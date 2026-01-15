@@ -246,7 +246,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["mpip", "fortidata"] | None = None,
+        type_: Literal["mpip", "fortidata"] | None = None,
         mpip_type: Literal["remote", "local"] | None = None,
         connector: str | None = None,
         comment: str | None = None,
@@ -264,7 +264,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name of table containing the label.
-            type: Label type.
+            type_: Label type.
             mpip_type: MPIP label type.
             connector: Name of SDN connector.
             comment: Optional comments.
@@ -316,7 +316,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             mpip_type=mpip_type,
             connector=connector,
             comment=comment,
@@ -352,7 +352,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["mpip", "fortidata"] | None = None,
+        type_: Literal["mpip", "fortidata"] | None = None,
         mpip_type: Literal["remote", "local"] | None = None,
         connector: str | None = None,
         comment: str | None = None,
@@ -370,7 +370,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name of table containing the label.
-            type: Label type.
+            type_: Label type.
             mpip_type: MPIP label type.
             connector: Name of SDN connector.
             comment: Optional comments.
@@ -424,7 +424,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             mpip_type=mpip_type,
             connector=connector,
             comment=comment,
@@ -560,7 +560,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["mpip", "fortidata"] | None = None,
+        type_: Literal["mpip", "fortidata"] | None = None,
         mpip_type: Literal["remote", "local"] | None = None,
         connector: str | None = None,
         comment: str | None = None,
@@ -579,7 +579,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             mpip_type: Field mpip-type
             connector: Field connector
             comment: Field comment
@@ -628,7 +628,7 @@ class Label(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             mpip_type=mpip_type,
             connector=connector,
             comment=comment,

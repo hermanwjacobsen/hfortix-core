@@ -186,6 +186,10 @@ class AccessControlList:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -206,6 +210,7 @@ class AccessControlList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessControlListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -223,6 +228,7 @@ class AccessControlList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessControlListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -239,6 +245,7 @@ class AccessControlList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AccessControlListResponse]: ...
     
     # ================================================================
@@ -281,7 +288,7 @@ class AccessControlList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AccessControlListObject: ...
     
@@ -300,7 +307,7 @@ class AccessControlList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AccessControlListObject]: ...
     
@@ -400,23 +407,6 @@ class AccessControlList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AccessControlListObject | list[AccessControlListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -434,6 +424,7 @@ class AccessControlList:
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessControlListObject: ...
@@ -476,19 +467,7 @@ class AccessControlList:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AccessControlListPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -503,6 +482,7 @@ class AccessControlList:
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessControlListObject: ...
@@ -545,19 +525,7 @@ class AccessControlList:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AccessControlListPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -568,6 +536,7 @@ class AccessControlList:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessControlListObject: ...
@@ -598,14 +567,7 @@ class AccessControlList:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -638,8 +600,6 @@ class AccessControlList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -667,6 +627,10 @@ class AccessControlListDictMode:
     By default returns AccessControlListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AccessControlListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -805,10 +769,12 @@ class AccessControlListDictMode:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AccessControlListPayload | None = ...,
@@ -860,10 +826,12 @@ class AccessControlListDictMode:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AccessControlListPayload | None = ...,
@@ -903,10 +871,12 @@ class AccessControlListDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -943,8 +913,6 @@ class AccessControlListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -968,6 +936,10 @@ class AccessControlListObjectMode:
     By default returns AccessControlListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AccessControlListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1121,10 +1093,12 @@ class AccessControlListObjectMode:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessControlListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AccessControlListPayload | None = ...,
@@ -1191,10 +1165,12 @@ class AccessControlListObjectMode:
         layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessControlListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AccessControlListPayload | None = ...,
@@ -1245,10 +1221,12 @@ class AccessControlListObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessControlListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1285,8 +1263,6 @@ class AccessControlListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

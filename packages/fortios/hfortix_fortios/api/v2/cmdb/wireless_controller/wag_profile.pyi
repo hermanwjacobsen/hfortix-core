@@ -102,6 +102,10 @@ class WagProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -122,6 +126,7 @@ class WagProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WagProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -139,6 +144,7 @@ class WagProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WagProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -155,6 +161,7 @@ class WagProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[WagProfileResponse]: ...
     
     # ================================================================
@@ -197,7 +204,7 @@ class WagProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> WagProfileObject: ...
     
@@ -216,7 +223,7 @@ class WagProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[WagProfileObject]: ...
     
@@ -316,23 +323,6 @@ class WagProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> WagProfileObject | list[WagProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -355,6 +345,7 @@ class WagProfile:
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WagProfileObject: ...
@@ -412,24 +403,7 @@ class WagProfile:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: WagProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        tunnel_type: Literal["l2tpv3", "gre"] | None = ...,
-        wag_ip: str | None = ...,
-        wag_port: int | None = ...,
-        ping_interval: int | None = ...,
-        ping_number: int | None = ...,
-        return_packet_timeout: int | None = ...,
-        dhcp_ip_addr: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -449,6 +423,7 @@ class WagProfile:
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WagProfileObject: ...
@@ -506,24 +481,7 @@ class WagProfile:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: WagProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        tunnel_type: Literal["l2tpv3", "gre"] | None = ...,
-        wag_ip: str | None = ...,
-        wag_port: int | None = ...,
-        ping_interval: int | None = ...,
-        ping_number: int | None = ...,
-        return_packet_timeout: int | None = ...,
-        dhcp_ip_addr: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +492,7 @@ class WagProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WagProfileObject: ...
@@ -564,14 +523,7 @@ class WagProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -609,8 +561,6 @@ class WagProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +588,10 @@ class WagProfileDictMode:
     By default returns WagProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return WagProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -791,10 +745,12 @@ class WagProfileDictMode:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: WagProfilePayload | None = ...,
@@ -866,10 +822,12 @@ class WagProfileDictMode:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: WagProfilePayload | None = ...,
@@ -914,10 +872,12 @@ class WagProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -959,8 +919,6 @@ class WagProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +942,10 @@ class WagProfileObjectMode:
     By default returns WagProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return WagProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1157,10 +1119,12 @@ class WagProfileObjectMode:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WagProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: WagProfilePayload | None = ...,
@@ -1252,10 +1216,12 @@ class WagProfileObjectMode:
         return_packet_timeout: int | None = ...,
         dhcp_ip_addr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WagProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: WagProfilePayload | None = ...,
@@ -1311,10 +1277,12 @@ class WagProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WagProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1356,8 +1324,6 @@ class WagProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -246,7 +246,7 @@ class Ntp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         ntpsync: Literal["enable", "disable"] | None = None,
-        type: Literal["fortiguard", "custom"] | None = None,
+        type_: Literal["fortiguard", "custom"] | None = None,
         syncinterval: int | None = None,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = None,
         source_ip: str | None = None,
@@ -270,7 +270,7 @@ class Ntp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             ntpsync: Enable/disable setting the FortiGate system time by synchronizing with an NTP Server.
-            type: Use the FortiGuard NTP server or any other available NTP Server.
+            type_: Use the FortiGuard NTP server or any other available NTP Server.
             syncinterval: NTP synchronization interval (1 - 1440 min).
             ntpserver: Configure the FortiGate to connect to any available third-party NTP server.
                 Default format: [{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]
@@ -341,7 +341,7 @@ class Ntp(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             ntpsync=ntpsync,
-            type=type,
+            type_=type_,
             syncinterval=syncinterval,
             ntpserver=ntpserver,
             source_ip=source_ip,

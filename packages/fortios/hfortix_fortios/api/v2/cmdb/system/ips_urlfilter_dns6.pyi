@@ -51,7 +51,6 @@ class IpsUrlfilterDns6Object:
     status: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -74,6 +73,10 @@ class IpsUrlfilterDns6:
     Primary Key: address6
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -94,6 +97,7 @@ class IpsUrlfilterDns6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpsUrlfilterDns6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -111,6 +115,7 @@ class IpsUrlfilterDns6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpsUrlfilterDns6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -127,6 +132,7 @@ class IpsUrlfilterDns6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[IpsUrlfilterDns6Response]: ...
     
     # ================================================================
@@ -169,7 +175,7 @@ class IpsUrlfilterDns6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
     
@@ -188,7 +194,7 @@ class IpsUrlfilterDns6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[IpsUrlfilterDns6Object]: ...
     
@@ -288,23 +294,6 @@ class IpsUrlfilterDns6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        address6: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IpsUrlfilterDns6Object | list[IpsUrlfilterDns6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -320,6 +309,7 @@ class IpsUrlfilterDns6:
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
@@ -356,17 +346,7 @@ class IpsUrlfilterDns6:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: IpsUrlfilterDns6Payload | None = ...,
-        address6: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -379,6 +359,7 @@ class IpsUrlfilterDns6:
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
@@ -415,17 +396,7 @@ class IpsUrlfilterDns6:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IpsUrlfilterDns6Payload | None = ...,
-        address6: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -436,6 +407,7 @@ class IpsUrlfilterDns6:
         address6: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
@@ -466,14 +438,7 @@ class IpsUrlfilterDns6:
         self,
         address6: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        address6: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -504,8 +469,6 @@ class IpsUrlfilterDns6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -533,6 +496,10 @@ class IpsUrlfilterDns6DictMode:
     By default returns IpsUrlfilterDns6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return IpsUrlfilterDns6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -665,10 +632,12 @@ class IpsUrlfilterDns6DictMode:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
@@ -712,10 +681,12 @@ class IpsUrlfilterDns6DictMode:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
@@ -753,10 +724,12 @@ class IpsUrlfilterDns6DictMode:
         self,
         address6: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         address6: str,
@@ -791,8 +764,6 @@ class IpsUrlfilterDns6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -816,6 +787,10 @@ class IpsUrlfilterDns6ObjectMode:
     By default returns IpsUrlfilterDns6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IpsUrlfilterDns6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -961,10 +936,12 @@ class IpsUrlfilterDns6ObjectMode:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
@@ -1021,10 +998,12 @@ class IpsUrlfilterDns6ObjectMode:
         address6: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
@@ -1073,10 +1052,12 @@ class IpsUrlfilterDns6ObjectMode:
         self,
         address6: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDns6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         address6: str,
@@ -1111,8 +1092,6 @@ class IpsUrlfilterDns6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

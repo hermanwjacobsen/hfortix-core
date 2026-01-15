@@ -90,6 +90,10 @@ class SwitchProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -110,6 +114,7 @@ class SwitchProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SwitchProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -127,6 +132,7 @@ class SwitchProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SwitchProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -143,6 +149,7 @@ class SwitchProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SwitchProfileResponse]: ...
     
     # ================================================================
@@ -185,7 +192,7 @@ class SwitchProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
     
@@ -204,7 +211,7 @@ class SwitchProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SwitchProfileObject]: ...
     
@@ -304,23 +311,6 @@ class SwitchProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SwitchProfileObject | list[SwitchProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -340,6 +330,7 @@ class SwitchProfile:
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
@@ -388,21 +379,7 @@ class SwitchProfile:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SwitchProfilePayload | None = ...,
-        name: str | None = ...,
-        login_passwd_override: Literal["enable", "disable"] | None = ...,
-        login_passwd: str | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -419,6 +396,7 @@ class SwitchProfile:
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
@@ -467,21 +445,7 @@ class SwitchProfile:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SwitchProfilePayload | None = ...,
-        name: str | None = ...,
-        login_passwd_override: Literal["enable", "disable"] | None = ...,
-        login_passwd: str | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -492,6 +456,7 @@ class SwitchProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
@@ -522,14 +487,7 @@ class SwitchProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -564,8 +522,6 @@ class SwitchProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -593,6 +549,10 @@ class SwitchProfileDictMode:
     By default returns SwitchProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SwitchProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -737,10 +697,12 @@ class SwitchProfileDictMode:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SwitchProfilePayload | None = ...,
@@ -800,10 +762,12 @@ class SwitchProfileDictMode:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SwitchProfilePayload | None = ...,
@@ -845,10 +809,12 @@ class SwitchProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -887,8 +853,6 @@ class SwitchProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -912,6 +876,10 @@ class SwitchProfileObjectMode:
     By default returns SwitchProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SwitchProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1073,10 +1041,12 @@ class SwitchProfileObjectMode:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SwitchProfilePayload | None = ...,
@@ -1153,10 +1123,12 @@ class SwitchProfileObjectMode:
         revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
         revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SwitchProfilePayload | None = ...,
@@ -1209,10 +1181,12 @@ class SwitchProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SwitchProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1251,8 +1225,6 @@ class SwitchProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

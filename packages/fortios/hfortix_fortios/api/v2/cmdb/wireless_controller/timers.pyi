@@ -169,6 +169,10 @@ class Timers:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -189,6 +193,7 @@ class Timers:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TimersResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -206,6 +211,7 @@ class Timers:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TimersResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -222,6 +228,7 @@ class Timers:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TimersResponse: ...
     
     # ================================================================
@@ -264,7 +271,7 @@ class Timers:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> TimersObject: ...
     
@@ -283,7 +290,7 @@ class Timers:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> TimersObject: ...
     
@@ -383,23 +390,6 @@ class Timers:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> TimersObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -439,6 +429,7 @@ class Timers:
         ap_reboot_wait_interval2: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TimersObject: ...
@@ -547,41 +538,7 @@ class Timers:
         ap_reboot_wait_time: str | None = ...,
         ap_reboot_wait_interval2: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: TimersPayload | None = ...,
-        echo_interval: int | None = ...,
-        nat_session_keep_alive: int | None = ...,
-        discovery_interval: int | None = ...,
-        client_idle_timeout: int | None = ...,
-        client_idle_rehome_timeout: int | None = ...,
-        auth_timeout: int | None = ...,
-        rogue_ap_log: int | None = ...,
-        fake_ap_log: int | None = ...,
-        sta_offline_cleanup: int | None = ...,
-        sta_offline_ip2mac_cleanup: int | None = ...,
-        sta_cap_cleanup: int | None = ...,
-        rogue_ap_cleanup: int | None = ...,
-        rogue_sta_cleanup: int | None = ...,
-        wids_entry_cleanup: int | None = ...,
-        ble_device_cleanup: int | None = ...,
-        sta_stats_interval: int | None = ...,
-        vap_stats_interval: int | None = ...,
-        radio_stats_interval: int | None = ...,
-        sta_capability_interval: int | None = ...,
-        sta_locate_timer: int | None = ...,
-        ipsec_intf_cleanup: int | None = ...,
-        ble_scan_report_intv: int | None = ...,
-        drma_interval: int | None = ...,
-        ap_reboot_wait_interval1: int | None = ...,
-        ap_reboot_wait_time: str | None = ...,
-        ap_reboot_wait_interval2: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -636,8 +593,6 @@ class Timers:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -665,6 +620,10 @@ class TimersDictMode:
     By default returns TimersResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return TimersObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -870,10 +829,12 @@ class TimersDictMode:
         ap_reboot_wait_time: str | None = ...,
         ap_reboot_wait_interval2: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: TimersPayload | None = ...,
@@ -959,8 +920,6 @@ class TimersDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +943,10 @@ class TimersObjectMode:
     By default returns TimersObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return TimersResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1226,10 +1189,12 @@ class TimersObjectMode:
         ap_reboot_wait_time: str | None = ...,
         ap_reboot_wait_interval2: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TimersObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: TimersPayload | None = ...,
@@ -1315,8 +1280,6 @@ class TimersObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

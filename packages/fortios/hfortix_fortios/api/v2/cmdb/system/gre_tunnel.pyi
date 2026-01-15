@@ -143,6 +143,10 @@ class GreTunnel:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -163,6 +167,7 @@ class GreTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GreTunnelResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -180,6 +185,7 @@ class GreTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GreTunnelResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -196,6 +202,7 @@ class GreTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[GreTunnelResponse]: ...
     
     # ================================================================
@@ -238,7 +245,7 @@ class GreTunnel:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GreTunnelObject: ...
     
@@ -257,7 +264,7 @@ class GreTunnel:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[GreTunnelObject]: ...
     
@@ -357,23 +364,6 @@ class GreTunnel:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GreTunnelObject | list[GreTunnelObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -405,6 +395,7 @@ class GreTunnel:
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GreTunnelObject: ...
@@ -489,33 +480,7 @@ class GreTunnel:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: GreTunnelPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        remote_gw6: str | None = ...,
-        local_gw6: str | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        sequence_number_transmission: Literal["disable", "enable"] | None = ...,
-        sequence_number_reception: Literal["disable", "enable"] | None = ...,
-        checksum_transmission: Literal["disable", "enable"] | None = ...,
-        checksum_reception: Literal["disable", "enable"] | None = ...,
-        key_outbound: int | None = ...,
-        key_inbound: int | None = ...,
-        dscp_copying: Literal["disable", "enable"] | None = ...,
-        diffservcode: str | None = ...,
-        keepalive_interval: int | None = ...,
-        keepalive_failtimes: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -544,6 +509,7 @@ class GreTunnel:
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GreTunnelObject: ...
@@ -628,33 +594,7 @@ class GreTunnel:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GreTunnelPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        remote_gw6: str | None = ...,
-        local_gw6: str | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        sequence_number_transmission: Literal["disable", "enable"] | None = ...,
-        sequence_number_reception: Literal["disable", "enable"] | None = ...,
-        checksum_transmission: Literal["disable", "enable"] | None = ...,
-        checksum_reception: Literal["disable", "enable"] | None = ...,
-        key_outbound: int | None = ...,
-        key_inbound: int | None = ...,
-        dscp_copying: Literal["disable", "enable"] | None = ...,
-        diffservcode: str | None = ...,
-        keepalive_interval: int | None = ...,
-        keepalive_failtimes: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -665,6 +605,7 @@ class GreTunnel:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GreTunnelObject: ...
@@ -695,14 +636,7 @@ class GreTunnel:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -749,8 +683,6 @@ class GreTunnel:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -778,6 +710,10 @@ class GreTunnelDictMode:
     By default returns GreTunnelResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GreTunnelObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -958,10 +894,12 @@ class GreTunnelDictMode:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: GreTunnelPayload | None = ...,
@@ -1069,10 +1007,12 @@ class GreTunnelDictMode:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GreTunnelPayload | None = ...,
@@ -1126,10 +1066,12 @@ class GreTunnelDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1180,8 +1122,6 @@ class GreTunnelDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1205,6 +1145,10 @@ class GreTunnelObjectMode:
     By default returns GreTunnelObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GreTunnelResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1414,10 +1358,12 @@ class GreTunnelObjectMode:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GreTunnelObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: GreTunnelPayload | None = ...,
@@ -1554,10 +1500,12 @@ class GreTunnelObjectMode:
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GreTunnelObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GreTunnelPayload | None = ...,
@@ -1622,10 +1570,12 @@ class GreTunnelObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GreTunnelObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1676,8 +1626,6 @@ class GreTunnelObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

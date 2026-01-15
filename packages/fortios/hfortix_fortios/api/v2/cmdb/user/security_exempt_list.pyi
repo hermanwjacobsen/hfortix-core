@@ -118,6 +118,10 @@ class SecurityExemptList:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -138,6 +142,7 @@ class SecurityExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SecurityExemptListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -155,6 +160,7 @@ class SecurityExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SecurityExemptListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -171,6 +177,7 @@ class SecurityExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SecurityExemptListResponse]: ...
     
     # ================================================================
@@ -213,7 +220,7 @@ class SecurityExemptList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
     
@@ -232,7 +239,7 @@ class SecurityExemptList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SecurityExemptListObject]: ...
     
@@ -332,23 +339,6 @@ class SecurityExemptList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SecurityExemptListObject | list[SecurityExemptListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -365,6 +355,7 @@ class SecurityExemptList:
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
@@ -404,18 +395,7 @@ class SecurityExemptList:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SecurityExemptListPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -429,6 +409,7 @@ class SecurityExemptList:
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
@@ -468,18 +449,7 @@ class SecurityExemptList:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SecurityExemptListPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -490,6 +460,7 @@ class SecurityExemptList:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
@@ -520,14 +491,7 @@ class SecurityExemptList:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -559,8 +523,6 @@ class SecurityExemptList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -588,6 +550,10 @@ class SecurityExemptListDictMode:
     By default returns SecurityExemptListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SecurityExemptListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -723,10 +689,12 @@ class SecurityExemptListDictMode:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SecurityExemptListPayload | None = ...,
@@ -774,10 +742,12 @@ class SecurityExemptListDictMode:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SecurityExemptListPayload | None = ...,
@@ -816,10 +786,12 @@ class SecurityExemptListDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -855,8 +827,6 @@ class SecurityExemptListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -880,6 +850,10 @@ class SecurityExemptListObjectMode:
     By default returns SecurityExemptListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SecurityExemptListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1029,10 +1003,12 @@ class SecurityExemptListObjectMode:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SecurityExemptListPayload | None = ...,
@@ -1094,10 +1070,12 @@ class SecurityExemptListObjectMode:
         description: str | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SecurityExemptListPayload | None = ...,
@@ -1147,10 +1125,12 @@ class SecurityExemptListObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SecurityExemptListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1186,8 +1166,6 @@ class SecurityExemptListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

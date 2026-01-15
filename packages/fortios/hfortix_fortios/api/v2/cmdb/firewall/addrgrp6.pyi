@@ -19,7 +19,7 @@ class Addrgrp6Payload(TypedDict, total=False):
         }
     """
     name: str  # IPv6 address group name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
     comment: str  # Comment. | MaxLen: 255
     member: list[dict[str, Any]]  # Address objects contained within the group.
@@ -140,7 +140,7 @@ class Addrgrp6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # IPv6 address group name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
     comment: str  # Comment. | MaxLen: 255
     member: list[Addrgrp6MemberItem]  # Address objects contained within the group.
@@ -160,7 +160,7 @@ class Addrgrp6Object:
     
     # IPv6 address group name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Integer value to determine the color of the icon in the GUI | Default: 0 | Min: 0 | Max: 32
     color: int
@@ -201,6 +201,10 @@ class Addrgrp6:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -221,6 +225,7 @@ class Addrgrp6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Addrgrp6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -238,6 +243,7 @@ class Addrgrp6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Addrgrp6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -254,6 +260,7 @@ class Addrgrp6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Addrgrp6Response]: ...
     
     # ================================================================
@@ -296,7 +303,7 @@ class Addrgrp6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
     
@@ -315,7 +322,7 @@ class Addrgrp6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Addrgrp6Object]: ...
     
@@ -415,23 +422,6 @@ class Addrgrp6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Addrgrp6Object | list[Addrgrp6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -454,6 +444,7 @@ class Addrgrp6:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
@@ -511,24 +502,7 @@ class Addrgrp6:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Addrgrp6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        color: int | None = ...,
-        comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -548,6 +522,7 @@ class Addrgrp6:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
@@ -605,24 +580,7 @@ class Addrgrp6:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Addrgrp6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        color: int | None = ...,
-        comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -633,6 +591,7 @@ class Addrgrp6:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
@@ -663,14 +622,7 @@ class Addrgrp6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -708,8 +660,6 @@ class Addrgrp6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -737,6 +687,10 @@ class Addrgrp6DictMode:
     By default returns Addrgrp6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return Addrgrp6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -890,10 +844,12 @@ class Addrgrp6DictMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Addrgrp6Payload | None = ...,
@@ -965,10 +921,12 @@ class Addrgrp6DictMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Addrgrp6Payload | None = ...,
@@ -1013,10 +971,12 @@ class Addrgrp6DictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1058,8 +1018,6 @@ class Addrgrp6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1083,6 +1041,10 @@ class Addrgrp6ObjectMode:
     By default returns Addrgrp6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Addrgrp6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1256,10 +1218,12 @@ class Addrgrp6ObjectMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Addrgrp6Payload | None = ...,
@@ -1351,10 +1315,12 @@ class Addrgrp6ObjectMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Addrgrp6Payload | None = ...,
@@ -1410,10 +1376,12 @@ class Addrgrp6ObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Addrgrp6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1455,8 +1423,6 @@ class Addrgrp6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

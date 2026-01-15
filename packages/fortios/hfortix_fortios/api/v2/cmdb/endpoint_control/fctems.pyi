@@ -146,7 +146,6 @@ class FctemsObject:
     verifying_ca: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -169,6 +168,10 @@ class Fctems:
     Primary Key: ems-id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -189,6 +192,7 @@ class Fctems:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FctemsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -206,6 +210,7 @@ class Fctems:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FctemsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -222,6 +227,7 @@ class Fctems:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[FctemsResponse]: ...
     
     # ================================================================
@@ -264,7 +270,7 @@ class Fctems:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FctemsObject: ...
     
@@ -283,7 +289,7 @@ class Fctems:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FctemsObject]: ...
     
@@ -383,23 +389,6 @@ class Fctems:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        ems_id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FctemsObject | list[FctemsObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -437,6 +426,7 @@ class Fctems:
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsObject: ...
@@ -539,39 +529,7 @@ class Fctems:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: FctemsPayload | None = ...,
-        ems_id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        dirty_reason: Literal["none", "mismatched-ems-sn"] | None = ...,
-        fortinetone_cloud_authentication: Literal["enable", "disable"] | None = ...,
-        cloud_authentication_access_key: str | None = ...,
-        server: str | None = ...,
-        https_port: int | None = ...,
-        serial_number: str | None = ...,
-        tenant_id: str | None = ...,
-        source_ip: str | None = ...,
-        pull_sysinfo: Literal["enable", "disable"] | None = ...,
-        pull_vulnerabilities: Literal["enable", "disable"] | None = ...,
-        pull_tags: Literal["enable", "disable"] | None = ...,
-        pull_malware_hash: Literal["enable", "disable"] | None = ...,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = ...,
-        call_timeout: int | None = ...,
-        out_of_sync_threshold: int | None = ...,
-        send_tags_to_all_vdoms: Literal["enable", "disable"] | None = ...,
-        websocket_override: Literal["enable", "disable"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        trust_ca_cn: Literal["enable", "disable"] | None = ...,
-        verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -606,6 +564,7 @@ class Fctems:
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsObject: ...
@@ -708,39 +667,7 @@ class Fctems:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FctemsPayload | None = ...,
-        ems_id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        dirty_reason: Literal["none", "mismatched-ems-sn"] | None = ...,
-        fortinetone_cloud_authentication: Literal["enable", "disable"] | None = ...,
-        cloud_authentication_access_key: str | None = ...,
-        server: str | None = ...,
-        https_port: int | None = ...,
-        serial_number: str | None = ...,
-        tenant_id: str | None = ...,
-        source_ip: str | None = ...,
-        pull_sysinfo: Literal["enable", "disable"] | None = ...,
-        pull_vulnerabilities: Literal["enable", "disable"] | None = ...,
-        pull_tags: Literal["enable", "disable"] | None = ...,
-        pull_malware_hash: Literal["enable", "disable"] | None = ...,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = ...,
-        call_timeout: int | None = ...,
-        out_of_sync_threshold: int | None = ...,
-        send_tags_to_all_vdoms: Literal["enable", "disable"] | None = ...,
-        websocket_override: Literal["enable", "disable"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        trust_ca_cn: Literal["enable", "disable"] | None = ...,
-        verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -751,6 +678,7 @@ class Fctems:
         ems_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsObject: ...
@@ -781,14 +709,7 @@ class Fctems:
         self,
         ems_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -841,8 +762,6 @@ class Fctems:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -870,6 +789,10 @@ class FctemsDictMode:
     By default returns FctemsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FctemsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1068,10 +991,12 @@ class FctemsDictMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: FctemsPayload | None = ...,
@@ -1203,10 +1128,12 @@ class FctemsDictMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FctemsPayload | None = ...,
@@ -1266,10 +1193,12 @@ class FctemsDictMode:
         self,
         ems_id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         ems_id: int,
@@ -1326,8 +1255,6 @@ class FctemsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1351,6 +1278,10 @@ class FctemsObjectMode:
     By default returns FctemsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FctemsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1584,10 +1515,12 @@ class FctemsObjectMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: FctemsPayload | None = ...,
@@ -1754,10 +1687,12 @@ class FctemsObjectMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FctemsPayload | None = ...,
@@ -1828,10 +1763,12 @@ class FctemsObjectMode:
         self,
         ems_id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         ems_id: int,
@@ -1888,8 +1825,6 @@ class FctemsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

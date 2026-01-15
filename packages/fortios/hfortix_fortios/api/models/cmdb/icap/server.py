@@ -26,7 +26,19 @@ class ServerModel(BaseModel):
 
     Configure ICAP servers.
 
-    Validation Rules:        - name: max_length=63 pattern=        - addr_type: pattern=        - ip_address: pattern=        - ip6_address: pattern=        - fqdn: max_length=255 pattern=        - port: min=1 max=65535 pattern=        - max_connections: min=0 max=4294967295 pattern=        - secure: pattern=        - ssl_cert: max_length=79 pattern=        - healthcheck: pattern=        - healthcheck_service: max_length=127 pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - addr_type: pattern=
+        - ip_address: pattern=
+        - ip6_address: pattern=
+        - fqdn: max_length=255 pattern=
+        - port: min=1 max=65535 pattern=
+        - max_connections: min=0 max=4294967295 pattern=
+        - secure: pattern=
+        - ssl_cert: max_length=79 pattern=
+        - healthcheck: pattern=
+        - healthcheck_service: max_length=127 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +50,18 @@ class ServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="Server name.")    addr_type: Literal["ip4", "ip6", "fqdn"] | None = Field(default="ip4", description="Address type of the remote ICAP server: IPv4, IPv6 or FQDN.")    ip_address: str = Field(default="0.0.0.0", description="IPv4 address of the ICAP server.")    ip6_address: str = Field(default="::", description="IPv6 address of the ICAP server.")    fqdn: str | None = Field(max_length=255, default="", description="ICAP remote server Fully Qualified Domain Name (FQDN).")    port: int | None = Field(ge=1, le=65535, default=1344, description="ICAP server port.")    max_connections: int | None = Field(ge=0, le=4294967295, default=100, description="Maximum number of concurrent connections to ICAP server (unlimited = 0, default = 100). Must not be less than wad-worker-count.")    secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable secure connection to ICAP server.")    ssl_cert: str | None = Field(max_length=79, default="", description="CA certificate name.")  # datasource: ['certificate.ca.name']    healthcheck: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable ICAP remote server health checking. Attempts to connect to the remote ICAP server to verify that the server is operating normally.")    healthcheck_service: str = Field(max_length=127, default="", description="ICAP Service name to use for health checks.")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="Server name.")
+    addr_type: Literal["ip4", "ip6", "fqdn"] | None = Field(default="ip4", description="Address type of the remote ICAP server: IPv4, IPv6 or FQDN.")
+    ip_address: str = Field(default="0.0.0.0", description="IPv4 address of the ICAP server.")
+    ip6_address: str = Field(default="::", description="IPv6 address of the ICAP server.")
+    fqdn: str | None = Field(max_length=255, default="", description="ICAP remote server Fully Qualified Domain Name (FQDN).")
+    port: int | None = Field(ge=1, le=65535, default=1344, description="ICAP server port.")
+    max_connections: int | None = Field(ge=0, le=4294967295, default=100, description="Maximum number of concurrent connections to ICAP server (unlimited = 0, default = 100). Must not be less than wad-worker-count.")
+    secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable secure connection to ICAP server.")
+    ssl_cert: str | None = Field(max_length=79, default="", description="CA certificate name.")  # datasource: ['certificate.ca.name']
+    healthcheck: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable ICAP remote server health checking. Attempts to connect to the remote ICAP server to verify that the server is operating normally.")
+    healthcheck_service: str = Field(max_length=127, default="", description="ICAP Service name to use for health checks.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +140,7 @@ class ServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.icap.server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_cert", None)
@@ -154,7 +177,7 @@ class ServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_cert_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +200,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.877528Z
+# Generated: 2026-01-14T22:43:39.758512Z
 # ============================================================================

@@ -7,8 +7,9 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -27,11 +28,11 @@ class ProfileSignature(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    main_class: list[MainClass] = Field(default=None, description="Main signature class.")
-    disabled_sub_class: list[DisabledSubClass] = Field(default=None, description="Disabled signature subclasses.")
-    disabled_signature: list[DisabledSignature] = Field(default=None, description="Disabled signatures.")
+    main_class: list[dict[str, Any]] | None = Field(default=None, description="Main signature class.")
+    disabled_sub_class: list[dict[str, Any]] | None = Field(default=None, description="Disabled signature subclasses.")
+    disabled_signature: list[dict[str, Any]] | None = Field(default=None, description="Disabled signatures.")
     credit_card_detection_threshold: int | None = Field(ge=0, le=128, default=3, description="The minimum number of Credit cards to detect violation.")
-    custom_signature: list[CustomSignature] = Field(default=None, description="Custom signature.")
+    custom_signature: list[dict[str, Any]] | None = Field(default=None, description="Custom signature.")
 
 
 class ProfileConstraint(BaseModel):
@@ -45,20 +46,20 @@ class ProfileConstraint(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    header_length: list[HeaderLength] = Field(default=None, description="HTTP header length in request.")
-    content_length: list[ContentLength] = Field(default=None, description="HTTP content length in request.")
-    param_length: list[ParamLength] = Field(default=None, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")
-    line_length: list[LineLength] = Field(default=None, description="HTTP line length in request.")
-    url_param_length: list[UrlParamLength] = Field(default=None, description="Maximum length of parameter in URL.")
-    version: list[Version] = Field(default=None, description="Enable/disable HTTP version check.")
-    method: list[Method] = Field(default=None, description="Enable/disable HTTP method check.")
-    hostname: list[Hostname] = Field(default=None, description="Enable/disable hostname check.")
-    malformed: list[Malformed] = Field(default=None, description="Enable/disable malformed HTTP request check.")
-    max_cookie: list[MaxCookie] = Field(default=None, description="Maximum number of cookies in HTTP request.")
-    max_header_line: list[MaxHeaderLine] = Field(default=None, description="Maximum number of HTTP header line.")
-    max_url_param: list[MaxUrlParam] = Field(default=None, description="Maximum number of parameters in URL.")
-    max_range_segment: list[MaxRangeSegment] = Field(default=None, description="Maximum number of range segments in HTTP range line.")
-    exception: list[Exception] = Field(default=None, description="HTTP constraint exception.")
+    header_length: list[dict[str, Any]] | None = Field(default=None, description="HTTP header length in request.")
+    content_length: list[dict[str, Any]] | None = Field(default=None, description="HTTP content length in request.")
+    param_length: list[dict[str, Any]] | None = Field(default=None, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")
+    line_length: list[dict[str, Any]] | None = Field(default=None, description="HTTP line length in request.")
+    url_param_length: list[dict[str, Any]] | None = Field(default=None, description="Maximum length of parameter in URL.")
+    version: list[dict[str, Any]] | None = Field(default=None, description="Enable/disable HTTP version check.")
+    method: list[dict[str, Any]] | None = Field(default=None, description="Enable/disable HTTP method check.")
+    hostname: list[dict[str, Any]] | None = Field(default=None, description="Enable/disable hostname check.")
+    malformed: list[dict[str, Any]] | None = Field(default=None, description="Enable/disable malformed HTTP request check.")
+    max_cookie: list[dict[str, Any]] | None = Field(default=None, description="Maximum number of cookies in HTTP request.")
+    max_header_line: list[dict[str, Any]] | None = Field(default=None, description="Maximum number of HTTP header line.")
+    max_url_param: list[dict[str, Any]] | None = Field(default=None, description="Maximum number of parameters in URL.")
+    max_range_segment: list[dict[str, Any]] | None = Field(default=None, description="Maximum number of range segments in HTTP range line.")
+    exception: list[dict[str, Any]] | None = Field(default=None, description="HTTP constraint exception.")
 
 
 class ProfileMethod(BaseModel):
@@ -75,8 +76,8 @@ class ProfileMethod(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")
     log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")
     severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
-    default_allowed_methods: DefaultAllowedMethodsEnum | None = Field(default="", description="Methods.")
-    method_policy: list[MethodPolicy] = Field(default=None, description="HTTP method policy.")
+    default_allowed_methods: str | None = Field(default=None, description="Methods.")
+    method_policy: list[dict[str, Any]] | None = Field(default=None, description="HTTP method policy.")
 
 
 class ProfileAddressList(BaseModel):
@@ -93,8 +94,8 @@ class ProfileAddressList(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")
     blocked_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging on blocked addresses.")
     severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
-    trusted_address: list[TrustedAddress] = Field(default=None, description="Trusted address.")
-    blocked_address: list[BlockedAddress] = Field(default=None, description="Blocked address.")
+    trusted_address: list[dict[str, Any]] | None = Field(default=None, description="Trusted address.")
+    blocked_address: list[dict[str, Any]] | None = Field(default=None, description="Blocked address.")
 
 
 class ProfileUrlAccess(BaseModel):
@@ -113,7 +114,7 @@ class ProfileUrlAccess(BaseModel):
     action: Literal["bypass", "permit", "block"] | None = Field(default="permit", description="Action.")
     log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")
     severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
-    access_pattern: list[AccessPattern] = Field(default=None, description="URL access pattern.")
+    access_pattern: list[dict[str, Any]] | None = Field(default=None, description="URL access pattern.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -131,7 +132,17 @@ class ProfileModel(BaseModel):
 
     Configure Web application firewall configuration.
 
-    Validation Rules:        - name: max_length=47 pattern=        - external: pattern=        - extended_log: pattern=        - signature: pattern=        - constraint: pattern=        - method: pattern=        - address_list: pattern=        - url_access: pattern=        - comment: max_length=1023 pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - external: pattern=
+        - extended_log: pattern=
+        - signature: pattern=
+        - constraint: pattern=
+        - method: pattern=
+        - address_list: pattern=
+        - url_access: pattern=
+        - comment: max_length=1023 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -143,7 +154,16 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=47, default="", description="WAF Profile name.")    external: Literal["disable", "enable"] | None = Field(default="disable", description="Disable/Enable external HTTP Inspection.")    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")    signature: list[ProfileSignature] = Field(default=None, description="WAF signatures.")    constraint: list[ProfileConstraint] = Field(default=None, description="WAF HTTP protocol restrictions.")    method: list[ProfileMethod] = Field(default=None, description="Method restriction.")    address_list: list[ProfileAddressList] = Field(default=None, description="Address block and allow lists.")    url_access: list[ProfileUrlAccess] = Field(default=None, description="URL access list.")    comment: str | None = Field(max_length=1023, default=None, description="Comment.")    # ========================================================================
+    name: str | None = Field(max_length=47, default="", description="WAF Profile name.")
+    external: Literal["disable", "enable"] | None = Field(default="disable", description="Disable/Enable external HTTP Inspection.")
+    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")
+    signature: list[ProfileSignature] | None = Field(default=None, description="WAF signatures.")
+    constraint: list[ProfileConstraint] | None = Field(default=None, description="WAF HTTP protocol restrictions.")
+    method: list[ProfileMethod] | None = Field(default=None, description="Method restriction.")
+    address_list: list[ProfileAddressList] | None = Field(default=None, description="Address block and allow lists.")
+    url_access: list[ProfileUrlAccess] | None = Field(default=None, description="URL access list.")
+    comment: str | None = Field(max_length=1023, default=None, description="Comment.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -207,7 +227,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.waf.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "url_access", [])
@@ -255,7 +275,7 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_url_access_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -278,5 +298,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.571324Z
+# Generated: 2026-01-14T22:43:34.390166Z
 # ============================================================================

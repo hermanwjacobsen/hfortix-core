@@ -51,7 +51,19 @@ class ManualkeyModel(BaseModel):
 
     Configure IPsec manual keys.
 
-    Validation Rules:        - name: max_length=35 pattern=        - interface: max_length=15 pattern=        - remote_gw: pattern=        - local_gw: pattern=        - authentication: pattern=        - encryption: pattern=        - authkey: pattern=        - enckey: pattern=        - localspi: pattern=        - remotespi: pattern=        - npu_offload: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - interface: max_length=15 pattern=
+        - remote_gw: pattern=
+        - local_gw: pattern=
+        - authentication: pattern=
+        - encryption: pattern=
+        - authkey: pattern=
+        - enckey: pattern=
+        - localspi: pattern=
+        - remotespi: pattern=
+        - npu_offload: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -63,7 +75,18 @@ class ManualkeyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="IPsec tunnel name.")    interface: str = Field(max_length=15, default="", description="Name of the physical, aggregate, or VLAN interface.")  # datasource: ['system.interface.name']    remote_gw: str = Field(default="0.0.0.0", description="Peer gateway.")    local_gw: str | None = Field(default="0.0.0.0", description="Local gateway.")    authentication: ManualkeyAuthenticationEnum = Field(default="null", description="Authentication algorithm. Must be the same for both ends of the tunnel.")    encryption: ManualkeyEncryptionEnum = Field(default="null", description="Encryption algorithm. Must be the same for both ends of the tunnel.")    authkey: str = Field(default="", description="Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.")    enckey: str = Field(default="", description="Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.")    localspi: str = Field(default="", description="Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    remotespi: str = Field(default="", description="Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    npu_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NPU offloading.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="IPsec tunnel name.")
+    interface: str = Field(max_length=15, default="", description="Name of the physical, aggregate, or VLAN interface.")  # datasource: ['system.interface.name']
+    remote_gw: str = Field(default="0.0.0.0", description="Peer gateway.")
+    local_gw: str | None = Field(default="0.0.0.0", description="Local gateway.")
+    authentication: str | ManualkeyAuthenticationEnum = Field(default="null", description="Authentication algorithm. Must be the same for both ends of the tunnel.")
+    encryption: str | ManualkeyEncryptionEnum = Field(default="null", description="Encryption algorithm. Must be the same for both ends of the tunnel.")
+    authkey: str = Field(default="", description="Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.")
+    enckey: str = Field(default="", description="Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.")
+    localspi: str = Field(default="", description="Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")
+    remotespi: str = Field(default="", description="Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")
+    npu_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NPU offloading.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -142,7 +165,7 @@ class ManualkeyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.manualkey.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -179,7 +202,7 @@ class ManualkeyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -202,5 +225,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.559718Z
+# Generated: 2026-01-14T22:43:39.368489Z
 # ============================================================================

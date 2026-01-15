@@ -95,6 +95,10 @@ class IpipTunnel:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -115,6 +119,7 @@ class IpipTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpipTunnelResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -132,6 +137,7 @@ class IpipTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpipTunnelResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -148,6 +154,7 @@ class IpipTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[IpipTunnelResponse]: ...
     
     # ================================================================
@@ -190,7 +197,7 @@ class IpipTunnel:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
     
@@ -209,7 +216,7 @@ class IpipTunnel:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[IpipTunnelObject]: ...
     
@@ -309,23 +316,6 @@ class IpipTunnel:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IpipTunnelObject | list[IpipTunnelObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -345,6 +335,7 @@ class IpipTunnel:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
@@ -393,21 +384,7 @@ class IpipTunnel:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: IpipTunnelPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -424,6 +401,7 @@ class IpipTunnel:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
@@ -472,21 +450,7 @@ class IpipTunnel:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IpipTunnelPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -497,6 +461,7 @@ class IpipTunnel:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
@@ -527,14 +492,7 @@ class IpipTunnel:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -569,8 +527,6 @@ class IpipTunnel:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -598,6 +554,10 @@ class IpipTunnelDictMode:
     By default returns IpipTunnelResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IpipTunnelObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -742,10 +702,12 @@ class IpipTunnelDictMode:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: IpipTunnelPayload | None = ...,
@@ -805,10 +767,12 @@ class IpipTunnelDictMode:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IpipTunnelPayload | None = ...,
@@ -850,10 +814,12 @@ class IpipTunnelDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -892,8 +858,6 @@ class IpipTunnelDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -917,6 +881,10 @@ class IpipTunnelObjectMode:
     By default returns IpipTunnelObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IpipTunnelResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1078,10 +1046,12 @@ class IpipTunnelObjectMode:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: IpipTunnelPayload | None = ...,
@@ -1158,10 +1128,12 @@ class IpipTunnelObjectMode:
         use_sdwan: Literal["disable", "enable"] | None = ...,
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IpipTunnelPayload | None = ...,
@@ -1214,10 +1186,12 @@ class IpipTunnelObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpipTunnelObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1256,8 +1230,6 @@ class IpipTunnelObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -77,6 +77,10 @@ class HaMonitor:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -97,6 +101,7 @@ class HaMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HaMonitorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -114,6 +119,7 @@ class HaMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HaMonitorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -130,6 +136,7 @@ class HaMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HaMonitorResponse: ...
     
     # ================================================================
@@ -172,7 +179,7 @@ class HaMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> HaMonitorObject: ...
     
@@ -191,7 +198,7 @@ class HaMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> HaMonitorObject: ...
     
@@ -291,23 +298,6 @@ class HaMonitor:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> HaMonitorObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -324,6 +314,7 @@ class HaMonitor:
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HaMonitorObject: ...
@@ -363,18 +354,7 @@ class HaMonitor:
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: HaMonitorPayload | None = ...,
-        monitor_vlan: Literal["enable", "disable"] | None = ...,
-        vlan_hb_interval: int | None = ...,
-        vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -406,8 +386,6 @@ class HaMonitor:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -435,6 +413,10 @@ class HaMonitorDictMode:
     By default returns HaMonitorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return HaMonitorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -571,10 +553,12 @@ class HaMonitorDictMode:
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: HaMonitorPayload | None = ...,
@@ -614,8 +598,6 @@ class HaMonitorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -639,6 +621,10 @@ class HaMonitorObjectMode:
     By default returns HaMonitorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return HaMonitorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -789,10 +775,12 @@ class HaMonitorObjectMode:
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HaMonitorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: HaMonitorPayload | None = ...,
@@ -832,8 +820,6 @@ class HaMonitorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

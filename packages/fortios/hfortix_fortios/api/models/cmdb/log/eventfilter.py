@@ -26,7 +26,26 @@ class EventfilterModel(BaseModel):
 
     Configure log event filters.
 
-    Validation Rules:        - event: pattern=        - system: pattern=        - vpn: pattern=        - user: pattern=        - router: pattern=        - wireless_activity: pattern=        - wan_opt: pattern=        - endpoint: pattern=        - ha: pattern=        - security_rating: pattern=        - fortiextender: pattern=        - connector: pattern=        - sdwan: pattern=        - cifs: pattern=        - switch_controller: pattern=        - rest_api: pattern=        - web_svc: pattern=        - webproxy: pattern=    """
+    Validation Rules:
+        - event: pattern=
+        - system: pattern=
+        - vpn: pattern=
+        - user: pattern=
+        - router: pattern=
+        - wireless_activity: pattern=
+        - wan_opt: pattern=
+        - endpoint: pattern=
+        - ha: pattern=
+        - security_rating: pattern=
+        - fortiextender: pattern=
+        - connector: pattern=
+        - sdwan: pattern=
+        - cifs: pattern=
+        - switch_controller: pattern=
+        - rest_api: pattern=
+        - web_svc: pattern=
+        - webproxy: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +57,25 @@ class EventfilterModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    event: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable event logging.")    system: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable system event logging.")    vpn: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable VPN event logging.")    user: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable user authentication event logging.")    router: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable router event logging.")    wireless_activity: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable wireless event logging.")    wan_opt: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable WAN optimization event logging.")    endpoint: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable endpoint event logging.")    ha: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ha event logging.")    security_rating: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Security Rating result logging.")    fortiextender: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiExtender logging.")    connector: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SDN connector logging.")    sdwan: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SD-WAN logging.")    cifs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable CIFS logging.")    switch_controller: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Switch-Controller logging.")    rest_api: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable REST API logging.")    web_svc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web-svc performance logging.")    webproxy: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web proxy event logging.")    # ========================================================================
+    event: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable event logging.")
+    system: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable system event logging.")
+    vpn: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable VPN event logging.")
+    user: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable user authentication event logging.")
+    router: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable router event logging.")
+    wireless_activity: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable wireless event logging.")
+    wan_opt: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable WAN optimization event logging.")
+    endpoint: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable endpoint event logging.")
+    ha: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ha event logging.")
+    security_rating: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Security Rating result logging.")
+    fortiextender: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiExtender logging.")
+    connector: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SDN connector logging.")
+    sdwan: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SD-WAN logging.")
+    cifs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable CIFS logging.")
+    switch_controller: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Switch-Controller logging.")
+    rest_api: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable REST API logging.")
+    web_svc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web-svc performance logging.")
+    webproxy: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web proxy event logging.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -87,5 +124,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.417118Z
+# Generated: 2026-01-14T22:43:34.192236Z
 # ============================================================================

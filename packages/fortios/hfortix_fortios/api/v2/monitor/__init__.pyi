@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from . import ips
     from . import license
     from . import log
+    from . import monitor
     from . import network
     from . import registration
     from . import router
@@ -65,6 +66,7 @@ class MonitorDictMode:
     ips: ips.IpsDictMode
     license: license.LicenseDictMode
     log: log.LogDictMode
+    monitor: monitor.Monitor  # No mode classes yet
     network: network.NetworkDictMode
     registration: registration.RegistrationDictMode
     router: router.RouterDictMode
@@ -110,6 +112,7 @@ class MonitorObjectMode:
     ips: ips.IpsObjectMode
     license: license.LicenseObjectMode
     log: log.LogObjectMode
+    monitor: monitor.Monitor  # No mode classes yet
     network: network.NetworkObjectMode
     registration: registration.RegistrationObjectMode
     router: router.RouterObjectMode
@@ -152,6 +155,7 @@ class Monitor:
     ips: ips.Ips
     license: license.License
     log: log.Log
+    monitor: monitor.Monitor
     network: network.Network
     registration: registration.Registration
     router: router.Router

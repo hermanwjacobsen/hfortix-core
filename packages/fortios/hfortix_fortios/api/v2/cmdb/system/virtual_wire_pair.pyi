@@ -113,6 +113,10 @@ class VirtualWirePair:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -133,6 +137,7 @@ class VirtualWirePair:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VirtualWirePairResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -150,6 +155,7 @@ class VirtualWirePair:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VirtualWirePairResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -166,6 +172,7 @@ class VirtualWirePair:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VirtualWirePairResponse]: ...
     
     # ================================================================
@@ -208,7 +215,7 @@ class VirtualWirePair:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
     
@@ -227,7 +234,7 @@ class VirtualWirePair:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VirtualWirePairObject]: ...
     
@@ -327,23 +334,6 @@ class VirtualWirePair:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VirtualWirePairObject | list[VirtualWirePairObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -361,6 +351,7 @@ class VirtualWirePair:
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
@@ -403,19 +394,7 @@ class VirtualWirePair:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VirtualWirePairPayload | None = ...,
-        name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        wildcard_vlan: Literal["enable", "disable"] | None = ...,
-        vlan_filter: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -430,6 +409,7 @@ class VirtualWirePair:
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
@@ -472,19 +452,7 @@ class VirtualWirePair:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VirtualWirePairPayload | None = ...,
-        name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        wildcard_vlan: Literal["enable", "disable"] | None = ...,
-        vlan_filter: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -495,6 +463,7 @@ class VirtualWirePair:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
@@ -525,14 +494,7 @@ class VirtualWirePair:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -565,8 +527,6 @@ class VirtualWirePair:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -594,6 +554,10 @@ class VirtualWirePairDictMode:
     By default returns VirtualWirePairResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VirtualWirePairObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -732,10 +696,12 @@ class VirtualWirePairDictMode:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
@@ -787,10 +753,12 @@ class VirtualWirePairDictMode:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
@@ -830,10 +798,12 @@ class VirtualWirePairDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -870,8 +840,6 @@ class VirtualWirePairDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -895,6 +863,10 @@ class VirtualWirePairObjectMode:
     By default returns VirtualWirePairObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VirtualWirePairResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1048,10 +1020,12 @@ class VirtualWirePairObjectMode:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
@@ -1118,10 +1092,12 @@ class VirtualWirePairObjectMode:
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
@@ -1172,10 +1148,12 @@ class VirtualWirePairObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VirtualWirePairObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1212,8 +1190,6 @@ class VirtualWirePairObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

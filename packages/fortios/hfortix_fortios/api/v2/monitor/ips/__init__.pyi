@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .hold_signatures import HoldSignatures, HoldSignaturesDictMode, HoldSignaturesObjectMode
     from .metadata import Metadata, MetadataDictMode, MetadataObjectMode
     from .rate_based import RateBased, RateBasedDictMode, RateBasedObjectMode
-    from .session import SessionDictMode, SessionObjectMode
+    from .session import Session, SessionDictMode, SessionObjectMode
 
 __all__ = [
     "Anomaly",

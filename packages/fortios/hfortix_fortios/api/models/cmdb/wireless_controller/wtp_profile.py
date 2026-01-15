@@ -28,7 +28,7 @@ class WtpProfilePlatform(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    type: TypeEnum | None = Field(default="221E", description="WTP, FortiAP or AP platform type. There are built-in WTP profiles for all supported FortiAP models. You can select a built-in profile and customize it or create a new profile.")
+    type_: str | None = Field(default="221E", description="WTP, FortiAP or AP platform type. There are built-in WTP profiles for all supported FortiAP models. You can select a built-in profile and customize it or create a new profile.")
     mode: Literal["single-5G", "dual-5G"] | None = Field(default="single-5G", description="Configure operation mode of 5G radios (default = single-5G).")
     ddscan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of one radio for dedicated full-band scanning to detect RF characterization and wireless threat management.")
 
@@ -44,25 +44,25 @@ class WtpProfileLan(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    port_mode: PortModeEnum | None = Field(default="offline", description="LAN port mode.")
+    port_mode: str | None = Field(default="offline", description="LAN port mode.")
     port_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port to SSID.")  # datasource: ['system.interface.name']
-    port1_mode: Port1ModeEnum | None = Field(default="offline", description="LAN port 1 mode.")
+    port1_mode: str | None = Field(default="offline", description="LAN port 1 mode.")
     port1_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 1 to SSID.")  # datasource: ['system.interface.name']
-    port2_mode: Port2ModeEnum | None = Field(default="offline", description="LAN port 2 mode.")
+    port2_mode: str | None = Field(default="offline", description="LAN port 2 mode.")
     port2_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 2 to SSID.")  # datasource: ['system.interface.name']
-    port3_mode: Port3ModeEnum | None = Field(default="offline", description="LAN port 3 mode.")
+    port3_mode: str | None = Field(default="offline", description="LAN port 3 mode.")
     port3_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 3 to SSID.")  # datasource: ['system.interface.name']
-    port4_mode: Port4ModeEnum | None = Field(default="offline", description="LAN port 4 mode.")
+    port4_mode: str | None = Field(default="offline", description="LAN port 4 mode.")
     port4_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 4 to SSID.")  # datasource: ['system.interface.name']
-    port5_mode: Port5ModeEnum | None = Field(default="offline", description="LAN port 5 mode.")
+    port5_mode: str | None = Field(default="offline", description="LAN port 5 mode.")
     port5_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 5 to SSID.")  # datasource: ['system.interface.name']
-    port6_mode: Port6ModeEnum | None = Field(default="offline", description="LAN port 6 mode.")
+    port6_mode: str | None = Field(default="offline", description="LAN port 6 mode.")
     port6_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 6 to SSID.")  # datasource: ['system.interface.name']
-    port7_mode: Port7ModeEnum | None = Field(default="offline", description="LAN port 7 mode.")
+    port7_mode: str | None = Field(default="offline", description="LAN port 7 mode.")
     port7_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 7 to SSID.")  # datasource: ['system.interface.name']
-    port8_mode: Port8ModeEnum | None = Field(default="offline", description="LAN port 8 mode.")
+    port8_mode: str | None = Field(default="offline", description="LAN port 8 mode.")
     port8_ssid: str | None = Field(max_length=15, default="", description="Bridge LAN port 8 to SSID.")  # datasource: ['system.interface.name']
-    port_esl_mode: PortEslModeEnum | None = Field(default="offline", description="ESL port mode.")
+    port_esl_mode: str | None = Field(default="offline", description="ESL port mode.")
     port_esl_ssid: str | None = Field(max_length=15, default="", description="Bridge ESL port to SSID.")  # datasource: ['system.interface.name']
 
 
@@ -121,25 +121,25 @@ class WtpProfileRadio1(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    mode: ModeEnum | None = Field(default="ap", description="Mode of radio 1. Radio 1 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
-    band: BandEnum | None = Field(default="", description="WiFi band that Radio 1 operates on.")
+    mode: str | None = Field(default="ap", description="Mode of radio 1. Radio 1 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
+    band: str | None = Field(default=None, description="WiFi band that Radio 1 operates on.")
     band_5g_type: Literal["5g-full", "5g-high", "5g-low"] | None = Field(default="5g-full", description="WiFi 5G band type.")
     drma: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic radio mode assignment (DRMA) (default = disable).")
     drma_sensitivity: Literal["low", "medium", "high"] | None = Field(default="low", description="Network Coverage Factor (NCF) percentage required to consider a radio as redundant (default = low).")
     airtime_fairness: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable airtime fairness (default = disable).")
     protection_mode: Literal["rtscts", "ctsonly", "disable"] | None = Field(default="disable", description="Enable/disable 802.11g protection modes to support backwards compatibility with older clients (rtscts, ctsonly, disable).")
-    powersave_optimize: PowersaveOptimizeEnum | None = Field(default="", description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
-    transmit_optimize: TransmitOptimizeEnum | None = Field(default="power-save aggr-limit retry-limit send-bar", description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
+    powersave_optimize: str | None = Field(default=None, description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
+    transmit_optimize: str | None = Field(default=None, description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
     amsdu: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable 802.11n AMSDU support. AMSDU can improve performance if supported by your WiFi clients (default = enable).")
     coexistence: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing both HT20 and HT40 on the same radio (default = enable).")
     zero_wait_dfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable zero wait DFS on radio (default = enable).")
     bss_color: int | None = Field(ge=0, le=63, default=0, description="BSS color value for this 11ax radio (0 - 63, disable = 0, default = 0).")
     bss_color_mode: Literal["auto", "static"] | None = Field(default="auto", description="BSS color mode for this 11ax radio (default = auto).")
     short_guard_interval: Literal["enable", "disable"] | None = Field(default="disable", description="Use either the short guard interval (Short GI) of 400 ns or the long guard interval (Long GI) of 800 ns.")
-    mimo_mode: MimoModeEnum | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
-    channel_bonding: ChannelBondingEnum | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
+    mimo_mode: str | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
+    channel_bonding: str | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
     channel_bonding_ext: Literal["320MHz-1", "320MHz-2"] | None = Field(default="320MHz-2", description="Channel bandwidth extension: 320 MHz-1 and 320 MHz-2 (default = 320 MHz-2).")
-    optional_antenna: OptionalAntennaEnum | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
+    optional_antenna: str | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
     optional_antenna_gain: str | None = Field(max_length=7, default="0", description="Optional antenna gain in dBi (0 to 20, default = 0).")
     auto_power_level: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic power-level adjustment to prevent co-channel interference (default = disable).")
     auto_power_high: int | None = Field(ge=0, le=4294967295, default=17, description="The upper bound of automatic transmit power adjustment in dBm (the actual range of transmit power depends on the AP platform type).")
@@ -156,7 +156,7 @@ class WtpProfileRadio1(BaseModel):
     frag_threshold: int | None = Field(ge=800, le=2346, default=2346, description="Maximum packet size that can be sent without fragmentation (800 - 2346 bytes, default = 2346).")
     ap_sniffer_bufsize: int | None = Field(ge=1, le=32, default=16, description="Sniffer buffer size (1 - 32 MB, default = 16).")
     ap_sniffer_chan: int | None = Field(ge=0, le=4294967295, default=36, description="Channel on which to operate the sniffer (default = 6).")
-    ap_sniffer_chan_width: ApSnifferChanWidthEnum | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
+    ap_sniffer_chan_width: str | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
     ap_sniffer_addr: str | None = Field(default="00:00:00:00:00:00", description="MAC address to monitor.")
     ap_sniffer_mgmt_beacon: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management Beacon frames (default = enable).")
     ap_sniffer_mgmt_probe: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management probe frames (default = enable).")
@@ -165,7 +165,7 @@ class WtpProfileRadio1(BaseModel):
     ap_sniffer_data: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi data frame (default = enable).")
     sam_ssid: str | None = Field(max_length=32, default="", description="SSID for WiFi network.")
     sam_bssid: str | None = Field(default="00:00:00:00:00:00", description="BSSID for WiFi network.")
-    sam_security_type: SamSecurityTypeEnum | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
+    sam_security_type: str | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
     sam_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Captive Portal Authentication (default = disable).")
     sam_cwp_username: str | None = Field(max_length=35, default="", description="Username for captive portal authentication.")
     sam_cwp_password: Any = Field(max_length=128, default=None, description="Password for captive portal authentication.")
@@ -195,8 +195,8 @@ class WtpProfileRadio1(BaseModel):
     max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) or WiFi clients supported by the radio. Range depends on the hardware.")
     max_distance: int | None = Field(ge=0, le=54000, default=0, description="Maximum expected distance between the AP and clients (0 - 54000 m, default = 0).")
     vap_all: Literal["tunnel", "bridge", "manual"] | None = Field(default="tunnel", description="Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).")
-    vaps: list[Vaps] = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
-    channel: list[Channel] = Field(default=None, description="Selected list of wireless radio channels.")
+    vaps: list[dict[str, Any]] | None = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
+    channel: list[dict[str, Any]] | None = Field(default=None, description="Selected list of wireless radio channels.")
     call_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) call admission control to optimize WiFi bandwidth use for VoIP calls. New VoIP calls are only accepted if there is enough bandwidth available to support them.")
     call_capacity: int | None = Field(ge=0, le=60, default=10, description="Maximum number of Voice over WLAN (VoWLAN) phones supported by the radio (0 - 60, default = 10).")
     bandwidth_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) bandwidth admission control to optimize WiFi bandwidth use. A request to join the wireless network is only allowed if the access point has enough bandwidth to support it.")
@@ -214,25 +214,25 @@ class WtpProfileRadio2(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    mode: ModeEnum | None = Field(default="ap", description="Mode of radio 2. Radio 2 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
-    band: BandEnum | None = Field(default="", description="WiFi band that Radio 2 operates on.")
+    mode: str | None = Field(default="ap", description="Mode of radio 2. Radio 2 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
+    band: str | None = Field(default=None, description="WiFi band that Radio 2 operates on.")
     band_5g_type: Literal["5g-full", "5g-high", "5g-low"] | None = Field(default="5g-full", description="WiFi 5G band type.")
     drma: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic radio mode assignment (DRMA) (default = disable).")
     drma_sensitivity: Literal["low", "medium", "high"] | None = Field(default="low", description="Network Coverage Factor (NCF) percentage required to consider a radio as redundant (default = low).")
     airtime_fairness: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable airtime fairness (default = disable).")
     protection_mode: Literal["rtscts", "ctsonly", "disable"] | None = Field(default="disable", description="Enable/disable 802.11g protection modes to support backwards compatibility with older clients (rtscts, ctsonly, disable).")
-    powersave_optimize: PowersaveOptimizeEnum | None = Field(default="", description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
-    transmit_optimize: TransmitOptimizeEnum | None = Field(default="power-save aggr-limit retry-limit send-bar", description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
+    powersave_optimize: str | None = Field(default=None, description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
+    transmit_optimize: str | None = Field(default=None, description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
     amsdu: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable 802.11n AMSDU support. AMSDU can improve performance if supported by your WiFi clients (default = enable).")
     coexistence: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing both HT20 and HT40 on the same radio (default = enable).")
     zero_wait_dfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable zero wait DFS on radio (default = enable).")
     bss_color: int | None = Field(ge=0, le=63, default=0, description="BSS color value for this 11ax radio (0 - 63, disable = 0, default = 0).")
     bss_color_mode: Literal["auto", "static"] | None = Field(default="auto", description="BSS color mode for this 11ax radio (default = auto).")
     short_guard_interval: Literal["enable", "disable"] | None = Field(default="disable", description="Use either the short guard interval (Short GI) of 400 ns or the long guard interval (Long GI) of 800 ns.")
-    mimo_mode: MimoModeEnum | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
-    channel_bonding: ChannelBondingEnum | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
+    mimo_mode: str | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
+    channel_bonding: str | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
     channel_bonding_ext: Literal["320MHz-1", "320MHz-2"] | None = Field(default="320MHz-2", description="Channel bandwidth extension: 320 MHz-1 and 320 MHz-2 (default = 320 MHz-2).")
-    optional_antenna: OptionalAntennaEnum | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
+    optional_antenna: str | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
     optional_antenna_gain: str | None = Field(max_length=7, default="0", description="Optional antenna gain in dBi (0 to 20, default = 0).")
     auto_power_level: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic power-level adjustment to prevent co-channel interference (default = disable).")
     auto_power_high: int | None = Field(ge=0, le=4294967295, default=17, description="The upper bound of automatic transmit power adjustment in dBm (the actual range of transmit power depends on the AP platform type).")
@@ -249,7 +249,7 @@ class WtpProfileRadio2(BaseModel):
     frag_threshold: int | None = Field(ge=800, le=2346, default=2346, description="Maximum packet size that can be sent without fragmentation (800 - 2346 bytes, default = 2346).")
     ap_sniffer_bufsize: int | None = Field(ge=1, le=32, default=16, description="Sniffer buffer size (1 - 32 MB, default = 16).")
     ap_sniffer_chan: int | None = Field(ge=0, le=4294967295, default=6, description="Channel on which to operate the sniffer (default = 6).")
-    ap_sniffer_chan_width: ApSnifferChanWidthEnum | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
+    ap_sniffer_chan_width: str | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
     ap_sniffer_addr: str | None = Field(default="00:00:00:00:00:00", description="MAC address to monitor.")
     ap_sniffer_mgmt_beacon: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management Beacon frames (default = enable).")
     ap_sniffer_mgmt_probe: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management probe frames (default = enable).")
@@ -258,7 +258,7 @@ class WtpProfileRadio2(BaseModel):
     ap_sniffer_data: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi data frame (default = enable).")
     sam_ssid: str | None = Field(max_length=32, default="", description="SSID for WiFi network.")
     sam_bssid: str | None = Field(default="00:00:00:00:00:00", description="BSSID for WiFi network.")
-    sam_security_type: SamSecurityTypeEnum | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
+    sam_security_type: str | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
     sam_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Captive Portal Authentication (default = disable).")
     sam_cwp_username: str | None = Field(max_length=35, default="", description="Username for captive portal authentication.")
     sam_cwp_password: Any = Field(max_length=128, default=None, description="Password for captive portal authentication.")
@@ -288,8 +288,8 @@ class WtpProfileRadio2(BaseModel):
     max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) or WiFi clients supported by the radio. Range depends on the hardware.")
     max_distance: int | None = Field(ge=0, le=54000, default=0, description="Maximum expected distance between the AP and clients (0 - 54000 m, default = 0).")
     vap_all: Literal["tunnel", "bridge", "manual"] | None = Field(default="tunnel", description="Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).")
-    vaps: list[Vaps] = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
-    channel: list[Channel] = Field(default=None, description="Selected list of wireless radio channels.")
+    vaps: list[dict[str, Any]] | None = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
+    channel: list[dict[str, Any]] | None = Field(default=None, description="Selected list of wireless radio channels.")
     call_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) call admission control to optimize WiFi bandwidth use for VoIP calls. New VoIP calls are only accepted if there is enough bandwidth available to support them.")
     call_capacity: int | None = Field(ge=0, le=60, default=10, description="Maximum number of Voice over WLAN (VoWLAN) phones supported by the radio (0 - 60, default = 10).")
     bandwidth_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) bandwidth admission control to optimize WiFi bandwidth use. A request to join the wireless network is only allowed if the access point has enough bandwidth to support it.")
@@ -307,25 +307,25 @@ class WtpProfileRadio3(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    mode: ModeEnum | None = Field(default="ap", description="Mode of radio 3. Radio 3 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
-    band: BandEnum | None = Field(default="", description="WiFi band that Radio 3 operates on.")
+    mode: str | None = Field(default="ap", description="Mode of radio 3. Radio 3 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
+    band: str | None = Field(default=None, description="WiFi band that Radio 3 operates on.")
     band_5g_type: Literal["5g-full", "5g-high", "5g-low"] | None = Field(default="5g-full", description="WiFi 5G band type.")
     drma: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic radio mode assignment (DRMA) (default = disable).")
     drma_sensitivity: Literal["low", "medium", "high"] | None = Field(default="low", description="Network Coverage Factor (NCF) percentage required to consider a radio as redundant (default = low).")
     airtime_fairness: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable airtime fairness (default = disable).")
     protection_mode: Literal["rtscts", "ctsonly", "disable"] | None = Field(default="disable", description="Enable/disable 802.11g protection modes to support backwards compatibility with older clients (rtscts, ctsonly, disable).")
-    powersave_optimize: PowersaveOptimizeEnum | None = Field(default="", description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
-    transmit_optimize: TransmitOptimizeEnum | None = Field(default="power-save aggr-limit retry-limit send-bar", description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
+    powersave_optimize: str | None = Field(default=None, description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
+    transmit_optimize: str | None = Field(default=None, description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
     amsdu: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable 802.11n AMSDU support. AMSDU can improve performance if supported by your WiFi clients (default = enable).")
     coexistence: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing both HT20 and HT40 on the same radio (default = enable).")
     zero_wait_dfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable zero wait DFS on radio (default = enable).")
     bss_color: int | None = Field(ge=0, le=63, default=0, description="BSS color value for this 11ax radio (0 - 63, disable = 0, default = 0).")
     bss_color_mode: Literal["auto", "static"] | None = Field(default="auto", description="BSS color mode for this 11ax radio (default = auto).")
     short_guard_interval: Literal["enable", "disable"] | None = Field(default="disable", description="Use either the short guard interval (Short GI) of 400 ns or the long guard interval (Long GI) of 800 ns.")
-    mimo_mode: MimoModeEnum | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
-    channel_bonding: ChannelBondingEnum | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
+    mimo_mode: str | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
+    channel_bonding: str | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
     channel_bonding_ext: Literal["320MHz-1", "320MHz-2"] | None = Field(default="320MHz-2", description="Channel bandwidth extension: 320 MHz-1 and 320 MHz-2 (default = 320 MHz-2).")
-    optional_antenna: OptionalAntennaEnum | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
+    optional_antenna: str | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
     optional_antenna_gain: str | None = Field(max_length=7, default="0", description="Optional antenna gain in dBi (0 to 20, default = 0).")
     auto_power_level: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic power-level adjustment to prevent co-channel interference (default = disable).")
     auto_power_high: int | None = Field(ge=0, le=4294967295, default=17, description="The upper bound of automatic transmit power adjustment in dBm (the actual range of transmit power depends on the AP platform type).")
@@ -342,7 +342,7 @@ class WtpProfileRadio3(BaseModel):
     frag_threshold: int | None = Field(ge=800, le=2346, default=2346, description="Maximum packet size that can be sent without fragmentation (800 - 2346 bytes, default = 2346).")
     ap_sniffer_bufsize: int | None = Field(ge=1, le=32, default=16, description="Sniffer buffer size (1 - 32 MB, default = 16).")
     ap_sniffer_chan: int | None = Field(ge=0, le=4294967295, default=37, description="Channel on which to operate the sniffer (default = 6).")
-    ap_sniffer_chan_width: ApSnifferChanWidthEnum | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
+    ap_sniffer_chan_width: str | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
     ap_sniffer_addr: str | None = Field(default="00:00:00:00:00:00", description="MAC address to monitor.")
     ap_sniffer_mgmt_beacon: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management Beacon frames (default = enable).")
     ap_sniffer_mgmt_probe: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management probe frames (default = enable).")
@@ -351,7 +351,7 @@ class WtpProfileRadio3(BaseModel):
     ap_sniffer_data: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi data frame (default = enable).")
     sam_ssid: str | None = Field(max_length=32, default="", description="SSID for WiFi network.")
     sam_bssid: str | None = Field(default="00:00:00:00:00:00", description="BSSID for WiFi network.")
-    sam_security_type: SamSecurityTypeEnum | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
+    sam_security_type: str | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
     sam_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Captive Portal Authentication (default = disable).")
     sam_cwp_username: str | None = Field(max_length=35, default="", description="Username for captive portal authentication.")
     sam_cwp_password: Any = Field(max_length=128, default=None, description="Password for captive portal authentication.")
@@ -381,8 +381,8 @@ class WtpProfileRadio3(BaseModel):
     max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) or WiFi clients supported by the radio. Range depends on the hardware.")
     max_distance: int | None = Field(ge=0, le=54000, default=0, description="Maximum expected distance between the AP and clients (0 - 54000 m, default = 0).")
     vap_all: Literal["tunnel", "bridge", "manual"] | None = Field(default="tunnel", description="Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).")
-    vaps: list[Vaps] = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
-    channel: list[Channel] = Field(default=None, description="Selected list of wireless radio channels.")
+    vaps: list[dict[str, Any]] | None = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
+    channel: list[dict[str, Any]] | None = Field(default=None, description="Selected list of wireless radio channels.")
     call_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) call admission control to optimize WiFi bandwidth use for VoIP calls. New VoIP calls are only accepted if there is enough bandwidth available to support them.")
     call_capacity: int | None = Field(ge=0, le=60, default=10, description="Maximum number of Voice over WLAN (VoWLAN) phones supported by the radio (0 - 60, default = 10).")
     bandwidth_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) bandwidth admission control to optimize WiFi bandwidth use. A request to join the wireless network is only allowed if the access point has enough bandwidth to support it.")
@@ -400,25 +400,25 @@ class WtpProfileRadio4(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    mode: ModeEnum | None = Field(default="ap", description="Mode of radio 4. Radio 4 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
-    band: BandEnum | None = Field(default="", description="WiFi band that Radio 4 operates on.")
+    mode: str | None = Field(default="ap", description="Mode of radio 4. Radio 4 can be disabled, configured as an access point, a rogue AP monitor, a sniffer, or a station.")
+    band: str | None = Field(default=None, description="WiFi band that Radio 4 operates on.")
     band_5g_type: Literal["5g-full", "5g-high", "5g-low"] | None = Field(default="5g-full", description="WiFi 5G band type.")
     drma: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic radio mode assignment (DRMA) (default = disable).")
     drma_sensitivity: Literal["low", "medium", "high"] | None = Field(default="low", description="Network Coverage Factor (NCF) percentage required to consider a radio as redundant (default = low).")
     airtime_fairness: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable airtime fairness (default = disable).")
     protection_mode: Literal["rtscts", "ctsonly", "disable"] | None = Field(default="disable", description="Enable/disable 802.11g protection modes to support backwards compatibility with older clients (rtscts, ctsonly, disable).")
-    powersave_optimize: PowersaveOptimizeEnum | None = Field(default="", description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
-    transmit_optimize: TransmitOptimizeEnum | None = Field(default="power-save aggr-limit retry-limit send-bar", description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
+    powersave_optimize: str | None = Field(default=None, description="Enable client power-saving features such as TIM, AC VO, and OBSS etc.")
+    transmit_optimize: str | None = Field(default=None, description="Packet transmission optimization options including power saving, aggregation limiting, retry limiting, etc. All are enabled by default.")
     amsdu: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable 802.11n AMSDU support. AMSDU can improve performance if supported by your WiFi clients (default = enable).")
     coexistence: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing both HT20 and HT40 on the same radio (default = enable).")
     zero_wait_dfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable zero wait DFS on radio (default = enable).")
     bss_color: int | None = Field(ge=0, le=63, default=0, description="BSS color value for this 11ax radio (0 - 63, disable = 0, default = 0).")
     bss_color_mode: Literal["auto", "static"] | None = Field(default="auto", description="BSS color mode for this 11ax radio (default = auto).")
     short_guard_interval: Literal["enable", "disable"] | None = Field(default="disable", description="Use either the short guard interval (Short GI) of 400 ns or the long guard interval (Long GI) of 800 ns.")
-    mimo_mode: MimoModeEnum | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
-    channel_bonding: ChannelBondingEnum | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
+    mimo_mode: str | None = Field(default="default", description="Configure radio MIMO mode (default = default).")
+    channel_bonding: str | None = Field(default="20MHz", description="Channel bandwidth: 320, 240, 160, 80, 40, or 20MHz. Channels may use both 20 and 40 by enabling coexistence.")
     channel_bonding_ext: Literal["320MHz-1", "320MHz-2"] | None = Field(default="320MHz-2", description="Channel bandwidth extension: 320 MHz-1 and 320 MHz-2 (default = 320 MHz-2).")
-    optional_antenna: OptionalAntennaEnum | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
+    optional_antenna: str | None = Field(default="none", description="Optional antenna used on FAP (default = none).")
     optional_antenna_gain: str | None = Field(max_length=7, default="0", description="Optional antenna gain in dBi (0 to 20, default = 0).")
     auto_power_level: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic power-level adjustment to prevent co-channel interference (default = disable).")
     auto_power_high: int | None = Field(ge=0, le=4294967295, default=17, description="The upper bound of automatic transmit power adjustment in dBm (the actual range of transmit power depends on the AP platform type).")
@@ -435,7 +435,7 @@ class WtpProfileRadio4(BaseModel):
     frag_threshold: int | None = Field(ge=800, le=2346, default=2346, description="Maximum packet size that can be sent without fragmentation (800 - 2346 bytes, default = 2346).")
     ap_sniffer_bufsize: int | None = Field(ge=1, le=32, default=16, description="Sniffer buffer size (1 - 32 MB, default = 16).")
     ap_sniffer_chan: int | None = Field(ge=0, le=4294967295, default=6, description="Channel on which to operate the sniffer (default = 6).")
-    ap_sniffer_chan_width: ApSnifferChanWidthEnum | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
+    ap_sniffer_chan_width: str | None = Field(default="20MHz", description="Channel bandwidth for sniffer.")
     ap_sniffer_addr: str | None = Field(default="00:00:00:00:00:00", description="MAC address to monitor.")
     ap_sniffer_mgmt_beacon: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management Beacon frames (default = enable).")
     ap_sniffer_mgmt_probe: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi management probe frames (default = enable).")
@@ -444,7 +444,7 @@ class WtpProfileRadio4(BaseModel):
     ap_sniffer_data: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer on WiFi data frame (default = enable).")
     sam_ssid: str | None = Field(max_length=32, default="", description="SSID for WiFi network.")
     sam_bssid: str | None = Field(default="00:00:00:00:00:00", description="BSSID for WiFi network.")
-    sam_security_type: SamSecurityTypeEnum | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
+    sam_security_type: str | None = Field(default="wpa-personal", description="Select WiFi network security type (default = \"wpa-personal\" for 2.4/5G radio, \"wpa3-sae\" for 6G radio).")
     sam_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Captive Portal Authentication (default = disable).")
     sam_cwp_username: str | None = Field(max_length=35, default="", description="Username for captive portal authentication.")
     sam_cwp_password: Any = Field(max_length=128, default=None, description="Password for captive portal authentication.")
@@ -474,8 +474,8 @@ class WtpProfileRadio4(BaseModel):
     max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) or WiFi clients supported by the radio. Range depends on the hardware.")
     max_distance: int | None = Field(ge=0, le=54000, default=0, description="Maximum expected distance between the AP and clients (0 - 54000 m, default = 0).")
     vap_all: Literal["tunnel", "bridge", "manual"] | None = Field(default="tunnel", description="Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).")
-    vaps: list[Vaps] = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
-    channel: list[Channel] = Field(default=None, description="Selected list of wireless radio channels.")
+    vaps: list[dict[str, Any]] | None = Field(default=None, description="Manually selected list of Virtual Access Points (VAPs).")
+    channel: list[dict[str, Any]] | None = Field(default=None, description="Selected list of wireless radio channels.")
     call_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) call admission control to optimize WiFi bandwidth use for VoIP calls. New VoIP calls are only accepted if there is enough bandwidth available to support them.")
     call_capacity: int | None = Field(ge=0, le=60, default=10, description="Maximum number of Voice over WLAN (VoWLAN) phones supported by the radio (0 - 60, default = 10).")
     bandwidth_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WiFi multimedia (WMM) bandwidth admission control to optimize WiFi bandwidth use. A request to join the wireless network is only allowed if the access point has enough bandwidth to support it.")
@@ -545,8 +545,8 @@ class WtpProfileEslSesDongle(BaseModel):
         str_strip_whitespace = True
     compliance_level: Literal["compliance-level-2"] | None = Field(default="compliance-level-2", description="Compliance levels for the ESL solution integration (default = compliance-level-2).")
     scd_enable: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ESL SES-imagotag Serial Communication Daemon (SCD) (default = disable).")
-    esl_channel: EslChannelEnum | None = Field(default="127", description="ESL SES-imagotag dongle channel (default = 127).")
-    output_power: OutputPowerEnum | None = Field(default="a", description="ESL SES-imagotag dongle output power (default = A).")
+    esl_channel: str | None = Field(default="127", description="ESL SES-imagotag dongle channel (default = 127).")
+    output_power: str | None = Field(default="a", description="ESL SES-imagotag dongle output power (default = A).")
     apc_addr_type: Literal["fqdn", "ip"] | None = Field(default="fqdn", description="ESL SES-imagotag APC address type (default = fqdn).")
     apc_fqdn: str | None = Field(max_length=63, default="", description="FQDN of ESL SES-imagotag Access Point Controller (APC).")
     apc_ip: str | None = Field(default="0.0.0.0", description="IP address of ESL SES-imagotag Access Point Controller (APC).")
@@ -560,7 +560,7 @@ class WtpProfileEslSesDongle(BaseModel):
 # ============================================================================
 
 
-class WtpProfileControl_message_offloadEnum(str, Enum):
+class WtpProfileControlMessageOffloadEnum(str, Enum):
     """Allowed values for control_message_offload field."""
     EBP_FRAME = "ebp-frame"
     AEROSCOUT_TAG = "aeroscout-tag"
@@ -573,7 +573,7 @@ class WtpProfileControl_message_offloadEnum(str, Enum):
     SPECTRAL_ANALYSIS = "spectral-analysis"
 
 
-class WtpProfileDtls_policyEnum(str, Enum):
+class WtpProfileDtlsPolicyEnum(str, Enum):
     """Allowed values for dtls_policy field."""
     CLEAR_TEXT = "clear-text"
     DTLS_ENABLED = "dtls-enabled"
@@ -581,7 +581,7 @@ class WtpProfileDtls_policyEnum(str, Enum):
     IPSEC_SN_VPN = "ipsec-sn-vpn"
 
 
-class WtpProfileAp_countryEnum(str, Enum):
+class WtpProfileApCountryEnum(str, Enum):
     """Allowed values for ap_country field."""
     __ = "--"
     AF = "AF"
@@ -782,7 +782,7 @@ class WtpProfileAp_countryEnum(str, Enum):
     CA = "CA"
 
 
-class WtpProfilePoe_modeEnum(str, Enum):
+class WtpProfilePoeModeEnum(str, Enum):
     """Allowed values for poe_mode field."""
     AUTO = "auto"
     VALUE_8023AF = "8023af"
@@ -793,7 +793,7 @@ class WtpProfilePoe_modeEnum(str, Enum):
     LOW = "low"
 
 
-class WtpProfileWan_port_auth_methodsEnum(str, Enum):
+class WtpProfileWanPortAuthMethodsEnum(str, Enum):
     """Allowed values for wan_port_auth_methods field."""
     ALL = "all"
     EAP_FAST = "EAP-FAST"
@@ -801,7 +801,7 @@ class WtpProfileWan_port_auth_methodsEnum(str, Enum):
     EAP_PEAP = "EAP-PEAP"
 
 
-class WtpProfileApcfg_auto_cert_crypto_algoEnum(str, Enum):
+class WtpProfileApcfgAutoCertCryptoAlgoEnum(str, Enum):
     """Allowed values for apcfg_auto_cert_crypto_algo field."""
     RSA_1024 = "rsa-1024"
     RSA_1536 = "rsa-1536"
@@ -812,7 +812,7 @@ class WtpProfileApcfg_auto_cert_crypto_algoEnum(str, Enum):
     EC_SECP521R1 = "ec-secp521r1"
 
 
-class WtpProfileApcfg_auto_cert_scep_keysizeEnum(str, Enum):
+class WtpProfileApcfgAutoCertScepKeysizeEnum(str, Enum):
     """Allowed values for apcfg_auto_cert_scep_keysize field."""
     VALUE_1024 = "1024"
     VALUE_1536 = "1536"
@@ -831,7 +831,86 @@ class WtpProfileModel(BaseModel):
 
     Configure WTP profiles or FortiAP profiles that define radio settings for manageable FortiAP platforms.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comment: max_length=255 pattern=        - platform: pattern=        - control_message_offload: pattern=        - bonjour_profile: max_length=35 pattern=        - apcfg_profile: max_length=35 pattern=        - apcfg_mesh: pattern=        - apcfg_mesh_ap_type: pattern=        - apcfg_mesh_ssid: max_length=15 pattern=        - apcfg_mesh_eth_bridge: pattern=        - ble_profile: max_length=35 pattern=        - lw_profile: max_length=35 pattern=        - syslog_profile: max_length=35 pattern=        - wan_port_mode: pattern=        - lan: pattern=        - energy_efficient_ethernet: pattern=        - led_state: pattern=        - led_schedules: pattern=        - dtls_policy: pattern=        - dtls_in_kernel: pattern=        - max_clients: min=0 max=4294967295 pattern=        - handoff_rssi: min=20 max=30 pattern=        - handoff_sta_thresh: min=5 max=60 pattern=        - handoff_roaming: pattern=        - deny_mac_list: pattern=        - ap_country: pattern=        - ip_fragment_preventing: pattern=        - tun_mtu_uplink: min=576 max=1500 pattern=        - tun_mtu_downlink: min=576 max=1500 pattern=        - split_tunneling_acl_path: pattern=        - split_tunneling_acl_local_ap_subnet: pattern=        - split_tunneling_acl: pattern=        - allowaccess: pattern=        - login_passwd_change: pattern=        - login_passwd: max_length=128 pattern=        - lldp: pattern=        - poe_mode: pattern=        - usb_port: pattern=        - frequency_handoff: pattern=        - ap_handoff: pattern=        - default_mesh_root: pattern=        - radio_1: pattern=        - radio_2: pattern=        - radio_3: pattern=        - radio_4: pattern=        - lbs: pattern=        - ext_info_enable: pattern=        - indoor_outdoor_deployment: pattern=        - esl_ses_dongle: pattern=        - console_login: pattern=        - wan_port_auth: pattern=        - wan_port_auth_usrname: max_length=63 pattern=        - wan_port_auth_password: max_length=128 pattern=        - wan_port_auth_methods: pattern=        - wan_port_auth_macsec: pattern=        - apcfg_auto_cert: pattern=        - apcfg_auto_cert_enroll_protocol: pattern=        - apcfg_auto_cert_crypto_algo: pattern=        - apcfg_auto_cert_est_server: max_length=255 pattern=        - apcfg_auto_cert_est_ca_id: max_length=255 pattern=        - apcfg_auto_cert_est_http_username: max_length=63 pattern=        - apcfg_auto_cert_est_http_password: max_length=128 pattern=        - apcfg_auto_cert_est_subject: max_length=127 pattern=        - apcfg_auto_cert_est_subject_alt_name: max_length=127 pattern=        - apcfg_auto_cert_auto_regen_days: min=0 max=4294967295 pattern=        - apcfg_auto_cert_est_https_ca: max_length=79 pattern=        - apcfg_auto_cert_scep_keytype: pattern=        - apcfg_auto_cert_scep_keysize: pattern=        - apcfg_auto_cert_scep_ec_name: pattern=        - apcfg_auto_cert_scep_sub_fully_dn: max_length=255 pattern=        - apcfg_auto_cert_scep_url: max_length=255 pattern=        - apcfg_auto_cert_scep_password: max_length=128 pattern=        - apcfg_auto_cert_scep_ca_id: max_length=255 pattern=        - apcfg_auto_cert_scep_subject_alt_name: max_length=127 pattern=        - apcfg_auto_cert_scep_https_ca: max_length=79 pattern=        - unii_4_5ghz_band: pattern=        - admin_auth_tacacs_plus: max_length=35 pattern=        - admin_restrict_local: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comment: max_length=255 pattern=
+        - platform: pattern=
+        - control_message_offload: pattern=
+        - bonjour_profile: max_length=35 pattern=
+        - apcfg_profile: max_length=35 pattern=
+        - apcfg_mesh: pattern=
+        - apcfg_mesh_ap_type: pattern=
+        - apcfg_mesh_ssid: max_length=15 pattern=
+        - apcfg_mesh_eth_bridge: pattern=
+        - ble_profile: max_length=35 pattern=
+        - lw_profile: max_length=35 pattern=
+        - syslog_profile: max_length=35 pattern=
+        - wan_port_mode: pattern=
+        - lan: pattern=
+        - energy_efficient_ethernet: pattern=
+        - led_state: pattern=
+        - led_schedules: pattern=
+        - dtls_policy: pattern=
+        - dtls_in_kernel: pattern=
+        - max_clients: min=0 max=4294967295 pattern=
+        - handoff_rssi: min=20 max=30 pattern=
+        - handoff_sta_thresh: min=5 max=60 pattern=
+        - handoff_roaming: pattern=
+        - deny_mac_list: pattern=
+        - ap_country: pattern=
+        - ip_fragment_preventing: pattern=
+        - tun_mtu_uplink: min=576 max=1500 pattern=
+        - tun_mtu_downlink: min=576 max=1500 pattern=
+        - split_tunneling_acl_path: pattern=
+        - split_tunneling_acl_local_ap_subnet: pattern=
+        - split_tunneling_acl: pattern=
+        - allowaccess: pattern=
+        - login_passwd_change: pattern=
+        - login_passwd: max_length=128 pattern=
+        - lldp: pattern=
+        - poe_mode: pattern=
+        - usb_port: pattern=
+        - frequency_handoff: pattern=
+        - ap_handoff: pattern=
+        - default_mesh_root: pattern=
+        - radio_1: pattern=
+        - radio_2: pattern=
+        - radio_3: pattern=
+        - radio_4: pattern=
+        - lbs: pattern=
+        - ext_info_enable: pattern=
+        - indoor_outdoor_deployment: pattern=
+        - esl_ses_dongle: pattern=
+        - console_login: pattern=
+        - wan_port_auth: pattern=
+        - wan_port_auth_usrname: max_length=63 pattern=
+        - wan_port_auth_password: max_length=128 pattern=
+        - wan_port_auth_methods: pattern=
+        - wan_port_auth_macsec: pattern=
+        - apcfg_auto_cert: pattern=
+        - apcfg_auto_cert_enroll_protocol: pattern=
+        - apcfg_auto_cert_crypto_algo: pattern=
+        - apcfg_auto_cert_est_server: max_length=255 pattern=
+        - apcfg_auto_cert_est_ca_id: max_length=255 pattern=
+        - apcfg_auto_cert_est_http_username: max_length=63 pattern=
+        - apcfg_auto_cert_est_http_password: max_length=128 pattern=
+        - apcfg_auto_cert_est_subject: max_length=127 pattern=
+        - apcfg_auto_cert_est_subject_alt_name: max_length=127 pattern=
+        - apcfg_auto_cert_auto_regen_days: min=0 max=4294967295 pattern=
+        - apcfg_auto_cert_est_https_ca: max_length=79 pattern=
+        - apcfg_auto_cert_scep_keytype: pattern=
+        - apcfg_auto_cert_scep_keysize: pattern=
+        - apcfg_auto_cert_scep_ec_name: pattern=
+        - apcfg_auto_cert_scep_sub_fully_dn: max_length=255 pattern=
+        - apcfg_auto_cert_scep_url: max_length=255 pattern=
+        - apcfg_auto_cert_scep_password: max_length=128 pattern=
+        - apcfg_auto_cert_scep_ca_id: max_length=255 pattern=
+        - apcfg_auto_cert_scep_subject_alt_name: max_length=127 pattern=
+        - apcfg_auto_cert_scep_https_ca: max_length=79 pattern=
+        - unii_4_5ghz_band: pattern=
+        - admin_auth_tacacs_plus: max_length=35 pattern=
+        - admin_restrict_local: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -843,7 +922,85 @@ class WtpProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="WTP (or FortiAP or AP) profile name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    platform: list[WtpProfilePlatform] = Field(default=None, description="WTP, FortiAP, or AP platform.")    control_message_offload: WtpProfileControlMessageOffloadEnum | None = Field(default="ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis", description="Enable/disable CAPWAP control message data channel offload.")    bonjour_profile: str | None = Field(max_length=35, default="", description="Bonjour profile name.")  # datasource: ['wireless-controller.bonjour-profile.name']    apcfg_profile: str | None = Field(max_length=35, default="", description="AP local configuration profile name.")  # datasource: ['wireless-controller.apcfg-profile.name']    apcfg_mesh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP local mesh configuration (default = disable).")    apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = Field(default="ethernet", description="Mesh AP Type (default = ethernet).")    apcfg_mesh_ssid: str | None = Field(max_length=15, default="", description=" Mesh SSID (default = none).")  # datasource: ['wireless-controller.vap.name']    apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable mesh ethernet bridge (default = disable).")    ble_profile: str | None = Field(max_length=35, default="", description="Bluetooth Low Energy profile name.")  # datasource: ['wireless-controller.ble-profile.name']    lw_profile: str | None = Field(max_length=35, default="", description="LoRaWAN profile name.")  # datasource: ['wireless-controller.lw-profile.name']    syslog_profile: str | None = Field(max_length=35, default="", description="System log server configuration profile name.")  # datasource: ['wireless-controller.syslog-profile.name']    wan_port_mode: Literal["wan-lan", "wan-only"] | None = Field(default="wan-only", description="Enable/disable using a WAN port as a LAN port.")    lan: list[WtpProfileLan] = Field(default=None, description="WTP LAN port mapping.")    energy_efficient_ethernet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of energy efficient Ethernet on WTP.")    led_state: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of LEDs on WTP (default = enable).")    led_schedules: list[WtpProfileLedSchedules] = Field(default=None, description="Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.")    dtls_policy: WtpProfileDtlsPolicyEnum | None = Field(default="clear-text", description="WTP data channel DTLS policy (default = clear-text).")    dtls_in_kernel: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable data channel DTLS in kernel.")    max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).")    handoff_rssi: int | None = Field(ge=20, le=30, default=25, description="Minimum received signal strength indicator (RSSI) value for handoff (20 - 30, default = 25).")    handoff_sta_thresh: int | None = Field(ge=5, le=60, default=0, description="Threshold value for AP handoff.")    handoff_roaming: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).")    deny_mac_list: list[WtpProfileDenyMacList] = Field(default=None, description="List of MAC addresses that are denied access to this WTP, FortiAP, or AP.")    ap_country: WtpProfileApCountryEnum | None = Field(default="--", description="Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).")    ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | None = Field(default="tcp-mss-adjust", description="Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).")    tun_mtu_uplink: int | None = Field(ge=576, le=1500, default=0, description="The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).")    tun_mtu_downlink: int | None = Field(ge=576, le=1500, default=0, description="The MTU of downlink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).")    split_tunneling_acl_path: Literal["tunnel", "local"] | None = Field(default="local", description="Split tunneling ACL path is local/tunnel.")    split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).")    split_tunneling_acl: list[WtpProfileSplitTunnelingAcl] = Field(default=None, description="Split tunneling ACL filter list.")    allowaccess: Literal["https", "ssh", "snmp"] | None = Field(default="", description="Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.")    login_passwd_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).")    login_passwd: Any = Field(max_length=128, default=None, description="Set the managed WTP, FortiAP, or AP's administrator password.")    lldp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Link Layer Discovery Protocol (LLDP) for the WTP, FortiAP, or AP (default = enable).")    poe_mode: WtpProfilePoeModeEnum | None = Field(default="auto", description="Set the WTP, FortiAP, or AP's PoE mode.")    usb_port: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable USB port of the WTP (default = enable).")    frequency_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable frequency handoff of clients to other channels (default = disable).")    ap_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP handoff of clients to other APs (default = disable).")    default_mesh_root: Literal["enable", "disable"] | None = Field(default="disable", description="Configure default mesh root SSID when it is not included by radio's SSID configuration.")    radio_1: list[WtpProfileRadio1] = Field(default=None, description="Configuration options for radio 1.")    radio_2: list[WtpProfileRadio2] = Field(default=None, description="Configuration options for radio 2.")    radio_3: list[WtpProfileRadio3] = Field(default=None, description="Configuration options for radio 3.")    radio_4: list[WtpProfileRadio4] = Field(default=None, description="Configuration options for radio 4.")    lbs: list[WtpProfileLbs] = Field(default=None, description="Set various location based service (LBS) options.")    ext_info_enable: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable station/VAP/radio extension information.")    indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = Field(default="platform-determined", description="Set to allow indoor/outdoor-only channels under regulatory rules (default = platform-determined).")    esl_ses_dongle: list[WtpProfileEslSesDongle] = Field(default=None, description="ESL SES-imagotag dongle configuration.")    console_login: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiAP console login access (default = enable).")    wan_port_auth: Literal["none", "802.1x"] | None = Field(default="none", description="Set WAN port authentication mode (default = none).")    wan_port_auth_usrname: str | None = Field(max_length=63, default="", description="Set WAN port 802.1x supplicant user name.")    wan_port_auth_password: Any = Field(max_length=128, default=None, description="Set WAN port 802.1x supplicant password.")    wan_port_auth_methods: WtpProfileWanPortAuthMethodsEnum | None = Field(default="all", description="WAN port 802.1x supplicant EAP methods (default = all).")    wan_port_auth_macsec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WAN port 802.1x supplicant MACsec policy (default = disable).")    apcfg_auto_cert: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP local auto cert configuration (default = disable).")    apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = Field(default="none", description="Certificate enrollment protocol (default = none)")    apcfg_auto_cert_crypto_algo: WtpProfileApcfgAutoCertCryptoAlgoEnum | None = Field(default="ec-secp256r1", description="Cryptography algorithm: rsa-1024, rsa-1536, rsa-2048, rsa-4096, ec-secp256r1, ec-secp384r1, ec-secp521r1 (default = ec-secp256r1)")    apcfg_auto_cert_est_server: str | None = Field(max_length=255, default="", description="Address and port for EST server (e.g. https://example.com:1234).")    apcfg_auto_cert_est_ca_id: str | None = Field(max_length=255, default="", description="CA identifier of the CA server for signing via EST.")    apcfg_auto_cert_est_http_username: str | None = Field(max_length=63, default="", description="HTTP Authentication username for signing via EST.")    apcfg_auto_cert_est_http_password: Any = Field(max_length=128, default=None, description="HTTP Authentication password for signing via EST.")    apcfg_auto_cert_est_subject: str | None = Field(max_length=127, default="CN=FortiAP,DC=local,DC=COM", description="Subject e.g. \"CN=User,DC=example,DC=COM\" (default = CN=FortiAP,DC=local,DC=COM)")    apcfg_auto_cert_est_subject_alt_name: str | None = Field(max_length=127, default="", description="Subject alternative name (optional, e.g. \"DNS:dns1.com,IP:192.168.1.99\")")    apcfg_auto_cert_auto_regen_days: int | None = Field(ge=0, le=4294967295, default=30, description="Number of days to wait before expiry of an updated local certificate is requested (0 = disabled) (default = 30).")    apcfg_auto_cert_est_https_ca: str | None = Field(max_length=79, default="", description="PEM format https CA Certificate.")  # datasource: ['vpn.certificate.ca.name']    apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = Field(default="rsa", description="Key type (default = rsa)")    apcfg_auto_cert_scep_keysize: WtpProfileApcfgAutoCertScepKeysizeEnum | None = Field(default="2048", description="Key size: 1024, 1536, 2048, 4096 (default 2048).")    apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = Field(default="secp256r1", description="Elliptic curve name: secp256r1, secp384r1 and secp521r1. (default secp256r1).")    apcfg_auto_cert_scep_sub_fully_dn: str | None = Field(max_length=255, default="", description="Full DN of the subject (e.g C=US,ST=CA,L=Sunnyvale,O=Fortinet,OU=Dep1,emailAddress=test@example.com). There should be no space in between the attributes. Supported DN attributes (case-sensitive) are:C,ST,L,O,OU,emailAddress. The CN defaults to the device’s SN and cannot be changed.")    apcfg_auto_cert_scep_url: str | None = Field(max_length=255, default="", description="SCEP server URL.")    apcfg_auto_cert_scep_password: Any = Field(max_length=128, default=None, description="SCEP server challenge password for auto-regeneration.")    apcfg_auto_cert_scep_ca_id: str | None = Field(max_length=255, default="", description="CA identifier of the CA server for signing via SCEP.")    apcfg_auto_cert_scep_subject_alt_name: str | None = Field(max_length=127, default="", description="Subject alternative name (optional, e.g. \"DNS:dns1.com,IP:192.168.1.99\")")    apcfg_auto_cert_scep_https_ca: str | None = Field(max_length=79, default="", description="PEM format https CA Certificate.")  # datasource: ['vpn.certificate.ca.name']    unii_4_5ghz_band: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable UNII-4 5Ghz band channels (default = disable).")    admin_auth_tacacs_plus: str | None = Field(max_length=35, default="", description="Remote authentication server for admin user.")  # datasource: ['user.tacacs+.name']    admin_restrict_local: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable local admin authentication restriction when remote authenticator is up and running (default = disable).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="WTP (or FortiAP or AP) profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    platform: list[WtpProfilePlatform] | None = Field(default=None, description="WTP, FortiAP, or AP platform.")
+    control_message_offload: str | WtpProfileControlMessageOffloadEnum | None = Field(default=None, description="Enable/disable CAPWAP control message data channel offload.")
+    bonjour_profile: str | None = Field(max_length=35, default="", description="Bonjour profile name.")  # datasource: ['wireless-controller.bonjour-profile.name']
+    apcfg_profile: str | None = Field(max_length=35, default="", description="AP local configuration profile name.")  # datasource: ['wireless-controller.apcfg-profile.name']
+    apcfg_mesh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP local mesh configuration (default = disable).")
+    apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = Field(default="ethernet", description="Mesh AP Type (default = ethernet).")
+    apcfg_mesh_ssid: str | None = Field(max_length=15, default="", description=" Mesh SSID (default = none).")  # datasource: ['wireless-controller.vap.name']
+    apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable mesh ethernet bridge (default = disable).")
+    ble_profile: str | None = Field(max_length=35, default="", description="Bluetooth Low Energy profile name.")  # datasource: ['wireless-controller.ble-profile.name']
+    lw_profile: str | None = Field(max_length=35, default="", description="LoRaWAN profile name.")  # datasource: ['wireless-controller.lw-profile.name']
+    syslog_profile: str | None = Field(max_length=35, default="", description="System log server configuration profile name.")  # datasource: ['wireless-controller.syslog-profile.name']
+    wan_port_mode: Literal["wan-lan", "wan-only"] | None = Field(default="wan-only", description="Enable/disable using a WAN port as a LAN port.")
+    lan: list[WtpProfileLan] | None = Field(default=None, description="WTP LAN port mapping.")
+    energy_efficient_ethernet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of energy efficient Ethernet on WTP.")
+    led_state: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of LEDs on WTP (default = enable).")
+    led_schedules: list[WtpProfileLedSchedules] | None = Field(default=None, description="Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.")
+    dtls_policy: str | WtpProfileDtlsPolicyEnum | None = Field(default="clear-text", description="WTP data channel DTLS policy (default = clear-text).")
+    dtls_in_kernel: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable data channel DTLS in kernel.")
+    max_clients: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).")
+    handoff_rssi: int | None = Field(ge=20, le=30, default=25, description="Minimum received signal strength indicator (RSSI) value for handoff (20 - 30, default = 25).")
+    handoff_sta_thresh: int | None = Field(ge=5, le=60, default=0, description="Threshold value for AP handoff.")
+    handoff_roaming: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).")
+    deny_mac_list: list[WtpProfileDenyMacList] | None = Field(default=None, description="List of MAC addresses that are denied access to this WTP, FortiAP, or AP.")
+    ap_country: str | WtpProfileApCountryEnum | None = Field(default="--", description="Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).")
+    ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | None = Field(default="tcp-mss-adjust", description="Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).")
+    tun_mtu_uplink: int | None = Field(ge=576, le=1500, default=0, description="The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).")
+    tun_mtu_downlink: int | None = Field(ge=576, le=1500, default=0, description="The MTU of downlink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).")
+    split_tunneling_acl_path: Literal["tunnel", "local"] | None = Field(default="local", description="Split tunneling ACL path is local/tunnel.")
+    split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).")
+    split_tunneling_acl: list[WtpProfileSplitTunnelingAcl] | None = Field(default=None, description="Split tunneling ACL filter list.")
+    allowaccess: Literal["https", "ssh", "snmp"] | None = Field(default=None, description="Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.")
+    login_passwd_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).")
+    login_passwd: Any = Field(max_length=128, default=None, description="Set the managed WTP, FortiAP, or AP's administrator password.")
+    lldp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Link Layer Discovery Protocol (LLDP) for the WTP, FortiAP, or AP (default = enable).")
+    poe_mode: str | WtpProfilePoeModeEnum | None = Field(default="auto", description="Set the WTP, FortiAP, or AP's PoE mode.")
+    usb_port: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable USB port of the WTP (default = enable).")
+    frequency_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable frequency handoff of clients to other channels (default = disable).")
+    ap_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP handoff of clients to other APs (default = disable).")
+    default_mesh_root: Literal["enable", "disable"] | None = Field(default="disable", description="Configure default mesh root SSID when it is not included by radio's SSID configuration.")
+    radio_1: list[WtpProfileRadio1] | None = Field(default=None, description="Configuration options for radio 1.")
+    radio_2: list[WtpProfileRadio2] | None = Field(default=None, description="Configuration options for radio 2.")
+    radio_3: list[WtpProfileRadio3] | None = Field(default=None, description="Configuration options for radio 3.")
+    radio_4: list[WtpProfileRadio4] | None = Field(default=None, description="Configuration options for radio 4.")
+    lbs: list[WtpProfileLbs] | None = Field(default=None, description="Set various location based service (LBS) options.")
+    ext_info_enable: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable station/VAP/radio extension information.")
+    indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = Field(default="platform-determined", description="Set to allow indoor/outdoor-only channels under regulatory rules (default = platform-determined).")
+    esl_ses_dongle: list[WtpProfileEslSesDongle] | None = Field(default=None, description="ESL SES-imagotag dongle configuration.")
+    console_login: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiAP console login access (default = enable).")
+    wan_port_auth: Literal["none", "802.1x"] | None = Field(default="none", description="Set WAN port authentication mode (default = none).")
+    wan_port_auth_usrname: str | None = Field(max_length=63, default="", description="Set WAN port 802.1x supplicant user name.")
+    wan_port_auth_password: Any = Field(max_length=128, default=None, description="Set WAN port 802.1x supplicant password.")
+    wan_port_auth_methods: str | WtpProfileWanPortAuthMethodsEnum | None = Field(default="all", description="WAN port 802.1x supplicant EAP methods (default = all).")
+    wan_port_auth_macsec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WAN port 802.1x supplicant MACsec policy (default = disable).")
+    apcfg_auto_cert: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP local auto cert configuration (default = disable).")
+    apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = Field(default="none", description="Certificate enrollment protocol (default = none)")
+    apcfg_auto_cert_crypto_algo: str | WtpProfileApcfgAutoCertCryptoAlgoEnum | None = Field(default="ec-secp256r1", description="Cryptography algorithm: rsa-1024, rsa-1536, rsa-2048, rsa-4096, ec-secp256r1, ec-secp384r1, ec-secp521r1 (default = ec-secp256r1)")
+    apcfg_auto_cert_est_server: str | None = Field(max_length=255, default="", description="Address and port for EST server (e.g. https://example.com:1234).")
+    apcfg_auto_cert_est_ca_id: str | None = Field(max_length=255, default="", description="CA identifier of the CA server for signing via EST.")
+    apcfg_auto_cert_est_http_username: str | None = Field(max_length=63, default="", description="HTTP Authentication username for signing via EST.")
+    apcfg_auto_cert_est_http_password: Any = Field(max_length=128, default=None, description="HTTP Authentication password for signing via EST.")
+    apcfg_auto_cert_est_subject: str | None = Field(max_length=127, default="CN=FortiAP,DC=local,DC=COM", description="Subject e.g. \"CN=User,DC=example,DC=COM\" (default = CN=FortiAP,DC=local,DC=COM)")
+    apcfg_auto_cert_est_subject_alt_name: str | None = Field(max_length=127, default="", description="Subject alternative name (optional, e.g. \"DNS:dns1.com,IP:192.168.1.99\")")
+    apcfg_auto_cert_auto_regen_days: int | None = Field(ge=0, le=4294967295, default=30, description="Number of days to wait before expiry of an updated local certificate is requested (0 = disabled) (default = 30).")
+    apcfg_auto_cert_est_https_ca: str | None = Field(max_length=79, default="", description="PEM format https CA Certificate.")  # datasource: ['vpn.certificate.ca.name']
+    apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = Field(default="rsa", description="Key type (default = rsa)")
+    apcfg_auto_cert_scep_keysize: str | WtpProfileApcfgAutoCertScepKeysizeEnum | None = Field(default="2048", description="Key size: 1024, 1536, 2048, 4096 (default 2048).")
+    apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = Field(default="secp256r1", description="Elliptic curve name: secp256r1, secp384r1 and secp521r1. (default secp256r1).")
+    apcfg_auto_cert_scep_sub_fully_dn: str | None = Field(max_length=255, default="", description="Full DN of the subject (e.g C=US,ST=CA,L=Sunnyvale,O=Fortinet,OU=Dep1,emailAddress=test@example.com). There should be no space in between the attributes. Supported DN attributes (case-sensitive) are:C,ST,L,O,OU,emailAddress. The CN defaults to the device’s SN and cannot be changed.")
+    apcfg_auto_cert_scep_url: str | None = Field(max_length=255, default="", description="SCEP server URL.")
+    apcfg_auto_cert_scep_password: Any = Field(max_length=128, default=None, description="SCEP server challenge password for auto-regeneration.")
+    apcfg_auto_cert_scep_ca_id: str | None = Field(max_length=255, default="", description="CA identifier of the CA server for signing via SCEP.")
+    apcfg_auto_cert_scep_subject_alt_name: str | None = Field(max_length=127, default="", description="Subject alternative name (optional, e.g. \"DNS:dns1.com,IP:192.168.1.99\")")
+    apcfg_auto_cert_scep_https_ca: str | None = Field(max_length=79, default="", description="PEM format https CA Certificate.")  # datasource: ['vpn.certificate.ca.name']
+    unii_4_5ghz_band: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable UNII-4 5Ghz band channels (default = disable).")
+    admin_auth_tacacs_plus: str | None = Field(max_length=35, default="", description="Remote authentication server for admin user.")  # datasource: ['user.tacacs+.name']
+    admin_restrict_local: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable local admin authentication restriction when remote authenticator is up and running (default = disable).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -1042,7 +1199,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "bonjour_profile", None)
@@ -1091,7 +1248,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "apcfg_profile", None)
@@ -1140,7 +1297,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "apcfg_mesh_ssid", None)
@@ -1189,7 +1346,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ble_profile", None)
@@ -1238,7 +1395,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "lw_profile", None)
@@ -1287,7 +1444,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "syslog_profile", None)
@@ -1336,7 +1493,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "lan", [])
@@ -1394,7 +1551,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "led_schedules", [])
@@ -1456,7 +1613,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "radio_1", [])
@@ -1514,7 +1671,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "radio_2", [])
@@ -1572,7 +1729,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "radio_3", [])
@@ -1630,7 +1787,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "radio_4", [])
@@ -1688,7 +1845,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "lbs", [])
@@ -1746,7 +1903,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "apcfg_auto_cert_est_https_ca", None)
@@ -1795,7 +1952,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "apcfg_auto_cert_scep_https_ca", None)
@@ -1844,7 +2001,7 @@ class WtpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wtp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "admin_auth_tacacs_plus", None)
@@ -1881,23 +2038,38 @@ class WtpProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_bonjour_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_apcfg_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_apcfg_mesh_ssid_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ble_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_lw_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_syslog_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_lan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_led_schedules_references(client)
-        all_errors.extend(errors)        errors = await self.validate_radio_1_references(client)
-        all_errors.extend(errors)        errors = await self.validate_radio_2_references(client)
-        all_errors.extend(errors)        errors = await self.validate_radio_3_references(client)
-        all_errors.extend(errors)        errors = await self.validate_radio_4_references(client)
-        all_errors.extend(errors)        errors = await self.validate_lbs_references(client)
-        all_errors.extend(errors)        errors = await self.validate_apcfg_auto_cert_est_https_ca_references(client)
-        all_errors.extend(errors)        errors = await self.validate_apcfg_auto_cert_scep_https_ca_references(client)
-        all_errors.extend(errors)        errors = await self.validate_admin_auth_tacacs_plus_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_apcfg_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_apcfg_mesh_ssid_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ble_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_lw_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_syslog_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_lan_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_led_schedules_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_radio_1_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_radio_2_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_radio_3_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_radio_4_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_lbs_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_apcfg_auto_cert_est_https_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_apcfg_auto_cert_scep_https_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_admin_auth_tacacs_plus_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1919,5 +2091,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.617889Z
+# Generated: 2026-01-14T22:43:35.687623Z
 # ============================================================================

@@ -6,9 +6,9 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .forticare import ForticareDictMode, ForticareObjectMode
-    from .forticloud import ForticloudDictMode, ForticloudObjectMode
-    from .vdom import VdomDictMode, VdomObjectMode
+    from .forticare import Forticare, ForticareDictMode, ForticareObjectMode
+    from .forticloud import Forticloud, ForticloudDictMode, ForticloudObjectMode
+    from .vdom import Vdom, VdomDictMode, VdomObjectMode
 
 __all__ = [
     "RegistrationDictMode",

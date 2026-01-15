@@ -8,7 +8,7 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
-from typing import Any
+from typing import Any, Literal
 
 
 # ============================================================================
@@ -30,9 +30,9 @@ class InternetServiceExtensionEntry(BaseModel):
     id: int | None = Field(ge=0, le=255, default=0, description="Entry ID(1-255).")
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")
     protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255).")
-    port_range: list[PortRange] = Field(default=None, description="Port ranges in the custom entry.")
-    dst: list[Dst] = Field(default=None, description="Destination address or address group name.")
-    dst6: list[Dst6] = Field(default=None, description="Destination address6 or address6 group name.")
+    port_range: list[dict[str, Any]] | None = Field(default=None, description="Port ranges in the custom entry.")
+    dst: list[dict[str, Any]] | None = Field(default=None, description="Destination address or address group name.")
+    dst6: list[dict[str, Any]] | None = Field(default=None, description="Destination address6 or address6 group name.")
 
 
 class InternetServiceExtensionDisableEntry(BaseModel):
@@ -49,9 +49,9 @@ class InternetServiceExtensionDisableEntry(BaseModel):
     id: int | None = Field(ge=0, le=4294967295, default=0, description="Disable entry ID.")
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")
     protocol: int = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255).")
-    port_range: list[PortRange] = Field(default=None, description="Port ranges in the disable entry.")
-    ip_range: list[IpRange] = Field(default=None, description="IPv4 ranges in the disable entry.")
-    ip6_range: list[Ip6Range] = Field(default=None, description="IPv6 ranges in the disable entry.")
+    port_range: list[dict[str, Any]] | None = Field(default=None, description="Port ranges in the disable entry.")
+    ip_range: list[dict[str, Any]] | None = Field(default=None, description="IPv4 ranges in the disable entry.")
+    ip6_range: list[dict[str, Any]] | None = Field(default=None, description="IPv6 ranges in the disable entry.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -69,7 +69,12 @@ class InternetServiceExtensionModel(BaseModel):
 
     Configure Internet Services Extension.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - comment: max_length=255 pattern=        - entry: pattern=        - disable_entry: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - comment: max_length=255 pattern=
+        - entry: pattern=
+        - disable_entry: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -81,7 +86,11 @@ class InternetServiceExtensionModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Internet Service ID in the Internet Service database.")  # datasource: ['firewall.internet-service.id']    comment: str | None = Field(max_length=255, default=None, description="Comment.")    entry: list[InternetServiceExtensionEntry] = Field(default=None, description="Entries added to the Internet Service extension database.")    disable_entry: list[InternetServiceExtensionDisableEntry] = Field(default=None, description="Disable entries in the Internet Service database.")    # ========================================================================
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="Internet Service ID in the Internet Service database.")  # datasource: ['firewall.internet-service.id']
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    entry: list[InternetServiceExtensionEntry] | None = Field(default=None, description="Entries added to the Internet Service extension database.")
+    disable_entry: list[InternetServiceExtensionDisableEntry] | None = Field(default=None, description="Disable entries in the Internet Service database.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -160,7 +169,7 @@ class InternetServiceExtensionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_extension.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "id", None)
@@ -197,7 +206,7 @@ class InternetServiceExtensionModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_id_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -220,5 +229,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.461018Z
+# Generated: 2026-01-14T22:43:37.939161Z
 # ============================================================================

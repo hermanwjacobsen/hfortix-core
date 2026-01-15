@@ -258,7 +258,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         description: str | None = None,
         domains: str | list[str] | list[dict[str, Any]] | None = None,
@@ -279,7 +279,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name: SaaS application name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable setting.
-            type: SaaS application type.
+            type_: SaaS application type.
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
@@ -362,7 +362,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             description=description,
             domains=domains,
@@ -401,7 +401,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         description: str | None = None,
         domains: str | list[str] | list[dict[str, Any]] | None = None,
@@ -422,7 +422,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name: SaaS application name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable setting.
-            type: SaaS application type.
+            type_: SaaS application type.
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
@@ -507,7 +507,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             description=description,
             domains=domains,
@@ -646,7 +646,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         description: str | None = None,
         domains: str | list[str] | list[dict[str, Any]] | None = None,
@@ -668,7 +668,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name: Field name
             uuid: Field uuid
             status: Field status
-            type: Field type
+            type_: Field type
             casb_name: Field casb-name
             description: Field description
             domains: Field domains
@@ -720,7 +720,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             description=description,
             domains=domains,

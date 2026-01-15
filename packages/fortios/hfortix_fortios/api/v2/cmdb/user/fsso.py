@@ -233,7 +233,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "fortinac"] | None = None,
+        type_: Literal["default", "fortinac"] | None = None,
         server: str | None = None,
         port: int | None = None,
         password: Any | None = None,
@@ -278,7 +278,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name.
-            type: Server type.
+            type_: Server type.
             server: Domain name or IP address of the first FSSO collector agent.
             port: Port of the first FSSO collector agent.
             password: Password of the first FSSO collector agent.
@@ -344,7 +344,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             port=port,
             password=password,
@@ -407,7 +407,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "fortinac"] | None = None,
+        type_: Literal["default", "fortinac"] | None = None,
         server: str | None = None,
         port: int | None = None,
         password: Any | None = None,
@@ -452,7 +452,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name.
-            type: Server type.
+            type_: Server type.
             server: Domain name or IP address of the first FSSO collector agent.
             port: Port of the first FSSO collector agent.
             password: Password of the first FSSO collector agent.
@@ -520,7 +520,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             port=port,
             password=password,
@@ -683,7 +683,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "fortinac"] | None = None,
+        type_: Literal["default", "fortinac"] | None = None,
         server: str | None = None,
         port: int | None = None,
         password: Any | None = None,
@@ -729,7 +729,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             server: Field server
             port: Field port
             password: Field password
@@ -805,7 +805,7 @@ class Fsso(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             port=port,
             password=password,

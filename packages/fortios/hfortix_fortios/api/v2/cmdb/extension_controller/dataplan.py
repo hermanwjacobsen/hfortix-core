@@ -234,7 +234,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         modem_id: Literal["modem1", "modem2", "all"] | None = None,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = None,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = None,
         slot: Literal["sim1", "sim2"] | None = None,
         iccid: str | None = None,
         carrier: str | None = None,
@@ -265,7 +265,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: FortiExtender data plan name.
             modem_id: Dataplan's modem specifics, if any.
-            type: Type preferences configuration.
+            type_: Type preferences configuration.
             slot: SIM slot configuration.
             iccid: ICCID configuration.
             carrier: Carrier configuration.
@@ -317,7 +317,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             modem_id=modem_id,
-            type=type,
+            type_=type_,
             slot=slot,
             iccid=iccid,
             carrier=carrier,
@@ -366,7 +366,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         modem_id: Literal["modem1", "modem2", "all"] | None = None,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = None,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = None,
         slot: Literal["sim1", "sim2"] | None = None,
         iccid: str | None = None,
         carrier: str | None = None,
@@ -397,7 +397,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: FortiExtender data plan name.
             modem_id: Dataplan's modem specifics, if any.
-            type: Type preferences configuration.
+            type_: Type preferences configuration.
             slot: SIM slot configuration.
             iccid: ICCID configuration.
             carrier: Carrier configuration.
@@ -451,7 +451,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             modem_id=modem_id,
-            type=type,
+            type_=type_,
             slot=slot,
             iccid=iccid,
             carrier=carrier,
@@ -600,7 +600,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         modem_id: Literal["modem1", "modem2", "all"] | None = None,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = None,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = None,
         slot: Literal["sim1", "sim2"] | None = None,
         iccid: str | None = None,
         carrier: str | None = None,
@@ -632,7 +632,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             modem_id: Field modem-id
-            type: Field type
+            type_: Field type
             slot: Field slot
             iccid: Field iccid
             carrier: Field carrier
@@ -694,7 +694,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             modem_id=modem_id,
-            type=type,
+            type_=type_,
             slot=slot,
             iccid=iccid,
             carrier=carrier,

@@ -246,7 +246,6 @@ class CsfObject:
     file_quota_warning: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -268,6 +267,10 @@ class Csf:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -288,6 +291,7 @@ class Csf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CsfResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -305,6 +309,7 @@ class Csf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CsfResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -321,6 +326,7 @@ class Csf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CsfResponse: ...
     
     # ================================================================
@@ -363,7 +369,7 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CsfObject: ...
     
@@ -382,7 +388,7 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CsfObject: ...
     
@@ -482,23 +488,6 @@ class Csf:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CsfObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -538,6 +527,7 @@ class Csf:
         file_quota_warning: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CsfObject: ...
@@ -646,41 +636,7 @@ class Csf:
         file_quota: int | None = ...,
         file_quota_warning: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CsfPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        uid: str | None = ...,
-        upstream: str | None = ...,
-        source_ip: str | None = ...,
-        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        upstream_interface: str | None = ...,
-        upstream_port: int | None = ...,
-        group_name: str | None = ...,
-        group_password: str | None = ...,
-        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
-        log_unification: Literal["disable", "enable"] | None = ...,
-        authorization_request_type: Literal["serial", "certificate"] | None = ...,
-        certificate: str | None = ...,
-        fabric_workers: int | None = ...,
-        downstream_access: Literal["enable", "disable"] | None = ...,
-        legacy_authentication: Literal["disable", "enable"] | None = ...,
-        downstream_accprofile: str | None = ...,
-        configuration_sync: Literal["default", "local"] | None = ...,
-        fabric_object_unification: Literal["default", "local"] | None = ...,
-        saml_configuration_sync: Literal["default", "local"] | None = ...,
-        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
-        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
-        file_mgmt: Literal["enable", "disable"] | None = ...,
-        file_quota: int | None = ...,
-        file_quota_warning: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -735,8 +691,6 @@ class Csf:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -764,6 +718,10 @@ class CsfDictMode:
     By default returns CsfResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CsfObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -969,10 +927,12 @@ class CsfDictMode:
         file_quota: int | None = ...,
         file_quota_warning: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CsfPayload | None = ...,
@@ -1058,8 +1018,6 @@ class CsfDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1083,6 +1041,10 @@ class CsfObjectMode:
     By default returns CsfObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CsfResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1325,10 +1287,12 @@ class CsfObjectMode:
         file_quota: int | None = ...,
         file_quota_warning: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CsfObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CsfPayload | None = ...,
@@ -1414,8 +1378,6 @@ class CsfObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

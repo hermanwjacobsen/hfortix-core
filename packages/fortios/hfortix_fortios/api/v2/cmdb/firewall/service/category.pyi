@@ -19,7 +19,7 @@ class CategoryPayload(TypedDict, total=False):
         }
     """
     name: str  # Service category name. | MaxLen: 63
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     comment: str  # Comment. | MaxLen: 255
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
 
@@ -36,7 +36,7 @@ class CategoryResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Service category name. | MaxLen: 63
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     comment: str  # Comment. | MaxLen: 255
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
 
@@ -51,7 +51,7 @@ class CategoryObject:
     
     # Service category name. | MaxLen: 63
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Comment. | MaxLen: 255
     comment: str
@@ -82,6 +82,10 @@ class Category:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -102,6 +106,7 @@ class Category:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CategoryResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -119,6 +124,7 @@ class Category:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CategoryResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -135,6 +141,7 @@ class Category:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CategoryResponse]: ...
     
     # ================================================================
@@ -177,7 +184,7 @@ class Category:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CategoryObject: ...
     
@@ -196,7 +203,7 @@ class Category:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CategoryObject]: ...
     
@@ -296,23 +303,6 @@ class Category:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CategoryObject | list[CategoryObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -330,6 +320,7 @@ class Category:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CategoryObject: ...
@@ -372,19 +363,7 @@ class Category:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CategoryPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        comment: str | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -399,6 +378,7 @@ class Category:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CategoryObject: ...
@@ -441,19 +421,7 @@ class Category:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CategoryPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        comment: str | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -464,6 +432,7 @@ class Category:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CategoryObject: ...
@@ -494,14 +463,7 @@ class Category:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,8 +496,6 @@ class Category:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -563,6 +523,10 @@ class CategoryDictMode:
     By default returns CategoryResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CategoryObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -701,10 +665,12 @@ class CategoryDictMode:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CategoryPayload | None = ...,
@@ -756,10 +722,12 @@ class CategoryDictMode:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CategoryPayload | None = ...,
@@ -799,10 +767,12 @@ class CategoryDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -839,8 +809,6 @@ class CategoryDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +832,10 @@ class CategoryObjectMode:
     By default returns CategoryObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CategoryResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1017,10 +989,12 @@ class CategoryObjectMode:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CategoryObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CategoryPayload | None = ...,
@@ -1087,10 +1061,12 @@ class CategoryObjectMode:
         comment: str | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CategoryObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CategoryPayload | None = ...,
@@ -1141,10 +1117,12 @@ class CategoryObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CategoryObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1181,8 +1159,6 @@ class CategoryObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

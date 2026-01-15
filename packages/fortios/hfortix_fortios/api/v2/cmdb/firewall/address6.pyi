@@ -25,8 +25,8 @@ class Address6Payload(TypedDict, total=False):
         }
     """
     name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
     route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     macaddr: list[dict[str, Any]]  # Multiple MAC address ranges.
     sdn: str  # SDN. | MaxLen: 35
@@ -48,8 +48,8 @@ class Address6Payload(TypedDict, total=False):
     tenant: str  # Tenant. | MaxLen: 35
     epg_name: str  # Endpoint group name. | MaxLen: 255
     sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter: str  # Match criteria filter. | MaxLen: 2047
-    list: list[dict[str, Any]]  # IP address list.
+    filter_: str  # Match criteria filter. | MaxLen: 2047
+    list_: list[dict[str, Any]]  # IP address list.
     sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
     passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
@@ -86,7 +86,7 @@ class Address6SubnetsegmentItem(TypedDict):
     """
     
     name: str  # Name. | MaxLen: 63
-    type: Literal["any", "specific"]  # Subnet segment type. | Default: any
+    type_: Literal["any", "specific"]  # Subnet segment type. | Default: any
     value: str  # Subnet segment value. | MaxLen: 35
 
 
@@ -159,7 +159,7 @@ class Address6SubnetsegmentObject:
     # Name. | MaxLen: 63
     name: str
     # Subnet segment type. | Default: any
-    type: Literal["any", "specific"]
+    type_: Literal["any", "specific"]
     # Subnet segment value. | MaxLen: 35
     value: str
     
@@ -203,8 +203,8 @@ class Address6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
     route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
     sdn: str  # SDN. | MaxLen: 35
@@ -226,8 +226,8 @@ class Address6Response(TypedDict):
     tenant: str  # Tenant. | MaxLen: 35
     epg_name: str  # Endpoint group name. | MaxLen: 255
     sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter: str  # Match criteria filter. | MaxLen: 2047
-    list: list[Address6ListItem]  # IP address list.
+    filter_: str  # Match criteria filter. | MaxLen: 2047
+    list_: list[Address6ListItem]  # IP address list.
     sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
     passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
@@ -243,10 +243,10 @@ class Address6Object:
     
     # Address name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
-    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
+    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
     # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     route_tag: int
     # Multiple MAC address ranges.
@@ -290,9 +290,9 @@ class Address6Object:
     # SDN Tag. | MaxLen: 15
     sdn_tag: str
     # Match criteria filter. | MaxLen: 2047
-    filter: str
+    filter_: str
     # IP address list.
-    list: list[Address6ListObject]
+    list_: list[Address6ListObject]
     # Type of addresses to collect. | Default: private
     sdn_addr_type: Literal["private", "public", "all"]
     # Enable/disable passive learning of FQDNs.  When enabled, the | Default: enable
@@ -324,6 +324,10 @@ class Address6:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -344,6 +348,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Address6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -361,6 +366,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Address6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -377,6 +383,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Address6Response]: ...
     
     # ================================================================
@@ -419,7 +426,7 @@ class Address6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Address6Object: ...
     
@@ -438,7 +445,7 @@ class Address6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Address6Object]: ...
     
@@ -538,23 +545,6 @@ class Address6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Address6Object | list[Address6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -568,7 +558,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -590,13 +580,14 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6Object: ...
@@ -607,7 +598,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -629,8 +620,8 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -647,7 +638,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -669,8 +660,8 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -686,7 +677,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -708,50 +699,13 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -762,7 +716,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -784,13 +738,14 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6Object: ...
@@ -801,7 +756,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -823,8 +778,8 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -841,7 +796,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -863,8 +818,8 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -880,7 +835,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -902,50 +857,13 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -956,6 +874,7 @@ class Address6:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6Object: ...
@@ -986,14 +905,7 @@ class Address6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1008,7 +920,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1030,8 +942,8 @@ class Address6:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1051,8 +963,6 @@ class Address6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1080,6 +990,10 @@ class Address6DictMode:
     By default returns Address6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return Address6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1185,7 +1099,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1207,8 +1121,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1225,7 +1139,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1247,8 +1161,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1265,7 +1179,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1287,22 +1201,24 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1324,8 +1240,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1340,7 +1256,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1362,8 +1278,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1380,7 +1296,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1402,8 +1318,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1420,7 +1336,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1442,22 +1358,24 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1479,8 +1397,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1516,10 +1434,12 @@ class Address6DictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1539,7 +1459,7 @@ class Address6DictMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1561,8 +1481,8 @@ class Address6DictMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1581,8 +1501,6 @@ class Address6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1606,6 +1524,10 @@ class Address6ObjectMode:
     By default returns Address6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Address6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1711,7 +1633,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1733,8 +1655,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1751,7 +1673,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1773,8 +1695,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1791,7 +1713,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1813,8 +1735,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1831,7 +1753,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1853,22 +1775,24 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1890,8 +1814,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1906,7 +1830,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1928,8 +1852,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1946,7 +1870,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -1968,8 +1892,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -1986,7 +1910,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -2008,8 +1932,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -2026,7 +1950,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -2048,22 +1972,24 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -2085,8 +2011,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -2133,10 +2059,12 @@ class Address6ObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2156,7 +2084,7 @@ class Address6ObjectMode:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
         macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -2178,8 +2106,8 @@ class Address6ObjectMode:
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter_: str | None = ...,
+        list_: str | list[str] | list[dict[str, Any]] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -2198,8 +2126,6 @@ class Address6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

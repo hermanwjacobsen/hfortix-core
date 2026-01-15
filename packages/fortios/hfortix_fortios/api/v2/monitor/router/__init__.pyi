@@ -13,10 +13,10 @@ if TYPE_CHECKING:
     from .policy import Policy, PolicyDictMode, PolicyObjectMode
     from .policy6 import Policy6, Policy6DictMode, Policy6ObjectMode
     from .statistics import Statistics, StatisticsDictMode, StatisticsObjectMode
-    from .bgp import BgpDictMode, BgpObjectMode
+    from .bgp import Bgp, BgpDictMode, BgpObjectMode
     from .lookup import Lookup
-    from .ospf import OspfDictMode, OspfObjectMode
-    from .sdwan import SdwanDictMode, SdwanObjectMode
+    from .ospf import Ospf, OspfDictMode, OspfObjectMode
+    from .sdwan import Sdwan, SdwanDictMode, SdwanObjectMode
 
 __all__ = [
     "Charts",

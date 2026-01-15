@@ -133,6 +133,10 @@ class InternetServiceCustom:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -153,6 +157,7 @@ class InternetServiceCustom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceCustomResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -170,6 +175,7 @@ class InternetServiceCustom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceCustomResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -186,6 +192,7 @@ class InternetServiceCustom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InternetServiceCustomResponse]: ...
     
     # ================================================================
@@ -228,7 +235,7 @@ class InternetServiceCustom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
     
@@ -247,7 +254,7 @@ class InternetServiceCustom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InternetServiceCustomObject]: ...
     
@@ -347,23 +354,6 @@ class InternetServiceCustom:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceCustomObject | list[InternetServiceCustomObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -381,6 +371,7 @@ class InternetServiceCustom:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
@@ -423,19 +414,7 @@ class InternetServiceCustom:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InternetServiceCustomPayload | None = ...,
-        name: str | None = ...,
-        reputation: int | None = ...,
-        comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -450,6 +429,7 @@ class InternetServiceCustom:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
@@ -492,19 +472,7 @@ class InternetServiceCustom:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceCustomPayload | None = ...,
-        name: str | None = ...,
-        reputation: int | None = ...,
-        comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -515,6 +483,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
@@ -545,14 +514,7 @@ class InternetServiceCustom:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -585,8 +547,6 @@ class InternetServiceCustom:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -614,6 +574,10 @@ class InternetServiceCustomDictMode:
     By default returns InternetServiceCustomResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceCustomObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -752,10 +716,12 @@ class InternetServiceCustomDictMode:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceCustomPayload | None = ...,
@@ -807,10 +773,12 @@ class InternetServiceCustomDictMode:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceCustomPayload | None = ...,
@@ -850,10 +818,12 @@ class InternetServiceCustomDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -890,8 +860,6 @@ class InternetServiceCustomDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -915,6 +883,10 @@ class InternetServiceCustomObjectMode:
     By default returns InternetServiceCustomObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceCustomResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1068,10 +1040,12 @@ class InternetServiceCustomObjectMode:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceCustomPayload | None = ...,
@@ -1138,10 +1112,12 @@ class InternetServiceCustomObjectMode:
         comment: str | None = ...,
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceCustomPayload | None = ...,
@@ -1192,10 +1168,12 @@ class InternetServiceCustomObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceCustomObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1232,8 +1210,6 @@ class InternetServiceCustomObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

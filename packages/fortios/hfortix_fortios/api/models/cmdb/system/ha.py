@@ -99,7 +99,7 @@ class HaVcluster(BaseModel):
     pingserver_failover_threshold: int | None = Field(ge=0, le=50, default=0, description="Remote IP monitoring failover threshold (0 - 50).")
     pingserver_secondary_force_reset: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to force the cluster to negotiate after a remote IP monitoring failover.")
     pingserver_flip_timeout: int | None = Field(ge=6, le=2147483647, default=60, description="Time to wait in minutes before renegotiating after a remote IP monitoring failover.")
-    vdom: list[Vdom] = Field(default=None, description="Virtual domain(s) in the virtual cluster.")
+    vdom: list[dict[str, Any]] | None = Field(default=None, description="Virtual domain(s) in the virtual cluster.")
 
 
 class HaStatus(BaseModel):
@@ -120,7 +120,7 @@ class HaStatus(BaseModel):
 # ============================================================================
 
 
-class HaUpgrade_modeEnum(str, Enum):
+class HaUpgradeModeEnum(str, Enum):
     """Allowed values for upgrade_mode field."""
     SIMULTANEOUS = "simultaneous"
     UNINTERRUPTIBLE = "uninterruptible"
@@ -139,7 +139,7 @@ class HaScheduleEnum(str, Enum):
     IPPORT = "ipport"
 
 
-class HaIpsec_phase2_proposalEnum(str, Enum):
+class HaIpsecPhase2ProposalEnum(str, Enum):
     """Allowed values for ipsec_phase2_proposal field."""
     AES128_SHA1 = "aes128-sha1"
     AES128_SHA256 = "aes128-sha256"
@@ -169,7 +169,89 @@ class HaModel(BaseModel):
 
     Configure HA.
 
-    Validation Rules:        - group_id: min=0 max=1023 pattern=        - group_name: max_length=32 pattern=        - mode: pattern=        - sync_packet_balance: pattern=        - password: max_length=128 pattern=        - key: max_length=16 pattern=        - hbdev: pattern=        - auto_virtual_mac_interface: pattern=        - backup_hbdev: pattern=        - unicast_hb: pattern=        - unicast_hb_peerip: pattern=        - unicast_hb_netmask: pattern=        - session_sync_dev: pattern=        - route_ttl: min=5 max=3600 pattern=        - route_wait: min=0 max=3600 pattern=        - route_hold: min=0 max=3600 pattern=        - multicast_ttl: min=5 max=3600 pattern=        - evpn_ttl: min=5 max=3600 pattern=        - load_balance_all: pattern=        - sync_config: pattern=        - encryption: pattern=        - authentication: pattern=        - hb_interval: min=1 max=20 pattern=        - hb_interval_in_milliseconds: pattern=        - hb_lost_threshold: min=1 max=60 pattern=        - hello_holddown: min=5 max=300 pattern=        - gratuitous_arps: pattern=        - arps: min=1 max=60 pattern=        - arps_interval: min=1 max=20 pattern=        - session_pickup: pattern=        - session_pickup_connectionless: pattern=        - session_pickup_expectation: pattern=        - session_pickup_nat: pattern=        - session_pickup_delay: pattern=        - link_failed_signal: pattern=        - upgrade_mode: pattern=        - uninterruptible_primary_wait: min=15 max=300 pattern=        - standalone_mgmt_vdom: pattern=        - ha_mgmt_status: pattern=        - ha_mgmt_interfaces: pattern=        - ha_eth_type: max_length=4 pattern=        - hc_eth_type: max_length=4 pattern=        - l2ep_eth_type: max_length=4 pattern=        - ha_uptime_diff_margin: min=1 max=65535 pattern=        - standalone_config_sync: pattern=        - unicast_status: pattern=        - unicast_gateway: pattern=        - unicast_peers: pattern=        - schedule: pattern=        - weight: pattern=        - cpu_threshold: pattern=        - memory_threshold: pattern=        - http_proxy_threshold: pattern=        - ftp_proxy_threshold: pattern=        - imap_proxy_threshold: pattern=        - nntp_proxy_threshold: pattern=        - pop3_proxy_threshold: pattern=        - smtp_proxy_threshold: pattern=        - override: pattern=        - priority: min=0 max=255 pattern=        - override_wait_time: min=0 max=3600 pattern=        - monitor: pattern=        - pingserver_monitor_interface: pattern=        - pingserver_failover_threshold: min=0 max=50 pattern=        - pingserver_secondary_force_reset: pattern=        - pingserver_flip_timeout: min=6 max=2147483647 pattern=        - vcluster_status: pattern=        - vcluster: pattern=        - ha_direct: pattern=        - ssd_failover: pattern=        - memory_compatible_mode: pattern=        - memory_based_failover: pattern=        - memory_failover_threshold: min=0 max=95 pattern=        - memory_failover_monitor_period: min=1 max=300 pattern=        - memory_failover_sample_rate: min=1 max=60 pattern=        - memory_failover_flip_timeout: min=6 max=2147483647 pattern=        - failover_hold_time: min=0 max=300 pattern=        - check_secondary_dev_health: pattern=        - ipsec_phase2_proposal: pattern=        - bounce_intf_upon_failover: pattern=        - status: pattern=    """
+    Validation Rules:
+        - group_id: min=0 max=1023 pattern=
+        - group_name: max_length=32 pattern=
+        - mode: pattern=
+        - sync_packet_balance: pattern=
+        - password: max_length=128 pattern=
+        - key: max_length=16 pattern=
+        - hbdev: pattern=
+        - auto_virtual_mac_interface: pattern=
+        - backup_hbdev: pattern=
+        - unicast_hb: pattern=
+        - unicast_hb_peerip: pattern=
+        - unicast_hb_netmask: pattern=
+        - session_sync_dev: pattern=
+        - route_ttl: min=5 max=3600 pattern=
+        - route_wait: min=0 max=3600 pattern=
+        - route_hold: min=0 max=3600 pattern=
+        - multicast_ttl: min=5 max=3600 pattern=
+        - evpn_ttl: min=5 max=3600 pattern=
+        - load_balance_all: pattern=
+        - sync_config: pattern=
+        - encryption: pattern=
+        - authentication: pattern=
+        - hb_interval: min=1 max=20 pattern=
+        - hb_interval_in_milliseconds: pattern=
+        - hb_lost_threshold: min=1 max=60 pattern=
+        - hello_holddown: min=5 max=300 pattern=
+        - gratuitous_arps: pattern=
+        - arps: min=1 max=60 pattern=
+        - arps_interval: min=1 max=20 pattern=
+        - session_pickup: pattern=
+        - session_pickup_connectionless: pattern=
+        - session_pickup_expectation: pattern=
+        - session_pickup_nat: pattern=
+        - session_pickup_delay: pattern=
+        - link_failed_signal: pattern=
+        - upgrade_mode: pattern=
+        - uninterruptible_primary_wait: min=15 max=300 pattern=
+        - standalone_mgmt_vdom: pattern=
+        - ha_mgmt_status: pattern=
+        - ha_mgmt_interfaces: pattern=
+        - ha_eth_type: max_length=4 pattern=
+        - hc_eth_type: max_length=4 pattern=
+        - l2ep_eth_type: max_length=4 pattern=
+        - ha_uptime_diff_margin: min=1 max=65535 pattern=
+        - standalone_config_sync: pattern=
+        - unicast_status: pattern=
+        - unicast_gateway: pattern=
+        - unicast_peers: pattern=
+        - schedule: pattern=
+        - weight: pattern=
+        - cpu_threshold: pattern=
+        - memory_threshold: pattern=
+        - http_proxy_threshold: pattern=
+        - ftp_proxy_threshold: pattern=
+        - imap_proxy_threshold: pattern=
+        - nntp_proxy_threshold: pattern=
+        - pop3_proxy_threshold: pattern=
+        - smtp_proxy_threshold: pattern=
+        - override: pattern=
+        - priority: min=0 max=255 pattern=
+        - override_wait_time: min=0 max=3600 pattern=
+        - monitor: pattern=
+        - pingserver_monitor_interface: pattern=
+        - pingserver_failover_threshold: min=0 max=50 pattern=
+        - pingserver_secondary_force_reset: pattern=
+        - pingserver_flip_timeout: min=6 max=2147483647 pattern=
+        - vcluster_status: pattern=
+        - vcluster: pattern=
+        - ha_direct: pattern=
+        - ssd_failover: pattern=
+        - memory_compatible_mode: pattern=
+        - memory_based_failover: pattern=
+        - memory_failover_threshold: min=0 max=95 pattern=
+        - memory_failover_monitor_period: min=1 max=300 pattern=
+        - memory_failover_sample_rate: min=1 max=60 pattern=
+        - memory_failover_flip_timeout: min=6 max=2147483647 pattern=
+        - failover_hold_time: min=0 max=300 pattern=
+        - check_secondary_dev_health: pattern=
+        - ipsec_phase2_proposal: pattern=
+        - bounce_intf_upon_failover: pattern=
+        - status: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -181,7 +263,88 @@ class HaModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    group_id: int | None = Field(ge=0, le=1023, default=0, description="HA group ID  (0 - 1023;  or 0 - 7 when there are more than 2 vclusters). Must be the same for all members.")    group_name: str | None = Field(max_length=32, default="", description="Cluster group name. Must be the same for all members.")    mode: Literal["standalone", "a-a", "a-p"] | None = Field(default="standalone", description="HA mode. Must be the same for all members. FGSP requires standalone.")    sync_packet_balance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HA packet distribution to multiple CPUs.")    password: Any = Field(max_length=128, default=None, description="Cluster password. Must be the same for all members.")    key: Any = Field(max_length=16, default=None, description="Key.")    hbdev: str | None = Field(default="", description="Heartbeat interfaces. Must be the same for all members.")    auto_virtual_mac_interface: list[HaAutoVirtualMacInterface] = Field(default=None, description="The physical interface that will be assigned an auto-generated virtual MAC address.")    backup_hbdev: list[HaBackupHbdev] = Field(default=None, description="Backup heartbeat interfaces. Must be the same for all members.")    unicast_hb: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast heartbeat.")    unicast_hb_peerip: str | None = Field(default="0.0.0.0", description="Unicast heartbeat peer IP.")    unicast_hb_netmask: str | None = Field(default="0.0.0.0", description="Unicast heartbeat netmask.")    session_sync_dev: str | None = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    route_ttl: int | None = Field(ge=5, le=3600, default=10, description="TTL for primary unit routes (5 - 3600 sec). Increase to maintain active routes during failover.")    route_wait: int | None = Field(ge=0, le=3600, default=0, description="Time to wait before sending new routes to the cluster (0 - 3600 sec).")    route_hold: int | None = Field(ge=0, le=3600, default=10, description="Time to wait between routing table updates to the cluster (0 - 3600 sec).")    multicast_ttl: int | None = Field(ge=5, le=3600, default=600, description="HA multicast TTL on primary (5 - 3600 sec).")    evpn_ttl: int | None = Field(ge=5, le=3600, default=60, description="HA EVPN FDB TTL on primary box (5 - 3600 sec).")    load_balance_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to load balance TCP sessions. Disable to load balance proxy sessions only.")    sync_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable configuration synchronization.")    encryption: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable heartbeat message encryption.")    authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable heartbeat message authentication.")    hb_interval: int | None = Field(ge=1, le=20, default=2, description="Time between sending heartbeat packets (1 - 20). Increase to reduce false positives.")    hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = Field(default="100ms", description="Units of heartbeat interval time between sending heartbeat packets. Default is 100ms.")    hb_lost_threshold: int | None = Field(ge=1, le=60, default=20, description="Number of lost heartbeats to signal a failure (1 - 60). Increase to reduce false positives.")    hello_holddown: int | None = Field(ge=5, le=300, default=20, description="Time to wait before changing from hello to work state (5 - 300 sec).")    gratuitous_arps: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable gratuitous ARPs. Disable if link-failed-signal enabled.")    arps: int | None = Field(ge=1, le=60, default=5, description="Number of gratuitous ARPs (1 - 60). Lower to reduce traffic. Higher to reduce failover time.")    arps_interval: int | None = Field(ge=1, le=20, default=8, description="Time between gratuitous ARPs  (1 - 20 sec). Lower to reduce failover time. Higher to reduce traffic.")    session_pickup: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable session pickup. Enabling it can reduce session down time when fail over happens.")    session_pickup_connectionless: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable UDP and ICMP session sync.")    session_pickup_expectation: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable session helper expectation session sync for FGSP.")    session_pickup_nat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT session sync for FGSP.")    session_pickup_delay: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to sync sessions longer than 30 sec. Only longer lived sessions need to be synced.")    link_failed_signal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to shut down all interfaces for 1 sec after a failover. Use if gratuitous ARPs do not update network.")    upgrade_mode: HaUpgradeModeEnum | None = Field(default="uninterruptible", description="The mode to upgrade a cluster.")    uninterruptible_primary_wait: int | None = Field(ge=15, le=300, default=30, description="Number of minutes the primary HA unit waits before the secondary HA unit is considered upgraded and the system is started before starting its own upgrade (15 - 300, default = 30).")    standalone_mgmt_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable standalone management VDOM.")    ha_mgmt_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to reserve interfaces to manage individual cluster units.")    ha_mgmt_interfaces: list[HaHaMgmtInterfaces] = Field(default=None, description="Reserve interfaces to manage individual cluster units.")    ha_eth_type: str | None = Field(max_length=4, default="8890", description="HA heartbeat packet Ethertype (4-digit hex).")    hc_eth_type: str | None = Field(max_length=4, default="8891", description="Transparent mode HA heartbeat packet Ethertype (4-digit hex).")    l2ep_eth_type: str | None = Field(max_length=4, default="8893", description="Telnet session HA heartbeat packet Ethertype (4-digit hex).")    ha_uptime_diff_margin: int | None = Field(ge=1, le=65535, default=300, description="Normally you would only reduce this value for failover testing.")    standalone_config_sync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FGSP configuration synchronization.")    unicast_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast connection.")    unicast_gateway: str | None = Field(default="0.0.0.0", description="Default route gateway for unicast interface.")    unicast_peers: list[HaUnicastPeers] = Field(default=None, description="Number of unicast peers.")    schedule: HaScheduleEnum | None = Field(default="round-robin", description="Type of A-A load balancing. Use none if you have external load balancers.")    weight: str | None = Field(default="0 40", description="Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.")    cpu_threshold: str | None = Field(default="", description="Dynamic weighted load balancing CPU usage weight and high and low thresholds.")    memory_threshold: str | None = Field(default="", description="Dynamic weighted load balancing memory usage weight and high and low thresholds.")    http_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of HTTP proxy sessions.")    ftp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of FTP proxy sessions.")    imap_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of IMAP proxy sessions.")    nntp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of NNTP proxy sessions.")    pop3_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of POP3 proxy sessions.")    smtp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of SMTP proxy sessions.")    override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable and increase the priority of the unit that should always be primary (master).")    priority: int | None = Field(ge=0, le=255, default=128, description="Increase the priority to select the primary unit (0 - 255).")    override_wait_time: int | None = Field(ge=0, le=3600, default=0, description="Delay negotiating if override is enabled (0 - 3600 sec). Reduces how often the cluster negotiates.")    monitor: str | None = Field(default="", description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']    pingserver_monitor_interface: str | None = Field(default="", description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']    pingserver_failover_threshold: int | None = Field(ge=0, le=50, default=0, description="Remote IP monitoring failover threshold (0 - 50).")    pingserver_secondary_force_reset: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to force the cluster to negotiate after a remote IP monitoring failover.")    pingserver_flip_timeout: int | None = Field(ge=6, le=2147483647, default=60, description="Time to wait in minutes before renegotiating after a remote IP monitoring failover.")    vcluster_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable virtual cluster for virtual clustering.")    vcluster: list[HaVcluster] = Field(default=None, description="Virtual cluster table.")    ha_direct: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.")    ssd_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic HA failover on SSD disk failure.")    memory_compatible_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable memory compatible mode.")    memory_based_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable memory based failover.")    memory_failover_threshold: int | None = Field(ge=0, le=95, default=0, description="Memory usage threshold to trigger memory based failover (0 means using conserve mode threshold in system.global).")    memory_failover_monitor_period: int | None = Field(ge=1, le=300, default=60, description="Duration of high memory usage before memory based failover is triggered in seconds (1 - 300, default = 60).")    memory_failover_sample_rate: int | None = Field(ge=1, le=60, default=1, description="Rate at which memory usage is sampled in order to measure memory usage in seconds (1 - 60, default = 1).")    memory_failover_flip_timeout: int | None = Field(ge=6, le=2147483647, default=6, description="Time to wait between subsequent memory based failovers in minutes (6 - 2147483647, default = 6).")    failover_hold_time: int | None = Field(ge=0, le=300, default=0, description="Time to wait before failover (0 - 300 sec, default = 0), to avoid flip.")    check_secondary_dev_health: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable secondary dev health check for session load-balance in HA A-A mode.")    ipsec_phase2_proposal: HaIpsecPhase2ProposalEnum = Field(default="", description="IPsec phase2 proposal.")    bounce_intf_upon_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable notification of kernel to bring down and up all monitored interfaces. The setting is used during failovers if gratuitous ARPs do not update the network.")    status: list[HaStatus] = Field(default=None, description="list ha status information")    # ========================================================================
+    group_id: int | None = Field(ge=0, le=1023, default=0, description="HA group ID  (0 - 1023;  or 0 - 7 when there are more than 2 vclusters). Must be the same for all members.")
+    group_name: str | None = Field(max_length=32, default="", description="Cluster group name. Must be the same for all members.")
+    mode: Literal["standalone", "a-a", "a-p"] | None = Field(default="standalone", description="HA mode. Must be the same for all members. FGSP requires standalone.")
+    sync_packet_balance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HA packet distribution to multiple CPUs.")
+    password: Any = Field(max_length=128, default=None, description="Cluster password. Must be the same for all members.")
+    key: Any = Field(max_length=16, default=None, description="Key.")
+    hbdev: str | None = Field(default="", description="Heartbeat interfaces. Must be the same for all members.")
+    auto_virtual_mac_interface: list[HaAutoVirtualMacInterface] | None = Field(default=None, description="The physical interface that will be assigned an auto-generated virtual MAC address.")
+    backup_hbdev: list[HaBackupHbdev] | None = Field(default=None, description="Backup heartbeat interfaces. Must be the same for all members.")
+    unicast_hb: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast heartbeat.")
+    unicast_hb_peerip: str | None = Field(default="0.0.0.0", description="Unicast heartbeat peer IP.")
+    unicast_hb_netmask: str | None = Field(default="0.0.0.0", description="Unicast heartbeat netmask.")
+    session_sync_dev: str | None = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']
+    route_ttl: int | None = Field(ge=5, le=3600, default=10, description="TTL for primary unit routes (5 - 3600 sec). Increase to maintain active routes during failover.")
+    route_wait: int | None = Field(ge=0, le=3600, default=0, description="Time to wait before sending new routes to the cluster (0 - 3600 sec).")
+    route_hold: int | None = Field(ge=0, le=3600, default=10, description="Time to wait between routing table updates to the cluster (0 - 3600 sec).")
+    multicast_ttl: int | None = Field(ge=5, le=3600, default=600, description="HA multicast TTL on primary (5 - 3600 sec).")
+    evpn_ttl: int | None = Field(ge=5, le=3600, default=60, description="HA EVPN FDB TTL on primary box (5 - 3600 sec).")
+    load_balance_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to load balance TCP sessions. Disable to load balance proxy sessions only.")
+    sync_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable configuration synchronization.")
+    encryption: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable heartbeat message encryption.")
+    authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable heartbeat message authentication.")
+    hb_interval: int | None = Field(ge=1, le=20, default=2, description="Time between sending heartbeat packets (1 - 20). Increase to reduce false positives.")
+    hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = Field(default="100ms", description="Units of heartbeat interval time between sending heartbeat packets. Default is 100ms.")
+    hb_lost_threshold: int | None = Field(ge=1, le=60, default=20, description="Number of lost heartbeats to signal a failure (1 - 60). Increase to reduce false positives.")
+    hello_holddown: int | None = Field(ge=5, le=300, default=20, description="Time to wait before changing from hello to work state (5 - 300 sec).")
+    gratuitous_arps: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable gratuitous ARPs. Disable if link-failed-signal enabled.")
+    arps: int | None = Field(ge=1, le=60, default=5, description="Number of gratuitous ARPs (1 - 60). Lower to reduce traffic. Higher to reduce failover time.")
+    arps_interval: int | None = Field(ge=1, le=20, default=8, description="Time between gratuitous ARPs  (1 - 20 sec). Lower to reduce failover time. Higher to reduce traffic.")
+    session_pickup: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable session pickup. Enabling it can reduce session down time when fail over happens.")
+    session_pickup_connectionless: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable UDP and ICMP session sync.")
+    session_pickup_expectation: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable session helper expectation session sync for FGSP.")
+    session_pickup_nat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT session sync for FGSP.")
+    session_pickup_delay: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to sync sessions longer than 30 sec. Only longer lived sessions need to be synced.")
+    link_failed_signal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to shut down all interfaces for 1 sec after a failover. Use if gratuitous ARPs do not update network.")
+    upgrade_mode: str | HaUpgradeModeEnum | None = Field(default="uninterruptible", description="The mode to upgrade a cluster.")
+    uninterruptible_primary_wait: int | None = Field(ge=15, le=300, default=30, description="Number of minutes the primary HA unit waits before the secondary HA unit is considered upgraded and the system is started before starting its own upgrade (15 - 300, default = 30).")
+    standalone_mgmt_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable standalone management VDOM.")
+    ha_mgmt_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to reserve interfaces to manage individual cluster units.")
+    ha_mgmt_interfaces: list[HaHaMgmtInterfaces] | None = Field(default=None, description="Reserve interfaces to manage individual cluster units.")
+    ha_eth_type: str | None = Field(max_length=4, default="8890", description="HA heartbeat packet Ethertype (4-digit hex).")
+    hc_eth_type: str | None = Field(max_length=4, default="8891", description="Transparent mode HA heartbeat packet Ethertype (4-digit hex).")
+    l2ep_eth_type: str | None = Field(max_length=4, default="8893", description="Telnet session HA heartbeat packet Ethertype (4-digit hex).")
+    ha_uptime_diff_margin: int | None = Field(ge=1, le=65535, default=300, description="Normally you would only reduce this value for failover testing.")
+    standalone_config_sync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FGSP configuration synchronization.")
+    unicast_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast connection.")
+    unicast_gateway: str | None = Field(default="0.0.0.0", description="Default route gateway for unicast interface.")
+    unicast_peers: list[HaUnicastPeers] | None = Field(default=None, description="Number of unicast peers.")
+    schedule: str | HaScheduleEnum | None = Field(default="round-robin", description="Type of A-A load balancing. Use none if you have external load balancers.")
+    weight: str | None = Field(default="0 40", description="Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.")
+    cpu_threshold: str | None = Field(default="", description="Dynamic weighted load balancing CPU usage weight and high and low thresholds.")
+    memory_threshold: str | None = Field(default="", description="Dynamic weighted load balancing memory usage weight and high and low thresholds.")
+    http_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of HTTP proxy sessions.")
+    ftp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of FTP proxy sessions.")
+    imap_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of IMAP proxy sessions.")
+    nntp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of NNTP proxy sessions.")
+    pop3_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of POP3 proxy sessions.")
+    smtp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of SMTP proxy sessions.")
+    override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable and increase the priority of the unit that should always be primary (master).")
+    priority: int | None = Field(ge=0, le=255, default=128, description="Increase the priority to select the primary unit (0 - 255).")
+    override_wait_time: int | None = Field(ge=0, le=3600, default=0, description="Delay negotiating if override is enabled (0 - 3600 sec). Reduces how often the cluster negotiates.")
+    monitor: str | None = Field(default="", description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']
+    pingserver_monitor_interface: str | None = Field(default="", description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']
+    pingserver_failover_threshold: int | None = Field(ge=0, le=50, default=0, description="Remote IP monitoring failover threshold (0 - 50).")
+    pingserver_secondary_force_reset: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to force the cluster to negotiate after a remote IP monitoring failover.")
+    pingserver_flip_timeout: int | None = Field(ge=6, le=2147483647, default=60, description="Time to wait in minutes before renegotiating after a remote IP monitoring failover.")
+    vcluster_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable virtual cluster for virtual clustering.")
+    vcluster: list[HaVcluster] | None = Field(default=None, description="Virtual cluster table.")
+    ha_direct: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.")
+    ssd_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic HA failover on SSD disk failure.")
+    memory_compatible_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable memory compatible mode.")
+    memory_based_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable memory based failover.")
+    memory_failover_threshold: int | None = Field(ge=0, le=95, default=0, description="Memory usage threshold to trigger memory based failover (0 means using conserve mode threshold in system.global).")
+    memory_failover_monitor_period: int | None = Field(ge=1, le=300, default=60, description="Duration of high memory usage before memory based failover is triggered in seconds (1 - 300, default = 60).")
+    memory_failover_sample_rate: int | None = Field(ge=1, le=60, default=1, description="Rate at which memory usage is sampled in order to measure memory usage in seconds (1 - 60, default = 1).")
+    memory_failover_flip_timeout: int | None = Field(ge=6, le=2147483647, default=6, description="Time to wait between subsequent memory based failovers in minutes (6 - 2147483647, default = 6).")
+    failover_hold_time: int | None = Field(ge=0, le=300, default=0, description="Time to wait before failover (0 - 300 sec, default = 0), to avoid flip.")
+    check_secondary_dev_health: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable secondary dev health check for session load-balance in HA A-A mode.")
+    ipsec_phase2_proposal: str | HaIpsecPhase2ProposalEnum | None = Field(default=None, description="IPsec phase2 proposal.")
+    bounce_intf_upon_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable notification of kernel to bring down and up all monitored interfaces. The setting is used during failovers if gratuitous ARPs do not update the network.")
+    status: list[HaStatus] | None = Field(default=None, description="list ha status information")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -290,7 +453,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "auto_virtual_mac_interface", [])
@@ -348,7 +511,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "backup_hbdev", [])
@@ -406,7 +569,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "session_sync_dev", None)
@@ -455,7 +618,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ha_mgmt_interfaces", [])
@@ -513,7 +676,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "monitor", None)
@@ -562,7 +725,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "pingserver_monitor_interface", None)
@@ -611,7 +774,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vcluster", [])
@@ -657,14 +820,20 @@ class HaModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_auto_virtual_mac_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_backup_hbdev_references(client)
-        all_errors.extend(errors)        errors = await self.validate_session_sync_dev_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ha_mgmt_interfaces_references(client)
-        all_errors.extend(errors)        errors = await self.validate_monitor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_pingserver_monitor_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vcluster_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_backup_hbdev_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_session_sync_dev_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ha_mgmt_interfaces_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_monitor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_pingserver_monitor_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vcluster_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -686,5 +855,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.323977Z
+# Generated: 2026-01-14T22:43:39.028935Z
 # ============================================================================

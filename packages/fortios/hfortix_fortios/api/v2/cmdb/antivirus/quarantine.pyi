@@ -22,9 +22,9 @@ class QuarantinePayload(TypedDict, total=False):
     maxfilesize: int  # Maximum file size to quarantine | Default: 0 | Min: 0 | Max: 500
     quarantine_quota: int  # The amount of disk space to reserve for quarantini | Default: 0 | Min: 0 | Max: 4294967295
     drop_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Do not quarantine infected files found in sessions
-    store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine infected files found in sessions using | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine infected files found in sessions using | Default: imap smtp pop3 http ftp nntp i
     drop_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Do not quarantine files detected by machine learni
-    store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine files detected by machine learning foun | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine files detected by machine learning foun | Default: imap smtp pop3 http ftp nntp i
     lowspace: Literal["drop-new", "ovrw-old"]  # Select the method for handling additional files wh | Default: ovrw-old
     destination: Literal["NULL", "disk", "FortiAnalyzer"]  # Choose whether to quarantine files to the FortiGat | Default: disk
 
@@ -44,9 +44,9 @@ class QuarantineResponse(TypedDict):
     maxfilesize: int  # Maximum file size to quarantine | Default: 0 | Min: 0 | Max: 500
     quarantine_quota: int  # The amount of disk space to reserve for quarantini | Default: 0 | Min: 0 | Max: 4294967295
     drop_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Do not quarantine infected files found in sessions
-    store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine infected files found in sessions using | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine infected files found in sessions using | Default: imap smtp pop3 http ftp nntp i
     drop_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Do not quarantine files detected by machine learni
-    store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine files detected by machine learning foun | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]  # Quarantine files detected by machine learning foun | Default: imap smtp pop3 http ftp nntp i
     lowspace: Literal["drop-new", "ovrw-old"]  # Select the method for handling additional files wh | Default: ovrw-old
     destination: Literal["NULL", "disk", "FortiAnalyzer"]  # Choose whether to quarantine files to the FortiGat | Default: disk
 
@@ -67,11 +67,11 @@ class QuarantineObject:
     quarantine_quota: int
     # Do not quarantine infected files found in sessions using the
     drop_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]
-    # Quarantine infected files found in sessions using the select | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    # Quarantine infected files found in sessions using the select | Default: imap smtp pop3 http ftp nntp i
     store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]
     # Do not quarantine files detected by machine learning found i
     drop_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]
-    # Quarantine files detected by machine learning found in sessi | Default: imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh
+    # Quarantine files detected by machine learning found in sessi | Default: imap smtp pop3 http ftp nntp i
     store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"]
     # Select the method for handling additional files when running | Default: ovrw-old
     lowspace: Literal["drop-new", "ovrw-old"]
@@ -101,6 +101,10 @@ class Quarantine:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -121,6 +125,7 @@ class Quarantine:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> QuarantineResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -138,6 +143,7 @@ class Quarantine:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> QuarantineResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -154,6 +160,7 @@ class Quarantine:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> QuarantineResponse: ...
     
     # ================================================================
@@ -196,7 +203,7 @@ class Quarantine:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> QuarantineObject: ...
     
@@ -215,7 +222,7 @@ class Quarantine:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> QuarantineObject: ...
     
@@ -315,23 +322,6 @@ class Quarantine:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> QuarantineObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -354,6 +344,7 @@ class Quarantine:
         destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QuarantineObject: ...
@@ -411,24 +402,7 @@ class Quarantine:
         lowspace: Literal["drop-new", "ovrw-old"] | None = ...,
         destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: QuarantinePayload | None = ...,
-        agelimit: int | None = ...,
-        maxfilesize: int | None = ...,
-        quarantine_quota: int | None = ...,
-        drop_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list[str] | None = ...,
-        store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list[str] | None = ...,
-        drop_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list[str] | None = ...,
-        store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list[str] | None = ...,
-        lowspace: Literal["drop-new", "ovrw-old"] | None = ...,
-        destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -466,8 +440,6 @@ class Quarantine:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -495,6 +467,10 @@ class QuarantineDictMode:
     By default returns QuarantineResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return QuarantineObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -649,10 +625,12 @@ class QuarantineDictMode:
         lowspace: Literal["drop-new", "ovrw-old"] | None = ...,
         destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: QuarantinePayload | None = ...,
@@ -704,8 +682,6 @@ class QuarantineDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -729,6 +705,10 @@ class QuarantineObjectMode:
     By default returns QuarantineObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return QuarantineResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -903,10 +883,12 @@ class QuarantineObjectMode:
         lowspace: Literal["drop-new", "ovrw-old"] | None = ...,
         destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> QuarantineObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: QuarantinePayload | None = ...,
@@ -958,8 +940,6 @@ class QuarantineObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

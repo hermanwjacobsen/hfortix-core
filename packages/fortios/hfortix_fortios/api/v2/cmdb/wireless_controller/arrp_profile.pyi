@@ -185,6 +185,10 @@ class ArrpProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -205,6 +209,7 @@ class ArrpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ArrpProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -222,6 +227,7 @@ class ArrpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ArrpProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -238,6 +244,7 @@ class ArrpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ArrpProfileResponse]: ...
     
     # ================================================================
@@ -280,7 +287,7 @@ class ArrpProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
     
@@ -299,7 +306,7 @@ class ArrpProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ArrpProfileObject]: ...
     
@@ -399,23 +406,6 @@ class ArrpProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ArrpProfileObject | list[ArrpProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -451,6 +441,7 @@ class ArrpProfile:
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
@@ -547,37 +538,7 @@ class ArrpProfile:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ArrpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        selection_period: int | None = ...,
-        monitor_period: int | None = ...,
-        weight_managed_ap: int | None = ...,
-        weight_rogue_ap: int | None = ...,
-        weight_noise_floor: int | None = ...,
-        weight_channel_load: int | None = ...,
-        weight_spectral_rssi: int | None = ...,
-        weight_weather_channel: int | None = ...,
-        weight_dfs_channel: int | None = ...,
-        threshold_ap: int | None = ...,
-        threshold_noise_floor: str | None = ...,
-        threshold_channel_load: int | None = ...,
-        threshold_spectral_rssi: str | None = ...,
-        threshold_tx_retries: int | None = ...,
-        threshold_rx_errors: int | None = ...,
-        include_weather_channel: Literal["enable", "disable"] | None = ...,
-        include_dfs_channel: Literal["enable", "disable"] | None = ...,
-        override_darrp_optimize: Literal["enable", "disable"] | None = ...,
-        darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -610,6 +571,7 @@ class ArrpProfile:
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
@@ -706,37 +668,7 @@ class ArrpProfile:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ArrpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        selection_period: int | None = ...,
-        monitor_period: int | None = ...,
-        weight_managed_ap: int | None = ...,
-        weight_rogue_ap: int | None = ...,
-        weight_noise_floor: int | None = ...,
-        weight_channel_load: int | None = ...,
-        weight_spectral_rssi: int | None = ...,
-        weight_weather_channel: int | None = ...,
-        weight_dfs_channel: int | None = ...,
-        threshold_ap: int | None = ...,
-        threshold_noise_floor: str | None = ...,
-        threshold_channel_load: int | None = ...,
-        threshold_spectral_rssi: str | None = ...,
-        threshold_tx_retries: int | None = ...,
-        threshold_rx_errors: int | None = ...,
-        include_weather_channel: Literal["enable", "disable"] | None = ...,
-        include_dfs_channel: Literal["enable", "disable"] | None = ...,
-        override_darrp_optimize: Literal["enable", "disable"] | None = ...,
-        darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -747,6 +679,7 @@ class ArrpProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
@@ -777,14 +710,7 @@ class ArrpProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -835,8 +761,6 @@ class ArrpProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +788,10 @@ class ArrpProfileDictMode:
     By default returns ArrpProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ArrpProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1056,10 +984,12 @@ class ArrpProfileDictMode:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ArrpProfilePayload | None = ...,
@@ -1183,10 +1113,12 @@ class ArrpProfileDictMode:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ArrpProfilePayload | None = ...,
@@ -1244,10 +1176,12 @@ class ArrpProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1302,8 +1236,6 @@ class ArrpProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1327,6 +1259,10 @@ class ArrpProfileObjectMode:
     By default returns ArrpProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ArrpProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1552,10 +1488,12 @@ class ArrpProfileObjectMode:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ArrpProfilePayload | None = ...,
@@ -1712,10 +1650,12 @@ class ArrpProfileObjectMode:
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ArrpProfilePayload | None = ...,
@@ -1784,10 +1724,12 @@ class ArrpProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ArrpProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1842,8 +1784,6 @@ class ArrpProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

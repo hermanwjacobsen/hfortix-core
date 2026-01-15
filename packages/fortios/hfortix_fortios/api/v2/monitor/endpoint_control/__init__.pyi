@@ -8,8 +8,8 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .record_list import RecordList, RecordListDictMode, RecordListObjectMode
     from .summary import Summary, SummaryDictMode, SummaryObjectMode
-    from .avatar import AvatarDictMode, AvatarObjectMode
-    from .ems import EmsDictMode, EmsObjectMode
+    from .avatar import Avatar, AvatarDictMode, AvatarObjectMode
+    from .ems import Ems, EmsDictMode, EmsObjectMode
     from .installer import Installer
 
 __all__ = [

@@ -247,7 +247,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         profile_name: str | None = None,
         comment: str | None = None,
-        type: Literal["policing", "queuing"] | None = None,
+        type_: Literal["policing", "queuing"] | None = None,
         npu_offloading: Literal["disable", "enable"] | None = None,
         default_class_id: int | None = None,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = None,
@@ -265,7 +265,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include profile-name (primary key).
             profile_name: Shaping profile name.
             comment: Comment.
-            type: Select shaping profile type: policing / queuing.
+            type_: Select shaping profile type: policing / queuing.
             npu_offloading: Enable/disable NPU offloading.
             default_class_id: Default class ID to handle unclassified packets (including all local traffic).
             shaping_entries: Define shaping entries of this shaping profile.
@@ -319,7 +319,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             profile_name=profile_name,
             comment=comment,
-            type=type,
+            type_=type_,
             npu_offloading=npu_offloading,
             default_class_id=default_class_id,
             shaping_entries=shaping_entries,
@@ -355,7 +355,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         profile_name: str | None = None,
         comment: str | None = None,
-        type: Literal["policing", "queuing"] | None = None,
+        type_: Literal["policing", "queuing"] | None = None,
         npu_offloading: Literal["disable", "enable"] | None = None,
         default_class_id: int | None = None,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = None,
@@ -373,7 +373,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             profile_name: Shaping profile name.
             comment: Comment.
-            type: Select shaping profile type: policing / queuing.
+            type_: Select shaping profile type: policing / queuing.
             npu_offloading: Enable/disable NPU offloading.
             default_class_id: Default class ID to handle unclassified packets (including all local traffic).
             shaping_entries: Define shaping entries of this shaping profile.
@@ -429,7 +429,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             profile_name=profile_name,
             comment=comment,
-            type=type,
+            type_=type_,
             npu_offloading=npu_offloading,
             default_class_id=default_class_id,
             shaping_entries=shaping_entries,
@@ -565,7 +565,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         profile_name: str | None = None,
         comment: str | None = None,
-        type: Literal["policing", "queuing"] | None = None,
+        type_: Literal["policing", "queuing"] | None = None,
         npu_offloading: Literal["disable", "enable"] | None = None,
         default_class_id: int | None = None,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = None,
@@ -584,7 +584,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including profile-name (primary key)
             profile_name: Field profile-name
             comment: Field comment
-            type: Field type
+            type_: Field type
             npu_offloading: Field npu-offloading
             default_class_id: Field default-class-id
             shaping_entries: Field shaping-entries
@@ -633,7 +633,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             profile_name=profile_name,
             comment=comment,
-            type=type,
+            type_=type_,
             npu_offloading=npu_offloading,
             default_class_id=default_class_id,
             shaping_entries=shaping_entries,

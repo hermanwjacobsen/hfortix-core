@@ -49,7 +49,7 @@ class DdnsMonitorInterface(BaseModel):
 # ============================================================================
 
 
-class DdnsDdns_serverEnum(str, Enum):
+class DdnsDdnsServerEnum(str, Enum):
     """Allowed values for ddns_server field."""
     DYNDNS_ORG = "dyndns.org"
     DYNS_NET = "dyns.net"
@@ -75,7 +75,28 @@ class DdnsModel(BaseModel):
 
     Configure DDNS.
 
-    Validation Rules:        - ddnsid: min=0 max=4294967295 pattern=        - ddns_server: pattern=        - addr_type: pattern=        - server_type: pattern=        - ddns_server_addr: pattern=        - ddns_zone: max_length=64 pattern=        - ddns_ttl: min=60 max=86400 pattern=        - ddns_auth: pattern=        - ddns_keyname: max_length=64 pattern=        - ddns_key: pattern=        - ddns_domain: max_length=64 pattern=        - ddns_username: max_length=64 pattern=        - ddns_sn: max_length=64 pattern=        - ddns_password: max_length=128 pattern=        - use_public_ip: pattern=        - update_interval: min=60 max=2592000 pattern=        - clear_text: pattern=        - ssl_certificate: max_length=35 pattern=        - bound_ip: max_length=46 pattern=        - monitor_interface: pattern=    """
+    Validation Rules:
+        - ddnsid: min=0 max=4294967295 pattern=
+        - ddns_server: pattern=
+        - addr_type: pattern=
+        - server_type: pattern=
+        - ddns_server_addr: pattern=
+        - ddns_zone: max_length=64 pattern=
+        - ddns_ttl: min=60 max=86400 pattern=
+        - ddns_auth: pattern=
+        - ddns_keyname: max_length=64 pattern=
+        - ddns_key: pattern=
+        - ddns_domain: max_length=64 pattern=
+        - ddns_username: max_length=64 pattern=
+        - ddns_sn: max_length=64 pattern=
+        - ddns_password: max_length=128 pattern=
+        - use_public_ip: pattern=
+        - update_interval: min=60 max=2592000 pattern=
+        - clear_text: pattern=
+        - ssl_certificate: max_length=35 pattern=
+        - bound_ip: max_length=46 pattern=
+        - monitor_interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -87,7 +108,27 @@ class DdnsModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    ddnsid: int | None = Field(ge=0, le=4294967295, default=0, description="DDNS ID.")    ddns_server: DdnsDdnsServerEnum = Field(default="", description="Select a DDNS service provider.")    addr_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of interface address in DDNS update.")    server_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of the DDNS server.")    ddns_server_addr: list[DdnsDdnsServerAddr] = Field(default=None, description="Generic DDNS server IP/FQDN list.")    ddns_zone: str | None = Field(max_length=64, default="", description="Zone of your domain name (for example, DDNS.com).")    ddns_ttl: int | None = Field(ge=60, le=86400, default=300, description="Time-to-live for DDNS packets.")    ddns_auth: Literal["disable", "tsig"] | None = Field(default="disable", description="Enable/disable TSIG authentication for your DDNS server.")    ddns_keyname: str | None = Field(max_length=64, default="", description="DDNS update key name.")    ddns_key: Any = Field(default=None, description="DDNS update key (base 64 encoding).")    ddns_domain: str | None = Field(max_length=64, default="", description="Your fully qualified domain name. For example, yourname.ddns.com.")    ddns_username: str | None = Field(max_length=64, default="", description="DDNS user name.")    ddns_sn: str | None = Field(max_length=64, default="", description="DDNS Serial Number.")    ddns_password: Any = Field(max_length=128, default=None, description="DDNS password.")    use_public_ip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of public IP address.")    update_interval: int | None = Field(ge=60, le=2592000, default=0, description="DDNS update interval (60 - 2592000 sec, 0 means default).")    clear_text: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of clear text connections.")    ssl_certificate: str | None = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']    bound_ip: str | None = Field(max_length=46, default="", description="Bound IP address.")    monitor_interface: list[DdnsMonitorInterface] = Field(description="Monitored interface.")    # ========================================================================
+    ddnsid: int | None = Field(ge=0, le=4294967295, default=0, description="DDNS ID.")
+    ddns_server: str | DdnsDdnsServerEnum | None = Field(default=None, description="Select a DDNS service provider.")
+    addr_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of interface address in DDNS update.")
+    server_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of the DDNS server.")
+    ddns_server_addr: list[DdnsDdnsServerAddr] | None = Field(default=None, description="Generic DDNS server IP/FQDN list.")
+    ddns_zone: str | None = Field(max_length=64, default="", description="Zone of your domain name (for example, DDNS.com).")
+    ddns_ttl: int | None = Field(ge=60, le=86400, default=300, description="Time-to-live for DDNS packets.")
+    ddns_auth: Literal["disable", "tsig"] | None = Field(default="disable", description="Enable/disable TSIG authentication for your DDNS server.")
+    ddns_keyname: str | None = Field(max_length=64, default="", description="DDNS update key name.")
+    ddns_key: Any = Field(default=None, description="DDNS update key (base 64 encoding).")
+    ddns_domain: str | None = Field(max_length=64, default="", description="Your fully qualified domain name. For example, yourname.ddns.com.")
+    ddns_username: str | None = Field(max_length=64, default="", description="DDNS user name.")
+    ddns_sn: str | None = Field(max_length=64, default="", description="DDNS Serial Number.")
+    ddns_password: Any = Field(max_length=128, default=None, description="DDNS password.")
+    use_public_ip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of public IP address.")
+    update_interval: int | None = Field(ge=60, le=2592000, default=0, description="DDNS update interval (60 - 2592000 sec, 0 means default).")
+    clear_text: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of clear text connections.")
+    ssl_certificate: str | None = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']
+    bound_ip: str | None = Field(max_length=46, default="", description="Bound IP address.")
+    monitor_interface: list[DdnsMonitorInterface] | None = Field(description="Monitored interface.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -166,7 +207,7 @@ class DdnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ddns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_certificate", None)
@@ -215,7 +256,7 @@ class DdnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ddns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "monitor_interface", [])
@@ -261,9 +302,10 @@ class DdnsModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_monitor_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_monitor_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -285,5 +327,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.695319Z
+# Generated: 2026-01-14T22:43:39.536615Z
 # ============================================================================

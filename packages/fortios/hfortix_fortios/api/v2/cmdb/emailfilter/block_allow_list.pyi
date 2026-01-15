@@ -34,7 +34,7 @@ class BlockAllowListEntriesItem(TypedDict):
     
     status: Literal["enable", "disable"]  # Enable/disable status. | Default: enable
     id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["ip", "email-to", "email-from", "subject"]  # Entry type. | Default: ip
+    type_: Literal["ip", "email-to", "email-from", "subject"]  # Entry type. | Default: ip
     action: Literal["reject", "spam", "clear"]  # Reject, mark as spam or good email. | Default: spam
     addr_type: Literal["ipv4", "ipv6"]  # IP address type. | Default: ipv4
     ip4_subnet: str  # IPv4 network address/subnet mask bits. | Default: 0.0.0.0 0.0.0.0
@@ -58,7 +58,7 @@ class BlockAllowListEntriesObject:
     # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Entry type. | Default: ip
-    type: Literal["ip", "email-to", "email-from", "subject"]
+    type_: Literal["ip", "email-to", "email-from", "subject"]
     # Reject, mark as spam or good email. | Default: spam
     action: Literal["reject", "spam", "clear"]
     # IP address type. | Default: ipv4
@@ -137,6 +137,10 @@ class BlockAllowList:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -157,6 +161,7 @@ class BlockAllowList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> BlockAllowListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -174,6 +179,7 @@ class BlockAllowList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> BlockAllowListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -190,6 +196,7 @@ class BlockAllowList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[BlockAllowListResponse]: ...
     
     # ================================================================
@@ -232,7 +239,7 @@ class BlockAllowList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
     
@@ -251,7 +258,7 @@ class BlockAllowList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[BlockAllowListObject]: ...
     
@@ -351,23 +358,6 @@ class BlockAllowList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> BlockAllowListObject | list[BlockAllowListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -385,6 +375,7 @@ class BlockAllowList:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
@@ -427,19 +418,7 @@ class BlockAllowList:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: BlockAllowListPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -454,6 +433,7 @@ class BlockAllowList:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
@@ -496,19 +476,7 @@ class BlockAllowList:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: BlockAllowListPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -519,6 +487,7 @@ class BlockAllowList:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
@@ -549,14 +518,7 @@ class BlockAllowList:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -589,8 +551,6 @@ class BlockAllowList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -618,6 +578,10 @@ class BlockAllowListDictMode:
     By default returns BlockAllowListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return BlockAllowListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -756,10 +720,12 @@ class BlockAllowListDictMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: BlockAllowListPayload | None = ...,
@@ -811,10 +777,12 @@ class BlockAllowListDictMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: BlockAllowListPayload | None = ...,
@@ -854,10 +822,12 @@ class BlockAllowListDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -894,8 +864,6 @@ class BlockAllowListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -919,6 +887,10 @@ class BlockAllowListObjectMode:
     By default returns BlockAllowListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return BlockAllowListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1072,10 +1044,12 @@ class BlockAllowListObjectMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: BlockAllowListPayload | None = ...,
@@ -1142,10 +1116,12 @@ class BlockAllowListObjectMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: BlockAllowListPayload | None = ...,
@@ -1196,10 +1172,12 @@ class BlockAllowListObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BlockAllowListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1236,8 +1214,6 @@ class BlockAllowListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

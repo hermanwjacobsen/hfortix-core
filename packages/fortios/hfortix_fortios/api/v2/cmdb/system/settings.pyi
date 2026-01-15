@@ -647,7 +647,6 @@ class SettingsObject:
     internet_service_app_ctrl_size: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -669,6 +668,10 @@ class Settings:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -689,6 +692,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -706,6 +710,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -722,6 +727,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingsResponse: ...
     
     # ================================================================
@@ -764,7 +770,7 @@ class Settings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingsObject: ...
     
@@ -783,7 +789,7 @@ class Settings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingsObject: ...
     
@@ -882,23 +888,6 @@ class Settings:
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SettingsObject | dict[str, Any]: ...
     
     def get_schema(
         self,
@@ -1055,6 +1044,7 @@ class Settings:
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingsObject: ...
@@ -1511,157 +1501,7 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1832,8 +1672,6 @@ class Settings:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1861,6 +1699,10 @@ class SettingsDictMode:
     By default returns SettingsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SettingsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2414,10 +2256,12 @@ class SettingsDictMode:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
@@ -2735,8 +2579,6 @@ class SettingsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2760,6 +2602,10 @@ class SettingsObjectMode:
     By default returns SettingsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SettingsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -3466,10 +3312,12 @@ class SettingsObjectMode:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SettingsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
@@ -3787,8 +3635,6 @@ class SettingsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

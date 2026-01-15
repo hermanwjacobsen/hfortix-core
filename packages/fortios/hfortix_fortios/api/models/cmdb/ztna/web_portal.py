@@ -41,7 +41,32 @@ class WebPortalModel(BaseModel):
 
     Configure ztna web-portal.
 
-    Validation Rules:        - name: max_length=79 pattern=        - vip: max_length=79 pattern=        - host: max_length=79 pattern=        - decrypted_traffic_mirror: max_length=35 pattern=        - log_blocked_traffic: pattern=        - auth_portal: pattern=        - auth_virtual_host: max_length=79 pattern=        - vip6: max_length=79 pattern=        - auth_rule: max_length=35 pattern=        - display_bookmark: pattern=        - focus_bookmark: pattern=        - display_status: pattern=        - display_history: pattern=        - policy_auth_sso: pattern=        - heading: max_length=31 pattern=        - theme: pattern=        - clipboard: pattern=        - default_window_width: min=0 max=65535 pattern=        - default_window_height: min=0 max=65535 pattern=        - cookie_age: min=0 max=525600 pattern=        - forticlient_download: pattern=        - customize_forticlient_download_url: pattern=        - windows_forticlient_download_url: max_length=1023 pattern=        - macos_forticlient_download_url: max_length=1023 pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - vip: max_length=79 pattern=
+        - host: max_length=79 pattern=
+        - decrypted_traffic_mirror: max_length=35 pattern=
+        - log_blocked_traffic: pattern=
+        - auth_portal: pattern=
+        - auth_virtual_host: max_length=79 pattern=
+        - vip6: max_length=79 pattern=
+        - auth_rule: max_length=35 pattern=
+        - display_bookmark: pattern=
+        - focus_bookmark: pattern=
+        - display_status: pattern=
+        - display_history: pattern=
+        - policy_auth_sso: pattern=
+        - heading: max_length=31 pattern=
+        - theme: pattern=
+        - clipboard: pattern=
+        - default_window_width: min=0 max=65535 pattern=
+        - default_window_height: min=0 max=65535 pattern=
+        - cookie_age: min=0 max=525600 pattern=
+        - forticlient_download: pattern=
+        - customize_forticlient_download_url: pattern=
+        - windows_forticlient_download_url: max_length=1023 pattern=
+        - macos_forticlient_download_url: max_length=1023 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -53,7 +78,31 @@ class WebPortalModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    auth_rule: str | None = Field(max_length=35, default="", description="Authentication Rule.")  # datasource: ['authentication.rule.name']    display_bookmark: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal bookmark widget.")    focus_bookmark: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to prioritize the placement of the bookmark section over the quick-connection section in the ztna web-portal.")    display_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal status widget.")    display_history: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to display the web portal user login history widget.")    policy_auth_sso: Literal["enable", "disable"] | None = Field(default="enable", description="Enable policy sso authentication.")    heading: str | None = Field(max_length=31, default="ZTNA Portal", description="Web portal heading message.")    theme: WebPortalThemeEnum | None = Field(default="security-fabric", description="Web portal color scheme.")    clipboard: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to support RDP/VPC clipboard functionality.")    default_window_width: int | None = Field(ge=0, le=65535, default=1024, description="Screen width (range from 0 - 65535, default = 1024).")    default_window_height: int | None = Field(ge=0, le=65535, default=768, description="Screen height (range from 0 - 65535, default = 768).")    cookie_age: int | None = Field(ge=0, le=525600, default=60, description="Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.")    forticlient_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download option for FortiClient.")    customize_forticlient_download_url: Literal["enable", "disable"] | None = Field(default="disable", description="Enable support of customized download URL for FortiClient.")    windows_forticlient_download_url: str | None = Field(max_length=1023, default=None, description="Download URL for Windows FortiClient.")    macos_forticlient_download_url: str | None = Field(max_length=1023, default=None, description="Download URL for Mac FortiClient.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")
+    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']
+    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']
+    log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")
+    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")
+    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']
+    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']
+    auth_rule: str | None = Field(max_length=35, default="", description="Authentication Rule.")  # datasource: ['authentication.rule.name']
+    display_bookmark: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal bookmark widget.")
+    focus_bookmark: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to prioritize the placement of the bookmark section over the quick-connection section in the ztna web-portal.")
+    display_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal status widget.")
+    display_history: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to display the web portal user login history widget.")
+    policy_auth_sso: Literal["enable", "disable"] | None = Field(default="enable", description="Enable policy sso authentication.")
+    heading: str | None = Field(max_length=31, default="ZTNA Portal", description="Web portal heading message.")
+    theme: str | WebPortalThemeEnum | None = Field(default="security-fabric", description="Web portal color scheme.")
+    clipboard: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to support RDP/VPC clipboard functionality.")
+    default_window_width: int | None = Field(ge=0, le=65535, default=1024, description="Screen width (range from 0 - 65535, default = 1024).")
+    default_window_height: int | None = Field(ge=0, le=65535, default=768, description="Screen height (range from 0 - 65535, default = 768).")
+    cookie_age: int | None = Field(ge=0, le=525600, default=60, description="Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.")
+    forticlient_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download option for FortiClient.")
+    customize_forticlient_download_url: Literal["enable", "disable"] | None = Field(default="disable", description="Enable support of customized download URL for FortiClient.")
+    windows_forticlient_download_url: str | None = Field(max_length=1023, default=None, description="Download URL for Windows FortiClient.")
+    macos_forticlient_download_url: str | None = Field(max_length=1023, default=None, description="Download URL for Mac FortiClient.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -207,7 +256,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vip", None)
@@ -256,7 +305,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -305,7 +354,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -354,7 +403,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_virtual_host", None)
@@ -403,7 +452,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vip6", None)
@@ -452,7 +501,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_rule", None)
@@ -489,13 +538,18 @@ class WebPortalModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vip_references(client)
-        all_errors.extend(errors)        errors = await self.validate_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_decrypted_traffic_mirror_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_virtual_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vip6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_rule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_host_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_decrypted_traffic_mirror_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_virtual_host_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vip6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_rule_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -517,5 +571,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.312486Z
+# Generated: 2026-01-14T22:43:40.297063Z
 # ============================================================================

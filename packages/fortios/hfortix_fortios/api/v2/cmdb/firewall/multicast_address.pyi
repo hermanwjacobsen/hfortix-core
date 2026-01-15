@@ -24,7 +24,7 @@ class MulticastAddressPayload(TypedDict, total=False):
         }
     """
     name: str  # Multicast address name. | MaxLen: 79
-    type: Literal["multicastrange", "broadcastmask"]  # Type of address object: multicast IP address range | Default: multicastrange
+    type_: Literal["multicastrange", "broadcastmask"]  # Type of address object: multicast IP address range | Default: multicastrange
     subnet: str  # Broadcast address and subnet. | Default: 0.0.0.0 0.0.0.0
     start_ip: str  # First IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
     end_ip: str  # Final IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
@@ -83,7 +83,7 @@ class MulticastAddressResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Multicast address name. | MaxLen: 79
-    type: Literal["multicastrange", "broadcastmask"]  # Type of address object: multicast IP address range | Default: multicastrange
+    type_: Literal["multicastrange", "broadcastmask"]  # Type of address object: multicast IP address range | Default: multicastrange
     subnet: str  # Broadcast address and subnet. | Default: 0.0.0.0 0.0.0.0
     start_ip: str  # First IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
     end_ip: str  # Final IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
@@ -104,7 +104,7 @@ class MulticastAddressObject:
     # Multicast address name. | MaxLen: 79
     name: str
     # Type of address object: multicast IP address range or broadc | Default: multicastrange
-    type: Literal["multicastrange", "broadcastmask"]
+    type_: Literal["multicastrange", "broadcastmask"]
     # Broadcast address and subnet. | Default: 0.0.0.0 0.0.0.0
     subnet: str
     # First IPv4 address (inclusive) in the range for the address. | Default: 0.0.0.0
@@ -144,6 +144,10 @@ class MulticastAddress:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -164,6 +168,7 @@ class MulticastAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MulticastAddressResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -181,6 +186,7 @@ class MulticastAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MulticastAddressResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -197,6 +203,7 @@ class MulticastAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[MulticastAddressResponse]: ...
     
     # ================================================================
@@ -239,7 +246,7 @@ class MulticastAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
     
@@ -258,7 +265,7 @@ class MulticastAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[MulticastAddressObject]: ...
     
@@ -358,23 +365,6 @@ class MulticastAddress:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> MulticastAddressObject | list[MulticastAddressObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -387,7 +377,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -397,6 +387,7 @@ class MulticastAddress:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
@@ -406,7 +397,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -426,7 +417,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -445,7 +436,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -454,24 +445,7 @@ class MulticastAddress:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: MulticastAddressPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
-        subnet: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        comment: str | None = ...,
-        associated_interface: str | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -481,7 +455,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -491,6 +465,7 @@ class MulticastAddress:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
@@ -500,7 +475,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -520,7 +495,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -539,7 +514,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -548,24 +523,7 @@ class MulticastAddress:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: MulticastAddressPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
-        subnet: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        comment: str | None = ...,
-        associated_interface: str | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -576,6 +534,7 @@ class MulticastAddress:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
@@ -606,14 +565,7 @@ class MulticastAddress:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -627,7 +579,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -651,8 +603,6 @@ class MulticastAddress:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -680,6 +630,10 @@ class MulticastAddressDictMode:
     By default returns MulticastAddressResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return MulticastAddressObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -784,7 +738,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -804,7 +758,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -824,7 +778,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -833,15 +787,17 @@ class MulticastAddressDictMode:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -859,7 +815,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -879,7 +835,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -899,7 +855,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -908,15 +864,17 @@ class MulticastAddressDictMode:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -956,10 +914,12 @@ class MulticastAddressDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -978,7 +938,7 @@ class MulticastAddressDictMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1001,8 +961,6 @@ class MulticastAddressDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1026,6 +984,10 @@ class MulticastAddressObjectMode:
     By default returns MulticastAddressObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return MulticastAddressResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1130,7 +1092,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1150,7 +1112,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1170,7 +1132,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1190,7 +1152,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1199,15 +1161,17 @@ class MulticastAddressObjectMode:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1225,7 +1189,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1245,7 +1209,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1265,7 +1229,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1285,7 +1249,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1294,15 +1258,17 @@ class MulticastAddressObjectMode:
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1353,10 +1319,12 @@ class MulticastAddressObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastAddressObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1375,7 +1343,7 @@ class MulticastAddressObjectMode:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type_: Literal["multicastrange", "broadcastmask"] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -1398,8 +1366,6 @@ class MulticastAddressObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

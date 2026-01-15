@@ -425,7 +425,91 @@ class ProxyPolicyModel(BaseModel):
 
     Configure proxy policies.
 
-    Validation Rules:        - uuid: pattern=        - policyid: min=0 max=4294967295 pattern=        - name: max_length=35 pattern=        - proxy: pattern=        - access_proxy: pattern=        - access_proxy6: pattern=        - ztna_proxy: pattern=        - srcintf: pattern=        - dstintf: pattern=        - srcaddr: pattern=        - poolname: pattern=        - poolname6: pattern=        - dstaddr: pattern=        - ztna_ems_tag: pattern=        - ztna_tags_match_logic: pattern=        - device_ownership: pattern=        - url_risk: pattern=        - internet_service: pattern=        - internet_service_negate: pattern=        - internet_service_name: pattern=        - internet_service_group: pattern=        - internet_service_custom: pattern=        - internet_service_custom_group: pattern=        - internet_service_fortiguard: pattern=        - internet_service6: pattern=        - internet_service6_negate: pattern=        - internet_service6_name: pattern=        - internet_service6_group: pattern=        - internet_service6_custom: pattern=        - internet_service6_custom_group: pattern=        - internet_service6_fortiguard: pattern=        - service: pattern=        - srcaddr_negate: pattern=        - dstaddr_negate: pattern=        - ztna_ems_tag_negate: pattern=        - service_negate: pattern=        - action: pattern=        - status: pattern=        - schedule: max_length=35 pattern=        - logtraffic: pattern=        - session_ttl: min=300 max=2764800 pattern=        - srcaddr6: pattern=        - dstaddr6: pattern=        - groups: pattern=        - users: pattern=        - http_tunnel_auth: pattern=        - ssh_policy_redirect: pattern=        - webproxy_forward_server: max_length=63 pattern=        - isolator_server: max_length=63 pattern=        - webproxy_profile: max_length=63 pattern=        - transparent: pattern=        - webcache: pattern=        - webcache_https: pattern=        - disclaimer: pattern=        - utm_status: pattern=        - profile_type: pattern=        - profile_group: max_length=47 pattern=        - profile_protocol_options: max_length=47 pattern=        - ssl_ssh_profile: max_length=47 pattern=        - av_profile: max_length=47 pattern=        - webfilter_profile: max_length=47 pattern=        - dnsfilter_profile: max_length=47 pattern=        - emailfilter_profile: max_length=47 pattern=        - dlp_profile: max_length=47 pattern=        - file_filter_profile: max_length=47 pattern=        - ips_sensor: max_length=47 pattern=        - application_list: max_length=47 pattern=        - ips_voip_filter: max_length=47 pattern=        - sctp_filter_profile: max_length=47 pattern=        - icap_profile: max_length=47 pattern=        - videofilter_profile: max_length=47 pattern=        - waf_profile: max_length=47 pattern=        - ssh_filter_profile: max_length=47 pattern=        - casb_profile: max_length=47 pattern=        - replacemsg_override_group: max_length=35 pattern=        - logtraffic_start: pattern=        - log_http_transaction: pattern=        - comments: max_length=1023 pattern=        - block_notification: pattern=        - redirect_url: max_length=1023 pattern=        - https_sub_category: pattern=        - decrypted_traffic_mirror: max_length=35 pattern=        - detect_https_in_http_request: pattern=    """
+    Validation Rules:
+        - uuid: pattern=
+        - policyid: min=0 max=4294967295 pattern=
+        - name: max_length=35 pattern=
+        - proxy: pattern=
+        - access_proxy: pattern=
+        - access_proxy6: pattern=
+        - ztna_proxy: pattern=
+        - srcintf: pattern=
+        - dstintf: pattern=
+        - srcaddr: pattern=
+        - poolname: pattern=
+        - poolname6: pattern=
+        - dstaddr: pattern=
+        - ztna_ems_tag: pattern=
+        - ztna_tags_match_logic: pattern=
+        - device_ownership: pattern=
+        - url_risk: pattern=
+        - internet_service: pattern=
+        - internet_service_negate: pattern=
+        - internet_service_name: pattern=
+        - internet_service_group: pattern=
+        - internet_service_custom: pattern=
+        - internet_service_custom_group: pattern=
+        - internet_service_fortiguard: pattern=
+        - internet_service6: pattern=
+        - internet_service6_negate: pattern=
+        - internet_service6_name: pattern=
+        - internet_service6_group: pattern=
+        - internet_service6_custom: pattern=
+        - internet_service6_custom_group: pattern=
+        - internet_service6_fortiguard: pattern=
+        - service: pattern=
+        - srcaddr_negate: pattern=
+        - dstaddr_negate: pattern=
+        - ztna_ems_tag_negate: pattern=
+        - service_negate: pattern=
+        - action: pattern=
+        - status: pattern=
+        - schedule: max_length=35 pattern=
+        - logtraffic: pattern=
+        - session_ttl: min=300 max=2764800 pattern=
+        - srcaddr6: pattern=
+        - dstaddr6: pattern=
+        - groups: pattern=
+        - users: pattern=
+        - http_tunnel_auth: pattern=
+        - ssh_policy_redirect: pattern=
+        - webproxy_forward_server: max_length=63 pattern=
+        - isolator_server: max_length=63 pattern=
+        - webproxy_profile: max_length=63 pattern=
+        - transparent: pattern=
+        - webcache: pattern=
+        - webcache_https: pattern=
+        - disclaimer: pattern=
+        - utm_status: pattern=
+        - profile_type: pattern=
+        - profile_group: max_length=47 pattern=
+        - profile_protocol_options: max_length=47 pattern=
+        - ssl_ssh_profile: max_length=47 pattern=
+        - av_profile: max_length=47 pattern=
+        - webfilter_profile: max_length=47 pattern=
+        - dnsfilter_profile: max_length=47 pattern=
+        - emailfilter_profile: max_length=47 pattern=
+        - dlp_profile: max_length=47 pattern=
+        - file_filter_profile: max_length=47 pattern=
+        - ips_sensor: max_length=47 pattern=
+        - application_list: max_length=47 pattern=
+        - ips_voip_filter: max_length=47 pattern=
+        - sctp_filter_profile: max_length=47 pattern=
+        - icap_profile: max_length=47 pattern=
+        - videofilter_profile: max_length=47 pattern=
+        - waf_profile: max_length=47 pattern=
+        - ssh_filter_profile: max_length=47 pattern=
+        - casb_profile: max_length=47 pattern=
+        - replacemsg_override_group: max_length=35 pattern=
+        - logtraffic_start: pattern=
+        - log_http_transaction: pattern=
+        - comments: max_length=1023 pattern=
+        - block_notification: pattern=
+        - redirect_url: max_length=1023 pattern=
+        - https_sub_category: pattern=
+        - decrypted_traffic_mirror: max_length=35 pattern=
+        - detect_https_in_http_request: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -437,7 +521,90 @@ class ProxyPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID.")    name: str | None = Field(max_length=35, default="", description="Policy name.")    proxy: ProxyPolicyProxyEnum = Field(default="", description="Type of explicit proxy.")    access_proxy: list[ProxyPolicyAccessProxy] = Field(default=None, description="IPv4 access proxy.")    access_proxy6: list[ProxyPolicyAccessProxy6] = Field(default=None, description="IPv6 access proxy.")    ztna_proxy: list[ProxyPolicyZtnaProxy] = Field(default=None, description="ZTNA proxies.")    srcintf: list[ProxyPolicySrcintf] = Field(description="Source interface names.")    dstintf: list[ProxyPolicyDstintf] = Field(description="Destination interface names.")    srcaddr: list[ProxyPolicySrcaddr] = Field(default=None, description="Source address objects.")    poolname: list[ProxyPolicyPoolname] = Field(default=None, description="Name of IP pool object.")    poolname6: list[ProxyPolicyPoolname6] = Field(default=None, description="Name of IPv6 pool object.")    dstaddr: list[ProxyPolicyDstaddr] = Field(default=None, description="Destination address objects.")    ztna_ems_tag: list[ProxyPolicyZtnaEmsTag] = Field(default=None, description="ZTNA EMS Tag names.")    ztna_tags_match_logic: Literal["or", "and"] | None = Field(default="or", description="ZTNA tag matching logic.")    device_ownership: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, the ownership enforcement will be done at policy level.")    url_risk: list[ProxyPolicyUrlRisk] = Field(default=None, description="URL risk level name.")    internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.")    internet_service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, Internet Services match against any internet service EXCEPT the selected Internet Service.")    internet_service_name: list[ProxyPolicyInternetServiceName] = Field(default=None, description="Internet Service name.")    internet_service_group: list[ProxyPolicyInternetServiceGroup] = Field(default=None, description="Internet Service group name.")    internet_service_custom: list[ProxyPolicyInternetServiceCustom] = Field(default=None, description="Custom Internet Service name.")    internet_service_custom_group: list[ProxyPolicyInternetServiceCustomGroup] = Field(default=None, description="Custom Internet Service group name.")    internet_service_fortiguard: list[ProxyPolicyInternetServiceFortiguard] = Field(default=None, description="FortiGuard Internet Service name.")    internet_service6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services IPv6 for this policy. If enabled, destination IPv6 address and service are not used.")    internet_service6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, Internet Services match against any internet service IPv6 EXCEPT the selected Internet Service IPv6.")    internet_service6_name: list[ProxyPolicyInternetService6Name] = Field(default=None, description="Internet Service IPv6 name.")    internet_service6_group: list[ProxyPolicyInternetService6Group] = Field(default=None, description="Internet Service IPv6 group name.")    internet_service6_custom: list[ProxyPolicyInternetService6Custom] = Field(default=None, description="Custom Internet Service IPv6 name.")    internet_service6_custom_group: list[ProxyPolicyInternetService6CustomGroup] = Field(default=None, description="Custom Internet Service IPv6 group name.")    internet_service6_fortiguard: list[ProxyPolicyInternetService6Fortiguard] = Field(default=None, description="FortiGuard Internet Service IPv6 name.")    service: list[ProxyPolicyService] = Field(default=None, description="Name of service objects.")    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, source addresses match against any address EXCEPT the specified source addresses.")    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, destination addresses match against any address EXCEPT the specified destination addresses.")    ztna_ems_tag_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS tags.")    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, services match against any service EXCEPT the specified destination services.")    action: ProxyPolicyActionEnum | None = Field(default="deny", description="Accept or deny traffic matching the policy parameters.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of the policy.")    schedule: str = Field(max_length=35, default="", description="Name of schedule object.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable/disable logging traffic through the policy.")    session_ttl: int | None = Field(ge=300, le=2764800, default=0, description="TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).")    srcaddr6: list[ProxyPolicySrcaddr6] = Field(default=None, description="IPv6 source address objects.")    dstaddr6: list[ProxyPolicyDstaddr6] = Field(default=None, description="IPv6 destination address objects.")    groups: list[ProxyPolicyGroups] = Field(default=None, description="Names of group objects.")    users: list[ProxyPolicyUsers] = Field(default=None, description="Names of user objects.")    http_tunnel_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP tunnel authentication.")    ssh_policy_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Redirect SSH traffic to matching transparent proxy policy.")    webproxy_forward_server: str | None = Field(max_length=63, default="", description="Web proxy forward server name.")  # datasource: ['web-proxy.forward-server.name', 'web-proxy.forward-server-group.name']    isolator_server: str = Field(max_length=63, default="", description="Isolator server name.")  # datasource: ['web-proxy.isolator-server.name']    webproxy_profile: str | None = Field(max_length=63, default="", description="Name of web proxy profile.")  # datasource: ['web-proxy.profile.name']    transparent: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to use the IP address of the client to connect to the server.")    webcache: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web caching.")    webcache_https: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable web caching for HTTPS (Requires deep-inspection enabled in ssl-ssh-profile).")    disclaimer: ProxyPolicyDisclaimerEnum | None = Field(default="disable", description="Web proxy disclaimer setting: by domain, policy, or user.")    utm_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable the use of UTM profiles/sensors/lists.")    profile_type: Literal["single", "group"] | None = Field(default="single", description="Determine whether the firewall policy allows security profile groups or single profiles only.")    profile_group: str | None = Field(max_length=47, default="", description="Name of profile group.")  # datasource: ['firewall.profile-group.name']    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']    ssl_ssh_profile: str | None = Field(max_length=47, default="no-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    replacemsg_override_group: str | None = Field(max_length=35, default="", description="Authentication replacement message override group.")  # datasource: ['system.replacemsg-group.name']    logtraffic_start: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable policy log traffic start.")    log_http_transaction: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP transaction log.")    comments: str | None = Field(max_length=1023, default=None, description="Optional comments.")    block_notification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable block notification.")    redirect_url: str | None = Field(max_length=1023, default=None, description="Redirect URL for further explicit web proxy processing.")    https_sub_category: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTPS sub-category policy matching.")    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    detect_https_in_http_request: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable detection of HTTPS in HTTP request.")    # ========================================================================
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID.")
+    name: str | None = Field(max_length=35, default="", description="Policy name.")
+    proxy: str | ProxyPolicyProxyEnum | None = Field(default=None, description="Type of explicit proxy.")
+    access_proxy: list[ProxyPolicyAccessProxy] | None = Field(default=None, description="IPv4 access proxy.")
+    access_proxy6: list[ProxyPolicyAccessProxy6] | None = Field(default=None, description="IPv6 access proxy.")
+    ztna_proxy: list[ProxyPolicyZtnaProxy] | None = Field(default=None, description="ZTNA proxies.")
+    srcintf: list[ProxyPolicySrcintf] | None = Field(description="Source interface names.")
+    dstintf: list[ProxyPolicyDstintf] | None = Field(description="Destination interface names.")
+    srcaddr: list[ProxyPolicySrcaddr] | None = Field(default=None, description="Source address objects.")
+    poolname: list[ProxyPolicyPoolname] | None = Field(default=None, description="Name of IP pool object.")
+    poolname6: list[ProxyPolicyPoolname6] | None = Field(default=None, description="Name of IPv6 pool object.")
+    dstaddr: list[ProxyPolicyDstaddr] | None = Field(default=None, description="Destination address objects.")
+    ztna_ems_tag: list[ProxyPolicyZtnaEmsTag] | None = Field(default=None, description="ZTNA EMS Tag names.")
+    ztna_tags_match_logic: Literal["or", "and"] | None = Field(default="or", description="ZTNA tag matching logic.")
+    device_ownership: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, the ownership enforcement will be done at policy level.")
+    url_risk: list[ProxyPolicyUrlRisk] | None = Field(default=None, description="URL risk level name.")
+    internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.")
+    internet_service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, Internet Services match against any internet service EXCEPT the selected Internet Service.")
+    internet_service_name: list[ProxyPolicyInternetServiceName] | None = Field(default=None, description="Internet Service name.")
+    internet_service_group: list[ProxyPolicyInternetServiceGroup] | None = Field(default=None, description="Internet Service group name.")
+    internet_service_custom: list[ProxyPolicyInternetServiceCustom] | None = Field(default=None, description="Custom Internet Service name.")
+    internet_service_custom_group: list[ProxyPolicyInternetServiceCustomGroup] | None = Field(default=None, description="Custom Internet Service group name.")
+    internet_service_fortiguard: list[ProxyPolicyInternetServiceFortiguard] | None = Field(default=None, description="FortiGuard Internet Service name.")
+    internet_service6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services IPv6 for this policy. If enabled, destination IPv6 address and service are not used.")
+    internet_service6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, Internet Services match against any internet service IPv6 EXCEPT the selected Internet Service IPv6.")
+    internet_service6_name: list[ProxyPolicyInternetService6Name] | None = Field(default=None, description="Internet Service IPv6 name.")
+    internet_service6_group: list[ProxyPolicyInternetService6Group] | None = Field(default=None, description="Internet Service IPv6 group name.")
+    internet_service6_custom: list[ProxyPolicyInternetService6Custom] | None = Field(default=None, description="Custom Internet Service IPv6 name.")
+    internet_service6_custom_group: list[ProxyPolicyInternetService6CustomGroup] | None = Field(default=None, description="Custom Internet Service IPv6 group name.")
+    internet_service6_fortiguard: list[ProxyPolicyInternetService6Fortiguard] | None = Field(default=None, description="FortiGuard Internet Service IPv6 name.")
+    service: list[ProxyPolicyService] | None = Field(default=None, description="Name of service objects.")
+    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, source addresses match against any address EXCEPT the specified source addresses.")
+    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, destination addresses match against any address EXCEPT the specified destination addresses.")
+    ztna_ems_tag_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS tags.")
+    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled, services match against any service EXCEPT the specified destination services.")
+    action: str | ProxyPolicyActionEnum | None = Field(default="deny", description="Accept or deny traffic matching the policy parameters.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of the policy.")
+    schedule: str = Field(max_length=35, default="", description="Name of schedule object.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']
+    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable/disable logging traffic through the policy.")
+    session_ttl: int | None = Field(ge=300, le=2764800, default=0, description="TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).")
+    srcaddr6: list[ProxyPolicySrcaddr6] | None = Field(default=None, description="IPv6 source address objects.")
+    dstaddr6: list[ProxyPolicyDstaddr6] | None = Field(default=None, description="IPv6 destination address objects.")
+    groups: list[ProxyPolicyGroups] | None = Field(default=None, description="Names of group objects.")
+    users: list[ProxyPolicyUsers] | None = Field(default=None, description="Names of user objects.")
+    http_tunnel_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP tunnel authentication.")
+    ssh_policy_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Redirect SSH traffic to matching transparent proxy policy.")
+    webproxy_forward_server: str | None = Field(max_length=63, default="", description="Web proxy forward server name.")  # datasource: ['web-proxy.forward-server.name', 'web-proxy.forward-server-group.name']
+    isolator_server: str = Field(max_length=63, default="", description="Isolator server name.")  # datasource: ['web-proxy.isolator-server.name']
+    webproxy_profile: str | None = Field(max_length=63, default="", description="Name of web proxy profile.")  # datasource: ['web-proxy.profile.name']
+    transparent: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to use the IP address of the client to connect to the server.")
+    webcache: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web caching.")
+    webcache_https: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable web caching for HTTPS (Requires deep-inspection enabled in ssl-ssh-profile).")
+    disclaimer: str | ProxyPolicyDisclaimerEnum | None = Field(default="disable", description="Web proxy disclaimer setting: by domain, policy, or user.")
+    utm_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable the use of UTM profiles/sensors/lists.")
+    profile_type: Literal["single", "group"] | None = Field(default="single", description="Determine whether the firewall policy allows security profile groups or single profiles only.")
+    profile_group: str | None = Field(max_length=47, default="", description="Name of profile group.")  # datasource: ['firewall.profile-group.name']
+    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']
+    ssl_ssh_profile: str | None = Field(max_length=47, default="no-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']
+    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']
+    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']
+    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']
+    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']
+    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']
+    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']
+    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']
+    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']
+    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']
+    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']
+    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']
+    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']
+    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']
+    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']
+    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']
+    replacemsg_override_group: str | None = Field(max_length=35, default="", description="Authentication replacement message override group.")  # datasource: ['system.replacemsg-group.name']
+    logtraffic_start: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable policy log traffic start.")
+    log_http_transaction: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP transaction log.")
+    comments: str | None = Field(max_length=1023, default=None, description="Optional comments.")
+    block_notification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable block notification.")
+    redirect_url: str | None = Field(max_length=1023, default=None, description="Redirect URL for further explicit web proxy processing.")
+    https_sub_category: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTPS sub-category policy matching.")
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']
+    detect_https_in_http_request: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable detection of HTTPS in HTTP request.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -861,7 +1028,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "access_proxy", [])
@@ -919,7 +1086,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "access_proxy6", [])
@@ -977,7 +1144,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ztna_proxy", [])
@@ -1039,7 +1206,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -1101,7 +1268,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstintf", [])
@@ -1163,7 +1330,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -1229,7 +1396,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "poolname", [])
@@ -1287,7 +1454,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "poolname6", [])
@@ -1345,7 +1512,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -1415,7 +1582,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ztna_ems_tag", [])
@@ -1475,7 +1642,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "url_risk", [])
@@ -1533,7 +1700,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_name", [])
@@ -1591,7 +1758,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_group", [])
@@ -1649,7 +1816,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_custom", [])
@@ -1707,7 +1874,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_custom_group", [])
@@ -1765,7 +1932,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_fortiguard", [])
@@ -1823,7 +1990,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_name", [])
@@ -1881,7 +2048,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_group", [])
@@ -1939,7 +2106,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_custom", [])
@@ -1997,7 +2164,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_custom_group", [])
@@ -2055,7 +2222,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_fortiguard", [])
@@ -2113,7 +2280,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -2173,7 +2340,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -2226,7 +2393,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -2288,7 +2455,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -2354,7 +2521,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -2412,7 +2579,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "users", [])
@@ -2472,7 +2639,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webproxy_forward_server", None)
@@ -2523,7 +2690,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "isolator_server", None)
@@ -2572,7 +2739,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webproxy_profile", None)
@@ -2621,7 +2788,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile_group", None)
@@ -2670,7 +2837,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile_protocol_options", None)
@@ -2719,7 +2886,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_ssh_profile", None)
@@ -2768,7 +2935,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -2817,7 +2984,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -2866,7 +3033,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dnsfilter_profile", None)
@@ -2915,7 +3082,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -2964,7 +3131,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -3013,7 +3180,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "file_filter_profile", None)
@@ -3062,7 +3229,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -3089,7 +3256,7 @@ class ProxyPolicyModel(BaseModel):
         can be called before posting to the API to catch reference errors early.
 
         Datasource endpoints checked:
-        - application/list
+        - application/list_
         Args:
             client: FortiOS client instance (from fgt._client)
 
@@ -3111,7 +3278,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -3120,13 +3287,13 @@ class ProxyPolicyModel(BaseModel):
 
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.application.list.exists(value):
+        if await client.api.cmdb.application.list_.exists(value):
             found = True
 
         if not found:
             errors.append(
                 f"Application-List '{value}' not found in "
-                "application/list"
+                "application/list_"
             )
         return errors
     async def validate_ips_voip_filter_references(self, client: Any) -> list[str]:
@@ -3160,7 +3327,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_voip_filter", None)
@@ -3209,7 +3376,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sctp_filter_profile", None)
@@ -3258,7 +3425,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "icap_profile", None)
@@ -3307,7 +3474,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "videofilter_profile", None)
@@ -3356,7 +3523,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "waf_profile", None)
@@ -3405,7 +3572,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssh_filter_profile", None)
@@ -3454,7 +3621,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -3503,7 +3670,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_override_group", None)
@@ -3552,7 +3719,7 @@ class ProxyPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -3589,57 +3756,106 @@ class ProxyPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_access_proxy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_access_proxy6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ztna_proxy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_poolname_references(client)
-        all_errors.extend(errors)        errors = await self.validate_poolname6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ztna_ems_tag_references(client)
-        all_errors.extend(errors)        errors = await self.validate_url_risk_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_schedule_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_groups_references(client)
-        all_errors.extend(errors)        errors = await self.validate_users_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webproxy_forward_server_references(client)
-        all_errors.extend(errors)        errors = await self.validate_isolator_server_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webproxy_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_profile_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_profile_protocol_options_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_ssh_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_av_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dnsfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_emailfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dlp_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_file_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_sensor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_application_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_voip_filter_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sctp_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_icap_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_videofilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_waf_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssh_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_casb_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_replacemsg_override_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_decrypted_traffic_mirror_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_access_proxy6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ztna_proxy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcintf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstintf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_poolname_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_poolname6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ztna_ems_tag_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_url_risk_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_users_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webproxy_forward_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_isolator_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webproxy_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_profile_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_profile_protocol_options_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_ssh_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_av_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dnsfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_emailfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dlp_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_file_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_voip_filter_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sctp_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_icap_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_videofilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_waf_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssh_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_casb_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_replacemsg_override_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_decrypted_traffic_mirror_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -3661,5 +3877,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.059429Z
+# Generated: 2026-01-14T22:43:37.453049Z
 # ============================================================================

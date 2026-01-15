@@ -55,7 +55,6 @@ class IpsUrlfilterDnsObject:
     ipv6_capability: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -78,6 +77,10 @@ class IpsUrlfilterDns:
     Primary Key: address
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -98,6 +101,7 @@ class IpsUrlfilterDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpsUrlfilterDnsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -115,6 +119,7 @@ class IpsUrlfilterDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpsUrlfilterDnsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -131,6 +136,7 @@ class IpsUrlfilterDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[IpsUrlfilterDnsResponse]: ...
     
     # ================================================================
@@ -173,7 +179,7 @@ class IpsUrlfilterDns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
     
@@ -192,7 +198,7 @@ class IpsUrlfilterDns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[IpsUrlfilterDnsObject]: ...
     
@@ -292,23 +298,6 @@ class IpsUrlfilterDns:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        address: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IpsUrlfilterDnsObject | list[IpsUrlfilterDnsObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -325,6 +314,7 @@ class IpsUrlfilterDns:
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
@@ -364,18 +354,7 @@ class IpsUrlfilterDns:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: IpsUrlfilterDnsPayload | None = ...,
-        address: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -389,6 +368,7 @@ class IpsUrlfilterDns:
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
@@ -428,18 +408,7 @@ class IpsUrlfilterDns:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IpsUrlfilterDnsPayload | None = ...,
-        address: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -450,6 +419,7 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
@@ -480,14 +450,7 @@ class IpsUrlfilterDns:
         self,
         address: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        address: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -519,8 +482,6 @@ class IpsUrlfilterDns:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -548,6 +509,10 @@ class IpsUrlfilterDnsDictMode:
     By default returns IpsUrlfilterDnsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IpsUrlfilterDnsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -683,10 +648,12 @@ class IpsUrlfilterDnsDictMode:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
@@ -734,10 +701,12 @@ class IpsUrlfilterDnsDictMode:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
@@ -776,10 +745,12 @@ class IpsUrlfilterDnsDictMode:
         self,
         address: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         address: str,
@@ -815,8 +786,6 @@ class IpsUrlfilterDnsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -840,6 +809,10 @@ class IpsUrlfilterDnsObjectMode:
     By default returns IpsUrlfilterDnsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IpsUrlfilterDnsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -989,10 +962,12 @@ class IpsUrlfilterDnsObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
@@ -1054,10 +1029,12 @@ class IpsUrlfilterDnsObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
@@ -1107,10 +1084,12 @@ class IpsUrlfilterDnsObjectMode:
         self,
         address: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpsUrlfilterDnsObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         address: str,
@@ -1146,8 +1125,6 @@ class IpsUrlfilterDnsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -45,22 +45,22 @@ class ThreatWeightMalware(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    virus_infected: VirusInfectedEnum | None = Field(default="critical", description="Threat weight score for virus (infected) detected.")
-    inline_block: InlineBlockEnum | None = Field(default="critical", description="Threat weight score for malware detected by inline block.")
-    file_blocked: FileBlockedEnum | None = Field(default="low", description="Threat weight score for blocked file detected.")
-    command_blocked: CommandBlockedEnum | None = Field(default="disable", description="Threat weight score for blocked command detected.")
-    oversized: OversizedEnum | None = Field(default="disable", description="Threat weight score for oversized file detected.")
-    virus_scan_error: VirusScanErrorEnum | None = Field(default="high", description="Threat weight score for virus (scan error) detected.")
-    switch_proto: SwitchProtoEnum | None = Field(default="disable", description="Threat weight score for switch proto detected.")
-    mimefragmented: MimefragmentedEnum | None = Field(default="disable", description="Threat weight score for mimefragmented detected.")
-    virus_file_type_executable: VirusFileTypeExecutableEnum | None = Field(default="medium", description="Threat weight score for virus (file type executable) detected.")
-    virus_outbreak_prevention: VirusOutbreakPreventionEnum | None = Field(default="critical", description="Threat weight score for virus (outbreak prevention) event.")
-    content_disarm: ContentDisarmEnum | None = Field(default="medium", description="Threat weight score for virus (content disarm) detected.")
-    malware_list: MalwareListEnum | None = Field(default="medium", description="Threat weight score for virus (malware list) detected.")
-    ems_threat_feed: EmsThreatFeedEnum | None = Field(default="medium", description="Threat weight score for virus (EMS threat feed) detected.")
-    fsa_malicious: FsaMaliciousEnum | None = Field(default="critical", description="Threat weight score for FortiSandbox malicious malware detected.")
-    fsa_high_risk: FsaHighRiskEnum | None = Field(default="high", description="Threat weight score for FortiSandbox high risk malware detected.")
-    fsa_medium_risk: FsaMediumRiskEnum | None = Field(default="medium", description="Threat weight score for FortiSandbox medium risk malware detected.")
+    virus_infected: str | None = Field(default="critical", description="Threat weight score for virus (infected) detected.")
+    inline_block: str | None = Field(default="critical", description="Threat weight score for malware detected by inline block.")
+    file_blocked: str | None = Field(default="low", description="Threat weight score for blocked file detected.")
+    command_blocked: str | None = Field(default="disable", description="Threat weight score for blocked command detected.")
+    oversized: str | None = Field(default="disable", description="Threat weight score for oversized file detected.")
+    virus_scan_error: str | None = Field(default="high", description="Threat weight score for virus (scan error) detected.")
+    switch_proto: str | None = Field(default="disable", description="Threat weight score for switch proto detected.")
+    mimefragmented: str | None = Field(default="disable", description="Threat weight score for mimefragmented detected.")
+    virus_file_type_executable: str | None = Field(default="medium", description="Threat weight score for virus (file type executable) detected.")
+    virus_outbreak_prevention: str | None = Field(default="critical", description="Threat weight score for virus (outbreak prevention) event.")
+    content_disarm: str | None = Field(default="medium", description="Threat weight score for virus (content disarm) detected.")
+    malware_list: str | None = Field(default="medium", description="Threat weight score for virus (malware list) detected.")
+    ems_threat_feed: str | None = Field(default="medium", description="Threat weight score for virus (EMS threat feed) detected.")
+    fsa_malicious: str | None = Field(default="critical", description="Threat weight score for FortiSandbox malicious malware detected.")
+    fsa_high_risk: str | None = Field(default="high", description="Threat weight score for FortiSandbox high risk malware detected.")
+    fsa_medium_risk: str | None = Field(default="medium", description="Threat weight score for FortiSandbox medium risk malware detected.")
 
 
 class ThreatWeightIps(BaseModel):
@@ -74,11 +74,11 @@ class ThreatWeightIps(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    info_severity: InfoSeverityEnum | None = Field(default="disable", description="Threat weight score for IPS info severity events.")
-    low_severity: LowSeverityEnum | None = Field(default="low", description="Threat weight score for IPS low severity events.")
-    medium_severity: MediumSeverityEnum | None = Field(default="medium", description="Threat weight score for IPS medium severity events.")
-    high_severity: HighSeverityEnum | None = Field(default="high", description="Threat weight score for IPS high severity events.")
-    critical_severity: CriticalSeverityEnum | None = Field(default="critical", description="Threat weight score for IPS critical severity events.")
+    info_severity: str | None = Field(default="disable", description="Threat weight score for IPS info severity events.")
+    low_severity: str | None = Field(default="low", description="Threat weight score for IPS low severity events.")
+    medium_severity: str | None = Field(default="medium", description="Threat weight score for IPS medium severity events.")
+    high_severity: str | None = Field(default="high", description="Threat weight score for IPS high severity events.")
+    critical_severity: str | None = Field(default="critical", description="Threat weight score for IPS critical severity events.")
 
 
 class ThreatWeightWeb(BaseModel):
@@ -94,7 +94,7 @@ class ThreatWeightWeb(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=255, default=0, description="Entry ID.")
     category: int = Field(ge=0, le=255, default=0, description="Threat weight score for web category filtering matches.")
-    level: LevelEnum | None = Field(default="low", description="Threat weight score for web category filtering matches.")
+    level: str | None = Field(default="low", description="Threat weight score for web category filtering matches.")
 
 
 class ThreatWeightGeolocation(BaseModel):
@@ -110,7 +110,7 @@ class ThreatWeightGeolocation(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=255, default=0, description="Entry ID.")
     country: str = Field(max_length=2, default="", description="Country code.")
-    level: LevelEnum | None = Field(default="low", description="Threat weight score for Geolocation-based events.")
+    level: str | None = Field(default="low", description="Threat weight score for Geolocation-based events.")
 
 
 class ThreatWeightApplication(BaseModel):
@@ -126,14 +126,14 @@ class ThreatWeightApplication(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=255, default=0, description="Entry ID.")
     category: int = Field(ge=0, le=65535, default=0, description="Application category.")
-    level: LevelEnum | None = Field(default="low", description="Threat weight score for Application events.")
+    level: str | None = Field(default="low", description="Threat weight score for Application events.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 
-class ThreatWeightBlocked_connectionEnum(str, Enum):
+class ThreatWeightBlockedConnectionEnum(str, Enum):
     """Allowed values for blocked_connection field."""
     DISABLE = "disable"
     LOW = "low"
@@ -142,7 +142,7 @@ class ThreatWeightBlocked_connectionEnum(str, Enum):
     CRITICAL = "critical"
 
 
-class ThreatWeightFailed_connectionEnum(str, Enum):
+class ThreatWeightFailedConnectionEnum(str, Enum):
     """Allowed values for failed_connection field."""
     DISABLE = "disable"
     LOW = "low"
@@ -151,7 +151,7 @@ class ThreatWeightFailed_connectionEnum(str, Enum):
     CRITICAL = "critical"
 
 
-class ThreatWeightUrl_block_detectedEnum(str, Enum):
+class ThreatWeightUrlBlockDetectedEnum(str, Enum):
     """Allowed values for url_block_detected field."""
     DISABLE = "disable"
     LOW = "low"
@@ -160,7 +160,7 @@ class ThreatWeightUrl_block_detectedEnum(str, Enum):
     CRITICAL = "critical"
 
 
-class ThreatWeightBotnet_connection_detectedEnum(str, Enum):
+class ThreatWeightBotnetConnectionDetectedEnum(str, Enum):
     """Allowed values for botnet_connection_detected field."""
     DISABLE = "disable"
     LOW = "low"
@@ -180,7 +180,19 @@ class ThreatWeightModel(BaseModel):
 
     Configure threat weight settings.
 
-    Validation Rules:        - status: pattern=        - level: pattern=        - blocked_connection: pattern=        - failed_connection: pattern=        - url_block_detected: pattern=        - botnet_connection_detected: pattern=        - malware: pattern=        - ips: pattern=        - web: pattern=        - geolocation: pattern=        - application: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - level: pattern=
+        - blocked_connection: pattern=
+        - failed_connection: pattern=
+        - url_block_detected: pattern=
+        - botnet_connection_detected: pattern=
+        - malware: pattern=
+        - ips: pattern=
+        - web: pattern=
+        - geolocation: pattern=
+        - application: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -192,7 +204,18 @@ class ThreatWeightModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the threat weight feature.")    level: list[ThreatWeightLevel] = Field(default=None, description="Score mapping for threat weight levels.")    blocked_connection: ThreatWeightBlockedConnectionEnum | None = Field(default="high", description="Threat weight score for blocked connections.")    failed_connection: ThreatWeightFailedConnectionEnum | None = Field(default="low", description="Threat weight score for failed connections.")    url_block_detected: ThreatWeightUrlBlockDetectedEnum | None = Field(default="high", description="Threat weight score for URL blocking.")    botnet_connection_detected: ThreatWeightBotnetConnectionDetectedEnum | None = Field(default="critical", description="Threat weight score for detected botnet connections.")    malware: list[ThreatWeightMalware] = Field(default=None, description="Anti-virus malware threat weight settings.")    ips: list[ThreatWeightIps] = Field(default=None, description="IPS threat weight settings.")    web: list[ThreatWeightWeb] = Field(default=None, description="Web filtering threat weight settings.")    geolocation: list[ThreatWeightGeolocation] = Field(default=None, description="Geolocation-based threat weight settings.")    application: list[ThreatWeightApplication] = Field(default=None, description="Application-control threat weight settings.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the threat weight feature.")
+    level: list[ThreatWeightLevel] | None = Field(default=None, description="Score mapping for threat weight levels.")
+    blocked_connection: str | ThreatWeightBlockedConnectionEnum | None = Field(default="high", description="Threat weight score for blocked connections.")
+    failed_connection: str | ThreatWeightFailedConnectionEnum | None = Field(default="low", description="Threat weight score for failed connections.")
+    url_block_detected: str | ThreatWeightUrlBlockDetectedEnum | None = Field(default="high", description="Threat weight score for URL blocking.")
+    botnet_connection_detected: str | ThreatWeightBotnetConnectionDetectedEnum | None = Field(default="critical", description="Threat weight score for detected botnet connections.")
+    malware: list[ThreatWeightMalware] | None = Field(default=None, description="Anti-virus malware threat weight settings.")
+    ips: list[ThreatWeightIps] | None = Field(default=None, description="IPS threat weight settings.")
+    web: list[ThreatWeightWeb] | None = Field(default=None, description="Web filtering threat weight settings.")
+    geolocation: list[ThreatWeightGeolocation] | None = Field(default=None, description="Geolocation-based threat weight settings.")
+    application: list[ThreatWeightApplication] | None = Field(default=None, description="Application-control threat weight settings.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -241,5 +264,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.237893Z
+# Generated: 2026-01-14T22:43:38.929231Z
 # ============================================================================

@@ -19,7 +19,7 @@ class LdbMonitorPayload(TypedDict, total=False):
         }
     """
     name: str  # Monitor name. | MaxLen: 35
-    type: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
+    type_: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
     interval: int  # Time between health checks | Default: 10 | Min: 5 | Max: 65535
     timeout: int  # Time to wait to receive response to a health check | Default: 2 | Min: 1 | Max: 255
     retry: int  # Number health check attempts before the server is | Default: 3 | Min: 1 | Max: 255
@@ -45,7 +45,7 @@ class LdbMonitorResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Monitor name. | MaxLen: 35
-    type: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
+    type_: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
     interval: int  # Time between health checks | Default: 10 | Min: 5 | Max: 65535
     timeout: int  # Time to wait to receive response to a health check | Default: 2 | Min: 1 | Max: 255
     retry: int  # Number health check attempts before the server is | Default: 3 | Min: 1 | Max: 255
@@ -70,7 +70,7 @@ class LdbMonitorObject:
     # Monitor name. | MaxLen: 35
     name: str
     # Select the Monitor type used by the health check monitor to
-    type: Literal["ping", "tcp", "http", "https", "dns"]
+    type_: Literal["ping", "tcp", "http", "https", "dns"]
     # Time between health checks (5 - 65535 sec, default = 10). | Default: 10 | Min: 5 | Max: 65535
     interval: int
     # Time to wait to receive response to a health check from a se | Default: 2 | Min: 1 | Max: 255
@@ -118,6 +118,10 @@ class LdbMonitor:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -138,6 +142,7 @@ class LdbMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LdbMonitorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -155,6 +160,7 @@ class LdbMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LdbMonitorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -171,6 +177,7 @@ class LdbMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LdbMonitorResponse]: ...
     
     # ================================================================
@@ -213,7 +220,7 @@ class LdbMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
     
@@ -232,7 +239,7 @@ class LdbMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LdbMonitorObject]: ...
     
@@ -332,23 +339,6 @@ class LdbMonitor:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LdbMonitorObject | list[LdbMonitorObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -361,7 +351,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -375,6 +365,7 @@ class LdbMonitor:
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
@@ -384,7 +375,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -408,7 +399,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -431,7 +422,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -444,28 +435,7 @@ class LdbMonitor:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -475,7 +445,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -489,6 +459,7 @@ class LdbMonitor:
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
@@ -498,7 +469,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -522,7 +493,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -545,7 +516,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -558,28 +529,7 @@ class LdbMonitor:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -590,6 +540,7 @@ class LdbMonitor:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
@@ -620,14 +571,7 @@ class LdbMonitor:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -641,7 +585,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -669,8 +613,6 @@ class LdbMonitor:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -698,6 +640,10 @@ class LdbMonitorDictMode:
     By default returns LdbMonitorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LdbMonitorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -802,7 +748,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -826,7 +772,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -850,7 +796,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -863,15 +809,17 @@ class LdbMonitorDictMode:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -893,7 +841,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -917,7 +865,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -941,7 +889,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -954,15 +902,17 @@ class LdbMonitorDictMode:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1006,10 +956,12 @@ class LdbMonitorDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1028,7 +980,7 @@ class LdbMonitorDictMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1055,8 +1007,6 @@ class LdbMonitorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1080,6 +1030,10 @@ class LdbMonitorObjectMode:
     By default returns LdbMonitorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LdbMonitorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1184,7 +1138,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1208,7 +1162,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1232,7 +1186,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1256,7 +1210,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1269,15 +1223,17 @@ class LdbMonitorObjectMode:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1299,7 +1255,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1323,7 +1279,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1347,7 +1303,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1371,7 +1327,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1384,15 +1340,17 @@ class LdbMonitorObjectMode:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1447,10 +1405,12 @@ class LdbMonitorObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdbMonitorObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1469,7 +1429,7 @@ class LdbMonitorObjectMode:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -1496,8 +1456,6 @@ class LdbMonitorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

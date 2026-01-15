@@ -235,7 +235,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
         passwd: Any | None = None,
         ldap_server: str | None = None,
         radius_server: str | None = None,
@@ -274,7 +274,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name: Local user name.
             id: User ID.
             status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
-            type: Authentication method.
+            type_: Authentication method.
             passwd: User's password.
             ldap_server: Name of LDAP server with which the user must authenticate.
             radius_server: Name of RADIUS server with which the user must authenticate.
@@ -334,7 +334,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             passwd=passwd,
             ldap_server=ldap_server,
             radius_server=radius_server,
@@ -391,7 +391,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
         passwd: Any | None = None,
         ldap_server: str | None = None,
         radius_server: str | None = None,
@@ -430,7 +430,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name: Local user name.
             id: User ID.
             status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
-            type: Authentication method.
+            type_: Authentication method.
             passwd: User's password.
             ldap_server: Name of LDAP server with which the user must authenticate.
             radius_server: Name of RADIUS server with which the user must authenticate.
@@ -492,7 +492,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             passwd=passwd,
             ldap_server=ldap_server,
             radius_server=radius_server,
@@ -649,7 +649,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
         passwd: Any | None = None,
         ldap_server: str | None = None,
         radius_server: str | None = None,
@@ -689,7 +689,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name: Field name
             id: Field id
             status: Field status
-            type: Field type
+            type_: Field type
             passwd: Field passwd
             ldap_server: Field ldap-server
             radius_server: Field radius-server
@@ -759,7 +759,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             passwd=passwd,
             ldap_server=ldap_server,
             radius_server=radius_server,

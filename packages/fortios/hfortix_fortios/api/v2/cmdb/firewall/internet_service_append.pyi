@@ -77,6 +77,10 @@ class InternetServiceAppend:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -97,6 +101,7 @@ class InternetServiceAppend:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceAppendResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -114,6 +119,7 @@ class InternetServiceAppend:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceAppendResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -130,6 +136,7 @@ class InternetServiceAppend:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceAppendResponse: ...
     
     # ================================================================
@@ -172,7 +179,7 @@ class InternetServiceAppend:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceAppendObject: ...
     
@@ -191,7 +198,7 @@ class InternetServiceAppend:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceAppendObject: ...
     
@@ -291,23 +298,6 @@ class InternetServiceAppend:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceAppendObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -324,6 +314,7 @@ class InternetServiceAppend:
         append_port: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceAppendObject: ...
@@ -363,18 +354,7 @@ class InternetServiceAppend:
         match_port: int | None = ...,
         append_port: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceAppendPayload | None = ...,
-        addr_mode: Literal["ipv4", "ipv6", "both"] | None = ...,
-        match_port: int | None = ...,
-        append_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -406,8 +386,6 @@ class InternetServiceAppend:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -435,6 +413,10 @@ class InternetServiceAppendDictMode:
     By default returns InternetServiceAppendResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceAppendObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -571,10 +553,12 @@ class InternetServiceAppendDictMode:
         match_port: int | None = ...,
         append_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceAppendPayload | None = ...,
@@ -614,8 +598,6 @@ class InternetServiceAppendDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -639,6 +621,10 @@ class InternetServiceAppendObjectMode:
     By default returns InternetServiceAppendObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceAppendResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -789,10 +775,12 @@ class InternetServiceAppendObjectMode:
         match_port: int | None = ...,
         append_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceAppendObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceAppendPayload | None = ...,
@@ -832,8 +820,6 @@ class InternetServiceAppendObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

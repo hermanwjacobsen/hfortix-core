@@ -46,7 +46,7 @@ class ProfilePayload(TypedDict, total=False):
     request_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
     response_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
     file_transfer_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
-    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post put trace connect other
+    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post p
     response_req_hdr: Literal["disable", "enable"]  # Enable/disable addition of req-hdr for ICAP respon | Default: enable
     respmod_default_action: Literal["forward", "bypass"]  # Default action to ICAP response modification | Default: forward
     icap_block_log: Literal["disable", "enable"]  # Enable/disable UTM log when infection found | Default: disable
@@ -173,7 +173,7 @@ class ProfileResponse(TypedDict):
     request_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
     response_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
     file_transfer_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
-    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post put trace connect other
+    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post p
     response_req_hdr: Literal["disable", "enable"]  # Enable/disable addition of req-hdr for ICAP respon | Default: enable
     respmod_default_action: Literal["forward", "bypass"]  # Default action to ICAP response modification | Default: forward
     icap_block_log: Literal["disable", "enable"]  # Enable/disable UTM log when infection found | Default: disable
@@ -235,7 +235,7 @@ class ProfileObject:
     response_path: str
     # Path component of the ICAP URI that identifies the file tran | MaxLen: 127
     file_transfer_path: str
-    # The allowed HTTP methods that will be sent to ICAP server fo | Default: delete get head options post put trace connect other
+    # The allowed HTTP methods that will be sent to ICAP server fo | Default: delete get head options post p
     methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]
     # Enable/disable addition of req-hdr for ICAP response modific | Default: enable
     response_req_hdr: Literal["disable", "enable"]
@@ -280,6 +280,10 @@ class Profile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -300,6 +304,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -317,6 +322,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -333,6 +339,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ProfileResponse]: ...
     
     # ================================================================
@@ -375,7 +382,7 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -394,7 +401,7 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ProfileObject]: ...
     
@@ -494,23 +501,6 @@ class Profile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProfileObject | list[ProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -555,6 +545,7 @@ class Profile:
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -678,46 +669,7 @@ class Profile:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        replacemsg_group: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        request: Literal["disable", "enable"] | None = ...,
-        response: Literal["disable", "enable"] | None = ...,
-        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
-        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
-        ocr_only: Literal["disable", "enable"] | None = ...,
-        size_limit_204: int | None = ...,
-        response_204: Literal["disable", "enable"] | None = ...,
-        preview: Literal["disable", "enable"] | None = ...,
-        preview_data_length: int | None = ...,
-        request_server: str | None = ...,
-        response_server: str | None = ...,
-        file_transfer_server: str | None = ...,
-        request_failure: Literal["error", "bypass"] | None = ...,
-        response_failure: Literal["error", "bypass"] | None = ...,
-        file_transfer_failure: Literal["error", "bypass"] | None = ...,
-        request_path: str | None = ...,
-        response_path: str | None = ...,
-        file_transfer_path: str | None = ...,
-        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
-        response_req_hdr: Literal["disable", "enable"] | None = ...,
-        respmod_default_action: Literal["forward", "bypass"] | None = ...,
-        icap_block_log: Literal["disable", "enable"] | None = ...,
-        chunk_encap: Literal["disable", "enable"] | None = ...,
-        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
-        scan_progress_interval: int | None = ...,
-        timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -759,6 +711,7 @@ class Profile:
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -882,46 +835,7 @@ class Profile:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        replacemsg_group: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        request: Literal["disable", "enable"] | None = ...,
-        response: Literal["disable", "enable"] | None = ...,
-        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
-        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
-        ocr_only: Literal["disable", "enable"] | None = ...,
-        size_limit_204: int | None = ...,
-        response_204: Literal["disable", "enable"] | None = ...,
-        preview: Literal["disable", "enable"] | None = ...,
-        preview_data_length: int | None = ...,
-        request_server: str | None = ...,
-        response_server: str | None = ...,
-        file_transfer_server: str | None = ...,
-        request_failure: Literal["error", "bypass"] | None = ...,
-        response_failure: Literal["error", "bypass"] | None = ...,
-        file_transfer_failure: Literal["error", "bypass"] | None = ...,
-        request_path: str | None = ...,
-        response_path: str | None = ...,
-        file_transfer_path: str | None = ...,
-        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
-        response_req_hdr: Literal["disable", "enable"] | None = ...,
-        respmod_default_action: Literal["forward", "bypass"] | None = ...,
-        icap_block_log: Literal["disable", "enable"] | None = ...,
-        chunk_encap: Literal["disable", "enable"] | None = ...,
-        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
-        scan_progress_interval: int | None = ...,
-        timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -932,6 +846,7 @@ class Profile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -962,14 +877,7 @@ class Profile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1029,8 +937,6 @@ class Profile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1058,6 +964,10 @@ class ProfileDictMode:
     By default returns ProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1277,10 +1187,12 @@ class ProfileDictMode:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -1440,10 +1352,12 @@ class ProfileDictMode:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -1510,10 +1424,12 @@ class ProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1577,8 +1493,6 @@ class ProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1602,6 +1516,10 @@ class ProfileObjectMode:
     By default returns ProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1863,10 +1781,12 @@ class ProfileObjectMode:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -2068,10 +1988,12 @@ class ProfileObjectMode:
         icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -2149,10 +2071,12 @@ class ProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2216,8 +2140,6 @@ class ProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -30,7 +30,7 @@ class DnsDatabaseDnsEntry(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="DNS entry ID.")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable resource record status.")
-    type: TypeEnum = Field(default="A", description="Resource record type.")
+    type_: str = Field(default="A", description="Resource record type.")
     ttl: int | None = Field(ge=0, le=2147483647, default=0, description="Time-to-live for this entry (0 to 2147483647 sec, default = 0).")
     preference: int | None = Field(ge=0, le=65535, default=10, description="DNS entry preference (0 - 65535, highest preference = 0, default = 10).")
     ip: str | None = Field(default="0.0.0.0", description="IPv4 address of the host.")
@@ -62,7 +62,29 @@ class DnsDatabaseModel(BaseModel):
 
     Configure DNS databases.
 
-    Validation Rules:        - name: max_length=35 pattern=        - status: pattern=        - domain: max_length=255 pattern=        - allow_transfer: pattern=        - type: pattern=        - view: pattern=        - ip_primary: pattern=        - primary_name: max_length=255 pattern=        - contact: max_length=255 pattern=        - ttl: min=0 max=2147483647 pattern=        - authoritative: pattern=        - forwarder: pattern=        - forwarder6: pattern=        - source_ip: pattern=        - source_ip6: pattern=        - source_ip_interface: max_length=15 pattern=        - rr_max: min=10 max=65536 pattern=        - dns_entry: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - status: pattern=
+        - domain: max_length=255 pattern=
+        - allow_transfer: pattern=
+        - type_: pattern=
+        - view: pattern=
+        - ip_primary: pattern=
+        - primary_name: max_length=255 pattern=
+        - contact: max_length=255 pattern=
+        - ttl: min=0 max=2147483647 pattern=
+        - authoritative: pattern=
+        - forwarder: pattern=
+        - forwarder6: pattern=
+        - source_ip: pattern=
+        - source_ip6: pattern=
+        - source_ip_interface: max_length=15 pattern=
+        - rr_max: min=10 max=65536 pattern=
+        - dns_entry: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -74,7 +96,28 @@ class DnsDatabaseModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Zone name.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this DNS zone.")    domain: str = Field(max_length=255, default="", description="Domain name.")    allow_transfer: str | None = Field(default="", description="DNS zone transfer IP address list.")    type: Literal["primary", "secondary"] = Field(default="primary", description="Zone type (primary to manage entries directly, secondary to import entries from other zones).")    view: DnsDatabaseViewEnum = Field(default="shadow", description="Zone view (public to serve public clients, shadow to serve internal clients).")    ip_primary: str | None = Field(default="0.0.0.0", description="IP address of primary DNS server. Entries in this primary DNS server and imported into the DNS zone.")    primary_name: str | None = Field(max_length=255, default="dns", description="Domain name of the default DNS server for this zone.")    contact: str | None = Field(max_length=255, default="host", description="Email address of the administrator for this zone. You can specify only the username, such as admin or the full email address, such as admin@test.com When using only a username, the domain of the email will be this zone.")    ttl: int = Field(ge=0, le=2147483647, default=86400, description="Default time-to-live value for the entries of this DNS zone (0 - 2147483647 sec, default = 86400).")    authoritative: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable authoritative zone.")    forwarder: str | None = Field(default="", description="DNS zone forwarder IP address list.")    forwarder6: str | None = Field(default="::", description="Forwarder IPv6 address.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for forwarding to DNS server.")    source_ip6: str | None = Field(default="::", description="IPv6 source IP address for forwarding to DNS server.")    source_ip_interface: str | None = Field(max_length=15, default="", description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']    rr_max: int | None = Field(ge=10, le=65536, default=16384, description="Maximum number of resource records (10 - 65536, 0 means infinite).")    dns_entry: list[DnsDatabaseDnsEntry] = Field(description="DNS entry.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Zone name.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this DNS zone.")
+    domain: str = Field(max_length=255, default="", description="Domain name.")
+    allow_transfer: str | None = Field(default="", description="DNS zone transfer IP address list.")
+    type_: Literal["primary", "secondary"] = Field(default="primary", description="Zone type (primary to manage entries directly, secondary to import entries from other zones).")
+    view: str | DnsDatabaseViewEnum = Field(default="shadow", description="Zone view (public to serve public clients, shadow to serve internal clients).")
+    ip_primary: str | None = Field(default="0.0.0.0", description="IP address of primary DNS server. Entries in this primary DNS server and imported into the DNS zone.")
+    primary_name: str | None = Field(max_length=255, default="dns", description="Domain name of the default DNS server for this zone.")
+    contact: str | None = Field(max_length=255, default="host", description="Email address of the administrator for this zone. You can specify only the username, such as admin or the full email address, such as admin@test.com When using only a username, the domain of the email will be this zone.")
+    ttl: int = Field(ge=0, le=2147483647, default=86400, description="Default time-to-live value for the entries of this DNS zone (0 - 2147483647 sec, default = 86400).")
+    authoritative: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable authoritative zone.")
+    forwarder: str | None = Field(default="", description="DNS zone forwarder IP address list.")
+    forwarder6: str | None = Field(default="::", description="Forwarder IPv6 address.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for forwarding to DNS server.")
+    source_ip6: str | None = Field(default="::", description="IPv6 source IP address for forwarding to DNS server.")
+    source_ip_interface: str | None = Field(max_length=15, default="", description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']
+    rr_max: int | None = Field(ge=10, le=65536, default=16384, description="Maximum number of resource records (10 - 65536, 0 means infinite).")
+    dns_entry: list[DnsDatabaseDnsEntry] | None = Field(description="DNS entry.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -168,7 +211,7 @@ class DnsDatabaseModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dns_database.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -217,7 +260,7 @@ class DnsDatabaseModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dns_database.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -254,9 +297,10 @@ class DnsDatabaseModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_source_ip_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -278,5 +322,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.587596Z
+# Generated: 2026-01-14T22:43:39.403271Z
 # ============================================================================

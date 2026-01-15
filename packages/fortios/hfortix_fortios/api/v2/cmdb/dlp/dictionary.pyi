@@ -18,7 +18,7 @@ class DictionaryPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     name: str  # Name of table containing the dictionary. | MaxLen: 35
     match_type: Literal["match-all", "match-any"]  # Logical relation between entries | Default: match-any
     match_around: Literal["enable", "disable"]  # Enable/disable match-around support. | Default: disable
@@ -35,7 +35,7 @@ class DictionaryEntriesItem(TypedDict):
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: str  # Pattern type to match. | MaxLen: 35
+    type_: str  # Pattern type to match. | MaxLen: 35
     pattern: str  # Pattern to match. | MaxLen: 255
     ignore_case: Literal["enable", "disable"]  # Enable/disable ignore case. | Default: disable
     repeat: Literal["enable", "disable"]  # Enable/disable repeat match. | Default: disable
@@ -56,7 +56,7 @@ class DictionaryEntriesObject:
     # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Pattern type to match. | MaxLen: 35
-    type: str
+    type_: str
     # Pattern to match. | MaxLen: 255
     pattern: str
     # Enable/disable ignore case. | Default: disable
@@ -86,7 +86,7 @@ class DictionaryResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     name: str  # Name of table containing the dictionary. | MaxLen: 35
     match_type: Literal["match-all", "match-any"]  # Logical relation between entries | Default: match-any
     match_around: Literal["enable", "disable"]  # Enable/disable match-around support. | Default: disable
@@ -102,7 +102,7 @@ class DictionaryObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Name of table containing the dictionary. | MaxLen: 35
     name: str
@@ -139,6 +139,10 @@ class Dictionary:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -159,6 +163,7 @@ class Dictionary:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DictionaryResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -176,6 +181,7 @@ class Dictionary:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DictionaryResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -192,6 +198,7 @@ class Dictionary:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DictionaryResponse]: ...
     
     # ================================================================
@@ -234,7 +241,7 @@ class Dictionary:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DictionaryObject: ...
     
@@ -253,7 +260,7 @@ class Dictionary:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DictionaryObject]: ...
     
@@ -353,23 +360,6 @@ class Dictionary:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DictionaryObject | list[DictionaryObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -389,6 +379,7 @@ class Dictionary:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DictionaryObject: ...
@@ -437,21 +428,7 @@ class Dictionary:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -468,6 +445,7 @@ class Dictionary:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DictionaryObject: ...
@@ -516,21 +494,7 @@ class Dictionary:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -541,6 +505,7 @@ class Dictionary:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DictionaryObject: ...
@@ -571,14 +536,7 @@ class Dictionary:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -613,8 +571,6 @@ class Dictionary:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -642,6 +598,10 @@ class DictionaryDictMode:
     By default returns DictionaryResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DictionaryObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -786,10 +746,12 @@ class DictionaryDictMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -849,10 +811,12 @@ class DictionaryDictMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -894,10 +858,12 @@ class DictionaryDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -936,8 +902,6 @@ class DictionaryDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -961,6 +925,10 @@ class DictionaryObjectMode:
     By default returns DictionaryObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DictionaryResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1122,10 +1090,12 @@ class DictionaryObjectMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DictionaryObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -1202,10 +1172,12 @@ class DictionaryObjectMode:
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DictionaryObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -1258,10 +1230,12 @@ class DictionaryObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DictionaryObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1300,8 +1274,6 @@ class DictionaryObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

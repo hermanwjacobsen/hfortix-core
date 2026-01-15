@@ -153,6 +153,10 @@ class SslServer:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -173,6 +177,7 @@ class SslServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SslServerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -190,6 +195,7 @@ class SslServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SslServerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -206,6 +212,7 @@ class SslServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SslServerResponse]: ...
     
     # ================================================================
@@ -248,7 +255,7 @@ class SslServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SslServerObject: ...
     
@@ -267,7 +274,7 @@ class SslServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SslServerObject]: ...
     
@@ -367,23 +374,6 @@ class SslServer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SslServerObject | list[SslServerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -411,6 +401,7 @@ class SslServer:
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslServerObject: ...
@@ -483,29 +474,7 @@ class SslServer:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SslServerPayload | None = ...,
-        name: str | None = ...,
-        ip: str | None = ...,
-        port: int | None = ...,
-        ssl_mode: Literal["half", "full"] | None = ...,
-        add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
-        mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
-        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
-        ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        url_rewrite: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -530,6 +499,7 @@ class SslServer:
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslServerObject: ...
@@ -602,29 +572,7 @@ class SslServer:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SslServerPayload | None = ...,
-        name: str | None = ...,
-        ip: str | None = ...,
-        port: int | None = ...,
-        ssl_mode: Literal["half", "full"] | None = ...,
-        add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
-        mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
-        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
-        ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        url_rewrite: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -635,6 +583,7 @@ class SslServer:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslServerObject: ...
@@ -665,14 +614,7 @@ class SslServer:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -715,8 +657,6 @@ class SslServer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -744,6 +684,10 @@ class SslServerDictMode:
     By default returns SslServerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SslServerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -912,10 +856,12 @@ class SslServerDictMode:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SslServerPayload | None = ...,
@@ -1007,10 +953,12 @@ class SslServerDictMode:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SslServerPayload | None = ...,
@@ -1060,10 +1008,12 @@ class SslServerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1110,8 +1060,6 @@ class SslServerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1135,6 +1083,10 @@ class SslServerObjectMode:
     By default returns SslServerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SslServerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1328,10 +1280,12 @@ class SslServerObjectMode:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslServerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SslServerPayload | None = ...,
@@ -1448,10 +1402,12 @@ class SslServerObjectMode:
         ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
         url_rewrite: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslServerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SslServerPayload | None = ...,
@@ -1512,10 +1468,12 @@ class SslServerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslServerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1562,8 +1520,6 @@ class SslServerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

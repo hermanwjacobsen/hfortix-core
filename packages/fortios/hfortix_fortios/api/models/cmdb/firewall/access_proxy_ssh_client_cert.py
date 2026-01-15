@@ -29,7 +29,7 @@ class AccessProxySshClientCertCertExtension(BaseModel):
         str_strip_whitespace = True
     name: str = Field(max_length=127, default="", description="Name of certificate extension.")
     critical: Literal["no", "yes"] | None = Field(default="no", description="Critical option.")
-    type: Literal["fixed", "user"] | None = Field(default="fixed", description="Type of certificate extension.")
+    type_: Literal["fixed", "user"] | None = Field(default="fixed", description="Type of certificate extension.")
     data: str | None = Field(max_length=127, default="", description="Data of certificate extension.")
 
 # ============================================================================
@@ -48,7 +48,17 @@ class AccessProxySshClientCertModel(BaseModel):
 
     Configure Access Proxy SSH client certificate.
 
-    Validation Rules:        - name: max_length=79 pattern=        - source_address: pattern=        - permit_x11_forwarding: pattern=        - permit_agent_forwarding: pattern=        - permit_port_forwarding: pattern=        - permit_pty: pattern=        - permit_user_rc: pattern=        - cert_extension: pattern=        - auth_ca: max_length=79 pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - source_address: pattern=
+        - permit_x11_forwarding: pattern=
+        - permit_agent_forwarding: pattern=
+        - permit_port_forwarding: pattern=
+        - permit_pty: pattern=
+        - permit_user_rc: pattern=
+        - cert_extension: pattern=
+        - auth_ca: max_length=79 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -60,7 +70,16 @@ class AccessProxySshClientCertModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="SSH client certificate name.")    source_address: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable appending source-address certificate critical option. This option ensure certificate only accepted from FortiGate source address.")    permit_x11_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-x11-forwarding certificate extension.")    permit_agent_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-agent-forwarding certificate extension.")    permit_port_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-port-forwarding certificate extension.")    permit_pty: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-pty certificate extension.")    permit_user_rc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-user-rc certificate extension.")    cert_extension: list[AccessProxySshClientCertCertExtension] = Field(default=None, description="Configure certificate extension for user certificate.")    auth_ca: str = Field(max_length=79, default="", description="Name of the SSH server public key authentication CA.")  # datasource: ['firewall.ssh.local-ca.name']    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="SSH client certificate name.")
+    source_address: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable appending source-address certificate critical option. This option ensure certificate only accepted from FortiGate source address.")
+    permit_x11_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-x11-forwarding certificate extension.")
+    permit_agent_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-agent-forwarding certificate extension.")
+    permit_port_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-port-forwarding certificate extension.")
+    permit_pty: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-pty certificate extension.")
+    permit_user_rc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-user-rc certificate extension.")
+    cert_extension: list[AccessProxySshClientCertCertExtension] | None = Field(default=None, description="Configure certificate extension for user certificate.")
+    auth_ca: str = Field(max_length=79, default="", description="Name of the SSH server public key authentication CA.")  # datasource: ['firewall.ssh.local-ca.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -139,7 +158,7 @@ class AccessProxySshClientCertModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy_ssh_client_cert.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_ca", None)
@@ -176,7 +195,7 @@ class AccessProxySshClientCertModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_auth_ca_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -199,5 +218,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.754677Z
+# Generated: 2026-01-14T22:43:39.609383Z
 # ============================================================================

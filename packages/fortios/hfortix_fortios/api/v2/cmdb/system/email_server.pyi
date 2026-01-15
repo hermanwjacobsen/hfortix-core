@@ -23,7 +23,7 @@ class EmailServerPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    type: Literal["custom"]  # Use FortiGuard Message service or custom email ser | Default: custom
+    type_: Literal["custom"]  # Use FortiGuard Message service or custom email ser | Default: custom
     server: str  # SMTP server IP address or hostname. | MaxLen: 63
     port: int  # SMTP server port. | Default: 25 | Min: 1 | Max: 65535
     source_ip: str  # SMTP server IPv4 source IP. | Default: 0.0.0.0
@@ -50,7 +50,7 @@ class EmailServerResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    type: Literal["custom"]  # Use FortiGuard Message service or custom email ser | Default: custom
+    type_: Literal["custom"]  # Use FortiGuard Message service or custom email ser | Default: custom
     server: str  # SMTP server IP address or hostname. | MaxLen: 63
     port: int  # SMTP server port. | Default: 25 | Min: 1 | Max: 65535
     source_ip: str  # SMTP server IPv4 source IP. | Default: 0.0.0.0
@@ -75,7 +75,7 @@ class EmailServerObject:
     """
     
     # Use FortiGuard Message service or custom email server. | Default: custom
-    type: Literal["custom"]
+    type_: Literal["custom"]
     # SMTP server IP address or hostname. | MaxLen: 63
     server: str
     # SMTP server port. | Default: 25 | Min: 1 | Max: 65535
@@ -126,6 +126,10 @@ class EmailServer:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -146,6 +150,7 @@ class EmailServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EmailServerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -163,6 +168,7 @@ class EmailServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EmailServerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -179,6 +185,7 @@ class EmailServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EmailServerResponse: ...
     
     # ================================================================
@@ -221,7 +228,7 @@ class EmailServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> EmailServerObject: ...
     
@@ -240,7 +247,7 @@ class EmailServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> EmailServerObject: ...
     
@@ -340,23 +347,6 @@ class EmailServer:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> EmailServerObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -368,7 +358,7 @@ class EmailServer:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -384,6 +374,7 @@ class EmailServer:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> EmailServerObject: ...
@@ -392,7 +383,7 @@ class EmailServer:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -417,7 +408,7 @@ class EmailServer:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -441,7 +432,7 @@ class EmailServer:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -456,29 +447,7 @@ class EmailServer:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
-        server: str | None = ...,
-        port: int | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        authenticate: Literal["enable", "disable"] | None = ...,
-        validate_server: Literal["enable", "disable"] | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        security: Literal["none", "starttls", "smtps"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -491,7 +460,7 @@ class EmailServer:
     def set(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -521,8 +490,6 @@ class EmailServer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -550,6 +517,10 @@ class EmailServerDictMode:
     By default returns EmailServerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return EmailServerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -654,7 +625,7 @@ class EmailServerDictMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -679,7 +650,7 @@ class EmailServerDictMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -704,7 +675,7 @@ class EmailServerDictMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -719,14 +690,16 @@ class EmailServerDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -755,7 +728,7 @@ class EmailServerDictMode:
     def set(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -784,8 +757,6 @@ class EmailServerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -809,6 +780,10 @@ class EmailServerObjectMode:
     By default returns EmailServerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return EmailServerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -913,7 +888,7 @@ class EmailServerObjectMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -938,7 +913,7 @@ class EmailServerObjectMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -963,7 +938,7 @@ class EmailServerObjectMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -988,7 +963,7 @@ class EmailServerObjectMode:
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -1003,14 +978,16 @@ class EmailServerObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> EmailServerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -1039,7 +1016,7 @@ class EmailServerObjectMode:
     def set(
         self,
         payload_dict: EmailServerPayload | None = ...,
-        type: Literal["custom"] | None = ...,
+        type_: Literal["custom"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         source_ip: str | None = ...,
@@ -1068,8 +1045,6 @@ class EmailServerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -26,7 +26,19 @@ class IsolatorServerModel(BaseModel):
 
     Configure forward-server addresses.
 
-    Validation Rules:        - name: max_length=63 pattern=        - addr_type: pattern=        - ip: pattern=        - ipv6: pattern=        - fqdn: max_length=255 pattern=        - port: min=1 max=65535 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=        - comment: max_length=63 pattern=        - masquerade: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - addr_type: pattern=
+        - ip: pattern=
+        - ipv6: pattern=
+        - fqdn: max_length=255 pattern=
+        - port: min=1 max=65535 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+        - comment: max_length=63 pattern=
+        - masquerade: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +50,18 @@ class IsolatorServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="Server name.")    addr_type: Literal["ip", "ipv6", "fqdn"] | None = Field(default="ip", description="Address type of the forwarding proxy server: IP or FQDN.")    ip: str | None = Field(default="0.0.0.0", description="Forward proxy server IP address.")    ipv6: str | None = Field(default="::", description="Forward proxy server IPv6 address.")    fqdn: str | None = Field(max_length=255, default="", description="Forward server Fully Qualified Domain Name (FQDN).")    port: int | None = Field(ge=1, le=65535, default=3128, description="Port number that the forwarding server expects to receive HTTP sessions on (1 - 65535, default = 3128).")    interface_select_method: Literal["sdwan", "specify"] | None = Field(default="sdwan", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=-1, description="VRF ID used for connection to server.")    comment: str | None = Field(max_length=63, default="", description="Comment.")    masquerade: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="Server name.")
+    addr_type: Literal["ip", "ipv6", "fqdn"] | None = Field(default="ip", description="Address type of the forwarding proxy server: IP or FQDN.")
+    ip: str | None = Field(default="0.0.0.0", description="Forward proxy server IP address.")
+    ipv6: str | None = Field(default="::", description="Forward proxy server IPv6 address.")
+    fqdn: str | None = Field(max_length=255, default="", description="Forward server Fully Qualified Domain Name (FQDN).")
+    port: int | None = Field(ge=1, le=65535, default=3128, description="Port number that the forwarding server expects to receive HTTP sessions on (1 - 65535, default = 3128).")
+    interface_select_method: Literal["sdwan", "specify"] | None = Field(default="sdwan", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=-1, description="VRF ID used for connection to server.")
+    comment: str | None = Field(max_length=63, default="", description="Comment.")
+    masquerade: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +140,7 @@ class IsolatorServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.isolator_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -154,7 +177,7 @@ class IsolatorServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +200,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.996690Z
+# Generated: 2026-01-14T22:43:39.898318Z
 # ============================================================================

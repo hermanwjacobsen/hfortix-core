@@ -246,7 +246,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["standard", "expanded"] | None = None,
+        type_: Literal["standard", "expanded"] | None = None,
         rule: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -261,7 +261,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Community list name.
-            type: Community list type (standard or expanded).
+            type_: Community list type (standard or expanded).
             rule: Community list rule.
                 Default format: [{'id': 1, 'action': 'deny', 'regexp': 'value', 'match': 'value'}]
                 Required format: List of dicts with keys: id, action, regexp, match
@@ -310,7 +310,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             rule=rule,
             data=payload_dict,
         )
@@ -343,7 +343,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["standard", "expanded"] | None = None,
+        type_: Literal["standard", "expanded"] | None = None,
         rule: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -358,7 +358,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Community list name.
-            type: Community list type (standard or expanded).
+            type_: Community list type (standard or expanded).
             rule: Community list rule.
                 Default format: [{'id': 1, 'action': 'deny', 'regexp': 'value', 'match': 'value'}]
                 Required format: List of dicts with keys: id, action, regexp, match
@@ -409,7 +409,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             rule=rule,
             data=payload_dict,
         )
@@ -542,7 +542,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["standard", "expanded"] | None = None,
+        type_: Literal["standard", "expanded"] | None = None,
         rule: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -558,7 +558,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             rule: Field rule
             vdom: Virtual domain name
             raw_json: If True, return raw API response
@@ -604,7 +604,7 @@ class CommunityList(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             rule=rule,
             data=payload_dict,
         )

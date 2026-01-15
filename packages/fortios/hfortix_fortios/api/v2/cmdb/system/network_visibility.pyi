@@ -81,6 +81,10 @@ class NetworkVisibility:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -101,6 +105,7 @@ class NetworkVisibility:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetworkVisibilityResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -118,6 +123,7 @@ class NetworkVisibility:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetworkVisibilityResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -134,6 +140,7 @@ class NetworkVisibility:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetworkVisibilityResponse: ...
     
     # ================================================================
@@ -176,7 +183,7 @@ class NetworkVisibility:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NetworkVisibilityObject: ...
     
@@ -195,7 +202,7 @@ class NetworkVisibility:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NetworkVisibilityObject: ...
     
@@ -295,23 +302,6 @@ class NetworkVisibility:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> NetworkVisibilityObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -329,6 +319,7 @@ class NetworkVisibility:
         destination_location: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NetworkVisibilityObject: ...
@@ -371,19 +362,7 @@ class NetworkVisibility:
         destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
         destination_location: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: NetworkVisibilityPayload | None = ...,
-        destination_visibility: Literal["disable", "enable"] | None = ...,
-        source_location: Literal["disable", "enable"] | None = ...,
-        destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
-        destination_location: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -416,8 +395,6 @@ class NetworkVisibility:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -445,6 +422,10 @@ class NetworkVisibilityDictMode:
     By default returns NetworkVisibilityResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return NetworkVisibilityObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -584,10 +565,12 @@ class NetworkVisibilityDictMode:
         destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
         destination_location: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: NetworkVisibilityPayload | None = ...,
@@ -629,8 +612,6 @@ class NetworkVisibilityDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -654,6 +635,10 @@ class NetworkVisibilityObjectMode:
     By default returns NetworkVisibilityObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return NetworkVisibilityResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -808,10 +793,12 @@ class NetworkVisibilityObjectMode:
         destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
         destination_location: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NetworkVisibilityObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: NetworkVisibilityPayload | None = ...,
@@ -853,8 +840,6 @@ class NetworkVisibilityObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

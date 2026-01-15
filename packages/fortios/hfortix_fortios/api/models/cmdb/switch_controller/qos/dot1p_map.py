@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class Dot1pMapPriority_0Enum(str, Enum):
+class Dot1pMapPriority0Enum(str, Enum):
     """Allowed values for priority_0 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -28,7 +28,7 @@ class Dot1pMapPriority_0Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_1Enum(str, Enum):
+class Dot1pMapPriority1Enum(str, Enum):
     """Allowed values for priority_1 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -40,7 +40,7 @@ class Dot1pMapPriority_1Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_2Enum(str, Enum):
+class Dot1pMapPriority2Enum(str, Enum):
     """Allowed values for priority_2 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -52,7 +52,7 @@ class Dot1pMapPriority_2Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_3Enum(str, Enum):
+class Dot1pMapPriority3Enum(str, Enum):
     """Allowed values for priority_3 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -64,7 +64,7 @@ class Dot1pMapPriority_3Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_4Enum(str, Enum):
+class Dot1pMapPriority4Enum(str, Enum):
     """Allowed values for priority_4 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -76,7 +76,7 @@ class Dot1pMapPriority_4Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_5Enum(str, Enum):
+class Dot1pMapPriority5Enum(str, Enum):
     """Allowed values for priority_5 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -88,7 +88,7 @@ class Dot1pMapPriority_5Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_6Enum(str, Enum):
+class Dot1pMapPriority6Enum(str, Enum):
     """Allowed values for priority_6 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -100,7 +100,7 @@ class Dot1pMapPriority_6Enum(str, Enum):
     QUEUE_7 = "queue-7"
 
 
-class Dot1pMapPriority_7Enum(str, Enum):
+class Dot1pMapPriority7Enum(str, Enum):
     """Allowed values for priority_7 field."""
     QUEUE_0 = "queue-0"
     QUEUE_1 = "queue-1"
@@ -123,7 +123,19 @@ class Dot1pMapModel(BaseModel):
 
     Configure FortiSwitch QoS 802.1p.
 
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - egress_pri_tagging: pattern=        - priority_0: pattern=        - priority_1: pattern=        - priority_2: pattern=        - priority_3: pattern=        - priority_4: pattern=        - priority_5: pattern=        - priority_6: pattern=        - priority_7: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - description: max_length=63 pattern=
+        - egress_pri_tagging: pattern=
+        - priority_0: pattern=
+        - priority_1: pattern=
+        - priority_2: pattern=
+        - priority_3: pattern=
+        - priority_4: pattern=
+        - priority_5: pattern=
+        - priority_6: pattern=
+        - priority_7: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -135,7 +147,18 @@ class Dot1pMapModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=63, default="", description="Dot1p map name.")    description: str | None = Field(max_length=63, default="", description="Description of the 802.1p name.")    egress_pri_tagging: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable egress priority-tag frame.")    priority_0: Dot1pMapPriority0Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_1: Dot1pMapPriority1Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_2: Dot1pMapPriority2Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_3: Dot1pMapPriority3Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_4: Dot1pMapPriority4Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_5: Dot1pMapPriority5Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_6: Dot1pMapPriority6Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    priority_7: Dot1pMapPriority7Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")    # ========================================================================
+    name: str = Field(max_length=63, default="", description="Dot1p map name.")
+    description: str | None = Field(max_length=63, default="", description="Description of the 802.1p name.")
+    egress_pri_tagging: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable egress priority-tag frame.")
+    priority_0: str | Dot1pMapPriority0Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_1: str | Dot1pMapPriority1Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_2: str | Dot1pMapPriority2Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_3: str | Dot1pMapPriority3Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_4: str | Dot1pMapPriority4Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_5: str | Dot1pMapPriority5Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_6: str | Dot1pMapPriority6Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    priority_7: str | Dot1pMapPriority7Enum | None = Field(default="queue-0", description="COS queue mapped to dot1p priority number.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -184,5 +207,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.533837Z
+# Generated: 2026-01-14T22:43:39.338065Z
 # ============================================================================

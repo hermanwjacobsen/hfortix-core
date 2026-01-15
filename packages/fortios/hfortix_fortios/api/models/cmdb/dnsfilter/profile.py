@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -41,8 +41,8 @@ class ProfileFtgdDns(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    options: Literal["error-allow", "ftgd-disable"] | None = Field(default="", description="FortiGuard DNS filter options.")
-    filters: list[Filters] = Field(default=None, description="FortiGuard DNS domain filters.")
+    options: Literal["error-allow", "ftgd-disable"] | None = Field(default=None, description="FortiGuard DNS filter options.")
+    filters: list[dict[str, Any]] | None = Field(default=None, description="FortiGuard DNS domain filters.")
 
 
 class ProfileExternalIpBlocklist(BaseModel):
@@ -110,7 +110,25 @@ class ProfileModel(BaseModel):
 
     Configure DNS domain filter profile.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - domain_filter: pattern=        - ftgd_dns: pattern=        - log_all_domain: pattern=        - sdns_ftgd_err_log: pattern=        - sdns_domain_log: pattern=        - block_action: pattern=        - redirect_portal: pattern=        - redirect_portal6: pattern=        - block_botnet: pattern=        - safe_search: pattern=        - youtube_restrict: pattern=        - external_ip_blocklist: pattern=        - dns_translation: pattern=        - transparent_dns_database: pattern=        - strip_ech: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - domain_filter: pattern=
+        - ftgd_dns: pattern=
+        - log_all_domain: pattern=
+        - sdns_ftgd_err_log: pattern=
+        - sdns_domain_log: pattern=
+        - block_action: pattern=
+        - redirect_portal: pattern=
+        - redirect_portal6: pattern=
+        - block_botnet: pattern=
+        - safe_search: pattern=
+        - youtube_restrict: pattern=
+        - external_ip_blocklist: pattern=
+        - dns_translation: pattern=
+        - transparent_dns_database: pattern=
+        - strip_ech: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -122,7 +140,24 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    domain_filter: list[ProfileDomainFilter] = Field(default=None, description="Domain filter settings.")    ftgd_dns: list[ProfileFtgdDns] = Field(default=None, description="FortiGuard DNS Filter settings.")    log_all_domain: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging of all domains visited (detailed DNS logging).")    sdns_ftgd_err_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiGuard SDNS rating error logging.")    sdns_domain_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable domain filtering and botnet domain logging.")    block_action: Literal["block", "redirect", "block-sevrfail"] | None = Field(default="redirect", description="Action to take for blocked domains.")    redirect_portal: str | None = Field(default="0.0.0.0", description="IPv4 address of the SDNS redirect portal.")    redirect_portal6: str | None = Field(default="::", description="IPv6 address of the SDNS redirect portal.")    block_botnet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable blocking botnet C&C DNS lookups.")    safe_search: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.")    youtube_restrict: Literal["strict", "moderate", "none"] | None = Field(default="strict", description="Set safe search for YouTube restriction level.")    external_ip_blocklist: list[ProfileExternalIpBlocklist] = Field(default=None, description="One or more external IP block lists.")    dns_translation: list[ProfileDnsTranslation] = Field(default=None, description="DNS translation settings.")    transparent_dns_database: list[ProfileTransparentDnsDatabase] = Field(default=None, description="Transparent DNS database zones.")    strip_ech: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable removal of the encrypted client hello service parameter from supporting DNS RRs.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    domain_filter: list[ProfileDomainFilter] | None = Field(default=None, description="Domain filter settings.")
+    ftgd_dns: list[ProfileFtgdDns] | None = Field(default=None, description="FortiGuard DNS Filter settings.")
+    log_all_domain: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging of all domains visited (detailed DNS logging).")
+    sdns_ftgd_err_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiGuard SDNS rating error logging.")
+    sdns_domain_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable domain filtering and botnet domain logging.")
+    block_action: Literal["block", "redirect", "block-sevrfail"] | None = Field(default="redirect", description="Action to take for blocked domains.")
+    redirect_portal: str | None = Field(default="0.0.0.0", description="IPv4 address of the SDNS redirect portal.")
+    redirect_portal6: str | None = Field(default="::", description="IPv6 address of the SDNS redirect portal.")
+    block_botnet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable blocking botnet C&C DNS lookups.")
+    safe_search: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.")
+    youtube_restrict: Literal["strict", "moderate", "none"] | None = Field(default="strict", description="Set safe search for YouTube restriction level.")
+    external_ip_blocklist: list[ProfileExternalIpBlocklist] | None = Field(default=None, description="One or more external IP block lists.")
+    dns_translation: list[ProfileDnsTranslation] | None = Field(default=None, description="DNS translation settings.")
+    transparent_dns_database: list[ProfileTransparentDnsDatabase] | None = Field(default=None, description="Transparent DNS database zones.")
+    strip_ech: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable removal of the encrypted client hello service parameter from supporting DNS RRs.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -186,7 +221,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "domain_filter", [])
@@ -244,7 +279,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "external_ip_blocklist", [])
@@ -302,7 +337,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "transparent_dns_database", [])
@@ -348,10 +383,12 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_domain_filter_references(client)
-        all_errors.extend(errors)        errors = await self.validate_external_ip_blocklist_references(client)
-        all_errors.extend(errors)        errors = await self.validate_transparent_dns_database_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_external_ip_blocklist_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_transparent_dns_database_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -373,5 +410,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.598188Z
+# Generated: 2026-01-14T22:43:39.416681Z
 # ============================================================================

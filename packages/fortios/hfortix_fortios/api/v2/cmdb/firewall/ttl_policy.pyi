@@ -147,7 +147,6 @@ class TtlPolicyObject:
     ttl: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -170,6 +169,10 @@ class TtlPolicy:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -190,6 +193,7 @@ class TtlPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TtlPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -207,6 +211,7 @@ class TtlPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TtlPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -223,6 +228,7 @@ class TtlPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[TtlPolicyResponse]: ...
     
     # ================================================================
@@ -265,7 +271,7 @@ class TtlPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
     
@@ -284,7 +290,7 @@ class TtlPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[TtlPolicyObject]: ...
     
@@ -384,23 +390,6 @@ class TtlPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> TtlPolicyObject | list[TtlPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -422,6 +411,7 @@ class TtlPolicy:
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
@@ -476,23 +466,7 @@ class TtlPolicy:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: TtlPolicyPayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        srcintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: str | None = ...,
-        ttl: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -511,6 +485,7 @@ class TtlPolicy:
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
@@ -565,23 +540,7 @@ class TtlPolicy:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: TtlPolicyPayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        srcintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: str | None = ...,
-        ttl: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -592,6 +551,7 @@ class TtlPolicy:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
@@ -622,14 +582,7 @@ class TtlPolicy:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -666,8 +619,6 @@ class TtlPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -695,6 +646,10 @@ class TtlPolicyDictMode:
     By default returns TtlPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return TtlPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -845,10 +800,12 @@ class TtlPolicyDictMode:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: TtlPolicyPayload | None = ...,
@@ -916,10 +873,12 @@ class TtlPolicyDictMode:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: TtlPolicyPayload | None = ...,
@@ -963,10 +922,12 @@ class TtlPolicyDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1007,8 +968,6 @@ class TtlPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1032,6 +991,10 @@ class TtlPolicyObjectMode:
     By default returns TtlPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return TtlPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1201,10 +1164,12 @@ class TtlPolicyObjectMode:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: TtlPolicyPayload | None = ...,
@@ -1291,10 +1256,12 @@ class TtlPolicyObjectMode:
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: TtlPolicyPayload | None = ...,
@@ -1349,10 +1316,12 @@ class TtlPolicyObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TtlPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1393,8 +1362,6 @@ class TtlPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -8,7 +8,7 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
-from typing import Any
+from typing import Any, Literal
 
 
 # ============================================================================
@@ -34,10 +34,10 @@ class DynamicPortPolicyPolicy(BaseModel):
     match_type: Literal["dynamic", "override"] | None = Field(default="dynamic", description="Match and retain the devices based on the type.")
     match_period: int | None = Field(ge=0, le=120, default=0, description="Number of days the matched devices will be retained (0 - 120, 0 = always retain).")
     match_remove: Literal["default", "link-down"] | None = Field(default="default", description="Options to remove the matched override devices.")
-    interface_tags: list[InterfaceTags] = Field(default=None, description="Match policy based on the FortiSwitch interface object tags.")
+    interface_tags: list[dict[str, Any]] | None = Field(default=None, description="Match policy based on the FortiSwitch interface object tags.")
     mac: str | None = Field(max_length=17, default="", description="Match policy based on MAC address.")
     hw_vendor: str | None = Field(max_length=15, default="", description="Match policy based on hardware vendor.")
-    type: str | None = Field(max_length=15, default="", description="Match policy based on type.")
+    type_: str | None = Field(max_length=15, default="", description="Match policy based on type.")
     family: str | None = Field(max_length=31, default="", description="Match policy based on family.")
     host: str | None = Field(max_length=64, default="", description="Match policy based on host.")
     lldp_profile: str | None = Field(max_length=63, default="", description="LLDP profile to be applied when using this policy.")  # datasource: ['switch-controller.lldp-profile.name']
@@ -64,7 +64,12 @@ class DynamicPortPolicyModel(BaseModel):
 
     Configure Dynamic port policy to be applied on the managed FortiSwitch ports through DPP device.
 
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - fortilink: max_length=15 pattern=        - policy: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - description: max_length=63 pattern=
+        - fortilink: max_length=15 pattern=
+        - policy: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -76,7 +81,11 @@ class DynamicPortPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="Dynamic port policy name.")    description: str | None = Field(max_length=63, default="", description="Description for the Dynamic port policy.")    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this Dynamic port policy belongs to.")  # datasource: ['system.interface.name']    policy: list[DynamicPortPolicyPolicy] = Field(default=None, description="Port policies with matching criteria and actions.")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="Dynamic port policy name.")
+    description: str | None = Field(max_length=63, default="", description="Description for the Dynamic port policy.")
+    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this Dynamic port policy belongs to.")  # datasource: ['system.interface.name']
+    policy: list[DynamicPortPolicyPolicy] | None = Field(default=None, description="Port policies with matching criteria and actions.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -155,7 +164,7 @@ class DynamicPortPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.dynamic_port_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -204,7 +213,7 @@ class DynamicPortPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.dynamic_port_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "policy", [])
@@ -250,9 +259,10 @@ class DynamicPortPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fortilink_references(client)
-        all_errors.extend(errors)        errors = await self.validate_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_policy_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -274,5 +284,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.995193Z
+# Generated: 2026-01-14T22:43:37.366905Z
 # ============================================================================

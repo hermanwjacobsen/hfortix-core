@@ -42,7 +42,7 @@ class ApiUserTrusthost(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
-    type: Literal["ipv4-trusthost", "ipv6-trusthost"] | None = Field(default="ipv4-trusthost", description="Trusthost type.")
+    type_: Literal["ipv4-trusthost", "ipv6-trusthost"] | None = Field(default="ipv4-trusthost", description="Trusthost type.")
     ipv4_trusthost: str | None = Field(default="0.0.0.0 0.0.0.0", description="IPv4 trusted host address.")
     ipv6_trusthost: str | None = Field(default="::/0", description="IPv6 trusted host address.")
 
@@ -62,7 +62,18 @@ class ApiUserModel(BaseModel):
 
     Configure API users.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comments: max_length=255 pattern=        - api_key: max_length=128 pattern=        - accprofile: max_length=35 pattern=        - vdom: pattern=        - schedule: max_length=35 pattern=        - cors_allow_origin: max_length=269 pattern=        - peer_auth: pattern=        - peer_group: max_length=35 pattern=        - trusthost: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comments: max_length=255 pattern=
+        - api_key: max_length=128 pattern=
+        - accprofile: max_length=35 pattern=
+        - vdom: pattern=
+        - schedule: max_length=35 pattern=
+        - cors_allow_origin: max_length=269 pattern=
+        - peer_auth: pattern=
+        - peer_group: max_length=35 pattern=
+        - trusthost: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -74,7 +85,17 @@ class ApiUserModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="User name.")    comments: str | None = Field(max_length=255, default=None, description="Comment.")    api_key: Any = Field(max_length=128, default=None, description="Admin user password.")    accprofile: str = Field(max_length=35, default="", description="Admin user access profile.")  # datasource: ['system.accprofile.name']    vdom: list[ApiUserVdom] = Field(default=None, description="Virtual domains.")    schedule: str | None = Field(max_length=35, default="", description="Schedule name.")    cors_allow_origin: str | None = Field(max_length=269, default="", description="Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.")    peer_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable peer authentication.")    peer_group: str = Field(max_length=35, default="", description="Peer group name.")    trusthost: list[ApiUserTrusthost] = Field(default=None, description="Trusthost.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="User name.")
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    api_key: Any = Field(max_length=128, default=None, description="Admin user password.")
+    accprofile: str = Field(max_length=35, default="", description="Admin user access profile.")  # datasource: ['system.accprofile.name']
+    vdom: list[ApiUserVdom] | None = Field(default=None, description="Virtual domains.")
+    schedule: str | None = Field(max_length=35, default="", description="Schedule name.")
+    cors_allow_origin: str | None = Field(max_length=269, default="", description="Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.")
+    peer_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable peer authentication.")
+    peer_group: str = Field(max_length=35, default="", description="Peer group name.")
+    trusthost: list[ApiUserTrusthost] | None = Field(default=None, description="Trusthost.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -153,7 +174,7 @@ class ApiUserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.api_user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "accprofile", None)
@@ -202,7 +223,7 @@ class ApiUserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.api_user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vdom", [])
@@ -248,9 +269,10 @@ class ApiUserModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_accprofile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vdom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vdom_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -272,5 +294,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.282729Z
+# Generated: 2026-01-14T22:43:37.716365Z
 # ============================================================================

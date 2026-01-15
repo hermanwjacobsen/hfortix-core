@@ -24,7 +24,7 @@ class LabelPayload(TypedDict, total=False):
         }
     """
     name: str  # Name of table containing the label. | MaxLen: 35
-    type: Literal["mpip", "fortidata"]  # Label type. | Default: mpip
+    type_: Literal["mpip", "fortidata"]  # Label type. | Default: mpip
     mpip_type: Literal["remote", "local"]  # MPIP label type. | Default: remote
     connector: str  # Name of SDN connector. | MaxLen: 35
     comment: str  # Optional comments. | MaxLen: 255
@@ -83,7 +83,7 @@ class LabelResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Name of table containing the label. | MaxLen: 35
-    type: Literal["mpip", "fortidata"]  # Label type. | Default: mpip
+    type_: Literal["mpip", "fortidata"]  # Label type. | Default: mpip
     mpip_type: Literal["remote", "local"]  # MPIP label type. | Default: remote
     connector: str  # Name of SDN connector. | MaxLen: 35
     comment: str  # Optional comments. | MaxLen: 255
@@ -101,7 +101,7 @@ class LabelObject:
     # Name of table containing the label. | MaxLen: 35
     name: str
     # Label type. | Default: mpip
-    type: Literal["mpip", "fortidata"]
+    type_: Literal["mpip", "fortidata"]
     # MPIP label type. | Default: remote
     mpip_type: Literal["remote", "local"]
     # Name of SDN connector. | MaxLen: 35
@@ -135,6 +135,10 @@ class Label:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -155,6 +159,7 @@ class Label:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LabelResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -172,6 +177,7 @@ class Label:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LabelResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -188,6 +194,7 @@ class Label:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LabelResponse]: ...
     
     # ================================================================
@@ -230,7 +237,7 @@ class Label:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LabelObject: ...
     
@@ -249,7 +256,7 @@ class Label:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LabelObject]: ...
     
@@ -349,23 +356,6 @@ class Label:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LabelObject | list[LabelObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -378,13 +368,14 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LabelObject: ...
@@ -394,7 +385,7 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -411,7 +402,7 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -427,27 +418,13 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LabelPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
-        mpip_type: Literal["remote", "local"] | None = ...,
-        connector: str | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -457,13 +434,14 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LabelObject: ...
@@ -473,7 +451,7 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -490,7 +468,7 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -506,27 +484,13 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LabelPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
-        mpip_type: Literal["remote", "local"] | None = ...,
-        connector: str | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -537,6 +501,7 @@ class Label:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LabelObject: ...
@@ -567,14 +532,7 @@ class Label:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -588,7 +546,7 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -609,8 +567,6 @@ class Label:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +594,10 @@ class LabelDictMode:
     By default returns LabelResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LabelObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -742,7 +702,7 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -759,7 +719,7 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -776,21 +736,23 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -805,7 +767,7 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -822,7 +784,7 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -839,21 +801,23 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -890,10 +854,12 @@ class LabelDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -912,7 +878,7 @@ class LabelDictMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -932,8 +898,6 @@ class LabelDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -957,6 +921,10 @@ class LabelObjectMode:
     By default returns LabelObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LabelResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1061,7 +1029,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1078,7 +1046,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1095,7 +1063,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1112,21 +1080,23 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LabelObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1141,7 +1111,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1158,7 +1128,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1175,7 +1145,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1192,21 +1162,23 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LabelObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1254,10 +1226,12 @@ class LabelObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LabelObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1276,7 +1250,7 @@ class LabelObjectMode:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
+        type_: Literal["mpip", "fortidata"] | None = ...,
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
@@ -1296,8 +1270,6 @@ class LabelObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

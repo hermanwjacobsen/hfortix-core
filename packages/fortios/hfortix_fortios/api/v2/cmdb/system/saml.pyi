@@ -190,7 +190,6 @@ class SamlObject:
     service_providers: list[SamlServiceprovidersObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -212,6 +211,10 @@ class Saml:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -232,6 +235,7 @@ class Saml:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SamlResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -249,6 +253,7 @@ class Saml:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SamlResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -265,6 +270,7 @@ class Saml:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SamlResponse: ...
     
     # ================================================================
@@ -307,7 +313,7 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SamlObject: ...
     
@@ -326,7 +332,7 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SamlObject: ...
     
@@ -426,23 +432,6 @@ class Saml:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SamlObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -475,6 +464,7 @@ class Saml:
         service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SamlObject: ...
@@ -562,34 +552,7 @@ class Saml:
         life: int | None = ...,
         service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        role: Literal["identity-provider", "service-provider"] | None = ...,
-        default_login_page: Literal["normal", "sso"] | None = ...,
-        default_profile: str | None = ...,
-        cert: str | None = ...,
-        binding_protocol: Literal["post", "redirect"] | None = ...,
-        portal_url: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        server_address: str | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        tolerance: int | None = ...,
-        life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -637,8 +600,6 @@ class Saml:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -666,6 +627,10 @@ class SamlDictMode:
     By default returns SamlResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SamlObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -850,10 +815,12 @@ class SamlDictMode:
         life: int | None = ...,
         service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SamlPayload | None = ...,
@@ -925,8 +892,6 @@ class SamlDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -950,6 +915,10 @@ class SamlObjectMode:
     By default returns SamlObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SamlResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1164,10 +1133,12 @@ class SamlObjectMode:
         life: int | None = ...,
         service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SamlObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SamlPayload | None = ...,
@@ -1239,8 +1210,6 @@ class SamlObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

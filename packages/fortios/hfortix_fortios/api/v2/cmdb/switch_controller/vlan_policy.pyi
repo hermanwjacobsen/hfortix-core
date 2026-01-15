@@ -165,6 +165,10 @@ class VlanPolicy:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -185,6 +189,7 @@ class VlanPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VlanPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -202,6 +207,7 @@ class VlanPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VlanPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -218,6 +224,7 @@ class VlanPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VlanPolicyResponse]: ...
     
     # ================================================================
@@ -260,7 +267,7 @@ class VlanPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
     
@@ -279,7 +286,7 @@ class VlanPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VlanPolicyObject]: ...
     
@@ -379,23 +386,6 @@ class VlanPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VlanPolicyObject | list[VlanPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -417,6 +407,7 @@ class VlanPolicy:
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
@@ -471,23 +462,7 @@ class VlanPolicy:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[dict[str, Any]] | None = ...,
-        untagged_vlans: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -506,6 +481,7 @@ class VlanPolicy:
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
@@ -560,23 +536,7 @@ class VlanPolicy:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[dict[str, Any]] | None = ...,
-        untagged_vlans: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -587,6 +547,7 @@ class VlanPolicy:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
@@ -617,14 +578,7 @@ class VlanPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -661,8 +615,6 @@ class VlanPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -690,6 +642,10 @@ class VlanPolicyDictMode:
     By default returns VlanPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VlanPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -840,10 +796,12 @@ class VlanPolicyDictMode:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -911,10 +869,12 @@ class VlanPolicyDictMode:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -958,10 +918,12 @@ class VlanPolicyDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1002,8 +964,6 @@ class VlanPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1027,6 +987,10 @@ class VlanPolicyObjectMode:
     By default returns VlanPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VlanPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1196,10 +1160,12 @@ class VlanPolicyObjectMode:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -1286,10 +1252,12 @@ class VlanPolicyObjectMode:
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -1344,10 +1312,12 @@ class VlanPolicyObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VlanPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1388,8 +1358,6 @@ class VlanPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

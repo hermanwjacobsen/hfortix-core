@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -35,7 +35,7 @@ class SslServerSslCert(BaseModel):
 # ============================================================================
 
 
-class SslServerSsl_dh_bitsEnum(str, Enum):
+class SslServerSslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
     VALUE_768 = "768"
     VALUE_1024 = "1024"
@@ -43,7 +43,7 @@ class SslServerSsl_dh_bitsEnum(str, Enum):
     VALUE_2048 = "2048"
 
 
-class SslServerSsl_min_versionEnum(str, Enum):
+class SslServerSslMinVersionEnum(str, Enum):
     """Allowed values for ssl_min_version field."""
     TLS_1_0 = "tls-1.0"
     TLS_1_1 = "tls-1.1"
@@ -51,7 +51,7 @@ class SslServerSsl_min_versionEnum(str, Enum):
     TLS_1_3 = "tls-1.3"
 
 
-class SslServerSsl_max_versionEnum(str, Enum):
+class SslServerSslMaxVersionEnum(str, Enum):
     """Allowed values for ssl_max_version field."""
     TLS_1_0 = "tls-1.0"
     TLS_1_1 = "tls-1.1"
@@ -70,7 +70,22 @@ class SslServerModel(BaseModel):
 
     Configure SSL servers.
 
-    Validation Rules:        - name: max_length=35 pattern=        - ip: pattern=        - port: min=1 max=65535 pattern=        - ssl_mode: pattern=        - add_header_x_forwarded_proto: pattern=        - mapped_port: min=1 max=65535 pattern=        - ssl_cert: pattern=        - ssl_dh_bits: pattern=        - ssl_algorithm: pattern=        - ssl_client_renegotiation: pattern=        - ssl_min_version: pattern=        - ssl_max_version: pattern=        - ssl_send_empty_frags: pattern=        - url_rewrite: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - ip: pattern=
+        - port: min=1 max=65535 pattern=
+        - ssl_mode: pattern=
+        - add_header_x_forwarded_proto: pattern=
+        - mapped_port: min=1 max=65535 pattern=
+        - ssl_cert: pattern=
+        - ssl_dh_bits: pattern=
+        - ssl_algorithm: pattern=
+        - ssl_client_renegotiation: pattern=
+        - ssl_min_version: pattern=
+        - ssl_max_version: pattern=
+        - ssl_send_empty_frags: pattern=
+        - url_rewrite: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -82,7 +97,21 @@ class SslServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Server name.")    ip: str = Field(default="0.0.0.0", description="IPv4 address of the SSL server.")    port: int = Field(ge=1, le=65535, default=443, description="Server service port (1 - 65535, default = 443).")    ssl_mode: Literal["half", "full"] | None = Field(default="full", description="SSL/TLS mode for encryption and decryption of traffic.")    add_header_x_forwarded_proto: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable adding an X-Forwarded-Proto header to forwarded requests.")    mapped_port: int = Field(ge=1, le=65535, default=80, description="Mapped server service port (1 - 65535, default = 80).")    ssl_cert: list[SslServerSslCert] = Field(default=None, description="List of certificate names to use for SSL connections to this server. (default = \"Fortinet_SSL\").")    ssl_dh_bits: SslServerSslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")    ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="allow", description="Allow or block client renegotiation by server.")    ssl_min_version: SslServerSslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")    ssl_max_version: SslServerSslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")    ssl_send_empty_frags: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending empty fragments to avoid attack on CBC IV.")    url_rewrite: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable rewriting the URL.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Server name.")
+    ip: str = Field(default="0.0.0.0", description="IPv4 address of the SSL server.")
+    port: int = Field(ge=1, le=65535, default=443, description="Server service port (1 - 65535, default = 443).")
+    ssl_mode: Literal["half", "full"] | None = Field(default="full", description="SSL/TLS mode for encryption and decryption of traffic.")
+    add_header_x_forwarded_proto: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable adding an X-Forwarded-Proto header to forwarded requests.")
+    mapped_port: int = Field(ge=1, le=65535, default=80, description="Mapped server service port (1 - 65535, default = 80).")
+    ssl_cert: list[SslServerSslCert] | None = Field(default=None, description="List of certificate names to use for SSL connections to this server. (default = \"Fortinet_SSL\").")
+    ssl_dh_bits: str | SslServerSslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")
+    ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")
+    ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="allow", description="Allow or block client renegotiation by server.")
+    ssl_min_version: str | SslServerSslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")
+    ssl_max_version: str | SslServerSslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")
+    ssl_send_empty_frags: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending empty fragments to avoid attack on CBC IV.")
+    url_rewrite: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable rewriting the URL.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -146,7 +175,7 @@ class SslServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ssl_cert", [])
@@ -192,7 +221,7 @@ class SslServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_cert_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -215,5 +244,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.932865Z
+# Generated: 2026-01-14T22:43:34.861636Z
 # ============================================================================

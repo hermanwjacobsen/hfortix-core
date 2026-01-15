@@ -95,7 +95,6 @@ class SysinfoObject:
     non_mgmt_vdom_query: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -117,6 +116,10 @@ class Sysinfo:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -137,6 +140,7 @@ class Sysinfo:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SysinfoResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -154,6 +158,7 @@ class Sysinfo:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SysinfoResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -170,6 +175,7 @@ class Sysinfo:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SysinfoResponse: ...
     
     # ================================================================
@@ -212,7 +218,7 @@ class Sysinfo:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SysinfoObject: ...
     
@@ -231,7 +237,7 @@ class Sysinfo:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SysinfoObject: ...
     
@@ -331,23 +337,6 @@ class Sysinfo:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SysinfoObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -374,6 +363,7 @@ class Sysinfo:
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SysinfoObject: ...
@@ -443,28 +433,7 @@ class Sysinfo:
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SysinfoPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        engine_id_type: Literal["text", "hex", "mac"] | None = ...,
-        engine_id: str | None = ...,
-        description: str | None = ...,
-        contact_info: str | None = ...,
-        location: str | None = ...,
-        trap_high_cpu_threshold: int | None = ...,
-        trap_low_memory_threshold: int | None = ...,
-        trap_log_full_threshold: int | None = ...,
-        trap_free_memory_threshold: int | None = ...,
-        trap_freeable_memory_threshold: int | None = ...,
-        append_index: Literal["enable", "disable"] | None = ...,
-        non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -506,8 +475,6 @@ class Sysinfo:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -535,6 +502,10 @@ class SysinfoDictMode:
     By default returns SysinfoResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SysinfoObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -701,10 +672,12 @@ class SysinfoDictMode:
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SysinfoPayload | None = ...,
@@ -764,8 +737,6 @@ class SysinfoDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -789,6 +760,10 @@ class SysinfoObjectMode:
     By default returns SysinfoObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SysinfoResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -979,10 +954,12 @@ class SysinfoObjectMode:
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SysinfoObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SysinfoPayload | None = ...,
@@ -1042,8 +1019,6 @@ class SysinfoObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

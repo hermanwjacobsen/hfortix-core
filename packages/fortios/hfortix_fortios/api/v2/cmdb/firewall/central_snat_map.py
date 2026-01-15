@@ -283,7 +283,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         policyid: int | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["ipv4", "ipv6"] | None = None,
+        type_: Literal["ipv4", "ipv6"] | None = None,
         srcintf: str | list[str] | list[dict[str, Any]] | None = None,
         dstintf: str | list[str] | list[dict[str, Any]] | None = None,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
@@ -317,7 +317,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid: Policy ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable the active status of this policy.
-            type: IPv4/IPv6 source NAT.
+            type_: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -478,7 +478,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid=policyid,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             srcintf=srcintf,
             dstintf=dstintf,
             orig_addr=orig_addr,
@@ -530,7 +530,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         policyid: int | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["ipv4", "ipv6"] | None = None,
+        type_: Literal["ipv4", "ipv6"] | None = None,
         srcintf: str | list[str] | list[dict[str, Any]] | None = None,
         dstintf: str | list[str] | list[dict[str, Any]] | None = None,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
@@ -564,7 +564,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid: Policy ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable the active status of this policy.
-            type: IPv4/IPv6 source NAT.
+            type_: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -727,7 +727,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid=policyid,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             srcintf=srcintf,
             dstintf=dstintf,
             orig_addr=orig_addr,
@@ -879,7 +879,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         policyid: int | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["ipv4", "ipv6"] | None = None,
+        type_: Literal["ipv4", "ipv6"] | None = None,
         srcintf: str | list[str] | list[dict[str, Any]] | None = None,
         dstintf: str | list[str] | list[dict[str, Any]] | None = None,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
@@ -914,7 +914,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid: Field policyid
             uuid: Field uuid
             status: Field status
-            type: Field type
+            type_: Field type
             srcintf: Field srcintf
             dstintf: Field dstintf
             orig_addr: Field orig-addr
@@ -979,7 +979,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             policyid=policyid,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             srcintf=srcintf,
             dstintf=dstintf,
             orig_addr=orig_addr,

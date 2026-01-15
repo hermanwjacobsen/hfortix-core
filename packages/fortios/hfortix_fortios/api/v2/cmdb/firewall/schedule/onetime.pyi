@@ -19,7 +19,7 @@ class OnetimePayload(TypedDict, total=False):
         }
     """
     name: str  # Onetime schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     start: str  # Schedule start date and time, format hh:mm yyyy/mm
     start_utc: str  # Schedule start date and time, in epoch format.
     end: str  # Schedule end date and time, format hh:mm yyyy/mm/d
@@ -41,7 +41,7 @@ class OnetimeResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Onetime schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     start: str  # Schedule start date and time, format hh:mm yyyy/mm
     start_utc: str  # Schedule start date and time, in epoch format.
     end: str  # Schedule end date and time, format hh:mm yyyy/mm/d
@@ -61,7 +61,7 @@ class OnetimeObject:
     
     # Onetime schedule name. | MaxLen: 31
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Schedule start date and time, format hh:mm yyyy/mm/dd.
     start: str
@@ -102,6 +102,10 @@ class Onetime:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -122,6 +126,7 @@ class Onetime:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OnetimeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -139,6 +144,7 @@ class Onetime:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OnetimeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -155,6 +161,7 @@ class Onetime:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[OnetimeResponse]: ...
     
     # ================================================================
@@ -197,7 +204,7 @@ class Onetime:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OnetimeObject: ...
     
@@ -216,7 +223,7 @@ class Onetime:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[OnetimeObject]: ...
     
@@ -316,23 +323,6 @@ class Onetime:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OnetimeObject | list[OnetimeObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -355,6 +345,7 @@ class Onetime:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnetimeObject: ...
@@ -412,24 +403,7 @@ class Onetime:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -449,6 +423,7 @@ class Onetime:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnetimeObject: ...
@@ -506,24 +481,7 @@ class Onetime:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +492,7 @@ class Onetime:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnetimeObject: ...
@@ -564,14 +523,7 @@ class Onetime:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -609,8 +561,6 @@ class Onetime:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +588,10 @@ class OnetimeDictMode:
     By default returns OnetimeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OnetimeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -791,10 +745,12 @@ class OnetimeDictMode:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -866,10 +822,12 @@ class OnetimeDictMode:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -914,10 +872,12 @@ class OnetimeDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -959,8 +919,6 @@ class OnetimeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +942,10 @@ class OnetimeObjectMode:
     By default returns OnetimeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OnetimeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1157,10 +1119,12 @@ class OnetimeObjectMode:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnetimeObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -1252,10 +1216,12 @@ class OnetimeObjectMode:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnetimeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -1311,10 +1277,12 @@ class OnetimeObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnetimeObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1356,8 +1324,6 @@ class OnetimeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

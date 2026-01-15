@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .link_monitor_metrics import LinkMonitorMetricsDictMode, LinkMonitorMetricsObjectMode
+    from .link_monitor_metrics import LinkMonitorMetrics, LinkMonitorMetricsDictMode, LinkMonitorMetricsObjectMode
 
 __all__ = [
     "SdwanDictMode",

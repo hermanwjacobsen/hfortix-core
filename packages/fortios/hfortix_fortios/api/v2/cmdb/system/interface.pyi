@@ -122,7 +122,7 @@ class InterfacePayload(TypedDict, total=False):
     status: Literal["up", "down"]  # Bring the interface up or shut the interface down. | Default: up
     netbios_forward: Literal["disable", "enable"]  # Enable/disable NETBIOS forwarding. | Default: disable
     wins_ip: str  # WINS server IP. | Default: 0.0.0.0
-    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
+    type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
     dedicated_to: Literal["none", "management"]  # Configure interface for single purpose. | Default: none
     trust_ip_1: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
     trust_ip_2: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
@@ -266,7 +266,7 @@ class InterfaceClientoptionsItem(TypedDict):
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
     code: int  # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
-    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP client option type. | Default: hex
+    type_: Literal["hex", "string", "ip", "fqdn"]  # DHCP client option type. | Default: hex
     value: str  # DHCP client option value. | MaxLen: 312
     ip: str  # DHCP option IPs.
 
@@ -380,7 +380,7 @@ class InterfaceClientoptionsObject:
     # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
     code: int
     # DHCP client option type. | Default: hex
-    type: Literal["hex", "string", "ip", "fqdn"]
+    type_: Literal["hex", "string", "ip", "fqdn"]
     # DHCP client option value. | MaxLen: 312
     value: str
     # DHCP option IPs.
@@ -689,7 +689,7 @@ class InterfaceResponse(TypedDict):
     status: Literal["up", "down"]  # Bring the interface up or shut the interface down. | Default: up
     netbios_forward: Literal["disable", "enable"]  # Enable/disable NETBIOS forwarding. | Default: disable
     wins_ip: str  # WINS server IP. | Default: 0.0.0.0
-    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
+    type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
     dedicated_to: Literal["none", "management"]  # Configure interface for single purpose. | Default: none
     trust_ip_1: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
     trust_ip_2: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
@@ -1012,7 +1012,7 @@ class InterfaceObject:
     # WINS server IP. | Default: 0.0.0.0
     wins_ip: str
     # Interface type. | Default: vlan
-    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]
+    type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]
     # Configure interface for single purpose. | Default: none
     dedicated_to: Literal["none", "management"]
     # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
@@ -1277,9 +1277,7 @@ class InterfaceObject:
     physical: str
     
     # Common API response fields
-    status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -1299,6 +1297,10 @@ class Interface:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -1320,6 +1322,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterfaceResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -1337,6 +1340,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterfaceResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -1353,6 +1357,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InterfaceResponse]: ...
     
     # ================================================================
@@ -1395,7 +1400,7 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
@@ -1414,7 +1419,7 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InterfaceObject]: ...
     
@@ -1513,23 +1518,6 @@ class Interface:
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InterfaceObject | list[InterfaceObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
@@ -1631,7 +1619,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -1765,6 +1753,7 @@ class Interface:
         physical: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
@@ -1862,7 +1851,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -2094,7 +2083,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -2325,7 +2314,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -2458,236 +2447,7 @@ class Interface:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InterfacePayload | None = ...,
-        name: str | None = ...,
-        vrf: int | None = ...,
-        cli_conn_status: int | None = ...,
-        fortilink: Literal["enable", "disable"] | None = ...,
-        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
-        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_relay_interface: str | None = ...,
-        dhcp_relay_vrf_select: int | None = ...,
-        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_ip: str | list[str] | None = ...,
-        dhcp_relay_source_ip: str | None = ...,
-        dhcp_relay_circuit_id: str | None = ...,
-        dhcp_relay_link_selection: str | None = ...,
-        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
-        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
-        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
-        management_ip: str | None = ...,
-        ip: str | None = ...,
-        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
-        gwdetect: Literal["enable", "disable"] | None = ...,
-        ping_serv_status: int | None = ...,
-        detectserver: str | None = ...,
-        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
-        ha_priority: int | None = ...,
-        fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
-        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
-        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_client_identifier: str | None = ...,
-        dhcp_renew_time: int | None = ...,
-        ipunnumbered: str | None = ...,
-        username: str | None = ...,
-        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
-        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        idle_timeout: int | None = ...,
-        multilink: Literal["enable", "disable"] | None = ...,
-        mrru: int | None = ...,
-        detected_peer_mtu: int | None = ...,
-        disc_retry_timeout: int | None = ...,
-        padt_retry_timeout: int | None = ...,
-        service_name: str | None = ...,
-        ac_name: str | None = ...,
-        lcp_echo_interval: int | None = ...,
-        lcp_max_echo_fails: int | None = ...,
-        defaultgw: Literal["enable", "disable"] | None = ...,
-        dns_server_override: Literal["enable", "disable"] | None = ...,
-        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
-        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
-        pptp_client: Literal["enable", "disable"] | None = ...,
-        pptp_user: str | None = ...,
-        pptp_password: str | None = ...,
-        pptp_server_ip: str | None = ...,
-        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
-        pptp_timeout: int | None = ...,
-        arpforward: Literal["enable", "disable"] | None = ...,
-        ndiscforward: Literal["enable", "disable"] | None = ...,
-        broadcast_forward: Literal["enable", "disable"] | None = ...,
-        bfd: Literal["global", "enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        l2forward: Literal["enable", "disable"] | None = ...,
-        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
-        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
-        reachable_time: int | None = ...,
-        vlanforward: Literal["enable", "disable"] | None = ...,
-        stpforward: Literal["enable", "disable"] | None = ...,
-        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
-        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
-        ident_accept: Literal["enable", "disable"] | None = ...,
-        ipmac: Literal["enable", "disable"] | None = ...,
-        subst: Literal["enable", "disable"] | None = ...,
-        macaddr: str | None = ...,
-        virtual_mac: str | None = ...,
-        substitute_dst_mac: str | None = ...,
-        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
-        status: Literal["up", "down"] | None = ...,
-        netbios_forward: Literal["disable", "enable"] | None = ...,
-        wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
-        dedicated_to: Literal["none", "management"] | None = ...,
-        trust_ip_1: str | None = ...,
-        trust_ip_2: str | None = ...,
-        trust_ip_3: str | None = ...,
-        trust_ip6_1: str | None = ...,
-        trust_ip6_2: str | None = ...,
-        trust_ip6_3: str | None = ...,
-        ring_rx: int | None = ...,
-        ring_tx: int | None = ...,
-        wccp: Literal["enable", "disable"] | None = ...,
-        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
-        netflow_sample_rate: int | None = ...,
-        netflow_sampler_id: int | None = ...,
-        sflow_sampler: Literal["enable", "disable"] | None = ...,
-        drop_fragment: Literal["enable", "disable"] | None = ...,
-        src_check: Literal["enable", "disable"] | None = ...,
-        sample_rate: int | None = ...,
-        polling_interval: int | None = ...,
-        sample_direction: Literal["tx", "rx", "both"] | None = ...,
-        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
-        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
-        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
-        tcp_mss: int | None = ...,
-        inbandwidth: int | None = ...,
-        outbandwidth: int | None = ...,
-        egress_shaping_profile: str | None = ...,
-        ingress_shaping_profile: str | None = ...,
-        spillover_threshold: int | None = ...,
-        ingress_spillover_threshold: int | None = ...,
-        weight: int | None = ...,
-        interface: str | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        mtu_override: Literal["enable", "disable"] | None = ...,
-        mtu: int | None = ...,
-        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
-        vlanid: int | None = ...,
-        forward_domain: int | None = ...,
-        remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        lacp_mode: Literal["static", "passive", "active"] | None = ...,
-        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
-        system_id_type: Literal["auto", "user"] | None = ...,
-        system_id: str | None = ...,
-        lacp_speed: Literal["slow", "fast"] | None = ...,
-        min_links: int | None = ...,
-        min_links_down: Literal["operational", "administrative"] | None = ...,
-        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
-        link_up_delay: int | None = ...,
-        aggregate_type: Literal["physical", "vxlan"] | None = ...,
-        priority_override: Literal["enable", "disable"] | None = ...,
-        aggregate: str | None = ...,
-        redundant_interface: str | None = ...,
-        devindex: int | None = ...,
-        vindex: int | None = ...,
-        switch: str | None = ...,
-        description: str | None = ...,
-        alias: str | None = ...,
-        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
-        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
-        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
-        security_external_web: str | None = ...,
-        security_external_logout: str | None = ...,
-        replacemsg_override_group: str | None = ...,
-        security_redirect_url: str | None = ...,
-        auth_cert: str | None = ...,
-        auth_portal_addr: str | None = ...,
-        security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        ike_saml_server: str | None = ...,
-        device_identification: Literal["enable", "disable"] | None = ...,
-        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
-        device_user_identification: Literal["enable", "disable"] | None = ...,
-        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
-        lldp_network_policy: str | None = ...,
-        estimated_upstream_bandwidth: int | None = ...,
-        estimated_downstream_bandwidth: int | None = ...,
-        measured_upstream_bandwidth: int | None = ...,
-        measured_downstream_bandwidth: int | None = ...,
-        bandwidth_measure_time: int | None = ...,
-        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
-        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
-        phy_setting: str | None = ...,
-        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
-        snmp_index: int | None = ...,
-        secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
-        preserve_session_route: Literal["enable", "disable"] | None = ...,
-        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
-        ap_discover: Literal["enable", "disable"] | None = ...,
-        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
-        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
-        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
-        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
-        internal: int | None = ...,
-        fortilink_backup_link: int | None = ...,
-        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
-        switch_controller_traffic_policy: str | None = ...,
-        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
-        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
-        switch_controller_mgmt_vlan: int | None = ...,
-        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
-        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
-        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
-        switch_controller_learning_limit: int | None = ...,
-        switch_controller_nac: str | None = ...,
-        switch_controller_dynamic: str | None = ...,
-        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
-        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
-        switch_controller_offload: Literal["enable", "disable"] | None = ...,
-        switch_controller_offload_ip: str | None = ...,
-        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
-        swc_vlan: int | None = ...,
-        swc_first_create: int | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        eap_supplicant: Literal["enable", "disable"] | None = ...,
-        eap_method: Literal["tls", "peap"] | None = ...,
-        eap_identity: str | None = ...,
-        eap_password: str | None = ...,
-        eap_ca_cert: str | None = ...,
-        eap_user_cert: str | None = ...,
-        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        ipv6: str | None = ...,
-        physical: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2785,7 +2545,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -2919,6 +2679,7 @@ class Interface:
         physical: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
@@ -3016,7 +2777,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -3248,7 +3009,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -3479,7 +3240,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -3612,236 +3373,7 @@ class Interface:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InterfacePayload | None = ...,
-        name: str | None = ...,
-        vrf: int | None = ...,
-        cli_conn_status: int | None = ...,
-        fortilink: Literal["enable", "disable"] | None = ...,
-        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
-        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_relay_interface: str | None = ...,
-        dhcp_relay_vrf_select: int | None = ...,
-        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_ip: str | list[str] | None = ...,
-        dhcp_relay_source_ip: str | None = ...,
-        dhcp_relay_circuit_id: str | None = ...,
-        dhcp_relay_link_selection: str | None = ...,
-        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
-        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
-        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
-        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
-        management_ip: str | None = ...,
-        ip: str | None = ...,
-        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
-        gwdetect: Literal["enable", "disable"] | None = ...,
-        ping_serv_status: int | None = ...,
-        detectserver: str | None = ...,
-        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
-        ha_priority: int | None = ...,
-        fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
-        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
-        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_client_identifier: str | None = ...,
-        dhcp_renew_time: int | None = ...,
-        ipunnumbered: str | None = ...,
-        username: str | None = ...,
-        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
-        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        idle_timeout: int | None = ...,
-        multilink: Literal["enable", "disable"] | None = ...,
-        mrru: int | None = ...,
-        detected_peer_mtu: int | None = ...,
-        disc_retry_timeout: int | None = ...,
-        padt_retry_timeout: int | None = ...,
-        service_name: str | None = ...,
-        ac_name: str | None = ...,
-        lcp_echo_interval: int | None = ...,
-        lcp_max_echo_fails: int | None = ...,
-        defaultgw: Literal["enable", "disable"] | None = ...,
-        dns_server_override: Literal["enable", "disable"] | None = ...,
-        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
-        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
-        pptp_client: Literal["enable", "disable"] | None = ...,
-        pptp_user: str | None = ...,
-        pptp_password: str | None = ...,
-        pptp_server_ip: str | None = ...,
-        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
-        pptp_timeout: int | None = ...,
-        arpforward: Literal["enable", "disable"] | None = ...,
-        ndiscforward: Literal["enable", "disable"] | None = ...,
-        broadcast_forward: Literal["enable", "disable"] | None = ...,
-        bfd: Literal["global", "enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        l2forward: Literal["enable", "disable"] | None = ...,
-        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
-        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
-        reachable_time: int | None = ...,
-        vlanforward: Literal["enable", "disable"] | None = ...,
-        stpforward: Literal["enable", "disable"] | None = ...,
-        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
-        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
-        ident_accept: Literal["enable", "disable"] | None = ...,
-        ipmac: Literal["enable", "disable"] | None = ...,
-        subst: Literal["enable", "disable"] | None = ...,
-        macaddr: str | None = ...,
-        virtual_mac: str | None = ...,
-        substitute_dst_mac: str | None = ...,
-        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
-        status: Literal["up", "down"] | None = ...,
-        netbios_forward: Literal["disable", "enable"] | None = ...,
-        wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
-        dedicated_to: Literal["none", "management"] | None = ...,
-        trust_ip_1: str | None = ...,
-        trust_ip_2: str | None = ...,
-        trust_ip_3: str | None = ...,
-        trust_ip6_1: str | None = ...,
-        trust_ip6_2: str | None = ...,
-        trust_ip6_3: str | None = ...,
-        ring_rx: int | None = ...,
-        ring_tx: int | None = ...,
-        wccp: Literal["enable", "disable"] | None = ...,
-        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
-        netflow_sample_rate: int | None = ...,
-        netflow_sampler_id: int | None = ...,
-        sflow_sampler: Literal["enable", "disable"] | None = ...,
-        drop_fragment: Literal["enable", "disable"] | None = ...,
-        src_check: Literal["enable", "disable"] | None = ...,
-        sample_rate: int | None = ...,
-        polling_interval: int | None = ...,
-        sample_direction: Literal["tx", "rx", "both"] | None = ...,
-        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
-        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
-        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
-        tcp_mss: int | None = ...,
-        inbandwidth: int | None = ...,
-        outbandwidth: int | None = ...,
-        egress_shaping_profile: str | None = ...,
-        ingress_shaping_profile: str | None = ...,
-        spillover_threshold: int | None = ...,
-        ingress_spillover_threshold: int | None = ...,
-        weight: int | None = ...,
-        interface: str | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        mtu_override: Literal["enable", "disable"] | None = ...,
-        mtu: int | None = ...,
-        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
-        vlanid: int | None = ...,
-        forward_domain: int | None = ...,
-        remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        lacp_mode: Literal["static", "passive", "active"] | None = ...,
-        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
-        system_id_type: Literal["auto", "user"] | None = ...,
-        system_id: str | None = ...,
-        lacp_speed: Literal["slow", "fast"] | None = ...,
-        min_links: int | None = ...,
-        min_links_down: Literal["operational", "administrative"] | None = ...,
-        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
-        link_up_delay: int | None = ...,
-        aggregate_type: Literal["physical", "vxlan"] | None = ...,
-        priority_override: Literal["enable", "disable"] | None = ...,
-        aggregate: str | None = ...,
-        redundant_interface: str | None = ...,
-        devindex: int | None = ...,
-        vindex: int | None = ...,
-        switch: str | None = ...,
-        description: str | None = ...,
-        alias: str | None = ...,
-        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
-        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
-        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
-        security_external_web: str | None = ...,
-        security_external_logout: str | None = ...,
-        replacemsg_override_group: str | None = ...,
-        security_redirect_url: str | None = ...,
-        auth_cert: str | None = ...,
-        auth_portal_addr: str | None = ...,
-        security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        ike_saml_server: str | None = ...,
-        device_identification: Literal["enable", "disable"] | None = ...,
-        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
-        device_user_identification: Literal["enable", "disable"] | None = ...,
-        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
-        lldp_network_policy: str | None = ...,
-        estimated_upstream_bandwidth: int | None = ...,
-        estimated_downstream_bandwidth: int | None = ...,
-        measured_upstream_bandwidth: int | None = ...,
-        measured_downstream_bandwidth: int | None = ...,
-        bandwidth_measure_time: int | None = ...,
-        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
-        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
-        phy_setting: str | None = ...,
-        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
-        snmp_index: int | None = ...,
-        secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
-        preserve_session_route: Literal["enable", "disable"] | None = ...,
-        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
-        ap_discover: Literal["enable", "disable"] | None = ...,
-        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
-        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
-        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
-        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
-        internal: int | None = ...,
-        fortilink_backup_link: int | None = ...,
-        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
-        switch_controller_traffic_policy: str | None = ...,
-        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
-        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
-        switch_controller_mgmt_vlan: int | None = ...,
-        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
-        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
-        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
-        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
-        switch_controller_learning_limit: int | None = ...,
-        switch_controller_nac: str | None = ...,
-        switch_controller_dynamic: str | None = ...,
-        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
-        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
-        switch_controller_offload: Literal["enable", "disable"] | None = ...,
-        switch_controller_offload_ip: str | None = ...,
-        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
-        swc_vlan: int | None = ...,
-        swc_first_create: int | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        eap_supplicant: Literal["enable", "disable"] | None = ...,
-        eap_method: Literal["tls", "peap"] | None = ...,
-        eap_identity: str | None = ...,
-        eap_password: str | None = ...,
-        eap_ca_cert: str | None = ...,
-        eap_user_cert: str | None = ...,
-        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        ipv6: str | None = ...,
-        physical: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -3852,6 +3384,7 @@ class Interface:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
@@ -3882,14 +3415,7 @@ class Interface:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -3991,7 +3517,7 @@ class Interface:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -4139,8 +3665,6 @@ class Interface:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -4168,6 +3692,10 @@ class InterfaceDictMode:
     By default returns InterfaceResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InterfaceObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -4360,7 +3888,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -4592,7 +4120,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -4824,7 +4352,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -4957,10 +4485,12 @@ class InterfaceDictMode:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InterfacePayload | None = ...,
@@ -5053,7 +4583,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -5283,7 +4813,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -5515,7 +5045,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -5747,7 +5277,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -5880,10 +5410,12 @@ class InterfaceDictMode:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InterfacePayload | None = ...,
@@ -5976,7 +5508,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -6140,10 +5672,12 @@ class InterfaceDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -6250,7 +5784,7 @@ class InterfaceDictMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -6397,8 +5931,6 @@ class InterfaceDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -6422,6 +5954,10 @@ class InterfaceObjectMode:
     By default returns InterfaceObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InterfaceResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -6614,7 +6150,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -6846,7 +6382,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -7078,7 +6614,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -7310,7 +6846,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -7443,10 +6979,12 @@ class InterfaceObjectMode:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InterfacePayload | None = ...,
@@ -7539,7 +7077,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -7769,7 +7307,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -8001,7 +7539,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -8233,7 +7771,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -8465,7 +8003,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -8598,10 +8136,12 @@ class InterfaceObjectMode:
         ipv6: str | None = ...,
         physical: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InterfacePayload | None = ...,
@@ -8694,7 +8234,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -8869,10 +8409,12 @@ class InterfaceObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -8979,7 +8521,7 @@ class InterfaceObjectMode:
         status: Literal["up", "down"] | None = ...,
         netbios_forward: Literal["disable", "enable"] | None = ...,
         wins_ip: str | None = ...,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
         dedicated_to: Literal["none", "management"] | None = ...,
         trust_ip_1: str | None = ...,
         trust_ip_2: str | None = ...,
@@ -9126,8 +8668,6 @@ class InterfaceObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

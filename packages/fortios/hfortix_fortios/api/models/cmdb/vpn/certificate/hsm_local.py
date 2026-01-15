@@ -35,7 +35,7 @@ class HsmLocalDetails(BaseModel):
 # ============================================================================
 
 
-class HsmLocalGch_cryptokey_algorithmEnum(str, Enum):
+class HsmLocalGchCryptokeyAlgorithmEnum(str, Enum):
     """Allowed values for gch_cryptokey_algorithm field."""
     RSA_SIGN_PKCS1_2048_SHA256 = "rsa-sign-pkcs1-2048-sha256"
     RSA_SIGN_PKCS1_3072_SHA256 = "rsa-sign-pkcs1-3072-sha256"
@@ -61,7 +61,24 @@ class HsmLocalModel(BaseModel):
 
     Local certificates whose keys are stored on HSM.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comments: max_length=511 pattern=        - vendor: pattern=        - api_version: pattern=        - certificate: pattern=        - range: pattern=        - source: pattern=        - gch_url: max_length=1024 pattern=        - gch_project: max_length=31 pattern=        - gch_location: max_length=63 pattern=        - gch_keyring: max_length=63 pattern=        - gch_cryptokey: max_length=63 pattern=        - gch_cryptokey_version: max_length=31 pattern=        - gch_cloud_service_name: max_length=35 pattern=        - gch_cryptokey_algorithm: pattern=        - details: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comments: max_length=511 pattern=
+        - vendor: pattern=
+        - api_version: pattern=
+        - certificate: pattern=
+        - range_: pattern=
+        - source: pattern=
+        - gch_url: max_length=1024 pattern=
+        - gch_project: max_length=31 pattern=
+        - gch_location: max_length=63 pattern=
+        - gch_keyring: max_length=63 pattern=
+        - gch_cryptokey: max_length=63 pattern=
+        - gch_cryptokey_version: max_length=31 pattern=
+        - gch_cloud_service_name: max_length=35 pattern=
+        - gch_cryptokey_algorithm: pattern=
+        - details: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -73,7 +90,23 @@ class HsmLocalModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Name.")    comments: str | None = Field(max_length=511, default="", description="Comment.")    vendor: Literal["unknown", "gch"] = Field(default="unknown", description="HSM vendor.")    api_version: Literal["unknown", "gch-default"] | None = Field(default="unknown", description="API version for communicating with HSM.")    certificate: str | None = Field(default="", description="PEM format certificate.")    range: Literal["global", "vdom"] | None = Field(default="vdom", description="Either a global or VDOM IP address range for the certificate.")    source: Literal["factory", "user", "bundle"] | None = Field(default="user", description="Certificate source type.")    gch_url: str | None = Field(max_length=1024, default="", description="Google Cloud HSM key URL (e.g. \"https://cloudkms.googleapis.com/v1/projects/sampleproject/locations/samplelocation/keyRings/samplekeyring/cryptoKeys/sampleKeyName/cryptoKeyVersions/1\").")    gch_project: str | None = Field(max_length=31, default="", description="Google Cloud HSM project ID.")    gch_location: str | None = Field(max_length=63, default="", description="Google Cloud HSM location.")    gch_keyring: str | None = Field(max_length=63, default="", description="Google Cloud HSM keyring.")    gch_cryptokey: str | None = Field(max_length=63, default="", description="Google Cloud HSM cryptokey.")    gch_cryptokey_version: str | None = Field(max_length=31, default="", description="Google Cloud HSM cryptokey version.")    gch_cloud_service_name: str | None = Field(max_length=35, default="", description="Cloud service config name to generate access token.")  # datasource: ['system.cloud-service.name']    gch_cryptokey_algorithm: HsmLocalGchCryptokeyAlgorithmEnum | None = Field(default="rsa-sign-pkcs1-2048-sha256", description="Google Cloud HSM cryptokey algorithm.")    details: list[HsmLocalDetails] = Field(default=None, description="Print hsm-local certificate detailed information.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Name.")
+    comments: str | None = Field(max_length=511, default="", description="Comment.")
+    vendor: Literal["unknown", "gch"] = Field(default="unknown", description="HSM vendor.")
+    api_version: Literal["unknown", "gch-default"] | None = Field(default="unknown", description="API version for communicating with HSM.")
+    certificate: str | None = Field(default="", description="PEM format certificate.")
+    range_: Literal["global", "vdom"] | None = Field(default="vdom", description="Either a global or VDOM IP address range for the certificate.")
+    source: Literal["factory", "user", "bundle"] | None = Field(default="user", description="Certificate source type.")
+    gch_url: str | None = Field(max_length=1024, default="", description="Google Cloud HSM key URL (e.g. \"https://cloudkms.googleapis.com/v1/projects/sampleproject/locations/samplelocation/keyRings/samplekeyring/cryptoKeys/sampleKeyName/cryptoKeyVersions/1\").")
+    gch_project: str | None = Field(max_length=31, default="", description="Google Cloud HSM project ID.")
+    gch_location: str | None = Field(max_length=63, default="", description="Google Cloud HSM location.")
+    gch_keyring: str | None = Field(max_length=63, default="", description="Google Cloud HSM keyring.")
+    gch_cryptokey: str | None = Field(max_length=63, default="", description="Google Cloud HSM cryptokey.")
+    gch_cryptokey_version: str | None = Field(max_length=31, default="", description="Google Cloud HSM cryptokey version.")
+    gch_cloud_service_name: str | None = Field(max_length=35, default="", description="Cloud service config name to generate access token.")  # datasource: ['system.cloud-service.name']
+    gch_cryptokey_algorithm: str | HsmLocalGchCryptokeyAlgorithmEnum | None = Field(default="rsa-sign-pkcs1-2048-sha256", description="Google Cloud HSM cryptokey algorithm.")
+    details: list[HsmLocalDetails] | None = Field(default=None, description="Print hsm-local certificate detailed information.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -152,7 +185,7 @@ class HsmLocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.hsm_local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "gch_cloud_service_name", None)
@@ -189,7 +222,7 @@ class HsmLocalModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_gch_cloud_service_name_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -212,5 +245,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.811006Z
+# Generated: 2026-01-14T22:43:37.131220Z
 # ============================================================================

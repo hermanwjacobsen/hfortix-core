@@ -46,7 +46,7 @@ class ManagedSwitchPayload(TypedDict, total=False):
     mgmt_mode: int  # FortiLink management mode. | Default: 0 | Min: 0 | Max: 255
     tunnel_discovered: int  # SOCKS tunnel management discovered. | Default: 0 | Min: 0 | Max: 1
     tdr_supported: str  # TDR supported. | MaxLen: 31
-    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x00000000000000000000000000000000
+    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x0000000000000000000000000000
     switch_device_tag: str  # User definable label/tag. | MaxLen: 32
     switch_dhcp_opt43_key: str  # DHCP option43 key. | MaxLen: 63
     mclag_igmp_snooping_aware: Literal["enable", "disable"]  # Enable/disable MCLAG IGMP-snooping awareness. | Default: enable
@@ -59,7 +59,7 @@ class ManagedSwitchPayload(TypedDict, total=False):
     route_offload_mclag: Literal["disable", "enable"]  # Enable/disable route offload MCLAG on this FortiSw | Default: disable
     route_offload_router: list[dict[str, Any]]  # Configure route offload MCLAG IP address.
     vlan: list[dict[str, Any]]  # Configure VLAN assignment priority.
-    type: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
+    type_: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
     owner_vdom: str  # VDOM which owner of port belongs to. | MaxLen: 31
     flow_identity: str  # Flow-tracking netflow ipfix switch identity in hex | Default: 00000000
     staged_image_version: str  # Staged image version for FortiSwitch. | MaxLen: 127
@@ -172,7 +172,7 @@ class ManagedSwitchPortsItem(TypedDict):
     allowed_vlans_all: Literal["enable", "disable"]  # Enable/disable all defined vlans on this port. | Default: disable
     allowed_vlans: str  # Configure switch port tagged VLANs.
     untagged_vlans: str  # Configure switch port untagged VLANs.
-    type: Literal["physical", "trunk"]  # Interface type: physical or trunk port. | Default: physical
+    type_: Literal["physical", "trunk"]  # Interface type: physical or trunk port. | Default: physical
     access_mode: Literal["dynamic", "nac", "static"]  # Access mode of the port. | Default: static
     matched_dpp_policy: str  # Matched child policy in the dynamic port policy. | MaxLen: 63
     matched_dpp_intf_tags: str  # Matched interface tags in the dynamic port policy. | MaxLen: 63
@@ -273,7 +273,7 @@ class ManagedSwitchSnmpcommunityItem(TypedDict):
     trap_v2c_status: Literal["disable", "enable"]  # Enable/disable SNMP v2c traps. | Default: enable
     trap_v2c_lport: int  # SNMP v2c trap local port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     trap_v2c_rport: int  # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
-    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
+    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf
 
 
 class ManagedSwitchSnmpuserItem(TypedDict):
@@ -332,7 +332,7 @@ class ManagedSwitchStaticmacItem(TypedDict):
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["static", "sticky"]  # Type. | Default: static
+    type_: Literal["static", "sticky"]  # Type. | Default: static
     vlan: str  # Vlan. | MaxLen: 15
     mac: str  # MAC address. | Default: 00:00:00:00:00:00
     interface: str  # Interface name. | MaxLen: 35
@@ -390,7 +390,7 @@ class ManagedSwitchSysteminterfaceItem(TypedDict):
     status: Literal["disable", "enable"]  # Enable/disable interface status. | Default: enable
     allowaccess: Literal["ping", "https", "http", "ssh", "snmp", "telnet", "radius-acct"]  # Permitted types of management access to this inter
     vlan: str  # VLAN name. | MaxLen: 15
-    type: Literal["vlan", "physical"]  # Interface type. | Default: vlan
+    type_: Literal["vlan", "physical"]  # Interface type. | Default: vlan
     interface: str  # Interface name. | MaxLen: 63
     vrf: str  # VRF for this route. | MaxLen: 63
 
@@ -590,7 +590,7 @@ class ManagedSwitchPortsObject:
     # Configure switch port untagged VLANs.
     untagged_vlans: str
     # Interface type: physical or trunk port. | Default: physical
-    type: Literal["physical", "trunk"]
+    type_: Literal["physical", "trunk"]
     # Access mode of the port. | Default: static
     access_mode: Literal["dynamic", "nac", "static"]
     # Matched child policy in the dynamic port policy. | MaxLen: 63
@@ -794,7 +794,7 @@ class ManagedSwitchSnmpcommunityObject:
     trap_v2c_lport: int
     # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     trap_v2c_rport: int
-    # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
+    # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf
     events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]
     
     # Methods from FortiObject
@@ -917,7 +917,7 @@ class ManagedSwitchStaticmacObject:
     # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Type. | Default: static
-    type: Literal["static", "sticky"]
+    type_: Literal["static", "sticky"]
     # Vlan. | MaxLen: 15
     vlan: str
     # MAC address. | Default: 00:00:00:00:00:00
@@ -1037,7 +1037,7 @@ class ManagedSwitchSysteminterfaceObject:
     # VLAN name. | MaxLen: 15
     vlan: str
     # Interface type. | Default: vlan
-    type: Literal["vlan", "physical"]
+    type_: Literal["vlan", "physical"]
     # Interface name. | MaxLen: 63
     interface: str
     # VRF for this route. | MaxLen: 63
@@ -1175,7 +1175,7 @@ class ManagedSwitchResponse(TypedDict):
     mgmt_mode: int  # FortiLink management mode. | Default: 0 | Min: 0 | Max: 255
     tunnel_discovered: int  # SOCKS tunnel management discovered. | Default: 0 | Min: 0 | Max: 1
     tdr_supported: str  # TDR supported. | MaxLen: 31
-    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x00000000000000000000000000000000
+    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x0000000000000000000000000000
     switch_device_tag: str  # User definable label/tag. | MaxLen: 32
     switch_dhcp_opt43_key: str  # DHCP option43 key. | MaxLen: 63
     mclag_igmp_snooping_aware: Literal["enable", "disable"]  # Enable/disable MCLAG IGMP-snooping awareness. | Default: enable
@@ -1188,7 +1188,7 @@ class ManagedSwitchResponse(TypedDict):
     route_offload_mclag: Literal["disable", "enable"]  # Enable/disable route offload MCLAG on this FortiSw | Default: disable
     route_offload_router: list[ManagedSwitchRouteoffloadrouterItem]  # Configure route offload MCLAG IP address.
     vlan: list[ManagedSwitchVlanItem]  # Configure VLAN assignment priority.
-    type: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
+    type_: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
     owner_vdom: str  # VDOM which owner of port belongs to. | MaxLen: 31
     flow_identity: str  # Flow-tracking netflow ipfix switch identity in hex | Default: 00000000
     staged_image_version: str  # Staged image version for FortiSwitch. | MaxLen: 127
@@ -1273,7 +1273,7 @@ class ManagedSwitchObject:
     tunnel_discovered: int
     # TDR supported. | MaxLen: 31
     tdr_supported: str
-    # List of features this FortiSwitch supports | Default: 0x00000000000000000000000000000000
+    # List of features this FortiSwitch supports | Default: 0x0000000000000000000000000000
     dynamic_capability: str
     # User definable label/tag. | MaxLen: 32
     switch_device_tag: str
@@ -1300,7 +1300,7 @@ class ManagedSwitchObject:
     # Configure VLAN assignment priority.
     vlan: list[ManagedSwitchVlanObject]
     # Indication of switch type, physical or virtual. | Default: physical
-    type: Literal["virtual", "physical"]
+    type_: Literal["virtual", "physical"]
     # VDOM which owner of port belongs to. | MaxLen: 31
     owner_vdom: str
     # Flow-tracking netflow ipfix switch identity in hex format | Default: 00000000
@@ -1394,6 +1394,10 @@ class ManagedSwitch:
     Primary Key: switch-id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -1414,6 +1418,7 @@ class ManagedSwitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ManagedSwitchResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -1431,6 +1436,7 @@ class ManagedSwitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ManagedSwitchResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -1447,6 +1453,7 @@ class ManagedSwitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ManagedSwitchResponse]: ...
     
     # ================================================================
@@ -1489,7 +1496,7 @@ class ManagedSwitch:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
     
@@ -1508,7 +1515,7 @@ class ManagedSwitch:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ManagedSwitchObject]: ...
     
@@ -1608,23 +1615,6 @@ class ManagedSwitch:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        switch_id: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ManagedSwitchObject | list[ManagedSwitchObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -1669,7 +1659,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -1706,6 +1696,7 @@ class ManagedSwitch:
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
@@ -1747,7 +1738,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -1826,7 +1817,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -1904,7 +1895,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -1940,83 +1931,7 @@ class ManagedSwitch:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ManagedSwitchPayload | None = ...,
-        switch_id: str | None = ...,
-        sn: str | None = ...,
-        description: str | None = ...,
-        switch_profile: str | None = ...,
-        access_profile: str | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        fsw_wan1_peer: str | None = ...,
-        fsw_wan1_admin: Literal["discovered", "disable", "enable"] | None = ...,
-        poe_pre_standard_detection: Literal["enable", "disable"] | None = ...,
-        dhcp_server_access_list: Literal["global", "enable", "disable"] | None = ...,
-        poe_detection_type: int | None = ...,
-        max_poe_budget: int | None = ...,
-        directly_connected: int | None = ...,
-        version: int | None = ...,
-        max_allowed_trunk_members: int | None = ...,
-        pre_provisioned: int | None = ...,
-        l3_discovered: int | None = ...,
-        mgmt_mode: int | None = ...,
-        tunnel_discovered: int | None = ...,
-        tdr_supported: str | None = ...,
-        dynamic_capability: str | None = ...,
-        switch_device_tag: str | None = ...,
-        switch_dhcp_opt43_key: str | None = ...,
-        mclag_igmp_snooping_aware: Literal["enable", "disable"] | None = ...,
-        dynamically_discovered: int | None = ...,
-        ptp_status: Literal["disable", "enable"] | None = ...,
-        ptp_profile: str | None = ...,
-        radius_nas_ip_override: Literal["disable", "enable"] | None = ...,
-        radius_nas_ip: str | None = ...,
-        route_offload: Literal["disable", "enable"] | None = ...,
-        route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
-        owner_vdom: str | None = ...,
-        flow_identity: str | None = ...,
-        staged_image_version: str | None = ...,
-        delayed_restart_trigger: int | None = ...,
-        firmware_provision: Literal["enable", "disable"] | None = ...,
-        firmware_provision_version: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
-        stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
-        snmp_sysinfo: str | None = ...,
-        override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
-        snmp_trap_threshold: str | None = ...,
-        override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
-        qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
-        qos_red_probability: int | None = ...,
-        switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
-        storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
-        igmp_snooping: str | None = ...,
-        x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2058,7 +1973,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2095,6 +2010,7 @@ class ManagedSwitch:
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
@@ -2136,7 +2052,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2215,7 +2131,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2293,7 +2209,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2329,83 +2245,7 @@ class ManagedSwitch:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ManagedSwitchPayload | None = ...,
-        switch_id: str | None = ...,
-        sn: str | None = ...,
-        description: str | None = ...,
-        switch_profile: str | None = ...,
-        access_profile: str | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        fsw_wan1_peer: str | None = ...,
-        fsw_wan1_admin: Literal["discovered", "disable", "enable"] | None = ...,
-        poe_pre_standard_detection: Literal["enable", "disable"] | None = ...,
-        dhcp_server_access_list: Literal["global", "enable", "disable"] | None = ...,
-        poe_detection_type: int | None = ...,
-        max_poe_budget: int | None = ...,
-        directly_connected: int | None = ...,
-        version: int | None = ...,
-        max_allowed_trunk_members: int | None = ...,
-        pre_provisioned: int | None = ...,
-        l3_discovered: int | None = ...,
-        mgmt_mode: int | None = ...,
-        tunnel_discovered: int | None = ...,
-        tdr_supported: str | None = ...,
-        dynamic_capability: str | None = ...,
-        switch_device_tag: str | None = ...,
-        switch_dhcp_opt43_key: str | None = ...,
-        mclag_igmp_snooping_aware: Literal["enable", "disable"] | None = ...,
-        dynamically_discovered: int | None = ...,
-        ptp_status: Literal["disable", "enable"] | None = ...,
-        ptp_profile: str | None = ...,
-        radius_nas_ip_override: Literal["disable", "enable"] | None = ...,
-        radius_nas_ip: str | None = ...,
-        route_offload: Literal["disable", "enable"] | None = ...,
-        route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
-        owner_vdom: str | None = ...,
-        flow_identity: str | None = ...,
-        staged_image_version: str | None = ...,
-        delayed_restart_trigger: int | None = ...,
-        firmware_provision: Literal["enable", "disable"] | None = ...,
-        firmware_provision_version: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
-        stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
-        snmp_sysinfo: str | None = ...,
-        override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
-        snmp_trap_threshold: str | None = ...,
-        override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
-        qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
-        qos_red_probability: int | None = ...,
-        switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
-        storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
-        igmp_snooping: str | None = ...,
-        x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2416,6 +2256,7 @@ class ManagedSwitch:
         switch_id: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
@@ -2446,14 +2287,7 @@ class ManagedSwitch:
         self,
         switch_id: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        switch_id: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2499,7 +2333,7 @@ class ManagedSwitch:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2550,8 +2384,6 @@ class ManagedSwitch:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2579,6 +2411,10 @@ class ManagedSwitchDictMode:
     By default returns ManagedSwitchResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ManagedSwitchObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2715,7 +2551,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2794,7 +2630,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2873,7 +2709,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -2909,10 +2745,12 @@ class ManagedSwitchDictMode:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ManagedSwitchPayload | None = ...,
@@ -2949,7 +2787,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3026,7 +2864,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3105,7 +2943,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3184,7 +3022,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3220,10 +3058,12 @@ class ManagedSwitchDictMode:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ManagedSwitchPayload | None = ...,
@@ -3260,7 +3100,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3327,10 +3167,12 @@ class ManagedSwitchDictMode:
         self,
         switch_id: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         switch_id: str,
@@ -3381,7 +3223,7 @@ class ManagedSwitchDictMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3431,8 +3273,6 @@ class ManagedSwitchDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -3456,6 +3296,10 @@ class ManagedSwitchObjectMode:
     By default returns ManagedSwitchObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ManagedSwitchResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -3592,7 +3436,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3671,7 +3515,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3750,7 +3594,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3829,7 +3673,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3865,10 +3709,12 @@ class ManagedSwitchObjectMode:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ManagedSwitchPayload | None = ...,
@@ -3905,7 +3751,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -3982,7 +3828,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4061,7 +3907,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4140,7 +3986,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4219,7 +4065,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4255,10 +4101,12 @@ class ManagedSwitchObjectMode:
         router_static: str | list[str] | list[dict[str, Any]] | None = ...,
         system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ManagedSwitchPayload | None = ...,
@@ -4295,7 +4143,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4373,10 +4221,12 @@ class ManagedSwitchObjectMode:
         self,
         switch_id: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManagedSwitchObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         switch_id: str,
@@ -4427,7 +4277,7 @@ class ManagedSwitchObjectMode:
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
         vlan: str | list[str] | list[dict[str, Any]] | None = ...,
-        type: Literal["virtual", "physical"] | None = ...,
+        type_: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
         staged_image_version: str | None = ...,
@@ -4477,8 +4327,6 @@ class ManagedSwitchObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

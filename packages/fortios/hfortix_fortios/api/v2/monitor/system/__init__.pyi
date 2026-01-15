@@ -35,58 +35,58 @@ if TYPE_CHECKING:
     from .vdom_link import VdomLink, VdomLinkDictMode, VdomLinkObjectMode
     from .vdom_resource import VdomResource, VdomResourceDictMode, VdomResourceObjectMode
     from .vm_information import VmInformation, VmInformationDictMode, VmInformationObjectMode
-    from .admin import AdminDictMode, AdminObjectMode
-    from .api_user import ApiUserDictMode, ApiUserObjectMode
-    from .automation_action import AutomationActionDictMode, AutomationActionObjectMode
-    from .automation_stitch import AutomationStitchDictMode, AutomationStitchObjectMode
+    from .admin import Admin, AdminDictMode, AdminObjectMode
+    from .api_user import ApiUser, ApiUserDictMode, ApiUserObjectMode
+    from .automation_action import AutomationAction, AutomationActionDictMode, AutomationActionObjectMode
+    from .automation_stitch import AutomationStitch, AutomationStitchDictMode, AutomationStitchObjectMode
     from .available_interfaces import AvailableInterfaces
     from .botnet import Botnet
     from .botnet_domains import BotnetDomains
-    from .central_management import CentralManagementDictMode, CentralManagementObjectMode
-    from .certificate import CertificateDictMode, CertificateObjectMode
-    from .change_password import ChangePasswordDictMode, ChangePasswordObjectMode
-    from .cluster import ClusterDictMode, ClusterObjectMode
-    from .com_log import ComLogDictMode, ComLogObjectMode
-    from .config import ConfigDictMode, ConfigObjectMode
-    from .config_error_log import ConfigErrorLogDictMode, ConfigErrorLogObjectMode
+    from .central_management import CentralManagement, CentralManagementDictMode, CentralManagementObjectMode
+    from .certificate import Certificate, CertificateDictMode, CertificateObjectMode
+    from .change_password import ChangePassword, ChangePasswordDictMode, ChangePasswordObjectMode
+    from .cluster import Cluster, ClusterDictMode, ClusterObjectMode
+    from .com_log import ComLog, ComLogDictMode, ComLogObjectMode
+    from .config import Config, ConfigDictMode, ConfigObjectMode
+    from .config_error_log import ConfigErrorLog, ConfigErrorLogDictMode, ConfigErrorLogObjectMode
     from .config_revision import ConfigRevision
     from .config_script import ConfigScript
-    from .config_sync import ConfigSyncDictMode, ConfigSyncObjectMode
-    from .crash_log import CrashLogDictMode, CrashLogObjectMode
+    from .config_sync import ConfigSync, ConfigSyncDictMode, ConfigSyncObjectMode
+    from .crash_log import CrashLog, CrashLogDictMode, CrashLogObjectMode
     from .csf import Csf
-    from .debug import DebugDictMode, DebugObjectMode
+    from .debug import Debug, DebugDictMode, DebugObjectMode
     from .dhcp import Dhcp
-    from .dhcp6 import Dhcp6DictMode, Dhcp6ObjectMode
-    from .disconnect_admins import DisconnectAdminsDictMode, DisconnectAdminsObjectMode
-    from .external_resource import ExternalResourceDictMode, ExternalResourceObjectMode
+    from .dhcp6 import Dhcp6, Dhcp6DictMode, Dhcp6ObjectMode
+    from .disconnect_admins import DisconnectAdmins, DisconnectAdminsDictMode, DisconnectAdminsObjectMode
+    from .external_resource import ExternalResource, ExternalResourceDictMode, ExternalResourceObjectMode
     from .firmware import Firmware
-    from .fortiguard import FortiguardDictMode, FortiguardObjectMode
-    from .fortimanager import FortimanagerDictMode, FortimanagerObjectMode
-    from .fsck import FsckDictMode, FsckObjectMode
+    from .fortiguard import Fortiguard, FortiguardDictMode, FortiguardObjectMode
+    from .fortimanager import Fortimanager, FortimanagerDictMode, FortimanagerObjectMode
+    from .fsck import Fsck, FsckDictMode, FsckObjectMode
     from .ha_peer import HaPeer
-    from .hscalefw_license import HscalefwLicenseDictMode, HscalefwLicenseObjectMode
+    from .hscalefw_license import HscalefwLicense, HscalefwLicenseDictMode, HscalefwLicenseObjectMode
     from .interface import Interface
-    from .ipam import IpamDictMode, IpamObjectMode
-    from .logdisk import LogdiskDictMode, LogdiskObjectMode
-    from .lte_modem import LteModemDictMode, LteModemObjectMode
+    from .ipam import Ipam, IpamDictMode, IpamObjectMode
+    from .logdisk import Logdisk, LogdiskDictMode, LogdiskObjectMode
+    from .lte_modem import LteModem, LteModemDictMode, LteModemObjectMode
     from .modem import Modem
-    from .modem5g import Modem5gDictMode, Modem5gObjectMode
-    from .ntp import NtpDictMode, NtpObjectMode
-    from .object import ObjectDictMode, ObjectObjectMode
-    from .os import OsDictMode, OsObjectMode
-    from .password_policy_conform import PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
-    from .performance import PerformanceDictMode, PerformanceObjectMode
-    from .private_data_encryption import PrivateDataEncryptionDictMode, PrivateDataEncryptionObjectMode
-    from .process import ProcessDictMode, ProcessObjectMode
-    from .resource import ResourceDictMode, ResourceObjectMode
-    from .sandbox import SandboxDictMode, SandboxObjectMode
-    from .sdn_connector import SdnConnectorDictMode, SdnConnectorObjectMode
+    from .modem5g import Modem5g, Modem5gDictMode, Modem5gObjectMode
+    from .ntp import Ntp, NtpDictMode, NtpObjectMode
+    from .object import Object, ObjectDictMode, ObjectObjectMode
+    from .os import Os, OsDictMode, OsObjectMode
+    from .password_policy_conform import PasswordPolicyConform, PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
+    from .performance import Performance, PerformanceDictMode, PerformanceObjectMode
+    from .private_data_encryption import PrivateDataEncryption, PrivateDataEncryptionDictMode, PrivateDataEncryptionObjectMode
+    from .process import Process, ProcessDictMode, ProcessObjectMode
+    from .resource import Resource, ResourceDictMode, ResourceObjectMode
+    from .sandbox import Sandbox, SandboxDictMode, SandboxObjectMode
+    from .sdn_connector import SdnConnector, SdnConnectorDictMode, SdnConnectorObjectMode
     from .time import Time
-    from .traffic_history import TrafficHistoryDictMode, TrafficHistoryObjectMode
-    from .upgrade_report import UpgradeReportDictMode, UpgradeReportObjectMode
-    from .usb_device import UsbDeviceDictMode, UsbDeviceObjectMode
+    from .traffic_history import TrafficHistory, TrafficHistoryDictMode, TrafficHistoryObjectMode
+    from .upgrade_report import UpgradeReport, UpgradeReportDictMode, UpgradeReportObjectMode
+    from .usb_device import UsbDevice, UsbDeviceDictMode, UsbDeviceObjectMode
     from .usb_log import UsbLog
-    from .vmlicense import VmlicenseDictMode, VmlicenseObjectMode
+    from .vmlicense import Vmlicense, VmlicenseDictMode, VmlicenseObjectMode
 
 __all__ = [
     "AcmeCertificateStatus",

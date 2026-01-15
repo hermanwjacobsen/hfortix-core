@@ -135,6 +135,10 @@ class ForwardServer:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -155,6 +159,7 @@ class ForwardServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ForwardServerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -172,6 +177,7 @@ class ForwardServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ForwardServerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -188,6 +194,7 @@ class ForwardServer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ForwardServerResponse]: ...
     
     # ================================================================
@@ -230,7 +237,7 @@ class ForwardServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ForwardServerObject: ...
     
@@ -249,7 +256,7 @@ class ForwardServer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ForwardServerObject]: ...
     
@@ -349,23 +356,6 @@ class ForwardServer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ForwardServerObject | list[ForwardServerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -395,6 +385,7 @@ class ForwardServer:
         password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerObject: ...
@@ -473,31 +464,7 @@ class ForwardServer:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ForwardServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip", "ipv6", "fqdn"] | None = ...,
-        ip: str | None = ...,
-        ipv6: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        interface_select_method: Literal["sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        comment: str | None = ...,
-        masquerade: Literal["enable", "disable"] | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        monitor: str | None = ...,
-        server_down_option: Literal["block", "pass"] | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -524,6 +491,7 @@ class ForwardServer:
         password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerObject: ...
@@ -602,31 +570,7 @@ class ForwardServer:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ForwardServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip", "ipv6", "fqdn"] | None = ...,
-        ip: str | None = ...,
-        ipv6: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        interface_select_method: Literal["sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        comment: str | None = ...,
-        masquerade: Literal["enable", "disable"] | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        monitor: str | None = ...,
-        server_down_option: Literal["block", "pass"] | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -637,6 +581,7 @@ class ForwardServer:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerObject: ...
@@ -667,14 +612,7 @@ class ForwardServer:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -719,8 +657,6 @@ class ForwardServer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -748,6 +684,10 @@ class ForwardServerDictMode:
     By default returns ForwardServerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ForwardServerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -922,10 +862,12 @@ class ForwardServerDictMode:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ForwardServerPayload | None = ...,
@@ -1025,10 +967,12 @@ class ForwardServerDictMode:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ForwardServerPayload | None = ...,
@@ -1080,10 +1024,12 @@ class ForwardServerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1132,8 +1078,6 @@ class ForwardServerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1157,6 +1101,10 @@ class ForwardServerObjectMode:
     By default returns ForwardServerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ForwardServerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1358,10 +1306,12 @@ class ForwardServerObjectMode:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ForwardServerPayload | None = ...,
@@ -1488,10 +1438,12 @@ class ForwardServerObjectMode:
         username: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ForwardServerPayload | None = ...,
@@ -1554,10 +1506,12 @@ class ForwardServerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1606,8 +1560,6 @@ class ForwardServerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -234,7 +234,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["trusted", "revoked"] | None = None,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
         nid: Literal["256", "384", "521"] | None = None,
         usage: Literal["transparent-proxy", "access-proxy"] | None = None,
         ip: str | None = None,
@@ -255,7 +255,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: SSH public key name.
             status: Set the trust status of the public key.
-            type: Set the type of the public key.
+            type_: Set the type of the public key.
             nid: Set the nid of the ECDSA key.
             usage: Usage for this public key.
             ip: IP address of the SSH server.
@@ -297,7 +297,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             nid=nid,
             usage=usage,
             ip=ip,
@@ -336,7 +336,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["trusted", "revoked"] | None = None,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
         nid: Literal["256", "384", "521"] | None = None,
         usage: Literal["transparent-proxy", "access-proxy"] | None = None,
         ip: str | None = None,
@@ -357,7 +357,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: SSH public key name.
             status: Set the trust status of the public key.
-            type: Set the type of the public key.
+            type_: Set the type of the public key.
             nid: Set the nid of the ECDSA key.
             usage: Usage for this public key.
             ip: IP address of the SSH server.
@@ -401,7 +401,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             nid=nid,
             usage=usage,
             ip=ip,
@@ -540,7 +540,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["trusted", "revoked"] | None = None,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
         nid: Literal["256", "384", "521"] | None = None,
         usage: Literal["transparent-proxy", "access-proxy"] | None = None,
         ip: str | None = None,
@@ -562,7 +562,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             status: Field status
-            type: Field type
+            type_: Field type
             nid: Field nid
             usage: Field usage
             ip: Field ip
@@ -614,7 +614,7 @@ class HostKey(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             nid=nid,
             usage=usage,
             ip=ip,

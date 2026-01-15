@@ -42,12 +42,7 @@ class AutomationActionPayload(TypedDict, total=False):
     alicloud_access_key_id: str  # AliCloud AccessKey ID. | MaxLen: 35
     alicloud_access_key_secret: str  # AliCloud AccessKey secret. | MaxLen: 59
     message_type: Literal["text", "json", "form-data"]  # Message type. | Default: text
-    message: str  # Message content. | Default: Time: %%log.date%% %%log.time%%
-Device: %%log.devid%% (%%log.vd%%)
-Level: %%log.level%%
-Event: %%log.logdesc%%
-Raw log:
-%%log%% | MaxLen: 4095
+    message: str  # Message content. | Default: Time: %%log.date%% %%log.time% | MaxLen: 4095
     replacement_message: Literal["enable", "disable"]  # Enable/disable replacement message. | Default: disable
     replacemsg_group: str  # Replacement message group. | MaxLen: 35
     protocol: Literal["http", "https"]  # Request protocol. | Default: http
@@ -236,12 +231,7 @@ class AutomationActionResponse(TypedDict):
     alicloud_access_key_id: str  # AliCloud AccessKey ID. | MaxLen: 35
     alicloud_access_key_secret: str  # AliCloud AccessKey secret. | MaxLen: 59
     message_type: Literal["text", "json", "form-data"]  # Message type. | Default: text
-    message: str  # Message content. | Default: Time: %%log.date%% %%log.time%%
-Device: %%log.devid%% (%%log.vd%%)
-Level: %%log.level%%
-Event: %%log.logdesc%%
-Raw log:
-%%log%% | MaxLen: 4095
+    message: str  # Message content. | Default: Time: %%log.date%% %%log.time% | MaxLen: 4095
     replacement_message: Literal["enable", "disable"]  # Enable/disable replacement message. | Default: disable
     replacemsg_group: str  # Replacement message group. | MaxLen: 35
     protocol: Literal["http", "https"]  # Request protocol. | Default: http
@@ -308,12 +298,7 @@ class AutomationActionObject:
     alicloud_access_key_secret: str
     # Message type. | Default: text
     message_type: Literal["text", "json", "form-data"]
-    # Message content. | Default: Time: %%log.date%% %%log.time%%
-Device: %%log.devid%% (%%log.vd%%)
-Level: %%log.level%%
-Event: %%log.logdesc%%
-Raw log:
-%%log%% | MaxLen: 4095
+    # Message content. | Default: Time: %%log.date%% %%log.time% | MaxLen: 4095
     message: str
     # Enable/disable replacement message. | Default: disable
     replacement_message: Literal["enable", "disable"]
@@ -384,6 +369,10 @@ class AutomationAction:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -404,6 +393,7 @@ class AutomationAction:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationActionResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -421,6 +411,7 @@ class AutomationAction:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationActionResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -437,6 +428,7 @@ class AutomationAction:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AutomationActionResponse]: ...
     
     # ================================================================
@@ -479,7 +471,7 @@ class AutomationAction:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AutomationActionObject: ...
     
@@ -498,7 +490,7 @@ class AutomationAction:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AutomationActionObject]: ...
     
@@ -598,23 +590,6 @@ class AutomationAction:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AutomationActionObject | list[AutomationActionObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -668,6 +643,7 @@ class AutomationAction:
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationActionObject: ...
@@ -818,55 +794,7 @@ class AutomationAction:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AutomationActionPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        action_type: Literal["email", "fortiexplorer-notification", "alert", "disable-ssid", "system-actions", "quarantine", "quarantine-forticlient", "quarantine-nsx", "quarantine-fortinac", "ban-ip", "aws-lambda", "azure-function", "google-cloud-function", "alicloud-function", "webhook", "cli-script", "diagnose-script", "regular-expression", "slack-notification", "microsoft-teams-notification"] | None = ...,
-        system_action: Literal["reboot", "shutdown", "backup-config"] | None = ...,
-        tls_certificate: str | None = ...,
-        forticare_email: Literal["enable", "disable"] | None = ...,
-        email_to: str | list[str] | list[dict[str, Any]] | None = ...,
-        email_from: str | None = ...,
-        email_subject: str | None = ...,
-        minimum_interval: int | None = ...,
-        aws_api_key: str | None = ...,
-        azure_function_authorization: Literal["anonymous", "function", "admin"] | None = ...,
-        azure_api_key: str | None = ...,
-        alicloud_function_authorization: Literal["anonymous", "function"] | None = ...,
-        alicloud_access_key_id: str | None = ...,
-        alicloud_access_key_secret: str | None = ...,
-        message_type: Literal["text", "json", "form-data"] | None = ...,
-        message: str | None = ...,
-        replacement_message: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        protocol: Literal["http", "https"] | None = ...,
-        method: Literal["post", "put", "get", "patch", "delete"] | None = ...,
-        uri: str | None = ...,
-        http_body: str | None = ...,
-        port: int | None = ...,
-        http_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        form_data: str | list[str] | list[dict[str, Any]] | None = ...,
-        verify_host_cert: Literal["enable", "disable"] | None = ...,
-        script: str | None = ...,
-        output_size: int | None = ...,
-        timeout: int | None = ...,
-        duration: int | None = ...,
-        output_interval: int | None = ...,
-        file_only: Literal["enable", "disable"] | None = ...,
-        execute_security_fabric: Literal["enable", "disable"] | None = ...,
-        accprofile: str | None = ...,
-        regular_expression: str | None = ...,
-        log_debug_print: Literal["enable", "disable"] | None = ...,
-        security_tag: str | None = ...,
-        sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -917,6 +845,7 @@ class AutomationAction:
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationActionObject: ...
@@ -1067,55 +996,7 @@ class AutomationAction:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AutomationActionPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        action_type: Literal["email", "fortiexplorer-notification", "alert", "disable-ssid", "system-actions", "quarantine", "quarantine-forticlient", "quarantine-nsx", "quarantine-fortinac", "ban-ip", "aws-lambda", "azure-function", "google-cloud-function", "alicloud-function", "webhook", "cli-script", "diagnose-script", "regular-expression", "slack-notification", "microsoft-teams-notification"] | None = ...,
-        system_action: Literal["reboot", "shutdown", "backup-config"] | None = ...,
-        tls_certificate: str | None = ...,
-        forticare_email: Literal["enable", "disable"] | None = ...,
-        email_to: str | list[str] | list[dict[str, Any]] | None = ...,
-        email_from: str | None = ...,
-        email_subject: str | None = ...,
-        minimum_interval: int | None = ...,
-        aws_api_key: str | None = ...,
-        azure_function_authorization: Literal["anonymous", "function", "admin"] | None = ...,
-        azure_api_key: str | None = ...,
-        alicloud_function_authorization: Literal["anonymous", "function"] | None = ...,
-        alicloud_access_key_id: str | None = ...,
-        alicloud_access_key_secret: str | None = ...,
-        message_type: Literal["text", "json", "form-data"] | None = ...,
-        message: str | None = ...,
-        replacement_message: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        protocol: Literal["http", "https"] | None = ...,
-        method: Literal["post", "put", "get", "patch", "delete"] | None = ...,
-        uri: str | None = ...,
-        http_body: str | None = ...,
-        port: int | None = ...,
-        http_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        form_data: str | list[str] | list[dict[str, Any]] | None = ...,
-        verify_host_cert: Literal["enable", "disable"] | None = ...,
-        script: str | None = ...,
-        output_size: int | None = ...,
-        timeout: int | None = ...,
-        duration: int | None = ...,
-        output_interval: int | None = ...,
-        file_only: Literal["enable", "disable"] | None = ...,
-        execute_security_fabric: Literal["enable", "disable"] | None = ...,
-        accprofile: str | None = ...,
-        regular_expression: str | None = ...,
-        log_debug_print: Literal["enable", "disable"] | None = ...,
-        security_tag: str | None = ...,
-        sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1126,6 +1007,7 @@ class AutomationAction:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationActionObject: ...
@@ -1156,14 +1038,7 @@ class AutomationAction:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1232,8 +1107,6 @@ class AutomationAction:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1261,6 +1134,10 @@ class AutomationActionDictMode:
     By default returns AutomationActionResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AutomationActionObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1507,10 +1384,12 @@ class AutomationActionDictMode:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AutomationActionPayload | None = ...,
@@ -1706,10 +1585,12 @@ class AutomationActionDictMode:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AutomationActionPayload | None = ...,
@@ -1785,10 +1666,12 @@ class AutomationActionDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1861,8 +1744,6 @@ class AutomationActionDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1886,6 +1767,10 @@ class AutomationActionObjectMode:
     By default returns AutomationActionObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AutomationActionResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2183,10 +2068,12 @@ class AutomationActionObjectMode:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationActionObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AutomationActionPayload | None = ...,
@@ -2433,10 +2320,12 @@ class AutomationActionObjectMode:
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationActionObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AutomationActionPayload | None = ...,
@@ -2523,10 +2412,12 @@ class AutomationActionObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationActionObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2599,8 +2490,6 @@ class AutomationActionObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

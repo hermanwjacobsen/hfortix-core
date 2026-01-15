@@ -27,7 +27,7 @@ class UserActivityPayload(TypedDict, total=False):
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # CASB user activity status. | Default: enable
     description: str  # CASB user activity description. | MaxLen: 63
-    type: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
+    type_: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
     casb_name: str  # CASB user activity signature name. | MaxLen: 79
     application: str  # CASB SaaS application name. | MaxLen: 79
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]  # CASB user activity category. | Default: activity-control
@@ -128,7 +128,7 @@ class UserActivityResponse(TypedDict):
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # CASB user activity status. | Default: enable
     description: str  # CASB user activity description. | MaxLen: 63
-    type: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
+    type_: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
     casb_name: str  # CASB user activity signature name. | MaxLen: 79
     application: str  # CASB SaaS application name. | MaxLen: 79
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]  # CASB user activity category. | Default: activity-control
@@ -154,7 +154,7 @@ class UserActivityObject:
     # CASB user activity description. | MaxLen: 63
     description: str
     # CASB user activity type. | Default: customized
-    type: Literal["built-in", "customized"]
+    type_: Literal["built-in", "customized"]
     # CASB user activity signature name. | MaxLen: 79
     casb_name: str
     # CASB SaaS application name. | MaxLen: 79
@@ -169,7 +169,6 @@ class UserActivityObject:
     control_options: list[UserActivityControloptionsObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -192,6 +191,10 @@ class UserActivity:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -212,6 +215,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UserActivityResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -229,6 +233,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UserActivityResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -245,6 +250,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[UserActivityResponse]: ...
     
     # ================================================================
@@ -287,7 +293,7 @@ class UserActivity:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> UserActivityObject: ...
     
@@ -306,7 +312,7 @@ class UserActivity:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[UserActivityObject]: ...
     
@@ -406,23 +412,6 @@ class UserActivity:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> UserActivityObject | list[UserActivityObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -438,7 +427,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -447,6 +436,7 @@ class UserActivity:
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UserActivityObject: ...
@@ -459,7 +449,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -481,7 +471,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -502,7 +492,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -510,26 +500,7 @@ class UserActivity:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -542,7 +513,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -551,6 +522,7 @@ class UserActivity:
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UserActivityObject: ...
@@ -563,7 +535,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -585,7 +557,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -606,7 +578,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -614,26 +586,7 @@ class UserActivity:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -644,6 +597,7 @@ class UserActivity:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UserActivityObject: ...
@@ -674,14 +628,7 @@ class UserActivity:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -698,7 +645,7 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -721,8 +668,6 @@ class UserActivity:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -750,6 +695,10 @@ class UserActivityDictMode:
     By default returns UserActivityResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return UserActivityObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -857,7 +806,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -879,7 +828,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -901,7 +850,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -909,10 +858,12 @@ class UserActivityDictMode:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -920,7 +871,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -940,7 +891,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -962,7 +913,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -984,7 +935,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -992,10 +943,12 @@ class UserActivityDictMode:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -1003,7 +956,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1042,10 +995,12 @@ class UserActivityDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1067,7 +1022,7 @@ class UserActivityDictMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1089,8 +1044,6 @@ class UserActivityDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1114,6 +1067,10 @@ class UserActivityObjectMode:
     By default returns UserActivityObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return UserActivityResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1221,7 +1178,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1243,7 +1200,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1265,7 +1222,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1287,7 +1244,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1295,10 +1252,12 @@ class UserActivityObjectMode:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UserActivityObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -1306,7 +1265,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1326,7 +1285,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1348,7 +1307,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1370,7 +1329,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1392,7 +1351,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1400,10 +1359,12 @@ class UserActivityObjectMode:
         match: str | list[str] | list[dict[str, Any]] | None = ...,
         control_options: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UserActivityObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -1411,7 +1372,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1461,10 +1422,12 @@ class UserActivityObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UserActivityObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1486,7 +1449,7 @@ class UserActivityObjectMode:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
@@ -1508,8 +1471,6 @@ class UserActivityObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

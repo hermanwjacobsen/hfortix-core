@@ -248,7 +248,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type: int | None = None,
+        type_: int | None = None,
         status: int | None = None,
         code: int | None = None,
         vdom: str | bool | None = None,
@@ -279,7 +279,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Remote subnet address and subnet mask.
             cgw_name: AWS customer gateway name to be created.
             psksecret: Pre-shared secret for PSK authentication. Auto-generated if not specified
-            type: SDN VPN type.
+            type_: SDN VPN type.
             status: SDN VPN status.
             code: SDN VPN error code.
             vdom: Virtual domain name.
@@ -331,7 +331,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type=type,
+            type_=type_,
             status=status,
             code=code,
             data=payload_dict,
@@ -380,7 +380,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type: int | None = None,
+        type_: int | None = None,
         status: int | None = None,
         code: int | None = None,
         vdom: str | bool | None = None,
@@ -411,7 +411,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Remote subnet address and subnet mask.
             cgw_name: AWS customer gateway name to be created.
             psksecret: Pre-shared secret for PSK authentication. Auto-generated if not specified
-            type: SDN VPN type.
+            type_: SDN VPN type.
             status: SDN VPN status.
             code: SDN VPN error code.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -465,7 +465,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type=type,
+            type_=type_,
             status=status,
             code=code,
             data=payload_dict,
@@ -614,7 +614,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type: int | None = None,
+        type_: int | None = None,
         status: int | None = None,
         code: int | None = None,
         vdom: str | bool | None = None,
@@ -646,7 +646,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Field remote-cidr
             cgw_name: Field cgw-name
             psksecret: Field psksecret
-            type: Field type
+            type_: Field type
             status: Field status
             code: Field code
             vdom: Virtual domain name
@@ -708,7 +708,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type=type,
+            type_=type_,
             status=status,
             code=code,
             data=payload_dict,

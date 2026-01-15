@@ -54,7 +54,7 @@ class ApiUserTrusthostItem(TypedDict):
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["ipv4-trusthost", "ipv6-trusthost"]  # Trusthost type. | Default: ipv4-trusthost
+    type_: Literal["ipv4-trusthost", "ipv6-trusthost"]  # Trusthost type. | Default: ipv4-trusthost
     ipv4_trusthost: str  # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
     ipv6_trusthost: str  # IPv6 trusted host address. | Default: ::/0
 
@@ -93,7 +93,7 @@ class ApiUserTrusthostObject:
     # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Trusthost type. | Default: ipv4-trusthost
-    type: Literal["ipv4-trusthost", "ipv6-trusthost"]
+    type_: Literal["ipv4-trusthost", "ipv6-trusthost"]
     # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
     ipv4_trusthost: str
     # IPv6 trusted host address. | Default: ::/0
@@ -161,7 +161,6 @@ class ApiUserObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -181,6 +180,10 @@ class ApiUser:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -202,6 +205,7 @@ class ApiUser:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ApiUserResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -219,6 +223,7 @@ class ApiUser:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ApiUserResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -235,6 +240,7 @@ class ApiUser:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ApiUserResponse]: ...
     
     # ================================================================
@@ -277,7 +283,7 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
@@ -296,7 +302,7 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ApiUserObject]: ...
     
@@ -396,23 +402,6 @@ class ApiUser:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ApiUserObject | list[ApiUserObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -435,6 +424,7 @@ class ApiUser:
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
@@ -492,24 +482,7 @@ class ApiUser:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ApiUserPayload | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        api_key: str | None = ...,
-        accprofile: str | None = ...,
-        schedule: str | None = ...,
-        cors_allow_origin: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
-        peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -529,6 +502,7 @@ class ApiUser:
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
@@ -586,24 +560,7 @@ class ApiUser:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ApiUserPayload | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        api_key: str | None = ...,
-        accprofile: str | None = ...,
-        schedule: str | None = ...,
-        cors_allow_origin: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
-        peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -614,6 +571,7 @@ class ApiUser:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
@@ -644,14 +602,7 @@ class ApiUser:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -689,8 +640,6 @@ class ApiUser:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -718,6 +667,10 @@ class ApiUserDictMode:
     By default returns ApiUserResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ApiUserObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -871,10 +824,12 @@ class ApiUserDictMode:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ApiUserPayload | None = ...,
@@ -946,10 +901,12 @@ class ApiUserDictMode:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ApiUserPayload | None = ...,
@@ -994,10 +951,12 @@ class ApiUserDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1039,8 +998,6 @@ class ApiUserDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1064,6 +1021,10 @@ class ApiUserObjectMode:
     By default returns ApiUserObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ApiUserResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1237,10 +1198,12 @@ class ApiUserObjectMode:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ApiUserPayload | None = ...,
@@ -1332,10 +1295,12 @@ class ApiUserObjectMode:
         peer_group: str | None = ...,
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ApiUserPayload | None = ...,
@@ -1391,10 +1356,12 @@ class ApiUserObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1436,8 +1403,6 @@ class ApiUserObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

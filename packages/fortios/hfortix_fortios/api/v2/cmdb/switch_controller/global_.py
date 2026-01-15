@@ -14,10 +14,10 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.switch_controller_global_.get()
+    >>> items = fgt.api.cmdb.switch_controller_global.get()
     >>>
     >>> # Create with auto-normalization (strings/lists converted automatically)
-    >>> result = fgt.api.cmdb.switch_controller_global_.post(
+    >>> result = fgt.api.cmdb.switch_controller_global.post(
     ...     name="example",
     ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
     ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
@@ -154,21 +154,21 @@ class Global(CRUDEndpoint, MetadataMixin):
 
         Examples:
             >>> # Get all switch_controller/global_ objects
-            >>> result = fgt.api.cmdb.switch_controller_global_.get()
+            >>> result = fgt.api.cmdb.switch_controller_global.get()
             >>> print(f"Found {len(result['results'])} objects")
             
             >>> # Get with filter
-            >>> result = fgt.api.cmdb.switch_controller_global_.get(
+            >>> result = fgt.api.cmdb.switch_controller_global.get(
             ...     filter=["name==test", "status==enable"]
             ... )
             
             >>> # Get with pagination
-            >>> result = fgt.api.cmdb.switch_controller_global_.get(
+            >>> result = fgt.api.cmdb.switch_controller_global.get(
             ...     start=0, count=100
             ... )
             
             >>> # Get schema information  
-            >>> schema = fgt.api.cmdb.switch_controller_global_.get_schema()
+            >>> schema = fgt.api.cmdb.switch_controller_global.get_schema()
 
         See Also:
             - post(): Create new switch_controller/global_ object
@@ -224,11 +224,11 @@ class Global(CRUDEndpoint, MetadataMixin):
             
         Example:
             >>> # Get FortiOS native schema
-            >>> schema = fgt.api.cmdb.switch_controller_global_.get_schema()
+            >>> schema = fgt.api.cmdb.switch_controller_global.get_schema()
             >>> print(schema['results'])
             
             >>> # Get JSON Schema format (if supported)
-            >>> json_schema = fgt.api.cmdb.switch_controller_global_.get_schema(format="json-schema")
+            >>> json_schema = fgt.api.cmdb.switch_controller_global.get_schema(format="json-schema")
         
         Note:
             Not all endpoints support all schema formats. The "schema" format
@@ -334,7 +334,7 @@ class Global(CRUDEndpoint, MetadataMixin):
 
         Examples:
             >>> # Update specific fields
-            >>> result = fgt.api.cmdb.switch_controller_global_.put(
+            >>> result = fgt.api.cmdb.switch_controller_global.put(
             ...     name="existing-object",
             ...     # ... fields to update
             ... )
@@ -344,7 +344,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             ...     "name": "existing-object",
             ...     "field1": "new-value",
             ... }
-            >>> result = fgt.api.cmdb.switch_controller_global_.put(payload_dict=payload)
+            >>> result = fgt.api.cmdb.switch_controller_global.put(payload_dict=payload)
 
         See Also:
             - post(): Create new object
@@ -452,7 +452,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             
         Example:
             >>> # Move policy 100 before policy 50
-            >>> fgt.api.cmdb.switch_controller_global_.move(
+            >>> fgt.api.cmdb.switch_controller_global.move(
             ...     name="object1",
             ...     action="before",
             ...     reference_name="object2"
@@ -497,7 +497,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             
         Example:
             >>> # Clone an existing object
-            >>> fgt.api.cmdb.switch_controller_global_.clone(
+            >>> fgt.api.cmdb.switch_controller_global.clone(
             ...     name="template",
             ...     new_name="new-from-template"
             ... )
@@ -535,8 +535,8 @@ class Global(CRUDEndpoint, MetadataMixin):
             
         Example:
             >>> # Check before creating
-            >>> if not fgt.api.cmdb.switch_controller_global_.exists(name="myobj"):
-            ...     fgt.api.cmdb.switch_controller_global_.post(payload_dict=data)
+            >>> if not fgt.api.cmdb.switch_controller_global.exists(name="myobj"):
+            ...     fgt.api.cmdb.switch_controller_global.post(payload_dict=data)
         """
         # Try to fetch the object - 404 means it doesn't exist
         try:

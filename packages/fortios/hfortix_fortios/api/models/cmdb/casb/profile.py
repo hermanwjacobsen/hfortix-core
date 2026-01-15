@@ -7,8 +7,8 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal
 
 
 # ============================================================================
@@ -30,15 +30,15 @@ class ProfileSaasApplication(BaseModel):
     name: str = Field(max_length=79, default="", description="CASB profile SaaS application name.")  # datasource: ['casb.saas-application.name']
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable setting.")
     safe_search: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable safe search.")
-    safe_search_control: list[SafeSearchControl] = Field(description="CASB profile safe search control.")
+    safe_search_control: list[dict[str, Any]] | None = Field(description="CASB profile safe search control.")
     tenant_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable tenant control.")
-    tenant_control_tenants: list[TenantControlTenants] = Field(description="CASB profile tenant control tenants.")
-    advanced_tenant_control: list[AdvancedTenantControl] = Field(default=None, description="CASB profile advanced tenant control.")
+    tenant_control_tenants: list[dict[str, Any]] | None = Field(description="CASB profile tenant control tenants.")
+    advanced_tenant_control: list[dict[str, Any]] | None = Field(default=None, description="CASB profile advanced tenant control.")
     domain_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable domain control.")
-    domain_control_domains: list[DomainControlDomains] = Field(description="CASB profile domain control domains.")
+    domain_control_domains: list[dict[str, Any]] | None = Field(description="CASB profile domain control domains.")
     log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable log settings.")
-    access_rule: list[AccessRule] = Field(default=None, description="CASB profile access rule.")
-    custom_control: list[CustomControl] = Field(default=None, description="CASB profile custom control.")
+    access_rule: list[dict[str, Any]] | None = Field(default=None, description="CASB profile access rule.")
+    custom_control: list[dict[str, Any]] | None = Field(default=None, description="CASB profile custom control.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -56,7 +56,11 @@ class ProfileModel(BaseModel):
 
     Configure CASB profile.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - saas_application: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - saas_application: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -68,7 +72,10 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=47, default="", description="CASB profile name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    saas_application: list[ProfileSaasApplication] = Field(default=None, description="CASB profile SaaS application.")    # ========================================================================
+    name: str | None = Field(max_length=47, default="", description="CASB profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    saas_application: list[ProfileSaasApplication] | None = Field(default=None, description="CASB profile SaaS application.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -132,7 +139,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.casb.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "saas_application", [])
@@ -178,7 +185,7 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_saas_application_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -201,5 +208,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.052112Z
+# Generated: 2026-01-14T22:43:38.679799Z
 # ============================================================================

@@ -233,7 +233,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "nptv6"] | None = None,
+        type_: Literal["overload", "nptv6"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         internal_prefix: str | None = None,
@@ -254,7 +254,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: IPv6 IP pool name.
-            type: Configure IPv6 pool type (overload or NPTv6).
+            type_: Configure IPv6 pool type (overload or NPTv6).
             startip: First IPv6 address (inclusive) in the range for the address pool (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx, default = ::).
             endip: Final IPv6 address (inclusive) in the range for the address pool (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx, default = ::).
             internal_prefix: Internal NPTv6 prefix length (32 - 64).
@@ -296,7 +296,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             internal_prefix=internal_prefix,
@@ -335,7 +335,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "nptv6"] | None = None,
+        type_: Literal["overload", "nptv6"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         internal_prefix: str | None = None,
@@ -356,7 +356,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: IPv6 IP pool name.
-            type: Configure IPv6 pool type (overload or NPTv6).
+            type_: Configure IPv6 pool type (overload or NPTv6).
             startip: First IPv6 address (inclusive) in the range for the address pool (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx, default = ::).
             endip: Final IPv6 address (inclusive) in the range for the address pool (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx, default = ::).
             internal_prefix: Internal NPTv6 prefix length (32 - 64).
@@ -400,7 +400,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             internal_prefix=internal_prefix,
@@ -539,7 +539,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "nptv6"] | None = None,
+        type_: Literal["overload", "nptv6"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         internal_prefix: str | None = None,
@@ -561,7 +561,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             startip: Field startip
             endip: Field endip
             internal_prefix: Field internal-prefix
@@ -613,7 +613,7 @@ class Ippool6(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             internal_prefix=internal_prefix,

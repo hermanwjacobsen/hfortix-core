@@ -65,7 +65,7 @@ class AutomationTriggerFields(BaseModel):
 # ============================================================================
 
 
-class AutomationTriggerEvent_typeEnum(str, Enum):
+class AutomationTriggerEventTypeEnum(str, Enum):
     """Allowed values for event_type field."""
     IOC = "ioc"
     EVENT_LOG = "event-log"
@@ -90,7 +90,7 @@ class AutomationTriggerEvent_typeEnum(str, Enum):
     STITCH = "stitch"
 
 
-class AutomationTriggerLicense_typeEnum(str, Enum):
+class AutomationTriggerLicenseTypeEnum(str, Enum):
     """Allowed values for license_type field."""
     FORTICARE_SUPPORT = "forticare-support"
     FORTIGUARD_WEBFILTER = "fortiguard-webfilter"
@@ -102,7 +102,7 @@ class AutomationTriggerLicense_typeEnum(str, Enum):
     ANY = "any"
 
 
-class AutomationTriggerReport_typeEnum(str, Enum):
+class AutomationTriggerReportTypeEnum(str, Enum):
     """Allowed values for report_type field."""
     POSTURE = "posture"
     COVERAGE = "coverage"
@@ -110,7 +110,7 @@ class AutomationTriggerReport_typeEnum(str, Enum):
     ANY = "any"
 
 
-class AutomationTriggerTrigger_frequencyEnum(str, Enum):
+class AutomationTriggerTriggerFrequencyEnum(str, Enum):
     """Allowed values for trigger_frequency field."""
     HOURLY = "hourly"
     DAILY = "daily"
@@ -119,7 +119,7 @@ class AutomationTriggerTrigger_frequencyEnum(str, Enum):
     ONCE = "once"
 
 
-class AutomationTriggerTrigger_weekdayEnum(str, Enum):
+class AutomationTriggerTriggerWeekdayEnum(str, Enum):
     """Allowed values for trigger_weekday field."""
     SUNDAY = "sunday"
     MONDAY = "monday"
@@ -141,7 +141,30 @@ class AutomationTriggerModel(BaseModel):
 
     Trigger for automation stitches.
 
-    Validation Rules:        - name: max_length=35 pattern=        - description: max_length=255 pattern=        - trigger_type: pattern=        - event_type: pattern=        - vdom: pattern=        - license_type: pattern=        - report_type: pattern=        - stitch_name: max_length=35 pattern=        - logid: pattern=        - trigger_frequency: pattern=        - trigger_weekday: pattern=        - trigger_day: min=1 max=31 pattern=        - trigger_hour: min=0 max=23 pattern=        - trigger_minute: min=0 max=59 pattern=        - trigger_datetime: pattern=        - fields: pattern=        - faz_event_name: max_length=255 pattern=        - faz_event_severity: max_length=255 pattern=        - faz_event_tags: max_length=255 pattern=        - serial: max_length=255 pattern=        - fabric_event_name: max_length=255 pattern=        - fabric_event_severity: max_length=255 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - description: max_length=255 pattern=
+        - trigger_type: pattern=
+        - event_type: pattern=
+        - vdom: pattern=
+        - license_type: pattern=
+        - report_type: pattern=
+        - stitch_name: max_length=35 pattern=
+        - logid: pattern=
+        - trigger_frequency: pattern=
+        - trigger_weekday: pattern=
+        - trigger_day: min=1 max=31 pattern=
+        - trigger_hour: min=0 max=23 pattern=
+        - trigger_minute: min=0 max=59 pattern=
+        - trigger_datetime: pattern=
+        - fields: pattern=
+        - faz_event_name: max_length=255 pattern=
+        - faz_event_severity: max_length=255 pattern=
+        - faz_event_tags: max_length=255 pattern=
+        - serial: max_length=255 pattern=
+        - fabric_event_name: max_length=255 pattern=
+        - fabric_event_severity: max_length=255 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -153,7 +176,29 @@ class AutomationTriggerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Name.")    description: str | None = Field(max_length=255, default=None, description="Description.")    trigger_type: Literal["event-based", "scheduled"] | None = Field(default="event-based", description="Trigger type.")    event_type: AutomationTriggerEventTypeEnum | None = Field(default="ioc", description="Event type.")    vdom: list[AutomationTriggerVdom] = Field(default=None, description="Virtual domain(s) that this trigger is valid for.")    license_type: AutomationTriggerLicenseTypeEnum | None = Field(default="forticare-support", description="License type.")    report_type: AutomationTriggerReportTypeEnum | None = Field(default="posture", description="Security Rating report.")    stitch_name: str = Field(max_length=35, default="", description="Triggering stitch name.")  # datasource: ['system.automation-stitch.name']    logid: list[AutomationTriggerLogid] = Field(default=None, description="Log IDs to trigger event.")    trigger_frequency: AutomationTriggerTriggerFrequencyEnum | None = Field(default="daily", description="Scheduled trigger frequency (default = daily).")    trigger_weekday: AutomationTriggerTriggerWeekdayEnum | None = Field(default="", description="Day of week for trigger.")    trigger_day: int | None = Field(ge=1, le=31, default=1, description="Day within a month to trigger.")    trigger_hour: int | None = Field(ge=0, le=23, default=0, description="Hour of the day on which to trigger (0 - 23, default = 1).")    trigger_minute: int | None = Field(ge=0, le=59, default=0, description="Minute of the hour on which to trigger (0 - 59, default = 0).")    trigger_datetime: Any = Field(default="0000-00-00 00:00:00", description="Trigger date and time (YYYY-MM-DD HH:MM:SS).")    fields: list[AutomationTriggerFields] = Field(default=None, description="Customized trigger field settings.")    faz_event_name: str = Field(max_length=255, description="FortiAnalyzer event handler name.")    faz_event_severity: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event severity.")    faz_event_tags: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event tags.")    serial: str = Field(max_length=255, description="Fabric connector serial number.")    fabric_event_name: str = Field(max_length=255, description="Fabric connector event handler name.")    fabric_event_severity: str | None = Field(max_length=255, default=None, description="Fabric connector event severity.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Name.")
+    description: str | None = Field(max_length=255, default=None, description="Description.")
+    trigger_type: Literal["event-based", "scheduled"] | None = Field(default="event-based", description="Trigger type.")
+    event_type: str | AutomationTriggerEventTypeEnum | None = Field(default="ioc", description="Event type.")
+    vdom: list[AutomationTriggerVdom] | None = Field(default=None, description="Virtual domain(s) that this trigger is valid for.")
+    license_type: str | AutomationTriggerLicenseTypeEnum | None = Field(default="forticare-support", description="License type.")
+    report_type: str | AutomationTriggerReportTypeEnum | None = Field(default="posture", description="Security Rating report.")
+    stitch_name: str = Field(max_length=35, default="", description="Triggering stitch name.")  # datasource: ['system.automation-stitch.name']
+    logid: list[AutomationTriggerLogid] | None = Field(default=None, description="Log IDs to trigger event.")
+    trigger_frequency: str | AutomationTriggerTriggerFrequencyEnum | None = Field(default="daily", description="Scheduled trigger frequency (default = daily).")
+    trigger_weekday: str | AutomationTriggerTriggerWeekdayEnum | None = Field(default=None, description="Day of week for trigger.")
+    trigger_day: int | None = Field(ge=1, le=31, default=1, description="Day within a month to trigger.")
+    trigger_hour: int | None = Field(ge=0, le=23, default=0, description="Hour of the day on which to trigger (0 - 23, default = 1).")
+    trigger_minute: int | None = Field(ge=0, le=59, default=0, description="Minute of the hour on which to trigger (0 - 59, default = 0).")
+    trigger_datetime: Any = Field(default="0000-00-00 00:00:00", description="Trigger date and time (YYYY-MM-DD HH:MM:SS).")
+    fields: list[AutomationTriggerFields] | None = Field(default=None, description="Customized trigger field settings.")
+    faz_event_name: str = Field(max_length=255, description="FortiAnalyzer event handler name.")
+    faz_event_severity: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event severity.")
+    faz_event_tags: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event tags.")
+    serial: str = Field(max_length=255, description="Fabric connector serial number.")
+    fabric_event_name: str = Field(max_length=255, description="Fabric connector event handler name.")
+    fabric_event_severity: str | None = Field(max_length=255, default=None, description="Fabric connector event severity.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -232,7 +277,7 @@ class AutomationTriggerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_trigger.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vdom", [])
@@ -290,7 +335,7 @@ class AutomationTriggerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_trigger.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "stitch_name", None)
@@ -327,9 +372,10 @@ class AutomationTriggerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vdom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_stitch_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_stitch_name_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -351,5 +397,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.422209Z
+# Generated: 2026-01-14T22:43:35.492774Z
 # ============================================================================

@@ -26,7 +26,20 @@ class DataTypeModel(BaseModel):
 
     Configure predefined data type used by DLP blocking.
 
-    Validation Rules:        - name: max_length=35 pattern=        - pattern: max_length=255 pattern=        - verify: max_length=255 pattern=        - verify2: max_length=255 pattern=        - match_around: max_length=35 pattern=        - look_back: min=1 max=255 pattern=        - look_ahead: min=1 max=255 pattern=        - match_back: min=1 max=4096 pattern=        - match_ahead: min=1 max=4096 pattern=        - transform: max_length=255 pattern=        - verify_transformed_pattern: pattern=        - comment: max_length=255 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - pattern: max_length=255 pattern=
+        - verify: max_length=255 pattern=
+        - verify2: max_length=255 pattern=
+        - match_around: max_length=35 pattern=
+        - look_back: min=1 max=255 pattern=
+        - look_ahead: min=1 max=255 pattern=
+        - match_back: min=1 max=4096 pattern=
+        - match_ahead: min=1 max=4096 pattern=
+        - transform: max_length=255 pattern=
+        - verify_transformed_pattern: pattern=
+        - comment: max_length=255 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +51,19 @@ class DataTypeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Name of table containing the data type.")    pattern: str | None = Field(max_length=255, default="", description="Regular expression pattern string without look around.")    verify: str | None = Field(max_length=255, default="", description="Regular expression pattern string used to verify the data type.")    verify2: str | None = Field(max_length=255, default="", description="Extra regular expression pattern string used to verify the data type.")    match_around: str | None = Field(max_length=35, default="", description="Dictionary to check whether it has a match around (Only support match-any and basic types, no repeat supported).")  # datasource: ['dlp.dictionary.name']    look_back: int = Field(ge=1, le=255, default=1, description="Number of characters required to save for verification (1 - 255, default = 1).")    look_ahead: int = Field(ge=1, le=255, default=1, description="Number of characters to obtain in advance for verification (1 - 255, default = 1).")    match_back: int = Field(ge=1, le=4096, default=1, description="Number of characters in front for match-around (1 - 4096, default = 1).")    match_ahead: int = Field(ge=1, le=4096, default=1, description="Number of characters behind for match-around (1 - 4096, default = 1).")    transform: str | None = Field(max_length=255, default="", description="Template to transform user input to a pattern using capture group from 'pattern'.")    verify_transformed_pattern: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification for transformed pattern.")    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Name of table containing the data type.")
+    pattern: str | None = Field(max_length=255, default="", description="Regular expression pattern string without look around.")
+    verify: str | None = Field(max_length=255, default="", description="Regular expression pattern string used to verify the data type.")
+    verify2: str | None = Field(max_length=255, default="", description="Extra regular expression pattern string used to verify the data type.")
+    match_around: str | None = Field(max_length=35, default="", description="Dictionary to check whether it has a match around (Only support match-any and basic types, no repeat supported).")  # datasource: ['dlp.dictionary.name']
+    look_back: int = Field(ge=1, le=255, default=1, description="Number of characters required to save for verification (1 - 255, default = 1).")
+    look_ahead: int = Field(ge=1, le=255, default=1, description="Number of characters to obtain in advance for verification (1 - 255, default = 1).")
+    match_back: int = Field(ge=1, le=4096, default=1, description="Number of characters in front for match-around (1 - 4096, default = 1).")
+    match_ahead: int = Field(ge=1, le=4096, default=1, description="Number of characters behind for match-around (1 - 4096, default = 1).")
+    transform: str | None = Field(max_length=255, default="", description="Template to transform user input to a pattern using capture group from 'pattern'.")
+    verify_transformed_pattern: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification for transformed pattern.")
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +142,7 @@ class DataTypeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.data_type.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "match_around", None)
@@ -154,7 +179,7 @@ class DataTypeModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_match_around_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +202,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.884397Z
+# Generated: 2026-01-14T22:43:35.971984Z
 # ============================================================================

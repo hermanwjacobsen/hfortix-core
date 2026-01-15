@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -146,8 +146,8 @@ class RipInterface(BaseModel):
     auth_keychain: str | None = Field(max_length=35, default="", description="Authentication key-chain name.")  # datasource: ['router.key-chain.name']
     auth_mode: Literal["none", "text", "md5"] | None = Field(default="none", description="Authentication mode.")
     auth_string: Any = Field(max_length=16, default=None, description="Authentication string/password.")
-    receive_version: Literal["1", "2"] | None = Field(default="", description="Receive version.")
-    send_version: Literal["1", "2"] | None = Field(default="", description="Send version.")
+    receive_version: Literal["1", "2"] | None = Field(default=None, description="Receive version.")
+    send_version: Literal["1", "2"] | None = Field(default=None, description="Send version.")
     send_version2_broadcast: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable broadcast version 1 compatible packets.")
     split_horizon_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable split horizon.")
     split_horizon: Literal["poisoned", "regular"] | None = Field(default="poisoned", description="Enable/disable split horizon.")
@@ -169,7 +169,23 @@ class RipModel(BaseModel):
 
     Configure RIP.
 
-    Validation Rules:        - default_information_originate: pattern=        - default_metric: min=1 max=16 pattern=        - max_out_metric: min=0 max=15 pattern=        - distance: pattern=        - distribute_list: pattern=        - neighbor: pattern=        - network: pattern=        - offset_list: pattern=        - passive_interface: pattern=        - redistribute: pattern=        - update_timer: min=1 max=2147483647 pattern=        - timeout_timer: min=5 max=2147483647 pattern=        - garbage_timer: min=5 max=2147483647 pattern=        - version: pattern=        - interface: pattern=    """
+    Validation Rules:
+        - default_information_originate: pattern=
+        - default_metric: min=1 max=16 pattern=
+        - max_out_metric: min=0 max=15 pattern=
+        - distance: pattern=
+        - distribute_list: pattern=
+        - neighbor: pattern=
+        - network: pattern=
+        - offset_list: pattern=
+        - passive_interface: pattern=
+        - redistribute: pattern=
+        - update_timer: min=1 max=2147483647 pattern=
+        - timeout_timer: min=5 max=2147483647 pattern=
+        - garbage_timer: min=5 max=2147483647 pattern=
+        - version: pattern=
+        - interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -181,7 +197,22 @@ class RipModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    default_metric: int | None = Field(ge=1, le=16, default=1, description="Default metric.")    max_out_metric: int | None = Field(ge=0, le=15, default=0, description="Maximum metric allowed to output(0 means 'not set').")    distance: list[RipDistance] = Field(default=None, description="Distance.")    distribute_list: list[RipDistributeList] = Field(default=None, description="Distribute list.")    neighbor: list[RipNeighbor] = Field(default=None, description="Neighbor.")    network: list[RipNetwork] = Field(default=None, description="Network.")    offset_list: list[RipOffsetList] = Field(default=None, description="Offset list.")    passive_interface: list[RipPassiveInterface] = Field(default=None, description="Passive interface configuration.")    redistribute: list[RipRedistribute] = Field(default=None, description="Redistribute configuration.")    update_timer: int | None = Field(ge=1, le=2147483647, default=30, description="Update timer in seconds.")    timeout_timer: int | None = Field(ge=5, le=2147483647, default=180, description="Timeout timer in seconds.")    garbage_timer: int | None = Field(ge=5, le=2147483647, default=120, description="Garbage timer in seconds.")    version: Literal["1", "2"] | None = Field(default="2", description="RIP version.")    interface: list[RipInterface] = Field(default=None, description="RIP interface configuration.")    # ========================================================================
+    default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")
+    default_metric: int | None = Field(ge=1, le=16, default=1, description="Default metric.")
+    max_out_metric: int | None = Field(ge=0, le=15, default=0, description="Maximum metric allowed to output(0 means 'not set').")
+    distance: list[RipDistance] | None = Field(default=None, description="Distance.")
+    distribute_list: list[RipDistributeList] | None = Field(default=None, description="Distribute list.")
+    neighbor: list[RipNeighbor] | None = Field(default=None, description="Neighbor.")
+    network: list[RipNetwork] | None = Field(default=None, description="Network.")
+    offset_list: list[RipOffsetList] | None = Field(default=None, description="Offset list.")
+    passive_interface: list[RipPassiveInterface] | None = Field(default=None, description="Passive interface configuration.")
+    redistribute: list[RipRedistribute] | None = Field(default=None, description="Redistribute configuration.")
+    update_timer: int | None = Field(ge=1, le=2147483647, default=30, description="Update timer in seconds.")
+    timeout_timer: int | None = Field(ge=5, le=2147483647, default=180, description="Timeout timer in seconds.")
+    garbage_timer: int | None = Field(ge=5, le=2147483647, default=120, description="Garbage timer in seconds.")
+    version: Literal["1", "2"] | None = Field(default="2", description="RIP version.")
+    interface: list[RipInterface] | None = Field(default=None, description="RIP interface configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -245,7 +276,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "distance", [])
@@ -303,7 +334,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "distribute_list", [])
@@ -361,7 +392,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "offset_list", [])
@@ -419,7 +450,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -477,7 +508,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -535,7 +566,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -581,13 +612,18 @@ class RipModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_distance_references(client)
-        all_errors.extend(errors)        errors = await self.validate_distribute_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_offset_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_passive_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_distribute_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_offset_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_passive_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -609,5 +645,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.634811Z
+# Generated: 2026-01-14T22:43:34.474094Z
 # ============================================================================

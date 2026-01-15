@@ -47,7 +47,7 @@ class DynamicPortPolicyPolicyItem(TypedDict):
     interface_tags: str  # Match policy based on the FortiSwitch interface ob
     mac: str  # Match policy based on MAC address. | MaxLen: 17
     hw_vendor: str  # Match policy based on hardware vendor. | MaxLen: 15
-    type: str  # Match policy based on type. | MaxLen: 15
+    type_: str  # Match policy based on type. | MaxLen: 15
     family: str  # Match policy based on family. | MaxLen: 31
     host: str  # Match policy based on host. | MaxLen: 64
     lldp_profile: str  # LLDP profile to be applied when using this policy. | MaxLen: 63
@@ -90,7 +90,7 @@ class DynamicPortPolicyPolicyObject:
     # Match policy based on hardware vendor. | MaxLen: 15
     hw_vendor: str
     # Match policy based on type. | MaxLen: 15
-    type: str
+    type_: str
     # Match policy based on family. | MaxLen: 31
     family: str
     # Match policy based on host. | MaxLen: 64
@@ -175,6 +175,10 @@ class DynamicPortPolicy:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -195,6 +199,7 @@ class DynamicPortPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DynamicPortPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -212,6 +217,7 @@ class DynamicPortPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DynamicPortPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -228,6 +234,7 @@ class DynamicPortPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DynamicPortPolicyResponse]: ...
     
     # ================================================================
@@ -270,7 +277,7 @@ class DynamicPortPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
     
@@ -289,7 +296,7 @@ class DynamicPortPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DynamicPortPolicyObject]: ...
     
@@ -389,23 +396,6 @@ class DynamicPortPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DynamicPortPolicyObject | list[DynamicPortPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -423,6 +413,7 @@ class DynamicPortPolicy:
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
@@ -465,19 +456,7 @@ class DynamicPortPolicy:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -492,6 +471,7 @@ class DynamicPortPolicy:
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
@@ -534,19 +514,7 @@ class DynamicPortPolicy:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -557,6 +525,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
@@ -587,14 +556,7 @@ class DynamicPortPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -627,8 +589,6 @@ class DynamicPortPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -656,6 +616,10 @@ class DynamicPortPolicyDictMode:
     By default returns DynamicPortPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DynamicPortPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -794,10 +758,12 @@ class DynamicPortPolicyDictMode:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
@@ -849,10 +815,12 @@ class DynamicPortPolicyDictMode:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
@@ -892,10 +860,12 @@ class DynamicPortPolicyDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -932,8 +902,6 @@ class DynamicPortPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -957,6 +925,10 @@ class DynamicPortPolicyObjectMode:
     By default returns DynamicPortPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DynamicPortPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1110,10 +1082,12 @@ class DynamicPortPolicyObjectMode:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
@@ -1180,10 +1154,12 @@ class DynamicPortPolicyObjectMode:
         fortilink: str | None = ...,
         policy: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
@@ -1234,10 +1210,12 @@ class DynamicPortPolicyObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DynamicPortPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1274,8 +1252,6 @@ class DynamicPortPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

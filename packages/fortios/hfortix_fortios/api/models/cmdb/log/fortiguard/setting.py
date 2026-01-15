@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class SettingUpload_optionEnum(str, Enum):
+class SettingUploadOptionEnum(str, Enum):
     """Allowed values for upload_option field."""
     STORE_AND_UPLOAD = "store-and-upload"
     REALTIME = "realtime"
@@ -24,7 +24,7 @@ class SettingUpload_optionEnum(str, Enum):
     VALUE_5_MINUTE = "5-minute"
 
 
-class SettingSsl_min_proto_versionEnum(str, Enum):
+class SettingSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -45,7 +45,23 @@ class SettingModel(BaseModel):
 
     Configure logging to FortiCloud.
 
-    Validation Rules:        - status: pattern=        - upload_option: pattern=        - upload_interval: pattern=        - upload_day: pattern=        - upload_time: pattern=        - priority: pattern=        - max_log_rate: min=0 max=100000 pattern=        - access_config: pattern=        - enc_algorithm: pattern=        - ssl_min_proto_version: pattern=        - conn_timeout: min=1 max=3600 pattern=        - source_ip: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - upload_option: pattern=
+        - upload_interval: pattern=
+        - upload_day: pattern=
+        - upload_time: pattern=
+        - priority: pattern=
+        - max_log_rate: min=0 max=100000 pattern=
+        - access_config: pattern=
+        - enc_algorithm: pattern=
+        - ssl_min_proto_version: pattern=
+        - conn_timeout: min=1 max=3600 pattern=
+        - source_ip: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -57,7 +73,22 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging to FortiCloud.")    upload_option: SettingUploadOptionEnum | None = Field(default="5-minute", description="Configure how log messages are sent to FortiCloud.")    upload_interval: Literal["daily", "weekly", "monthly"] | None = Field(default="daily", description="Frequency of uploading log files to FortiCloud.")    upload_day: str | None = Field(default="", description="Day of week to roll logs.")    upload_time: str | None = Field(default="", description="Time of day to roll logs (hh:mm).")    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="FortiCloud maximum log rate in MBps (0 = unlimited).")    access_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiCloud access to configuration and data.")    enc_algorithm: Literal["high-medium", "high", "low"] | None = Field(default="high", description="Configure the level of SSL protection for secure communication with FortiCloud.")    ssl_min_proto_version: SettingSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    conn_timeout: int | None = Field(ge=1, le=3600, default=10, description="FortiGate Cloud connection timeout in seconds.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address used to connect FortiCloud.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging to FortiCloud.")
+    upload_option: str | SettingUploadOptionEnum | None = Field(default="5-minute", description="Configure how log messages are sent to FortiCloud.")
+    upload_interval: Literal["daily", "weekly", "monthly"] | None = Field(default="daily", description="Frequency of uploading log files to FortiCloud.")
+    upload_day: str | None = Field(default="", description="Day of week to roll logs.")
+    upload_time: str | None = Field(default="", description="Time of day to roll logs (hh:mm).")
+    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")
+    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="FortiCloud maximum log rate in MBps (0 = unlimited).")
+    access_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiCloud access to configuration and data.")
+    enc_algorithm: Literal["high-medium", "high", "low"] | None = Field(default="high", description="Configure the level of SSL protection for secure communication with FortiCloud.")
+    ssl_min_proto_version: str | SettingSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    conn_timeout: int | None = Field(ge=1, le=3600, default=10, description="FortiGate Cloud connection timeout in seconds.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address used to connect FortiCloud.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -136,7 +167,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.fortiguard.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -173,7 +204,7 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -196,5 +227,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.162156Z
+# Generated: 2026-01-14T22:43:38.840241Z
 # ============================================================================

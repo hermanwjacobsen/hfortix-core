@@ -26,7 +26,17 @@ class MacPolicyModel(BaseModel):
 
     Configure MAC policy to be applied on the managed FortiSwitch devices through NAC device.
 
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - fortilink: max_length=15 pattern=        - vlan: max_length=15 pattern=        - traffic_policy: max_length=63 pattern=        - count: pattern=        - bounce_port_link: pattern=        - bounce_port_duration: min=1 max=30 pattern=        - poe_reset: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - description: max_length=63 pattern=
+        - fortilink: max_length=15 pattern=
+        - vlan: max_length=15 pattern=
+        - traffic_policy: max_length=63 pattern=
+        - count: pattern=
+        - bounce_port_link: pattern=
+        - bounce_port_duration: min=1 max=30 pattern=
+        - poe_reset: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +48,16 @@ class MacPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="MAC policy name.")    description: str | None = Field(max_length=63, default="", description="Description for the MAC policy.")    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this MAC policy belongs to.")  # datasource: ['system.interface.name']    vlan: str | None = Field(max_length=15, default="", description="Ingress traffic VLAN assignment for the MAC address matching this MAC policy.")  # datasource: ['system.interface.name']    traffic_policy: str | None = Field(max_length=63, default="", description="Traffic policy to be applied when using this MAC policy.")  # datasource: ['switch-controller.traffic-policy.name']    count: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet count on the NAC device.")    bounce_port_link: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.")    bounce_port_duration: int | None = Field(ge=1, le=30, default=5, description="Bounce duration in seconds of a switch port where this mac-policy is applied.")    poe_reset: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable POE reset of a switch port where this mac-policy is applied.")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="MAC policy name.")
+    description: str | None = Field(max_length=63, default="", description="Description for the MAC policy.")
+    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this MAC policy belongs to.")  # datasource: ['system.interface.name']
+    vlan: str | None = Field(max_length=15, default="", description="Ingress traffic VLAN assignment for the MAC address matching this MAC policy.")  # datasource: ['system.interface.name']
+    traffic_policy: str | None = Field(max_length=63, default="", description="Traffic policy to be applied when using this MAC policy.")  # datasource: ['switch-controller.traffic-policy.name']
+    count: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet count on the NAC device.")
+    bounce_port_link: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.")
+    bounce_port_duration: int | None = Field(ge=1, le=30, default=5, description="Bounce duration in seconds of a switch port where this mac-policy is applied.")
+    poe_reset: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable POE reset of a switch port where this mac-policy is applied.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -147,7 +166,7 @@ class MacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.mac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -196,7 +215,7 @@ class MacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.mac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vlan", None)
@@ -245,7 +264,7 @@ class MacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.mac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "traffic_policy", None)
@@ -282,10 +301,12 @@ class MacPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fortilink_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vlan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_traffic_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vlan_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_traffic_policy_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -307,5 +328,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.977671Z
+# Generated: 2026-01-14T22:43:34.917875Z
 # ============================================================================

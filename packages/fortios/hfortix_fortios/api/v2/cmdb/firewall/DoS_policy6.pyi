@@ -82,7 +82,7 @@ class DosPolicy6AnomalyItem(TypedDict):
     quarantine_expiry: str  # Duration of quarantine. | Default: 5m
     quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
     threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
-    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
+    threshold_default: int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
 
 
 # Nested classes for table field children (object mode)
@@ -175,7 +175,7 @@ class DosPolicy6AnomalyObject:
     # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
     threshold: int
     # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
-    threshold(default): int
+    threshold_default: int
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -234,7 +234,6 @@ class DosPolicy6Object:
     anomaly: list[DosPolicy6AnomalyObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -257,6 +256,10 @@ class DosPolicy6:
     Primary Key: policyid
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -277,6 +280,7 @@ class DosPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DosPolicy6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -294,6 +298,7 @@ class DosPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DosPolicy6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -310,6 +315,7 @@ class DosPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DosPolicy6Response]: ...
     
     # ================================================================
@@ -352,7 +358,7 @@ class DosPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
     
@@ -371,7 +377,7 @@ class DosPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DosPolicy6Object]: ...
     
@@ -471,23 +477,6 @@ class DosPolicy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        policyid: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DosPolicy6Object | list[DosPolicy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -510,6 +499,7 @@ class DosPolicy6:
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
@@ -567,24 +557,7 @@ class DosPolicy6:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DosPolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -604,6 +577,7 @@ class DosPolicy6:
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
@@ -661,24 +635,7 @@ class DosPolicy6:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DosPolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -689,6 +646,7 @@ class DosPolicy6:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
@@ -719,14 +677,7 @@ class DosPolicy6:
         self,
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        policyid: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -764,8 +715,6 @@ class DosPolicy6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -793,6 +742,10 @@ class DosPolicy6DictMode:
     By default returns DosPolicy6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return DosPolicy6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -946,10 +899,12 @@ class DosPolicy6DictMode:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DosPolicy6Payload | None = ...,
@@ -1021,10 +976,12 @@ class DosPolicy6DictMode:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DosPolicy6Payload | None = ...,
@@ -1069,10 +1026,12 @@ class DosPolicy6DictMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1114,8 +1073,6 @@ class DosPolicy6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1139,6 +1096,10 @@ class DosPolicy6ObjectMode:
     By default returns DosPolicy6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DosPolicy6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1312,10 +1273,12 @@ class DosPolicy6ObjectMode:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DosPolicy6Payload | None = ...,
@@ -1407,10 +1370,12 @@ class DosPolicy6ObjectMode:
         service: str | list[str] | list[dict[str, Any]] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DosPolicy6Payload | None = ...,
@@ -1466,10 +1431,12 @@ class DosPolicy6ObjectMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DosPolicy6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1511,8 +1478,6 @@ class DosPolicy6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -147,6 +147,10 @@ class TrafficShaper:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -167,6 +171,7 @@ class TrafficShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TrafficShaperResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -184,6 +189,7 @@ class TrafficShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TrafficShaperResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -200,6 +206,7 @@ class TrafficShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[TrafficShaperResponse]: ...
     
     # ================================================================
@@ -242,7 +249,7 @@ class TrafficShaper:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
     
@@ -261,7 +268,7 @@ class TrafficShaper:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[TrafficShaperObject]: ...
     
@@ -361,23 +368,6 @@ class TrafficShaper:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> TrafficShaperObject | list[TrafficShaperObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -410,6 +400,7 @@ class TrafficShaper:
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
@@ -497,34 +488,7 @@ class TrafficShaper:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: TrafficShaperPayload | None = ...,
-        name: str | None = ...,
-        guaranteed_bandwidth: int | None = ...,
-        maximum_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
-        per_policy: Literal["disable", "enable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        dscp_marking_method: Literal["multi-stage", "static"] | None = ...,
-        exceed_bandwidth: int | None = ...,
-        exceed_dscp: str | None = ...,
-        maximum_dscp: str | None = ...,
-        cos_marking: Literal["enable", "disable"] | None = ...,
-        cos_marking_method: Literal["multi-stage", "static"] | None = ...,
-        cos: str | None = ...,
-        exceed_cos: str | None = ...,
-        maximum_cos: str | None = ...,
-        overhead: int | None = ...,
-        exceed_class_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -554,6 +518,7 @@ class TrafficShaper:
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
@@ -641,34 +606,7 @@ class TrafficShaper:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: TrafficShaperPayload | None = ...,
-        name: str | None = ...,
-        guaranteed_bandwidth: int | None = ...,
-        maximum_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
-        per_policy: Literal["disable", "enable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        dscp_marking_method: Literal["multi-stage", "static"] | None = ...,
-        exceed_bandwidth: int | None = ...,
-        exceed_dscp: str | None = ...,
-        maximum_dscp: str | None = ...,
-        cos_marking: Literal["enable", "disable"] | None = ...,
-        cos_marking_method: Literal["multi-stage", "static"] | None = ...,
-        cos: str | None = ...,
-        exceed_cos: str | None = ...,
-        maximum_cos: str | None = ...,
-        overhead: int | None = ...,
-        exceed_class_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -679,6 +617,7 @@ class TrafficShaper:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
@@ -709,14 +648,7 @@ class TrafficShaper:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -764,8 +696,6 @@ class TrafficShaper:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -793,6 +723,10 @@ class TrafficShaperDictMode:
     By default returns TrafficShaperResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return TrafficShaperObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -976,10 +910,12 @@ class TrafficShaperDictMode:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: TrafficShaperPayload | None = ...,
@@ -1091,10 +1027,12 @@ class TrafficShaperDictMode:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: TrafficShaperPayload | None = ...,
@@ -1149,10 +1087,12 @@ class TrafficShaperDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1204,8 +1144,6 @@ class TrafficShaperDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1229,6 +1167,10 @@ class TrafficShaperObjectMode:
     By default returns TrafficShaperObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return TrafficShaperResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1442,10 +1384,12 @@ class TrafficShaperObjectMode:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: TrafficShaperPayload | None = ...,
@@ -1587,10 +1531,12 @@ class TrafficShaperObjectMode:
         overhead: int | None = ...,
         exceed_class_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: TrafficShaperPayload | None = ...,
@@ -1656,10 +1602,12 @@ class TrafficShaperObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficShaperObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1711,8 +1659,6 @@ class TrafficShaperObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

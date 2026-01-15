@@ -29,7 +29,7 @@ class SdnConnectorPayload(TypedDict, total=False):
     """
     name: str  # SDN connector name. | MaxLen: 35
     status: Literal["disable", "enable"]  # Enable/disable connection to the remote SDN connec | Default: enable
-    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
+    type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
     proxy: str  # SDN proxy. | MaxLen: 35
     use_metadata_iam: Literal["disable", "enable"]  # Enable/disable use of IAM role from metadata to ca | Default: disable
     microsoft_365: Literal["disable", "enable"]  # Enable to use as Microsoft 365 connector. | Default: disable
@@ -434,7 +434,7 @@ class SdnConnectorResponse(TypedDict):
     """
     name: str  # SDN connector name. | MaxLen: 35
     status: Literal["disable", "enable"]  # Enable/disable connection to the remote SDN connec | Default: enable
-    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
+    type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
     proxy: str  # SDN proxy. | MaxLen: 35
     use_metadata_iam: Literal["disable", "enable"]  # Enable/disable use of IAM role from metadata to ca | Default: disable
     microsoft_365: Literal["disable", "enable"]  # Enable to use as Microsoft 365 connector. | Default: disable
@@ -502,7 +502,7 @@ class SdnConnectorObject:
     # Enable/disable connection to the remote SDN connector. | Default: enable
     status: Literal["disable", "enable"]
     # Type of SDN connector. | Default: aws
-    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]
+    type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]
     # SDN proxy. | MaxLen: 35
     proxy: str
     # Enable/disable use of IAM role from metadata to call API. | Default: disable
@@ -609,9 +609,7 @@ class SdnConnectorObject:
     update_interval: int
     
     # Common API response fields
-    status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -631,6 +629,10 @@ class SdnConnector:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -652,6 +654,7 @@ class SdnConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SdnConnectorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -669,6 +672,7 @@ class SdnConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SdnConnectorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -685,6 +689,7 @@ class SdnConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SdnConnectorResponse]: ...
     
     # ================================================================
@@ -727,7 +732,7 @@ class SdnConnector:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
     
@@ -746,7 +751,7 @@ class SdnConnector:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SdnConnectorObject]: ...
     
@@ -846,23 +851,6 @@ class SdnConnector:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SdnConnectorObject | list[SdnConnectorObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -876,7 +864,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -930,6 +918,7 @@ class SdnConnector:
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
@@ -940,7 +929,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1005,7 +994,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1069,7 +1058,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1122,69 +1111,7 @@ class SdnConnector:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[dict[str, Any]] | None = ...,
-        route_table: str | list[str] | list[dict[str, Any]] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        oci_region_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
-        gcp_project_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        forwarding_rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1195,7 +1122,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1249,6 +1176,7 @@ class SdnConnector:
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
@@ -1259,7 +1187,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1324,7 +1252,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1388,7 +1316,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1441,69 +1369,7 @@ class SdnConnector:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[dict[str, Any]] | None = ...,
-        route_table: str | list[str] | list[dict[str, Any]] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        oci_region_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
-        gcp_project_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        forwarding_rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1514,6 +1380,7 @@ class SdnConnector:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
@@ -1544,14 +1411,7 @@ class SdnConnector:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1566,7 +1426,7 @@ class SdnConnector:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1634,8 +1494,6 @@ class SdnConnector:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1663,6 +1521,10 @@ class SdnConnectorDictMode:
     By default returns SdnConnectorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SdnConnectorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1768,7 +1630,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1833,7 +1695,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1898,7 +1760,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -1951,16 +1813,18 @@ class SdnConnectorDictMode:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2023,7 +1887,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2088,7 +1952,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2153,7 +2017,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2206,16 +2070,18 @@ class SdnConnectorDictMode:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2299,10 +2165,12 @@ class SdnConnectorDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -2322,7 +2190,7 @@ class SdnConnectorDictMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2389,8 +2257,6 @@ class SdnConnectorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2414,6 +2280,10 @@ class SdnConnectorObjectMode:
     By default returns SdnConnectorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SdnConnectorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2519,7 +2389,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2584,7 +2454,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2649,7 +2519,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2714,7 +2584,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2767,16 +2637,18 @@ class SdnConnectorObjectMode:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2839,7 +2711,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2904,7 +2776,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -2969,7 +2841,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -3034,7 +2906,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -3087,16 +2959,18 @@ class SdnConnectorObjectMode:
         par_id: str | None = ...,
         update_interval: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -3191,10 +3065,12 @@ class SdnConnectorObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SdnConnectorObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -3214,7 +3090,7 @@ class SdnConnectorObjectMode:
         payload_dict: SdnConnectorPayload | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
         proxy: str | None = ...,
         use_metadata_iam: Literal["disable", "enable"] | None = ...,
         microsoft_365: Literal["disable", "enable"] | None = ...,
@@ -3281,8 +3157,6 @@ class SdnConnectorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

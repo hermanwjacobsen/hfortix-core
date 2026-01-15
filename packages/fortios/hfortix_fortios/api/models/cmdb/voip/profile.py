@@ -7,8 +7,9 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -136,8 +137,8 @@ class ProfileSip(BaseModel):
     ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="allow", description="Allow/block client renegotiation by server.")
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")
     ssl_pfs: Literal["require", "deny", "allow"] | None = Field(default="allow", description="SSL Perfect Forward Secrecy.")
-    ssl_min_version: SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")
-    ssl_max_version: SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")
+    ssl_min_version: str | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")
+    ssl_max_version: str | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")
     ssl_client_certificate: str | None = Field(max_length=35, default="", description="Name of Certificate to offer to server if requested.")  # datasource: ['vpn.certificate.local.name']
     ssl_server_certificate: str = Field(max_length=35, default="", description="Name of Certificate return to the client in every SSL connection.")  # datasource: ['vpn.certificate.local.name']
     ssl_auth_client: str | None = Field(max_length=35, default="", description="Require a client certificate and authenticate it with the peer/peergrp.")  # datasource: ['user.peer.name', 'user.peergrp.name']
@@ -177,7 +178,7 @@ class ProfileMsrp(BaseModel):
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable MSRP.")
     log_violations: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of MSRP violations.")
     max_msg_size: int | None = Field(ge=0, le=65535, default=0, description="Maximum allowable MSRP message size (1-65535).")
-    max_msg_size_action: MaxMsgSizeActionEnum | None = Field(default="pass", description="Action for violation of max-msg-size.")
+    max_msg_size_action: str | None = Field(default="pass", description="Action for violation of max-msg-size.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -195,7 +196,14 @@ class ProfileModel(BaseModel):
 
     Configure VoIP profiles.
 
-    Validation Rules:        - name: max_length=47 pattern=        - feature_set: pattern=        - comment: max_length=255 pattern=        - sip: pattern=        - sccp: pattern=        - msrp: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - feature_set: pattern=
+        - comment: max_length=255 pattern=
+        - sip: pattern=
+        - sccp: pattern=
+        - msrp: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -207,7 +215,13 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile name.")    feature_set: Literal["ips", "voipd"] | None = Field(default="voipd", description="IPS or voipd (SIP-ALG) inspection feature set.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    sip: list[ProfileSip] = Field(default=None, description="SIP.")    sccp: list[ProfileSccp] = Field(default=None, description="SCCP.")    msrp: list[ProfileMsrp] = Field(default=None, description="MSRP.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile name.")
+    feature_set: Literal["ips", "voipd"] | None = Field(default="voipd", description="IPS or voipd (SIP-ALG) inspection feature set.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    sip: list[ProfileSip] | None = Field(default=None, description="SIP.")
+    sccp: list[ProfileSccp] | None = Field(default=None, description="SCCP.")
+    msrp: list[ProfileMsrp] | None = Field(default=None, description="MSRP.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -271,7 +285,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.voip.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "sip", [])
@@ -319,7 +333,7 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_sip_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -342,5 +356,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.658362Z
+# Generated: 2026-01-14T22:43:34.503339Z
 # ============================================================================

@@ -19,7 +19,7 @@ class Ippool6Payload(TypedDict, total=False):
         }
     """
     name: str  # IPv6 IP pool name. | MaxLen: 79
-    type: Literal["overload", "nptv6"]  # Configure IPv6 pool type (overload or NPTv6). | Default: overload
+    type_: Literal["overload", "nptv6"]  # Configure IPv6 pool type (overload or NPTv6). | Default: overload
     startip: str  # First IPv6 address (inclusive) in the range for th | Default: ::
     endip: str  # Final IPv6 address (inclusive) in the range for th | Default: ::
     internal_prefix: str  # Internal NPTv6 prefix length (32 - 64). | Default: ::/0
@@ -41,7 +41,7 @@ class Ippool6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # IPv6 IP pool name. | MaxLen: 79
-    type: Literal["overload", "nptv6"]  # Configure IPv6 pool type (overload or NPTv6). | Default: overload
+    type_: Literal["overload", "nptv6"]  # Configure IPv6 pool type (overload or NPTv6). | Default: overload
     startip: str  # First IPv6 address (inclusive) in the range for th | Default: ::
     endip: str  # Final IPv6 address (inclusive) in the range for th | Default: ::
     internal_prefix: str  # Internal NPTv6 prefix length (32 - 64). | Default: ::/0
@@ -62,7 +62,7 @@ class Ippool6Object:
     # IPv6 IP pool name. | MaxLen: 79
     name: str
     # Configure IPv6 pool type (overload or NPTv6). | Default: overload
-    type: Literal["overload", "nptv6"]
+    type_: Literal["overload", "nptv6"]
     # First IPv6 address (inclusive) in the range for the address | Default: ::
     startip: str
     # Final IPv6 address (inclusive) in the range for the address | Default: ::
@@ -102,6 +102,10 @@ class Ippool6:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -122,6 +126,7 @@ class Ippool6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ippool6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -139,6 +144,7 @@ class Ippool6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ippool6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -155,6 +161,7 @@ class Ippool6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Ippool6Response]: ...
     
     # ================================================================
@@ -197,7 +204,7 @@ class Ippool6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Ippool6Object: ...
     
@@ -216,7 +223,7 @@ class Ippool6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Ippool6Object]: ...
     
@@ -316,23 +323,6 @@ class Ippool6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Ippool6Object | list[Ippool6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -345,7 +335,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -355,6 +345,7 @@ class Ippool6:
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ippool6Object: ...
@@ -364,7 +355,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -384,7 +375,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -403,7 +394,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -412,24 +403,7 @@ class Ippool6:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Ippool6Payload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        internal_prefix: str | None = ...,
-        external_prefix: str | None = ...,
-        comments: str | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -439,7 +413,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -449,6 +423,7 @@ class Ippool6:
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ippool6Object: ...
@@ -458,7 +433,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -478,7 +453,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -497,7 +472,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -506,24 +481,7 @@ class Ippool6:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Ippool6Payload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        internal_prefix: str | None = ...,
-        external_prefix: str | None = ...,
-        comments: str | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +492,7 @@ class Ippool6:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ippool6Object: ...
@@ -564,14 +523,7 @@ class Ippool6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -585,7 +537,7 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -609,8 +561,6 @@ class Ippool6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +588,10 @@ class Ippool6DictMode:
     By default returns Ippool6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return Ippool6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -742,7 +696,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -762,7 +716,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -782,7 +736,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -791,15 +745,17 @@ class Ippool6DictMode:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -817,7 +773,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -837,7 +793,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -857,7 +813,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -866,15 +822,17 @@ class Ippool6DictMode:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -914,10 +872,12 @@ class Ippool6DictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -936,7 +896,7 @@ class Ippool6DictMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -959,8 +919,6 @@ class Ippool6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +942,10 @@ class Ippool6ObjectMode:
     By default returns Ippool6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Ippool6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1088,7 +1050,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1108,7 +1070,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1128,7 +1090,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1148,7 +1110,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1157,15 +1119,17 @@ class Ippool6ObjectMode:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ippool6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1183,7 +1147,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1203,7 +1167,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1223,7 +1187,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1243,7 +1207,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1252,15 +1216,17 @@ class Ippool6ObjectMode:
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ippool6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1311,10 +1277,12 @@ class Ippool6ObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ippool6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1333,7 +1301,7 @@ class Ippool6ObjectMode:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type_: Literal["overload", "nptv6"] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
@@ -1356,8 +1324,6 @@ class Ippool6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -74,6 +74,10 @@ class InternetServiceIpblVendor:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -94,6 +98,7 @@ class InternetServiceIpblVendor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceIpblVendorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -111,6 +116,7 @@ class InternetServiceIpblVendor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceIpblVendorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -127,6 +133,7 @@ class InternetServiceIpblVendor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InternetServiceIpblVendorResponse]: ...
     
     # ================================================================
@@ -169,7 +176,7 @@ class InternetServiceIpblVendor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
     
@@ -188,7 +195,7 @@ class InternetServiceIpblVendor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InternetServiceIpblVendorObject]: ...
     
@@ -288,23 +295,6 @@ class InternetServiceIpblVendor:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceIpblVendorObject | list[InternetServiceIpblVendorObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -320,6 +310,7 @@ class InternetServiceIpblVendor:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
@@ -356,17 +347,7 @@ class InternetServiceIpblVendor:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InternetServiceIpblVendorPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -379,6 +360,7 @@ class InternetServiceIpblVendor:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
@@ -415,17 +397,7 @@ class InternetServiceIpblVendor:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceIpblVendorPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -436,6 +408,7 @@ class InternetServiceIpblVendor:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
@@ -466,14 +439,7 @@ class InternetServiceIpblVendor:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -504,8 +470,6 @@ class InternetServiceIpblVendor:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -533,6 +497,10 @@ class InternetServiceIpblVendorDictMode:
     By default returns InternetServiceIpblVendorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceIpblVendorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -665,10 +633,12 @@ class InternetServiceIpblVendorDictMode:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceIpblVendorPayload | None = ...,
@@ -712,10 +682,12 @@ class InternetServiceIpblVendorDictMode:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceIpblVendorPayload | None = ...,
@@ -753,10 +725,12 @@ class InternetServiceIpblVendorDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -791,8 +765,6 @@ class InternetServiceIpblVendorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -816,6 +788,10 @@ class InternetServiceIpblVendorObjectMode:
     By default returns InternetServiceIpblVendorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceIpblVendorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -961,10 +937,12 @@ class InternetServiceIpblVendorObjectMode:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceIpblVendorPayload | None = ...,
@@ -1021,10 +999,12 @@ class InternetServiceIpblVendorObjectMode:
         id: int | None = ...,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceIpblVendorPayload | None = ...,
@@ -1073,10 +1053,12 @@ class InternetServiceIpblVendorObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceIpblVendorObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1111,8 +1093,6 @@ class InternetServiceIpblVendorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

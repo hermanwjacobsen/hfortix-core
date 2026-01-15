@@ -35,7 +35,19 @@ class OverrideModel(BaseModel):
 
     Configure FortiGuard Web Filter administrative overrides.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - scope: pattern=        - ip: pattern=        - user: max_length=64 pattern=        - user_group: max_length=63 pattern=        - old_profile: max_length=47 pattern=        - new_profile: max_length=47 pattern=        - ip6: pattern=        - expires: pattern=        - initiator: max_length=64 pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - scope: pattern=
+        - ip: pattern=
+        - user: max_length=64 pattern=
+        - user_group: max_length=63 pattern=
+        - old_profile: max_length=47 pattern=
+        - new_profile: max_length=47 pattern=
+        - ip6: pattern=
+        - expires: pattern=
+        - initiator: max_length=64 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -47,7 +59,18 @@ class OverrideModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Override rule ID.")    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable override rule.")    scope: OverrideScopeEnum | None = Field(default="user", description="Override either the specific user, user group, IPv4 address, or IPv6 address.")    ip: str = Field(default="0.0.0.0", description="IPv4 address which the override applies.")    user: str = Field(max_length=64, default="", description="Name of the user which the override applies.")    user_group: str = Field(max_length=63, default="", description="Specify the user group for which the override applies.")  # datasource: ['user.group.name']    old_profile: str = Field(max_length=47, default="", description="Name of the web filter profile which the override applies.")  # datasource: ['webfilter.profile.name']    new_profile: str = Field(max_length=47, default="", description="Name of the new web filter profile used by the override.")  # datasource: ['webfilter.profile.name']    ip6: str = Field(default="::", description="IPv6 address which the override applies.")    expires: str = Field(default="1970/01/01 00:00:00", description="Override expiration date and time, from 5 minutes to 365 from now (format: yyyy/mm/dd hh:mm:ss).")    initiator: str | None = Field(max_length=64, default="", description="Initiating user of override (read-only setting).")    # ========================================================================
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="Override rule ID.")
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable override rule.")
+    scope: str | OverrideScopeEnum | None = Field(default="user", description="Override either the specific user, user group, IPv4 address, or IPv6 address.")
+    ip: str = Field(default="0.0.0.0", description="IPv4 address which the override applies.")
+    user: str = Field(max_length=64, default="", description="Name of the user which the override applies.")
+    user_group: str = Field(max_length=63, default="", description="Specify the user group for which the override applies.")  # datasource: ['user.group.name']
+    old_profile: str = Field(max_length=47, default="", description="Name of the web filter profile which the override applies.")  # datasource: ['webfilter.profile.name']
+    new_profile: str = Field(max_length=47, default="", description="Name of the new web filter profile used by the override.")  # datasource: ['webfilter.profile.name']
+    ip6: str = Field(default="::", description="IPv6 address which the override applies.")
+    expires: str = Field(default="1970/01/01 00:00:00", description="Override expiration date and time, from 5 minutes to 365 from now (format: yyyy/mm/dd hh:mm:ss).")
+    initiator: str | None = Field(max_length=64, default="", description="Initiating user of override (read-only setting).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -156,7 +179,7 @@ class OverrideModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.override.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "user_group", None)
@@ -205,7 +228,7 @@ class OverrideModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.override.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "old_profile", None)
@@ -254,7 +277,7 @@ class OverrideModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.override.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "new_profile", None)
@@ -291,10 +314,12 @@ class OverrideModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_user_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_old_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_new_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_old_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_new_profile_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -316,5 +341,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.552780Z
+# Generated: 2026-01-14T22:43:34.365235Z
 # ============================================================================

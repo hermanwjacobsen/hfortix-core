@@ -46,7 +46,7 @@ class IsisIsisInterface(BaseModel):
     name: str | None = Field(max_length=15, default="", description="IS-IS interface name.")  # datasource: ['system.interface.name']
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable interface for IS-IS.")
     status6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 interface for IS-IS.")
-    network_type: Literal["broadcast", "point-to-point", "loopback"] | None = Field(default="", description="IS-IS interface's network type.")
+    network_type: Literal["broadcast", "point-to-point", "loopback"] | None = Field(default=None, description="IS-IS interface's network type.")
     circuit_type: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-1-2", description="IS-IS interface's circuit type.")
     csnp_interval_l1: int | None = Field(ge=1, le=65535, default=10, description="Level 1 CSNP interval.")
     csnp_interval_l2: int | None = Field(ge=1, le=65535, default=10, description="Level 2 CSNP interval.")
@@ -149,7 +149,7 @@ class IsisRedistribute6(BaseModel):
 # ============================================================================
 
 
-class IsisMetric_styleEnum(str, Enum):
+class IsisMetricStyleEnum(str, Enum):
     """Allowed values for metric_style field."""
     NARROW = "narrow"
     WIDE = "wide"
@@ -177,7 +177,49 @@ class IsisModel(BaseModel):
 
     Configure IS-IS.
 
-    Validation Rules:        - is_type: pattern=        - adv_passive_only: pattern=        - adv_passive_only6: pattern=        - auth_mode_l1: pattern=        - auth_mode_l2: pattern=        - auth_password_l1: max_length=128 pattern=        - auth_password_l2: max_length=128 pattern=        - auth_keychain_l1: max_length=35 pattern=        - auth_keychain_l2: max_length=35 pattern=        - auth_sendonly_l1: pattern=        - auth_sendonly_l2: pattern=        - ignore_lsp_errors: pattern=        - lsp_gen_interval_l1: min=1 max=120 pattern=        - lsp_gen_interval_l2: min=1 max=120 pattern=        - lsp_refresh_interval: min=1 max=65535 pattern=        - max_lsp_lifetime: min=350 max=65535 pattern=        - spf_interval_exp_l1: pattern=        - spf_interval_exp_l2: pattern=        - dynamic_hostname: pattern=        - adjacency_check: pattern=        - adjacency_check6: pattern=        - overload_bit: pattern=        - overload_bit_suppress: pattern=        - overload_bit_on_startup: min=5 max=86400 pattern=        - default_originate: pattern=        - default_originate6: pattern=        - metric_style: pattern=        - redistribute_l1: pattern=        - redistribute_l1_list: max_length=35 pattern=        - redistribute_l2: pattern=        - redistribute_l2_list: max_length=35 pattern=        - redistribute6_l1: pattern=        - redistribute6_l1_list: max_length=35 pattern=        - redistribute6_l2: pattern=        - redistribute6_l2_list: max_length=35 pattern=        - isis_net: pattern=        - isis_interface: pattern=        - summary_address: pattern=        - summary_address6: pattern=        - redistribute: pattern=        - redistribute6: pattern=    """
+    Validation Rules:
+        - is_type: pattern=
+        - adv_passive_only: pattern=
+        - adv_passive_only6: pattern=
+        - auth_mode_l1: pattern=
+        - auth_mode_l2: pattern=
+        - auth_password_l1: max_length=128 pattern=
+        - auth_password_l2: max_length=128 pattern=
+        - auth_keychain_l1: max_length=35 pattern=
+        - auth_keychain_l2: max_length=35 pattern=
+        - auth_sendonly_l1: pattern=
+        - auth_sendonly_l2: pattern=
+        - ignore_lsp_errors: pattern=
+        - lsp_gen_interval_l1: min=1 max=120 pattern=
+        - lsp_gen_interval_l2: min=1 max=120 pattern=
+        - lsp_refresh_interval: min=1 max=65535 pattern=
+        - max_lsp_lifetime: min=350 max=65535 pattern=
+        - spf_interval_exp_l1: pattern=
+        - spf_interval_exp_l2: pattern=
+        - dynamic_hostname: pattern=
+        - adjacency_check: pattern=
+        - adjacency_check6: pattern=
+        - overload_bit: pattern=
+        - overload_bit_suppress: pattern=
+        - overload_bit_on_startup: min=5 max=86400 pattern=
+        - default_originate: pattern=
+        - default_originate6: pattern=
+        - metric_style: pattern=
+        - redistribute_l1: pattern=
+        - redistribute_l1_list: max_length=35 pattern=
+        - redistribute_l2: pattern=
+        - redistribute_l2_list: max_length=35 pattern=
+        - redistribute6_l1: pattern=
+        - redistribute6_l1_list: max_length=35 pattern=
+        - redistribute6_l2: pattern=
+        - redistribute6_l2_list: max_length=35 pattern=
+        - isis_net: pattern=
+        - isis_interface: pattern=
+        - summary_address: pattern=
+        - summary_address6: pattern=
+        - redistribute: pattern=
+        - redistribute6: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -189,7 +231,48 @@ class IsisModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    is_type: Literal["level-1-2", "level-1", "level-2-only"] | None = Field(default="level-1-2", description="IS type.")    adv_passive_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IS-IS advertisement of passive interfaces only.")    adv_passive_only6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 IS-IS advertisement of passive interfaces only.")    auth_mode_l1: Literal["password", "md5"] | None = Field(default="password", description="Level 1 authentication mode.")    auth_mode_l2: Literal["password", "md5"] | None = Field(default="password", description="Level 2 authentication mode.")    auth_password_l1: Any = Field(max_length=128, default=None, description="Authentication password for level 1 PDUs.")    auth_password_l2: Any = Field(max_length=128, default=None, description="Authentication password for level 2 PDUs.")    auth_keychain_l1: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']    auth_keychain_l2: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']    auth_sendonly_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 1 authentication send-only.")    auth_sendonly_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 2 authentication send-only.")    ignore_lsp_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignoring of LSP errors with bad checksums.")    lsp_gen_interval_l1: int | None = Field(ge=1, le=120, default=30, description="Minimum interval for level 1 LSP regenerating.")    lsp_gen_interval_l2: int | None = Field(ge=1, le=120, default=30, description="Minimum interval for level 2 LSP regenerating.")    lsp_refresh_interval: int | None = Field(ge=1, le=65535, default=900, description="LSP refresh time in seconds.")    max_lsp_lifetime: int | None = Field(ge=350, le=65535, default=1200, description="Maximum LSP lifetime in seconds.")    spf_interval_exp_l1: str | None = Field(default="", description="Level 1 SPF calculation delay.")    spf_interval_exp_l2: str | None = Field(default="", description="Level 2 SPF calculation delay.")    dynamic_hostname: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable dynamic hostname.")    adjacency_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adjacency check.")    adjacency_check6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 adjacency check.")    overload_bit: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable signal other routers not to use us in SPF.")    overload_bit_suppress: Literal["external", "interlevel"] | None = Field(default="", description="Suppress overload-bit for the specific prefixes.")    overload_bit_on_startup: int | None = Field(ge=5, le=86400, default=0, description="Overload-bit only temporarily after reboot.")    default_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default route information.")    default_originate6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default IPv6 route information.")    metric_style: IsisMetricStyleEnum | None = Field(default="narrow", description="Use old-style (ISO 10589) or new-style packet formats.")    redistribute_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 routes into level 2.")    redistribute_l1_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l1 to l2.")  # datasource: ['router.access-list.name']    redistribute_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 routes into level 1.")    redistribute_l2_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l2 to l1.")  # datasource: ['router.access-list.name']    redistribute6_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 IPv6 routes into level 2.")    redistribute6_l1_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l1 to l2.")  # datasource: ['router.access-list6.name']    redistribute6_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 IPv6 routes into level 1.")    redistribute6_l2_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l2 to l1.")  # datasource: ['router.access-list6.name']    isis_net: list[IsisIsisNet] = Field(default=None, description="IS-IS net configuration.")    isis_interface: list[IsisIsisInterface] = Field(default=None, description="IS-IS interface configuration.")    summary_address: list[IsisSummaryAddress] = Field(default=None, description="IS-IS summary addresses.")    summary_address6: list[IsisSummaryAddress6] = Field(default=None, description="IS-IS IPv6 summary address.")    redistribute: list[IsisRedistribute] = Field(default=None, description="IS-IS redistribute protocols.")    redistribute6: list[IsisRedistribute6] = Field(default=None, description="IS-IS IPv6 redistribution for routing protocols.")    # ========================================================================
+    is_type: Literal["level-1-2", "level-1", "level-2-only"] | None = Field(default="level-1-2", description="IS type.")
+    adv_passive_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IS-IS advertisement of passive interfaces only.")
+    adv_passive_only6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 IS-IS advertisement of passive interfaces only.")
+    auth_mode_l1: Literal["password", "md5"] | None = Field(default="password", description="Level 1 authentication mode.")
+    auth_mode_l2: Literal["password", "md5"] | None = Field(default="password", description="Level 2 authentication mode.")
+    auth_password_l1: Any = Field(max_length=128, default=None, description="Authentication password for level 1 PDUs.")
+    auth_password_l2: Any = Field(max_length=128, default=None, description="Authentication password for level 2 PDUs.")
+    auth_keychain_l1: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']
+    auth_keychain_l2: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']
+    auth_sendonly_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 1 authentication send-only.")
+    auth_sendonly_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 2 authentication send-only.")
+    ignore_lsp_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignoring of LSP errors with bad checksums.")
+    lsp_gen_interval_l1: int | None = Field(ge=1, le=120, default=30, description="Minimum interval for level 1 LSP regenerating.")
+    lsp_gen_interval_l2: int | None = Field(ge=1, le=120, default=30, description="Minimum interval for level 2 LSP regenerating.")
+    lsp_refresh_interval: int | None = Field(ge=1, le=65535, default=900, description="LSP refresh time in seconds.")
+    max_lsp_lifetime: int | None = Field(ge=350, le=65535, default=1200, description="Maximum LSP lifetime in seconds.")
+    spf_interval_exp_l1: str | None = Field(default="", description="Level 1 SPF calculation delay.")
+    spf_interval_exp_l2: str | None = Field(default="", description="Level 2 SPF calculation delay.")
+    dynamic_hostname: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable dynamic hostname.")
+    adjacency_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adjacency check.")
+    adjacency_check6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 adjacency check.")
+    overload_bit: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable signal other routers not to use us in SPF.")
+    overload_bit_suppress: Literal["external", "interlevel"] | None = Field(default=None, description="Suppress overload-bit for the specific prefixes.")
+    overload_bit_on_startup: int | None = Field(ge=5, le=86400, default=0, description="Overload-bit only temporarily after reboot.")
+    default_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default route information.")
+    default_originate6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default IPv6 route information.")
+    metric_style: str | IsisMetricStyleEnum | None = Field(default="narrow", description="Use old-style (ISO 10589) or new-style packet formats.")
+    redistribute_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 routes into level 2.")
+    redistribute_l1_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l1 to l2.")  # datasource: ['router.access-list.name']
+    redistribute_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 routes into level 1.")
+    redistribute_l2_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l2 to l1.")  # datasource: ['router.access-list.name']
+    redistribute6_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 IPv6 routes into level 2.")
+    redistribute6_l1_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l1 to l2.")  # datasource: ['router.access-list6.name']
+    redistribute6_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 IPv6 routes into level 1.")
+    redistribute6_l2_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l2 to l1.")  # datasource: ['router.access-list6.name']
+    isis_net: list[IsisIsisNet] | None = Field(default=None, description="IS-IS net configuration.")
+    isis_interface: list[IsisIsisInterface] | None = Field(default=None, description="IS-IS interface configuration.")
+    summary_address: list[IsisSummaryAddress] | None = Field(default=None, description="IS-IS summary addresses.")
+    summary_address6: list[IsisSummaryAddress6] | None = Field(default=None, description="IS-IS IPv6 summary address.")
+    redistribute: list[IsisRedistribute] | None = Field(default=None, description="IS-IS redistribute protocols.")
+    redistribute6: list[IsisRedistribute6] | None = Field(default=None, description="IS-IS IPv6 redistribution for routing protocols.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -343,7 +426,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_keychain_l1", None)
@@ -392,7 +475,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_keychain_l2", None)
@@ -441,7 +524,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "redistribute_l1_list", None)
@@ -490,7 +573,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "redistribute_l2_list", None)
@@ -539,7 +622,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "redistribute6_l1_list", None)
@@ -588,7 +671,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "redistribute6_l2_list", None)
@@ -637,7 +720,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "isis_interface", [])
@@ -695,7 +778,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -753,7 +836,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute6", [])
@@ -799,16 +882,24 @@ class IsisModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_auth_keychain_l1_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_keychain_l2_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_l1_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_l2_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute6_l1_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute6_l2_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_isis_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_keychain_l2_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_l1_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_l2_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute6_l1_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute6_l2_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_isis_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -830,5 +921,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.802646Z
+# Generated: 2026-01-14T22:43:38.364723Z
 # ============================================================================

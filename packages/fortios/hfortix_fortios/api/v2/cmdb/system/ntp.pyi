@@ -19,7 +19,7 @@ class NtpPayload(TypedDict, total=False):
         }
     """
     ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
-    type: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
+    type_: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
     syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
     ntpserver: list[dict[str, Any]]  # Configure the FortiGate to connect to any availabl
     source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
@@ -136,7 +136,7 @@ class NtpResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
-    type: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
+    type_: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
     syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
     ntpserver: list[NtpNtpserverItem]  # Configure the FortiGate to connect to any availabl
     source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
@@ -160,7 +160,7 @@ class NtpObject:
     # Enable/disable setting the FortiGate system time by synchron | Default: disable
     ntpsync: Literal["enable", "disable"]
     # Use the FortiGuard NTP server or any other available NTP Ser | Default: fortiguard
-    type: Literal["fortiguard", "custom"]
+    type_: Literal["fortiguard", "custom"]
     # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
     syncinterval: int
     # Configure the FortiGate to connect to any available third-pa
@@ -205,6 +205,10 @@ class Ntp:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -225,6 +229,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NtpResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -242,6 +247,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NtpResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -258,6 +264,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NtpResponse: ...
     
     # ================================================================
@@ -300,7 +307,7 @@ class Ntp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NtpObject: ...
     
@@ -319,7 +326,7 @@ class Ntp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NtpObject: ...
     
@@ -419,23 +426,6 @@ class Ntp:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> NtpObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -448,7 +438,7 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -461,6 +451,7 @@ class Ntp:
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NtpObject: ...
@@ -470,7 +461,7 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -493,7 +484,7 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -515,7 +506,7 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -527,27 +518,7 @@ class Ntp:
         key_id: int | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -561,7 +532,7 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -588,8 +559,6 @@ class Ntp:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -617,6 +586,10 @@ class NtpDictMode:
     By default returns NtpResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return NtpObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -722,7 +695,7 @@ class NtpDictMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -745,7 +718,7 @@ class NtpDictMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -768,7 +741,7 @@ class NtpDictMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -780,15 +753,17 @@ class NtpDictMode:
         key_id: int | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -815,7 +790,7 @@ class NtpDictMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -841,8 +816,6 @@ class NtpDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -866,6 +839,10 @@ class NtpObjectMode:
     By default returns NtpObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return NtpResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -971,7 +948,7 @@ class NtpObjectMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -994,7 +971,7 @@ class NtpObjectMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -1017,7 +994,7 @@ class NtpObjectMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -1040,7 +1017,7 @@ class NtpObjectMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -1052,15 +1029,17 @@ class NtpObjectMode:
         key_id: int | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NtpObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -1087,7 +1066,7 @@ class NtpObjectMode:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        type_: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
@@ -1113,8 +1092,6 @@ class NtpObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

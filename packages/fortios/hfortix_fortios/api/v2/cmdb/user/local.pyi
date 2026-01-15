@@ -33,7 +33,7 @@ class LocalPayload(TypedDict, total=False):
     name: str  # Local user name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the local user to authenti | Default: enable
-    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
+    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
     passwd: str  # User's password. | MaxLen: 128
     ldap_server: str  # Name of LDAP server with which the user must authe | MaxLen: 35
     radius_server: str  # Name of RADIUS server with which the user must aut | MaxLen: 35
@@ -73,7 +73,7 @@ class LocalResponse(TypedDict):
     name: str  # Local user name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the local user to authenti | Default: enable
-    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
+    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
     passwd: str  # User's password. | MaxLen: 128
     ldap_server: str  # Name of LDAP server with which the user must authe | MaxLen: 35
     radius_server: str  # Name of RADIUS server with which the user must aut | MaxLen: 35
@@ -114,7 +114,7 @@ class LocalObject:
     # Enable/disable allowing the local user to authenticate with | Default: enable
     status: Literal["enable", "disable"]
     # Authentication method. | Default: password
-    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]
+    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]
     # User's password. | MaxLen: 128
     passwd: str
     # Name of LDAP server with which the user must authenticate. | MaxLen: 35
@@ -163,7 +163,6 @@ class LocalObject:
     username_sensitivity: Literal["disable", "enable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -186,6 +185,10 @@ class Local:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -206,6 +209,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LocalResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -223,6 +227,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LocalResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -239,6 +244,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LocalResponse]: ...
     
     # ================================================================
@@ -281,7 +287,7 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LocalObject: ...
     
@@ -300,7 +306,7 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LocalObject]: ...
     
@@ -400,23 +406,6 @@ class Local:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LocalObject | list[LocalObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -431,7 +420,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -457,6 +446,7 @@ class Local:
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
@@ -468,7 +458,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -506,7 +496,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -543,7 +533,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -568,42 +558,7 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -615,7 +570,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -641,6 +596,7 @@ class Local:
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
@@ -652,7 +608,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -690,7 +646,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -727,7 +683,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -752,42 +708,7 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -798,6 +719,7 @@ class Local:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
@@ -828,14 +750,7 @@ class Local:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -851,7 +766,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -891,8 +806,6 @@ class Local:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -920,6 +833,10 @@ class LocalDictMode:
     By default returns LocalResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LocalObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1026,7 +943,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1064,7 +981,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1102,7 +1019,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1127,17 +1044,19 @@ class LocalDictMode:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1173,7 +1092,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1211,7 +1130,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1249,7 +1168,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1274,17 +1193,19 @@ class LocalDictMode:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1340,10 +1261,12 @@ class LocalDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1364,7 +1287,7 @@ class LocalDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1403,8 +1326,6 @@ class LocalDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1428,6 +1349,10 @@ class LocalObjectMode:
     By default returns LocalObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LocalResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1534,7 +1459,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1572,7 +1497,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1610,7 +1535,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1648,7 +1573,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1673,17 +1598,19 @@ class LocalObjectMode:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1719,7 +1646,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1757,7 +1684,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1795,7 +1722,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1833,7 +1760,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1858,17 +1785,19 @@ class LocalObjectMode:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1935,10 +1864,12 @@ class LocalObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1959,7 +1890,7 @@ class LocalObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -1998,8 +1929,6 @@ class LocalObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

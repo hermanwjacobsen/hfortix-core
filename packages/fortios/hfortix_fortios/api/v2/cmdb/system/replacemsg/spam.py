@@ -256,7 +256,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format: Literal["none", "text", "html"] | None = None,
+        format_: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -272,7 +272,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type: Message type.
             buffer: Message string.
             header: Header flag.
-            format: Format flag.
+            format_: Format flag.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -309,7 +309,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format=format,
+            format_=format_,
             data=payload_dict,
         )
         
@@ -343,7 +343,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format: Literal["none", "text", "html"] | None = None,
+        format_: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -359,7 +359,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type: Message type.
             buffer: Message string.
             header: Header flag.
-            format: Format flag.
+            format_: Format flag.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -398,7 +398,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format=format,
+            format_=format_,
             data=payload_dict,
         )
 
@@ -542,7 +542,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format: Literal["none", "text", "html"] | None = None,
+        format_: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -559,7 +559,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type: Field msg-type
             buffer: Field buffer
             header: Field header
-            format: Field format
+            format_: Field format
             vdom: Virtual domain name
             raw_json: If True, return raw API response
             response_mode: Override client-level response_mode
@@ -606,7 +606,7 @@ class Spam(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format=format,
+            format_=format_,
             data=payload_dict,
         )
         

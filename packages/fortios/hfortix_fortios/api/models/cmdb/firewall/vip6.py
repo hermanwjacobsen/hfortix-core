@@ -29,7 +29,7 @@ class Vip6SrcFilter(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    range: str = Field(max_length=79, default="", description="Source-filter range.")
+    range_: str = Field(max_length=79, default="", description="Source-filter range.")
 
 
 class Vip6Quic(BaseModel):
@@ -74,7 +74,7 @@ class Vip6Realservers(BaseModel):
     http_host: str | None = Field(max_length=63, default="", description="HTTP server domain name in HTTP header.")
     translate_host: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable translation of hostname/IP from virtual server to real server.")
     max_connections: int | None = Field(ge=0, le=2147483647, default=0, description="Max number of active connections that can directed to the real server. When reached, sessions are sent to other real servers.")
-    monitor: list[Monitor] = Field(default=None, description="Name of the health check monitor to use when polling to determine a virtual server's connectivity status.")
+    monitor: list[dict[str, Any]] | None = Field(default=None, description="Name of the health check monitor to use when polling to determine a virtual server's connectivity status.")
     client_ip: str | None = Field(default="", description="Only clients in this IP range can connect to this real server.")
     verify_cert: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable certificate verification of the real server.")
 
@@ -105,8 +105,8 @@ class Vip6SslCipherSuites(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     priority: int | None = Field(ge=0, le=4294967295, default=0, description="SSL/TLS cipher suites priority.")
-    cipher: CipherEnum = Field(default="", description="Cipher suite name.")
-    versions: VersionsEnum | None = Field(default="ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3", description="SSL/TLS versions that the cipher suite can be used with.")
+    cipher: str | None = Field(default=None, description="Cipher suite name.")
+    versions: str | None = Field(default=None, description="SSL/TLS versions that the cipher suite can be used with.")
 
 
 class Vip6SslServerCipherSuites(BaseModel):
@@ -121,8 +121,8 @@ class Vip6SslServerCipherSuites(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     priority: int | None = Field(ge=0, le=4294967295, default=0, description="SSL/TLS cipher suites priority.")
-    cipher: CipherEnum = Field(default="", description="Cipher suite name.")
-    versions: VersionsEnum | None = Field(default="ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3", description="SSL/TLS versions that the cipher suite can be used with.")
+    cipher: str | None = Field(default=None, description="Cipher suite name.")
+    versions: str | None = Field(default=None, description="SSL/TLS versions that the cipher suite can be used with.")
 
 
 class Vip6Monitor(BaseModel):
@@ -143,7 +143,7 @@ class Vip6Monitor(BaseModel):
 # ============================================================================
 
 
-class Vip6Ldb_methodEnum(str, Enum):
+class Vip6LdbMethodEnum(str, Enum):
     """Allowed values for ldb_method field."""
     STATIC = "static"
     ROUND_ROBIN = "round-robin"
@@ -154,7 +154,7 @@ class Vip6Ldb_methodEnum(str, Enum):
     HTTP_HOST = "http-host"
 
 
-class Vip6Server_typeEnum(str, Enum):
+class Vip6ServerTypeEnum(str, Enum):
     """Allowed values for server_type field."""
     HTTP = "http"
     HTTPS = "https"
@@ -167,7 +167,7 @@ class Vip6Server_typeEnum(str, Enum):
     IP = "ip"
 
 
-class Vip6Ssl_dh_bitsEnum(str, Enum):
+class Vip6SslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
     VALUE_768 = "768"
     VALUE_1024 = "1024"
@@ -177,7 +177,7 @@ class Vip6Ssl_dh_bitsEnum(str, Enum):
     VALUE_4096 = "4096"
 
 
-class Vip6Ssl_algorithmEnum(str, Enum):
+class Vip6SslAlgorithmEnum(str, Enum):
     """Allowed values for ssl_algorithm field."""
     HIGH = "high"
     MEDIUM = "medium"
@@ -185,7 +185,7 @@ class Vip6Ssl_algorithmEnum(str, Enum):
     CUSTOM = "custom"
 
 
-class Vip6Ssl_server_algorithmEnum(str, Enum):
+class Vip6SslServerAlgorithmEnum(str, Enum):
     """Allowed values for ssl_server_algorithm field."""
     HIGH = "high"
     MEDIUM = "medium"
@@ -194,7 +194,7 @@ class Vip6Ssl_server_algorithmEnum(str, Enum):
     CLIENT = "client"
 
 
-class Vip6Ssl_min_versionEnum(str, Enum):
+class Vip6SslMinVersionEnum(str, Enum):
     """Allowed values for ssl_min_version field."""
     SSL_3_0 = "ssl-3.0"
     TLS_1_0 = "tls-1.0"
@@ -203,7 +203,7 @@ class Vip6Ssl_min_versionEnum(str, Enum):
     TLS_1_3 = "tls-1.3"
 
 
-class Vip6Ssl_max_versionEnum(str, Enum):
+class Vip6SslMaxVersionEnum(str, Enum):
     """Allowed values for ssl_max_version field."""
     SSL_3_0 = "ssl-3.0"
     TLS_1_0 = "tls-1.0"
@@ -212,7 +212,7 @@ class Vip6Ssl_max_versionEnum(str, Enum):
     TLS_1_3 = "tls-1.3"
 
 
-class Vip6Ssl_server_min_versionEnum(str, Enum):
+class Vip6SslServerMinVersionEnum(str, Enum):
     """Allowed values for ssl_server_min_version field."""
     SSL_3_0 = "ssl-3.0"
     TLS_1_0 = "tls-1.0"
@@ -222,7 +222,7 @@ class Vip6Ssl_server_min_versionEnum(str, Enum):
     CLIENT = "client"
 
 
-class Vip6Ssl_server_max_versionEnum(str, Enum):
+class Vip6SslServerMaxVersionEnum(str, Enum):
     """Allowed values for ssl_server_max_version field."""
     SSL_3_0 = "ssl-3.0"
     TLS_1_0 = "tls-1.0"
@@ -232,7 +232,7 @@ class Vip6Ssl_server_max_versionEnum(str, Enum):
     CLIENT = "client"
 
 
-class Vip6Ssl_client_session_state_typeEnum(str, Enum):
+class Vip6SslClientSessionStateTypeEnum(str, Enum):
     """Allowed values for ssl_client_session_state_type field."""
     DISABLE = "disable"
     TIME = "time"
@@ -240,7 +240,7 @@ class Vip6Ssl_client_session_state_typeEnum(str, Enum):
     BOTH = "both"
 
 
-class Vip6Ssl_server_session_state_typeEnum(str, Enum):
+class Vip6SslServerSessionStateTypeEnum(str, Enum):
     """Allowed values for ssl_server_session_state_type field."""
     DISABLE = "disable"
     TIME = "time"
@@ -259,7 +259,91 @@ class Vip6Model(BaseModel):
 
     Configure virtual IP for IPv6.
 
-    Validation Rules:        - name: max_length=79 pattern=        - id: min=0 max=65535 pattern=        - uuid: pattern=        - comment: max_length=255 pattern=        - type: pattern=        - src_filter: pattern=        - src_vip_filter: pattern=        - extip: pattern=        - mappedip: pattern=        - nat_source_vip: pattern=        - ndp_reply: pattern=        - portforward: pattern=        - protocol: pattern=        - extport: pattern=        - mappedport: pattern=        - color: min=0 max=32 pattern=        - ldb_method: pattern=        - server_type: pattern=        - http_redirect: pattern=        - persistence: pattern=        - h2_support: pattern=        - h3_support: pattern=        - quic: pattern=        - nat66: pattern=        - nat64: pattern=        - add_nat64_route: pattern=        - empty_cert_action: pattern=        - user_agent_detect: pattern=        - client_cert: pattern=        - realservers: pattern=        - http_cookie_domain_from_host: pattern=        - http_cookie_domain: max_length=35 pattern=        - http_cookie_path: max_length=35 pattern=        - http_cookie_generation: min=0 max=4294967295 pattern=        - http_cookie_age: min=0 max=525600 pattern=        - http_cookie_share: pattern=        - https_cookie_secure: pattern=        - http_multiplex: pattern=        - http_ip_header: pattern=        - http_ip_header_name: max_length=35 pattern=        - outlook_web_access: pattern=        - weblogic_server: pattern=        - websphere_server: pattern=        - ssl_mode: pattern=        - ssl_certificate: pattern=        - ssl_dh_bits: pattern=        - ssl_algorithm: pattern=        - ssl_cipher_suites: pattern=        - ssl_server_renegotiation: pattern=        - ssl_server_algorithm: pattern=        - ssl_server_cipher_suites: pattern=        - ssl_pfs: pattern=        - ssl_min_version: pattern=        - ssl_max_version: pattern=        - ssl_server_min_version: pattern=        - ssl_server_max_version: pattern=        - ssl_accept_ffdhe_groups: pattern=        - ssl_send_empty_frags: pattern=        - ssl_client_fallback: pattern=        - ssl_client_renegotiation: pattern=        - ssl_client_session_state_type: pattern=        - ssl_client_session_state_timeout: min=1 max=14400 pattern=        - ssl_client_session_state_max: min=1 max=10000 pattern=        - ssl_client_rekey_count: min=200 max=1048576 pattern=        - ssl_server_session_state_type: pattern=        - ssl_server_session_state_timeout: min=1 max=14400 pattern=        - ssl_server_session_state_max: min=1 max=10000 pattern=        - ssl_http_location_conversion: pattern=        - ssl_http_match_host: pattern=        - ssl_hpkp: pattern=        - ssl_hpkp_primary: max_length=79 pattern=        - ssl_hpkp_backup: max_length=79 pattern=        - ssl_hpkp_age: min=60 max=157680000 pattern=        - ssl_hpkp_report_uri: max_length=255 pattern=        - ssl_hpkp_include_subdomains: pattern=        - ssl_hsts: pattern=        - ssl_hsts_age: min=60 max=157680000 pattern=        - ssl_hsts_include_subdomains: pattern=        - monitor: pattern=        - max_embryonic_connections: min=0 max=100000 pattern=        - embedded_ipv4_address: pattern=        - ipv4_mappedip: pattern=        - ipv4_mappedport: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - id: min=0 max=65535 pattern=
+        - uuid: pattern=
+        - comment: max_length=255 pattern=
+        - type_: pattern=
+        - src_filter: pattern=
+        - src_vip_filter: pattern=
+        - extip: pattern=
+        - mappedip: pattern=
+        - nat_source_vip: pattern=
+        - ndp_reply: pattern=
+        - portforward: pattern=
+        - protocol: pattern=
+        - extport: pattern=
+        - mappedport: pattern=
+        - color: min=0 max=32 pattern=
+        - ldb_method: pattern=
+        - server_type: pattern=
+        - http_redirect: pattern=
+        - persistence: pattern=
+        - h2_support: pattern=
+        - h3_support: pattern=
+        - quic: pattern=
+        - nat66: pattern=
+        - nat64: pattern=
+        - add_nat64_route: pattern=
+        - empty_cert_action: pattern=
+        - user_agent_detect: pattern=
+        - client_cert: pattern=
+        - realservers: pattern=
+        - http_cookie_domain_from_host: pattern=
+        - http_cookie_domain: max_length=35 pattern=
+        - http_cookie_path: max_length=35 pattern=
+        - http_cookie_generation: min=0 max=4294967295 pattern=
+        - http_cookie_age: min=0 max=525600 pattern=
+        - http_cookie_share: pattern=
+        - https_cookie_secure: pattern=
+        - http_multiplex: pattern=
+        - http_ip_header: pattern=
+        - http_ip_header_name: max_length=35 pattern=
+        - outlook_web_access: pattern=
+        - weblogic_server: pattern=
+        - websphere_server: pattern=
+        - ssl_mode: pattern=
+        - ssl_certificate: pattern=
+        - ssl_dh_bits: pattern=
+        - ssl_algorithm: pattern=
+        - ssl_cipher_suites: pattern=
+        - ssl_server_renegotiation: pattern=
+        - ssl_server_algorithm: pattern=
+        - ssl_server_cipher_suites: pattern=
+        - ssl_pfs: pattern=
+        - ssl_min_version: pattern=
+        - ssl_max_version: pattern=
+        - ssl_server_min_version: pattern=
+        - ssl_server_max_version: pattern=
+        - ssl_accept_ffdhe_groups: pattern=
+        - ssl_send_empty_frags: pattern=
+        - ssl_client_fallback: pattern=
+        - ssl_client_renegotiation: pattern=
+        - ssl_client_session_state_type: pattern=
+        - ssl_client_session_state_timeout: min=1 max=14400 pattern=
+        - ssl_client_session_state_max: min=1 max=10000 pattern=
+        - ssl_client_rekey_count: min=200 max=1048576 pattern=
+        - ssl_server_session_state_type: pattern=
+        - ssl_server_session_state_timeout: min=1 max=14400 pattern=
+        - ssl_server_session_state_max: min=1 max=10000 pattern=
+        - ssl_http_location_conversion: pattern=
+        - ssl_http_match_host: pattern=
+        - ssl_hpkp: pattern=
+        - ssl_hpkp_primary: max_length=79 pattern=
+        - ssl_hpkp_backup: max_length=79 pattern=
+        - ssl_hpkp_age: min=60 max=157680000 pattern=
+        - ssl_hpkp_report_uri: max_length=255 pattern=
+        - ssl_hpkp_include_subdomains: pattern=
+        - ssl_hsts: pattern=
+        - ssl_hsts_age: min=60 max=157680000 pattern=
+        - ssl_hsts_include_subdomains: pattern=
+        - monitor: pattern=
+        - max_embryonic_connections: min=0 max=100000 pattern=
+        - embedded_ipv4_address: pattern=
+        - ipv4_mappedip: pattern=
+        - ipv4_mappedport: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -271,7 +355,90 @@ class Vip6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="Virtual ip6 name.")    id: int | None = Field(ge=0, le=65535, default=0, description="Custom defined ID.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    type: Literal["static-nat", "server-load-balance", "access-proxy"] | None = Field(default="static-nat", description="Configure a static NAT server load balance VIP or access proxy.")    src_filter: list[Vip6SrcFilter] = Field(default=None, description="Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.")    src_vip_filter: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.")    extip: str = Field(default="", description="IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.")    mappedip: str = Field(default="", description="Mapped IPv6 address range in the format startIP-endIP.")    nat_source_vip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to perform SNAT on traffic from mappedip to the extip for all egress interfaces.")    ndp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this FortiGate unit's ability to respond to NDP requests for this virtual IP address (default = enable).")    portforward: Literal["disable", "enable"] | None = Field(default="disable", description="Enable port forwarding.")    protocol: Literal["tcp", "udp", "sctp"] | None = Field(default="tcp", description="Protocol to use when forwarding packets.")    extport: str = Field(default="", description="Incoming port number range that you want to map to a port number range on the destination network.")    mappedport: str | None = Field(default="", description="Port number range on the destination network to which the external port number range is mapped.")    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    ldb_method: Vip6LdbMethodEnum | None = Field(default="static", description="Method used to distribute sessions to real servers.")    server_type: Vip6ServerTypeEnum = Field(default="", description="Protocol to be load balanced by the virtual server (also called the server load balance virtual IP).")    http_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirection of HTTP to HTTPS.")    persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = Field(default="none", description="Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.")    h2_support: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable HTTP2 support (default = enable).")    h3_support: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP3/QUIC support (default = disable).")    quic: list[Vip6Quic] = Field(default=None, description="QUIC setting.")    nat66: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable DNAT66.")    nat64: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DNAT64.")    add_nat64_route: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable adding NAT64 route.")    empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = Field(default="block", description="Action for an empty client certificate.")    user_agent_detect: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.")    client_cert: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable requesting client certificate.")    realservers: list[Vip6Realservers] = Field(default=None, description="Select the real servers that this server load balancing VIP will distribute traffic to.")    http_cookie_domain_from_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of HTTP cookie domain from host field in HTTP.")    http_cookie_domain: str | None = Field(max_length=35, default="", description="Domain that HTTP cookie persistence should apply to.")    http_cookie_path: str | None = Field(max_length=35, default="", description="Limit HTTP cookie persistence to the specified path.")    http_cookie_generation: int | None = Field(ge=0, le=4294967295, default=0, description="Generation of HTTP cookie to be accepted. Changing invalidates all existing cookies.")    http_cookie_age: int | None = Field(ge=0, le=525600, default=60, description="Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.")    http_cookie_share: Literal["disable", "same-ip"] | None = Field(default="same-ip", description="Control sharing of cookies across virtual servers. Use of same-ip means a cookie from one virtual server can be used by another. Disable stops cookie sharing.")    https_cookie_secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable verification that inserted HTTPS cookies are secure.")    http_multiplex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP multiplexing.")    http_ip_header: Literal["enable", "disable"] | None = Field(default="disable", description="For HTTP multiplexing, enable to add the original client IP address in the X-Forwarded-For HTTP header.")    http_ip_header_name: str | None = Field(max_length=35, default="", description="For HTTP multiplexing, enter a custom HTTPS header name. The original client IP address is added to this header. If empty, X-Forwarded-For is used.")    outlook_web_access: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add the Front-End-Https header for Microsoft Outlook Web Access.")    weblogic_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add an HTTP header to indicate SSL offloading for a WebLogic server.")    websphere_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.")    ssl_mode: Literal["half", "full"] | None = Field(default="half", description="Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).")    ssl_certificate: list[Vip6SslCertificate] = Field(description="Name of the certificate to use for SSL handshake.")    ssl_dh_bits: Vip6SslDhBitsEnum | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")    ssl_algorithm: Vip6SslAlgorithmEnum | None = Field(default="high", description="Permitted encryption algorithms for SSL sessions according to encryption strength.")    ssl_cipher_suites: list[Vip6SslCipherSuites] = Field(default=None, description="SSL/TLS cipher suites acceptable from a client, ordered by priority.")    ssl_server_renegotiation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable secure renegotiation to comply with RFC 5746.")    ssl_server_algorithm: Vip6SslServerAlgorithmEnum | None = Field(default="client", description="Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.")    ssl_server_cipher_suites: list[Vip6SslServerCipherSuites] = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")    ssl_pfs: Literal["require", "deny", "allow"] | None = Field(default="require", description="Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.")    ssl_min_version: Vip6SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a client.")    ssl_max_version: Vip6SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a client.")    ssl_server_min_version: Vip6SslServerMinVersionEnum | None = Field(default="client", description="Lowest SSL/TLS version acceptable from a server. Use the client setting by default.")    ssl_server_max_version: Vip6SslServerMaxVersionEnum | None = Field(default="client", description="Highest SSL/TLS version acceptable from a server. Use the client setting by default.")    ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FFDHE cipher suite for SSL key exchange.")    ssl_send_empty_frags: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending empty fragments to avoid CBC IV attacks (SSL 3.0 & TLS 1.0 only). May need to be disabled for compatibility with older systems.")    ssl_client_fallback: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable support for preventing Downgrade Attacks on client connections (RFC 7507).")    ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="secure", description="Allow, deny, or require secure renegotiation of client sessions to comply with RFC 5746.")    ssl_client_session_state_type: Vip6SslClientSessionStateTypeEnum | None = Field(default="both", description="How to expire SSL sessions for the segment of the SSL connection between the client and the FortiGate.")    ssl_client_session_state_timeout: int | None = Field(ge=1, le=14400, default=30, description="Number of minutes to keep client to FortiGate SSL session state.")    ssl_client_session_state_max: int | None = Field(ge=1, le=10000, default=1000, description="Maximum number of client to FortiGate SSL session states to keep.")    ssl_client_rekey_count: int | None = Field(ge=200, le=1048576, default=0, description="Maximum length of data in MB before triggering a client rekey (0 = disable).")    ssl_server_session_state_type: Vip6SslServerSessionStateTypeEnum | None = Field(default="both", description="How to expire SSL sessions for the segment of the SSL connection between the server and the FortiGate.")    ssl_server_session_state_timeout: int | None = Field(ge=1, le=14400, default=60, description="Number of minutes to keep FortiGate to Server SSL session state.")    ssl_server_session_state_max: int | None = Field(ge=1, le=10000, default=100, description="Maximum number of FortiGate to Server SSL session states to keep.")    ssl_http_location_conversion: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to replace HTTP with HTTPS in the reply's Location HTTP header field.")    ssl_http_match_host: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable HTTP host matching for location conversion.")    ssl_hpkp: Literal["disable", "enable", "report-only"] | None = Field(default="disable", description="Enable/disable including HPKP header in response.")    ssl_hpkp_primary: str | None = Field(max_length=79, default="", description="Certificate to generate primary HPKP pin from.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.ca.name']    ssl_hpkp_backup: str | None = Field(max_length=79, default="", description="Certificate to generate backup HPKP pin from.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.ca.name']    ssl_hpkp_age: int | None = Field(ge=60, le=157680000, default=5184000, description="Number of minutes the web browser should keep HPKP.")    ssl_hpkp_report_uri: str | None = Field(max_length=255, default=None, description="URL to report HPKP violations to.")    ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = Field(default="disable", description="Indicate that HPKP header applies to all subdomains.")    ssl_hsts: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including HSTS header in response.")    ssl_hsts_age: int | None = Field(ge=60, le=157680000, default=5184000, description="Number of seconds the client should honor the HSTS setting.")    ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = Field(default="disable", description="Indicate that HSTS header applies to all subdomains.")    monitor: list[Vip6Monitor] = Field(default=None, description="Name of the health check monitor to use when polling to determine a virtual server's connectivity status.")    max_embryonic_connections: int | None = Field(ge=0, le=100000, default=1000, description="Maximum number of incomplete connections.")    embedded_ipv4_address: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.")    ipv4_mappedip: str | None = Field(default="", description="Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.")    ipv4_mappedport: str | None = Field(default="", description="IPv4 port number range on the destination network to which the external port number range is mapped.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="Virtual ip6 name.")
+    id: int | None = Field(ge=0, le=65535, default=0, description="Custom defined ID.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    type_: Literal["static-nat", "server-load-balance", "access-proxy"] | None = Field(default="static-nat", description="Configure a static NAT server load balance VIP or access proxy.")
+    src_filter: list[Vip6SrcFilter] | None = Field(default=None, description="Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.")
+    src_vip_filter: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.")
+    extip: str = Field(default="", description="IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.")
+    mappedip: str = Field(default="", description="Mapped IPv6 address range in the format startIP-endIP.")
+    nat_source_vip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to perform SNAT on traffic from mappedip to the extip for all egress interfaces.")
+    ndp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this FortiGate unit's ability to respond to NDP requests for this virtual IP address (default = enable).")
+    portforward: Literal["disable", "enable"] | None = Field(default="disable", description="Enable port forwarding.")
+    protocol: Literal["tcp", "udp", "sctp"] | None = Field(default="tcp", description="Protocol to use when forwarding packets.")
+    extport: str = Field(default="", description="Incoming port number range that you want to map to a port number range on the destination network.")
+    mappedport: str | None = Field(default="", description="Port number range on the destination network to which the external port number range is mapped.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")
+    ldb_method: str | Vip6LdbMethodEnum | None = Field(default="static", description="Method used to distribute sessions to real servers.")
+    server_type: str | Vip6ServerTypeEnum | None = Field(default=None, description="Protocol to be load balanced by the virtual server (also called the server load balance virtual IP).")
+    http_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirection of HTTP to HTTPS.")
+    persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = Field(default="none", description="Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.")
+    h2_support: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable HTTP2 support (default = enable).")
+    h3_support: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP3/QUIC support (default = disable).")
+    quic: list[Vip6Quic] | None = Field(default=None, description="QUIC setting.")
+    nat66: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable DNAT66.")
+    nat64: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DNAT64.")
+    add_nat64_route: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable adding NAT64 route.")
+    empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = Field(default="block", description="Action for an empty client certificate.")
+    user_agent_detect: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.")
+    client_cert: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable requesting client certificate.")
+    realservers: list[Vip6Realservers] | None = Field(default=None, description="Select the real servers that this server load balancing VIP will distribute traffic to.")
+    http_cookie_domain_from_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of HTTP cookie domain from host field in HTTP.")
+    http_cookie_domain: str | None = Field(max_length=35, default="", description="Domain that HTTP cookie persistence should apply to.")
+    http_cookie_path: str | None = Field(max_length=35, default="", description="Limit HTTP cookie persistence to the specified path.")
+    http_cookie_generation: int | None = Field(ge=0, le=4294967295, default=0, description="Generation of HTTP cookie to be accepted. Changing invalidates all existing cookies.")
+    http_cookie_age: int | None = Field(ge=0, le=525600, default=60, description="Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.")
+    http_cookie_share: Literal["disable", "same-ip"] | None = Field(default="same-ip", description="Control sharing of cookies across virtual servers. Use of same-ip means a cookie from one virtual server can be used by another. Disable stops cookie sharing.")
+    https_cookie_secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable verification that inserted HTTPS cookies are secure.")
+    http_multiplex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP multiplexing.")
+    http_ip_header: Literal["enable", "disable"] | None = Field(default="disable", description="For HTTP multiplexing, enable to add the original client IP address in the X-Forwarded-For HTTP header.")
+    http_ip_header_name: str | None = Field(max_length=35, default="", description="For HTTP multiplexing, enter a custom HTTPS header name. The original client IP address is added to this header. If empty, X-Forwarded-For is used.")
+    outlook_web_access: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add the Front-End-Https header for Microsoft Outlook Web Access.")
+    weblogic_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add an HTTP header to indicate SSL offloading for a WebLogic server.")
+    websphere_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.")
+    ssl_mode: Literal["half", "full"] | None = Field(default="half", description="Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).")
+    ssl_certificate: list[Vip6SslCertificate] | None = Field(description="Name of the certificate to use for SSL handshake.")
+    ssl_dh_bits: str | Vip6SslDhBitsEnum | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")
+    ssl_algorithm: str | Vip6SslAlgorithmEnum | None = Field(default="high", description="Permitted encryption algorithms for SSL sessions according to encryption strength.")
+    ssl_cipher_suites: list[Vip6SslCipherSuites] | None = Field(default=None, description="SSL/TLS cipher suites acceptable from a client, ordered by priority.")
+    ssl_server_renegotiation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable secure renegotiation to comply with RFC 5746.")
+    ssl_server_algorithm: str | Vip6SslServerAlgorithmEnum | None = Field(default="client", description="Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.")
+    ssl_server_cipher_suites: list[Vip6SslServerCipherSuites] | None = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")
+    ssl_pfs: Literal["require", "deny", "allow"] | None = Field(default="require", description="Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.")
+    ssl_min_version: str | Vip6SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a client.")
+    ssl_max_version: str | Vip6SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a client.")
+    ssl_server_min_version: str | Vip6SslServerMinVersionEnum | None = Field(default="client", description="Lowest SSL/TLS version acceptable from a server. Use the client setting by default.")
+    ssl_server_max_version: str | Vip6SslServerMaxVersionEnum | None = Field(default="client", description="Highest SSL/TLS version acceptable from a server. Use the client setting by default.")
+    ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FFDHE cipher suite for SSL key exchange.")
+    ssl_send_empty_frags: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending empty fragments to avoid CBC IV attacks (SSL 3.0 & TLS 1.0 only). May need to be disabled for compatibility with older systems.")
+    ssl_client_fallback: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable support for preventing Downgrade Attacks on client connections (RFC 7507).")
+    ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="secure", description="Allow, deny, or require secure renegotiation of client sessions to comply with RFC 5746.")
+    ssl_client_session_state_type: str | Vip6SslClientSessionStateTypeEnum | None = Field(default="both", description="How to expire SSL sessions for the segment of the SSL connection between the client and the FortiGate.")
+    ssl_client_session_state_timeout: int | None = Field(ge=1, le=14400, default=30, description="Number of minutes to keep client to FortiGate SSL session state.")
+    ssl_client_session_state_max: int | None = Field(ge=1, le=10000, default=1000, description="Maximum number of client to FortiGate SSL session states to keep.")
+    ssl_client_rekey_count: int | None = Field(ge=200, le=1048576, default=0, description="Maximum length of data in MB before triggering a client rekey (0 = disable).")
+    ssl_server_session_state_type: str | Vip6SslServerSessionStateTypeEnum | None = Field(default="both", description="How to expire SSL sessions for the segment of the SSL connection between the server and the FortiGate.")
+    ssl_server_session_state_timeout: int | None = Field(ge=1, le=14400, default=60, description="Number of minutes to keep FortiGate to Server SSL session state.")
+    ssl_server_session_state_max: int | None = Field(ge=1, le=10000, default=100, description="Maximum number of FortiGate to Server SSL session states to keep.")
+    ssl_http_location_conversion: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to replace HTTP with HTTPS in the reply's Location HTTP header field.")
+    ssl_http_match_host: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable HTTP host matching for location conversion.")
+    ssl_hpkp: Literal["disable", "enable", "report-only"] | None = Field(default="disable", description="Enable/disable including HPKP header in response.")
+    ssl_hpkp_primary: str | None = Field(max_length=79, default="", description="Certificate to generate primary HPKP pin from.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.ca.name']
+    ssl_hpkp_backup: str | None = Field(max_length=79, default="", description="Certificate to generate backup HPKP pin from.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.ca.name']
+    ssl_hpkp_age: int | None = Field(ge=60, le=157680000, default=5184000, description="Number of minutes the web browser should keep HPKP.")
+    ssl_hpkp_report_uri: str | None = Field(max_length=255, default=None, description="URL to report HPKP violations to.")
+    ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = Field(default="disable", description="Indicate that HPKP header applies to all subdomains.")
+    ssl_hsts: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including HSTS header in response.")
+    ssl_hsts_age: int | None = Field(ge=60, le=157680000, default=5184000, description="Number of seconds the client should honor the HSTS setting.")
+    ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = Field(default="disable", description="Indicate that HSTS header applies to all subdomains.")
+    monitor: list[Vip6Monitor] | None = Field(default=None, description="Name of the health check monitor to use when polling to determine a virtual server's connectivity status.")
+    max_embryonic_connections: int | None = Field(ge=0, le=100000, default=1000, description="Maximum number of incomplete connections.")
+    embedded_ipv4_address: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.")
+    ipv4_mappedip: str | None = Field(default="", description="Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.")
+    ipv4_mappedport: str | None = Field(default="", description="IPv4 port number range on the destination network to which the external port number range is mapped.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -365,7 +532,7 @@ class Vip6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.vip6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ssl_certificate", [])
@@ -423,7 +590,7 @@ class Vip6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.vip6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_hpkp_primary", None)
@@ -474,7 +641,7 @@ class Vip6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.vip6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_hpkp_backup", None)
@@ -525,7 +692,7 @@ class Vip6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.vip6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "monitor", [])
@@ -571,11 +738,14 @@ class Vip6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_hpkp_primary_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_hpkp_backup_references(client)
-        all_errors.extend(errors)        errors = await self.validate_monitor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_hpkp_primary_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_hpkp_backup_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_monitor_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -597,5 +767,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.727284Z
+# Generated: 2026-01-14T22:43:35.791558Z
 # ============================================================================

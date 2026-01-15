@@ -26,7 +26,7 @@ class LocalInPolicy6Payload(TypedDict, total=False):
         }
     """
     policyid: int  # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     intf: list[dict[str, Any]]  # Incoming interface name from available options.
     srcaddr: list[dict[str, Any]]  # Source address object from available options.
     srcaddr_negate: Literal["enable", "disable"]  # When enabled srcaddr specifies what the source add | Default: disable
@@ -340,7 +340,7 @@ class LocalInPolicy6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     policyid: int  # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     intf: list[LocalInPolicy6IntfItem]  # Incoming interface name from available options.
     srcaddr: list[LocalInPolicy6SrcaddrItem]  # Source address object from available options.
     srcaddr_negate: Literal["enable", "disable"]  # When enabled srcaddr specifies what the source add | Default: disable
@@ -373,7 +373,7 @@ class LocalInPolicy6Object:
     
     # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Incoming interface name from available options.
     intf: list[LocalInPolicy6IntfObject]
@@ -417,7 +417,6 @@ class LocalInPolicy6Object:
     comments: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -440,6 +439,10 @@ class LocalInPolicy6:
     Primary Key: policyid
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -460,6 +463,7 @@ class LocalInPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LocalInPolicy6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -477,6 +481,7 @@ class LocalInPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LocalInPolicy6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -493,6 +498,7 @@ class LocalInPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LocalInPolicy6Response]: ...
     
     # ================================================================
@@ -535,7 +541,7 @@ class LocalInPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
     
@@ -554,7 +560,7 @@ class LocalInPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LocalInPolicy6Object]: ...
     
@@ -654,23 +660,6 @@ class LocalInPolicy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        policyid: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LocalInPolicy6Object | list[LocalInPolicy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -706,6 +695,7 @@ class LocalInPolicy6:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
@@ -802,37 +792,7 @@ class LocalInPolicy6:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LocalInPolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src: Literal["enable", "disable"] | None = ...,
-        internet_service6_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        service_negate: Literal["enable", "disable"] | None = ...,
-        internet_service6_src_negate: Literal["enable", "disable"] | None = ...,
-        schedule: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        virtual_patch: Literal["enable", "disable"] | None = ...,
-        logtraffic: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -865,6 +825,7 @@ class LocalInPolicy6:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
@@ -961,37 +922,7 @@ class LocalInPolicy6:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LocalInPolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src: Literal["enable", "disable"] | None = ...,
-        internet_service6_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service6_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        service_negate: Literal["enable", "disable"] | None = ...,
-        internet_service6_src_negate: Literal["enable", "disable"] | None = ...,
-        schedule: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        virtual_patch: Literal["enable", "disable"] | None = ...,
-        logtraffic: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1002,6 +933,7 @@ class LocalInPolicy6:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
@@ -1032,14 +964,7 @@ class LocalInPolicy6:
         self,
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        policyid: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1090,8 +1015,6 @@ class LocalInPolicy6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1119,6 +1042,10 @@ class LocalInPolicy6DictMode:
     By default returns LocalInPolicy6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return LocalInPolicy6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1311,10 +1238,12 @@ class LocalInPolicy6DictMode:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LocalInPolicy6Payload | None = ...,
@@ -1438,10 +1367,12 @@ class LocalInPolicy6DictMode:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LocalInPolicy6Payload | None = ...,
@@ -1499,10 +1430,12 @@ class LocalInPolicy6DictMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1557,8 +1490,6 @@ class LocalInPolicy6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1582,6 +1513,10 @@ class LocalInPolicy6ObjectMode:
     By default returns LocalInPolicy6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LocalInPolicy6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1807,10 +1742,12 @@ class LocalInPolicy6ObjectMode:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LocalInPolicy6Payload | None = ...,
@@ -1967,10 +1904,12 @@ class LocalInPolicy6ObjectMode:
         logtraffic: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LocalInPolicy6Payload | None = ...,
@@ -2039,10 +1978,12 @@ class LocalInPolicy6ObjectMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LocalInPolicy6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -2097,8 +2038,6 @@ class LocalInPolicy6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

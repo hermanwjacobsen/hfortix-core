@@ -182,7 +182,6 @@ class AutomationStitchObject:
     destination: list[AutomationStitchDestinationObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -205,6 +204,10 @@ class AutomationStitch:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -225,6 +228,7 @@ class AutomationStitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationStitchResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -242,6 +246,7 @@ class AutomationStitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationStitchResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -258,6 +263,7 @@ class AutomationStitch:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AutomationStitchResponse]: ...
     
     # ================================================================
@@ -300,7 +306,7 @@ class AutomationStitch:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
     
@@ -319,7 +325,7 @@ class AutomationStitch:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AutomationStitchObject]: ...
     
@@ -419,23 +425,6 @@ class AutomationStitch:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AutomationStitchObject | list[AutomationStitchObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -457,6 +446,7 @@ class AutomationStitch:
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
@@ -511,23 +501,7 @@ class AutomationStitch:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AutomationStitchPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
-        condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -546,6 +520,7 @@ class AutomationStitch:
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
@@ -600,23 +575,7 @@ class AutomationStitch:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AutomationStitchPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
-        condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -627,6 +586,7 @@ class AutomationStitch:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
@@ -657,14 +617,7 @@ class AutomationStitch:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -701,8 +654,6 @@ class AutomationStitch:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -730,6 +681,10 @@ class AutomationStitchDictMode:
     By default returns AutomationStitchResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AutomationStitchObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -880,10 +835,12 @@ class AutomationStitchDictMode:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AutomationStitchPayload | None = ...,
@@ -951,10 +908,12 @@ class AutomationStitchDictMode:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AutomationStitchPayload | None = ...,
@@ -998,10 +957,12 @@ class AutomationStitchDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1042,8 +1003,6 @@ class AutomationStitchDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1067,6 +1026,10 @@ class AutomationStitchObjectMode:
     By default returns AutomationStitchObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AutomationStitchResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1236,10 +1199,12 @@ class AutomationStitchObjectMode:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AutomationStitchPayload | None = ...,
@@ -1326,10 +1291,12 @@ class AutomationStitchObjectMode:
         actions: str | list[str] | list[dict[str, Any]] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AutomationStitchPayload | None = ...,
@@ -1384,10 +1351,12 @@ class AutomationStitchObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationStitchObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1428,8 +1397,6 @@ class AutomationStitchObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

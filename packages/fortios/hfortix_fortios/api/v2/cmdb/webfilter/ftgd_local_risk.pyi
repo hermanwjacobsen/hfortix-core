@@ -59,7 +59,6 @@ class FtgdLocalRiskObject:
     risk_score: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -82,6 +81,10 @@ class FtgdLocalRisk:
     Primary Key: url
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -102,6 +105,7 @@ class FtgdLocalRisk:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FtgdLocalRiskResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -119,6 +123,7 @@ class FtgdLocalRisk:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FtgdLocalRiskResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -135,6 +140,7 @@ class FtgdLocalRisk:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[FtgdLocalRiskResponse]: ...
     
     # ================================================================
@@ -177,7 +183,7 @@ class FtgdLocalRisk:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
     
@@ -196,7 +202,7 @@ class FtgdLocalRisk:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FtgdLocalRiskObject]: ...
     
@@ -296,23 +302,6 @@ class FtgdLocalRisk:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        url: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FtgdLocalRiskObject | list[FtgdLocalRiskObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -330,6 +319,7 @@ class FtgdLocalRisk:
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
@@ -372,19 +362,7 @@ class FtgdLocalRisk:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: FtgdLocalRiskPayload | None = ...,
-        url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        risk_score: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -399,6 +377,7 @@ class FtgdLocalRisk:
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
@@ -441,19 +420,7 @@ class FtgdLocalRisk:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FtgdLocalRiskPayload | None = ...,
-        url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        risk_score: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -464,6 +431,7 @@ class FtgdLocalRisk:
         url: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
@@ -494,14 +462,7 @@ class FtgdLocalRisk:
         self,
         url: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        url: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,8 +495,6 @@ class FtgdLocalRisk:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -563,6 +522,10 @@ class FtgdLocalRiskDictMode:
     By default returns FtgdLocalRiskResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FtgdLocalRiskObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -701,10 +664,12 @@ class FtgdLocalRiskDictMode:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
@@ -756,10 +721,12 @@ class FtgdLocalRiskDictMode:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
@@ -799,10 +766,12 @@ class FtgdLocalRiskDictMode:
         self,
         url: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         url: str,
@@ -839,8 +808,6 @@ class FtgdLocalRiskDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +831,10 @@ class FtgdLocalRiskObjectMode:
     By default returns FtgdLocalRiskObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FtgdLocalRiskResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1017,10 +988,12 @@ class FtgdLocalRiskObjectMode:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
@@ -1087,10 +1060,12 @@ class FtgdLocalRiskObjectMode:
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
@@ -1141,10 +1116,12 @@ class FtgdLocalRiskObjectMode:
         self,
         url: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FtgdLocalRiskObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         url: str,
@@ -1181,8 +1158,6 @@ class FtgdLocalRiskObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

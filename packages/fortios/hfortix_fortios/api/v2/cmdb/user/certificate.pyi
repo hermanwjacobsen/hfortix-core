@@ -26,7 +26,7 @@ class CertificatePayload(TypedDict, total=False):
     name: str  # User name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the certificate user to au | Default: enable
-    type: Literal["single-certificate", "trusted-issuer"]  # Type of certificate authentication method. | Default: single-certificate
+    type_: Literal["single-certificate", "trusted-issuer"]  # Type of certificate authentication method. | Default: single-certificate
     common_name: str  # Certificate common name. | MaxLen: 64
     issuer: str  # CA certificate used for client certificate verific | MaxLen: 79
 
@@ -45,7 +45,7 @@ class CertificateResponse(TypedDict):
     name: str  # User name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the certificate user to au | Default: enable
-    type: Literal["single-certificate", "trusted-issuer"]  # Type of certificate authentication method. | Default: single-certificate
+    type_: Literal["single-certificate", "trusted-issuer"]  # Type of certificate authentication method. | Default: single-certificate
     common_name: str  # Certificate common name. | MaxLen: 64
     issuer: str  # CA certificate used for client certificate verific | MaxLen: 79
 
@@ -65,14 +65,13 @@ class CertificateObject:
     # Enable/disable allowing the certificate user to authenticate | Default: enable
     status: Literal["enable", "disable"]
     # Type of certificate authentication method. | Default: single-certificate
-    type: Literal["single-certificate", "trusted-issuer"]
+    type_: Literal["single-certificate", "trusted-issuer"]
     # Certificate common name. | MaxLen: 64
     common_name: str
     # CA certificate used for client certificate verification. | MaxLen: 79
     issuer: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -95,6 +94,10 @@ class Certificate:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -115,6 +118,7 @@ class Certificate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CertificateResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -132,6 +136,7 @@ class Certificate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CertificateResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -148,6 +153,7 @@ class Certificate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CertificateResponse]: ...
     
     # ================================================================
@@ -190,7 +196,7 @@ class Certificate:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CertificateObject: ...
     
@@ -209,7 +215,7 @@ class Certificate:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CertificateObject]: ...
     
@@ -309,23 +315,6 @@ class Certificate:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CertificateObject | list[CertificateObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -340,11 +329,12 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CertificateObject: ...
@@ -356,7 +346,7 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -373,7 +363,7 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -389,25 +379,11 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CertificatePayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
-        common_name: str | None = ...,
-        issuer: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -419,11 +395,12 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CertificateObject: ...
@@ -435,7 +412,7 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -452,7 +429,7 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -468,25 +445,11 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CertificatePayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
-        common_name: str | None = ...,
-        issuer: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -497,6 +460,7 @@ class Certificate:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CertificateObject: ...
@@ -527,14 +491,7 @@ class Certificate:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -550,7 +507,7 @@ class Certificate:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -569,8 +526,6 @@ class Certificate:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -598,6 +553,10 @@ class CertificateDictMode:
     By default returns CertificateResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CertificateObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -704,7 +663,7 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -721,7 +680,7 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -738,21 +697,23 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -767,7 +728,7 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -784,7 +745,7 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -801,21 +762,23 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -850,10 +813,12 @@ class CertificateDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -874,7 +839,7 @@ class CertificateDictMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -892,8 +857,6 @@ class CertificateDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -917,6 +880,10 @@ class CertificateObjectMode:
     By default returns CertificateObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CertificateResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1023,7 +990,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1040,7 +1007,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1057,7 +1024,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1074,21 +1041,23 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CertificateObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1103,7 +1072,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1120,7 +1089,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1137,7 +1106,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1154,21 +1123,23 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CertificateObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1214,10 +1185,12 @@ class CertificateObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CertificateObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1238,7 +1211,7 @@ class CertificateObjectMode:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -1256,8 +1229,6 @@ class CertificateObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

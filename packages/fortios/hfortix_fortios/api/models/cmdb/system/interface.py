@@ -30,7 +30,7 @@ class InterfaceClientOptions(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
     code: int = Field(ge=0, le=255, default=0, description="DHCP client option code.")
-    type: TypeEnum | None = Field(default="hex", description="DHCP client option type.")
+    type_: str | None = Field(default="hex", description="DHCP client option type.")
     value: str | None = Field(max_length=312, default="", description="DHCP client option value.")
     ip: str | None = Field(default="", description="DHCP option IPs.")
 
@@ -101,7 +101,7 @@ class InterfaceVrrp(BaseModel):
     vrdst_priority: int | None = Field(ge=0, le=254, default=0, description="Priority of the virtual router when the virtual router destination becomes unreachable (0 - 254).")
     ignore_default_route: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignoring of default route when checking destination.")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this VRRP configuration.")
-    proxy_arp: list[ProxyArp] = Field(default=None, description="VRRP Proxy ARP configuration.")
+    proxy_arp: list[dict[str, Any]] | None = Field(default=None, description="VRRP Proxy ARP configuration.")
 
 
 class InterfacePhySetting(BaseModel):
@@ -132,7 +132,7 @@ class InterfaceSecondaryip(BaseModel):
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
     ip: Any = Field(default="0.0.0.0 0.0.0.0", description="Secondary IP address of the interface.")
     secip_relay_ip: str | None = Field(default="", description="DHCP relay IP address.")
-    allowaccess: AllowaccessEnum | None = Field(default="", description="Management access settings for the secondary IP address.")
+    allowaccess: str | None = Field(default=None, description="Management access settings for the secondary IP address.")
     gwdetect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable detect gateway alive for first.")
     ping_serv_status: int | None = Field(ge=0, le=255, default=0, description="PING server status.")
     detectserver: str | None = Field(default="", description="Gateway's ping server for this IP.")
@@ -168,7 +168,7 @@ class InterfaceTagging(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=63, default="", description="Tagging entry name.")
     category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    tags: list[dict[str, Any]] | None = Field(default=None, description="Tags.")
 
 
 class InterfaceIpv6(BaseModel):
@@ -182,8 +182,8 @@ class InterfaceIpv6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ip6_mode: Ip6ModeEnum | None = Field(default="static", description="Addressing mode (static, DHCP, delegated).")
-    client_options: list[ClientOptions] = Field(default=None, description="DHCP6 client options.")
+    ip6_mode: str | None = Field(default="static", description="Addressing mode (static, DHCP, delegated).")
+    client_options: list[dict[str, Any]] | None = Field(default=None, description="DHCP6 client options.")
     nd_mode: Literal["basic", "SEND-compatible"] | None = Field(default="basic", description="Neighbor discovery mode.")
     nd_cert: str = Field(max_length=35, default="", description="Neighbor discovery certificate.")  # datasource: ['certificate.local.name']
     nd_security_level: int | None = Field(ge=0, le=7, default=0, description="Neighbor discovery security level (0 - 7; 0 = least secure, default = 0).")
@@ -192,8 +192,8 @@ class InterfaceIpv6(BaseModel):
     nd_cga_modifier: str | None = Field(default="", description="Neighbor discovery CGA modifier.")
     ip6_dns_server_override: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable using the DNS server acquired by DHCP.")
     ip6_address: str | None = Field(default="::/0", description="Primary IPv6 address prefix. Syntax: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx.")
-    ip6_extra_addr: list[Ip6ExtraAddr] = Field(default=None, description="Extra IPv6 address prefixes of interface.")
-    ip6_allowaccess: Ip6AllowaccessEnum | None = Field(default="", description="Allow management access to the interface.")
+    ip6_extra_addr: list[dict[str, Any]] | None = Field(default=None, description="Extra IPv6 address prefixes of interface.")
+    ip6_allowaccess: str | None = Field(default=None, description="Allow management access to the interface.")
     ip6_send_adv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending advertisements about the interface.")
     icmp6_send_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending of ICMPv6 redirects.")
     ip6_manage_flag: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the managed flag.")
@@ -208,7 +208,7 @@ class InterfaceIpv6(BaseModel):
     ip6_hop_limit: int | None = Field(ge=0, le=255, default=0, description="Hop limit (0 means unspecified).")
     ip6_adv_rio: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending advertisements with route information option.")
     ip6_route_pref: Literal["medium", "high", "low"] | None = Field(default="medium", description="Set route preference to the interface (default = medium).")
-    ip6_route_list: list[Ip6RouteList] = Field(default=None, description="Advertised route list.")
+    ip6_route_list: list[dict[str, Any]] | None = Field(default=None, description="Advertised route list.")
     autoconf: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address auto config.")
     unique_autoconf_addr: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unique auto config address.")
     interface_identifier: str | None = Field(default="::", description="IPv6 interface identifier.")
@@ -216,24 +216,24 @@ class InterfaceIpv6(BaseModel):
     ip6_delegated_prefix_iaid: int = Field(ge=0, le=4294967295, default=0, description="IAID of obtained delegated-prefix from the upstream interface.")
     ip6_upstream_interface: str = Field(max_length=15, default="", description="Interface name providing delegated information.")  # datasource: ['system.interface.name']
     ip6_subnet: str | None = Field(default="::/0", description="Subnet to routing prefix. Syntax: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx.")
-    ip6_prefix_list: list[Ip6PrefixList] = Field(default=None, description="Advertised prefix list.")
-    ip6_rdnss_list: list[Ip6RdnssList] = Field(default=None, description="Advertised IPv6 RDNSS list.")
-    ip6_dnssl_list: list[Ip6DnsslList] = Field(default=None, description="Advertised IPv6 DNSS list.")
-    ip6_delegated_prefix_list: list[Ip6DelegatedPrefixList] = Field(default=None, description="Advertised IPv6 delegated prefix list.")
+    ip6_prefix_list: list[dict[str, Any]] | None = Field(default=None, description="Advertised prefix list.")
+    ip6_rdnss_list: list[dict[str, Any]] | None = Field(default=None, description="Advertised IPv6 RDNSS list.")
+    ip6_dnssl_list: list[dict[str, Any]] | None = Field(default=None, description="Advertised IPv6 DNSS list.")
+    ip6_delegated_prefix_list: list[dict[str, Any]] | None = Field(default=None, description="Advertised IPv6 delegated prefix list.")
     dhcp6_relay_service: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DHCPv6 relay.")
     dhcp6_relay_type: Literal["regular"] | None = Field(default="regular", description="DHCPv6 relay type.")
     dhcp6_relay_source_interface: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of address on this interface as the source address of the relay message.")
     dhcp6_relay_ip: str | None = Field(default="", description="DHCPv6 relay IP address.")
     dhcp6_relay_source_ip: str | None = Field(default="::", description="IPv6 address used by the DHCP6 relay as its source IP.")
     dhcp6_relay_interface_id: str | None = Field(max_length=64, default="", description="DHCP6 relay interface ID.")
-    dhcp6_client_options: Literal["rapid", "iapd", "iana"] | None = Field(default="", description="DHCPv6 client options.")
+    dhcp6_client_options: Literal["rapid", "iapd", "iana"] | None = Field(default=None, description="DHCPv6 client options.")
     dhcp6_prefix_delegation: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCPv6 prefix delegation.")
     dhcp6_information_request: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCPv6 information request.")
-    dhcp6_iapd_list: list[Dhcp6IapdList] = Field(default=None, description="DHCPv6 IA-PD list.")
+    dhcp6_iapd_list: list[dict[str, Any]] | None = Field(default=None, description="DHCPv6 IA-PD list.")
     cli_conn6_status: int | None = Field(ge=0, le=4294967295, default=0, description="CLI IPv6 connection status.")
     vrrp_virtual_mac6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable virtual MAC for VRRP.")
     vrip6_link_local: str | None = Field(default="::", description="Link-local IPv6 address of virtual router.")
-    vrrp6: list[Vrrp6] = Field(default=None, description="IPv6 VRRP configuration.")
+    vrrp6: list[dict[str, Any]] | None = Field(default=None, description="IPv6 VRRP configuration.")
 
 
 class InterfacePhysical(BaseModel):
@@ -271,7 +271,7 @@ class InterfaceAllowaccessEnum(str, Enum):
     SCIM = "scim"
 
 
-class InterfacePppoe_egress_cosEnum(str, Enum):
+class InterfacePppoeEgressCosEnum(str, Enum):
     """Allowed values for pppoe_egress_cos field."""
     COS0 = "cos0"
     COS1 = "cos1"
@@ -283,7 +283,7 @@ class InterfacePppoe_egress_cosEnum(str, Enum):
     COS7 = "cos7"
 
 
-class InterfaceAuth_typeEnum(str, Enum):
+class InterfaceAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
     AUTO = "auto"
     PAP = "pap"
@@ -292,7 +292,7 @@ class InterfaceAuth_typeEnum(str, Enum):
     MSCHAPV2 = "mschapv2"
 
 
-class InterfacePptp_auth_typeEnum(str, Enum):
+class InterfacePptpAuthTypeEnum(str, Enum):
     """Allowed values for pptp_auth_type field."""
     AUTO = "auto"
     PAP = "pap"
@@ -314,7 +314,7 @@ class InterfaceSpeedEnum(str, Enum):
 
 
 class InterfaceTypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     PHYSICAL = "physical"
     VLAN = "vlan"
     AGGREGATE = "aggregate"
@@ -333,7 +333,7 @@ class InterfaceTypeEnum(str, Enum):
     LAN_EXTENSION = "lan-extension"
 
 
-class InterfaceNetflow_samplerEnum(str, Enum):
+class InterfaceNetflowSamplerEnum(str, Enum):
     """Allowed values for netflow_sampler field."""
     DISABLE = "disable"
     TX = "tx"
@@ -358,7 +358,7 @@ class InterfaceRoleEnum(str, Enum):
     UNDEFINED = "undefined"
 
 
-class InterfaceManaged_subnetwork_sizeEnum(str, Enum):
+class InterfaceManagedSubnetworkSizeEnum(str, Enum):
     """Allowed values for managed_subnetwork_size field."""
     VALUE_4 = "4"
     VALUE_8 = "8"
@@ -385,7 +385,7 @@ class InterfaceManaged_subnetwork_sizeEnum(str, Enum):
     VALUE_16777216 = "16777216"
 
 
-class InterfaceSwitch_controller_featureEnum(str, Enum):
+class InterfaceSwitchControllerFeatureEnum(str, Enum):
     """Allowed values for switch_controller_feature field."""
     NONE = "none"
     DEFAULT_VLAN = "default-vlan"
@@ -397,7 +397,7 @@ class InterfaceSwitch_controller_featureEnum(str, Enum):
     NAC_SEGMENT = "nac-segment"
 
 
-class InterfaceDefault_purdue_levelEnum(str, Enum):
+class InterfaceDefaultPurdueLevelEnum(str, Enum):
     """Allowed values for default_purdue_level field."""
     VALUE_1 = "1"
     VALUE_1_5 = "1.5"
@@ -421,7 +421,230 @@ class InterfaceModel(BaseModel):
 
     Configure interfaces.
 
-    Validation Rules:        - name: max_length=15 pattern=        - vdom: max_length=31 pattern=        - vrf: min=0 max=511 pattern=        - cli_conn_status: min=0 max=4294967295 pattern=        - fortilink: pattern=        - switch_controller_source_ip: pattern=        - mode: pattern=        - client_options: pattern=        - distance: min=1 max=255 pattern=        - priority: min=1 max=65535 pattern=        - dhcp_relay_interface_select_method: pattern=        - dhcp_relay_interface: max_length=15 pattern=        - dhcp_relay_vrf_select: min=0 max=511 pattern=        - dhcp_broadcast_flag: pattern=        - dhcp_relay_service: pattern=        - dhcp_relay_ip: pattern=        - dhcp_relay_source_ip: pattern=        - dhcp_relay_circuit_id: max_length=64 pattern=        - dhcp_relay_link_selection: pattern=        - dhcp_relay_request_all_server: pattern=        - dhcp_relay_allow_no_end_option: pattern=        - dhcp_relay_type: pattern=        - dhcp_smart_relay: pattern=        - dhcp_relay_agent_option: pattern=        - dhcp_classless_route_addition: pattern=        - management_ip: pattern=        - ip: pattern=        - allowaccess: pattern=        - gwdetect: pattern=        - ping_serv_status: min=0 max=255 pattern=        - detectserver: pattern=        - detectprotocol: pattern=        - ha_priority: min=1 max=50 pattern=        - fail_detect: pattern=        - fail_detect_option: pattern=        - fail_alert_method: pattern=        - fail_action_on_extender: pattern=        - fail_alert_interfaces: pattern=        - dhcp_client_identifier: max_length=48 pattern=        - dhcp_renew_time: min=300 max=604800 pattern=        - ipunnumbered: pattern=        - username: max_length=64 pattern=        - pppoe_egress_cos: pattern=        - pppoe_unnumbered_negotiate: pattern=        - password: max_length=128 pattern=        - idle_timeout: min=0 max=32767 pattern=        - multilink: pattern=        - mrru: min=296 max=65535 pattern=        - detected_peer_mtu: min=0 max=4294967295 pattern=        - disc_retry_timeout: min=0 max=4294967295 pattern=        - padt_retry_timeout: min=0 max=4294967295 pattern=        - service_name: max_length=63 pattern=        - ac_name: max_length=63 pattern=        - lcp_echo_interval: min=0 max=32767 pattern=        - lcp_max_echo_fails: min=0 max=32767 pattern=        - defaultgw: pattern=        - dns_server_override: pattern=        - dns_server_protocol: pattern=        - auth_type: pattern=        - pptp_client: pattern=        - pptp_user: max_length=64 pattern=        - pptp_password: max_length=128 pattern=        - pptp_server_ip: pattern=        - pptp_auth_type: pattern=        - pptp_timeout: min=0 max=65535 pattern=        - arpforward: pattern=        - ndiscforward: pattern=        - broadcast_forward: pattern=        - bfd: pattern=        - bfd_desired_min_tx: min=1 max=100000 pattern=        - bfd_detect_mult: min=1 max=50 pattern=        - bfd_required_min_rx: min=1 max=100000 pattern=        - l2forward: pattern=        - icmp_send_redirect: pattern=        - icmp_accept_redirect: pattern=        - reachable_time: min=30000 max=3600000 pattern=        - vlanforward: pattern=        - stpforward: pattern=        - stpforward_mode: pattern=        - ips_sniffer_mode: pattern=        - ident_accept: pattern=        - ipmac: pattern=        - subst: pattern=        - macaddr: pattern=        - virtual_mac: pattern=        - substitute_dst_mac: pattern=        - speed: pattern=        - status: pattern=        - netbios_forward: pattern=        - wins_ip: pattern=        - type: pattern=        - dedicated_to: pattern=        - trust_ip_1: pattern=        - trust_ip_2: pattern=        - trust_ip_3: pattern=        - trust_ip6_1: pattern=        - trust_ip6_2: pattern=        - trust_ip6_3: pattern=        - ring_rx: min=0 max=4294967295 pattern=        - ring_tx: min=0 max=4294967295 pattern=        - wccp: pattern=        - netflow_sampler: pattern=        - netflow_sample_rate: min=1 max=65535 pattern=        - netflow_sampler_id: min=1 max=254 pattern=        - sflow_sampler: pattern=        - drop_fragment: pattern=        - src_check: pattern=        - sample_rate: min=10 max=99999 pattern=        - polling_interval: min=1 max=255 pattern=        - sample_direction: pattern=        - explicit_web_proxy: pattern=        - explicit_ftp_proxy: pattern=        - proxy_captive_portal: pattern=        - tcp_mss: min=48 max=65535 pattern=        - inbandwidth: min=0 max=80000000 pattern=        - outbandwidth: min=0 max=80000000 pattern=        - egress_shaping_profile: max_length=35 pattern=        - ingress_shaping_profile: max_length=35 pattern=        - spillover_threshold: min=0 max=16776000 pattern=        - ingress_spillover_threshold: min=0 max=16776000 pattern=        - weight: min=0 max=255 pattern=        - interface: max_length=15 pattern=        - external: pattern=        - mtu_override: pattern=        - mtu: min=0 max=4294967295 pattern=        - vlan_protocol: pattern=        - vlanid: min=1 max=4094 pattern=        - forward_domain: min=0 max=2147483647 pattern=        - remote_ip: pattern=        - member: pattern=        - lacp_mode: pattern=        - lacp_ha_secondary: pattern=        - system_id_type: pattern=        - system_id: pattern=        - lacp_speed: pattern=        - min_links: min=1 max=32 pattern=        - min_links_down: pattern=        - algorithm: pattern=        - link_up_delay: min=50 max=3600000 pattern=        - aggregate_type: pattern=        - priority_override: pattern=        - aggregate: max_length=15 pattern=        - redundant_interface: max_length=15 pattern=        - devindex: min=0 max=4294967295 pattern=        - vindex: min=0 max=65535 pattern=        - switch: max_length=15 pattern=        - description: max_length=255 pattern=        - alias: max_length=25 pattern=        - security_mode: pattern=        - security_mac_auth_bypass: pattern=        - security_ip_auth_bypass: pattern=        - security_external_web: max_length=1023 pattern=        - security_external_logout: max_length=127 pattern=        - replacemsg_override_group: max_length=35 pattern=        - security_redirect_url: max_length=1023 pattern=        - auth_cert: max_length=35 pattern=        - auth_portal_addr: max_length=63 pattern=        - security_exempt_list: max_length=35 pattern=        - security_groups: pattern=        - ike_saml_server: max_length=35 pattern=        - device_identification: pattern=        - exclude_signatures: pattern=        - device_user_identification: pattern=        - lldp_reception: pattern=        - lldp_transmission: pattern=        - lldp_network_policy: max_length=35 pattern=        - estimated_upstream_bandwidth: min=0 max=4294967295 pattern=        - estimated_downstream_bandwidth: min=0 max=4294967295 pattern=        - measured_upstream_bandwidth: min=0 max=4294967295 pattern=        - measured_downstream_bandwidth: min=0 max=4294967295 pattern=        - bandwidth_measure_time: min=0 max=4294967295 pattern=        - monitor_bandwidth: pattern=        - vrrp_virtual_mac: pattern=        - vrrp: pattern=        - phy_setting: pattern=        - role: pattern=        - snmp_index: min=0 max=2147483647 pattern=        - secondary_IP: pattern=        - secondaryip: pattern=        - preserve_session_route: pattern=        - auto_auth_extension_device: pattern=        - ap_discover: pattern=        - fortilink_neighbor_detect: pattern=        - ip_managed_by_fortiipam: pattern=        - managed_subnetwork_size: pattern=        - fortilink_split_interface: pattern=        - internal: min=0 max=255 pattern=        - fortilink_backup_link: min=0 max=255 pattern=        - switch_controller_access_vlan: pattern=        - switch_controller_traffic_policy: max_length=63 pattern=        - switch_controller_rspan_mode: pattern=        - switch_controller_netflow_collect: pattern=        - switch_controller_mgmt_vlan: min=1 max=4094 pattern=        - switch_controller_igmp_snooping: pattern=        - switch_controller_igmp_snooping_proxy: pattern=        - switch_controller_igmp_snooping_fast_leave: pattern=        - switch_controller_dhcp_snooping: pattern=        - switch_controller_dhcp_snooping_verify_mac: pattern=        - switch_controller_dhcp_snooping_option82: pattern=        - dhcp_snooping_server_list: pattern=        - switch_controller_arp_inspection: pattern=        - switch_controller_learning_limit: min=0 max=128 pattern=        - switch_controller_nac: max_length=35 pattern=        - switch_controller_dynamic: max_length=35 pattern=        - switch_controller_feature: pattern=        - switch_controller_iot_scanning: pattern=        - switch_controller_offload: pattern=        - switch_controller_offload_ip: pattern=        - switch_controller_offload_gw: pattern=        - swc_vlan: min=0 max=4294967295 pattern=        - swc_first_create: min=0 max=4294967295 pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - eap_supplicant: pattern=        - eap_method: pattern=        - eap_identity: max_length=35 pattern=        - eap_password: max_length=128 pattern=        - eap_ca_cert: max_length=79 pattern=        - eap_user_cert: max_length=35 pattern=        - default_purdue_level: pattern=        - ipv6: pattern=        - physical: pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - vdom: max_length=31 pattern=
+        - vrf: min=0 max=511 pattern=
+        - cli_conn_status: min=0 max=4294967295 pattern=
+        - fortilink: pattern=
+        - switch_controller_source_ip: pattern=
+        - mode: pattern=
+        - client_options: pattern=
+        - distance: min=1 max=255 pattern=
+        - priority: min=1 max=65535 pattern=
+        - dhcp_relay_interface_select_method: pattern=
+        - dhcp_relay_interface: max_length=15 pattern=
+        - dhcp_relay_vrf_select: min=0 max=511 pattern=
+        - dhcp_broadcast_flag: pattern=
+        - dhcp_relay_service: pattern=
+        - dhcp_relay_ip: pattern=
+        - dhcp_relay_source_ip: pattern=
+        - dhcp_relay_circuit_id: max_length=64 pattern=
+        - dhcp_relay_link_selection: pattern=
+        - dhcp_relay_request_all_server: pattern=
+        - dhcp_relay_allow_no_end_option: pattern=
+        - dhcp_relay_type: pattern=
+        - dhcp_smart_relay: pattern=
+        - dhcp_relay_agent_option: pattern=
+        - dhcp_classless_route_addition: pattern=
+        - management_ip: pattern=
+        - ip: pattern=
+        - allowaccess: pattern=
+        - gwdetect: pattern=
+        - ping_serv_status: min=0 max=255 pattern=
+        - detectserver: pattern=
+        - detectprotocol: pattern=
+        - ha_priority: min=1 max=50 pattern=
+        - fail_detect: pattern=
+        - fail_detect_option: pattern=
+        - fail_alert_method: pattern=
+        - fail_action_on_extender: pattern=
+        - fail_alert_interfaces: pattern=
+        - dhcp_client_identifier: max_length=48 pattern=
+        - dhcp_renew_time: min=300 max=604800 pattern=
+        - ipunnumbered: pattern=
+        - username: max_length=64 pattern=
+        - pppoe_egress_cos: pattern=
+        - pppoe_unnumbered_negotiate: pattern=
+        - password: max_length=128 pattern=
+        - idle_timeout: min=0 max=32767 pattern=
+        - multilink: pattern=
+        - mrru: min=296 max=65535 pattern=
+        - detected_peer_mtu: min=0 max=4294967295 pattern=
+        - disc_retry_timeout: min=0 max=4294967295 pattern=
+        - padt_retry_timeout: min=0 max=4294967295 pattern=
+        - service_name: max_length=63 pattern=
+        - ac_name: max_length=63 pattern=
+        - lcp_echo_interval: min=0 max=32767 pattern=
+        - lcp_max_echo_fails: min=0 max=32767 pattern=
+        - defaultgw: pattern=
+        - dns_server_override: pattern=
+        - dns_server_protocol: pattern=
+        - auth_type: pattern=
+        - pptp_client: pattern=
+        - pptp_user: max_length=64 pattern=
+        - pptp_password: max_length=128 pattern=
+        - pptp_server_ip: pattern=
+        - pptp_auth_type: pattern=
+        - pptp_timeout: min=0 max=65535 pattern=
+        - arpforward: pattern=
+        - ndiscforward: pattern=
+        - broadcast_forward: pattern=
+        - bfd: pattern=
+        - bfd_desired_min_tx: min=1 max=100000 pattern=
+        - bfd_detect_mult: min=1 max=50 pattern=
+        - bfd_required_min_rx: min=1 max=100000 pattern=
+        - l2forward: pattern=
+        - icmp_send_redirect: pattern=
+        - icmp_accept_redirect: pattern=
+        - reachable_time: min=30000 max=3600000 pattern=
+        - vlanforward: pattern=
+        - stpforward: pattern=
+        - stpforward_mode: pattern=
+        - ips_sniffer_mode: pattern=
+        - ident_accept: pattern=
+        - ipmac: pattern=
+        - subst: pattern=
+        - macaddr: pattern=
+        - virtual_mac: pattern=
+        - substitute_dst_mac: pattern=
+        - speed: pattern=
+        - status: pattern=
+        - netbios_forward: pattern=
+        - wins_ip: pattern=
+        - type_: pattern=
+        - dedicated_to: pattern=
+        - trust_ip_1: pattern=
+        - trust_ip_2: pattern=
+        - trust_ip_3: pattern=
+        - trust_ip6_1: pattern=
+        - trust_ip6_2: pattern=
+        - trust_ip6_3: pattern=
+        - ring_rx: min=0 max=4294967295 pattern=
+        - ring_tx: min=0 max=4294967295 pattern=
+        - wccp: pattern=
+        - netflow_sampler: pattern=
+        - netflow_sample_rate: min=1 max=65535 pattern=
+        - netflow_sampler_id: min=1 max=254 pattern=
+        - sflow_sampler: pattern=
+        - drop_fragment: pattern=
+        - src_check: pattern=
+        - sample_rate: min=10 max=99999 pattern=
+        - polling_interval: min=1 max=255 pattern=
+        - sample_direction: pattern=
+        - explicit_web_proxy: pattern=
+        - explicit_ftp_proxy: pattern=
+        - proxy_captive_portal: pattern=
+        - tcp_mss: min=48 max=65535 pattern=
+        - inbandwidth: min=0 max=80000000 pattern=
+        - outbandwidth: min=0 max=80000000 pattern=
+        - egress_shaping_profile: max_length=35 pattern=
+        - ingress_shaping_profile: max_length=35 pattern=
+        - spillover_threshold: min=0 max=16776000 pattern=
+        - ingress_spillover_threshold: min=0 max=16776000 pattern=
+        - weight: min=0 max=255 pattern=
+        - interface: max_length=15 pattern=
+        - external: pattern=
+        - mtu_override: pattern=
+        - mtu: min=0 max=4294967295 pattern=
+        - vlan_protocol: pattern=
+        - vlanid: min=1 max=4094 pattern=
+        - forward_domain: min=0 max=2147483647 pattern=
+        - remote_ip: pattern=
+        - member: pattern=
+        - lacp_mode: pattern=
+        - lacp_ha_secondary: pattern=
+        - system_id_type: pattern=
+        - system_id: pattern=
+        - lacp_speed: pattern=
+        - min_links: min=1 max=32 pattern=
+        - min_links_down: pattern=
+        - algorithm: pattern=
+        - link_up_delay: min=50 max=3600000 pattern=
+        - aggregate_type: pattern=
+        - priority_override: pattern=
+        - aggregate: max_length=15 pattern=
+        - redundant_interface: max_length=15 pattern=
+        - devindex: min=0 max=4294967295 pattern=
+        - vindex: min=0 max=65535 pattern=
+        - switch: max_length=15 pattern=
+        - description: max_length=255 pattern=
+        - alias: max_length=25 pattern=
+        - security_mode: pattern=
+        - security_mac_auth_bypass: pattern=
+        - security_ip_auth_bypass: pattern=
+        - security_external_web: max_length=1023 pattern=
+        - security_external_logout: max_length=127 pattern=
+        - replacemsg_override_group: max_length=35 pattern=
+        - security_redirect_url: max_length=1023 pattern=
+        - auth_cert: max_length=35 pattern=
+        - auth_portal_addr: max_length=63 pattern=
+        - security_exempt_list: max_length=35 pattern=
+        - security_groups: pattern=
+        - ike_saml_server: max_length=35 pattern=
+        - device_identification: pattern=
+        - exclude_signatures: pattern=
+        - device_user_identification: pattern=
+        - lldp_reception: pattern=
+        - lldp_transmission: pattern=
+        - lldp_network_policy: max_length=35 pattern=
+        - estimated_upstream_bandwidth: min=0 max=4294967295 pattern=
+        - estimated_downstream_bandwidth: min=0 max=4294967295 pattern=
+        - measured_upstream_bandwidth: min=0 max=4294967295 pattern=
+        - measured_downstream_bandwidth: min=0 max=4294967295 pattern=
+        - bandwidth_measure_time: min=0 max=4294967295 pattern=
+        - monitor_bandwidth: pattern=
+        - vrrp_virtual_mac: pattern=
+        - vrrp: pattern=
+        - phy_setting: pattern=
+        - role: pattern=
+        - snmp_index: min=0 max=2147483647 pattern=
+        - secondary_IP: pattern=
+        - secondaryip: pattern=
+        - preserve_session_route: pattern=
+        - auto_auth_extension_device: pattern=
+        - ap_discover: pattern=
+        - fortilink_neighbor_detect: pattern=
+        - ip_managed_by_fortiipam: pattern=
+        - managed_subnetwork_size: pattern=
+        - fortilink_split_interface: pattern=
+        - internal: min=0 max=255 pattern=
+        - fortilink_backup_link: min=0 max=255 pattern=
+        - switch_controller_access_vlan: pattern=
+        - switch_controller_traffic_policy: max_length=63 pattern=
+        - switch_controller_rspan_mode: pattern=
+        - switch_controller_netflow_collect: pattern=
+        - switch_controller_mgmt_vlan: min=1 max=4094 pattern=
+        - switch_controller_igmp_snooping: pattern=
+        - switch_controller_igmp_snooping_proxy: pattern=
+        - switch_controller_igmp_snooping_fast_leave: pattern=
+        - switch_controller_dhcp_snooping: pattern=
+        - switch_controller_dhcp_snooping_verify_mac: pattern=
+        - switch_controller_dhcp_snooping_option82: pattern=
+        - dhcp_snooping_server_list: pattern=
+        - switch_controller_arp_inspection: pattern=
+        - switch_controller_learning_limit: min=0 max=128 pattern=
+        - switch_controller_nac: max_length=35 pattern=
+        - switch_controller_dynamic: max_length=35 pattern=
+        - switch_controller_feature: pattern=
+        - switch_controller_iot_scanning: pattern=
+        - switch_controller_offload: pattern=
+        - switch_controller_offload_ip: pattern=
+        - switch_controller_offload_gw: pattern=
+        - swc_vlan: min=0 max=4294967295 pattern=
+        - swc_first_create: min=0 max=4294967295 pattern=
+        - color: min=0 max=32 pattern=
+        - tagging: pattern=
+        - eap_supplicant: pattern=
+        - eap_method: pattern=
+        - eap_identity: max_length=35 pattern=
+        - eap_password: max_length=128 pattern=
+        - eap_ca_cert: max_length=79 pattern=
+        - eap_user_cert: max_length=35 pattern=
+        - default_purdue_level: pattern=
+        - ipv6: pattern=
+        - physical: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -433,7 +656,229 @@ class InterfaceModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="Name.")    vdom: str = Field(max_length=31, default="", description="Interface is in this virtual domain (VDOM).")  # datasource: ['system.vdom.name']    vrf: int | None = Field(ge=0, le=511, default=0, description="Virtual Routing Forwarding ID.")    cli_conn_status: int | None = Field(ge=0, le=4294967295, default=0, description="CLI connection status.")    fortilink: Literal["enable", "disable"] | None = Field(default="disable", description="Enable FortiLink to dedicate this interface to manage other Fortinet devices.")    switch_controller_source_ip: Literal["outbound", "fixed"] | None = Field(default="outbound", description="Source IP address used in FortiLink over L3 connections.")    mode: Literal["static", "dhcp", "pppoe"] | None = Field(default="static", description="Addressing mode (static, DHCP, PPPoE).")    client_options: list[InterfaceClientOptions] = Field(default=None, description="DHCP client options.")    distance: int | None = Field(ge=1, le=255, default=5, description="Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.")    priority: int | None = Field(ge=1, le=65535, default=1, description="Priority of learned routes.")    dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    dhcp_relay_interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    dhcp_relay_vrf_select: int | None = Field(ge=0, le=511, default=-1, description="VRF ID used for connection to server.")    dhcp_broadcast_flag: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable setting of the broadcast flag in messages sent by the DHCP client (default = enable).")    dhcp_relay_service: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing this interface to act as a DHCP relay.")    dhcp_relay_ip: str | None = Field(default="", description="DHCP relay IP address.")    dhcp_relay_source_ip: str | None = Field(default="0.0.0.0", description="IP address used by the DHCP relay as its source IP.")    dhcp_relay_circuit_id: str | None = Field(max_length=64, default="", description="DHCP relay circuit ID.")    dhcp_relay_link_selection: str | None = Field(default="0.0.0.0", description="DHCP relay link selection.")    dhcp_relay_request_all_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable sending of DHCP requests to all servers.")    dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable relaying DHCP messages with no end option.")    dhcp_relay_type: Literal["regular", "ipsec"] | None = Field(default="regular", description="DHCP relay type (regular or IPsec).")    dhcp_smart_relay: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DHCP smart relay.")    dhcp_relay_agent_option: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DHCP relay agent option.")    dhcp_classless_route_addition: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable addition of classless static routes retrieved from DHCP server.")    management_ip: Any = Field(default="0.0.0.0 0.0.0.0", description="High Availability in-band management IP address of this interface.")    ip: Any = Field(default="0.0.0.0 0.0.0.0", description="Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.")    allowaccess: InterfaceAllowaccessEnum | None = Field(default="", description="Permitted types of management access to this interface.")    gwdetect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable detect gateway alive for first.")    ping_serv_status: int | None = Field(ge=0, le=255, default=0, description="PING server status.")    detectserver: str | None = Field(default="", description="Gateway's ping server for this IP.")    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | None = Field(default="ping", description="Protocols used to detect the server.")    ha_priority: int | None = Field(ge=1, le=50, default=1, description="HA election priority for the PING server.")    fail_detect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fail detection features for this interface.")    fail_detect_option: Literal["detectserver", "link-down"] | None = Field(default="link-down", description="Options for detecting that this interface has failed.")    fail_alert_method: Literal["link-failed-signal", "link-down"] | None = Field(default="link-down", description="Select link-failed-signal or link-down method to alert about a failed link.")    fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = Field(default="soft-restart", description="Action on FortiExtender when interface fail.")    fail_alert_interfaces: list[InterfaceFailAlertInterfaces] = Field(default=None, description="Names of the FortiGate interfaces to which the link failure alert is sent.")    dhcp_client_identifier: str | None = Field(max_length=48, default="", description="DHCP client identifier.")    dhcp_renew_time: int | None = Field(ge=300, le=604800, default=0, description="DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.")    ipunnumbered: str | None = Field(default="0.0.0.0", description="Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.")    username: str | None = Field(max_length=64, default="", description="Username of the PPPoE account, provided by your ISP.")    pppoe_egress_cos: InterfacePppoeEgressCosEnum | None = Field(default="cos0", description="CoS in VLAN tag for outgoing PPPoE/PPP packets.")    pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PPPoE unnumbered negotiation.")    password: Any = Field(max_length=128, default=None, description="PPPoE account's password.")    idle_timeout: int | None = Field(ge=0, le=32767, default=0, description="PPPoE auto disconnect after idle timeout seconds, 0 means no timeout.")    multilink: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PPP multilink support.")    mrru: int | None = Field(ge=296, le=65535, default=1500, description="PPP MRRU (296 - 65535, default = 1500).")    detected_peer_mtu: int | None = Field(ge=0, le=4294967295, default=0, description="MTU of detected peer (0 - 4294967295).")    disc_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="Time in seconds to wait before retrying to start a PPPoE discovery, 0 means no timeout.")    padt_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="PPPoE Active Discovery Terminate (PADT) used to terminate sessions after an idle time.")    service_name: str | None = Field(max_length=63, default="", description="PPPoE service name.")    ac_name: str | None = Field(max_length=63, default="", description="PPPoE server name.")    lcp_echo_interval: int | None = Field(ge=0, le=32767, default=5, description="Time in seconds between PPPoE Link Control Protocol (LCP) echo requests.")    lcp_max_echo_fails: int | None = Field(ge=0, le=32767, default=3, description="Maximum missed LCP echo messages before disconnect.")    defaultgw: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to get the gateway IP from the DHCP or PPPoE server.")    dns_server_override: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use DNS acquired by DHCP or PPPoE.")    dns_server_protocol: Literal["cleartext", "dot", "doh"] | None = Field(default="cleartext", description="DNS transport protocols.")    auth_type: InterfaceAuthTypeEnum | None = Field(default="auto", description="PPP authentication type to use.")    pptp_client: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PPTP client.")    pptp_user: str | None = Field(max_length=64, default="", description="PPTP user name.")    pptp_password: Any = Field(max_length=128, default=None, description="PPTP password.")    pptp_server_ip: str | None = Field(default="0.0.0.0", description="PPTP server IP address.")    pptp_auth_type: InterfacePptpAuthTypeEnum | None = Field(default="auto", description="PPTP authentication type.")    pptp_timeout: int | None = Field(ge=0, le=65535, default=0, description="Idle timer in minutes (0 for disabled).")    arpforward: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ARP forwarding.")    ndiscforward: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NDISC forwarding.")    broadcast_forward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable broadcast forwarding.")    bfd: Literal["global", "enable", "disable"] | None = Field(default="global", description="Bidirectional Forwarding Detection (BFD) settings.")    bfd_desired_min_tx: int | None = Field(ge=1, le=100000, default=250, description="BFD desired minimal transmit interval.")    bfd_detect_mult: int | None = Field(ge=1, le=50, default=3, description="BFD detection multiplier.")    bfd_required_min_rx: int | None = Field(ge=1, le=100000, default=250, description="BFD required minimal receive interval.")    l2forward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable l2 forwarding.")    icmp_send_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending of ICMP redirects.")    icmp_accept_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ICMP accept redirect.")    reachable_time: int | None = Field(ge=30000, le=3600000, default=30000, description="IPv4 reachable time in milliseconds (30000 - 3600000, default = 30000).")    vlanforward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traffic forwarding between VLANs on this interface.")    stpforward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable STP forwarding.")    stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = Field(default="rpl-all-ext-id", description="Configure STP forwarding mode.")    ips_sniffer_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the use of this interface as a one-armed sniffer.")    ident_accept: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication for this interface.")    ipmac: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP/MAC binding.")    subst: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to always send packets from this interface to a destination MAC address.")    macaddr: str | None = Field(default="00:00:00:00:00:00", description="Change the interface's MAC address.")    virtual_mac: str | None = Field(default="00:00:00:00:00:00", description="Change the interface's virtual MAC address.")    substitute_dst_mac: str | None = Field(default="00:00:00:00:00:00", description="Destination MAC address that all packets are sent to from this interface.")    speed: InterfaceSpeedEnum | None = Field(default="auto", description="Interface speed. The default setting and the options available depend on the interface hardware.")    status: Literal["up", "down"] | None = Field(default="up", description="Bring the interface up or shut the interface down.")    netbios_forward: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable NETBIOS forwarding.")    wins_ip: str | None = Field(default="0.0.0.0", description="WINS server IP.")    type: InterfaceTypeEnum | None = Field(default="vlan", description="Interface type.")    dedicated_to: Literal["none", "management"] | None = Field(default="none", description="Configure interface for single purpose.")    trust_ip_1: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")    trust_ip_2: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")    trust_ip_3: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")    trust_ip6_1: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")    trust_ip6_2: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")    trust_ip6_3: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")    ring_rx: int | None = Field(ge=0, le=4294967295, default=0, description="RX ring size.")    ring_tx: int | None = Field(ge=0, le=4294967295, default=0, description="TX ring size.")    wccp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WCCP on this interface. Used for encapsulated WCCP communication between WCCP clients and servers.")    netflow_sampler: InterfaceNetflowSamplerEnum | None = Field(default="disable", description="Enable/disable NetFlow on this interface and set the data that NetFlow collects (rx, tx, or both).")    netflow_sample_rate: int | None = Field(ge=1, le=65535, default=1, description="NetFlow sample rate.  Sample one packet every configured number of packets (1 - 65535, default = 1, which means standard NetFlow where all packets are sampled).")    netflow_sampler_id: int | None = Field(ge=1, le=254, default=0, description="Netflow sampler ID.")    sflow_sampler: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sFlow on this interface.")    drop_fragment: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable drop fragment packets.")    src_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable source IP check.")    sample_rate: int | None = Field(ge=10, le=99999, default=2000, description="sFlow sample rate (10 - 99999).")    polling_interval: int | None = Field(ge=1, le=255, default=20, description="sFlow polling interval in seconds (1 - 255).")    sample_direction: Literal["tx", "rx", "both"] | None = Field(default="both", description="Data that NetFlow collects (rx, tx, or both).")    explicit_web_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit web proxy on this interface.")    explicit_ftp_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTP proxy on this interface.")    proxy_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable proxy captive portal on this interface.")    tcp_mss: int | None = Field(ge=48, le=65535, default=0, description="TCP maximum segment size. 0 means do not change segment size.")    inbandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 means unlimited.")    outbandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Bandwidth limit for outgoing traffic (0 - 80000000 kbps).")    egress_shaping_profile: str | None = Field(max_length=35, default="", description="Outgoing traffic shaping profile.")  # datasource: ['firewall.shaping-profile.profile-name']    ingress_shaping_profile: str | None = Field(max_length=35, default="", description="Incoming traffic shaping profile.")  # datasource: ['firewall.shaping-profile.profile-name']    spillover_threshold: int | None = Field(ge=0, le=16776000, default=0, description="Egress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.")    ingress_spillover_threshold: int | None = Field(ge=0, le=16776000, default=0, description="Ingress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.")    weight: int | None = Field(ge=0, le=255, default=0, description="Default weight for static routes (if route has no weight configured).")    interface: str = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']    external: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable identifying the interface as an external interface (which usually means it's connected to the Internet).")    mtu_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to set a custom MTU for this interface.")    mtu: int | None = Field(ge=0, le=4294967295, default=1500, description="MTU value for this interface.")    vlan_protocol: Literal["8021q", "8021ad"] | None = Field(default="8021q", description="Ethernet protocol of VLAN.")    vlanid: int | None = Field(ge=1, le=4094, default=0, description="VLAN ID (1 - 4094).")    forward_domain: int | None = Field(ge=0, le=2147483647, default=0, description="Transparent mode forward domain.")    remote_ip: Any = Field(default="0.0.0.0 0.0.0.0", description="Remote IP address of tunnel.")    member: list[InterfaceMember] = Field(default=None, description="Physical interfaces that belong to the aggregate or redundant interface.")    lacp_mode: Literal["static", "passive", "active"] | None = Field(default="active", description="LACP mode.")    lacp_ha_secondary: Literal["enable", "disable"] | None = Field(default="enable", description="LACP HA secondary member.")    system_id_type: Literal["auto", "user"] | None = Field(default="auto", description="Method in which system ID is generated.")    system_id: str = Field(default="00:00:00:00:00:00", description="Define a system ID for the aggregate interface.")    lacp_speed: Literal["slow", "fast"] | None = Field(default="slow", description="How often the interface sends LACP messages.")    min_links: int | None = Field(ge=1, le=32, default=1, description="Minimum number of aggregated ports that must be up.")    min_links_down: Literal["operational", "administrative"] | None = Field(default="operational", description="Action to take when less than the configured minimum number of links are active.")    algorithm: InterfaceAlgorithmEnum | None = Field(default="L4", description="Frame distribution algorithm.")    link_up_delay: int | None = Field(ge=50, le=3600000, default=50, description="Number of milliseconds to wait before considering a link is up.")    aggregate_type: Literal["physical", "vxlan"] | None = Field(default="physical", description="Type of aggregation.")    priority_override: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable fail back to higher priority port once recovered.")    aggregate: str | None = Field(max_length=15, default="", description="Aggregate interface.")    redundant_interface: str | None = Field(max_length=15, default="", description="Redundant interface.")    devindex: int | None = Field(ge=0, le=4294967295, default=0, description="Device Index.")    vindex: int | None = Field(ge=0, le=65535, default=0, description="Switch control interface VLAN ID.")    switch: str | None = Field(max_length=15, default="", description="Contained in switch.")    description: str | None = Field(max_length=255, default=None, description="Description.")    alias: str | None = Field(max_length=25, default="", description="Alias will be displayed with the interface name to make it easier to distinguish.")    security_mode: Literal["none", "captive-portal", "802.1X"] | None = Field(default="none", description="Turn on captive portal authentication for this interface.")    security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = Field(default="disable", description="Enable/disable MAC authentication bypass.")    security_ip_auth_bypass: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP authentication bypass.")    security_external_web: str | None = Field(max_length=1023, default=None, description="URL of external authentication web server.")    security_external_logout: str | None = Field(max_length=127, default="", description="URL of external authentication logout server.")    replacemsg_override_group: str | None = Field(max_length=35, default="", description="Replacement message override group.")    security_redirect_url: str | None = Field(max_length=1023, default=None, description="URL redirection after disclaimer/authentication.")    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate.")  # datasource: ['vpn.certificate.local.name']    auth_portal_addr: str | None = Field(max_length=63, default="", description="Address of captive portal.")    security_exempt_list: str | None = Field(max_length=35, default="", description="Name of security-exempt-list.")    security_groups: list[InterfaceSecurityGroups] = Field(default=None, description="User groups that can authenticate with the captive portal.")    ike_saml_server: str | None = Field(max_length=35, default="", description="Configure IKE authentication SAML server.")  # datasource: ['user.saml.name']    device_identification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.")    exclude_signatures: Literal["iot", "ot"] | None = Field(default="", description="Exclude IOT or OT application signatures.")    device_user_identification: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable passive gathering of user identity information about users on this interface.")    lldp_reception: Literal["enable", "disable", "vdom"] | None = Field(default="vdom", description="Enable/disable Link Layer Discovery Protocol (LLDP) reception.")    lldp_transmission: Literal["enable", "disable", "vdom"] | None = Field(default="vdom", description="Enable/disable Link Layer Discovery Protocol (LLDP) transmission.")    lldp_network_policy: str | None = Field(max_length=35, default="", description="LLDP-MED network policy profile.")  # datasource: ['system.lldp.network-policy.name']    estimated_upstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Estimated maximum upstream bandwidth (kbps). Used to estimate link utilization.")    estimated_downstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Estimated maximum downstream bandwidth (kbps). Used to estimate link utilization.")    measured_upstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Measured upstream bandwidth (kbps).")    measured_downstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Measured downstream bandwidth (kbps).")    bandwidth_measure_time: int | None = Field(ge=0, le=4294967295, default=0, description="Bandwidth measure time.")    monitor_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable monitoring bandwidth on this interface.")    vrrp_virtual_mac: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of virtual MAC for VRRP.")    vrrp: list[InterfaceVrrp] = Field(default=None, description="VRRP configuration.")    phy_setting: list[InterfacePhySetting] = Field(default=None, description="PHY settings")    role: InterfaceRoleEnum | None = Field(default="undefined", description="Interface role.")    snmp_index: int | None = Field(ge=0, le=2147483647, default=0, description="Permanent SNMP Index of the interface.")    secondary_IP: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adding a secondary IP to this interface.")    secondaryip: list[InterfaceSecondaryip] = Field(default=None, description="Second IP address of interface.")    preserve_session_route: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable preservation of session route when dirty.")    auto_auth_extension_device: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.")    ap_discover: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic registration of unknown FortiAP devices.")    fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = Field(default="lldp", description="Protocol for FortiGate neighbor discovery.")    ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = Field(default="inherit-global", description="Enable/disable automatic IP address assignment of this interface by FortiIPAM.")    managed_subnetwork_size: InterfaceManagedSubnetworkSizeEnum | None = Field(default="256", description="Number of IP addresses to be allocated by FortiIPAM and used by this FortiGate unit's DHCP server settings.")    fortilink_split_interface: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiLink split interface to connect member link to different FortiSwitch in stack for uplink redundancy.")    internal: int | None = Field(ge=0, le=255, default=0, description="Implicitly created.")    fortilink_backup_link: int | None = Field(ge=0, le=255, default=0, description="FortiLink split interface backup link.")    switch_controller_access_vlan: Literal["enable", "disable"] | None = Field(default="disable", description="Block FortiSwitch port-to-port traffic.")    switch_controller_traffic_policy: str | None = Field(max_length=63, default="", description="Switch controller traffic policy for the VLAN.")  # datasource: ['switch-controller.traffic-policy.name']    switch_controller_rspan_mode: Literal["disable", "enable"] | None = Field(default="disable", description="Stop Layer2 MAC learning and interception of BPDUs and other packets on this interface.")    switch_controller_netflow_collect: Literal["disable", "enable"] | None = Field(default="disable", description="NetFlow collection and processing.")    switch_controller_mgmt_vlan: int | None = Field(ge=1, le=4094, default=4094, description="VLAN to use for FortiLink management purposes.")    switch_controller_igmp_snooping: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping.")    switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping proxy.")    switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping fast-leave.")    switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping.")    switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping verify MAC.")    switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping option82.")    dhcp_snooping_server_list: list[InterfaceDhcpSnoopingServerList] = Field(default=None, description="Configure DHCP server access list.")    switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = Field(default="disable", description="Enable/disable/Monitor FortiSwitch ARP inspection.")    switch_controller_learning_limit: int | None = Field(ge=0, le=128, default=0, description="Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).")    switch_controller_nac: str | None = Field(max_length=35, default="", description="Integrated FortiLink settings for managed FortiSwitch.")  # datasource: ['switch-controller.fortilink-settings.name']    switch_controller_dynamic: str | None = Field(max_length=35, default="", description="Integrated FortiLink settings for managed FortiSwitch.")  # datasource: ['switch-controller.fortilink-settings.name']    switch_controller_feature: InterfaceSwitchControllerFeatureEnum | None = Field(default="none", description="Interface's purpose when assigning traffic (read only).")    switch_controller_iot_scanning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch IoT scanning.")    switch_controller_offload: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch routing offload.")    switch_controller_offload_ip: str | None = Field(default="0.0.0.0", description="IP for routing offload on FortiSwitch.")    switch_controller_offload_gw: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch routing offload gateway.")    swc_vlan: int | None = Field(ge=0, le=4294967295, default=0, description="Creation status for switch-controller VLANs.")    swc_first_create: int | None = Field(ge=0, le=4294967295, default=0, description="Initial create for switch-controller VLANs.")    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    tagging: list[InterfaceTagging] = Field(default=None, description="Config object tagging.")    eap_supplicant: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable EAP-Supplicant.")    eap_method: Literal["tls", "peap"] | None = Field(default="", description="EAP method.")    eap_identity: str | None = Field(max_length=35, default="", description="EAP identity.")    eap_password: Any = Field(max_length=128, default=None, description="EAP password.")    eap_ca_cert: str | None = Field(max_length=79, default="", description="EAP CA certificate name.")  # datasource: ['certificate.ca.name']    eap_user_cert: str | None = Field(max_length=35, default="", description="EAP user certificate name.")  # datasource: ['certificate.local.name']    default_purdue_level: InterfaceDefaultPurdueLevelEnum | None = Field(default="3", description="default purdue level of device detected on this interface.")    ipv6: list[InterfaceIpv6] = Field(default=None, description="IPv6 of interface.")    physical: list[InterfacePhysical] = Field(default=None, description="Print physical interface information.")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="Name.")
+    vdom: str = Field(max_length=31, default="", description="Interface is in this virtual domain (VDOM).")  # datasource: ['system.vdom.name']
+    vrf: int | None = Field(ge=0, le=511, default=0, description="Virtual Routing Forwarding ID.")
+    cli_conn_status: int | None = Field(ge=0, le=4294967295, default=0, description="CLI connection status.")
+    fortilink: Literal["enable", "disable"] | None = Field(default="disable", description="Enable FortiLink to dedicate this interface to manage other Fortinet devices.")
+    switch_controller_source_ip: Literal["outbound", "fixed"] | None = Field(default="outbound", description="Source IP address used in FortiLink over L3 connections.")
+    mode: Literal["static", "dhcp", "pppoe"] | None = Field(default="static", description="Addressing mode (static, DHCP, PPPoE).")
+    client_options: list[InterfaceClientOptions] | None = Field(default=None, description="DHCP client options.")
+    distance: int | None = Field(ge=1, le=255, default=5, description="Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.")
+    priority: int | None = Field(ge=1, le=65535, default=1, description="Priority of learned routes.")
+    dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    dhcp_relay_interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    dhcp_relay_vrf_select: int | None = Field(ge=0, le=511, default=-1, description="VRF ID used for connection to server.")
+    dhcp_broadcast_flag: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable setting of the broadcast flag in messages sent by the DHCP client (default = enable).")
+    dhcp_relay_service: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing this interface to act as a DHCP relay.")
+    dhcp_relay_ip: str | None = Field(default="", description="DHCP relay IP address.")
+    dhcp_relay_source_ip: str | None = Field(default="0.0.0.0", description="IP address used by the DHCP relay as its source IP.")
+    dhcp_relay_circuit_id: str | None = Field(max_length=64, default="", description="DHCP relay circuit ID.")
+    dhcp_relay_link_selection: str | None = Field(default="0.0.0.0", description="DHCP relay link selection.")
+    dhcp_relay_request_all_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable sending of DHCP requests to all servers.")
+    dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable relaying DHCP messages with no end option.")
+    dhcp_relay_type: Literal["regular", "ipsec"] | None = Field(default="regular", description="DHCP relay type (regular or IPsec).")
+    dhcp_smart_relay: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DHCP smart relay.")
+    dhcp_relay_agent_option: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DHCP relay agent option.")
+    dhcp_classless_route_addition: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable addition of classless static routes retrieved from DHCP server.")
+    management_ip: Any = Field(default="0.0.0.0 0.0.0.0", description="High Availability in-band management IP address of this interface.")
+    ip: Any = Field(default="0.0.0.0 0.0.0.0", description="Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.")
+    allowaccess: str | InterfaceAllowaccessEnum | None = Field(default=None, description="Permitted types of management access to this interface.")
+    gwdetect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable detect gateway alive for first.")
+    ping_serv_status: int | None = Field(ge=0, le=255, default=0, description="PING server status.")
+    detectserver: str | None = Field(default="", description="Gateway's ping server for this IP.")
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | None = Field(default="ping", description="Protocols used to detect the server.")
+    ha_priority: int | None = Field(ge=1, le=50, default=1, description="HA election priority for the PING server.")
+    fail_detect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fail detection features for this interface.")
+    fail_detect_option: Literal["detectserver", "link-down"] | None = Field(default="link-down", description="Options for detecting that this interface has failed.")
+    fail_alert_method: Literal["link-failed-signal", "link-down"] | None = Field(default="link-down", description="Select link-failed-signal or link-down method to alert about a failed link.")
+    fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = Field(default="soft-restart", description="Action on FortiExtender when interface fail.")
+    fail_alert_interfaces: list[InterfaceFailAlertInterfaces] | None = Field(default=None, description="Names of the FortiGate interfaces to which the link failure alert is sent.")
+    dhcp_client_identifier: str | None = Field(max_length=48, default="", description="DHCP client identifier.")
+    dhcp_renew_time: int | None = Field(ge=300, le=604800, default=0, description="DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.")
+    ipunnumbered: str | None = Field(default="0.0.0.0", description="Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.")
+    username: str | None = Field(max_length=64, default="", description="Username of the PPPoE account, provided by your ISP.")
+    pppoe_egress_cos: str | InterfacePppoeEgressCosEnum | None = Field(default="cos0", description="CoS in VLAN tag for outgoing PPPoE/PPP packets.")
+    pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PPPoE unnumbered negotiation.")
+    password: Any = Field(max_length=128, default=None, description="PPPoE account's password.")
+    idle_timeout: int | None = Field(ge=0, le=32767, default=0, description="PPPoE auto disconnect after idle timeout seconds, 0 means no timeout.")
+    multilink: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PPP multilink support.")
+    mrru: int | None = Field(ge=296, le=65535, default=1500, description="PPP MRRU (296 - 65535, default = 1500).")
+    detected_peer_mtu: int | None = Field(ge=0, le=4294967295, default=0, description="MTU of detected peer (0 - 4294967295).")
+    disc_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="Time in seconds to wait before retrying to start a PPPoE discovery, 0 means no timeout.")
+    padt_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="PPPoE Active Discovery Terminate (PADT) used to terminate sessions after an idle time.")
+    service_name: str | None = Field(max_length=63, default="", description="PPPoE service name.")
+    ac_name: str | None = Field(max_length=63, default="", description="PPPoE server name.")
+    lcp_echo_interval: int | None = Field(ge=0, le=32767, default=5, description="Time in seconds between PPPoE Link Control Protocol (LCP) echo requests.")
+    lcp_max_echo_fails: int | None = Field(ge=0, le=32767, default=3, description="Maximum missed LCP echo messages before disconnect.")
+    defaultgw: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to get the gateway IP from the DHCP or PPPoE server.")
+    dns_server_override: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use DNS acquired by DHCP or PPPoE.")
+    dns_server_protocol: Literal["cleartext", "dot", "doh"] | None = Field(default="cleartext", description="DNS transport protocols.")
+    auth_type: str | InterfaceAuthTypeEnum | None = Field(default="auto", description="PPP authentication type to use.")
+    pptp_client: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PPTP client.")
+    pptp_user: str | None = Field(max_length=64, default="", description="PPTP user name.")
+    pptp_password: Any = Field(max_length=128, default=None, description="PPTP password.")
+    pptp_server_ip: str | None = Field(default="0.0.0.0", description="PPTP server IP address.")
+    pptp_auth_type: str | InterfacePptpAuthTypeEnum | None = Field(default="auto", description="PPTP authentication type.")
+    pptp_timeout: int | None = Field(ge=0, le=65535, default=0, description="Idle timer in minutes (0 for disabled).")
+    arpforward: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ARP forwarding.")
+    ndiscforward: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NDISC forwarding.")
+    broadcast_forward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable broadcast forwarding.")
+    bfd: Literal["global", "enable", "disable"] | None = Field(default="global", description="Bidirectional Forwarding Detection (BFD) settings.")
+    bfd_desired_min_tx: int | None = Field(ge=1, le=100000, default=250, description="BFD desired minimal transmit interval.")
+    bfd_detect_mult: int | None = Field(ge=1, le=50, default=3, description="BFD detection multiplier.")
+    bfd_required_min_rx: int | None = Field(ge=1, le=100000, default=250, description="BFD required minimal receive interval.")
+    l2forward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable l2 forwarding.")
+    icmp_send_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending of ICMP redirects.")
+    icmp_accept_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ICMP accept redirect.")
+    reachable_time: int | None = Field(ge=30000, le=3600000, default=30000, description="IPv4 reachable time in milliseconds (30000 - 3600000, default = 30000).")
+    vlanforward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traffic forwarding between VLANs on this interface.")
+    stpforward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable STP forwarding.")
+    stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = Field(default="rpl-all-ext-id", description="Configure STP forwarding mode.")
+    ips_sniffer_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the use of this interface as a one-armed sniffer.")
+    ident_accept: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication for this interface.")
+    ipmac: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP/MAC binding.")
+    subst: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to always send packets from this interface to a destination MAC address.")
+    macaddr: str | None = Field(default="00:00:00:00:00:00", description="Change the interface's MAC address.")
+    virtual_mac: str | None = Field(default="00:00:00:00:00:00", description="Change the interface's virtual MAC address.")
+    substitute_dst_mac: str | None = Field(default="00:00:00:00:00:00", description="Destination MAC address that all packets are sent to from this interface.")
+    speed: str | InterfaceSpeedEnum | None = Field(default="auto", description="Interface speed. The default setting and the options available depend on the interface hardware.")
+    status: Literal["up", "down"] | None = Field(default="up", description="Bring the interface up or shut the interface down.")
+    netbios_forward: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable NETBIOS forwarding.")
+    wins_ip: str | None = Field(default="0.0.0.0", description="WINS server IP.")
+    type_: str | InterfaceTypeEnum | None = Field(default="vlan", description="Interface type.")
+    dedicated_to: Literal["none", "management"] | None = Field(default="none", description="Configure interface for single purpose.")
+    trust_ip_1: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")
+    trust_ip_2: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")
+    trust_ip_3: Any = Field(default="0.0.0.0 0.0.0.0", description="Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).")
+    trust_ip6_1: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")
+    trust_ip6_2: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")
+    trust_ip6_3: str | None = Field(default="::/0", description="Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).")
+    ring_rx: int | None = Field(ge=0, le=4294967295, default=0, description="RX ring size.")
+    ring_tx: int | None = Field(ge=0, le=4294967295, default=0, description="TX ring size.")
+    wccp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WCCP on this interface. Used for encapsulated WCCP communication between WCCP clients and servers.")
+    netflow_sampler: str | InterfaceNetflowSamplerEnum | None = Field(default="disable", description="Enable/disable NetFlow on this interface and set the data that NetFlow collects (rx, tx, or both).")
+    netflow_sample_rate: int | None = Field(ge=1, le=65535, default=1, description="NetFlow sample rate.  Sample one packet every configured number of packets (1 - 65535, default = 1, which means standard NetFlow where all packets are sampled).")
+    netflow_sampler_id: int | None = Field(ge=1, le=254, default=0, description="Netflow sampler ID.")
+    sflow_sampler: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sFlow on this interface.")
+    drop_fragment: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable drop fragment packets.")
+    src_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable source IP check.")
+    sample_rate: int | None = Field(ge=10, le=99999, default=2000, description="sFlow sample rate (10 - 99999).")
+    polling_interval: int | None = Field(ge=1, le=255, default=20, description="sFlow polling interval in seconds (1 - 255).")
+    sample_direction: Literal["tx", "rx", "both"] | None = Field(default="both", description="Data that NetFlow collects (rx, tx, or both).")
+    explicit_web_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit web proxy on this interface.")
+    explicit_ftp_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTP proxy on this interface.")
+    proxy_captive_portal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable proxy captive portal on this interface.")
+    tcp_mss: int | None = Field(ge=48, le=65535, default=0, description="TCP maximum segment size. 0 means do not change segment size.")
+    inbandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 means unlimited.")
+    outbandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Bandwidth limit for outgoing traffic (0 - 80000000 kbps).")
+    egress_shaping_profile: str | None = Field(max_length=35, default="", description="Outgoing traffic shaping profile.")  # datasource: ['firewall.shaping-profile.profile-name']
+    ingress_shaping_profile: str | None = Field(max_length=35, default="", description="Incoming traffic shaping profile.")  # datasource: ['firewall.shaping-profile.profile-name']
+    spillover_threshold: int | None = Field(ge=0, le=16776000, default=0, description="Egress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.")
+    ingress_spillover_threshold: int | None = Field(ge=0, le=16776000, default=0, description="Ingress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.")
+    weight: int | None = Field(ge=0, le=255, default=0, description="Default weight for static routes (if route has no weight configured).")
+    interface: str = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    external: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable identifying the interface as an external interface (which usually means it's connected to the Internet).")
+    mtu_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to set a custom MTU for this interface.")
+    mtu: int | None = Field(ge=0, le=4294967295, default=1500, description="MTU value for this interface.")
+    vlan_protocol: Literal["8021q", "8021ad"] | None = Field(default="8021q", description="Ethernet protocol of VLAN.")
+    vlanid: int | None = Field(ge=1, le=4094, default=0, description="VLAN ID (1 - 4094).")
+    forward_domain: int | None = Field(ge=0, le=2147483647, default=0, description="Transparent mode forward domain.")
+    remote_ip: Any = Field(default="0.0.0.0 0.0.0.0", description="Remote IP address of tunnel.")
+    member: list[InterfaceMember] | None = Field(default=None, description="Physical interfaces that belong to the aggregate or redundant interface.")
+    lacp_mode: Literal["static", "passive", "active"] | None = Field(default="active", description="LACP mode.")
+    lacp_ha_secondary: Literal["enable", "disable"] | None = Field(default="enable", description="LACP HA secondary member.")
+    system_id_type: Literal["auto", "user"] | None = Field(default="auto", description="Method in which system ID is generated.")
+    system_id: str = Field(default="00:00:00:00:00:00", description="Define a system ID for the aggregate interface.")
+    lacp_speed: Literal["slow", "fast"] | None = Field(default="slow", description="How often the interface sends LACP messages.")
+    min_links: int | None = Field(ge=1, le=32, default=1, description="Minimum number of aggregated ports that must be up.")
+    min_links_down: Literal["operational", "administrative"] | None = Field(default="operational", description="Action to take when less than the configured minimum number of links are active.")
+    algorithm: str | InterfaceAlgorithmEnum | None = Field(default="L4", description="Frame distribution algorithm.")
+    link_up_delay: int | None = Field(ge=50, le=3600000, default=50, description="Number of milliseconds to wait before considering a link is up.")
+    aggregate_type: Literal["physical", "vxlan"] | None = Field(default="physical", description="Type of aggregation.")
+    priority_override: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable fail back to higher priority port once recovered.")
+    aggregate: str | None = Field(max_length=15, default="", description="Aggregate interface.")
+    redundant_interface: str | None = Field(max_length=15, default="", description="Redundant interface.")
+    devindex: int | None = Field(ge=0, le=4294967295, default=0, description="Device Index.")
+    vindex: int | None = Field(ge=0, le=65535, default=0, description="Switch control interface VLAN ID.")
+    switch: str | None = Field(max_length=15, default="", description="Contained in switch.")
+    description: str | None = Field(max_length=255, default=None, description="Description.")
+    alias: str | None = Field(max_length=25, default="", description="Alias will be displayed with the interface name to make it easier to distinguish.")
+    security_mode: Literal["none", "captive-portal", "802.1X"] | None = Field(default="none", description="Turn on captive portal authentication for this interface.")
+    security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = Field(default="disable", description="Enable/disable MAC authentication bypass.")
+    security_ip_auth_bypass: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP authentication bypass.")
+    security_external_web: str | None = Field(max_length=1023, default=None, description="URL of external authentication web server.")
+    security_external_logout: str | None = Field(max_length=127, default="", description="URL of external authentication logout server.")
+    replacemsg_override_group: str | None = Field(max_length=35, default="", description="Replacement message override group.")
+    security_redirect_url: str | None = Field(max_length=1023, default=None, description="URL redirection after disclaimer/authentication.")
+    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate.")  # datasource: ['vpn.certificate.local.name']
+    auth_portal_addr: str | None = Field(max_length=63, default="", description="Address of captive portal.")
+    security_exempt_list: str | None = Field(max_length=35, default="", description="Name of security-exempt-list.")
+    security_groups: list[InterfaceSecurityGroups] | None = Field(default=None, description="User groups that can authenticate with the captive portal.")
+    ike_saml_server: str | None = Field(max_length=35, default="", description="Configure IKE authentication SAML server.")  # datasource: ['user.saml.name']
+    device_identification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.")
+    exclude_signatures: Literal["iot", "ot"] | None = Field(default=None, description="Exclude IOT or OT application signatures.")
+    device_user_identification: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable passive gathering of user identity information about users on this interface.")
+    lldp_reception: Literal["enable", "disable", "vdom"] | None = Field(default="vdom", description="Enable/disable Link Layer Discovery Protocol (LLDP) reception.")
+    lldp_transmission: Literal["enable", "disable", "vdom"] | None = Field(default="vdom", description="Enable/disable Link Layer Discovery Protocol (LLDP) transmission.")
+    lldp_network_policy: str | None = Field(max_length=35, default="", description="LLDP-MED network policy profile.")  # datasource: ['system.lldp.network-policy.name']
+    estimated_upstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Estimated maximum upstream bandwidth (kbps). Used to estimate link utilization.")
+    estimated_downstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Estimated maximum downstream bandwidth (kbps). Used to estimate link utilization.")
+    measured_upstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Measured upstream bandwidth (kbps).")
+    measured_downstream_bandwidth: int | None = Field(ge=0, le=4294967295, default=0, description="Measured downstream bandwidth (kbps).")
+    bandwidth_measure_time: int | None = Field(ge=0, le=4294967295, default=0, description="Bandwidth measure time.")
+    monitor_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable monitoring bandwidth on this interface.")
+    vrrp_virtual_mac: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of virtual MAC for VRRP.")
+    vrrp: list[InterfaceVrrp] | None = Field(default=None, description="VRRP configuration.")
+    phy_setting: list[InterfacePhySetting] | None = Field(default=None, description="PHY settings")
+    role: str | InterfaceRoleEnum | None = Field(default="undefined", description="Interface role.")
+    snmp_index: int | None = Field(ge=0, le=2147483647, default=0, description="Permanent SNMP Index of the interface.")
+    secondary_IP: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adding a secondary IP to this interface.")
+    secondaryip: list[InterfaceSecondaryip] | None = Field(default=None, description="Second IP address of interface.")
+    preserve_session_route: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable preservation of session route when dirty.")
+    auto_auth_extension_device: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.")
+    ap_discover: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic registration of unknown FortiAP devices.")
+    fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = Field(default="lldp", description="Protocol for FortiGate neighbor discovery.")
+    ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = Field(default="inherit-global", description="Enable/disable automatic IP address assignment of this interface by FortiIPAM.")
+    managed_subnetwork_size: str | InterfaceManagedSubnetworkSizeEnum | None = Field(default="256", description="Number of IP addresses to be allocated by FortiIPAM and used by this FortiGate unit's DHCP server settings.")
+    fortilink_split_interface: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiLink split interface to connect member link to different FortiSwitch in stack for uplink redundancy.")
+    internal: int | None = Field(ge=0, le=255, default=0, description="Implicitly created.")
+    fortilink_backup_link: int | None = Field(ge=0, le=255, default=0, description="FortiLink split interface backup link.")
+    switch_controller_access_vlan: Literal["enable", "disable"] | None = Field(default="disable", description="Block FortiSwitch port-to-port traffic.")
+    switch_controller_traffic_policy: str | None = Field(max_length=63, default="", description="Switch controller traffic policy for the VLAN.")  # datasource: ['switch-controller.traffic-policy.name']
+    switch_controller_rspan_mode: Literal["disable", "enable"] | None = Field(default="disable", description="Stop Layer2 MAC learning and interception of BPDUs and other packets on this interface.")
+    switch_controller_netflow_collect: Literal["disable", "enable"] | None = Field(default="disable", description="NetFlow collection and processing.")
+    switch_controller_mgmt_vlan: int | None = Field(ge=1, le=4094, default=4094, description="VLAN to use for FortiLink management purposes.")
+    switch_controller_igmp_snooping: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping.")
+    switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping proxy.")
+    switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller IGMP snooping fast-leave.")
+    switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping.")
+    switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping verify MAC.")
+    switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = Field(default="disable", description="Switch controller DHCP snooping option82.")
+    dhcp_snooping_server_list: list[InterfaceDhcpSnoopingServerList] | None = Field(default=None, description="Configure DHCP server access list.")
+    switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = Field(default="disable", description="Enable/disable/Monitor FortiSwitch ARP inspection.")
+    switch_controller_learning_limit: int | None = Field(ge=0, le=128, default=0, description="Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).")
+    switch_controller_nac: str | None = Field(max_length=35, default="", description="Integrated FortiLink settings for managed FortiSwitch.")  # datasource: ['switch-controller.fortilink-settings.name']
+    switch_controller_dynamic: str | None = Field(max_length=35, default="", description="Integrated FortiLink settings for managed FortiSwitch.")  # datasource: ['switch-controller.fortilink-settings.name']
+    switch_controller_feature: str | InterfaceSwitchControllerFeatureEnum | None = Field(default="none", description="Interface's purpose when assigning traffic (read only).")
+    switch_controller_iot_scanning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch IoT scanning.")
+    switch_controller_offload: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch routing offload.")
+    switch_controller_offload_ip: str | None = Field(default="0.0.0.0", description="IP for routing offload on FortiSwitch.")
+    switch_controller_offload_gw: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable managed FortiSwitch routing offload gateway.")
+    swc_vlan: int | None = Field(ge=0, le=4294967295, default=0, description="Creation status for switch-controller VLANs.")
+    swc_first_create: int | None = Field(ge=0, le=4294967295, default=0, description="Initial create for switch-controller VLANs.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")
+    tagging: list[InterfaceTagging] | None = Field(default=None, description="Config object tagging.")
+    eap_supplicant: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable EAP-Supplicant.")
+    eap_method: Literal["tls", "peap"] | None = Field(default=None, description="EAP method.")
+    eap_identity: str | None = Field(max_length=35, default="", description="EAP identity.")
+    eap_password: Any = Field(max_length=128, default=None, description="EAP password.")
+    eap_ca_cert: str | None = Field(max_length=79, default="", description="EAP CA certificate name.")  # datasource: ['certificate.ca.name']
+    eap_user_cert: str | None = Field(max_length=35, default="", description="EAP user certificate name.")  # datasource: ['certificate.local.name']
+    default_purdue_level: str | InterfaceDefaultPurdueLevelEnum | None = Field(default="3", description="default purdue level of device detected on this interface.")
+    ipv6: list[InterfaceIpv6] | None = Field(default=None, description="IPv6 of interface.")
+    physical: list[InterfacePhysical] | None = Field(default=None, description="Print physical interface information.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -692,7 +1137,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -741,7 +1186,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dhcp_relay_interface", None)
@@ -790,7 +1235,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "fail_alert_interfaces", [])
@@ -848,7 +1293,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "egress_shaping_profile", None)
@@ -897,7 +1342,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ingress_shaping_profile", None)
@@ -946,7 +1391,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -995,7 +1440,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "member", [])
@@ -1053,7 +1498,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_cert", None)
@@ -1102,7 +1547,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "security_groups", [])
@@ -1160,7 +1605,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ike_saml_server", None)
@@ -1209,7 +1654,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "lldp_network_policy", None)
@@ -1258,7 +1703,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_controller_traffic_policy", None)
@@ -1307,7 +1752,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_controller_nac", None)
@@ -1356,7 +1801,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_controller_dynamic", None)
@@ -1405,7 +1850,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -1463,7 +1908,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "eap_ca_cert", None)
@@ -1512,7 +1957,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "eap_user_cert", None)
@@ -1561,7 +2006,7 @@ class InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ipv6", [])
@@ -1607,25 +2052,42 @@ class InterfaceModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vdom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dhcp_relay_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fail_alert_interfaces_references(client)
-        all_errors.extend(errors)        errors = await self.validate_egress_shaping_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ingress_shaping_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_security_groups_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ike_saml_server_references(client)
-        all_errors.extend(errors)        errors = await self.validate_lldp_network_policy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_controller_traffic_policy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_controller_nac_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_controller_dynamic_references(client)
-        all_errors.extend(errors)        errors = await self.validate_tagging_references(client)
-        all_errors.extend(errors)        errors = await self.validate_eap_ca_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_eap_user_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dhcp_relay_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fail_alert_interfaces_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_egress_shaping_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ingress_shaping_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_member_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_security_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ike_saml_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_lldp_network_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_controller_traffic_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_controller_nac_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_controller_dynamic_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_tagging_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_eap_ca_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_eap_user_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1647,5 +2109,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.628354Z
+# Generated: 2026-01-14T22:43:36.909458Z
 # ============================================================================

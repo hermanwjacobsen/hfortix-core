@@ -58,7 +58,7 @@ class LinkMonitorServerList(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=1, le=32, default=0, description="Server ID.")
     dst: str = Field(max_length=64, default="", description="IP address of the server to be monitored.")
-    protocol: ProtocolEnum | None = Field(default="ping", description="Protocols used to monitor the server.")
+    protocol: str | None = Field(default="ping", description="Protocols used to monitor the server.")
     port: int | None = Field(ge=1, le=65535, default=0, description="Port number of the traffic to be used to monitor the server.")
     weight: int | None = Field(ge=0, le=255, default=0, description="Weight of the monitor to this dst (0 - 255).")
 
@@ -88,7 +88,42 @@ class LinkMonitorModel(BaseModel):
 
     Configure Link Health Monitor.
 
-    Validation Rules:        - name: max_length=35 pattern=        - addr_mode: pattern=        - srcintf: max_length=15 pattern=        - server_config: pattern=        - server_type: pattern=        - server: pattern=        - protocol: pattern=        - port: min=1 max=65535 pattern=        - gateway_ip: pattern=        - gateway_ip6: pattern=        - route: pattern=        - source_ip: pattern=        - source_ip6: pattern=        - http_get: max_length=1024 pattern=        - http_agent: max_length=1024 pattern=        - http_match: max_length=1024 pattern=        - interval: min=20 max=3600000 pattern=        - probe_timeout: min=20 max=5000 pattern=        - failtime: min=1 max=3600 pattern=        - recoverytime: min=1 max=3600 pattern=        - probe_count: min=5 max=30 pattern=        - security_mode: pattern=        - password: max_length=128 pattern=        - packet_size: min=0 max=65535 pattern=        - ha_priority: min=1 max=50 pattern=        - fail_weight: min=0 max=255 pattern=        - update_cascade_interface: pattern=        - update_static_route: pattern=        - update_policy_route: pattern=        - status: pattern=        - diffservcode: pattern=        - class_id: min=0 max=4294967295 pattern=        - service_detection: pattern=        - server_list: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - addr_mode: pattern=
+        - srcintf: max_length=15 pattern=
+        - server_config: pattern=
+        - server_type: pattern=
+        - server: pattern=
+        - protocol: pattern=
+        - port: min=1 max=65535 pattern=
+        - gateway_ip: pattern=
+        - gateway_ip6: pattern=
+        - route: pattern=
+        - source_ip: pattern=
+        - source_ip6: pattern=
+        - http_get: max_length=1024 pattern=
+        - http_agent: max_length=1024 pattern=
+        - http_match: max_length=1024 pattern=
+        - interval: min=20 max=3600000 pattern=
+        - probe_timeout: min=20 max=5000 pattern=
+        - failtime: min=1 max=3600 pattern=
+        - recoverytime: min=1 max=3600 pattern=
+        - probe_count: min=5 max=30 pattern=
+        - security_mode: pattern=
+        - password: max_length=128 pattern=
+        - packet_size: min=0 max=65535 pattern=
+        - ha_priority: min=1 max=50 pattern=
+        - fail_weight: min=0 max=255 pattern=
+        - update_cascade_interface: pattern=
+        - update_static_route: pattern=
+        - update_policy_route: pattern=
+        - status: pattern=
+        - diffservcode: pattern=
+        - class_id: min=0 max=4294967295 pattern=
+        - service_detection: pattern=
+        - server_list: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -100,7 +135,41 @@ class LinkMonitorModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Link monitor name.")    addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")    srcintf: str | None = Field(max_length=15, default="", description="Interface that receives the traffic to be monitored.")  # datasource: ['system.interface.name']    server_config: Literal["default", "individual"] | None = Field(default="default", description="Mode of server configuration.")    server_type: Literal["static", "dynamic"] | None = Field(default="static", description="Server type (static or dynamic).")    server: list[LinkMonitorServer] = Field(description="IP address of the server(s) to be monitored.")    protocol: LinkMonitorProtocolEnum | None = Field(default="ping", description="Protocols used to monitor the server.")    port: int | None = Field(ge=1, le=65535, default=0, description="Port number of the traffic to be used to monitor the server.")    gateway_ip: str | None = Field(default="0.0.0.0", description="Gateway IP address used to probe the server.")    gateway_ip6: str | None = Field(default="::", description="Gateway IPv6 address used to probe the server.")    route: list[LinkMonitorRoute] = Field(default=None, description="Subnet to monitor.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address used in packet to the server.")    source_ip6: str | None = Field(default="::", description="Source IPv6 address used in packet to the server.")    http_get: str = Field(max_length=1024, default="/", description="If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.")    http_agent: str | None = Field(max_length=1024, default="Chrome/ Safari/", description="String in the http-agent field in the HTTP header.")    http_match: str | None = Field(max_length=1024, default="", description="String that you expect to see in the HTTP-GET requests of the traffic to be monitored.")    interval: int | None = Field(ge=20, le=3600000, default=500, description="Detection interval in milliseconds (20 - 3600 * 1000 msec, default = 500).")    probe_timeout: int | None = Field(ge=20, le=5000, default=500, description="Time to wait before a probe packet is considered lost (20 - 5000 msec, default = 500).")    failtime: int | None = Field(ge=1, le=3600, default=5, description="Number of retry attempts before the server is considered down (1 - 3600, default = 5).")    recoverytime: int | None = Field(ge=1, le=3600, default=5, description="Number of successful responses received before server is considered recovered (1 - 3600, default = 5).")    probe_count: int | None = Field(ge=5, le=30, default=30, description="Number of most recent probes that should be used to calculate latency and jitter (5 - 30, default = 30).")    security_mode: Literal["none", "authentication"] | None = Field(default="none", description="Twamp controller security mode.")    password: Any = Field(max_length=128, default=None, description="TWAMP controller password in authentication mode.")    packet_size: int | None = Field(ge=0, le=65535, default=124, description="Packet size of a TWAMP test session (124/158 - 1024).")    ha_priority: int | None = Field(ge=1, le=50, default=1, description="HA election priority (1 - 50).")    fail_weight: int | None = Field(ge=0, le=255, default=0, description="Threshold weight to trigger link failure alert.")    update_cascade_interface: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable update cascade interface.")    update_static_route: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable updating the static route.")    update_policy_route: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable updating the policy route.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this link monitor.")    diffservcode: str | None = Field(default="", description="Differentiated services code point (DSCP) in the IP header of the probe packet.")    class_id: int | None = Field(ge=0, le=4294967295, default=0, description="Traffic class ID.")  # datasource: ['firewall.traffic-class.class-id']    service_detection: Literal["enable", "disable"] | None = Field(default="disable", description="Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.")    server_list: list[LinkMonitorServerList] = Field(default=None, description="Servers for link-monitor to monitor.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Link monitor name.")
+    addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")
+    srcintf: str | None = Field(max_length=15, default="", description="Interface that receives the traffic to be monitored.")  # datasource: ['system.interface.name']
+    server_config: Literal["default", "individual"] | None = Field(default="default", description="Mode of server configuration.")
+    server_type: Literal["static", "dynamic"] | None = Field(default="static", description="Server type (static or dynamic).")
+    server: list[LinkMonitorServer] | None = Field(description="IP address of the server(s) to be monitored.")
+    protocol: str | LinkMonitorProtocolEnum | None = Field(default="ping", description="Protocols used to monitor the server.")
+    port: int | None = Field(ge=1, le=65535, default=0, description="Port number of the traffic to be used to monitor the server.")
+    gateway_ip: str | None = Field(default="0.0.0.0", description="Gateway IP address used to probe the server.")
+    gateway_ip6: str | None = Field(default="::", description="Gateway IPv6 address used to probe the server.")
+    route: list[LinkMonitorRoute] | None = Field(default=None, description="Subnet to monitor.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address used in packet to the server.")
+    source_ip6: str | None = Field(default="::", description="Source IPv6 address used in packet to the server.")
+    http_get: str = Field(max_length=1024, default="/", description="If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.")
+    http_agent: str | None = Field(max_length=1024, default="Chrome/ Safari/", description="String in the http-agent field in the HTTP header.")
+    http_match: str | None = Field(max_length=1024, default="", description="String that you expect to see in the HTTP-GET requests of the traffic to be monitored.")
+    interval: int | None = Field(ge=20, le=3600000, default=500, description="Detection interval in milliseconds (20 - 3600 * 1000 msec, default = 500).")
+    probe_timeout: int | None = Field(ge=20, le=5000, default=500, description="Time to wait before a probe packet is considered lost (20 - 5000 msec, default = 500).")
+    failtime: int | None = Field(ge=1, le=3600, default=5, description="Number of retry attempts before the server is considered down (1 - 3600, default = 5).")
+    recoverytime: int | None = Field(ge=1, le=3600, default=5, description="Number of successful responses received before server is considered recovered (1 - 3600, default = 5).")
+    probe_count: int | None = Field(ge=5, le=30, default=30, description="Number of most recent probes that should be used to calculate latency and jitter (5 - 30, default = 30).")
+    security_mode: Literal["none", "authentication"] | None = Field(default="none", description="Twamp controller security mode.")
+    password: Any = Field(max_length=128, default=None, description="TWAMP controller password in authentication mode.")
+    packet_size: int | None = Field(ge=0, le=65535, default=124, description="Packet size of a TWAMP test session (124/158 - 1024).")
+    ha_priority: int | None = Field(ge=1, le=50, default=1, description="HA election priority (1 - 50).")
+    fail_weight: int | None = Field(ge=0, le=255, default=0, description="Threshold weight to trigger link failure alert.")
+    update_cascade_interface: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable update cascade interface.")
+    update_static_route: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable updating the static route.")
+    update_policy_route: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable updating the policy route.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this link monitor.")
+    diffservcode: str | None = Field(default="", description="Differentiated services code point (DSCP) in the IP header of the probe packet.")
+    class_id: int | None = Field(ge=0, le=4294967295, default=0, description="Traffic class ID.")  # datasource: ['firewall.traffic-class.class-id']
+    service_detection: Literal["enable", "disable"] | None = Field(default="disable", description="Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.")
+    server_list: list[LinkMonitorServerList] | None = Field(default=None, description="Servers for link-monitor to monitor.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -194,7 +263,7 @@ class LinkMonitorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.link_monitor.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "srcintf", None)
@@ -243,7 +312,7 @@ class LinkMonitorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.link_monitor.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "class_id", None)
@@ -280,9 +349,10 @@ class LinkMonitorModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_class_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_class_id_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -304,5 +374,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.093459Z
+# Generated: 2026-01-14T22:43:38.737761Z
 # ============================================================================

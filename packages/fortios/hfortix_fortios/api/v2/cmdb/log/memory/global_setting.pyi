@@ -81,6 +81,10 @@ class GlobalSetting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -101,6 +105,7 @@ class GlobalSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalSettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -118,6 +123,7 @@ class GlobalSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalSettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -134,6 +140,7 @@ class GlobalSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalSettingResponse: ...
     
     # ================================================================
@@ -176,7 +183,7 @@ class GlobalSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalSettingObject: ...
     
@@ -195,7 +202,7 @@ class GlobalSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalSettingObject: ...
     
@@ -295,23 +302,6 @@ class GlobalSetting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GlobalSettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -329,6 +319,7 @@ class GlobalSetting:
         full_final_warning_threshold: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalSettingObject: ...
@@ -371,19 +362,7 @@ class GlobalSetting:
         full_second_warning_threshold: int | None = ...,
         full_final_warning_threshold: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GlobalSettingPayload | None = ...,
-        max_size: int | None = ...,
-        full_first_warning_threshold: int | None = ...,
-        full_second_warning_threshold: int | None = ...,
-        full_final_warning_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -416,8 +395,6 @@ class GlobalSetting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -445,6 +422,10 @@ class GlobalSettingDictMode:
     By default returns GlobalSettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GlobalSettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -584,10 +565,12 @@ class GlobalSettingDictMode:
         full_second_warning_threshold: int | None = ...,
         full_final_warning_threshold: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GlobalSettingPayload | None = ...,
@@ -629,8 +612,6 @@ class GlobalSettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -654,6 +635,10 @@ class GlobalSettingObjectMode:
     By default returns GlobalSettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GlobalSettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -808,10 +793,12 @@ class GlobalSettingObjectMode:
         full_second_warning_threshold: int | None = ...,
         full_final_warning_threshold: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GlobalSettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GlobalSettingPayload | None = ...,
@@ -853,8 +840,6 @@ class GlobalSettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

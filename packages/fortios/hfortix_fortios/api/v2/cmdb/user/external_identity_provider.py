@@ -233,7 +233,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ms-graph"] | None = None,
+        type_: Literal["ms-graph"] | None = None,
         version: Literal["v1.0", "beta"] | None = None,
         url: str | None = None,
         user_attr_name: str | None = None,
@@ -258,7 +258,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: External identity provider name.
-            type: External identity provider type.
+            type_: External identity provider type.
             version: External identity API version.
             url: External identity provider URL (e.g. "https://example.com:8080/api/v1").
             user_attr_name: User attribute name in authentication query.
@@ -304,7 +304,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             version=version,
             url=url,
             user_attr_name=user_attr_name,
@@ -347,7 +347,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ms-graph"] | None = None,
+        type_: Literal["ms-graph"] | None = None,
         version: Literal["v1.0", "beta"] | None = None,
         url: str | None = None,
         user_attr_name: str | None = None,
@@ -372,7 +372,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: External identity provider name.
-            type: External identity provider type.
+            type_: External identity provider type.
             version: External identity API version.
             url: External identity provider URL (e.g. "https://example.com:8080/api/v1").
             user_attr_name: User attribute name in authentication query.
@@ -420,7 +420,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             version=version,
             url=url,
             user_attr_name=user_attr_name,
@@ -563,7 +563,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ms-graph"] | None = None,
+        type_: Literal["ms-graph"] | None = None,
         version: Literal["v1.0", "beta"] | None = None,
         url: str | None = None,
         user_attr_name: str | None = None,
@@ -589,7 +589,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             version: Field version
             url: Field url
             user_attr_name: Field user-attr-name
@@ -645,7 +645,7 @@ class ExternalIdentityProvider(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             version=version,
             url=url,
             user_attr_name=user_attr_name,

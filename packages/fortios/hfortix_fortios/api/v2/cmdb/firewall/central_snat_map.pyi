@@ -19,9 +19,9 @@ class CentralSnatMapPayload(TypedDict, total=False):
         }
     """
     policyid: int  # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable the active status of this policy. | Default: enable
-    type: Literal["ipv4", "ipv6"]  # IPv4/IPv6 source NAT. | Default: ipv4
+    type_: Literal["ipv4", "ipv6"]  # IPv4/IPv6 source NAT. | Default: ipv4
     srcintf: list[dict[str, Any]]  # Source interface name from available interfaces.
     dstintf: list[dict[str, Any]]  # Destination interface name from available interfac
     orig_addr: list[dict[str, Any]]  # IPv4 Original address.
@@ -302,9 +302,9 @@ class CentralSnatMapResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     policyid: int  # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable the active status of this policy. | Default: enable
-    type: Literal["ipv4", "ipv6"]  # IPv4/IPv6 source NAT. | Default: ipv4
+    type_: Literal["ipv4", "ipv6"]  # IPv4/IPv6 source NAT. | Default: ipv4
     srcintf: list[CentralSnatMapSrcintfItem]  # Source interface name from available interfaces.
     dstintf: list[CentralSnatMapDstintfItem]  # Destination interface name from available interfac
     orig_addr: list[CentralSnatMapOrigaddrItem]  # IPv4 Original address.
@@ -335,12 +335,12 @@ class CentralSnatMapObject:
     
     # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable the active status of this policy. | Default: enable
     status: Literal["enable", "disable"]
     # IPv4/IPv6 source NAT. | Default: ipv4
-    type: Literal["ipv4", "ipv6"]
+    type_: Literal["ipv4", "ipv6"]
     # Source interface name from available interfaces.
     srcintf: list[CentralSnatMapSrcintfObject]
     # Destination interface name from available interfaces.
@@ -379,7 +379,6 @@ class CentralSnatMapObject:
     comments: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -402,6 +401,10 @@ class CentralSnatMap:
     Primary Key: policyid
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -422,6 +425,7 @@ class CentralSnatMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CentralSnatMapResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -439,6 +443,7 @@ class CentralSnatMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CentralSnatMapResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -455,6 +460,7 @@ class CentralSnatMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CentralSnatMapResponse]: ...
     
     # ================================================================
@@ -497,7 +503,7 @@ class CentralSnatMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
     
@@ -516,7 +522,7 @@ class CentralSnatMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CentralSnatMapObject]: ...
     
@@ -616,23 +622,6 @@ class CentralSnatMap:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        policyid: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CentralSnatMapObject | list[CentralSnatMapObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -647,7 +636,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -668,6 +657,7 @@ class CentralSnatMap:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
@@ -679,7 +669,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -712,7 +702,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -744,7 +734,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -764,37 +754,7 @@ class CentralSnatMap:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
-        orig_addr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_addr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_addr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocol: int | None = ...,
-        orig_port: str | None = ...,
-        nat: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["enable", "disable"] | None = ...,
-        nat64: Literal["enable", "disable"] | None = ...,
-        nat_ippool: str | list[str] | list[dict[str, Any]] | None = ...,
-        nat_ippool6: str | list[str] | list[dict[str, Any]] | None = ...,
-        port_preserve: Literal["enable", "disable"] | None = ...,
-        port_random: Literal["enable", "disable"] | None = ...,
-        nat_port: str | None = ...,
-        dst_port: str | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -806,7 +766,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -827,6 +787,7 @@ class CentralSnatMap:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
@@ -838,7 +799,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -871,7 +832,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -903,7 +864,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -923,37 +884,7 @@ class CentralSnatMap:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
-        orig_addr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_addr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_addr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocol: int | None = ...,
-        orig_port: str | None = ...,
-        nat: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["enable", "disable"] | None = ...,
-        nat64: Literal["enable", "disable"] | None = ...,
-        nat_ippool: str | list[str] | list[dict[str, Any]] | None = ...,
-        nat_ippool6: str | list[str] | list[dict[str, Any]] | None = ...,
-        port_preserve: Literal["enable", "disable"] | None = ...,
-        port_random: Literal["enable", "disable"] | None = ...,
-        nat_port: str | None = ...,
-        dst_port: str | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -964,6 +895,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
@@ -994,14 +926,7 @@ class CentralSnatMap:
         self,
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        policyid: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1017,7 +942,7 @@ class CentralSnatMap:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1052,8 +977,6 @@ class CentralSnatMap:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1081,6 +1004,10 @@ class CentralSnatMapDictMode:
     By default returns CentralSnatMapResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CentralSnatMapObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1187,7 +1114,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1220,7 +1147,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1253,7 +1180,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1273,17 +1200,19 @@ class CentralSnatMapDictMode:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1314,7 +1243,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1347,7 +1276,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1380,7 +1309,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1400,17 +1329,19 @@ class CentralSnatMapDictMode:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1461,10 +1392,12 @@ class CentralSnatMapDictMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1485,7 +1418,7 @@ class CentralSnatMapDictMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1519,8 +1452,6 @@ class CentralSnatMapDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1544,6 +1475,10 @@ class CentralSnatMapObjectMode:
     By default returns CentralSnatMapObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CentralSnatMapResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1650,7 +1585,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1683,7 +1618,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1716,7 +1651,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1749,7 +1684,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1769,17 +1704,19 @@ class CentralSnatMapObjectMode:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1810,7 +1747,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1843,7 +1780,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1876,7 +1813,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1909,7 +1846,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1929,17 +1866,19 @@ class CentralSnatMapObjectMode:
         dst_port: str | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -2001,10 +1940,12 @@ class CentralSnatMapObjectMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CentralSnatMapObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -2025,7 +1966,7 @@ class CentralSnatMapObjectMode:
         policyid: int | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        type_: Literal["ipv4", "ipv6"] | None = ...,
         srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
         dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
         orig_addr: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -2059,8 +2000,6 @@ class CentralSnatMapObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

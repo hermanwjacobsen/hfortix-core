@@ -227,7 +227,7 @@ class EmailServer(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        type: Literal["custom"] | None = None,
+        type_: Literal["custom"] | None = None,
         server: str | None = None,
         port: int | None = None,
         source_ip: str | None = None,
@@ -253,7 +253,7 @@ class EmailServer(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
-            type: Use FortiGuard Message service or custom email server.
+            type_: Use FortiGuard Message service or custom email server.
             server: SMTP server IP address or hostname.
             port: SMTP server port.
             source_ip: SMTP server IPv4 source IP.
@@ -300,7 +300,7 @@ class EmailServer(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
-            type=type,
+            type_=type_,
             server=server,
             port=port,
             source_ip=source_ip,

@@ -191,6 +191,10 @@ class Netflow:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -211,6 +215,7 @@ class Netflow:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetflowResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -228,6 +233,7 @@ class Netflow:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetflowResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -244,6 +250,7 @@ class Netflow:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NetflowResponse: ...
     
     # ================================================================
@@ -286,7 +293,7 @@ class Netflow:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NetflowObject: ...
     
@@ -305,7 +312,7 @@ class Netflow:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NetflowObject: ...
     
@@ -405,23 +412,6 @@ class Netflow:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> NetflowObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -442,6 +432,7 @@ class Netflow:
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NetflowObject: ...
@@ -493,22 +484,7 @@ class Netflow:
         exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: NetflowPayload | None = ...,
-        active_flow_timeout: int | None = ...,
-        inactive_flow_timeout: int | None = ...,
-        template_tx_timeout: int | None = ...,
-        template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -544,8 +520,6 @@ class Netflow:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -573,6 +547,10 @@ class NetflowDictMode:
     By default returns NetflowResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return NetflowObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -721,10 +699,12 @@ class NetflowDictMode:
         exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: NetflowPayload | None = ...,
@@ -772,8 +752,6 @@ class NetflowDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -797,6 +775,10 @@ class NetflowObjectMode:
     By default returns NetflowObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return NetflowResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -963,10 +945,12 @@ class NetflowObjectMode:
         exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NetflowObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: NetflowPayload | None = ...,
@@ -1014,8 +998,6 @@ class NetflowObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

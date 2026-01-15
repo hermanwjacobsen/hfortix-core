@@ -247,7 +247,7 @@ class FlowTracking(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = None,
         sample_rate: int | None = None,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = None,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = None,
         collectors: str | list[str] | list[dict[str, Any]] | None = None,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = None,
         max_export_pkt_size: int | None = None,
@@ -274,7 +274,7 @@ class FlowTracking(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             sample_mode: Configure sample mode for the flow tracking.
             sample_rate: Configure sample rate for the perimeter and device-ingress sampling(0 - 99999).
-            format: Configure flow tracking protocol.
+            format_: Configure flow tracking protocol.
             collectors: Configure collectors for the flow.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -350,7 +350,7 @@ class FlowTracking(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             sample_mode=sample_mode,
             sample_rate=sample_rate,
-            format=format,
+            format_=format_,
             collectors=collectors,
             level=level,
             max_export_pkt_size=max_export_pkt_size,

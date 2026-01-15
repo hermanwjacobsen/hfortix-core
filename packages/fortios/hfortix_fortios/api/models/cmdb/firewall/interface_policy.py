@@ -74,7 +74,32 @@ class InterfacePolicyModel(BaseModel):
 
     Configure IPv4 interface policies.
 
-    Validation Rules:        - policyid: min=0 max=4294967295 pattern=        - uuid: pattern=        - status: pattern=        - comments: max_length=1023 pattern=        - logtraffic: pattern=        - interface: max_length=35 pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - service: pattern=        - application_list_status: pattern=        - application_list: max_length=47 pattern=        - ips_sensor_status: pattern=        - ips_sensor: max_length=47 pattern=        - dsri: pattern=        - av_profile_status: pattern=        - av_profile: max_length=47 pattern=        - webfilter_profile_status: pattern=        - webfilter_profile: max_length=47 pattern=        - casb_profile_status: pattern=        - casb_profile: max_length=47 pattern=        - emailfilter_profile_status: pattern=        - emailfilter_profile: max_length=47 pattern=        - dlp_profile_status: pattern=        - dlp_profile: max_length=47 pattern=    """
+    Validation Rules:
+        - policyid: min=0 max=4294967295 pattern=
+        - uuid: pattern=
+        - status: pattern=
+        - comments: max_length=1023 pattern=
+        - logtraffic: pattern=
+        - interface: max_length=35 pattern=
+        - srcaddr: pattern=
+        - dstaddr: pattern=
+        - service: pattern=
+        - application_list_status: pattern=
+        - application_list: max_length=47 pattern=
+        - ips_sensor_status: pattern=
+        - ips_sensor: max_length=47 pattern=
+        - dsri: pattern=
+        - av_profile_status: pattern=
+        - av_profile: max_length=47 pattern=
+        - webfilter_profile_status: pattern=
+        - webfilter_profile: max_length=47 pattern=
+        - casb_profile_status: pattern=
+        - casb_profile: max_length=47 pattern=
+        - emailfilter_profile_status: pattern=
+        - emailfilter_profile: max_length=47 pattern=
+        - dlp_profile_status: pattern=
+        - dlp_profile: max_length=47 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -86,7 +111,31 @@ class InterfacePolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID (0 - 4294967295).")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    comments: str | None = Field(max_length=1023, default=None, description="Comments.")    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Logging type to be used in this policy (Options: all | utm | disable, Default: utm).")    interface: str = Field(max_length=35, default="", description="Monitored interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    srcaddr: list[InterfacePolicySrcaddr] = Field(description="Address object to limit traffic monitoring to network traffic sent from the specified address or range.")    dstaddr: list[InterfacePolicyDstaddr] = Field(description="Address object to limit traffic monitoring to network traffic sent to the specified address or range.")    service: list[InterfacePolicyService] = Field(description="Service object from available options.")    application_list_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable application control.")    application_list: str = Field(max_length=47, default="", description="Application list name.")  # datasource: ['application.list.name']    ips_sensor_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPS.")    ips_sensor: str = Field(max_length=47, default="", description="IPS sensor name.")  # datasource: ['ips.sensor.name']    dsri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DSRI.")    av_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable antivirus.")    av_profile: str = Field(max_length=47, default="", description="Antivirus profile.")  # datasource: ['antivirus.profile.name']    webfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web filtering.")    webfilter_profile: str = Field(max_length=47, default="", description="Web filter profile.")  # datasource: ['webfilter.profile.name']    casb_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable CASB.")    casb_profile: str = Field(max_length=47, default="", description="CASB profile.")  # datasource: ['casb.profile.name']    emailfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable email filter.")    emailfilter_profile: str = Field(max_length=47, default="", description="Email filter profile.")  # datasource: ['emailfilter.profile.name']    dlp_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DLP.")    dlp_profile: str = Field(max_length=47, default="", description="DLP profile name.")  # datasource: ['dlp.profile.name']    # ========================================================================
+    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID (0 - 4294967295).")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")
+    comments: str | None = Field(max_length=1023, default=None, description="Comments.")
+    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Logging type to be used in this policy (Options: all | utm | disable, Default: utm).")
+    interface: str = Field(max_length=35, default="", description="Monitored interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']
+    srcaddr: list[InterfacePolicySrcaddr] | None = Field(description="Address object to limit traffic monitoring to network traffic sent from the specified address or range.")
+    dstaddr: list[InterfacePolicyDstaddr] | None = Field(description="Address object to limit traffic monitoring to network traffic sent to the specified address or range.")
+    service: list[InterfacePolicyService] | None = Field(description="Service object from available options.")
+    application_list_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable application control.")
+    application_list: str = Field(max_length=47, default="", description="Application list name.")  # datasource: ['application.list.name']
+    ips_sensor_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPS.")
+    ips_sensor: str = Field(max_length=47, default="", description="IPS sensor name.")  # datasource: ['ips.sensor.name']
+    dsri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DSRI.")
+    av_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable antivirus.")
+    av_profile: str = Field(max_length=47, default="", description="Antivirus profile.")  # datasource: ['antivirus.profile.name']
+    webfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web filtering.")
+    webfilter_profile: str = Field(max_length=47, default="", description="Web filter profile.")  # datasource: ['webfilter.profile.name']
+    casb_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable CASB.")
+    casb_profile: str = Field(max_length=47, default="", description="CASB profile.")  # datasource: ['casb.profile.name']
+    emailfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable email filter.")
+    emailfilter_profile: str = Field(max_length=47, default="", description="Email filter profile.")  # datasource: ['emailfilter.profile.name']
+    dlp_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DLP.")
+    dlp_profile: str = Field(max_length=47, default="", description="DLP profile name.")  # datasource: ['dlp.profile.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -270,7 +319,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -323,7 +372,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -383,7 +432,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -443,7 +492,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -481,7 +530,7 @@ class InterfacePolicyModel(BaseModel):
         can be called before posting to the API to catch reference errors early.
 
         Datasource endpoints checked:
-        - application/list
+        - application/list_
         Args:
             client: FortiOS client instance (from fgt._client)
 
@@ -503,7 +552,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -512,13 +561,13 @@ class InterfacePolicyModel(BaseModel):
 
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.application.list.exists(value):
+        if await client.api.cmdb.application.list_.exists(value):
             found = True
 
         if not found:
             errors.append(
                 f"Application-List '{value}' not found in "
-                "application/list"
+                "application/list_"
             )
         return errors
     async def validate_ips_sensor_references(self, client: Any) -> list[str]:
@@ -552,7 +601,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -601,7 +650,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -650,7 +699,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -699,7 +748,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -748,7 +797,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -797,7 +846,7 @@ class InterfacePolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -834,18 +883,28 @@ class InterfacePolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_application_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_sensor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_av_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_casb_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_emailfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dlp_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_av_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_casb_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_emailfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dlp_profile_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -867,5 +926,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.069715Z
+# Generated: 2026-01-14T22:43:35.042743Z
 # ============================================================================

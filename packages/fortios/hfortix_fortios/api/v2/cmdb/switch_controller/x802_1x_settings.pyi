@@ -105,6 +105,10 @@ class X8021xSettings:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -125,6 +129,7 @@ class X8021xSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> X8021xSettingsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -142,6 +147,7 @@ class X8021xSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> X8021xSettingsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -158,6 +164,7 @@ class X8021xSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> X8021xSettingsResponse: ...
     
     # ================================================================
@@ -200,7 +207,7 @@ class X8021xSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> X8021xSettingsObject: ...
     
@@ -219,7 +226,7 @@ class X8021xSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> X8021xSettingsObject: ...
     
@@ -319,23 +326,6 @@ class X8021xSettings:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> X8021xSettingsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -359,6 +349,7 @@ class X8021xSettings:
         mac_case: Literal["lowercase", "uppercase"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> X8021xSettingsObject: ...
@@ -419,25 +410,7 @@ class X8021xSettings:
         mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
         mac_case: Literal["lowercase", "uppercase"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: X8021xSettingsPayload | None = ...,
-        link_down_auth: Literal["set-unauth", "no-action"] | None = ...,
-        reauth_period: int | None = ...,
-        max_reauth_attempt: int | None = ...,
-        tx_period: int | None = ...,
-        mab_reauth: Literal["disable", "enable"] | None = ...,
-        mac_username_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
-        mac_password_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
-        mac_calling_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
-        mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
-        mac_case: Literal["lowercase", "uppercase"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -476,8 +449,6 @@ class X8021xSettings:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -505,6 +476,10 @@ class X8021xSettingsDictMode:
     By default returns X8021xSettingsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return X8021xSettingsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -662,10 +637,12 @@ class X8021xSettingsDictMode:
         mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
         mac_case: Literal["lowercase", "uppercase"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: X8021xSettingsPayload | None = ...,
@@ -719,8 +696,6 @@ class X8021xSettingsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -744,6 +719,10 @@ class X8021xSettingsObjectMode:
     By default returns X8021xSettingsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return X8021xSettingsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -922,10 +901,12 @@ class X8021xSettingsObjectMode:
         mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = ...,
         mac_case: Literal["lowercase", "uppercase"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> X8021xSettingsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: X8021xSettingsPayload | None = ...,
@@ -979,8 +960,6 @@ class X8021xSettingsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

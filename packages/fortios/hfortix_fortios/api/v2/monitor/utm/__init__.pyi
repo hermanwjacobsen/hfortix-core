@@ -8,9 +8,9 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .app_lookup import AppLookup, AppLookupDictMode, AppLookupObjectMode
     from .application_categories import ApplicationCategories, ApplicationCategoriesDictMode, ApplicationCategoriesObjectMode
-    from .antivirus import AntivirusDictMode, AntivirusObjectMode
+    from .antivirus import Antivirus, AntivirusDictMode, AntivirusObjectMode
     from .blacklisted_certificates import BlacklistedCertificates
-    from .rating_lookup import RatingLookupDictMode, RatingLookupObjectMode
+    from .rating_lookup import RatingLookup, RatingLookupDictMode, RatingLookupObjectMode
 
 __all__ = [
     "AppLookup",

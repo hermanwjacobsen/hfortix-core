@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -29,15 +30,15 @@ class AccessProxyApiGateway(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="API Gateway ID.")
     url_map: str = Field(max_length=511, default="/", description="URL pattern to match.")
-    service: ServiceEnum = Field(default="https", description="Service.")
-    ldb_method: LdbMethodEnum | None = Field(default="static", description="Method used to distribute sessions to real servers.")
+    service: str = Field(default="https", description="Service.")
+    ldb_method: str | None = Field(default="static", description="Method used to distribute sessions to real servers.")
     virtual_host: str | None = Field(max_length=79, default="", description="Virtual host.")  # datasource: ['firewall.access-proxy-virtual-host.name']
     url_map_type: Literal["sub-string", "wildcard", "regex"] = Field(default="sub-string", description="Type of url-map.")
     h2_support: Literal["enable", "disable"] = Field(default="enable", description="HTTP2 support, default=Enable.")
     h3_support: Literal["enable", "disable"] | None = Field(default="disable", description="HTTP3/QUIC support, default=Disable.")
-    quic: list[Quic] = Field(default=None, description="QUIC setting.")
-    realservers: list[Realservers] = Field(default=None, description="Select the real servers that this Access Proxy will distribute traffic to.")
-    application: list[Application] = Field(description="SaaS application controlled by this Access Proxy.")
+    quic: list[dict[str, Any]] | None = Field(default=None, description="QUIC setting.")
+    realservers: list[dict[str, Any]] | None = Field(default=None, description="Select the real servers that this Access Proxy will distribute traffic to.")
+    application: list[dict[str, Any]] | None = Field(description="SaaS application controlled by this Access Proxy.")
     persistence: Literal["none", "http-cookie"] | None = Field(default="none", description="Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.")
     http_cookie_domain_from_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of HTTP cookie domain from host field in HTTP.")
     http_cookie_domain: str | None = Field(max_length=35, default="", description="Domain that HTTP cookie persistence should apply to.")
@@ -48,11 +49,11 @@ class AccessProxyApiGateway(BaseModel):
     https_cookie_secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable verification that inserted HTTPS cookies are secure.")
     saml_server: str | None = Field(max_length=35, default="", description="SAML service provider configuration for VIP authentication.")  # datasource: ['user.saml.name']
     saml_redirect: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SAML redirection after successful authentication.")
-    ssl_dh_bits: SslDhBitsEnum | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")
+    ssl_dh_bits: str | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.")
-    ssl_cipher_suites: list[SslCipherSuites] = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")
-    ssl_min_version: SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a server.")
-    ssl_max_version: SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a server.")
+    ssl_cipher_suites: list[dict[str, Any]] | None = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")
+    ssl_min_version: str | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a server.")
+    ssl_max_version: str | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a server.")
     ssl_renegotiation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable secure renegotiation to comply with RFC 5746.")
     ssl_vpn_web_portal: str | None = Field(max_length=35, default="", description="Agentless VPN web portal.")  # datasource: ['vpn.ssl.web.portal.name']
 
@@ -70,15 +71,15 @@ class AccessProxyApiGateway6(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="API Gateway ID.")
     url_map: str = Field(max_length=511, default="/", description="URL pattern to match.")
-    service: ServiceEnum = Field(default="https", description="Service.")
-    ldb_method: LdbMethodEnum | None = Field(default="static", description="Method used to distribute sessions to real servers.")
+    service: str = Field(default="https", description="Service.")
+    ldb_method: str | None = Field(default="static", description="Method used to distribute sessions to real servers.")
     virtual_host: str | None = Field(max_length=79, default="", description="Virtual host.")  # datasource: ['firewall.access-proxy-virtual-host.name']
     url_map_type: Literal["sub-string", "wildcard", "regex"] = Field(default="sub-string", description="Type of url-map.")
     h2_support: Literal["enable", "disable"] = Field(default="enable", description="HTTP2 support, default=Enable.")
     h3_support: Literal["enable", "disable"] | None = Field(default="disable", description="HTTP3/QUIC support, default=Disable.")
-    quic: list[Quic] = Field(default=None, description="QUIC setting.")
-    realservers: list[Realservers] = Field(default=None, description="Select the real servers that this Access Proxy will distribute traffic to.")
-    application: list[Application] = Field(description="SaaS application controlled by this Access Proxy.")
+    quic: list[dict[str, Any]] | None = Field(default=None, description="QUIC setting.")
+    realservers: list[dict[str, Any]] | None = Field(default=None, description="Select the real servers that this Access Proxy will distribute traffic to.")
+    application: list[dict[str, Any]] | None = Field(description="SaaS application controlled by this Access Proxy.")
     persistence: Literal["none", "http-cookie"] | None = Field(default="none", description="Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.")
     http_cookie_domain_from_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of HTTP cookie domain from host field in HTTP.")
     http_cookie_domain: str | None = Field(max_length=35, default="", description="Domain that HTTP cookie persistence should apply to.")
@@ -89,11 +90,11 @@ class AccessProxyApiGateway6(BaseModel):
     https_cookie_secure: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable verification that inserted HTTPS cookies are secure.")
     saml_server: str | None = Field(max_length=35, default="", description="SAML service provider configuration for VIP authentication.")  # datasource: ['user.saml.name']
     saml_redirect: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SAML redirection after successful authentication.")
-    ssl_dh_bits: SslDhBitsEnum | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")
+    ssl_dh_bits: str | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.")
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.")
-    ssl_cipher_suites: list[SslCipherSuites] = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")
-    ssl_min_version: SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a server.")
-    ssl_max_version: SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a server.")
+    ssl_cipher_suites: list[dict[str, Any]] | None = Field(default=None, description="SSL/TLS cipher suites to offer to a server, ordered by priority.")
+    ssl_min_version: str | None = Field(default="tls-1.1", description="Lowest SSL/TLS version acceptable from a server.")
+    ssl_max_version: str | None = Field(default="tls-1.3", description="Highest SSL/TLS version acceptable from a server.")
     ssl_renegotiation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable secure renegotiation to comply with RFC 5746.")
     ssl_vpn_web_portal: str | None = Field(max_length=35, default="", description="Agentless VPN web portal.")  # datasource: ['vpn.ssl.web.portal.name']
 
@@ -113,7 +114,21 @@ class AccessProxyModel(BaseModel):
 
     Configure IPv4 access proxy.
 
-    Validation Rules:        - name: max_length=79 pattern=        - vip: max_length=79 pattern=        - auth_portal: pattern=        - auth_virtual_host: max_length=79 pattern=        - log_blocked_traffic: pattern=        - add_vhost_domain_to_dnsdb: pattern=        - svr_pool_multiplex: pattern=        - svr_pool_ttl: min=0 max=2147483647 pattern=        - svr_pool_server_max_request: min=0 max=2147483647 pattern=        - svr_pool_server_max_concurrent_request: min=0 max=2147483647 pattern=        - decrypted_traffic_mirror: max_length=35 pattern=        - api_gateway: pattern=        - api_gateway6: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - vip: max_length=79 pattern=
+        - auth_portal: pattern=
+        - auth_virtual_host: max_length=79 pattern=
+        - log_blocked_traffic: pattern=
+        - add_vhost_domain_to_dnsdb: pattern=
+        - svr_pool_multiplex: pattern=
+        - svr_pool_ttl: min=0 max=2147483647 pattern=
+        - svr_pool_server_max_request: min=0 max=2147483647 pattern=
+        - svr_pool_server_max_concurrent_request: min=0 max=2147483647 pattern=
+        - decrypted_traffic_mirror: max_length=35 pattern=
+        - api_gateway: pattern=
+        - api_gateway6: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -125,7 +140,20 @@ class AccessProxyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="Access Proxy name.")    vip: str = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    log_blocked_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")    add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adding vhost/domain to dnsdb for ztna dox tunnel.")    svr_pool_multiplex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable server pool multiplexing (default = disable). Share connected server in HTTP, HTTPS, and web-portal api-gateway.")    svr_pool_ttl: int | None = Field(ge=0, le=2147483647, default=15, description="Time-to-live in the server pool for idle connections to servers.")    svr_pool_server_max_request: int | None = Field(ge=0, le=2147483647, default=0, description="Maximum number of requests that servers in server pool handle before disconnecting (default = unlimited).")    svr_pool_server_max_concurrent_request: int | None = Field(ge=0, le=2147483647, default=0, description="Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).")    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    api_gateway: list[AccessProxyApiGateway] = Field(default=None, description="Set IPv4 API Gateway.")    api_gateway6: list[AccessProxyApiGateway6] = Field(default=None, description="Set IPv6 API Gateway.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="Access Proxy name.")
+    vip: str = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']
+    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")
+    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']
+    log_blocked_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")
+    add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adding vhost/domain to dnsdb for ztna dox tunnel.")
+    svr_pool_multiplex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable server pool multiplexing (default = disable). Share connected server in HTTP, HTTPS, and web-portal api-gateway.")
+    svr_pool_ttl: int | None = Field(ge=0, le=2147483647, default=15, description="Time-to-live in the server pool for idle connections to servers.")
+    svr_pool_server_max_request: int | None = Field(ge=0, le=2147483647, default=0, description="Maximum number of requests that servers in server pool handle before disconnecting (default = unlimited).")
+    svr_pool_server_max_concurrent_request: int | None = Field(ge=0, le=2147483647, default=0, description="Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).")
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']
+    api_gateway: list[AccessProxyApiGateway] | None = Field(default=None, description="Set IPv4 API Gateway.")
+    api_gateway6: list[AccessProxyApiGateway6] | None = Field(default=None, description="Set IPv6 API Gateway.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -234,7 +262,7 @@ class AccessProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vip", None)
@@ -283,7 +311,7 @@ class AccessProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_virtual_host", None)
@@ -332,7 +360,7 @@ class AccessProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -381,7 +409,7 @@ class AccessProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "api_gateway", [])
@@ -439,7 +467,7 @@ class AccessProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "api_gateway6", [])
@@ -485,12 +513,16 @@ class AccessProxyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vip_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_virtual_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_decrypted_traffic_mirror_references(client)
-        all_errors.extend(errors)        errors = await self.validate_api_gateway_references(client)
-        all_errors.extend(errors)        errors = await self.validate_api_gateway6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_virtual_host_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_decrypted_traffic_mirror_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_api_gateway_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_api_gateway6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -512,5 +544,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.415801Z
+# Generated: 2026-01-14T22:43:36.639476Z
 # ============================================================================

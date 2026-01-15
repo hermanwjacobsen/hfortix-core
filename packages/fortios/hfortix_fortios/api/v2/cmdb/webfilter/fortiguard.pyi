@@ -113,6 +113,10 @@ class Fortiguard:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -133,6 +137,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -150,6 +155,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -166,6 +172,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # ================================================================
@@ -208,7 +215,7 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
@@ -227,7 +234,7 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
@@ -327,23 +334,6 @@ class Fortiguard:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FortiguardObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -369,6 +359,7 @@ class Fortiguard:
         embed_image: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
@@ -435,27 +426,7 @@ class Fortiguard:
         request_packet_size_limit: int | None = ...,
         embed_image: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FortiguardPayload | None = ...,
-        cache_mode: Literal["ttl", "db-ver"] | None = ...,
-        cache_prefix_match: Literal["enable", "disable"] | None = ...,
-        cache_mem_permille: int | None = ...,
-        ovrd_auth_port_http: int | None = ...,
-        ovrd_auth_port_https: int | None = ...,
-        ovrd_auth_port_https_flow: int | None = ...,
-        ovrd_auth_port_warning: int | None = ...,
-        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
-        warn_auth_https: Literal["enable", "disable"] | None = ...,
-        close_ports: Literal["enable", "disable"] | None = ...,
-        request_packet_size_limit: int | None = ...,
-        embed_image: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -496,8 +467,6 @@ class Fortiguard:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -525,6 +494,10 @@ class FortiguardDictMode:
     By default returns FortiguardResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FortiguardObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -688,10 +661,12 @@ class FortiguardDictMode:
         request_packet_size_limit: int | None = ...,
         embed_image: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FortiguardPayload | None = ...,
@@ -749,8 +724,6 @@ class FortiguardDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -774,6 +747,10 @@ class FortiguardObjectMode:
     By default returns FortiguardObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FortiguardResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -960,10 +937,12 @@ class FortiguardObjectMode:
         request_packet_size_limit: int | None = ...,
         embed_image: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FortiguardPayload | None = ...,
@@ -1021,8 +1000,6 @@ class FortiguardObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

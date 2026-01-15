@@ -234,7 +234,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         crl: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         update_vdom: str | None = None,
         ldap_server: str | None = None,
@@ -259,7 +259,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name.
             crl: Certificate Revocation List as a PEM file.
-            range: Either global or VDOM IP address range for the certificate.
+            range_: Either global or VDOM IP address range for the certificate.
             source: Certificate source type.
             update_vdom: VDOM for CRL update.
             ldap_server: LDAP server name for CRL auto-update.
@@ -305,7 +305,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             crl=crl,
-            range=range,
+            range_=range_,
             source=source,
             update_vdom=update_vdom,
             ldap_server=ldap_server,
@@ -348,7 +348,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         crl: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         update_vdom: str | None = None,
         ldap_server: str | None = None,
@@ -373,7 +373,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name.
             crl: Certificate Revocation List as a PEM file.
-            range: Either global or VDOM IP address range for the certificate.
+            range_: Either global or VDOM IP address range for the certificate.
             source: Certificate source type.
             update_vdom: VDOM for CRL update.
             ldap_server: LDAP server name for CRL auto-update.
@@ -421,7 +421,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             crl=crl,
-            range=range,
+            range_=range_,
             source=source,
             update_vdom=update_vdom,
             ldap_server=ldap_server,
@@ -564,7 +564,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         crl: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         update_vdom: str | None = None,
         ldap_server: str | None = None,
@@ -590,7 +590,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             crl: Field crl
-            range: Field range
+            range_: Field range
             source: Field source
             update_vdom: Field update-vdom
             ldap_server: Field ldap-server
@@ -646,7 +646,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             crl=crl,
-            range=range,
+            range_=range_,
             source=source,
             update_vdom=update_vdom,
             ldap_server=ldap_server,

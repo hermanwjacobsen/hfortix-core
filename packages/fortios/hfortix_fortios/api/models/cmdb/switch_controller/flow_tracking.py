@@ -54,7 +54,7 @@ class FlowTrackingAggregates(BaseModel):
 
 
 class FlowTrackingFormatEnum(str, Enum):
-    """Allowed values for format field."""
+    """Allowed values for format_ field."""
     NETFLOW1 = "netflow1"
     NETFLOW5 = "netflow5"
     NETFLOW9 = "netflow9"
@@ -81,7 +81,23 @@ class FlowTrackingModel(BaseModel):
 
     Configure FortiSwitch flow tracking and export via ipfix/netflow.
 
-    Validation Rules:        - sample_mode: pattern=        - sample_rate: min=0 max=99999 pattern=        - format: pattern=        - collectors: pattern=        - level: pattern=        - max_export_pkt_size: min=512 max=9216 pattern=        - template_export_period: min=1 max=60 pattern=        - timeout_general: min=60 max=604800 pattern=        - timeout_icmp: min=60 max=604800 pattern=        - timeout_max: min=60 max=604800 pattern=        - timeout_tcp: min=60 max=604800 pattern=        - timeout_tcp_fin: min=60 max=604800 pattern=        - timeout_tcp_rst: min=60 max=604800 pattern=        - timeout_udp: min=60 max=604800 pattern=        - aggregates: pattern=    """
+    Validation Rules:
+        - sample_mode: pattern=
+        - sample_rate: min=0 max=99999 pattern=
+        - format_: pattern=
+        - collectors: pattern=
+        - level: pattern=
+        - max_export_pkt_size: min=512 max=9216 pattern=
+        - template_export_period: min=1 max=60 pattern=
+        - timeout_general: min=60 max=604800 pattern=
+        - timeout_icmp: min=60 max=604800 pattern=
+        - timeout_max: min=60 max=604800 pattern=
+        - timeout_tcp: min=60 max=604800 pattern=
+        - timeout_tcp_fin: min=60 max=604800 pattern=
+        - timeout_tcp_rst: min=60 max=604800 pattern=
+        - timeout_udp: min=60 max=604800 pattern=
+        - aggregates: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -93,7 +109,22 @@ class FlowTrackingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    sample_mode: Literal["local", "perimeter", "device-ingress"] | None = Field(default="perimeter", description="Configure sample mode for the flow tracking.")    sample_rate: int | None = Field(ge=0, le=99999, default=512, description="Configure sample rate for the perimeter and device-ingress sampling(0 - 99999).")    format: FlowTrackingFormatEnum | None = Field(default="netflow9", description="Configure flow tracking protocol.")    collectors: list[FlowTrackingCollectors] = Field(default=None, description="Configure collectors for the flow.")    level: FlowTrackingLevelEnum | None = Field(default="ip", description="Configure flow tracking level.")    max_export_pkt_size: int | None = Field(ge=512, le=9216, default=512, description="Configure flow max export packet size (512-9216, default=512 bytes).")    template_export_period: int | None = Field(ge=1, le=60, default=5, description="Configure template export period (1-60, default=5 minutes).")    timeout_general: int | None = Field(ge=60, le=604800, default=3600, description="Configure flow session general timeout (60-604800, default=3600 seconds).")    timeout_icmp: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session ICMP timeout (60-604800, default=300 seconds).")    timeout_max: int | None = Field(ge=60, le=604800, default=604800, description="Configure flow session max timeout (60-604800, default=604800 seconds).")    timeout_tcp: int | None = Field(ge=60, le=604800, default=3600, description="Configure flow session TCP timeout (60-604800, default=3600 seconds).")    timeout_tcp_fin: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session TCP FIN timeout (60-604800, default=300 seconds).")    timeout_tcp_rst: int | None = Field(ge=60, le=604800, default=120, description="Configure flow session TCP RST timeout (60-604800, default=120 seconds).")    timeout_udp: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session UDP timeout (60-604800, default=300 seconds).")    aggregates: list[FlowTrackingAggregates] = Field(default=None, description="Configure aggregates in which all traffic sessions matching the IP Address will be grouped into the same flow.")    # ========================================================================
+    sample_mode: Literal["local", "perimeter", "device-ingress"] | None = Field(default="perimeter", description="Configure sample mode for the flow tracking.")
+    sample_rate: int | None = Field(ge=0, le=99999, default=512, description="Configure sample rate for the perimeter and device-ingress sampling(0 - 99999).")
+    format_: str | FlowTrackingFormatEnum | None = Field(default="netflow9", description="Configure flow tracking protocol.")
+    collectors: list[FlowTrackingCollectors] | None = Field(default=None, description="Configure collectors for the flow.")
+    level: str | FlowTrackingLevelEnum | None = Field(default="ip", description="Configure flow tracking level.")
+    max_export_pkt_size: int | None = Field(ge=512, le=9216, default=512, description="Configure flow max export packet size (512-9216, default=512 bytes).")
+    template_export_period: int | None = Field(ge=1, le=60, default=5, description="Configure template export period (1-60, default=5 minutes).")
+    timeout_general: int | None = Field(ge=60, le=604800, default=3600, description="Configure flow session general timeout (60-604800, default=3600 seconds).")
+    timeout_icmp: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session ICMP timeout (60-604800, default=300 seconds).")
+    timeout_max: int | None = Field(ge=60, le=604800, default=604800, description="Configure flow session max timeout (60-604800, default=604800 seconds).")
+    timeout_tcp: int | None = Field(ge=60, le=604800, default=3600, description="Configure flow session TCP timeout (60-604800, default=3600 seconds).")
+    timeout_tcp_fin: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session TCP FIN timeout (60-604800, default=300 seconds).")
+    timeout_tcp_rst: int | None = Field(ge=60, le=604800, default=120, description="Configure flow session TCP RST timeout (60-604800, default=120 seconds).")
+    timeout_udp: int | None = Field(ge=60, le=604800, default=300, description="Configure flow session UDP timeout (60-604800, default=300 seconds).")
+    aggregates: list[FlowTrackingAggregates] | None = Field(default=None, description="Configure aggregates in which all traffic sessions matching the IP Address will be grouped into the same flow.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -142,5 +173,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.326700Z
+# Generated: 2026-01-14T22:43:34.084483Z
 # ============================================================================

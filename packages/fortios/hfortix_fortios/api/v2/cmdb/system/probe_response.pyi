@@ -93,6 +93,10 @@ class ProbeResponse:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -113,6 +117,7 @@ class ProbeResponse:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProbeResponseResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -130,6 +135,7 @@ class ProbeResponse:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProbeResponseResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -146,6 +152,7 @@ class ProbeResponse:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProbeResponseResponse: ...
     
     # ================================================================
@@ -188,7 +195,7 @@ class ProbeResponse:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProbeResponseObject: ...
     
@@ -207,7 +214,7 @@ class ProbeResponse:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProbeResponseObject: ...
     
@@ -307,23 +314,6 @@ class ProbeResponse:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProbeResponseObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -344,6 +334,7 @@ class ProbeResponse:
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProbeResponseObject: ...
@@ -395,22 +386,7 @@ class ProbeResponse:
         password: str | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProbeResponsePayload | None = ...,
-        port: int | None = ...,
-        http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
-        password: str | None = ...,
-        timeout: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -446,8 +422,6 @@ class ProbeResponse:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -475,6 +449,10 @@ class ProbeResponseDictMode:
     By default returns ProbeResponseResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProbeResponseObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -623,10 +601,12 @@ class ProbeResponseDictMode:
         password: str | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProbeResponsePayload | None = ...,
@@ -674,8 +654,6 @@ class ProbeResponseDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -699,6 +677,10 @@ class ProbeResponseObjectMode:
     By default returns ProbeResponseObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProbeResponseResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -865,10 +847,12 @@ class ProbeResponseObjectMode:
         password: str | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProbeResponseObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProbeResponsePayload | None = ...,
@@ -916,8 +900,6 @@ class ProbeResponseObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

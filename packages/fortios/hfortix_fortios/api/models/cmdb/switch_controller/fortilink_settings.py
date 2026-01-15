@@ -30,7 +30,7 @@ class FortilinkSettingsNacPorts(BaseModel):
     onboarding_vlan: str = Field(max_length=15, default="", description="Default NAC Onboarding VLAN when NAC devices are discovered.")  # datasource: ['system.interface.name']
     lan_segment: Literal["enabled", "disabled"] | None = Field(default="disabled", description="Enable/disable LAN segment feature on the FortiLink interface.")
     nac_lan_interface: str = Field(max_length=15, default="", description="Configure NAC LAN interface.")  # datasource: ['system.interface.name']
-    nac_segment_vlans: list[NacSegmentVlans] = Field(description="Configure NAC segment VLANs.")
+    nac_segment_vlans: list[dict[str, Any]] | None = Field(description="Configure NAC segment VLANs.")
     parent_key: str | None = Field(max_length=35, default="", description="Parent key name.")
     member_change: int | None = Field(ge=0, le=255, default=0, description="Member change flag.")
 
@@ -50,7 +50,14 @@ class FortilinkSettingsModel(BaseModel):
 
     Configure integrated FortiLink settings for FortiSwitch.
 
-    Validation Rules:        - name: max_length=35 pattern=        - fortilink: max_length=15 pattern=        - inactive_timer: min=1 max=1440 pattern=        - link_down_flush: pattern=        - access_vlan_mode: pattern=        - nac_ports: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - fortilink: max_length=15 pattern=
+        - inactive_timer: min=1 max=1440 pattern=
+        - link_down_flush: pattern=
+        - access_vlan_mode: pattern=
+        - nac_ports: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -62,7 +69,13 @@ class FortilinkSettingsModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="FortiLink settings name.")    fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface to which this fortilink-setting belongs.")  # datasource: ['system.interface.name']    inactive_timer: int | None = Field(ge=1, le=1440, default=15, description="Time interval(minutes) to be included in the inactive devices expiry calculation (mac age-out + inactive-time + periodic scan interval).")    link_down_flush: Literal["disable", "enable"] | None = Field(default="enable", description="Clear NAC and dynamic devices on switch ports on link down event.")    access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = Field(default="legacy", description="Intra VLAN traffic behavior with loss of connection to the FortiGate.")    nac_ports: list[FortilinkSettingsNacPorts] = Field(default=None, description="NAC specific configuration.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="FortiLink settings name.")
+    fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface to which this fortilink-setting belongs.")  # datasource: ['system.interface.name']
+    inactive_timer: int | None = Field(ge=1, le=1440, default=15, description="Time interval(minutes) to be included in the inactive devices expiry calculation (mac age-out + inactive-time + periodic scan interval).")
+    link_down_flush: Literal["disable", "enable"] | None = Field(default="enable", description="Clear NAC and dynamic devices on switch ports on link down event.")
+    access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = Field(default="legacy", description="Intra VLAN traffic behavior with loss of connection to the FortiGate.")
+    nac_ports: list[FortilinkSettingsNacPorts] | None = Field(default=None, description="NAC specific configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -141,7 +154,7 @@ class FortilinkSettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.fortilink_settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -190,7 +203,7 @@ class FortilinkSettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.fortilink_settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "nac_ports", [])
@@ -236,9 +249,10 @@ class FortilinkSettingsModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fortilink_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nac_ports_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nac_ports_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -260,5 +274,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.082514Z
+# Generated: 2026-01-14T22:43:36.222191Z
 # ============================================================================

@@ -30,7 +30,7 @@ class ReplacemsgGroupMail(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupHttp(BaseModel):
@@ -47,7 +47,7 @@ class ReplacemsgGroupHttp(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupWebproxy(BaseModel):
@@ -64,7 +64,7 @@ class ReplacemsgGroupWebproxy(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupFtp(BaseModel):
@@ -81,7 +81,7 @@ class ReplacemsgGroupFtp(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupFortiguardWf(BaseModel):
@@ -98,7 +98,7 @@ class ReplacemsgGroupFortiguardWf(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupSpam(BaseModel):
@@ -115,7 +115,7 @@ class ReplacemsgGroupSpam(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupAlertmail(BaseModel):
@@ -132,7 +132,7 @@ class ReplacemsgGroupAlertmail(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupAdmin(BaseModel):
@@ -149,7 +149,7 @@ class ReplacemsgGroupAdmin(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupAuth(BaseModel):
@@ -166,7 +166,7 @@ class ReplacemsgGroupAuth(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupSslvpn(BaseModel):
@@ -183,7 +183,7 @@ class ReplacemsgGroupSslvpn(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupNacQuar(BaseModel):
@@ -200,7 +200,7 @@ class ReplacemsgGroupNacQuar(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupTrafficQuota(BaseModel):
@@ -217,7 +217,7 @@ class ReplacemsgGroupTrafficQuota(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupUtm(BaseModel):
@@ -234,7 +234,7 @@ class ReplacemsgGroupUtm(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupCustomMessage(BaseModel):
@@ -251,7 +251,7 @@ class ReplacemsgGroupCustomMessage(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupIcap(BaseModel):
@@ -268,7 +268,7 @@ class ReplacemsgGroupIcap(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 
 class ReplacemsgGroupAutomation(BaseModel):
@@ -285,7 +285,7 @@ class ReplacemsgGroupAutomation(BaseModel):
     msg_type: str = Field(max_length=28, default="", description="Message type.")
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -303,7 +303,27 @@ class ReplacemsgGroupModel(BaseModel):
 
     Configure replacement message groups.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comment: max_length=255 pattern=        - group_type: pattern=        - mail: pattern=        - http: pattern=        - webproxy: pattern=        - ftp: pattern=        - fortiguard_wf: pattern=        - spam: pattern=        - alertmail: pattern=        - admin: pattern=        - auth: pattern=        - sslvpn: pattern=        - nac_quar: pattern=        - traffic_quota: pattern=        - utm: pattern=        - custom_message: pattern=        - icap: pattern=        - automation: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comment: max_length=255 pattern=
+        - group_type: pattern=
+        - mail: pattern=
+        - http: pattern=
+        - webproxy: pattern=
+        - ftp: pattern=
+        - fortiguard_wf: pattern=
+        - spam: pattern=
+        - alertmail: pattern=
+        - admin: pattern=
+        - auth: pattern=
+        - sslvpn: pattern=
+        - nac_quar: pattern=
+        - traffic_quota: pattern=
+        - utm: pattern=
+        - custom_message: pattern=
+        - icap: pattern=
+        - automation: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -315,7 +335,26 @@ class ReplacemsgGroupModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Group name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    group_type: Literal["default", "utm", "auth"] = Field(default="default", description="Group type.")    mail: list[ReplacemsgGroupMail] = Field(default=None, description="Replacement message table entries.")    http: list[ReplacemsgGroupHttp] = Field(default=None, description="Replacement message table entries.")    webproxy: list[ReplacemsgGroupWebproxy] = Field(default=None, description="Replacement message table entries.")    ftp: list[ReplacemsgGroupFtp] = Field(default=None, description="Replacement message table entries.")    fortiguard_wf: list[ReplacemsgGroupFortiguardWf] = Field(default=None, description="Replacement message table entries.")    spam: list[ReplacemsgGroupSpam] = Field(default=None, description="Replacement message table entries.")    alertmail: list[ReplacemsgGroupAlertmail] = Field(default=None, description="Replacement message table entries.")    admin: list[ReplacemsgGroupAdmin] = Field(default=None, description="Replacement message table entries.")    auth: list[ReplacemsgGroupAuth] = Field(default=None, description="Replacement message table entries.")    sslvpn: list[ReplacemsgGroupSslvpn] = Field(default=None, description="Replacement message table entries.")    nac_quar: list[ReplacemsgGroupNacQuar] = Field(default=None, description="Replacement message table entries.")    traffic_quota: list[ReplacemsgGroupTrafficQuota] = Field(default=None, description="Replacement message table entries.")    utm: list[ReplacemsgGroupUtm] = Field(default=None, description="Replacement message table entries.")    custom_message: list[ReplacemsgGroupCustomMessage] = Field(default=None, description="Replacement message table entries.")    icap: list[ReplacemsgGroupIcap] = Field(default=None, description="Replacement message table entries.")    automation: list[ReplacemsgGroupAutomation] = Field(default=None, description="Replacement message table entries.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Group name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    group_type: Literal["default", "utm", "auth"] = Field(default="default", description="Group type.")
+    mail: list[ReplacemsgGroupMail] | None = Field(default=None, description="Replacement message table entries.")
+    http: list[ReplacemsgGroupHttp] | None = Field(default=None, description="Replacement message table entries.")
+    webproxy: list[ReplacemsgGroupWebproxy] | None = Field(default=None, description="Replacement message table entries.")
+    ftp: list[ReplacemsgGroupFtp] | None = Field(default=None, description="Replacement message table entries.")
+    fortiguard_wf: list[ReplacemsgGroupFortiguardWf] | None = Field(default=None, description="Replacement message table entries.")
+    spam: list[ReplacemsgGroupSpam] | None = Field(default=None, description="Replacement message table entries.")
+    alertmail: list[ReplacemsgGroupAlertmail] | None = Field(default=None, description="Replacement message table entries.")
+    admin: list[ReplacemsgGroupAdmin] | None = Field(default=None, description="Replacement message table entries.")
+    auth: list[ReplacemsgGroupAuth] | None = Field(default=None, description="Replacement message table entries.")
+    sslvpn: list[ReplacemsgGroupSslvpn] | None = Field(default=None, description="Replacement message table entries.")
+    nac_quar: list[ReplacemsgGroupNacQuar] | None = Field(default=None, description="Replacement message table entries.")
+    traffic_quota: list[ReplacemsgGroupTrafficQuota] | None = Field(default=None, description="Replacement message table entries.")
+    utm: list[ReplacemsgGroupUtm] | None = Field(default=None, description="Replacement message table entries.")
+    custom_message: list[ReplacemsgGroupCustomMessage] | None = Field(default=None, description="Replacement message table entries.")
+    icap: list[ReplacemsgGroupIcap] | None = Field(default=None, description="Replacement message table entries.")
+    automation: list[ReplacemsgGroupAutomation] | None = Field(default=None, description="Replacement message table entries.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -364,5 +403,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.532175Z
+# Generated: 2026-01-14T22:43:36.777663Z
 # ============================================================================

@@ -8,20 +8,20 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .collected_email import CollectedEmail, CollectedEmailDictMode, CollectedEmailObjectMode
     from .banned import Banned
-    from .device import DeviceDictMode, DeviceObjectMode
+    from .device import Device, DeviceDictMode, DeviceObjectMode
     from .firewall import Firewall
     from .fortitoken import Fortitoken
-    from .fortitoken_cloud import FortitokenCloudDictMode, FortitokenCloudObjectMode
+    from .fortitoken_cloud import FortitokenCloud, FortitokenCloudDictMode, FortitokenCloudObjectMode
     from .fsso import Fsso
-    from .guest import GuestDictMode, GuestObjectMode
-    from .info import InfoDictMode, InfoObjectMode
-    from .local import LocalDictMode, LocalObjectMode
-    from .password_policy_conform import PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
+    from .guest import Guest, GuestDictMode, GuestObjectMode
+    from .info import Info, InfoDictMode, InfoObjectMode
+    from .local import Local, LocalDictMode, LocalObjectMode
+    from .password_policy_conform import PasswordPolicyConform, PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
     from .proxy import Proxy
-    from .query import QueryDictMode, QueryObjectMode
-    from .radius import RadiusDictMode, RadiusObjectMode
-    from .scim import ScimDictMode, ScimObjectMode
-    from .tacacs_plus import TacacsPlusDictMode, TacacsPlusObjectMode
+    from .query import Query, QueryDictMode, QueryObjectMode
+    from .radius import Radius, RadiusDictMode, RadiusObjectMode
+    from .scim import Scim, ScimDictMode, ScimObjectMode
+    from .tacacs_plus import TacacsPlus, TacacsPlusDictMode, TacacsPlusObjectMode
 
 __all__ = [
     "CollectedEmail",

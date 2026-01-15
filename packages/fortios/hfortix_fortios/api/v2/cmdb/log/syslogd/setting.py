@@ -247,7 +247,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = None,
         source_ip_interface: str | None = None,
         source_ip: str | None = None,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = None,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = None,
         priority: Literal["default", "low"] | None = None,
         max_log_rate: int | None = None,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = None,
@@ -276,7 +276,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
             facility: Remote syslog facility.
             source_ip_interface: Source interface of syslog.
             source_ip: Source IP address of syslog.
-            format: Log format.
+            format_: Log format.
             priority: Set log transmission priority.
             max_log_rate: Syslog maximum log rate in MBps (0 = unlimited).
             enc_algorithm: Enable/disable reliable syslogging with TLS encryption.
@@ -339,7 +339,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
             facility=facility,
             source_ip_interface=source_ip_interface,
             source_ip=source_ip,
-            format=format,
+            format_=format_,
             priority=priority,
             max_log_rate=max_log_rate,
             enc_algorithm=enc_algorithm,

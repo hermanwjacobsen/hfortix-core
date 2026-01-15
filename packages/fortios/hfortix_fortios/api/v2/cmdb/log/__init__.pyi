@@ -11,22 +11,22 @@ if TYPE_CHECKING:
     from .gui_display import GuiDisplay, GuiDisplayDictMode, GuiDisplayObjectMode
     from .setting import Setting, SettingDictMode, SettingObjectMode
     from .threat_weight import ThreatWeight, ThreatWeightDictMode, ThreatWeightObjectMode
-    from .disk import DiskDictMode, DiskObjectMode
-    from .fortianalyzer import FortianalyzerDictMode, FortianalyzerObjectMode
-    from .fortianalyzer2 import Fortianalyzer2DictMode, Fortianalyzer2ObjectMode
-    from .fortianalyzer3 import Fortianalyzer3DictMode, Fortianalyzer3ObjectMode
-    from .fortianalyzer_cloud import FortianalyzerCloudDictMode, FortianalyzerCloudObjectMode
-    from .fortiguard import FortiguardDictMode, FortiguardObjectMode
-    from .memory import MemoryDictMode, MemoryObjectMode
-    from .null_device import NullDeviceDictMode, NullDeviceObjectMode
-    from .syslogd import SyslogdDictMode, SyslogdObjectMode
-    from .syslogd2 import Syslogd2DictMode, Syslogd2ObjectMode
-    from .syslogd3 import Syslogd3DictMode, Syslogd3ObjectMode
-    from .syslogd4 import Syslogd4DictMode, Syslogd4ObjectMode
-    from .tacacs_plusaccounting import TacacsPlusaccountingDictMode, TacacsPlusaccountingObjectMode
-    from .tacacs_plusaccounting2 import TacacsPlusaccounting2DictMode, TacacsPlusaccounting2ObjectMode
-    from .tacacs_plusaccounting3 import TacacsPlusaccounting3DictMode, TacacsPlusaccounting3ObjectMode
-    from .webtrends import WebtrendsDictMode, WebtrendsObjectMode
+    from .disk import Disk, DiskDictMode, DiskObjectMode
+    from .fortianalyzer import Fortianalyzer, FortianalyzerDictMode, FortianalyzerObjectMode
+    from .fortianalyzer2 import Fortianalyzer2, Fortianalyzer2DictMode, Fortianalyzer2ObjectMode
+    from .fortianalyzer3 import Fortianalyzer3, Fortianalyzer3DictMode, Fortianalyzer3ObjectMode
+    from .fortianalyzer_cloud import FortianalyzerCloud, FortianalyzerCloudDictMode, FortianalyzerCloudObjectMode
+    from .fortiguard import Fortiguard, FortiguardDictMode, FortiguardObjectMode
+    from .memory import Memory, MemoryDictMode, MemoryObjectMode
+    from .null_device import NullDevice, NullDeviceDictMode, NullDeviceObjectMode
+    from .syslogd import Syslogd, SyslogdDictMode, SyslogdObjectMode
+    from .syslogd2 import Syslogd2, Syslogd2DictMode, Syslogd2ObjectMode
+    from .syslogd3 import Syslogd3, Syslogd3DictMode, Syslogd3ObjectMode
+    from .syslogd4 import Syslogd4, Syslogd4DictMode, Syslogd4ObjectMode
+    from .tacacs_plusaccounting import TacacsPlusaccounting, TacacsPlusaccountingDictMode, TacacsPlusaccountingObjectMode
+    from .tacacs_plusaccounting2 import TacacsPlusaccounting2, TacacsPlusaccounting2DictMode, TacacsPlusaccounting2ObjectMode
+    from .tacacs_plusaccounting3 import TacacsPlusaccounting3, TacacsPlusaccounting3DictMode, TacacsPlusaccounting3ObjectMode
+    from .webtrends import Webtrends, WebtrendsDictMode, WebtrendsObjectMode
 
 __all__ = [
     "CustomField",

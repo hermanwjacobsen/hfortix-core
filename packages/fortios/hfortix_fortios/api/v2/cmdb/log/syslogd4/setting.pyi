@@ -31,7 +31,7 @@ class SettingPayload(TypedDict, total=False):
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]  # Remote syslog facility. | Default: local7
     source_ip_interface: str  # Source interface of syslog. | MaxLen: 15
     source_ip: str  # Source IP address of syslog. | MaxLen: 63
-    format: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
+    format_: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
     priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
     max_log_rate: int  # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]  # Enable/disable reliable syslogging with TLS encryp | Default: disable
@@ -98,7 +98,7 @@ class SettingResponse(TypedDict):
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]  # Remote syslog facility. | Default: local7
     source_ip_interface: str  # Source interface of syslog. | MaxLen: 15
     source_ip: str  # Source IP address of syslog. | MaxLen: 63
-    format: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
+    format_: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
     priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
     max_log_rate: int  # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]  # Enable/disable reliable syslogging with TLS encryp | Default: disable
@@ -133,7 +133,7 @@ class SettingObject:
     # Source IP address of syslog. | MaxLen: 63
     source_ip: str
     # Log format. | Default: default
-    format: Literal["default", "csv", "cef", "rfc5424", "json"]
+    format_: Literal["default", "csv", "cef", "rfc5424", "json"]
     # Set log transmission priority. | Default: default
     priority: Literal["default", "low"]
     # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
@@ -154,7 +154,6 @@ class SettingObject:
     vrf_select: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -176,6 +175,10 @@ class Setting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -196,6 +199,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -213,6 +217,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -229,6 +234,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # ================================================================
@@ -271,7 +277,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -290,7 +296,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -390,23 +396,6 @@ class Setting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -425,7 +414,7 @@ class Setting:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -437,6 +426,7 @@ class Setting:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
@@ -452,7 +442,7 @@ class Setting:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -480,7 +470,7 @@ class Setting:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -507,7 +497,7 @@ class Setting:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -518,32 +508,7 @@ class Setting:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        mode: Literal["udp", "legacy-reliable", "reliable"] | None = ...,
-        port: int | None = ...,
-        facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
-        source_ip_interface: str | None = ...,
-        source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
-        priority: Literal["default", "low"] | None = ...,
-        max_log_rate: int | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -563,7 +528,7 @@ class Setting:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -589,8 +554,6 @@ class Setting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -618,6 +581,10 @@ class SettingDictMode:
     By default returns SettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -729,7 +696,7 @@ class SettingDictMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -757,7 +724,7 @@ class SettingDictMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -785,7 +752,7 @@ class SettingDictMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -796,10 +763,12 @@ class SettingDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -810,7 +779,7 @@ class SettingDictMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -842,7 +811,7 @@ class SettingDictMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -867,8 +836,6 @@ class SettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -892,6 +859,10 @@ class SettingObjectMode:
     By default returns SettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1003,7 +974,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1031,7 +1002,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1059,7 +1030,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1087,7 +1058,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1098,10 +1069,12 @@ class SettingObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1112,7 +1085,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1144,7 +1117,7 @@ class SettingObjectMode:
         facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
         source_ip_interface: str | None = ...,
         source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
+        format_: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
         priority: Literal["default", "low"] | None = ...,
         max_log_rate: int | None = ...,
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
@@ -1169,8 +1142,6 @@ class SettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

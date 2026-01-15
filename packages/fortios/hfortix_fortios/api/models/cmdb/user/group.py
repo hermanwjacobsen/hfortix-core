@@ -74,7 +74,7 @@ class GroupGuest(BaseModel):
 # ============================================================================
 
 
-class GroupGroup_typeEnum(str, Enum):
+class GroupGroupTypeEnum(str, Enum):
     """Allowed values for group_type field."""
     FIREWALL = "firewall"
     FSSO_SERVICE = "fsso-service"
@@ -93,7 +93,32 @@ class GroupModel(BaseModel):
 
     Configure user groups.
 
-    Validation Rules:        - name: max_length=35 pattern=        - id: min=0 max=4294967295 pattern=        - group_type: pattern=        - authtimeout: min=0 max=43200 pattern=        - auth_concurrent_override: pattern=        - auth_concurrent_value: min=0 max=100 pattern=        - http_digest_realm: max_length=35 pattern=        - sso_attribute_value: max_length=511 pattern=        - member: pattern=        - match: pattern=        - user_id: pattern=        - password: pattern=        - user_name: pattern=        - sponsor: pattern=        - company: pattern=        - email: pattern=        - mobile_phone: pattern=        - sms_server: pattern=        - sms_custom_server: max_length=35 pattern=        - expire_type: pattern=        - expire: min=1 max=31536000 pattern=        - max_accounts: min=0 max=500 pattern=        - multiple_guest_add: pattern=        - guest: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - id: min=0 max=4294967295 pattern=
+        - group_type: pattern=
+        - authtimeout: min=0 max=43200 pattern=
+        - auth_concurrent_override: pattern=
+        - auth_concurrent_value: min=0 max=100 pattern=
+        - http_digest_realm: max_length=35 pattern=
+        - sso_attribute_value: max_length=511 pattern=
+        - member: pattern=
+        - match: pattern=
+        - user_id: pattern=
+        - password: pattern=
+        - user_name: pattern=
+        - sponsor: pattern=
+        - company: pattern=
+        - email: pattern=
+        - mobile_phone: pattern=
+        - sms_server: pattern=
+        - sms_custom_server: max_length=35 pattern=
+        - expire_type: pattern=
+        - expire: min=1 max=31536000 pattern=
+        - max_accounts: min=0 max=500 pattern=
+        - multiple_guest_add: pattern=
+        - guest: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -105,7 +130,31 @@ class GroupModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Group name.")    id: int | None = Field(ge=0, le=4294967295, default=0, description="Group ID.")    group_type: GroupGroupTypeEnum | None = Field(default="firewall", description="Set the group to be for firewall authentication, FSSO, RSSO, or guest users.")    authtimeout: int | None = Field(ge=0, le=43200, default=0, description="Authentication timeout in minutes for this user group. 0 to use the global user setting auth-timeout.")    auth_concurrent_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global number of concurrent authentication sessions for this user group.")    auth_concurrent_value: int | None = Field(ge=0, le=100, default=0, description="Maximum number of concurrent authenticated connections per user (0 - 100).")    http_digest_realm: str | None = Field(max_length=35, default="", description="Realm attribute for MD5-digest authentication.")    sso_attribute_value: str | None = Field(max_length=511, default="", description="RADIUS attribute value.")    member: list[GroupMember] = Field(default=None, description="Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.")    match: list[GroupMatch] = Field(default=None, description="Group matches.")    user_id: Literal["email", "auto-generate", "specify"] | None = Field(default="email", description="Guest user ID type.")    password: Literal["auto-generate", "specify", "disable"] | None = Field(default="auto-generate", description="Guest user password type.")    user_name: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user name entry.")    sponsor: Literal["optional", "mandatory", "disabled"] | None = Field(default="optional", description="Set the action for the sponsor guest user field.")    company: Literal["optional", "mandatory", "disabled"] | None = Field(default="optional", description="Set the action for the company guest user field.")    email: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable the guest user email address field.")    mobile_phone: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user mobile phone number field.")    sms_server: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Send SMS through FortiGuard or other external server.")    sms_custom_server: str | None = Field(max_length=35, default="", description="SMS server.")  # datasource: ['system.sms-server.name']    expire_type: Literal["immediately", "first-successful-login"] | None = Field(default="immediately", description="Determine when the expiration countdown begins.")    expire: int | None = Field(ge=1, le=31536000, default=14400, description="Time in seconds before guest user accounts expire (1 - 31536000).")    max_accounts: int | None = Field(ge=0, le=500, default=0, description="Maximum number of guest accounts that can be created for this group (0 means unlimited).")    multiple_guest_add: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable addition of multiple guests.")    guest: list[GroupGuest] = Field(default=None, description="Guest User.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Group name.")
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="Group ID.")
+    group_type: str | GroupGroupTypeEnum | None = Field(default="firewall", description="Set the group to be for firewall authentication, FSSO, RSSO, or guest users.")
+    authtimeout: int | None = Field(ge=0, le=43200, default=0, description="Authentication timeout in minutes for this user group. 0 to use the global user setting auth-timeout.")
+    auth_concurrent_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global number of concurrent authentication sessions for this user group.")
+    auth_concurrent_value: int | None = Field(ge=0, le=100, default=0, description="Maximum number of concurrent authenticated connections per user (0 - 100).")
+    http_digest_realm: str | None = Field(max_length=35, default="", description="Realm attribute for MD5-digest authentication.")
+    sso_attribute_value: str | None = Field(max_length=511, default="", description="RADIUS attribute value.")
+    member: list[GroupMember] | None = Field(default=None, description="Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.")
+    match: list[GroupMatch] | None = Field(default=None, description="Group matches.")
+    user_id: Literal["email", "auto-generate", "specify"] | None = Field(default="email", description="Guest user ID type.")
+    password: Literal["auto-generate", "specify", "disable"] | None = Field(default="auto-generate", description="Guest user password type.")
+    user_name: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user name entry.")
+    sponsor: Literal["optional", "mandatory", "disabled"] | None = Field(default="optional", description="Set the action for the sponsor guest user field.")
+    company: Literal["optional", "mandatory", "disabled"] | None = Field(default="optional", description="Set the action for the company guest user field.")
+    email: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable the guest user email address field.")
+    mobile_phone: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user mobile phone number field.")
+    sms_server: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Send SMS through FortiGuard or other external server.")
+    sms_custom_server: str | None = Field(max_length=35, default="", description="SMS server.")  # datasource: ['system.sms-server.name']
+    expire_type: Literal["immediately", "first-successful-login"] | None = Field(default="immediately", description="Determine when the expiration countdown begins.")
+    expire: int | None = Field(ge=1, le=31536000, default=14400, description="Time in seconds before guest user accounts expire (1 - 31536000).")
+    max_accounts: int | None = Field(ge=0, le=500, default=0, description="Maximum number of guest accounts that can be created for this group (0 means unlimited).")
+    multiple_guest_add: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable addition of multiple guests.")
+    guest: list[GroupGuest] | None = Field(default=None, description="Guest User.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -184,7 +233,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "member", [])
@@ -260,7 +309,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "match", [])
@@ -326,7 +375,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sms_custom_server", None)
@@ -363,10 +412,12 @@ class GroupModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_match_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sms_custom_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_match_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sms_custom_server_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -388,5 +439,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.352254Z
+# Generated: 2026-01-14T22:43:39.061115Z
 # ============================================================================

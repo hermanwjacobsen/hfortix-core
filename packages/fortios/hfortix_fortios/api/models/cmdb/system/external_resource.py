@@ -18,7 +18,7 @@ from uuid import UUID
 
 
 class ExternalResourceTypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     CATEGORY = "category"
     DOMAIN = "domain"
     MALWARE = "malware"
@@ -39,7 +39,33 @@ class ExternalResourceModel(BaseModel):
 
     Configure external resource.
 
-    Validation Rules:        - name: max_length=35 pattern=        - uuid: pattern=        - status: pattern=        - type: pattern=        - namespace: max_length=15 pattern=        - object_array_path: max_length=511 pattern=        - address_name_field: max_length=511 pattern=        - address_data_field: max_length=511 pattern=        - address_comment_field: max_length=511 pattern=        - update_method: pattern=        - category: min=192 max=221 pattern=        - username: max_length=64 pattern=        - password: pattern=        - client_cert_auth: pattern=        - client_cert: max_length=79 pattern=        - comments: max_length=255 pattern=        - resource: max_length=511 pattern=        - user_agent: max_length=255 pattern=        - server_identity_check: pattern=        - refresh_rate: min=1 max=43200 pattern=        - source_ip: pattern=        - source_ip_interface: max_length=15 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - uuid: pattern=
+        - status: pattern=
+        - type_: pattern=
+        - namespace: max_length=15 pattern=
+        - object_array_path: max_length=511 pattern=
+        - address_name_field: max_length=511 pattern=
+        - address_data_field: max_length=511 pattern=
+        - address_comment_field: max_length=511 pattern=
+        - update_method: pattern=
+        - category: min=192 max=221 pattern=
+        - username: max_length=64 pattern=
+        - password: pattern=
+        - client_cert_auth: pattern=
+        - client_cert: max_length=79 pattern=
+        - comments: max_length=255 pattern=
+        - resource: max_length=511 pattern=
+        - user_agent: max_length=255 pattern=
+        - server_identity_check: pattern=
+        - refresh_rate: min=1 max=43200 pattern=
+        - source_ip: pattern=
+        - source_ip_interface: max_length=15 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -51,7 +77,32 @@ class ExternalResourceModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="External resource name.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable user resource.")    type: ExternalResourceTypeEnum | None = Field(default="category", description="User resource type.")    namespace: str | None = Field(max_length=15, default="", description="Generic external connector address namespace.")    object_array_path: str | None = Field(max_length=511, default="$.addresses", description="JSON Path to array of generic addresses in resource.")    address_name_field: str | None = Field(max_length=511, default="$.name", description="JSON Path to address name in generic address entry.")    address_data_field: str | None = Field(max_length=511, default="$.value", description="JSON Path to address data in generic address entry.")    address_comment_field: str | None = Field(max_length=511, default="$.description", description="JSON Path to address description in generic address entry.")    update_method: Literal["feed", "push"] | None = Field(default="feed", description="External resource update method.")    category: int | None = Field(ge=192, le=221, default=0, description="User resource category.")    username: str | None = Field(max_length=64, default="", description="HTTP basic authentication user name.")    password: Any = Field(default=None, description="HTTP basic authentication password.")    client_cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using client certificate for TLS authentication.")    client_cert: str | None = Field(max_length=79, default="", description="Client certificate name.")  # datasource: ['vpn.certificate.local.name']    comments: str | None = Field(max_length=255, default=None, description="Comment.")    resource: str = Field(max_length=511, default="", description="URL of external resource.")    user_agent: str | None = Field(max_length=255, default=None, description="HTTP User-Agent header (default = 'curl/7.58.0').")    server_identity_check: Literal["none", "basic", "full"] | None = Field(default="none", description="Certificate verification option.")    refresh_rate: int = Field(ge=1, le=43200, default=5, description="Time interval to refresh external resource (1 - 43200 min, default = 5 min).")    source_ip: str | None = Field(default="0.0.0.0", description="Source IPv4 address used to communicate with server.")    source_ip_interface: str | None = Field(max_length=15, default="", description="IPv4 Source interface for communication with the server.")  # datasource: ['system.interface.name']    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="External resource name.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable user resource.")
+    type_: str | ExternalResourceTypeEnum | None = Field(default="category", description="User resource type.")
+    namespace: str | None = Field(max_length=15, default="", description="Generic external connector address namespace.")
+    object_array_path: str | None = Field(max_length=511, default="$.addresses", description="JSON Path to array of generic addresses in resource.")
+    address_name_field: str | None = Field(max_length=511, default="$.name", description="JSON Path to address name in generic address entry.")
+    address_data_field: str | None = Field(max_length=511, default="$.value", description="JSON Path to address data in generic address entry.")
+    address_comment_field: str | None = Field(max_length=511, default="$.description", description="JSON Path to address description in generic address entry.")
+    update_method: Literal["feed", "push"] | None = Field(default="feed", description="External resource update method.")
+    category: int | None = Field(ge=192, le=221, default=0, description="User resource category.")
+    username: str | None = Field(max_length=64, default="", description="HTTP basic authentication user name.")
+    password: Any = Field(default=None, description="HTTP basic authentication password.")
+    client_cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using client certificate for TLS authentication.")
+    client_cert: str | None = Field(max_length=79, default="", description="Client certificate name.")  # datasource: ['vpn.certificate.local.name']
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    resource: str = Field(max_length=511, default="", description="URL of external resource.")
+    user_agent: str | None = Field(max_length=255, default=None, description="HTTP User-Agent header (default = 'curl/7.58.0').")
+    server_identity_check: Literal["none", "basic", "full"] | None = Field(default="none", description="Certificate verification option.")
+    refresh_rate: int = Field(ge=1, le=43200, default=5, description="Time interval to refresh external resource (1 - 43200 min, default = 5 min).")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IPv4 address used to communicate with server.")
+    source_ip_interface: str | None = Field(max_length=15, default="", description="IPv4 Source interface for communication with the server.")  # datasource: ['system.interface.name']
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -160,7 +211,7 @@ class ExternalResourceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.external_resource.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "client_cert", None)
@@ -209,7 +260,7 @@ class ExternalResourceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.external_resource.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -258,7 +309,7 @@ class ExternalResourceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.external_resource.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -295,10 +346,12 @@ class ExternalResourceModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_client_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_source_ip_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_source_ip_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -320,5 +373,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.046659Z
+# Generated: 2026-01-14T22:43:38.672782Z
 # ============================================================================

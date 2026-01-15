@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .custom_language import CustomLanguageDictMode, CustomLanguageObjectMode
-    from .language import LanguageDictMode, LanguageObjectMode
+    from .custom_language import CustomLanguage, CustomLanguageDictMode, CustomLanguageObjectMode
+    from .language import Language, LanguageDictMode, LanguageObjectMode
 
 __all__ = [
     "WebUiDictMode",

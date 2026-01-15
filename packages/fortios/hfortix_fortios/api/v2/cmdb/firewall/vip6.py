@@ -274,7 +274,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
         src_filter: str | list[str] | list[dict[str, Any]] | None = None,
         src_vip_filter: Literal["disable", "enable"] | None = None,
         extip: str | None = None,
@@ -369,7 +369,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id: Custom defined ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             comment: Comment.
-            type: Configure a static NAT server load balance VIP or access proxy.
+            type_: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
                 Default format: [{'range': 'value'}]
                 Supported formats:
@@ -565,7 +565,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             src_filter=src_filter,
             src_vip_filter=src_vip_filter,
             extip=extip,
@@ -678,7 +678,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
         src_filter: str | list[str] | list[dict[str, Any]] | None = None,
         src_vip_filter: Literal["disable", "enable"] | None = None,
         extip: str | None = None,
@@ -773,7 +773,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id: Custom defined ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             comment: Comment.
-            type: Configure a static NAT server load balance VIP or access proxy.
+            type_: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
                 Default format: [{'range': 'value'}]
                 Supported formats:
@@ -971,7 +971,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             src_filter=src_filter,
             src_vip_filter=src_vip_filter,
             extip=extip,
@@ -1184,7 +1184,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "server-load-balance", "access-proxy"] | None = None,
         src_filter: str | list[str] | list[dict[str, Any]] | None = None,
         src_vip_filter: Literal["disable", "enable"] | None = None,
         extip: str | None = None,
@@ -1280,7 +1280,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id: Field id
             uuid: Field uuid
             comment: Field comment
-            type: Field type
+            type_: Field type
             src_filter: Field src-filter
             src_vip_filter: Field src-vip-filter
             extip: Field extip
@@ -1406,7 +1406,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             src_filter=src_filter,
             src_vip_filter=src_vip_filter,
             extip=extip,

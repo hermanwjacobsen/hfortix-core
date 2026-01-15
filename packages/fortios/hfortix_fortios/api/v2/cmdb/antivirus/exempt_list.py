@@ -235,7 +235,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         hash_type: Literal["md5", "sha1", "sha256"] | None = None,
-        hash: str | None = None,
+        hash_: str | None = None,
         status: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -252,7 +252,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name: Table entry name.
             comment: Comment.
             hash_type: Hash type.
-            hash: Hash value to be matched.
+            hash_: Hash value to be matched.
             status: Enable/disable table entry.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
@@ -290,7 +290,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name=name,
             comment=comment,
             hash_type=hash_type,
-            hash=hash,
+            hash_=hash_,
             status=status,
             data=payload_dict,
         )
@@ -325,7 +325,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         hash_type: Literal["md5", "sha1", "sha256"] | None = None,
-        hash: str | None = None,
+        hash_: str | None = None,
         status: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -342,7 +342,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name: Table entry name.
             comment: Comment.
             hash_type: Hash type.
-            hash: Hash value to be matched.
+            hash_: Hash value to be matched.
             status: Enable/disable table entry.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
@@ -382,7 +382,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name=name,
             comment=comment,
             hash_type=hash_type,
-            hash=hash,
+            hash_=hash_,
             status=status,
             data=payload_dict,
         )
@@ -517,7 +517,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         hash_type: Literal["md5", "sha1", "sha256"] | None = None,
-        hash: str | None = None,
+        hash_: str | None = None,
         status: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -535,7 +535,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name: Field name
             comment: Field comment
             hash_type: Field hash-type
-            hash: Field hash
+            hash_: Field hash
             status: Field status
             vdom: Virtual domain name
             raw_json: If True, return raw API response
@@ -583,7 +583,7 @@ class ExemptList(CRUDEndpoint, MetadataMixin):
             name=name,
             comment=comment,
             hash_type=hash_type,
-            hash=hash,
+            hash_=hash_,
             status=status,
             data=payload_dict,
         )

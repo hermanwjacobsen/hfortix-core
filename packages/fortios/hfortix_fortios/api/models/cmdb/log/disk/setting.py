@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class SettingRoll_dayEnum(str, Enum):
+class SettingRollDayEnum(str, Enum):
     """Allowed values for roll_day field."""
     SUNDAY = "sunday"
     MONDAY = "monday"
@@ -51,7 +51,7 @@ class SettingUploadtypeEnum(str, Enum):
     DEBUG = "debug"
 
 
-class SettingUpload_ssl_connEnum(str, Enum):
+class SettingUploadSslConnEnum(str, Enum):
     """Allowed values for upload_ssl_conn field."""
     DEFAULT = "default"
     HIGH = "high"
@@ -70,7 +70,39 @@ class SettingModel(BaseModel):
 
     Settings for local disk logging.
 
-    Validation Rules:        - status: pattern=        - ips_archive: pattern=        - max_log_file_size: min=1 max=100 pattern=        - max_policy_packet_capture_size: min=0 max=4294967295 pattern=        - roll_schedule: pattern=        - roll_day: pattern=        - roll_time: pattern=        - diskfull: pattern=        - log_quota: min=0 max=4294967295 pattern=        - dlp_archive_quota: min=0 max=4294967295 pattern=        - report_quota: min=0 max=4294967295 pattern=        - maximum_log_age: min=0 max=3650 pattern=        - upload: pattern=        - upload_destination: pattern=        - uploadip: pattern=        - uploadport: min=0 max=65535 pattern=        - source_ip: pattern=        - uploaduser: max_length=35 pattern=        - uploadpass: max_length=128 pattern=        - uploaddir: max_length=63 pattern=        - uploadtype: pattern=        - uploadsched: pattern=        - uploadtime: pattern=        - upload_delete_files: pattern=        - upload_ssl_conn: pattern=        - full_first_warning_threshold: min=1 max=98 pattern=        - full_second_warning_threshold: min=2 max=99 pattern=        - full_final_warning_threshold: min=3 max=100 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - ips_archive: pattern=
+        - max_log_file_size: min=1 max=100 pattern=
+        - max_policy_packet_capture_size: min=0 max=4294967295 pattern=
+        - roll_schedule: pattern=
+        - roll_day: pattern=
+        - roll_time: pattern=
+        - diskfull: pattern=
+        - log_quota: min=0 max=4294967295 pattern=
+        - dlp_archive_quota: min=0 max=4294967295 pattern=
+        - report_quota: min=0 max=4294967295 pattern=
+        - maximum_log_age: min=0 max=3650 pattern=
+        - upload: pattern=
+        - upload_destination: pattern=
+        - uploadip: pattern=
+        - uploadport: min=0 max=65535 pattern=
+        - source_ip: pattern=
+        - uploaduser: max_length=35 pattern=
+        - uploadpass: max_length=128 pattern=
+        - uploaddir: max_length=63 pattern=
+        - uploadtype: pattern=
+        - uploadsched: pattern=
+        - uploadtime: pattern=
+        - upload_delete_files: pattern=
+        - upload_ssl_conn: pattern=
+        - full_first_warning_threshold: min=1 max=98 pattern=
+        - full_second_warning_threshold: min=2 max=99 pattern=
+        - full_final_warning_threshold: min=3 max=100 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -82,7 +114,38 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable local disk logging.")    ips_archive: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPS packet archiving to the local disk.")    max_log_file_size: int | None = Field(ge=1, le=100, default=20, description="Maximum log file size before rolling (1 - 100 Mbytes).")    max_policy_packet_capture_size: int | None = Field(ge=0, le=4294967295, default=100, description="Maximum size of policy sniffer in MB (0 means unlimited).")    roll_schedule: Literal["daily", "weekly"] | None = Field(default="daily", description="Frequency to check log file for rolling.")    roll_day: SettingRollDayEnum | None = Field(default="sunday", description="Day of week on which to roll log file.")    roll_time: str | None = Field(default="", description="Time of day to roll the log file (hh:mm).")    diskfull: Literal["overwrite", "nolog"] | None = Field(default="overwrite", description="Action to take when disk is full. The system can overwrite the oldest log messages or stop logging when the disk is full (default = overwrite).")    log_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Disk log quota (MB).")    dlp_archive_quota: int | None = Field(ge=0, le=4294967295, default=0, description="DLP archive quota (MB).")    report_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Report db quota (MB).")    maximum_log_age: int | None = Field(ge=0, le=3650, default=7, description="Delete log files older than (days).")    upload: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable uploading log files when they are rolled.")    upload_destination: Literal["ftp-server"] | None = Field(default="ftp-server", description="The type of server to upload log files to. Only FTP is currently supported.")    uploadip: str = Field(default="0.0.0.0", description="IP address of the FTP server to upload log files to.")    uploadport: int | None = Field(ge=0, le=65535, default=21, description="TCP port to use for communicating with the FTP server (default = 21).")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address to use for uploading disk log files.")    uploaduser: str = Field(max_length=35, default="", description="Username required to log into the FTP server to upload disk log files.")    uploadpass: Any = Field(max_length=128, default=None, description="Password required to log into the FTP server to upload disk log files.")    uploaddir: str | None = Field(max_length=63, default="", description="The remote directory on the FTP server to upload log files to.")    uploadtype: SettingUploadtypeEnum | None = Field(default="traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl", description="Types of log files to upload. Separate multiple entries with a space.")    uploadsched: Literal["disable", "enable"] | None = Field(default="disable", description="Set the schedule for uploading log files to the FTP server (default = disable = upload when rolling).")    uploadtime: str | None = Field(default="", description="Time of day at which log files are uploaded if uploadsched is enabled (hh:mm or hh).")    upload_delete_files: Literal["enable", "disable"] | None = Field(default="enable", description="Delete log files after uploading (default = enable).")    upload_ssl_conn: SettingUploadSslConnEnum | None = Field(default="default", description="Enable/disable encrypted FTPS communication to upload log files.")    full_first_warning_threshold: int | None = Field(ge=1, le=98, default=75, description="Log full first warning threshold as a percent (1 - 98, default = 75).")    full_second_warning_threshold: int | None = Field(ge=2, le=99, default=90, description="Log full second warning threshold as a percent (2 - 99, default = 90).")    full_final_warning_threshold: int | None = Field(ge=3, le=100, default=95, description="Log full final warning threshold as a percent (3 - 100, default = 95).")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    status: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable local disk logging.")
+    ips_archive: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPS packet archiving to the local disk.")
+    max_log_file_size: int | None = Field(ge=1, le=100, default=20, description="Maximum log file size before rolling (1 - 100 Mbytes).")
+    max_policy_packet_capture_size: int | None = Field(ge=0, le=4294967295, default=100, description="Maximum size of policy sniffer in MB (0 means unlimited).")
+    roll_schedule: Literal["daily", "weekly"] | None = Field(default="daily", description="Frequency to check log file for rolling.")
+    roll_day: str | SettingRollDayEnum | None = Field(default="sunday", description="Day of week on which to roll log file.")
+    roll_time: str | None = Field(default="", description="Time of day to roll the log file (hh:mm).")
+    diskfull: Literal["overwrite", "nolog"] | None = Field(default="overwrite", description="Action to take when disk is full. The system can overwrite the oldest log messages or stop logging when the disk is full (default = overwrite).")
+    log_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Disk log quota (MB).")
+    dlp_archive_quota: int | None = Field(ge=0, le=4294967295, default=0, description="DLP archive quota (MB).")
+    report_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Report db quota (MB).")
+    maximum_log_age: int | None = Field(ge=0, le=3650, default=7, description="Delete log files older than (days).")
+    upload: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable uploading log files when they are rolled.")
+    upload_destination: Literal["ftp-server"] | None = Field(default="ftp-server", description="The type of server to upload log files to. Only FTP is currently supported.")
+    uploadip: str = Field(default="0.0.0.0", description="IP address of the FTP server to upload log files to.")
+    uploadport: int | None = Field(ge=0, le=65535, default=21, description="TCP port to use for communicating with the FTP server (default = 21).")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address to use for uploading disk log files.")
+    uploaduser: str = Field(max_length=35, default="", description="Username required to log into the FTP server to upload disk log files.")
+    uploadpass: Any = Field(max_length=128, default=None, description="Password required to log into the FTP server to upload disk log files.")
+    uploaddir: str | None = Field(max_length=63, default="", description="The remote directory on the FTP server to upload log files to.")
+    uploadtype: str | SettingUploadtypeEnum | None = Field(default=None, description="Types of log files to upload. Separate multiple entries with a space.")
+    uploadsched: Literal["disable", "enable"] | None = Field(default="disable", description="Set the schedule for uploading log files to the FTP server (default = disable = upload when rolling).")
+    uploadtime: str | None = Field(default="", description="Time of day at which log files are uploaded if uploadsched is enabled (hh:mm or hh).")
+    upload_delete_files: Literal["enable", "disable"] | None = Field(default="enable", description="Delete log files after uploading (default = enable).")
+    upload_ssl_conn: str | SettingUploadSslConnEnum | None = Field(default="default", description="Enable/disable encrypted FTPS communication to upload log files.")
+    full_first_warning_threshold: int | None = Field(ge=1, le=98, default=75, description="Log full first warning threshold as a percent (1 - 98, default = 75).")
+    full_second_warning_threshold: int | None = Field(ge=2, le=99, default=90, description="Log full second warning threshold as a percent (2 - 99, default = 90).")
+    full_final_warning_threshold: int | None = Field(ge=3, le=100, default=95, description="Log full final warning threshold as a percent (3 - 100, default = 95).")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -161,7 +224,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.disk.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -198,7 +261,7 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -221,5 +284,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.032501Z
+# Generated: 2026-01-14T22:43:38.653274Z
 # ============================================================================

@@ -241,6 +241,10 @@ class DomainController:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -261,6 +265,7 @@ class DomainController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DomainControllerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -278,6 +283,7 @@ class DomainController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DomainControllerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -294,6 +300,7 @@ class DomainController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DomainControllerResponse]: ...
     
     # ================================================================
@@ -336,7 +343,7 @@ class DomainController:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DomainControllerObject: ...
     
@@ -355,7 +362,7 @@ class DomainController:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DomainControllerObject]: ...
     
@@ -455,23 +462,6 @@ class DomainController:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DomainControllerObject | list[DomainControllerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -509,6 +499,7 @@ class DomainController:
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DomainControllerObject: ...
@@ -611,39 +602,7 @@ class DomainController:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DomainControllerPayload | None = ...,
-        name: str | None = ...,
-        ad_mode: Literal["none", "ds", "lds"] | None = ...,
-        hostname: str | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        ip_address: str | None = ...,
-        ip6: str | None = ...,
-        port: int | None = ...,
-        source_ip_address: str | None = ...,
-        source_ip6: str | None = ...,
-        source_port: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain_name: str | None = ...,
-        replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        change_detection: Literal["enable", "disable"] | None = ...,
-        change_detection_period: int | None = ...,
-        dns_srv_lookup: Literal["enable", "disable"] | None = ...,
-        adlds_dn: str | None = ...,
-        adlds_ip_address: str | None = ...,
-        adlds_ip6: str | None = ...,
-        adlds_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -678,6 +637,7 @@ class DomainController:
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DomainControllerObject: ...
@@ -780,39 +740,7 @@ class DomainController:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DomainControllerPayload | None = ...,
-        name: str | None = ...,
-        ad_mode: Literal["none", "ds", "lds"] | None = ...,
-        hostname: str | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        ip_address: str | None = ...,
-        ip6: str | None = ...,
-        port: int | None = ...,
-        source_ip_address: str | None = ...,
-        source_ip6: str | None = ...,
-        source_port: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain_name: str | None = ...,
-        replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        change_detection: Literal["enable", "disable"] | None = ...,
-        change_detection_period: int | None = ...,
-        dns_srv_lookup: Literal["enable", "disable"] | None = ...,
-        adlds_dn: str | None = ...,
-        adlds_ip_address: str | None = ...,
-        adlds_ip6: str | None = ...,
-        adlds_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -823,6 +751,7 @@ class DomainController:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DomainControllerObject: ...
@@ -853,14 +782,7 @@ class DomainController:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -913,8 +835,6 @@ class DomainController:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -942,6 +862,10 @@ class DomainControllerDictMode:
     By default returns DomainControllerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DomainControllerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1140,10 +1064,12 @@ class DomainControllerDictMode:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DomainControllerPayload | None = ...,
@@ -1275,10 +1201,12 @@ class DomainControllerDictMode:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DomainControllerPayload | None = ...,
@@ -1338,10 +1266,12 @@ class DomainControllerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1398,8 +1328,6 @@ class DomainControllerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1423,6 +1351,10 @@ class DomainControllerObjectMode:
     By default returns DomainControllerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DomainControllerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1656,10 +1588,12 @@ class DomainControllerObjectMode:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DomainControllerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DomainControllerPayload | None = ...,
@@ -1826,10 +1760,12 @@ class DomainControllerObjectMode:
         adlds_ip6: str | None = ...,
         adlds_port: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DomainControllerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DomainControllerPayload | None = ...,
@@ -1900,10 +1836,12 @@ class DomainControllerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DomainControllerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1960,8 +1898,6 @@ class DomainControllerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -237,7 +237,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
         vendor: Literal["unknown", "gch"] | None = None,
         api_version: Literal["unknown", "gch-default"] | None = None,
         certificate: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         gch_url: str | None = None,
         gch_project: str | None = None,
@@ -265,7 +265,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor: HSM vendor.
             api_version: API version for communicating with HSM.
             certificate: PEM format certificate.
-            range: Either a global or VDOM IP address range for the certificate.
+            range_: Either a global or VDOM IP address range for the certificate.
             source: Certificate source type.
             gch_url: Google Cloud HSM key URL (e.g. "https://cloudkms.googleapis.com/v1/projects/sampleproject/locations/samplelocation/keyRings/samplekeyring/cryptoKeys/sampleKeyName/cryptoKeyVersions/1").
             gch_project: Google Cloud HSM project ID.
@@ -314,7 +314,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor=vendor,
             api_version=api_version,
             certificate=certificate,
-            range=range,
+            range_=range_,
             source=source,
             gch_url=gch_url,
             gch_project=gch_project,
@@ -360,7 +360,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
         vendor: Literal["unknown", "gch"] | None = None,
         api_version: Literal["unknown", "gch-default"] | None = None,
         certificate: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         gch_url: str | None = None,
         gch_project: str | None = None,
@@ -388,7 +388,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor: HSM vendor.
             api_version: API version for communicating with HSM.
             certificate: PEM format certificate.
-            range: Either a global or VDOM IP address range for the certificate.
+            range_: Either a global or VDOM IP address range for the certificate.
             source: Certificate source type.
             gch_url: Google Cloud HSM key URL (e.g. "https://cloudkms.googleapis.com/v1/projects/sampleproject/locations/samplelocation/keyRings/samplekeyring/cryptoKeys/sampleKeyName/cryptoKeyVersions/1").
             gch_project: Google Cloud HSM project ID.
@@ -439,7 +439,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor=vendor,
             api_version=api_version,
             certificate=certificate,
-            range=range,
+            range_=range_,
             source=source,
             gch_url=gch_url,
             gch_project=gch_project,
@@ -585,7 +585,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
         vendor: Literal["unknown", "gch"] | None = None,
         api_version: Literal["unknown", "gch-default"] | None = None,
         certificate: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         gch_url: str | None = None,
         gch_project: str | None = None,
@@ -614,7 +614,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor: Field vendor
             api_version: Field api-version
             certificate: Field certificate
-            range: Field range
+            range_: Field range
             source: Field source
             gch_url: Field gch-url
             gch_project: Field gch-project
@@ -673,7 +673,7 @@ class HsmLocal(CRUDEndpoint, MetadataMixin):
             vendor=vendor,
             api_version=api_version,
             certificate=certificate,
-            range=range,
+            range_=range_,
             source=source,
             gch_url=gch_url,
             gch_project=gch_project,

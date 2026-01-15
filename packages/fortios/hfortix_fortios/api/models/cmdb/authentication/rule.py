@@ -111,7 +111,27 @@ class RuleModel(BaseModel):
 
     Configure Authentication Rules.
 
-    Validation Rules:        - name: max_length=35 pattern=        - status: pattern=        - protocol: pattern=        - srcintf: pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - srcaddr6: pattern=        - dstaddr6: pattern=        - ip_based: pattern=        - active_auth_method: max_length=35 pattern=        - sso_auth_method: max_length=35 pattern=        - web_auth_cookie: pattern=        - cors_stateful: pattern=        - cors_depth: min=1 max=8 pattern=        - cert_auth_cookie: pattern=        - transaction_based: pattern=        - web_portal: pattern=        - comments: max_length=1023 pattern=        - session_logout: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - status: pattern=
+        - protocol: pattern=
+        - srcintf: pattern=
+        - srcaddr: pattern=
+        - dstaddr: pattern=
+        - srcaddr6: pattern=
+        - dstaddr6: pattern=
+        - ip_based: pattern=
+        - active_auth_method: max_length=35 pattern=
+        - sso_auth_method: max_length=35 pattern=
+        - web_auth_cookie: pattern=
+        - cors_stateful: pattern=
+        - cors_depth: min=1 max=8 pattern=
+        - cert_auth_cookie: pattern=
+        - transaction_based: pattern=
+        - web_portal: pattern=
+        - comments: max_length=1023 pattern=
+        - session_logout: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -123,7 +143,26 @@ class RuleModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Authentication rule name.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this authentication rule.")    protocol: RuleProtocolEnum | None = Field(default="http", description="Authentication is required for the selected protocol (default = HTTP).")    srcintf: list[RuleSrcintf] = Field(default=None, description="Incoming (ingress) interface.")    srcaddr: list[RuleSrcaddr] = Field(default=None, description="Authentication is required for the selected IPv4 source address.")    dstaddr: list[RuleDstaddr] = Field(default=None, description="Select an IPv4 destination address from available options. Required for web proxy authentication.")    srcaddr6: list[RuleSrcaddr6] = Field(default=None, description="Authentication is required for the selected IPv6 source address.")    dstaddr6: list[RuleDstaddr6] = Field(default=None, description="Select an IPv6 destination address from available options. Required for web proxy authentication.")    ip_based: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IP-based authentication. When enabled, previously authenticated users from the same IP address will be exempted.")    active_auth_method: str | None = Field(max_length=35, default="", description="Select an active authentication method.")  # datasource: ['authentication.scheme.name']    sso_auth_method: str | None = Field(max_length=35, default="", description="Select a single-sign on (SSO) authentication method.")  # datasource: ['authentication.scheme.name']    web_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Web authentication cookies (default = disable).")    cors_stateful: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowance of CORS access (default = disable).")    cors_depth: int | None = Field(ge=1, le=8, default=3, description="Depth to allow CORS access (default = 3).")    cert_auth_cookie: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable to use device certificate as authentication cookie (default = enable).")    transaction_based: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable transaction based authentication (default = disable).")    web_portal: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web portal for proxy transparent policy (default = enable).")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    session_logout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logout of a user from the current session.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Authentication rule name.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this authentication rule.")
+    protocol: str | RuleProtocolEnum | None = Field(default="http", description="Authentication is required for the selected protocol (default = HTTP).")
+    srcintf: list[RuleSrcintf] | None = Field(default=None, description="Incoming (ingress) interface.")
+    srcaddr: list[RuleSrcaddr] | None = Field(default=None, description="Authentication is required for the selected IPv4 source address.")
+    dstaddr: list[RuleDstaddr] | None = Field(default=None, description="Select an IPv4 destination address from available options. Required for web proxy authentication.")
+    srcaddr6: list[RuleSrcaddr6] | None = Field(default=None, description="Authentication is required for the selected IPv6 source address.")
+    dstaddr6: list[RuleDstaddr6] | None = Field(default=None, description="Select an IPv6 destination address from available options. Required for web proxy authentication.")
+    ip_based: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IP-based authentication. When enabled, previously authenticated users from the same IP address will be exempted.")
+    active_auth_method: str | None = Field(max_length=35, default="", description="Select an active authentication method.")  # datasource: ['authentication.scheme.name']
+    sso_auth_method: str | None = Field(max_length=35, default="", description="Select a single-sign on (SSO) authentication method.")  # datasource: ['authentication.scheme.name']
+    web_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Web authentication cookies (default = disable).")
+    cors_stateful: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowance of CORS access (default = disable).")
+    cors_depth: int | None = Field(ge=1, le=8, default=3, description="Depth to allow CORS access (default = 3).")
+    cert_auth_cookie: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable to use device certificate as authentication cookie (default = enable).")
+    transaction_based: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable transaction based authentication (default = disable).")
+    web_portal: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable web portal for proxy transparent policy (default = enable).")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    session_logout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logout of a user from the current session.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -217,7 +256,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -279,7 +318,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -345,7 +384,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -411,7 +450,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -471,7 +510,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -531,7 +570,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "active_auth_method", None)
@@ -580,7 +619,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sso_auth_method", None)
@@ -617,14 +656,20 @@ class RuleModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_active_auth_method_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sso_auth_method_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_active_auth_method_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sso_auth_method_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -646,5 +691,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.350855Z
+# Generated: 2026-01-14T22:43:37.802018Z
 # ============================================================================

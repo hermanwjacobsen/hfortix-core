@@ -29,8 +29,8 @@ class OverrideFilterFreeStyle(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")
-    category: CategoryEnum = Field(default="traffic", description="Log category.")
-    filter: str = Field(max_length=1023, default="", description="Free style filter string.")
+    category: str = Field(default="traffic", description="Log category.")
+    filter_: str = Field(max_length=1023, default="", description="Free style filter string.")
     filter_type: Literal["include", "exclude"] | None = Field(default="include", description="Include/exclude logs that match the filter.")
 
 # ============================================================================
@@ -61,7 +61,21 @@ class OverrideFilterModel(BaseModel):
 
     Override filters for FortiAnalyzer.
 
-    Validation Rules:        - severity: pattern=        - forward_traffic: pattern=        - local_traffic: pattern=        - multicast_traffic: pattern=        - sniffer_traffic: pattern=        - ztna_traffic: pattern=        - http_transaction: pattern=        - anomaly: pattern=        - voip: pattern=        - dlp_archive: pattern=        - gtp: pattern=        - forti_switch: pattern=        - free_style: pattern=    """
+    Validation Rules:
+        - severity: pattern=
+        - forward_traffic: pattern=
+        - local_traffic: pattern=
+        - multicast_traffic: pattern=
+        - sniffer_traffic: pattern=
+        - ztna_traffic: pattern=
+        - http_transaction: pattern=
+        - anomaly: pattern=
+        - voip: pattern=
+        - dlp_archive: pattern=
+        - gtp: pattern=
+        - forti_switch: pattern=
+        - free_style: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -73,7 +87,20 @@ class OverrideFilterModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    severity: OverrideFilterSeverityEnum | None = Field(default="information", description="Log every message above and including this severity level.")    forward_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable forward traffic logging.")    local_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable local in or out traffic logging.")    multicast_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast traffic logging.")    sniffer_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer traffic logging.")    ztna_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ztna traffic logging.")    http_transaction: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable log HTTP transaction messages.")    anomaly: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable anomaly logging.")    voip: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable VoIP logging.")    dlp_archive: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DLP archive logging.")    gtp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable GTP messages logging.")    forti_switch: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Forti-Switch logging.")    free_style: list[OverrideFilterFreeStyle] = Field(default=None, description="Free style filters.")    # ========================================================================
+    severity: str | OverrideFilterSeverityEnum | None = Field(default="information", description="Log every message above and including this severity level.")
+    forward_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable forward traffic logging.")
+    local_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable local in or out traffic logging.")
+    multicast_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast traffic logging.")
+    sniffer_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sniffer traffic logging.")
+    ztna_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ztna traffic logging.")
+    http_transaction: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable log HTTP transaction messages.")
+    anomaly: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable anomaly logging.")
+    voip: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable VoIP logging.")
+    dlp_archive: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DLP archive logging.")
+    gtp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable GTP messages logging.")
+    forti_switch: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Forti-Switch logging.")
+    free_style: list[OverrideFilterFreeStyle] | None = Field(default=None, description="Free style filters.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -122,5 +149,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.843233Z
+# Generated: 2026-01-14T22:43:37.171981Z
 # ============================================================================

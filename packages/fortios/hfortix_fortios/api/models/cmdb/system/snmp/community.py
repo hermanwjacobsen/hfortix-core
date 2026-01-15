@@ -135,7 +135,26 @@ class CommunityModel(BaseModel):
 
     SNMP community configuration.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - name: max_length=35 pattern=        - status: pattern=        - hosts: pattern=        - hosts6: pattern=        - query_v1_status: pattern=        - query_v1_port: min=1 max=65535 pattern=        - query_v2c_status: pattern=        - query_v2c_port: min=0 max=65535 pattern=        - trap_v1_status: pattern=        - trap_v1_lport: min=1 max=65535 pattern=        - trap_v1_rport: min=1 max=65535 pattern=        - trap_v2c_status: pattern=        - trap_v2c_lport: min=1 max=65535 pattern=        - trap_v2c_rport: min=1 max=65535 pattern=        - events: pattern=        - mib_view: max_length=32 pattern=        - vdoms: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - name: max_length=35 pattern=
+        - status: pattern=
+        - hosts: pattern=
+        - hosts6: pattern=
+        - query_v1_status: pattern=
+        - query_v1_port: min=1 max=65535 pattern=
+        - query_v2c_status: pattern=
+        - query_v2c_port: min=0 max=65535 pattern=
+        - trap_v1_status: pattern=
+        - trap_v1_lport: min=1 max=65535 pattern=
+        - trap_v1_rport: min=1 max=65535 pattern=
+        - trap_v2c_status: pattern=
+        - trap_v2c_lport: min=1 max=65535 pattern=
+        - trap_v2c_rport: min=1 max=65535 pattern=
+        - events: pattern=
+        - mib_view: max_length=32 pattern=
+        - vdoms: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -147,7 +166,25 @@ class CommunityModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="Community ID.")    name: str = Field(max_length=35, default="", description="Community name.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP community.")    hosts: list[CommunityHosts] = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")    hosts6: list[CommunityHosts6] = Field(default=None, description="Configure IPv6 SNMP managers.")    query_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 queries.")    query_v1_port: int | None = Field(ge=1, le=65535, default=161, description="SNMP v1 query port (default = 161).")    query_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")    query_v2c_port: int | None = Field(ge=0, le=65535, default=161, description="SNMP v2c query port (default = 161).")    trap_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 traps.")    trap_v1_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v1 trap local port (default = 162).")    trap_v1_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v1 trap remote port (default = 162).")    trap_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")    trap_v2c_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v2c trap local port (default = 162).")    trap_v2c_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v2c trap remote port (default = 162).")    events: CommunityEventsEnum | None = Field(default="cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change bfd", description="SNMP trap events.")    mib_view: str | None = Field(max_length=32, default="", description="SNMP access control MIB view.")  # datasource: ['system.snmp.mib-view.name']    vdoms: list[CommunityVdoms] = Field(default=None, description="SNMP access control VDOMs.")    # ========================================================================
+    id: int = Field(ge=0, le=4294967295, default=0, description="Community ID.")
+    name: str = Field(max_length=35, default="", description="Community name.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP community.")
+    hosts: list[CommunityHosts] | None = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")
+    hosts6: list[CommunityHosts6] | None = Field(default=None, description="Configure IPv6 SNMP managers.")
+    query_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 queries.")
+    query_v1_port: int | None = Field(ge=1, le=65535, default=161, description="SNMP v1 query port (default = 161).")
+    query_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")
+    query_v2c_port: int | None = Field(ge=0, le=65535, default=161, description="SNMP v2c query port (default = 161).")
+    trap_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 traps.")
+    trap_v1_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v1 trap local port (default = 162).")
+    trap_v1_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v1 trap remote port (default = 162).")
+    trap_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")
+    trap_v2c_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v2c trap local port (default = 162).")
+    trap_v2c_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMP v2c trap remote port (default = 162).")
+    events: str | CommunityEventsEnum | None = Field(default=None, description="SNMP trap events.")
+    mib_view: str | None = Field(max_length=32, default="", description="SNMP access control MIB view.")  # datasource: ['system.snmp.mib-view.name']
+    vdoms: list[CommunityVdoms] | None = Field(default=None, description="SNMP access control VDOMs.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -226,7 +263,7 @@ class CommunityModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.community.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "hosts", [])
@@ -284,7 +321,7 @@ class CommunityModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.community.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "hosts6", [])
@@ -342,7 +379,7 @@ class CommunityModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.community.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "mib_view", None)
@@ -391,7 +428,7 @@ class CommunityModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.community.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vdoms", [])
@@ -437,11 +474,14 @@ class CommunityModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_hosts_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hosts6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_mib_view_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vdoms_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hosts6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_mib_view_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vdoms_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -463,5 +503,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.829588Z
+# Generated: 2026-01-14T22:43:38.396870Z
 # ============================================================================

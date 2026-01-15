@@ -301,7 +301,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
         guest_lang: str | None = None,
         status: Any | None = None,
-        list: Any | None = None,
+        list_: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -376,7 +376,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
                   - List of dicts: [{'name': 'value'}] (recommended)
             guest_lang: Guest management portal language.
             status: print admin status information
-            list: print admin list information
+            list_: print admin list information
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -479,7 +479,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
             guest_usergroups=guest_usergroups,
             guest_lang=guest_lang,
             status=status,
-            list=list,
+            list_=list_,
             data=payload_dict,
         )
         
@@ -561,7 +561,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
         guest_lang: str | None = None,
         status: Any | None = None,
-        list: Any | None = None,
+        list_: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -636,7 +636,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
                   - List of dicts: [{'name': 'value'}] (recommended)
             guest_lang: Guest management portal language.
             status: print admin status information
-            list: print admin list information
+            list_: print admin list information
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -741,7 +741,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
             guest_usergroups=guest_usergroups,
             guest_lang=guest_lang,
             status=status,
-            list=list,
+            list_=list_,
             data=payload_dict,
         )
 
@@ -923,7 +923,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
         guest_lang: str | None = None,
         status: Any | None = None,
-        list: Any | None = None,
+        list_: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -988,7 +988,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
             guest_usergroups: Field guest-usergroups
             guest_lang: Field guest-lang
             status: Field status
-            list: Field list
+            list_: Field list
             vdom: Virtual domain name
             raw_json: If True, return raw API response
             response_mode: Override client-level response_mode
@@ -1083,7 +1083,7 @@ class Admin(CRUDEndpoint, MetadataMixin):
             guest_usergroups=guest_usergroups,
             guest_lang=guest_lang,
             status=status,
-            list=list,
+            list_=list_,
             data=payload_dict,
         )
         

@@ -29,7 +29,7 @@ class SettingAuthPorts(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
-    type: TypeEnum | None = Field(default="http", description="Service type.")
+    type_: str | None = Field(default="http", description="Service type.")
     port: int | None = Field(ge=1, le=65535, default=1024, description="Non-standard port for firewall user authentication.")
 
 
@@ -51,7 +51,7 @@ class SettingCorsAllowedOrigins(BaseModel):
 # ============================================================================
 
 
-class SettingAuth_typeEnum(str, Enum):
+class SettingAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
     HTTP = "http"
     HTTPS = "https"
@@ -59,7 +59,7 @@ class SettingAuth_typeEnum(str, Enum):
     TELNET = "telnet"
 
 
-class SettingAuth_ssl_min_proto_versionEnum(str, Enum):
+class SettingAuthSslMinProtoVersionEnum(str, Enum):
     """Allowed values for auth_ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -69,7 +69,7 @@ class SettingAuth_ssl_min_proto_versionEnum(str, Enum):
     TLSV1_3 = "TLSv1-3"
 
 
-class SettingAuth_ssl_max_proto_versionEnum(str, Enum):
+class SettingAuthSslMaxProtoVersionEnum(str, Enum):
     """Allowed values for auth_ssl_max_proto_version field."""
     SSLV3 = "sslv3"
     TLSV1 = "tlsv1"
@@ -89,7 +89,32 @@ class SettingModel(BaseModel):
 
     Configure user authentication setting.
 
-    Validation Rules:        - auth_type: pattern=        - auth_cert: max_length=35 pattern=        - auth_ca_cert: max_length=35 pattern=        - auth_secure_http: pattern=        - auth_http_basic: pattern=        - auth_ssl_allow_renegotiation: pattern=        - auth_src_mac: pattern=        - auth_on_demand: pattern=        - auth_timeout: min=1 max=1440 pattern=        - auth_timeout_type: pattern=        - auth_portal_timeout: min=1 max=30 pattern=        - radius_ses_timeout_act: pattern=        - auth_blackout_time: min=0 max=3600 pattern=        - auth_invalid_max: min=1 max=100 pattern=        - auth_lockout_threshold: min=1 max=10 pattern=        - auth_lockout_duration: min=0 max=4294967295 pattern=        - per_policy_disclaimer: pattern=        - auth_ports: pattern=        - auth_ssl_min_proto_version: pattern=        - auth_ssl_max_proto_version: pattern=        - auth_ssl_sigalgs: pattern=        - default_user_password_policy: max_length=35 pattern=        - cors: pattern=        - cors_allowed_origins: pattern=    """
+    Validation Rules:
+        - auth_type: pattern=
+        - auth_cert: max_length=35 pattern=
+        - auth_ca_cert: max_length=35 pattern=
+        - auth_secure_http: pattern=
+        - auth_http_basic: pattern=
+        - auth_ssl_allow_renegotiation: pattern=
+        - auth_src_mac: pattern=
+        - auth_on_demand: pattern=
+        - auth_timeout: min=1 max=1440 pattern=
+        - auth_timeout_type: pattern=
+        - auth_portal_timeout: min=1 max=30 pattern=
+        - radius_ses_timeout_act: pattern=
+        - auth_blackout_time: min=0 max=3600 pattern=
+        - auth_invalid_max: min=1 max=100 pattern=
+        - auth_lockout_threshold: min=1 max=10 pattern=
+        - auth_lockout_duration: min=0 max=4294967295 pattern=
+        - per_policy_disclaimer: pattern=
+        - auth_ports: pattern=
+        - auth_ssl_min_proto_version: pattern=
+        - auth_ssl_max_proto_version: pattern=
+        - auth_ssl_sigalgs: pattern=
+        - default_user_password_policy: max_length=35 pattern=
+        - cors: pattern=
+        - cors_allowed_origins: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -101,7 +126,31 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    auth_type: SettingAuthTypeEnum | None = Field(default="http https ftp telnet", description="Supported firewall policy authentication protocols/methods.")    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    auth_ca_cert: str | None = Field(max_length=35, default="", description="HTTPS CA certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    auth_secure_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting HTTP user authentication to more secure HTTPS.")    auth_http_basic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of HTTP basic authentication for identity-based firewall policies.")    auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/forbid SSL re-negotiation for HTTPS authentication.")    auth_src_mac: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable source MAC for user identity.")    auth_on_demand: Literal["always", "implicitly"] | None = Field(default="implicitly", description="Always/implicitly trigger firewall authentication on demand.")    auth_timeout: int | None = Field(ge=1, le=1440, default=5, description="Time in minutes before the firewall user authentication timeout requires the user to re-authenticate.")    auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = Field(default="idle-timeout", description="Control if authenticated users have to login again after a hard timeout, after an idle timeout, or after a session timeout.")    auth_portal_timeout: int | None = Field(ge=1, le=30, default=3, description="Time in minutes before captive portal user have to re-authenticate (1 - 30 min, default 3 min).")    radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = Field(default="hard-timeout", description="Set the RADIUS session timeout to a hard timeout or to ignore RADIUS server session timeouts.")    auth_blackout_time: int | None = Field(ge=0, le=3600, default=0, description="Time in seconds an IP address is denied access after failing to authenticate five times within one minute.")    auth_invalid_max: int | None = Field(ge=1, le=100, default=5, description="Maximum number of failed authentication attempts before the user is blocked.")    auth_lockout_threshold: int | None = Field(ge=1, le=10, default=3, description="Maximum number of failed login attempts before login lockout is triggered.")    auth_lockout_duration: int | None = Field(ge=0, le=4294967295, default=0, description="Lockout period in seconds after too many login failures.")    per_policy_disclaimer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable per policy disclaimer.")    auth_ports: list[SettingAuthPorts] = Field(default=None, description="Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.")    auth_ssl_min_proto_version: SettingAuthSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    auth_ssl_max_proto_version: SettingAuthSslMaxProtoVersionEnum | None = Field(default="", description="Maximum supported protocol version for SSL/TLS connections (default is no limit).")    auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = Field(default="all", description="Set signature algorithms related to HTTPS authentication (affects TLS version <= 1.2 only, default is to enable all).")    default_user_password_policy: str | None = Field(max_length=35, default="", description="Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']    cors: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowed origins white list for CORS.")    cors_allowed_origins: list[SettingCorsAllowedOrigins] = Field(default=None, description="Allowed origins white list for CORS.")    # ========================================================================
+    auth_type: str | SettingAuthTypeEnum | None = Field(default=None, description="Supported firewall policy authentication protocols/methods.")
+    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']
+    auth_ca_cert: str | None = Field(max_length=35, default="", description="HTTPS CA certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']
+    auth_secure_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting HTTP user authentication to more secure HTTPS.")
+    auth_http_basic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of HTTP basic authentication for identity-based firewall policies.")
+    auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/forbid SSL re-negotiation for HTTPS authentication.")
+    auth_src_mac: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable source MAC for user identity.")
+    auth_on_demand: Literal["always", "implicitly"] | None = Field(default="implicitly", description="Always/implicitly trigger firewall authentication on demand.")
+    auth_timeout: int | None = Field(ge=1, le=1440, default=5, description="Time in minutes before the firewall user authentication timeout requires the user to re-authenticate.")
+    auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = Field(default="idle-timeout", description="Control if authenticated users have to login again after a hard timeout, after an idle timeout, or after a session timeout.")
+    auth_portal_timeout: int | None = Field(ge=1, le=30, default=3, description="Time in minutes before captive portal user have to re-authenticate (1 - 30 min, default 3 min).")
+    radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = Field(default="hard-timeout", description="Set the RADIUS session timeout to a hard timeout or to ignore RADIUS server session timeouts.")
+    auth_blackout_time: int | None = Field(ge=0, le=3600, default=0, description="Time in seconds an IP address is denied access after failing to authenticate five times within one minute.")
+    auth_invalid_max: int | None = Field(ge=1, le=100, default=5, description="Maximum number of failed authentication attempts before the user is blocked.")
+    auth_lockout_threshold: int | None = Field(ge=1, le=10, default=3, description="Maximum number of failed login attempts before login lockout is triggered.")
+    auth_lockout_duration: int | None = Field(ge=0, le=4294967295, default=0, description="Lockout period in seconds after too many login failures.")
+    per_policy_disclaimer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable per policy disclaimer.")
+    auth_ports: list[SettingAuthPorts] | None = Field(default=None, description="Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.")
+    auth_ssl_min_proto_version: str | SettingAuthSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    auth_ssl_max_proto_version: str | SettingAuthSslMaxProtoVersionEnum | None = Field(default=None, description="Maximum supported protocol version for SSL/TLS connections (default is no limit).")
+    auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = Field(default="all", description="Set signature algorithms related to HTTPS authentication (affects TLS version <= 1.2 only, default is to enable all).")
+    default_user_password_policy: str | None = Field(max_length=35, default="", description="Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']
+    cors: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowed origins white list for CORS.")
+    cors_allowed_origins: list[SettingCorsAllowedOrigins] | None = Field(default=None, description="Allowed origins white list for CORS.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -210,7 +259,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_cert", None)
@@ -259,7 +308,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_ca_cert", None)
@@ -308,7 +357,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "default_user_password_policy", None)
@@ -345,10 +394,12 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_auth_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_ca_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_default_user_password_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_ca_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_default_user_password_policy_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -370,5 +421,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.026604Z
+# Generated: 2026-01-14T22:43:37.406864Z
 # ============================================================================

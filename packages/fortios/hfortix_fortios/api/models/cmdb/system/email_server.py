@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class EmailServerSsl_min_proto_versionEnum(str, Enum):
+class EmailServerSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -37,7 +37,22 @@ class EmailServerModel(BaseModel):
 
     Configure the email server used by the FortiGate various things. For example, for sending email messages to users to support user authentication features.
 
-    Validation Rules:        - type: pattern=        - server: max_length=63 pattern=        - port: min=1 max=65535 pattern=        - source_ip: pattern=        - source_ip6: pattern=        - authenticate: pattern=        - validate_server: pattern=        - username: max_length=255 pattern=        - password: max_length=128 pattern=        - security: pattern=        - ssl_min_proto_version: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - type_: pattern=
+        - server: max_length=63 pattern=
+        - port: min=1 max=65535 pattern=
+        - source_ip: pattern=
+        - source_ip6: pattern=
+        - authenticate: pattern=
+        - validate_server: pattern=
+        - username: max_length=255 pattern=
+        - password: max_length=128 pattern=
+        - security: pattern=
+        - ssl_min_proto_version: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -49,7 +64,21 @@ class EmailServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    type: Literal["custom"] | None = Field(default="custom", description="Use FortiGuard Message service or custom email server.")    server: str | None = Field(max_length=63, default="", description="SMTP server IP address or hostname.")    port: int | None = Field(ge=1, le=65535, default=25, description="SMTP server port.")    source_ip: str | None = Field(default="0.0.0.0", description="SMTP server IPv4 source IP.")    source_ip6: str | None = Field(default="::", description="SMTP server IPv6 source IP.")    authenticate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication.")    validate_server: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable validation of server certificate.")    username: str | None = Field(max_length=255, default="", description="SMTP server user name for authentication.")    password: Any = Field(max_length=128, default=None, description="SMTP server user password for authentication.")    security: Literal["none", "starttls", "smtps"] | None = Field(default="none", description="Connection security used by the email server.")    ssl_min_proto_version: EmailServerSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    type_: Literal["custom"] | None = Field(default="custom", description="Use FortiGuard Message service or custom email server.")
+    server: str | None = Field(max_length=63, default="", description="SMTP server IP address or hostname.")
+    port: int | None = Field(ge=1, le=65535, default=25, description="SMTP server port.")
+    source_ip: str | None = Field(default="0.0.0.0", description="SMTP server IPv4 source IP.")
+    source_ip6: str | None = Field(default="::", description="SMTP server IPv6 source IP.")
+    authenticate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication.")
+    validate_server: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable validation of server certificate.")
+    username: str | None = Field(max_length=255, default="", description="SMTP server user name for authentication.")
+    password: Any = Field(max_length=128, default=None, description="SMTP server user password for authentication.")
+    security: Literal["none", "starttls", "smtps"] | None = Field(default="none", description="Connection security used by the email server.")
+    ssl_min_proto_version: str | EmailServerSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -128,7 +157,7 @@ class EmailServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.email_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -165,7 +194,7 @@ class EmailServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -188,5 +217,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.347380Z
+# Generated: 2026-01-14T22:43:36.557869Z
 # ============================================================================

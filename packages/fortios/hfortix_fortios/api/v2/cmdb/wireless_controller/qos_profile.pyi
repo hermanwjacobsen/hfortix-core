@@ -282,6 +282,10 @@ class QosProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -302,6 +306,7 @@ class QosProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> QosProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -319,6 +324,7 @@ class QosProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> QosProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -335,6 +341,7 @@ class QosProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[QosProfileResponse]: ...
     
     # ================================================================
@@ -377,7 +384,7 @@ class QosProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> QosProfileObject: ...
     
@@ -396,7 +403,7 @@ class QosProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[QosProfileObject]: ...
     
@@ -496,23 +503,6 @@ class QosProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> QosProfileObject | list[QosProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -549,6 +539,7 @@ class QosProfile:
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QosProfileObject: ...
@@ -648,38 +639,7 @@ class QosProfile:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: QosProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        uplink: int | None = ...,
-        downlink: int | None = ...,
-        uplink_sta: int | None = ...,
-        downlink_sta: int | None = ...,
-        burst: Literal["enable", "disable"] | None = ...,
-        wmm: Literal["enable", "disable"] | None = ...,
-        wmm_uapsd: Literal["enable", "disable"] | None = ...,
-        call_admission_control: Literal["enable", "disable"] | None = ...,
-        call_capacity: int | None = ...,
-        bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
-        bandwidth_capacity: int | None = ...,
-        dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
-        wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
-        wmm_vo_dscp: int | None = ...,
-        wmm_vi_dscp: int | None = ...,
-        wmm_be_dscp: int | None = ...,
-        wmm_bk_dscp: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -713,6 +673,7 @@ class QosProfile:
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QosProfileObject: ...
@@ -812,38 +773,7 @@ class QosProfile:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: QosProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        uplink: int | None = ...,
-        downlink: int | None = ...,
-        uplink_sta: int | None = ...,
-        downlink_sta: int | None = ...,
-        burst: Literal["enable", "disable"] | None = ...,
-        wmm: Literal["enable", "disable"] | None = ...,
-        wmm_uapsd: Literal["enable", "disable"] | None = ...,
-        call_admission_control: Literal["enable", "disable"] | None = ...,
-        call_capacity: int | None = ...,
-        bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
-        bandwidth_capacity: int | None = ...,
-        dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
-        wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
-        wmm_vo_dscp: int | None = ...,
-        wmm_vi_dscp: int | None = ...,
-        wmm_be_dscp: int | None = ...,
-        wmm_bk_dscp: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -854,6 +784,7 @@ class QosProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QosProfileObject: ...
@@ -884,14 +815,7 @@ class QosProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -943,8 +867,6 @@ class QosProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -972,6 +894,10 @@ class QosProfileDictMode:
     By default returns QosProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return QosProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1167,10 +1093,12 @@ class QosProfileDictMode:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: QosProfilePayload | None = ...,
@@ -1298,10 +1226,12 @@ class QosProfileDictMode:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: QosProfilePayload | None = ...,
@@ -1360,10 +1290,12 @@ class QosProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1419,8 +1351,6 @@ class QosProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1444,6 +1374,10 @@ class QosProfileObjectMode:
     By default returns QosProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return QosProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1673,10 +1607,12 @@ class QosProfileObjectMode:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> QosProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: QosProfilePayload | None = ...,
@@ -1838,10 +1774,12 @@ class QosProfileObjectMode:
         wmm_be_dscp: int | None = ...,
         wmm_bk_dscp: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> QosProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: QosProfilePayload | None = ...,
@@ -1911,10 +1849,12 @@ class QosProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> QosProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1970,8 +1910,6 @@ class QosProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

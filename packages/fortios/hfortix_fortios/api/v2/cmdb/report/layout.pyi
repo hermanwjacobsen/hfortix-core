@@ -23,8 +23,8 @@ class LayoutPayload(TypedDict, total=False):
     subtitle: str  # Report subtitle. | MaxLen: 127
     description: str  # Description. | MaxLen: 127
     style_theme: str  # Report style theme. | MaxLen: 35
-    options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]  # Report layout options. | Default: include-table-of-content auto-numbering-heading view-chart-as-heading
-    format: Literal["pdf"]  # Report format. | Default: pdf
+    options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]  # Report layout options. | Default: include-table-of-content auto-
+    format_: Literal["pdf"]  # Report format. | Default: pdf
     schedule_type: Literal["demand", "daily", "weekly"]  # Report schedule type. | Default: daily
     day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]  # Schedule days of week to generate report. | Default: sunday
     time: str  # Schedule time to generate report (format = hh:mm).
@@ -47,7 +47,7 @@ class LayoutBodyitemItem(TypedDict):
     
     id: int  # Report item ID. | Default: 0 | Min: 0 | Max: 4294967295
     description: str  # Description. | MaxLen: 63
-    type: Literal["text", "image", "chart", "misc"]  # Report item type. | Default: text
+    type_: Literal["text", "image", "chart", "misc"]  # Report item type. | Default: text
     style: str  # Report item style. | MaxLen: 71
     top_n: int  # Value of top. | Default: 0 | Min: 0 | Max: 4294967295
     parameters: str  # Parameters.
@@ -55,7 +55,7 @@ class LayoutBodyitemItem(TypedDict):
     content: str  # Report item text content. | MaxLen: 511
     img_src: str  # Report item image file name. | MaxLen: 127
     chart: str  # Report item chart name. | MaxLen: 71
-    chart_options: Literal["include-no-data", "hide-title", "show-caption"]  # Report chart options. | Default: include-no-data hide-title show-caption
+    chart_options: Literal["include-no-data", "hide-title", "show-caption"]  # Report chart options. | Default: include-no-data hide-title sho
     misc_component: Literal["hline", "page-break", "column-break", "section-start"]  # Report item miscellaneous component. | Default: hline
     title: str  # Report section title. | MaxLen: 511
 
@@ -75,7 +75,7 @@ class LayoutBodyitemObject:
     # Description. | MaxLen: 63
     description: str
     # Report item type. | Default: text
-    type: Literal["text", "image", "chart", "misc"]
+    type_: Literal["text", "image", "chart", "misc"]
     # Report item style. | MaxLen: 71
     style: str
     # Value of top. | Default: 0 | Min: 0 | Max: 4294967295
@@ -90,7 +90,7 @@ class LayoutBodyitemObject:
     img_src: str
     # Report item chart name. | MaxLen: 71
     chart: str
-    # Report chart options. | Default: include-no-data hide-title show-caption
+    # Report chart options. | Default: include-no-data hide-title sho
     chart_options: Literal["include-no-data", "hide-title", "show-caption"]
     # Report item miscellaneous component. | Default: hline
     misc_component: Literal["hline", "page-break", "column-break", "section-start"]
@@ -120,8 +120,8 @@ class LayoutResponse(TypedDict):
     subtitle: str  # Report subtitle. | MaxLen: 127
     description: str  # Description. | MaxLen: 127
     style_theme: str  # Report style theme. | MaxLen: 35
-    options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]  # Report layout options. | Default: include-table-of-content auto-numbering-heading view-chart-as-heading
-    format: Literal["pdf"]  # Report format. | Default: pdf
+    options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]  # Report layout options. | Default: include-table-of-content auto-
+    format_: Literal["pdf"]  # Report format. | Default: pdf
     schedule_type: Literal["demand", "daily", "weekly"]  # Report schedule type. | Default: daily
     day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]  # Schedule days of week to generate report. | Default: sunday
     time: str  # Schedule time to generate report (format = hh:mm).
@@ -152,10 +152,10 @@ class LayoutObject:
     description: str
     # Report style theme. | MaxLen: 35
     style_theme: str
-    # Report layout options. | Default: include-table-of-content auto-numbering-heading view-chart-as-heading
+    # Report layout options. | Default: include-table-of-content auto-
     options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]
     # Report format. | Default: pdf
-    format: Literal["pdf"]
+    format_: Literal["pdf"]
     # Report schedule type. | Default: daily
     schedule_type: Literal["demand", "daily", "weekly"]
     # Schedule days of week to generate report. | Default: sunday
@@ -201,6 +201,10 @@ class Layout:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -221,6 +225,7 @@ class Layout:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LayoutResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -238,6 +243,7 @@ class Layout:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LayoutResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -254,6 +260,7 @@ class Layout:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LayoutResponse]: ...
     
     # ================================================================
@@ -296,7 +303,7 @@ class Layout:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LayoutObject: ...
     
@@ -315,7 +322,7 @@ class Layout:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LayoutObject]: ...
     
@@ -415,23 +422,6 @@ class Layout:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LayoutObject | list[LayoutObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -449,7 +439,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -462,6 +452,7 @@ class Layout:
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LayoutObject: ...
@@ -476,7 +467,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -504,7 +495,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -531,7 +522,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -543,32 +534,7 @@ class Layout:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LayoutPayload | None = ...,
-        name: str | None = ...,
-        title: str | None = ...,
-        subtitle: str | None = ...,
-        description: str | None = ...,
-        style_theme: str | None = ...,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
-        schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
-        time: str | None = ...,
-        cutoff_option: Literal["run-time", "custom"] | None = ...,
-        cutoff_time: str | None = ...,
-        email_send: Literal["enable", "disable"] | None = ...,
-        email_recipients: str | None = ...,
-        max_pdf_report: int | None = ...,
-        page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -583,7 +549,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -596,6 +562,7 @@ class Layout:
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LayoutObject: ...
@@ -610,7 +577,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -638,7 +605,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -665,7 +632,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -677,32 +644,7 @@ class Layout:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LayoutPayload | None = ...,
-        name: str | None = ...,
-        title: str | None = ...,
-        subtitle: str | None = ...,
-        description: str | None = ...,
-        style_theme: str | None = ...,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
-        schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
-        time: str | None = ...,
-        cutoff_option: Literal["run-time", "custom"] | None = ...,
-        cutoff_time: str | None = ...,
-        email_send: Literal["enable", "disable"] | None = ...,
-        email_recipients: str | None = ...,
-        max_pdf_report: int | None = ...,
-        page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -713,6 +655,7 @@ class Layout:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LayoutObject: ...
@@ -743,14 +686,7 @@ class Layout:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -769,7 +705,7 @@ class Layout:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -796,8 +732,6 @@ class Layout:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -825,6 +759,10 @@ class LayoutDictMode:
     By default returns LayoutResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LayoutObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -934,7 +872,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -962,7 +900,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -990,7 +928,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1002,10 +940,12 @@ class LayoutDictMode:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LayoutPayload | None = ...,
@@ -1015,7 +955,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1041,7 +981,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1069,7 +1009,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1097,7 +1037,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1109,10 +1049,12 @@ class LayoutDictMode:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LayoutPayload | None = ...,
@@ -1122,7 +1064,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1165,10 +1107,12 @@ class LayoutDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1192,7 +1136,7 @@ class LayoutDictMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1218,8 +1162,6 @@ class LayoutDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1243,6 +1185,10 @@ class LayoutObjectMode:
     By default returns LayoutObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LayoutResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1352,7 +1298,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1380,7 +1326,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1408,7 +1354,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1436,7 +1382,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1448,10 +1394,12 @@ class LayoutObjectMode:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LayoutObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LayoutPayload | None = ...,
@@ -1461,7 +1409,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1487,7 +1435,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1515,7 +1463,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1543,7 +1491,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1571,7 +1519,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1583,10 +1531,12 @@ class LayoutObjectMode:
         page: str | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LayoutObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LayoutPayload | None = ...,
@@ -1596,7 +1546,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1650,10 +1600,12 @@ class LayoutObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LayoutObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1677,7 +1629,7 @@ class LayoutObjectMode:
         description: str | None = ...,
         style_theme: str | None = ...,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = ...,
-        format: Literal["pdf"] | list[str] | None = ...,
+        format_: Literal["pdf"] | list[str] | None = ...,
         schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         time: str | None = ...,
@@ -1703,8 +1655,6 @@ class LayoutObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

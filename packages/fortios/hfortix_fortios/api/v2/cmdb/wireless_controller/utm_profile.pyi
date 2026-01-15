@@ -106,6 +106,10 @@ class UtmProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -126,6 +130,7 @@ class UtmProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UtmProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -143,6 +148,7 @@ class UtmProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UtmProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -159,6 +165,7 @@ class UtmProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[UtmProfileResponse]: ...
     
     # ================================================================
@@ -201,7 +208,7 @@ class UtmProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> UtmProfileObject: ...
     
@@ -220,7 +227,7 @@ class UtmProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[UtmProfileObject]: ...
     
@@ -320,23 +327,6 @@ class UtmProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> UtmProfileObject | list[UtmProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -358,6 +348,7 @@ class UtmProfile:
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmProfileObject: ...
@@ -412,23 +403,7 @@ class UtmProfile:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: UtmProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        antivirus_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -447,6 +422,7 @@ class UtmProfile:
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmProfileObject: ...
@@ -501,23 +477,7 @@ class UtmProfile:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: UtmProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        antivirus_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -528,6 +488,7 @@ class UtmProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmProfileObject: ...
@@ -558,14 +519,7 @@ class UtmProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -602,8 +556,6 @@ class UtmProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -631,6 +583,10 @@ class UtmProfileDictMode:
     By default returns UtmProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return UtmProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -781,10 +737,12 @@ class UtmProfileDictMode:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: UtmProfilePayload | None = ...,
@@ -852,10 +810,12 @@ class UtmProfileDictMode:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: UtmProfilePayload | None = ...,
@@ -899,10 +859,12 @@ class UtmProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -943,8 +905,6 @@ class UtmProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -968,6 +928,10 @@ class UtmProfileObjectMode:
     By default returns UtmProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return UtmProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1137,10 +1101,12 @@ class UtmProfileObjectMode:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: UtmProfilePayload | None = ...,
@@ -1227,10 +1193,12 @@ class UtmProfileObjectMode:
         webfilter_profile: str | None = ...,
         scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: UtmProfilePayload | None = ...,
@@ -1285,10 +1253,12 @@ class UtmProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1329,8 +1299,6 @@ class UtmProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

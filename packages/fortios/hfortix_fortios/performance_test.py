@@ -295,6 +295,8 @@ def test_endpoint_performance(
                 host, token=token, verify=verify, vdom=vdom, port=port
             )
         else:
+            if username is None or password is None:
+                raise ValueError("Either token or username/password must be provided")
             fgt = FortiOS(  # type: ignore[call-overload]
                 host,
                 username=username,
@@ -569,46 +571,66 @@ def run_performance_test(
         print(
             "\n[3/3] Testing concurrent performance (this may take a while)..."
         )
-        try:
-            # Use async mode for concurrency test
-            async def concurrent_test():
-                fgt = FortiOS(  # type: ignore[call-overload, misc]
-                    host=host,
-                    token=token,
-                    username=username,
-                    password=password,
-                    verify=verify,
-                    vdom=vdom,
-                    port=port,
-                    mode="async",
-                    max_connections=concurrent_level,
+        # Validate credentials before async test
+        if not token and (username is None or password is None):
+            print("✗ Concurrent testing failed: Either token or username/password required")
+            results.errors.append("Concurrent testing: Either token or username/password required")
+        else:
+            try:
+                # Use async mode for concurrency test
+                # Capture validated credentials for the async closure
+                _token = token
+                _username = username or ""
+                _password = password or ""
+
+                async def concurrent_test():
+                    if _token:
+                        fgt = FortiOS(  # type: ignore[call-overload, misc]
+                            host=host,
+                            token=_token,
+                            verify=verify,
+                            vdom=vdom,
+                            port=port,
+                            mode="async",
+                            max_connections=concurrent_level,
+                        )
+                    else:
+                        fgt = FortiOS(  # type: ignore[call-overload, misc]
+                            host=host,
+                            username=_username,
+                            password=_password,
+                            verify=verify,
+                            vdom=vdom,
+                            port=port,
+                            mode="async",
+                            max_connections=concurrent_level,
+                        )
+
+                    start = time.time()
+                    tasks = []
+
+                    for _ in range(concurrent_count):
+                        tasks.append(fgt.api.monitor.system.status.get())
+
+                    await asyncio.gather(*tasks)
+                    duration = time.time() - start
+
+                    await fgt.aclose()  # type: ignore[attr-defined]
+
+                    return duration
+
+                duration = asyncio.run(concurrent_test())
+                results.concurrent_throughput = concurrent_count / duration
+
+                print("✓ Concurrent test complete")
+                print(f"  {concurrent_count} requests in {duration:.2f}s")
+                print(
+                    f"  Throughput: " f"{results.concurrent_throughput:.2f} req/s"
                 )
 
-                start = time.time()
-                tasks = []
-
-                for _ in range(concurrent_count):
-                    tasks.append(fgt.api.monitor.system.status.get())
-
-                await asyncio.gather(*tasks)
-                duration = time.time() - start
-
-                await fgt.aclose()  # type: ignore[attr-defined]
-
-                return duration
-
-            duration = asyncio.run(concurrent_test())
-            results.concurrent_throughput = concurrent_count / duration
-
-            print("✓ Concurrent test complete")
-            print(f"  {concurrent_count} requests in {duration:.2f}s")
-            print(
-                f"  Throughput: " f"{results.concurrent_throughput:.2f} req/s"
-            )
-
-        except Exception as e:
-            print(f"✗ Concurrent testing failed: {e}")
-            results.errors.append(f"Concurrent testing: {e}")
+            except Exception as e:
+                print(f"✗ Concurrent testing failed: {e}")
+                results.errors.append(f"Concurrent testing: {e}")
     else:
         print("\n[3/3] Concurrent performance test: SKIPPED")
         print("  (Enable with test_concurrency=True)")

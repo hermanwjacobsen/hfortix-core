@@ -19,7 +19,7 @@ class ExtcommunityListPayload(TypedDict, total=False):
         }
     """
     name: str  # Extended community list name. | MaxLen: 35
-    type: Literal["standard", "expanded"]  # Extended community list type | Default: standard
+    type_: Literal["standard", "expanded"]  # Extended community list type | Default: standard
     rule: list[dict[str, Any]]  # Extended community list rule.
 
 # Nested TypedDicts for table field children (dict mode)
@@ -34,7 +34,7 @@ class ExtcommunityListRuleItem(TypedDict):
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
     action: Literal["deny", "permit"]  # Permit or deny route-based operations, based on th
     regexp: str  # Ordered list of EXTENDED COMMUNITY attributes as a | MaxLen: 255
-    type: Literal["rt", "soo"]  # Type of extended community. | Default: rt
+    type_: Literal["rt", "soo"]  # Type of extended community. | Default: rt
     match: str  # Extended community specifications for matching a r | MaxLen: 255
 
 
@@ -55,7 +55,7 @@ class ExtcommunityListRuleObject:
     # Ordered list of EXTENDED COMMUNITY attributes as a regular e | MaxLen: 255
     regexp: str
     # Type of extended community. | Default: rt
-    type: Literal["rt", "soo"]
+    type_: Literal["rt", "soo"]
     # Extended community specifications for matching a reserved ex | MaxLen: 255
     match: str
     
@@ -78,7 +78,7 @@ class ExtcommunityListResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Extended community list name. | MaxLen: 35
-    type: Literal["standard", "expanded"]  # Extended community list type | Default: standard
+    type_: Literal["standard", "expanded"]  # Extended community list type | Default: standard
     rule: list[ExtcommunityListRuleItem]  # Extended community list rule.
 
 
@@ -93,7 +93,7 @@ class ExtcommunityListObject:
     # Extended community list name. | MaxLen: 35
     name: str
     # Extended community list type (standard or expanded). | Default: standard
-    type: Literal["standard", "expanded"]
+    type_: Literal["standard", "expanded"]
     # Extended community list rule.
     rule: list[ExtcommunityListRuleObject]
     
@@ -121,6 +121,10 @@ class ExtcommunityList:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -141,6 +145,7 @@ class ExtcommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtcommunityListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -158,6 +163,7 @@ class ExtcommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtcommunityListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -174,6 +180,7 @@ class ExtcommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExtcommunityListResponse]: ...
     
     # ================================================================
@@ -216,7 +223,7 @@ class ExtcommunityList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
     
@@ -235,7 +242,7 @@ class ExtcommunityList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExtcommunityListObject]: ...
     
@@ -335,23 +342,6 @@ class ExtcommunityList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExtcommunityListObject | list[ExtcommunityListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -364,10 +354,11 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
@@ -377,7 +368,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -391,7 +382,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -404,21 +395,10 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExtcommunityListPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -428,10 +408,11 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
@@ -441,7 +422,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -455,7 +436,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -468,21 +449,10 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExtcommunityListPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -493,6 +463,7 @@ class ExtcommunityList:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
@@ -523,14 +494,7 @@ class ExtcommunityList:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -544,7 +508,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -562,8 +526,6 @@ class ExtcommunityList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -591,6 +553,10 @@ class ExtcommunityListDictMode:
     By default returns ExtcommunityListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExtcommunityListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -695,7 +661,7 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -709,7 +675,7 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -723,18 +689,20 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -746,7 +714,7 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -760,7 +728,7 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -774,18 +742,20 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -819,10 +789,12 @@ class ExtcommunityListDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -841,7 +813,7 @@ class ExtcommunityListDictMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -858,8 +830,6 @@ class ExtcommunityListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -883,6 +853,10 @@ class ExtcommunityListObjectMode:
     By default returns ExtcommunityListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExtcommunityListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -987,7 +961,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1001,7 +975,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1015,7 +989,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1029,18 +1003,20 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1052,7 +1028,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1066,7 +1042,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1080,7 +1056,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1094,18 +1070,20 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1150,10 +1128,12 @@ class ExtcommunityListObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtcommunityListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1172,7 +1152,7 @@ class ExtcommunityListObjectMode:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -1189,8 +1169,6 @@ class ExtcommunityListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

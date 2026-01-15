@@ -113,6 +113,10 @@ class InternetServiceGroup:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -133,6 +137,7 @@ class InternetServiceGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceGroupResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -150,6 +155,7 @@ class InternetServiceGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceGroupResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -166,6 +172,7 @@ class InternetServiceGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InternetServiceGroupResponse]: ...
     
     # ================================================================
@@ -208,7 +215,7 @@ class InternetServiceGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
     
@@ -227,7 +234,7 @@ class InternetServiceGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InternetServiceGroupObject]: ...
     
@@ -327,23 +334,6 @@ class InternetServiceGroup:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceGroupObject | list[InternetServiceGroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -361,6 +351,7 @@ class InternetServiceGroup:
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
@@ -403,19 +394,7 @@ class InternetServiceGroup:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InternetServiceGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -430,6 +409,7 @@ class InternetServiceGroup:
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
@@ -472,19 +452,7 @@ class InternetServiceGroup:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -495,6 +463,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
@@ -525,14 +494,7 @@ class InternetServiceGroup:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -565,8 +527,6 @@ class InternetServiceGroup:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -594,6 +554,10 @@ class InternetServiceGroupDictMode:
     By default returns InternetServiceGroupResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceGroupObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -732,10 +696,12 @@ class InternetServiceGroupDictMode:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceGroupPayload | None = ...,
@@ -787,10 +753,12 @@ class InternetServiceGroupDictMode:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceGroupPayload | None = ...,
@@ -830,10 +798,12 @@ class InternetServiceGroupDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -870,8 +840,6 @@ class InternetServiceGroupDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -895,6 +863,10 @@ class InternetServiceGroupObjectMode:
     By default returns InternetServiceGroupObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceGroupResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1048,10 +1020,12 @@ class InternetServiceGroupObjectMode:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceGroupPayload | None = ...,
@@ -1118,10 +1092,12 @@ class InternetServiceGroupObjectMode:
         direction: Literal["source", "destination", "both"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceGroupPayload | None = ...,
@@ -1172,10 +1148,12 @@ class InternetServiceGroupObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceGroupObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1212,8 +1190,6 @@ class InternetServiceGroupObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

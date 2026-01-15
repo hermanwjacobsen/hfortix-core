@@ -45,7 +45,24 @@ class VdomDnsModel(BaseModel):
 
     Configure DNS servers for a non-management VDOM.
 
-    Validation Rules:        - vdom_dns: pattern=        - primary: pattern=        - secondary: pattern=        - protocol: pattern=        - ssl_certificate: max_length=35 pattern=        - server_hostname: pattern=        - ip6_primary: pattern=        - ip6_secondary: pattern=        - source_ip: pattern=        - source_ip_interface: max_length=15 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=        - server_select_method: pattern=        - alt_primary: pattern=        - alt_secondary: pattern=    """
+    Validation Rules:
+        - vdom_dns: pattern=
+        - primary: pattern=
+        - secondary: pattern=
+        - protocol: pattern=
+        - ssl_certificate: max_length=35 pattern=
+        - server_hostname: pattern=
+        - ip6_primary: pattern=
+        - ip6_secondary: pattern=
+        - source_ip: pattern=
+        - source_ip_interface: max_length=15 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+        - server_select_method: pattern=
+        - alt_primary: pattern=
+        - alt_secondary: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -57,7 +74,23 @@ class VdomDnsModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    vdom_dns: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable configuring DNS servers for the current VDOM.")    primary: str = Field(default="0.0.0.0", description="Primary DNS server IP address for the VDOM.")    secondary: str | None = Field(default="0.0.0.0", description="Secondary DNS server IP address for the VDOM.")    protocol: Literal["cleartext", "dot", "doh"] | None = Field(default="cleartext", description="DNS transport protocols.")    ssl_certificate: str | None = Field(max_length=35, default="", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']    server_hostname: list[VdomDnsServerHostname] = Field(default=None, description="DNS server host name list.")    ip6_primary: str | None = Field(default="::", description="Primary IPv6 DNS server IP address for the VDOM.")    ip6_secondary: str | None = Field(default="::", description="Secondary IPv6 DNS server IP address for the VDOM.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for communications with the DNS server.")    source_ip_interface: str | None = Field(max_length=15, default="", description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    server_select_method: Literal["least-rtt", "failover"] | None = Field(default="least-rtt", description="Specify how configured servers are prioritized.")    alt_primary: str | None = Field(default="0.0.0.0", description="Alternate primary DNS server. This is not used as a failover DNS server.")    alt_secondary: str | None = Field(default="0.0.0.0", description="Alternate secondary DNS server. This is not used as a failover DNS server.")    # ========================================================================
+    vdom_dns: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable configuring DNS servers for the current VDOM.")
+    primary: str = Field(default="0.0.0.0", description="Primary DNS server IP address for the VDOM.")
+    secondary: str | None = Field(default="0.0.0.0", description="Secondary DNS server IP address for the VDOM.")
+    protocol: Literal["cleartext", "dot", "doh"] | None = Field(default="cleartext", description="DNS transport protocols.")
+    ssl_certificate: str | None = Field(max_length=35, default="", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']
+    server_hostname: list[VdomDnsServerHostname] | None = Field(default=None, description="DNS server host name list.")
+    ip6_primary: str | None = Field(default="::", description="Primary IPv6 DNS server IP address for the VDOM.")
+    ip6_secondary: str | None = Field(default="::", description="Secondary IPv6 DNS server IP address for the VDOM.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for communications with the DNS server.")
+    source_ip_interface: str | None = Field(max_length=15, default="", description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    server_select_method: Literal["least-rtt", "failover"] | None = Field(default="least-rtt", description="Specify how configured servers are prioritized.")
+    alt_primary: str | None = Field(default="0.0.0.0", description="Alternate primary DNS server. This is not used as a failover DNS server.")
+    alt_secondary: str | None = Field(default="0.0.0.0", description="Alternate secondary DNS server. This is not used as a failover DNS server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -166,7 +199,7 @@ class VdomDnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vdom_dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_certificate", None)
@@ -215,7 +248,7 @@ class VdomDnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vdom_dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -264,7 +297,7 @@ class VdomDnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vdom_dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -301,10 +334,12 @@ class VdomDnsModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_source_ip_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_source_ip_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -326,5 +361,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.455155Z
+# Generated: 2026-01-14T22:43:39.182329Z
 # ============================================================================

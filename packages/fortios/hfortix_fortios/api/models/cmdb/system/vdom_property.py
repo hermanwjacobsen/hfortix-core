@@ -26,7 +26,29 @@ class VdomPropertyModel(BaseModel):
 
     Configure VDOM property.
 
-    Validation Rules:        - name: max_length=31 pattern=        - description: max_length=127 pattern=        - snmp_index: min=1 max=2147483647 pattern=        - session: pattern=        - ipsec_phase1: pattern=        - ipsec_phase2: pattern=        - ipsec_phase1_interface: pattern=        - ipsec_phase2_interface: pattern=        - dialup_tunnel: pattern=        - firewall_policy: pattern=        - firewall_address: pattern=        - firewall_addrgrp: pattern=        - custom_service: pattern=        - service_group: pattern=        - onetime_schedule: pattern=        - recurring_schedule: pattern=        - user: pattern=        - user_group: pattern=        - sslvpn: pattern=        - proxy: pattern=        - log_disk_quota: pattern=    """
+    Validation Rules:
+        - name: max_length=31 pattern=
+        - description: max_length=127 pattern=
+        - snmp_index: min=1 max=2147483647 pattern=
+        - session: pattern=
+        - ipsec_phase1: pattern=
+        - ipsec_phase2: pattern=
+        - ipsec_phase1_interface: pattern=
+        - ipsec_phase2_interface: pattern=
+        - dialup_tunnel: pattern=
+        - firewall_policy: pattern=
+        - firewall_address: pattern=
+        - firewall_addrgrp: pattern=
+        - custom_service: pattern=
+        - service_group: pattern=
+        - onetime_schedule: pattern=
+        - recurring_schedule: pattern=
+        - user: pattern=
+        - user_group: pattern=
+        - sslvpn: pattern=
+        - proxy: pattern=
+        - log_disk_quota: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +60,28 @@ class VdomPropertyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=31, default="", description="VDOM name.")  # datasource: ['system.vdom.name']    description: str | None = Field(max_length=127, default="", description="Description.")    snmp_index: int | None = Field(ge=1, le=2147483647, default=0, description="Permanent SNMP Index of the virtual domain (1 - 2147483647).")    session: str | None = Field(default="", description="Maximum guaranteed number of sessions.")    ipsec_phase1: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 1 tunnels.")    ipsec_phase2: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 2 tunnels.")    ipsec_phase1_interface: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase1 interface tunnels.")    ipsec_phase2_interface: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase2 interface tunnels.")    dialup_tunnel: str | None = Field(default="", description="Maximum guaranteed number of dial-up tunnels.")    firewall_policy: str | None = Field(default="", description="Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).")    firewall_address: str | None = Field(default="", description="Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).")    firewall_addrgrp: str | None = Field(default="", description="Maximum guaranteed number of firewall address groups (IPv4, IPv6).")    custom_service: str | None = Field(default="", description="Maximum guaranteed number of firewall custom services.")    service_group: str | None = Field(default="", description="Maximum guaranteed number of firewall service groups.")    onetime_schedule: str | None = Field(default="", description="Maximum guaranteed number of firewall one-time schedules..")    recurring_schedule: str | None = Field(default="", description="Maximum guaranteed number of firewall recurring schedules.")    user: str | None = Field(default="", description="Maximum guaranteed number of local users.")    user_group: str | None = Field(default="", description="Maximum guaranteed number of user groups.")    sslvpn: str | None = Field(default="", description="Maximum guaranteed number of Agentless VPNs.")    proxy: str | None = Field(default="", description="Maximum guaranteed number of concurrent proxy users.")    log_disk_quota: str | None = Field(default="", description="Log disk quota in megabytes (MB). Range depends on how much disk space is available.")    # ========================================================================
+    name: str | None = Field(max_length=31, default="", description="VDOM name.")  # datasource: ['system.vdom.name']
+    description: str | None = Field(max_length=127, default="", description="Description.")
+    snmp_index: int | None = Field(ge=1, le=2147483647, default=0, description="Permanent SNMP Index of the virtual domain (1 - 2147483647).")
+    session: str | None = Field(default="", description="Maximum guaranteed number of sessions.")
+    ipsec_phase1: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 1 tunnels.")
+    ipsec_phase2: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 2 tunnels.")
+    ipsec_phase1_interface: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase1 interface tunnels.")
+    ipsec_phase2_interface: str | None = Field(default="", description="Maximum guaranteed number of VPN IPsec phase2 interface tunnels.")
+    dialup_tunnel: str | None = Field(default="", description="Maximum guaranteed number of dial-up tunnels.")
+    firewall_policy: str | None = Field(default="", description="Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).")
+    firewall_address: str | None = Field(default="", description="Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).")
+    firewall_addrgrp: str | None = Field(default="", description="Maximum guaranteed number of firewall address groups (IPv4, IPv6).")
+    custom_service: str | None = Field(default="", description="Maximum guaranteed number of firewall custom services.")
+    service_group: str | None = Field(default="", description="Maximum guaranteed number of firewall service groups.")
+    onetime_schedule: str | None = Field(default="", description="Maximum guaranteed number of firewall one-time schedules..")
+    recurring_schedule: str | None = Field(default="", description="Maximum guaranteed number of firewall recurring schedules.")
+    user: str | None = Field(default="", description="Maximum guaranteed number of local users.")
+    user_group: str | None = Field(default="", description="Maximum guaranteed number of user groups.")
+    sslvpn: str | None = Field(default="", description="Maximum guaranteed number of Agentless VPNs.")
+    proxy: str | None = Field(default="", description="Maximum guaranteed number of concurrent proxy users.")
+    log_disk_quota: str | None = Field(default="", description="Log disk quota in megabytes (MB). Range depends on how much disk space is available.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +160,7 @@ class VdomPropertyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vdom_property.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "name", None)
@@ -154,7 +197,7 @@ class VdomPropertyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_name_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +220,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.514414Z
+# Generated: 2026-01-14T22:43:39.259336Z
 # ============================================================================

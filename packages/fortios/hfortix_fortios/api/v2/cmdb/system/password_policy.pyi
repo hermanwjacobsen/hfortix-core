@@ -91,7 +91,6 @@ class PasswordPolicyObject:
     login_lockout_upon_weaker_encryption: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -113,6 +112,10 @@ class PasswordPolicy:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -133,6 +136,7 @@ class PasswordPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -150,6 +154,7 @@ class PasswordPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -166,6 +171,7 @@ class PasswordPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyResponse: ...
     
     # ================================================================
@@ -208,7 +214,7 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
@@ -227,7 +233,7 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
@@ -327,23 +333,6 @@ class PasswordPolicy:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> PasswordPolicyObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -369,6 +358,7 @@ class PasswordPolicy:
         login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
@@ -435,27 +425,7 @@ class PasswordPolicy:
         reuse_password_limit: int | None = ...,
         login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: PasswordPolicyPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
-        minimum_length: int | None = ...,
-        min_lower_case_letter: int | None = ...,
-        min_upper_case_letter: int | None = ...,
-        min_non_alphanumeric: int | None = ...,
-        min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
-        expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
-        reuse_password_limit: int | None = ...,
-        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -496,8 +466,6 @@ class PasswordPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -525,6 +493,10 @@ class PasswordPolicyDictMode:
     By default returns PasswordPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return PasswordPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -688,10 +660,12 @@ class PasswordPolicyDictMode:
         reuse_password_limit: int | None = ...,
         login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: PasswordPolicyPayload | None = ...,
@@ -749,8 +723,6 @@ class PasswordPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -774,6 +746,10 @@ class PasswordPolicyObjectMode:
     By default returns PasswordPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return PasswordPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -960,10 +936,12 @@ class PasswordPolicyObjectMode:
         reuse_password_limit: int | None = ...,
         login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: PasswordPolicyPayload | None = ...,
@@ -1021,8 +999,6 @@ class PasswordPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

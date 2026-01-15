@@ -158,7 +158,30 @@ class LocalInPolicy6Model(BaseModel):
 
     Configure user defined IPv6 local-in policies.
 
-    Validation Rules:        - policyid: min=0 max=4294967295 pattern=        - uuid: pattern=        - intf: pattern=        - srcaddr: pattern=        - srcaddr_negate: pattern=        - dstaddr: pattern=        - internet_service6_src: pattern=        - internet_service6_src_name: pattern=        - internet_service6_src_group: pattern=        - internet_service6_src_custom: pattern=        - internet_service6_src_custom_group: pattern=        - internet_service6_src_fortiguard: pattern=        - dstaddr_negate: pattern=        - action: pattern=        - service: pattern=        - service_negate: pattern=        - internet_service6_src_negate: pattern=        - schedule: max_length=35 pattern=        - status: pattern=        - virtual_patch: pattern=        - logtraffic: pattern=        - comments: max_length=1023 pattern=    """
+    Validation Rules:
+        - policyid: min=0 max=4294967295 pattern=
+        - uuid: pattern=
+        - intf: pattern=
+        - srcaddr: pattern=
+        - srcaddr_negate: pattern=
+        - dstaddr: pattern=
+        - internet_service6_src: pattern=
+        - internet_service6_src_name: pattern=
+        - internet_service6_src_group: pattern=
+        - internet_service6_src_custom: pattern=
+        - internet_service6_src_custom_group: pattern=
+        - internet_service6_src_fortiguard: pattern=
+        - dstaddr_negate: pattern=
+        - action: pattern=
+        - service: pattern=
+        - service_negate: pattern=
+        - internet_service6_src_negate: pattern=
+        - schedule: max_length=35 pattern=
+        - status: pattern=
+        - virtual_patch: pattern=
+        - logtraffic: pattern=
+        - comments: max_length=1023 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -170,7 +193,29 @@ class LocalInPolicy6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="User defined local in policy ID.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    intf: list[LocalInPolicy6Intf] = Field(description="Incoming interface name from available options.")    srcaddr: list[LocalInPolicy6Srcaddr] = Field(description="Source address object from available options.")    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")    dstaddr: list[LocalInPolicy6Dstaddr] = Field(description="Destination address object from available options.")    internet_service6_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services in source for this local-in policy.If enabled, source address is not used.")    internet_service6_src_name: list[LocalInPolicy6InternetService6SrcName] = Field(default=None, description="IPv6 Internet Service source name.")    internet_service6_src_group: list[LocalInPolicy6InternetService6SrcGroup] = Field(default=None, description="Internet Service6 source group name.")    internet_service6_src_custom: list[LocalInPolicy6InternetService6SrcCustom] = Field(default=None, description="Custom IPv6 Internet Service source name.")    internet_service6_src_custom_group: list[LocalInPolicy6InternetService6SrcCustomGroup] = Field(default=None, description="Custom Internet Service6 source group name.")    internet_service6_src_fortiguard: list[LocalInPolicy6InternetService6SrcFortiguard] = Field(default=None, description="FortiGuard IPv6 Internet Service source name.")    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")    action: Literal["accept", "deny"] | None = Field(default="deny", description="Action performed on traffic matching the policy (default = deny).")    service: list[LocalInPolicy6Service] = Field(description="Service object from available options. Separate names with a space.")    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled service specifies what the service must NOT be.")    internet_service6_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6-src specifies what the service must NOT be.")    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this local-in policy.")    virtual_patch: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the virtual patching feature.")    logtraffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable local-in traffic logging.")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    # ========================================================================
+    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="User defined local in policy ID.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    intf: list[LocalInPolicy6Intf] | None = Field(description="Incoming interface name from available options.")
+    srcaddr: list[LocalInPolicy6Srcaddr] | None = Field(description="Source address object from available options.")
+    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")
+    dstaddr: list[LocalInPolicy6Dstaddr] | None = Field(description="Destination address object from available options.")
+    internet_service6_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services in source for this local-in policy.If enabled, source address is not used.")
+    internet_service6_src_name: list[LocalInPolicy6InternetService6SrcName] | None = Field(default=None, description="IPv6 Internet Service source name.")
+    internet_service6_src_group: list[LocalInPolicy6InternetService6SrcGroup] | None = Field(default=None, description="Internet Service6 source group name.")
+    internet_service6_src_custom: list[LocalInPolicy6InternetService6SrcCustom] | None = Field(default=None, description="Custom IPv6 Internet Service source name.")
+    internet_service6_src_custom_group: list[LocalInPolicy6InternetService6SrcCustomGroup] | None = Field(default=None, description="Custom Internet Service6 source group name.")
+    internet_service6_src_fortiguard: list[LocalInPolicy6InternetService6SrcFortiguard] | None = Field(default=None, description="FortiGuard IPv6 Internet Service source name.")
+    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")
+    action: Literal["accept", "deny"] | None = Field(default="deny", description="Action performed on traffic matching the policy (default = deny).")
+    service: list[LocalInPolicy6Service] | None = Field(description="Service object from available options. Separate names with a space.")
+    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled service specifies what the service must NOT be.")
+    internet_service6_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6-src specifies what the service must NOT be.")
+    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this local-in policy.")
+    virtual_patch: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the virtual patching feature.")
+    logtraffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable local-in traffic logging.")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -249,7 +294,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "intf", [])
@@ -311,7 +356,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -373,7 +418,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -435,7 +480,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_name", [])
@@ -493,7 +538,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_group", [])
@@ -551,7 +596,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom", [])
@@ -609,7 +654,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom_group", [])
@@ -667,7 +712,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_fortiguard", [])
@@ -725,7 +770,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -785,7 +830,7 @@ class LocalInPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -826,17 +871,26 @@ class LocalInPolicy6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_intf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_schedule_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -858,5 +912,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.512418Z
+# Generated: 2026-01-14T22:43:36.752980Z
 # ============================================================================

@@ -42,7 +42,7 @@ class OtdtParametersItem(TypedDict):
     """
     
     name: str  # Parameter name. | MaxLen: 31
-    default value: str  # Parameter default value. | MaxLen: 199
+    default_value: str  # Parameter default value. | MaxLen: 199
 
 
 class OtdtMetadataItem(TypedDict):
@@ -70,7 +70,7 @@ class OtdtParametersObject:
     # Parameter name. | MaxLen: 31
     name: str
     # Parameter default value. | MaxLen: 199
-    default value: str
+    default_value: str
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -166,7 +166,6 @@ class OtdtObject:
     status: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -189,6 +188,10 @@ class Otdt:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -209,6 +212,7 @@ class Otdt:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OtdtResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -226,6 +230,7 @@ class Otdt:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OtdtResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -242,6 +247,7 @@ class Otdt:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[OtdtResponse]: ...
     
     # ================================================================
@@ -284,7 +290,7 @@ class Otdt:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OtdtObject: ...
     
@@ -303,7 +309,7 @@ class Otdt:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[OtdtObject]: ...
     
@@ -403,23 +409,6 @@ class Otdt:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OtdtObject | list[OtdtObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -446,6 +435,7 @@ class Otdt:
         status: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OtdtObject: ...
@@ -515,28 +505,7 @@ class Otdt:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -560,6 +529,7 @@ class Otdt:
         status: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OtdtObject: ...
@@ -629,28 +599,7 @@ class Otdt:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -661,6 +610,7 @@ class Otdt:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OtdtObject: ...
@@ -691,14 +641,7 @@ class Otdt:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -740,8 +683,6 @@ class Otdt:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -769,6 +710,10 @@ class OtdtDictMode:
     By default returns OtdtResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OtdtObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -934,10 +879,12 @@ class OtdtDictMode:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -1025,10 +972,12 @@ class OtdtDictMode:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -1077,10 +1026,12 @@ class OtdtDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1126,8 +1077,6 @@ class OtdtDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1151,6 +1100,10 @@ class OtdtObjectMode:
     By default returns OtdtObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OtdtResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1340,10 +1293,12 @@ class OtdtObjectMode:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OtdtObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -1455,10 +1410,12 @@ class OtdtObjectMode:
         metadata: str | list[str] | list[dict[str, Any]] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OtdtObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -1518,10 +1475,12 @@ class OtdtObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OtdtObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1567,8 +1526,6 @@ class OtdtObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

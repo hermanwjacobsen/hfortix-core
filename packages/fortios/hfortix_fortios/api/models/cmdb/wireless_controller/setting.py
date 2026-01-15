@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -263,7 +263,23 @@ class SettingModel(BaseModel):
 
     VDOM wireless controller configuration.
 
-    Validation Rules:        - account_id: max_length=63 pattern=        - country: pattern=        - duplicate_ssid: pattern=        - fapc_compatibility: pattern=        - wfa_compatibility: pattern=        - phishing_ssid_detect: pattern=        - fake_ssid_action: pattern=        - offending_ssid: pattern=        - device_weight: min=0 max=255 pattern=        - device_holdoff: min=0 max=60 pattern=        - device_idle: min=0 max=14400 pattern=        - firmware_provision_on_authorization: pattern=        - rolling_wtp_upgrade: pattern=        - darrp_optimize: min=0 max=86400 pattern=        - darrp_optimize_schedules: pattern=    """
+    Validation Rules:
+        - account_id: max_length=63 pattern=
+        - country: pattern=
+        - duplicate_ssid: pattern=
+        - fapc_compatibility: pattern=
+        - wfa_compatibility: pattern=
+        - phishing_ssid_detect: pattern=
+        - fake_ssid_action: pattern=
+        - offending_ssid: pattern=
+        - device_weight: min=0 max=255 pattern=
+        - device_holdoff: min=0 max=60 pattern=
+        - device_idle: min=0 max=14400 pattern=
+        - firmware_provision_on_authorization: pattern=
+        - rolling_wtp_upgrade: pattern=
+        - darrp_optimize: min=0 max=86400 pattern=
+        - darrp_optimize_schedules: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -275,7 +291,22 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    account_id: str | None = Field(max_length=63, default="", description="FortiCloud customer account ID.")    country: SettingCountryEnum | None = Field(default="US", description="Country or region in which the FortiGate is located. The country determines the 802.11 bands and channels that are available.")    duplicate_ssid: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing Virtual Access Points (VAPs) to use the same SSID name in the same VDOM.")    fapc_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FAP-C series compatibility.")    wfa_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WFA compatibility.")    phishing_ssid_detect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable phishing SSID detection.")    fake_ssid_action: Literal["log", "suppress"] | None = Field(default="log", description="Actions taken for detected fake SSID.")    offending_ssid: list[SettingOffendingSsid] = Field(default=None, description="Configure offending SSID.")    device_weight: int | None = Field(ge=0, le=255, default=1, description="Upper limit of confidence of device for identification (0 - 255, default = 1, 0 = disable).")    device_holdoff: int | None = Field(ge=0, le=60, default=5, description="Lower limit of creation time of device for identification in minutes (0 - 60, default = 5).")    device_idle: int | None = Field(ge=0, le=14400, default=1440, description="Upper limit of idle time of device for identification in minutes (0 - 14400, default = 1440).")    firmware_provision_on_authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic provisioning of latest firmware on authorization.")    rolling_wtp_upgrade: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable rolling WTP upgrade (default = disable).")    darrp_optimize: int | None = Field(ge=0, le=86400, default=86400, description="Time for running Distributed Automatic Radio Resource Provisioning (DARRP) optimizations (0 - 86400 sec, default = 86400, 0 = disable).")    darrp_optimize_schedules: list[SettingDarrpOptimizeSchedules] = Field(default=None, description="Firewall schedules for DARRP running time. DARRP will run periodically based on darrp-optimize within the schedules. Separate multiple schedule names with a space.")    # ========================================================================
+    account_id: str | None = Field(max_length=63, default="", description="FortiCloud customer account ID.")
+    country: str | SettingCountryEnum | None = Field(default="US", description="Country or region in which the FortiGate is located. The country determines the 802.11 bands and channels that are available.")
+    duplicate_ssid: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing Virtual Access Points (VAPs) to use the same SSID name in the same VDOM.")
+    fapc_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FAP-C series compatibility.")
+    wfa_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WFA compatibility.")
+    phishing_ssid_detect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable phishing SSID detection.")
+    fake_ssid_action: Literal["log", "suppress"] | None = Field(default="log", description="Actions taken for detected fake SSID.")
+    offending_ssid: list[SettingOffendingSsid] | None = Field(default=None, description="Configure offending SSID.")
+    device_weight: int | None = Field(ge=0, le=255, default=1, description="Upper limit of confidence of device for identification (0 - 255, default = 1, 0 = disable).")
+    device_holdoff: int | None = Field(ge=0, le=60, default=5, description="Lower limit of creation time of device for identification in minutes (0 - 60, default = 5).")
+    device_idle: int | None = Field(ge=0, le=14400, default=1440, description="Upper limit of idle time of device for identification in minutes (0 - 14400, default = 1440).")
+    firmware_provision_on_authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic provisioning of latest firmware on authorization.")
+    rolling_wtp_upgrade: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable rolling WTP upgrade (default = disable).")
+    darrp_optimize: int | None = Field(ge=0, le=86400, default=86400, description="Time for running Distributed Automatic Radio Resource Provisioning (DARRP) optimizations (0 - 86400 sec, default = 86400, 0 = disable).")
+    darrp_optimize_schedules: list[SettingDarrpOptimizeSchedules] | None = Field(default=None, description="Firewall schedules for DARRP running time. DARRP will run periodically based on darrp-optimize within the schedules. Separate multiple schedule names with a space.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -339,7 +370,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "darrp_optimize_schedules", [])
@@ -389,7 +420,7 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_darrp_optimize_schedules_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -412,5 +443,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.295880Z
+# Generated: 2026-01-14T22:43:38.995449Z
 # ============================================================================

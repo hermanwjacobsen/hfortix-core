@@ -27,7 +27,7 @@ class DnsDatabasePayload(TypedDict, total=False):
     status: Literal["enable", "disable"]  # Enable/disable this DNS zone. | Default: enable
     domain: str  # Domain name. | MaxLen: 255
     allow_transfer: list[dict[str, Any]]  # DNS zone transfer IP address list.
-    type: Literal["primary", "secondary"]  # Zone type | Default: primary
+    type_: Literal["primary", "secondary"]  # Zone type | Default: primary
     view: Literal["shadow", "public", "shadow-ztna", "proxy"]  # Zone view | Default: shadow
     ip_primary: str  # IP address of primary DNS server. Entries in this | Default: 0.0.0.0
     primary_name: str  # Domain name of the default DNS server for this zon | Default: dns | MaxLen: 255
@@ -56,7 +56,7 @@ class DnsDatabaseDnsentryItem(TypedDict):
     
     id: int  # DNS entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable resource record status. | Default: enable
-    type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]  # Resource record type. | Default: A
+    type_: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]  # Resource record type. | Default: A
     ttl: int  # Time-to-live for this entry | Default: 0 | Min: 0 | Max: 2147483647
     preference: int  # DNS entry preference | Default: 10 | Min: 0 | Max: 65535
     ip: str  # IPv4 address of the host. | Default: 0.0.0.0
@@ -80,7 +80,7 @@ class DnsDatabaseDnsentryObject:
     # Enable/disable resource record status. | Default: enable
     status: Literal["enable", "disable"]
     # Resource record type. | Default: A
-    type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]
+    type_: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]
     # Time-to-live for this entry | Default: 0 | Min: 0 | Max: 2147483647
     ttl: int
     # DNS entry preference | Default: 10 | Min: 0 | Max: 65535
@@ -116,7 +116,7 @@ class DnsDatabaseResponse(TypedDict):
     status: Literal["enable", "disable"]  # Enable/disable this DNS zone. | Default: enable
     domain: str  # Domain name. | MaxLen: 255
     allow_transfer: list[dict[str, Any]]  # DNS zone transfer IP address list.
-    type: Literal["primary", "secondary"]  # Zone type | Default: primary
+    type_: Literal["primary", "secondary"]  # Zone type | Default: primary
     view: Literal["shadow", "public", "shadow-ztna", "proxy"]  # Zone view | Default: shadow
     ip_primary: str  # IP address of primary DNS server. Entries in this | Default: 0.0.0.0
     primary_name: str  # Domain name of the default DNS server for this zon | Default: dns | MaxLen: 255
@@ -152,7 +152,7 @@ class DnsDatabaseObject:
     # DNS zone transfer IP address list.
     allow_transfer: list[dict[str, Any]]
     # Zone type | Default: primary
-    type: Literal["primary", "secondary"]
+    type_: Literal["primary", "secondary"]
     # Zone view | Default: shadow
     view: Literal["shadow", "public", "shadow-ztna", "proxy"]
     # IP address of primary DNS server. Entries in this primary DN | Default: 0.0.0.0
@@ -187,7 +187,6 @@ class DnsDatabaseObject:
     vrf_select: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -210,6 +209,10 @@ class DnsDatabase:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -230,6 +233,7 @@ class DnsDatabase:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DnsDatabaseResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -247,6 +251,7 @@ class DnsDatabase:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DnsDatabaseResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -263,6 +268,7 @@ class DnsDatabase:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DnsDatabaseResponse]: ...
     
     # ================================================================
@@ -305,7 +311,7 @@ class DnsDatabase:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
     
@@ -324,7 +330,7 @@ class DnsDatabase:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DnsDatabaseObject]: ...
     
@@ -424,23 +430,6 @@ class DnsDatabase:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DnsDatabaseObject | list[DnsDatabaseObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -456,7 +445,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -475,6 +464,7 @@ class DnsDatabase:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
@@ -487,7 +477,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -519,7 +509,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -550,7 +540,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -568,36 +558,7 @@ class DnsDatabase:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DnsDatabasePayload | None = ...,
-        name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        domain: str | None = ...,
-        allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
-        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
-        ip_primary: str | None = ...,
-        primary_name: str | None = ...,
-        contact: str | None = ...,
-        ttl: int | None = ...,
-        authoritative: Literal["enable", "disable"] | None = ...,
-        forwarder: str | list[str] | None = ...,
-        forwarder6: str | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        source_ip_interface: str | None = ...,
-        rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -610,7 +571,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -629,6 +590,7 @@ class DnsDatabase:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
@@ -641,7 +603,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -673,7 +635,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -704,7 +666,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -722,36 +684,7 @@ class DnsDatabase:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DnsDatabasePayload | None = ...,
-        name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        domain: str | None = ...,
-        allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
-        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
-        ip_primary: str | None = ...,
-        primary_name: str | None = ...,
-        contact: str | None = ...,
-        ttl: int | None = ...,
-        authoritative: Literal["enable", "disable"] | None = ...,
-        forwarder: str | list[str] | None = ...,
-        forwarder6: str | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        source_ip_interface: str | None = ...,
-        rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -762,6 +695,7 @@ class DnsDatabase:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
@@ -792,14 +726,7 @@ class DnsDatabase:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -816,7 +743,7 @@ class DnsDatabase:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -849,8 +776,6 @@ class DnsDatabase:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -878,6 +803,10 @@ class DnsDatabaseDictMode:
     By default returns DnsDatabaseResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DnsDatabaseObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -985,7 +914,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1017,7 +946,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1049,7 +978,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1067,10 +996,12 @@ class DnsDatabaseDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DnsDatabasePayload | None = ...,
@@ -1078,7 +1009,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1108,7 +1039,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1140,7 +1071,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1172,7 +1103,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1190,10 +1121,12 @@ class DnsDatabaseDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DnsDatabasePayload | None = ...,
@@ -1201,7 +1134,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1250,10 +1183,12 @@ class DnsDatabaseDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1275,7 +1210,7 @@ class DnsDatabaseDictMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1307,8 +1242,6 @@ class DnsDatabaseDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1332,6 +1265,10 @@ class DnsDatabaseObjectMode:
     By default returns DnsDatabaseObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DnsDatabaseResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1439,7 +1376,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1471,7 +1408,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1503,7 +1440,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1535,7 +1472,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1553,10 +1490,12 @@ class DnsDatabaseObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DnsDatabasePayload | None = ...,
@@ -1564,7 +1503,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1594,7 +1533,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1626,7 +1565,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1658,7 +1597,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1690,7 +1629,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1708,10 +1647,12 @@ class DnsDatabaseObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DnsDatabasePayload | None = ...,
@@ -1719,7 +1660,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1779,10 +1720,12 @@ class DnsDatabaseObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DnsDatabaseObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1804,7 +1747,7 @@ class DnsDatabaseObjectMode:
         status: Literal["enable", "disable"] | None = ...,
         domain: str | None = ...,
         allow_transfer: str | list[str] | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
+        type_: Literal["primary", "secondary"] | None = ...,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
@@ -1836,8 +1779,6 @@ class DnsDatabaseObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

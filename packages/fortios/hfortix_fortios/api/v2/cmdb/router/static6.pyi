@@ -153,7 +153,6 @@ class Static6Object:
     tag: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -176,6 +175,10 @@ class Static6:
     Primary Key: seq-num
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -196,6 +199,7 @@ class Static6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Static6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -213,6 +217,7 @@ class Static6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Static6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -229,6 +234,7 @@ class Static6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Static6Response]: ...
     
     # ================================================================
@@ -271,7 +277,7 @@ class Static6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Static6Object: ...
     
@@ -290,7 +296,7 @@ class Static6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Static6Object]: ...
     
@@ -390,23 +396,6 @@ class Static6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        seq_num: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Static6Object | list[Static6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -438,6 +427,7 @@ class Static6:
         tag: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Static6Object: ...
@@ -522,33 +512,7 @@ class Static6:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Static6Payload | None = ...,
-        seq_num: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        dst: str | None = ...,
-        gateway: str | None = ...,
-        device: str | None = ...,
-        devindex: int | None = ...,
-        distance: int | None = ...,
-        weight: int | None = ...,
-        priority: int | None = ...,
-        comment: str | None = ...,
-        blackhole: Literal["enable", "disable"] | None = ...,
-        dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | None = ...,
-        link_monitor_exempt: Literal["enable", "disable"] | None = ...,
-        vrf: int | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        tag: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -577,6 +541,7 @@ class Static6:
         tag: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Static6Object: ...
@@ -661,33 +626,7 @@ class Static6:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Static6Payload | None = ...,
-        seq_num: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        dst: str | None = ...,
-        gateway: str | None = ...,
-        device: str | None = ...,
-        devindex: int | None = ...,
-        distance: int | None = ...,
-        weight: int | None = ...,
-        priority: int | None = ...,
-        comment: str | None = ...,
-        blackhole: Literal["enable", "disable"] | None = ...,
-        dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | None = ...,
-        link_monitor_exempt: Literal["enable", "disable"] | None = ...,
-        vrf: int | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        tag: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -698,6 +637,7 @@ class Static6:
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Static6Object: ...
@@ -728,14 +668,7 @@ class Static6:
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        seq_num: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -782,8 +715,6 @@ class Static6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -811,6 +742,10 @@ class Static6DictMode:
     By default returns Static6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return Static6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -991,10 +926,12 @@ class Static6DictMode:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Static6Payload | None = ...,
@@ -1102,10 +1039,12 @@ class Static6DictMode:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Static6Payload | None = ...,
@@ -1159,10 +1098,12 @@ class Static6DictMode:
         self,
         seq_num: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         seq_num: int,
@@ -1213,8 +1154,6 @@ class Static6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1238,6 +1177,10 @@ class Static6ObjectMode:
     By default returns Static6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Static6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1447,10 +1390,12 @@ class Static6ObjectMode:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Static6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Static6Payload | None = ...,
@@ -1587,10 +1532,12 @@ class Static6ObjectMode:
         bfd: Literal["enable", "disable"] | None = ...,
         tag: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Static6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Static6Payload | None = ...,
@@ -1655,10 +1602,12 @@ class Static6ObjectMode:
         self,
         seq_num: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Static6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         seq_num: int,
@@ -1709,8 +1658,6 @@ class Static6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

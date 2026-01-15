@@ -179,6 +179,10 @@ class InternetServiceExtension:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -199,6 +203,7 @@ class InternetServiceExtension:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceExtensionResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -216,6 +221,7 @@ class InternetServiceExtension:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceExtensionResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -232,6 +238,7 @@ class InternetServiceExtension:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InternetServiceExtensionResponse]: ...
     
     # ================================================================
@@ -274,7 +281,7 @@ class InternetServiceExtension:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
     
@@ -293,7 +300,7 @@ class InternetServiceExtension:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InternetServiceExtensionObject]: ...
     
@@ -393,23 +400,6 @@ class InternetServiceExtension:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceExtensionObject | list[InternetServiceExtensionObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -427,6 +417,7 @@ class InternetServiceExtension:
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
@@ -469,19 +460,7 @@ class InternetServiceExtension:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InternetServiceExtensionPayload | None = ...,
-        id: int | None = ...,
-        comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -496,6 +475,7 @@ class InternetServiceExtension:
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
@@ -538,19 +518,7 @@ class InternetServiceExtension:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceExtensionPayload | None = ...,
-        id: int | None = ...,
-        comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -561,6 +529,7 @@ class InternetServiceExtension:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
@@ -591,14 +560,7 @@ class InternetServiceExtension:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -631,8 +593,6 @@ class InternetServiceExtension:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -660,6 +620,10 @@ class InternetServiceExtensionDictMode:
     By default returns InternetServiceExtensionResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceExtensionObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -798,10 +762,12 @@ class InternetServiceExtensionDictMode:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceExtensionPayload | None = ...,
@@ -853,10 +819,12 @@ class InternetServiceExtensionDictMode:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceExtensionPayload | None = ...,
@@ -896,10 +864,12 @@ class InternetServiceExtensionDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -936,8 +906,6 @@ class InternetServiceExtensionDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -961,6 +929,10 @@ class InternetServiceExtensionObjectMode:
     By default returns InternetServiceExtensionObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceExtensionResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1114,10 +1086,12 @@ class InternetServiceExtensionObjectMode:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceExtensionPayload | None = ...,
@@ -1184,10 +1158,12 @@ class InternetServiceExtensionObjectMode:
         entry: str | list[str] | list[dict[str, Any]] | None = ...,
         disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceExtensionPayload | None = ...,
@@ -1238,10 +1214,12 @@ class InternetServiceExtensionObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceExtensionObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1278,8 +1256,6 @@ class InternetServiceExtensionObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

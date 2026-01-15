@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .ike import IkeDictMode, IkeObjectMode
+    from .ike import Ike, IkeDictMode, IkeObjectMode
     from .ipsec import Ipsec
     from .ssl import Ssl
 

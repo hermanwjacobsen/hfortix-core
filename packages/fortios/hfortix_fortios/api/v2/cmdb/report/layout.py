@@ -251,7 +251,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
         description: str | None = None,
         style_theme: str | None = None,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = None,
-        format: Literal["pdf"] | list[str] | None = None,
+        format_: Literal["pdf"] | list[str] | None = None,
         schedule_type: Literal["demand", "daily", "weekly"] | None = None,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
@@ -280,7 +280,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description: Description.
             style_theme: Report style theme.
             options: Report layout options.
-            format: Report format.
+            format_: Report format.
             schedule_type: Report schedule type.
             day: Schedule days of week to generate report.
             time: Schedule time to generate report (format = hh:mm).
@@ -345,7 +345,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description=description,
             style_theme=style_theme,
             options=options,
-            format=format,
+            format_=format_,
             schedule_type=schedule_type,
             day=day,
             time=time,
@@ -392,7 +392,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
         description: str | None = None,
         style_theme: str | None = None,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = None,
-        format: Literal["pdf"] | list[str] | None = None,
+        format_: Literal["pdf"] | list[str] | None = None,
         schedule_type: Literal["demand", "daily", "weekly"] | None = None,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
@@ -421,7 +421,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description: Description.
             style_theme: Report style theme.
             options: Report layout options.
-            format: Report format.
+            format_: Report format.
             schedule_type: Report schedule type.
             day: Schedule days of week to generate report.
             time: Schedule time to generate report (format = hh:mm).
@@ -488,7 +488,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description=description,
             style_theme=style_theme,
             options=options,
-            format=format,
+            format_=format_,
             schedule_type=schedule_type,
             day=day,
             time=time,
@@ -635,7 +635,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
         description: str | None = None,
         style_theme: str | None = None,
         options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | list[dict[str, Any]] | None = None,
-        format: Literal["pdf"] | list[str] | list[dict[str, Any]] | None = None,
+        format_: Literal["pdf"] | list[str] | list[dict[str, Any]] | None = None,
         schedule_type: Literal["demand", "daily", "weekly"] | None = None,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
@@ -665,7 +665,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description: Field description
             style_theme: Field style-theme
             options: Field options
-            format: Field format
+            format_: Field format
             schedule_type: Field schedule-type
             day: Field day
             time: Field time
@@ -725,7 +725,7 @@ class Layout(CRUDEndpoint, MetadataMixin):
             description=description,
             style_theme=style_theme,
             options=options,
-            format=format,
+            format_=format_,
             schedule_type=schedule_type,
             day=day,
             time=time,

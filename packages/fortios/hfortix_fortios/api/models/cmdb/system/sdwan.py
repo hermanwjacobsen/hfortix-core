@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -45,7 +45,7 @@ class SdwanZone(BaseModel):
     name: str = Field(max_length=35, default="", description="Zone name.")
     advpn_select: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of ADVPN based on SDWAN information.")
     advpn_health_check: str | None = Field(max_length=35, default="", description="Health check for ADVPN local overlay link quality.")  # datasource: ['system.sdwan.health-check.name']
-    service_sla_tie_break: ServiceSlaTieBreakEnum | None = Field(default="cfg-order", description="Method of selecting member if more than one meets the SLA.")
+    service_sla_tie_break: str | None = Field(default="cfg-order", description="Method of selecting member if more than one meets the SLA.")
     minimum_sla_meet_members: int | None = Field(ge=1, le=255, default=1, description="Minimum number of members which meet SLA when the neighbor is preferred.")
 
 
@@ -100,8 +100,8 @@ class SdwanHealthCheck(BaseModel):
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")
     system_dns: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable system DNS as the probe server.")
     server: str | None = Field(max_length=79, default="", description="IP address or FQDN name of the server.")
-    detect_mode: DetectModeEnum | None = Field(default="active", description="The mode determining how to detect the server.")
-    protocol: ProtocolEnum | None = Field(default="ping", description="Protocol used to determine if the FortiGate can communicate with the server.")
+    detect_mode: str | None = Field(default="active", description="The mode determining how to detect the server.")
+    protocol: str | None = Field(default="ping", description="Protocol used to determine if the FortiGate can communicate with the server.")
     port: int | None = Field(ge=0, le=65535, default=0, description="Port number used to communicate with the server over the selected protocol (0 - 65535, default = 0, auto select. http, tcp-connect: 80, udp-echo, tcp-echo: 7, dns: 53, ftp: 21, twamp: 862).")
     quality_measured_method: Literal["half-open", "half-close"] | None = Field(default="half-open", description="Method to measure the quality of tcp-connect.")
     security_mode: Literal["none", "authentication"] | None = Field(default="none", description="Twamp controller security mode.")
@@ -140,14 +140,14 @@ class SdwanHealthCheck(BaseModel):
     vrf: int | None = Field(ge=0, le=511, default=0, description="Virtual Routing Forwarding ID.")
     source: str | None = Field(default="0.0.0.0", description="Source IP address used in the health-check packet to the server.")
     source6: str | None = Field(default="::", description="Source IPv6 address used in the health-check packet to server.")
-    members: list[Members] = Field(default=None, description="Member sequence number list.")
+    members: list[dict[str, Any]] | None = Field(default=None, description="Member sequence number list.")
     mos_codec: Literal["g711", "g722", "g729"] | None = Field(default="g711", description="Codec to use for MOS calculation (default = g711).")
     class_id: int | None = Field(ge=0, le=4294967295, default=0, description="Traffic class ID.")  # datasource: ['firewall.traffic-class.class-id']
     packet_loss_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of packet-loss in the formula of custom-profile-1.")
     latency_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of latency in the formula of custom-profile-1.")
     jitter_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of jitter in the formula of custom-profile-1.")
     bandwidth_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of reciprocal of available bidirectional bandwidth in the formula of custom-profile-1.")
-    sla: list[Sla] = Field(default=None, description="Service level agreement (SLA).")
+    sla: list[dict[str, Any]] | None = Field(default=None, description="Service level agreement (SLA).")
 
 
 class SdwanService(BaseModel):
@@ -165,13 +165,13 @@ class SdwanService(BaseModel):
     name: str | None = Field(max_length=35, default="", description="SD-WAN rule name.")
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")
     load_balance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable load-balance.")
-    input_device: list[InputDevice] = Field(default=None, description="Source interface name.")
+    input_device: list[dict[str, Any]] | None = Field(default=None, description="Source interface name.")
     input_device_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of input device match.")
-    input_zone: list[InputZone] = Field(default=None, description="Source input-zone name.")
-    mode: ModeEnum | None = Field(default="manual", description="Control how the SD-WAN rule sets the priority of interfaces in the SD-WAN.")
+    input_zone: list[dict[str, Any]] | None = Field(default=None, description="Source input-zone name.")
+    mode: str | None = Field(default="manual", description="Control how the SD-WAN rule sets the priority of interfaces in the SD-WAN.")
     zone_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable zone mode.")
     minimum_sla_meet_members: int | None = Field(ge=0, le=255, default=0, description="Minimum number of members which meet SLA.")
-    hash_mode: HashModeEnum | None = Field(default="round-robin", description="Hash algorithm for selected priority members for load balance mode.")
+    hash_mode: str | None = Field(default="round-robin", description="Hash algorithm for selected priority members for load balance mode.")
     shortcut_priority: Literal["enable", "disable", "auto"] | None = Field(default="auto", description="High priority of ADVPN shortcut for this service.")
     role: Literal["standalone", "primary", "secondary"] | None = Field(default="standalone", description="Service role to work with neighbor.")
     standalone_action: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable service when selected neighbor role is standalone while service role is not standalone.")
@@ -183,25 +183,25 @@ class SdwanService(BaseModel):
     end_port: int | None = Field(ge=0, le=65535, default=65535, description="End destination port number.")
     start_src_port: int | None = Field(ge=0, le=65535, default=1, description="Start source port number.")
     end_src_port: int | None = Field(ge=0, le=65535, default=65535, description="End source port number.")
-    dst: list[Dst] = Field(default=None, description="Destination address name.")
+    dst: list[dict[str, Any]] | None = Field(default=None, description="Destination address name.")
     dst_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of destination address match.")
-    src: list[Src] = Field(default=None, description="Source address name.")
-    dst6: list[Dst6] = Field(default=None, description="Destination address6 name.")
-    src6: list[Src6] = Field(default=None, description="Source address6 name.")
+    src: list[dict[str, Any]] | None = Field(default=None, description="Source address name.")
+    dst6: list[dict[str, Any]] | None = Field(default=None, description="Destination address6 name.")
+    src6: list[dict[str, Any]] | None = Field(default=None, description="Source address6 name.")
     src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of source address match.")
-    users: list[Users] = Field(default=None, description="User name.")
-    groups: list[Groups] = Field(default=None, description="User groups.")
+    users: list[dict[str, Any]] | None = Field(default=None, description="User name.")
+    groups: list[dict[str, Any]] | None = Field(default=None, description="User groups.")
     internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet service for application-based load balancing.")
-    internet_service_custom: list[InternetServiceCustom] = Field(default=None, description="Custom Internet service name list.")
-    internet_service_custom_group: list[InternetServiceCustomGroup] = Field(default=None, description="Custom Internet Service group list.")
-    internet_service_fortiguard: list[InternetServiceFortiguard] = Field(default=None, description="FortiGuard Internet service name list.")
-    internet_service_name: list[InternetServiceName] = Field(default=None, description="Internet service name list.")
-    internet_service_group: list[InternetServiceGroup] = Field(default=None, description="Internet Service group list.")
-    internet_service_app_ctrl: list[InternetServiceAppCtrl] = Field(default=None, description="Application control based Internet Service ID list.")
-    internet_service_app_ctrl_group: list[InternetServiceAppCtrlGroup] = Field(default=None, description="Application control based Internet Service group list.")
-    internet_service_app_ctrl_category: list[InternetServiceAppCtrlCategory] = Field(default=None, description="IDs of one or more application control categories.")
-    health_check: list[HealthCheck] = Field(default=None, description="Health check list.")
-    link_cost_factor: LinkCostFactorEnum | None = Field(default="latency", description="Link cost factor.")
+    internet_service_custom: list[dict[str, Any]] | None = Field(default=None, description="Custom Internet service name list.")
+    internet_service_custom_group: list[dict[str, Any]] | None = Field(default=None, description="Custom Internet Service group list.")
+    internet_service_fortiguard: list[dict[str, Any]] | None = Field(default=None, description="FortiGuard Internet service name list.")
+    internet_service_name: list[dict[str, Any]] | None = Field(default=None, description="Internet service name list.")
+    internet_service_group: list[dict[str, Any]] | None = Field(default=None, description="Internet Service group list.")
+    internet_service_app_ctrl: list[dict[str, Any]] | None = Field(default=None, description="Application control based Internet Service ID list.")
+    internet_service_app_ctrl_group: list[dict[str, Any]] | None = Field(default=None, description="Application control based Internet Service group list.")
+    internet_service_app_ctrl_category: list[dict[str, Any]] | None = Field(default=None, description="IDs of one or more application control categories.")
+    health_check: list[dict[str, Any]] | None = Field(default=None, description="Health check list.")
+    link_cost_factor: str | None = Field(default="latency", description="Link cost factor.")
     packet_loss_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of packet-loss in the formula of custom-profile-1.")
     latency_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of latency in the formula of custom-profile-1.")
     jitter_weight: int | None = Field(ge=0, le=10000000, default=0, description="Coefficient of jitter in the formula of custom-profile-1.")
@@ -213,15 +213,15 @@ class SdwanService(BaseModel):
     dscp_reverse: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable reverse traffic DSCP tag.")
     dscp_forward_tag: str | None = Field(default="", description="Forward traffic DSCP tag.")
     dscp_reverse_tag: str | None = Field(default="", description="Reverse traffic DSCP tag.")
-    sla: list[Sla] = Field(default=None, description="Service level agreement (SLA).")
-    priority_members: list[PriorityMembers] = Field(default=None, description="Member sequence number list.")
-    priority_zone: list[PriorityZone] = Field(default=None, description="Priority zone name list.")
+    sla: list[dict[str, Any]] | None = Field(default=None, description="Service level agreement (SLA).")
+    priority_members: list[dict[str, Any]] | None = Field(default=None, description="Member sequence number list.")
+    priority_zone: list[dict[str, Any]] | None = Field(default=None, description="Priority zone name list.")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SD-WAN service.")
     gateway: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SD-WAN service gateway.")
     default: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of SD-WAN as default service.")
     sla_compare_method: Literal["order", "number"] | None = Field(default="order", description="Method to compare SLA value for SLA mode.")
     fib_best_match_force: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable force using fib-best-match oif as outgoing interface.")
-    tie_break: TieBreakEnum | None = Field(default="zone", description="Method of selecting member if more than one meets the SLA.")
+    tie_break: str | None = Field(default="zone", description="Method of selecting member if more than one meets the SLA.")
     use_shortcut_sla: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of ADVPN shortcut for quality comparison.")
     passive_measurement: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable passive measurement based on the service criteria.")
     agent_exclusive: Literal["enable", "disable"] | None = Field(default="disable", description="Set/unset the service as agent use exclusively.")
@@ -241,7 +241,7 @@ class SdwanNeighbor(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     ip: str = Field(max_length=45, default="", description="IP/IPv6 address of neighbor or neighbor-group name.")  # datasource: ['router.bgp.neighbor-group.name', 'router.bgp.neighbor.ip']
-    member: list[Member] = Field(default=None, description="Member sequence number list.")
+    member: list[dict[str, Any]] | None = Field(default=None, description="Member sequence number list.")
     service_id: int | None = Field(ge=0, le=4294967295, default=0, description="SD-WAN service ID to work with the neighbor.")  # datasource: ['system.sdwan.service.id']
     minimum_sla_meet_members: int | None = Field(ge=1, le=255, default=1, description="Minimum number of members which meet SLA when the neighbor is preferred.")
     mode: Literal["sla", "speedtest"] | None = Field(default="sla", description="What metric to select the neighbor.")
@@ -263,14 +263,14 @@ class SdwanDuplication(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int = Field(ge=1, le=255, default=0, description="Duplication rule ID (1 - 255).")
-    service_id: list[ServiceId] = Field(default=None, description="SD-WAN service rule ID list.")
-    srcaddr: list[Srcaddr] = Field(default=None, description="Source address or address group names.")
-    dstaddr: list[Dstaddr] = Field(default=None, description="Destination address or address group names.")
-    srcaddr6: list[Srcaddr6] = Field(default=None, description="Source address6 or address6 group names.")
-    dstaddr6: list[Dstaddr6] = Field(default=None, description="Destination address6 or address6 group names.")
-    srcintf: list[Srcintf] = Field(default=None, description="Incoming (ingress) interfaces or zones.")
-    dstintf: list[Dstintf] = Field(default=None, description="Outgoing (egress) interfaces or zones.")
-    service: list[Service] = Field(default=None, description="Service and service group name.")
+    service_id: list[dict[str, Any]] | None = Field(default=None, description="SD-WAN service rule ID list.")
+    srcaddr: list[dict[str, Any]] | None = Field(default=None, description="Source address or address group names.")
+    dstaddr: list[dict[str, Any]] | None = Field(default=None, description="Destination address or address group names.")
+    srcaddr6: list[dict[str, Any]] | None = Field(default=None, description="Source address6 or address6 group names.")
+    dstaddr6: list[dict[str, Any]] | None = Field(default=None, description="Destination address6 or address6 group names.")
+    srcintf: list[dict[str, Any]] | None = Field(default=None, description="Incoming (ingress) interfaces or zones.")
+    dstintf: list[dict[str, Any]] | None = Field(default=None, description="Outgoing (egress) interfaces or zones.")
+    service: list[dict[str, Any]] | None = Field(default=None, description="Service and service group name.")
     packet_duplication: Literal["disable", "force", "on-demand"] | None = Field(default="disable", description="Configure packet duplication method.")
     sla_match_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable packet duplication matching health-check SLAs in service rule.")
     packet_de_duplication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable discarding of packets that have been duplicated.")
@@ -280,7 +280,7 @@ class SdwanDuplication(BaseModel):
 # ============================================================================
 
 
-class SdwanLoad_balance_modeEnum(str, Enum):
+class SdwanLoadBalanceModeEnum(str, Enum):
     """Allowed values for load_balance_mode field."""
     SOURCE_IP_BASED = "source-ip-based"
     WEIGHT_BASED = "weight-based"
@@ -300,7 +300,25 @@ class SdwanModel(BaseModel):
 
     Configure redundant Internet connections with multiple outbound links and health-check profiles.
 
-    Validation Rules:        - status: pattern=        - load_balance_mode: pattern=        - speedtest_bypass_routing: pattern=        - duplication_max_num: min=2 max=4 pattern=        - duplication_max_discrepancy: min=250 max=1000 pattern=        - neighbor_hold_down: pattern=        - neighbor_hold_down_time: min=0 max=10000000 pattern=        - app_perf_log_period: min=0 max=3600 pattern=        - neighbor_hold_boot_time: min=0 max=10000000 pattern=        - fail_detect: pattern=        - fail_alert_interfaces: pattern=        - zone: pattern=        - members: pattern=        - health_check: pattern=        - service: pattern=        - neighbor: pattern=        - duplication: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - load_balance_mode: pattern=
+        - speedtest_bypass_routing: pattern=
+        - duplication_max_num: min=2 max=4 pattern=
+        - duplication_max_discrepancy: min=250 max=1000 pattern=
+        - neighbor_hold_down: pattern=
+        - neighbor_hold_down_time: min=0 max=10000000 pattern=
+        - app_perf_log_period: min=0 max=3600 pattern=
+        - neighbor_hold_boot_time: min=0 max=10000000 pattern=
+        - fail_detect: pattern=
+        - fail_alert_interfaces: pattern=
+        - zone: pattern=
+        - members: pattern=
+        - health_check: pattern=
+        - service: pattern=
+        - neighbor: pattern=
+        - duplication: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -312,7 +330,24 @@ class SdwanModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SD-WAN.")    load_balance_mode: SdwanLoadBalanceModeEnum | None = Field(default="source-ip-based", description="Algorithm or mode to use for load balancing Internet traffic to SD-WAN members.")    speedtest_bypass_routing: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypass routing when speedtest on a SD-WAN member.")    duplication_max_num: int | None = Field(ge=2, le=4, default=2, description="Maximum number of interface members a packet is duplicated in the SD-WAN zone (2 - 4, default = 2; if set to 3, the original packet plus 2 more copies are created).")    duplication_max_discrepancy: int | None = Field(ge=250, le=1000, default=250, description="Maximum discrepancy between two packets for deduplication in milliseconds (250 - 1000, default = 250).")    neighbor_hold_down: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable hold switching from the secondary neighbor to the primary neighbor.")    neighbor_hold_down_time: int | None = Field(ge=0, le=10000000, default=0, description="Waiting period in seconds when switching from the secondary neighbor to the primary neighbor when hold-down is disabled. (0 - 10000000, default = 0).")    app_perf_log_period: int | None = Field(ge=0, le=3600, default=0, description="Time interval in seconds that application performance logs are generated (0 - 3600, default = 0).")    neighbor_hold_boot_time: int | None = Field(ge=0, le=10000000, default=0, description="Waiting period in seconds when switching from the primary neighbor to the secondary neighbor from the neighbor start. (0 - 10000000, default = 0).")    fail_detect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SD-WAN Internet connection status checking (failure detection).")    fail_alert_interfaces: list[SdwanFailAlertInterfaces] = Field(default=None, description="Physical interfaces that will be alerted.")    zone: list[SdwanZone] = Field(default=None, description="Configure SD-WAN zones.")    members: list[SdwanMembers] = Field(default=None, description="FortiGate interfaces added to the SD-WAN.")    health_check: list[SdwanHealthCheck] = Field(default=None, description="SD-WAN status checking or health checking. Identify a server on the Internet and determine how SD-WAN verifies that the FortiGate can communicate with it.")    service: list[SdwanService] = Field(default=None, description="Create SD-WAN rules (also called services) to control how sessions are distributed to interfaces in the SD-WAN.")    neighbor: list[SdwanNeighbor] = Field(default=None, description="Create SD-WAN neighbor from BGP neighbor table to control route advertisements according to SLA status.")    duplication: list[SdwanDuplication] = Field(default=None, description="Create SD-WAN duplication rule.")    # ========================================================================
+    status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SD-WAN.")
+    load_balance_mode: str | SdwanLoadBalanceModeEnum | None = Field(default="source-ip-based", description="Algorithm or mode to use for load balancing Internet traffic to SD-WAN members.")
+    speedtest_bypass_routing: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypass routing when speedtest on a SD-WAN member.")
+    duplication_max_num: int | None = Field(ge=2, le=4, default=2, description="Maximum number of interface members a packet is duplicated in the SD-WAN zone (2 - 4, default = 2; if set to 3, the original packet plus 2 more copies are created).")
+    duplication_max_discrepancy: int | None = Field(ge=250, le=1000, default=250, description="Maximum discrepancy between two packets for deduplication in milliseconds (250 - 1000, default = 250).")
+    neighbor_hold_down: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable hold switching from the secondary neighbor to the primary neighbor.")
+    neighbor_hold_down_time: int | None = Field(ge=0, le=10000000, default=0, description="Waiting period in seconds when switching from the secondary neighbor to the primary neighbor when hold-down is disabled. (0 - 10000000, default = 0).")
+    app_perf_log_period: int | None = Field(ge=0, le=3600, default=0, description="Time interval in seconds that application performance logs are generated (0 - 3600, default = 0).")
+    neighbor_hold_boot_time: int | None = Field(ge=0, le=10000000, default=0, description="Waiting period in seconds when switching from the primary neighbor to the secondary neighbor from the neighbor start. (0 - 10000000, default = 0).")
+    fail_detect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SD-WAN Internet connection status checking (failure detection).")
+    fail_alert_interfaces: list[SdwanFailAlertInterfaces] | None = Field(default=None, description="Physical interfaces that will be alerted.")
+    zone: list[SdwanZone] | None = Field(default=None, description="Configure SD-WAN zones.")
+    members: list[SdwanMembers] | None = Field(default=None, description="FortiGate interfaces added to the SD-WAN.")
+    health_check: list[SdwanHealthCheck] | None = Field(default=None, description="SD-WAN status checking or health checking. Identify a server on the Internet and determine how SD-WAN verifies that the FortiGate can communicate with it.")
+    service: list[SdwanService] | None = Field(default=None, description="Create SD-WAN rules (also called services) to control how sessions are distributed to interfaces in the SD-WAN.")
+    neighbor: list[SdwanNeighbor] | None = Field(default=None, description="Create SD-WAN neighbor from BGP neighbor table to control route advertisements according to SLA status.")
+    duplication: list[SdwanDuplication] | None = Field(default=None, description="Create SD-WAN duplication rule.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -376,7 +411,7 @@ class SdwanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdwan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "fail_alert_interfaces", [])
@@ -434,7 +469,7 @@ class SdwanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdwan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "zone", [])
@@ -492,7 +527,7 @@ class SdwanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdwan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "members", [])
@@ -550,7 +585,7 @@ class SdwanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdwan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "health_check", [])
@@ -608,7 +643,7 @@ class SdwanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdwan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor", [])
@@ -654,12 +689,16 @@ class SdwanModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fail_alert_interfaces_references(client)
-        all_errors.extend(errors)        errors = await self.validate_zone_references(client)
-        all_errors.extend(errors)        errors = await self.validate_members_references(client)
-        all_errors.extend(errors)        errors = await self.validate_health_check_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_zone_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_members_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_health_check_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -681,5 +720,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.496466Z
+# Generated: 2026-01-14T22:43:35.578712Z
 # ============================================================================

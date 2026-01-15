@@ -235,7 +235,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        type: Literal["ethernet", "ppp"] | None = None,
+        type_: Literal["ethernet", "ppp"] | None = None,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = None,
         remote_ip: str | None = None,
         remote_ip6: str | None = None,
@@ -255,7 +255,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name: GENEVE device or interface name. Must be an unique interface name.
             interface: Outgoing interface for GENEVE encapsulated traffic.
             vni: GENEVE network ID.
-            type: GENEVE type.
+            type_: GENEVE type.
             ip_version: IP version to use for the GENEVE interface and so for communication over the GENEVE. IPv4 or IPv6 unicast.
             remote_ip: IPv4 address of the GENEVE interface on the device at the remote end of the GENEVE.
             remote_ip6: IPv6 IP address of the GENEVE interface on the device at the remote end of the GENEVE.
@@ -296,7 +296,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name=name,
             interface=interface,
             vni=vni,
-            type=type,
+            type_=type_,
             ip_version=ip_version,
             remote_ip=remote_ip,
             remote_ip6=remote_ip6,
@@ -334,7 +334,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        type: Literal["ethernet", "ppp"] | None = None,
+        type_: Literal["ethernet", "ppp"] | None = None,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = None,
         remote_ip: str | None = None,
         remote_ip6: str | None = None,
@@ -354,7 +354,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name: GENEVE device or interface name. Must be an unique interface name.
             interface: Outgoing interface for GENEVE encapsulated traffic.
             vni: GENEVE network ID.
-            type: GENEVE type.
+            type_: GENEVE type.
             ip_version: IP version to use for the GENEVE interface and so for communication over the GENEVE. IPv4 or IPv6 unicast.
             remote_ip: IPv4 address of the GENEVE interface on the device at the remote end of the GENEVE.
             remote_ip6: IPv6 IP address of the GENEVE interface on the device at the remote end of the GENEVE.
@@ -397,7 +397,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name=name,
             interface=interface,
             vni=vni,
-            type=type,
+            type_=type_,
             ip_version=ip_version,
             remote_ip=remote_ip,
             remote_ip6=remote_ip6,
@@ -535,7 +535,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        type: Literal["ethernet", "ppp"] | None = None,
+        type_: Literal["ethernet", "ppp"] | None = None,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = None,
         remote_ip: str | None = None,
         remote_ip6: str | None = None,
@@ -556,7 +556,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name: Field name
             interface: Field interface
             vni: Field vni
-            type: Field type
+            type_: Field type
             ip_version: Field ip-version
             remote_ip: Field remote-ip
             remote_ip6: Field remote-ip6
@@ -607,7 +607,7 @@ class Geneve(CRUDEndpoint, MetadataMixin):
             name=name,
             interface=interface,
             vni=vni,
-            type=type,
+            type_=type_,
             ip_version=ip_version,
             remote_ip=remote_ip,
             remote_ip6=remote_ip6,

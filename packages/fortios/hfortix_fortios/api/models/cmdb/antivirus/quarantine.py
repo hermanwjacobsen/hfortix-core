@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class QuarantineDrop_infectedEnum(str, Enum):
+class QuarantineDropInfectedEnum(str, Enum):
     """Allowed values for drop_infected field."""
     IMAP = "imap"
     SMTP = "smtp"
@@ -34,7 +34,7 @@ class QuarantineDrop_infectedEnum(str, Enum):
     SSH = "ssh"
 
 
-class QuarantineStore_infectedEnum(str, Enum):
+class QuarantineStoreInfectedEnum(str, Enum):
     """Allowed values for store_infected field."""
     IMAP = "imap"
     SMTP = "smtp"
@@ -52,7 +52,7 @@ class QuarantineStore_infectedEnum(str, Enum):
     SSH = "ssh"
 
 
-class QuarantineDrop_machine_learningEnum(str, Enum):
+class QuarantineDropMachineLearningEnum(str, Enum):
     """Allowed values for drop_machine_learning field."""
     IMAP = "imap"
     SMTP = "smtp"
@@ -70,7 +70,7 @@ class QuarantineDrop_machine_learningEnum(str, Enum):
     SSH = "ssh"
 
 
-class QuarantineStore_machine_learningEnum(str, Enum):
+class QuarantineStoreMachineLearningEnum(str, Enum):
     """Allowed values for store_machine_learning field."""
     IMAP = "imap"
     SMTP = "smtp"
@@ -99,7 +99,17 @@ class QuarantineModel(BaseModel):
 
     Configure quarantine options.
 
-    Validation Rules:        - agelimit: min=0 max=479 pattern=        - maxfilesize: min=0 max=500 pattern=        - quarantine_quota: min=0 max=4294967295 pattern=        - drop_infected: pattern=        - store_infected: pattern=        - drop_machine_learning: pattern=        - store_machine_learning: pattern=        - lowspace: pattern=        - destination: pattern=    """
+    Validation Rules:
+        - agelimit: min=0 max=479 pattern=
+        - maxfilesize: min=0 max=500 pattern=
+        - quarantine_quota: min=0 max=4294967295 pattern=
+        - drop_infected: pattern=
+        - store_infected: pattern=
+        - drop_machine_learning: pattern=
+        - store_machine_learning: pattern=
+        - lowspace: pattern=
+        - destination: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -111,7 +121,16 @@ class QuarantineModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    agelimit: int | None = Field(ge=0, le=479, default=0, description="Age limit for quarantined files (0 - 479 hours, 0 means forever).")    maxfilesize: int | None = Field(ge=0, le=500, default=0, description="Maximum file size to quarantine (0 - 500 Mbytes, 0 means unlimited).")    quarantine_quota: int | None = Field(ge=0, le=4294967295, default=0, description="The amount of disk space to reserve for quarantining files (0 - 4294967295 Mbytes, 0 means unlimited and depends on disk space).")    drop_infected: QuarantineDropInfectedEnum | None = Field(default="", description="Do not quarantine infected files found in sessions using the selected protocols. Dropped files are deleted instead of being quarantined.")    store_infected: QuarantineStoreInfectedEnum | None = Field(default="imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh", description="Quarantine infected files found in sessions using the selected protocols.")    drop_machine_learning: QuarantineDropMachineLearningEnum | None = Field(default="", description="Do not quarantine files detected by machine learning found in sessions using the selected protocols. Dropped files are deleted instead of being quarantined.")    store_machine_learning: QuarantineStoreMachineLearningEnum | None = Field(default="imap smtp pop3 http ftp nntp imaps smtps pop3s https ftps mapi cifs ssh", description="Quarantine files detected by machine learning found in sessions using the selected protocols.")    lowspace: Literal["drop-new", "ovrw-old"] | None = Field(default="ovrw-old", description="Select the method for handling additional files when running low on disk space.")    destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = Field(default="disk", description="Choose whether to quarantine files to the FortiGate disk or to FortiAnalyzer or to delete them instead of quarantining them.")    # ========================================================================
+    agelimit: int | None = Field(ge=0, le=479, default=0, description="Age limit for quarantined files (0 - 479 hours, 0 means forever).")
+    maxfilesize: int | None = Field(ge=0, le=500, default=0, description="Maximum file size to quarantine (0 - 500 Mbytes, 0 means unlimited).")
+    quarantine_quota: int | None = Field(ge=0, le=4294967295, default=0, description="The amount of disk space to reserve for quarantining files (0 - 4294967295 Mbytes, 0 means unlimited and depends on disk space).")
+    drop_infected: str | QuarantineDropInfectedEnum | None = Field(default=None, description="Do not quarantine infected files found in sessions using the selected protocols. Dropped files are deleted instead of being quarantined.")
+    store_infected: str | QuarantineStoreInfectedEnum | None = Field(default=None, description="Quarantine infected files found in sessions using the selected protocols.")
+    drop_machine_learning: str | QuarantineDropMachineLearningEnum | None = Field(default=None, description="Do not quarantine files detected by machine learning found in sessions using the selected protocols. Dropped files are deleted instead of being quarantined.")
+    store_machine_learning: str | QuarantineStoreMachineLearningEnum | None = Field(default=None, description="Quarantine files detected by machine learning found in sessions using the selected protocols.")
+    lowspace: Literal["drop-new", "ovrw-old"] | None = Field(default="ovrw-old", description="Select the method for handling additional files when running low on disk space.")
+    destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = Field(default="disk", description="Choose whether to quarantine files to the FortiGate disk or to FortiAnalyzer or to delete them instead of quarantining them.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -160,5 +179,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.083205Z
+# Generated: 2026-01-14T22:43:37.471026Z
 # ============================================================================

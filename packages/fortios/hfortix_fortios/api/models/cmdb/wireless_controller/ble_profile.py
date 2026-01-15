@@ -49,7 +49,26 @@ class BleProfileModel(BaseModel):
 
     Configure Bluetooth Low Energy profile.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comment: max_length=63 pattern=        - advertising: pattern=        - ibeacon_uuid: max_length=63 pattern=        - major_id: min=0 max=65535 pattern=        - minor_id: min=0 max=65535 pattern=        - eddystone_namespace: max_length=20 pattern=        - eddystone_instance: max_length=12 pattern=        - eddystone_url: max_length=127 pattern=        - txpower: pattern=        - beacon_interval: min=40 max=3500 pattern=        - ble_scanning: pattern=        - scan_type: pattern=        - scan_threshold: max_length=7 pattern=        - scan_period: min=1000 max=10000 pattern=        - scan_time: min=1000 max=10000 pattern=        - scan_interval: min=10 max=1000 pattern=        - scan_window: min=10 max=1000 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comment: max_length=63 pattern=
+        - advertising: pattern=
+        - ibeacon_uuid: max_length=63 pattern=
+        - major_id: min=0 max=65535 pattern=
+        - minor_id: min=0 max=65535 pattern=
+        - eddystone_namespace: max_length=20 pattern=
+        - eddystone_instance: max_length=12 pattern=
+        - eddystone_url: max_length=127 pattern=
+        - txpower: pattern=
+        - beacon_interval: min=40 max=3500 pattern=
+        - ble_scanning: pattern=
+        - scan_type: pattern=
+        - scan_threshold: max_length=7 pattern=
+        - scan_period: min=1000 max=10000 pattern=
+        - scan_time: min=1000 max=10000 pattern=
+        - scan_interval: min=10 max=1000 pattern=
+        - scan_window: min=10 max=1000 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -61,7 +80,25 @@ class BleProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Bluetooth Low Energy profile name.")    comment: str | None = Field(max_length=63, default="", description="Comment.")    advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | None = Field(default="", description="Advertising type.")    ibeacon_uuid: str | None = Field(max_length=63, default="005ea414-cbd1-11e5-9956-625662870761", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    major_id: int | None = Field(ge=0, le=65535, default=1000, description="Major ID.")    minor_id: int | None = Field(ge=0, le=65535, default=2000, description="Minor ID.")    eddystone_namespace: str | None = Field(max_length=20, default="0102030405", description="Eddystone namespace ID.")    eddystone_instance: str | None = Field(max_length=12, default="abcdef", description="Eddystone instance ID.")    eddystone_url: str | None = Field(max_length=127, default="http://www.fortinet.com", description="Eddystone URL.")    txpower: BleProfileTxpowerEnum | None = Field(default="0", description="Transmit power level (default = 0).")    beacon_interval: int | None = Field(ge=40, le=3500, default=100, description="Beacon interval (default = 100 msec).")    ble_scanning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bluetooth Low Energy (BLE) scanning.")    scan_type: Literal["active", "passive"] | None = Field(default="active", description="Scan Type (default = active).")    scan_threshold: str | None = Field(max_length=7, default="-90", description="Minimum signal level/threshold in dBm required for the AP to report detected BLE device (-95 to -20, default = -90).")    scan_period: int | None = Field(ge=1000, le=10000, default=4000, description="Scan Period (default = 4000 msec).")    scan_time: int | None = Field(ge=1000, le=10000, default=1000, description="Scan Time (default = 1000 msec).")    scan_interval: int | None = Field(ge=10, le=1000, default=50, description="Scan Interval (default = 50 msec).")    scan_window: int | None = Field(ge=10, le=1000, default=50, description="Scan Windows (default = 50 msec).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Bluetooth Low Energy profile name.")
+    comment: str | None = Field(max_length=63, default="", description="Comment.")
+    advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | None = Field(default=None, description="Advertising type.")
+    ibeacon_uuid: str | None = Field(max_length=63, default="005ea414-cbd1-11e5-9956-625662870761", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    major_id: int | None = Field(ge=0, le=65535, default=1000, description="Major ID.")
+    minor_id: int | None = Field(ge=0, le=65535, default=2000, description="Minor ID.")
+    eddystone_namespace: str | None = Field(max_length=20, default="0102030405", description="Eddystone namespace ID.")
+    eddystone_instance: str | None = Field(max_length=12, default="abcdef", description="Eddystone instance ID.")
+    eddystone_url: str | None = Field(max_length=127, default="http://www.fortinet.com", description="Eddystone URL.")
+    txpower: str | BleProfileTxpowerEnum | None = Field(default="0", description="Transmit power level (default = 0).")
+    beacon_interval: int | None = Field(ge=40, le=3500, default=100, description="Beacon interval (default = 100 msec).")
+    ble_scanning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bluetooth Low Energy (BLE) scanning.")
+    scan_type: Literal["active", "passive"] | None = Field(default="active", description="Scan Type (default = active).")
+    scan_threshold: str | None = Field(max_length=7, default="-90", description="Minimum signal level/threshold in dBm required for the AP to report detected BLE device (-95 to -20, default = -90).")
+    scan_period: int | None = Field(ge=1000, le=10000, default=4000, description="Scan Period (default = 4000 msec).")
+    scan_time: int | None = Field(ge=1000, le=10000, default=1000, description="Scan Time (default = 1000 msec).")
+    scan_interval: int | None = Field(ge=10, le=1000, default=50, description="Scan Interval (default = 50 msec).")
+    scan_window: int | None = Field(ge=10, le=1000, default=50, description="Scan Windows (default = 50 msec).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -110,5 +147,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.998196Z
+# Generated: 2026-01-14T22:43:38.610165Z
 # ============================================================================

@@ -133,6 +133,10 @@ class InterController:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -153,6 +157,7 @@ class InterController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterControllerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -170,6 +175,7 @@ class InterController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterControllerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -186,6 +192,7 @@ class InterController:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterControllerResponse: ...
     
     # ================================================================
@@ -228,7 +235,7 @@ class InterController:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InterControllerObject: ...
     
@@ -247,7 +254,7 @@ class InterController:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InterControllerObject: ...
     
@@ -347,23 +354,6 @@ class InterController:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InterControllerObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -384,6 +374,7 @@ class InterController:
         inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterControllerObject: ...
@@ -435,22 +426,7 @@ class InterController:
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InterControllerPayload | None = ...,
-        inter_controller_mode: Literal["disable", "l2-roaming", "1+1"] | None = ...,
-        l3_roaming: Literal["enable", "disable"] | None = ...,
-        inter_controller_key: str | None = ...,
-        inter_controller_pri: Literal["primary", "secondary"] | None = ...,
-        fast_failover_max: int | None = ...,
-        fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -486,8 +462,6 @@ class InterController:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -515,6 +489,10 @@ class InterControllerDictMode:
     By default returns InterControllerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InterControllerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -663,10 +641,12 @@ class InterControllerDictMode:
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InterControllerPayload | None = ...,
@@ -714,8 +694,6 @@ class InterControllerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -739,6 +717,10 @@ class InterControllerObjectMode:
     By default returns InterControllerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InterControllerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -905,10 +887,12 @@ class InterControllerObjectMode:
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterControllerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InterControllerPayload | None = ...,
@@ -956,8 +940,6 @@ class InterControllerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

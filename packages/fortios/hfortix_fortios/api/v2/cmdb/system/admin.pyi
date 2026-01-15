@@ -78,7 +78,7 @@ class AdminPayload(TypedDict, total=False):
     guest_usergroups: list[dict[str, Any]]  # Select guest user groups.
     guest_lang: str  # Guest management portal language. | MaxLen: 35
     status: str  # print admin status information
-    list: str  # print admin list information
+    list_: str  # print admin list information
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -206,7 +206,7 @@ class AdminResponse(TypedDict):
     guest_usergroups: list[AdminGuestusergroupsItem]  # Select guest user groups.
     guest_lang: str  # Guest management portal language. | MaxLen: 35
     status: str  # print admin status information
-    list: str  # print admin list information
+    list_: str  # print admin list information
 
 
 @final
@@ -322,12 +322,10 @@ class AdminObject:
     # print admin status information
     status: str
     # print admin list information
-    list: str
+    list_: str
     
     # Common API response fields
-    status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -347,6 +345,10 @@ class Admin:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -368,6 +370,7 @@ class Admin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AdminResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -385,6 +388,7 @@ class Admin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AdminResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -401,6 +405,7 @@ class Admin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AdminResponse]: ...
     
     # ================================================================
@@ -443,7 +448,7 @@ class Admin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AdminObject: ...
     
@@ -462,7 +467,7 @@ class Admin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AdminObject]: ...
     
@@ -562,23 +567,6 @@ class Admin:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AdminObject | list[AdminObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -641,9 +629,10 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AdminObject: ...
@@ -703,7 +692,7 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -766,7 +755,7 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -828,69 +817,9 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AdminPayload | None = ...,
-        name: str | None = ...,
-        remote_auth: Literal["enable", "disable"] | None = ...,
-        remote_group: str | None = ...,
-        wildcard: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
-        peer_group: str | None = ...,
-        trusthost1: str | None = ...,
-        trusthost2: str | None = ...,
-        trusthost3: str | None = ...,
-        trusthost4: str | None = ...,
-        trusthost5: str | None = ...,
-        trusthost6: str | None = ...,
-        trusthost7: str | None = ...,
-        trusthost8: str | None = ...,
-        trusthost9: str | None = ...,
-        trusthost10: str | None = ...,
-        ip6_trusthost1: str | None = ...,
-        ip6_trusthost2: str | None = ...,
-        ip6_trusthost3: str | None = ...,
-        ip6_trusthost4: str | None = ...,
-        ip6_trusthost5: str | None = ...,
-        ip6_trusthost6: str | None = ...,
-        ip6_trusthost7: str | None = ...,
-        ip6_trusthost8: str | None = ...,
-        ip6_trusthost9: str | None = ...,
-        ip6_trusthost10: str | None = ...,
-        accprofile: str | None = ...,
-        allow_remove_admin_session: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        ssh_public_key1: str | None = ...,
-        ssh_public_key2: str | None = ...,
-        ssh_public_key3: str | None = ...,
-        ssh_certificate: str | None = ...,
-        schedule: str | None = ...,
-        accprofile_override: Literal["enable", "disable"] | None = ...,
-        vdom_override: Literal["enable", "disable"] | None = ...,
-        password_expire: str | None = ...,
-        force_password_change: Literal["enable", "disable"] | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        guest_lang: str | None = ...,
-        status: str | None = ...,
-        list: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -950,9 +879,10 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AdminObject: ...
@@ -1012,7 +942,7 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -1075,7 +1005,7 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -1137,69 +1067,9 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AdminPayload | None = ...,
-        name: str | None = ...,
-        remote_auth: Literal["enable", "disable"] | None = ...,
-        remote_group: str | None = ...,
-        wildcard: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
-        peer_group: str | None = ...,
-        trusthost1: str | None = ...,
-        trusthost2: str | None = ...,
-        trusthost3: str | None = ...,
-        trusthost4: str | None = ...,
-        trusthost5: str | None = ...,
-        trusthost6: str | None = ...,
-        trusthost7: str | None = ...,
-        trusthost8: str | None = ...,
-        trusthost9: str | None = ...,
-        trusthost10: str | None = ...,
-        ip6_trusthost1: str | None = ...,
-        ip6_trusthost2: str | None = ...,
-        ip6_trusthost3: str | None = ...,
-        ip6_trusthost4: str | None = ...,
-        ip6_trusthost5: str | None = ...,
-        ip6_trusthost6: str | None = ...,
-        ip6_trusthost7: str | None = ...,
-        ip6_trusthost8: str | None = ...,
-        ip6_trusthost9: str | None = ...,
-        ip6_trusthost10: str | None = ...,
-        accprofile: str | None = ...,
-        allow_remove_admin_session: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        ssh_public_key1: str | None = ...,
-        ssh_public_key2: str | None = ...,
-        ssh_public_key3: str | None = ...,
-        ssh_certificate: str | None = ...,
-        schedule: str | None = ...,
-        accprofile_override: Literal["enable", "disable"] | None = ...,
-        vdom_override: Literal["enable", "disable"] | None = ...,
-        password_expire: str | None = ...,
-        force_password_change: Literal["enable", "disable"] | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        guest_lang: str | None = ...,
-        status: str | None = ...,
-        list: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1210,6 +1080,7 @@ class Admin:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AdminObject: ...
@@ -1240,14 +1111,7 @@ class Admin:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1311,7 +1175,7 @@ class Admin:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -1328,8 +1192,6 @@ class Admin:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1357,6 +1219,10 @@ class AdminDictMode:
     By default returns AdminResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AdminObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1511,7 +1377,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1574,7 +1440,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1637,12 +1503,14 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AdminPayload | None = ...,
@@ -1697,7 +1565,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1758,7 +1626,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1821,7 +1689,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1884,12 +1752,14 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AdminPayload | None = ...,
@@ -1944,7 +1814,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1977,10 +1847,12 @@ class AdminDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -2049,7 +1921,7 @@ class AdminDictMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -2065,8 +1937,6 @@ class AdminDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2090,6 +1960,10 @@ class AdminObjectMode:
     By default returns AdminObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AdminResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2244,7 +2118,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -2307,7 +2181,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -2370,7 +2244,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -2433,12 +2307,14 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AdminObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AdminPayload | None = ...,
@@ -2493,7 +2369,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -2554,7 +2430,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -2617,7 +2493,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -2680,7 +2556,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -2743,12 +2619,14 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AdminObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AdminPayload | None = ...,
@@ -2803,7 +2681,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -2847,10 +2725,12 @@ class AdminObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AdminObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2919,7 +2799,7 @@ class AdminObjectMode:
         guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
-        list: str | None = ...,
+        list_: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -2935,8 +2815,6 @@ class AdminObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

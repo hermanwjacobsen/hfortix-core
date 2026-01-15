@@ -114,6 +114,10 @@ class H2qpConnCapability:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -134,6 +138,7 @@ class H2qpConnCapability:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> H2qpConnCapabilityResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -151,6 +156,7 @@ class H2qpConnCapability:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> H2qpConnCapabilityResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -167,6 +173,7 @@ class H2qpConnCapability:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[H2qpConnCapabilityResponse]: ...
     
     # ================================================================
@@ -209,7 +216,7 @@ class H2qpConnCapability:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
     
@@ -228,7 +235,7 @@ class H2qpConnCapability:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[H2qpConnCapabilityObject]: ...
     
@@ -328,23 +335,6 @@ class H2qpConnCapability:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> H2qpConnCapabilityObject | list[H2qpConnCapabilityObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -370,6 +360,7 @@ class H2qpConnCapability:
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
@@ -436,27 +427,7 @@ class H2qpConnCapability:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: H2qpConnCapabilityPayload | None = ...,
-        name: str | None = ...,
-        icmp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ftp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ssh_port: Literal["closed", "open", "unknown"] | None = ...,
-        http_port: Literal["closed", "open", "unknown"] | None = ...,
-        tls_port: Literal["closed", "open", "unknown"] | None = ...,
-        pptp_vpn_port: Literal["closed", "open", "unknown"] | None = ...,
-        voip_tcp_port: Literal["closed", "open", "unknown"] | None = ...,
-        voip_udp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ikev2_port: Literal["closed", "open", "unknown"] | None = ...,
-        ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
-        esp_port: Literal["closed", "open", "unknown"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -479,6 +450,7 @@ class H2qpConnCapability:
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
@@ -545,27 +517,7 @@ class H2qpConnCapability:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: H2qpConnCapabilityPayload | None = ...,
-        name: str | None = ...,
-        icmp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ftp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ssh_port: Literal["closed", "open", "unknown"] | None = ...,
-        http_port: Literal["closed", "open", "unknown"] | None = ...,
-        tls_port: Literal["closed", "open", "unknown"] | None = ...,
-        pptp_vpn_port: Literal["closed", "open", "unknown"] | None = ...,
-        voip_tcp_port: Literal["closed", "open", "unknown"] | None = ...,
-        voip_udp_port: Literal["closed", "open", "unknown"] | None = ...,
-        ikev2_port: Literal["closed", "open", "unknown"] | None = ...,
-        ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
-        esp_port: Literal["closed", "open", "unknown"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -576,6 +528,7 @@ class H2qpConnCapability:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
@@ -606,14 +559,7 @@ class H2qpConnCapability:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -654,8 +600,6 @@ class H2qpConnCapability:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -683,6 +627,10 @@ class H2qpConnCapabilityDictMode:
     By default returns H2qpConnCapabilityResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return H2qpConnCapabilityObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -845,10 +793,12 @@ class H2qpConnCapabilityDictMode:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: H2qpConnCapabilityPayload | None = ...,
@@ -932,10 +882,12 @@ class H2qpConnCapabilityDictMode:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: H2qpConnCapabilityPayload | None = ...,
@@ -983,10 +935,12 @@ class H2qpConnCapabilityDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1031,8 +985,6 @@ class H2qpConnCapabilityDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1056,6 +1008,10 @@ class H2qpConnCapabilityObjectMode:
     By default returns H2qpConnCapabilityObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return H2qpConnCapabilityResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1241,10 +1197,12 @@ class H2qpConnCapabilityObjectMode:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: H2qpConnCapabilityPayload | None = ...,
@@ -1351,10 +1309,12 @@ class H2qpConnCapabilityObjectMode:
         ikev2_xx_port: Literal["closed", "open", "unknown"] | None = ...,
         esp_port: Literal["closed", "open", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: H2qpConnCapabilityPayload | None = ...,
@@ -1413,10 +1373,12 @@ class H2qpConnCapabilityObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpConnCapabilityObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1461,8 +1423,6 @@ class H2qpConnCapabilityObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

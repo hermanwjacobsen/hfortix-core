@@ -35,7 +35,7 @@ class SpeedTestScheduleSchedules(BaseModel):
 # ============================================================================
 
 
-class SpeedTestScheduleUpdate_shaperEnum(str, Enum):
+class SpeedTestScheduleUpdateShaperEnum(str, Enum):
     """Allowed values for update_shaper field."""
     DISABLE = "disable"
     LOCAL = "local"
@@ -54,7 +54,31 @@ class SpeedTestScheduleModel(BaseModel):
 
     Speed test schedule for each interface.
 
-    Validation Rules:        - interface: max_length=35 pattern=        - status: pattern=        - diffserv: pattern=        - server_name: max_length=35 pattern=        - mode: pattern=        - schedules: pattern=        - dynamic_server: pattern=        - ctrl_port: min=1 max=65535 pattern=        - server_port: min=1 max=65535 pattern=        - update_shaper: pattern=        - update_inbandwidth: pattern=        - update_outbandwidth: pattern=        - update_interface_shaping: pattern=        - update_inbandwidth_maximum: min=0 max=16776000 pattern=        - update_inbandwidth_minimum: min=0 max=16776000 pattern=        - update_outbandwidth_maximum: min=0 max=16776000 pattern=        - update_outbandwidth_minimum: min=0 max=16776000 pattern=        - expected_inbandwidth_minimum: min=0 max=16776000 pattern=        - expected_inbandwidth_maximum: min=0 max=16776000 pattern=        - expected_outbandwidth_minimum: min=0 max=16776000 pattern=        - expected_outbandwidth_maximum: min=0 max=16776000 pattern=        - retries: min=1 max=10 pattern=        - retry_pause: min=60 max=3600 pattern=    """
+    Validation Rules:
+        - interface: max_length=35 pattern=
+        - status: pattern=
+        - diffserv: pattern=
+        - server_name: max_length=35 pattern=
+        - mode: pattern=
+        - schedules: pattern=
+        - dynamic_server: pattern=
+        - ctrl_port: min=1 max=65535 pattern=
+        - server_port: min=1 max=65535 pattern=
+        - update_shaper: pattern=
+        - update_inbandwidth: pattern=
+        - update_outbandwidth: pattern=
+        - update_interface_shaping: pattern=
+        - update_inbandwidth_maximum: min=0 max=16776000 pattern=
+        - update_inbandwidth_minimum: min=0 max=16776000 pattern=
+        - update_outbandwidth_maximum: min=0 max=16776000 pattern=
+        - update_outbandwidth_minimum: min=0 max=16776000 pattern=
+        - expected_inbandwidth_minimum: min=0 max=16776000 pattern=
+        - expected_inbandwidth_maximum: min=0 max=16776000 pattern=
+        - expected_outbandwidth_minimum: min=0 max=16776000 pattern=
+        - expected_outbandwidth_maximum: min=0 max=16776000 pattern=
+        - retries: min=1 max=10 pattern=
+        - retry_pause: min=60 max=3600 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -66,7 +90,30 @@ class SpeedTestScheduleModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    interface: str | None = Field(max_length=35, default="", description="Interface name.")  # datasource: ['system.interface.name']    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable scheduled speed test.")    diffserv: str | None = Field(default="", description="DSCP used for speed test.")    server_name: str | None = Field(max_length=35, default="", description="Speed test server name in system.speed-test-server list or leave it as empty to choose default server \"FTNT_Auto\".")  # datasource: ['system.speed-test-server.name']    mode: Literal["UDP", "TCP", "Auto"] | None = Field(default="Auto", description="Protocol Auto(default), TCP or UDP used for speed test.")    schedules: list[SpeedTestScheduleSchedules] = Field(description="Schedules for the interface.")    dynamic_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic server option.")    ctrl_port: int | None = Field(ge=1, le=65535, default=5200, description="Port of the controller to get access token.")    server_port: int | None = Field(ge=1, le=65535, default=5201, description="Port of the server to run speed test.")    update_shaper: SpeedTestScheduleUpdateShaperEnum | None = Field(default="disable", description="Set egress shaper based on the test result.")    update_inbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's inbound bandwidth setting.")    update_outbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's outbound bandwidth setting.")    update_interface_shaping: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable using the speedtest results as reference for interface shaping (overriding configured in/outbandwidth).")    update_inbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Maximum downloading bandwidth (kbps) to be used in a speed test.")    update_inbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Minimum downloading bandwidth (kbps) to be considered effective.")    update_outbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Maximum uploading bandwidth (kbps) to be used in a speed test.")    update_outbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Minimum uploading bandwidth (kbps) to be considered effective.")    expected_inbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Set the minimum inbandwidth threshold for applying speedtest results on shaping-profile.")    expected_inbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Set the maximum inbandwidth threshold for applying speedtest results on shaping-profile.")    expected_outbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Set the minimum outbandwidth threshold for applying speedtest results on shaping-profile.")    expected_outbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Set the maximum outbandwidth threshold for applying speedtest results on shaping-profile.")    retries: int | None = Field(ge=1, le=10, default=5, description="Maximum number of times the FortiGate unit will attempt to contact the same server before considering the speed test has failed (1 - 10, default = 5).")    retry_pause: int | None = Field(ge=60, le=3600, default=300, description="Number of seconds the FortiGate pauses between successive speed tests before trying a different server (60 - 3600, default = 300).")    # ========================================================================
+    interface: str | None = Field(max_length=35, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable scheduled speed test.")
+    diffserv: str | None = Field(default="", description="DSCP used for speed test.")
+    server_name: str | None = Field(max_length=35, default="", description="Speed test server name in system.speed-test-server list or leave it as empty to choose default server \"FTNT_Auto\".")  # datasource: ['system.speed-test-server.name']
+    mode: Literal["UDP", "TCP", "Auto"] | None = Field(default="Auto", description="Protocol Auto(default), TCP or UDP used for speed test.")
+    schedules: list[SpeedTestScheduleSchedules] | None = Field(description="Schedules for the interface.")
+    dynamic_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic server option.")
+    ctrl_port: int | None = Field(ge=1, le=65535, default=5200, description="Port of the controller to get access token.")
+    server_port: int | None = Field(ge=1, le=65535, default=5201, description="Port of the server to run speed test.")
+    update_shaper: str | SpeedTestScheduleUpdateShaperEnum | None = Field(default="disable", description="Set egress shaper based on the test result.")
+    update_inbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's inbound bandwidth setting.")
+    update_outbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's outbound bandwidth setting.")
+    update_interface_shaping: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable using the speedtest results as reference for interface shaping (overriding configured in/outbandwidth).")
+    update_inbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Maximum downloading bandwidth (kbps) to be used in a speed test.")
+    update_inbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Minimum downloading bandwidth (kbps) to be considered effective.")
+    update_outbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Maximum uploading bandwidth (kbps) to be used in a speed test.")
+    update_outbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Minimum uploading bandwidth (kbps) to be considered effective.")
+    expected_inbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Set the minimum inbandwidth threshold for applying speedtest results on shaping-profile.")
+    expected_inbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Set the maximum inbandwidth threshold for applying speedtest results on shaping-profile.")
+    expected_outbandwidth_minimum: int | None = Field(ge=0, le=16776000, default=0, description="Set the minimum outbandwidth threshold for applying speedtest results on shaping-profile.")
+    expected_outbandwidth_maximum: int | None = Field(ge=0, le=16776000, default=0, description="Set the maximum outbandwidth threshold for applying speedtest results on shaping-profile.")
+    retries: int | None = Field(ge=1, le=10, default=5, description="Maximum number of times the FortiGate unit will attempt to contact the same server before considering the speed test has failed (1 - 10, default = 5).")
+    retry_pause: int | None = Field(ge=60, le=3600, default=300, description="Number of seconds the FortiGate pauses between successive speed tests before trying a different server (60 - 3600, default = 300).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -160,7 +207,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -209,7 +256,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "server_name", None)
@@ -258,7 +305,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "schedules", [])
@@ -304,10 +351,12 @@ class SpeedTestScheduleModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_server_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_schedules_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_server_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_schedules_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -329,5 +378,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.749254Z
+# Generated: 2026-01-14T22:43:34.623410Z
 # ============================================================================

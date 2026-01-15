@@ -194,6 +194,10 @@ class X8021x:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -214,6 +218,7 @@ class X8021x:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> X8021xResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -231,6 +236,7 @@ class X8021x:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> X8021xResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -247,6 +253,7 @@ class X8021x:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[X8021xResponse]: ...
     
     # ================================================================
@@ -289,7 +296,7 @@ class X8021x:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> X8021xObject: ...
     
@@ -308,7 +315,7 @@ class X8021x:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[X8021xObject]: ...
     
@@ -408,23 +415,6 @@ class X8021x:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> X8021xObject | list[X8021xObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -461,6 +451,7 @@ class X8021x:
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> X8021xObject: ...
@@ -560,38 +551,7 @@ class X8021x:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: X8021xPayload | None = ...,
-        name: str | None = ...,
-        security_mode: Literal["802.1X", "802.1X-mac-based"] | None = ...,
-        user_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_auth_bypass: Literal["disable", "enable"] | None = ...,
-        auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = ...,
-        auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = ...,
-        open_auth: Literal["disable", "enable"] | None = ...,
-        eap_passthru: Literal["disable", "enable"] | None = ...,
-        eap_auto_untagged_vlans: Literal["disable", "enable"] | None = ...,
-        guest_vlan: Literal["disable", "enable"] | None = ...,
-        guest_vlan_id: str | None = ...,
-        guest_auth_delay: int | None = ...,
-        auth_fail_vlan: Literal["disable", "enable"] | None = ...,
-        auth_fail_vlan_id: str | None = ...,
-        framevid_apply: Literal["disable", "enable"] | None = ...,
-        radius_timeout_overwrite: Literal["disable", "enable"] | None = ...,
-        policy_type: Literal["802.1X"] | None = ...,
-        authserver_timeout_period: int | None = ...,
-        authserver_timeout_vlan: Literal["disable", "enable"] | None = ...,
-        authserver_timeout_vlanid: str | None = ...,
-        authserver_timeout_tagged: Literal["disable", "lldp-voice", "static"] | None = ...,
-        authserver_timeout_tagged_vlanid: str | None = ...,
-        dacl: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -625,6 +585,7 @@ class X8021x:
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> X8021xObject: ...
@@ -724,38 +685,7 @@ class X8021x:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: X8021xPayload | None = ...,
-        name: str | None = ...,
-        security_mode: Literal["802.1X", "802.1X-mac-based"] | None = ...,
-        user_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_auth_bypass: Literal["disable", "enable"] | None = ...,
-        auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = ...,
-        auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = ...,
-        open_auth: Literal["disable", "enable"] | None = ...,
-        eap_passthru: Literal["disable", "enable"] | None = ...,
-        eap_auto_untagged_vlans: Literal["disable", "enable"] | None = ...,
-        guest_vlan: Literal["disable", "enable"] | None = ...,
-        guest_vlan_id: str | None = ...,
-        guest_auth_delay: int | None = ...,
-        auth_fail_vlan: Literal["disable", "enable"] | None = ...,
-        auth_fail_vlan_id: str | None = ...,
-        framevid_apply: Literal["disable", "enable"] | None = ...,
-        radius_timeout_overwrite: Literal["disable", "enable"] | None = ...,
-        policy_type: Literal["802.1X"] | None = ...,
-        authserver_timeout_period: int | None = ...,
-        authserver_timeout_vlan: Literal["disable", "enable"] | None = ...,
-        authserver_timeout_vlanid: str | None = ...,
-        authserver_timeout_tagged: Literal["disable", "lldp-voice", "static"] | None = ...,
-        authserver_timeout_tagged_vlanid: str | None = ...,
-        dacl: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -766,6 +696,7 @@ class X8021x:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> X8021xObject: ...
@@ -796,14 +727,7 @@ class X8021x:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -855,8 +779,6 @@ class X8021x:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -884,6 +806,10 @@ class X8021xDictMode:
     By default returns X8021xResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return X8021xObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1079,10 +1005,12 @@ class X8021xDictMode:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: X8021xPayload | None = ...,
@@ -1210,10 +1138,12 @@ class X8021xDictMode:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: X8021xPayload | None = ...,
@@ -1272,10 +1202,12 @@ class X8021xDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1331,8 +1263,6 @@ class X8021xDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1356,6 +1286,10 @@ class X8021xObjectMode:
     By default returns X8021xObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return X8021xResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1585,10 +1519,12 @@ class X8021xObjectMode:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> X8021xObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: X8021xPayload | None = ...,
@@ -1750,10 +1686,12 @@ class X8021xObjectMode:
         authserver_timeout_tagged_vlanid: str | None = ...,
         dacl: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> X8021xObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: X8021xPayload | None = ...,
@@ -1823,10 +1761,12 @@ class X8021xObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> X8021xObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1882,8 +1822,6 @@ class X8021xObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

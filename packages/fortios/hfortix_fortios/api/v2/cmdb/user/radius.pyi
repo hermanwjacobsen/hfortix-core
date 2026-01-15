@@ -50,6 +50,7 @@ class RadiusPayload(TypedDict, total=False):
     source_ip_interface: str  # Source interface for communication with the RADIUS | MaxLen: 15
     username_case_sensitive: Literal["enable", "disable"]  # Enable/disable case sensitive user names. | Default: disable
     group_override_attr_type: Literal["filter-Id", "class"]  # RADIUS attribute type to override user group infor
+    class_: list[dict[str, Any]]  # Class attribute name(s).
     password_renewal: Literal["enable", "disable"]  # Enable/disable password renewal. | Default: enable
     require_message_authenticator: Literal["enable", "disable"]  # Require message authenticator in authentication re | Default: enable
     password_encoding: Literal["auto", "ISO-8859-1"]  # Password encoding. | Default: auto
@@ -81,7 +82,7 @@ class RadiusPayload(TypedDict, total=False):
     sso_attribute_value_override: Literal["enable", "disable"]  # Enable/disable override old attribute value with n | Default: enable
     rsso_context_timeout: int  # Time in seconds before the logged out user is remo | Default: 28800 | Min: 0 | Max: 4294967295
     rsso_log_period: int  # Time interval in seconds that group event log mess | Default: 0 | Min: 0 | Max: 4294967295
-    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
+    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing
     rsso_flush_ip_session: Literal["enable", "disable"]  # Enable/disable flushing user IP sessions on RADIUS | Default: disable
     rsso_ep_one_ip_only: Literal["enable", "disable"]  # Enable/disable the replacement of old IP addresses | Default: disable
     delimiter: Literal["plus", "comma"]  # Configure delimiter to be used for separating prof | Default: plus
@@ -210,6 +211,7 @@ class RadiusResponse(TypedDict):
     source_ip_interface: str  # Source interface for communication with the RADIUS | MaxLen: 15
     username_case_sensitive: Literal["enable", "disable"]  # Enable/disable case sensitive user names. | Default: disable
     group_override_attr_type: Literal["filter-Id", "class"]  # RADIUS attribute type to override user group infor
+    class_: list[RadiusClassItem]  # Class attribute name(s).
     password_renewal: Literal["enable", "disable"]  # Enable/disable password renewal. | Default: enable
     require_message_authenticator: Literal["enable", "disable"]  # Require message authenticator in authentication re | Default: enable
     password_encoding: Literal["auto", "ISO-8859-1"]  # Password encoding. | Default: auto
@@ -241,7 +243,7 @@ class RadiusResponse(TypedDict):
     sso_attribute_value_override: Literal["enable", "disable"]  # Enable/disable override old attribute value with n | Default: enable
     rsso_context_timeout: int  # Time in seconds before the logged out user is remo | Default: 28800 | Min: 0 | Max: 4294967295
     rsso_log_period: int  # Time interval in seconds that group event log mess | Default: 0 | Min: 0 | Max: 4294967295
-    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
+    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing
     rsso_flush_ip_session: Literal["enable", "disable"]  # Enable/disable flushing user IP sessions on RADIUS | Default: disable
     rsso_ep_one_ip_only: Literal["enable", "disable"]  # Enable/disable the replacement of old IP addresses | Default: disable
     delimiter: Literal["plus", "comma"]  # Configure delimiter to be used for separating prof | Default: plus
@@ -306,6 +308,8 @@ class RadiusObject:
     username_case_sensitive: Literal["enable", "disable"]
     # RADIUS attribute type to override user group information.
     group_override_attr_type: Literal["filter-Id", "class"]
+    # Class attribute name(s).
+    class_: list[RadiusClassObject]
     # Enable/disable password renewal. | Default: enable
     password_renewal: Literal["enable", "disable"]
     # Require message authenticator in authentication response. | Default: enable
@@ -368,7 +372,7 @@ class RadiusObject:
     rsso_context_timeout: int
     # Time interval in seconds that group event log messages will | Default: 0 | Min: 0 | Max: 4294967295
     rsso_log_period: int
-    # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
+    # Events to log. | Default: protocol-error profile-missing
     rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]
     # Enable/disable flushing user IP sessions on RADIUS accountin | Default: disable
     rsso_flush_ip_session: Literal["enable", "disable"]
@@ -403,6 +407,10 @@ class Radius:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -423,6 +431,7 @@ class Radius:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RadiusResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -440,6 +449,7 @@ class Radius:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RadiusResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -456,6 +466,7 @@ class Radius:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[RadiusResponse]: ...
     
     # ================================================================
@@ -498,7 +509,7 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> RadiusObject: ...
     
@@ -517,7 +528,7 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[RadiusObject]: ...
     
@@ -617,23 +628,6 @@ class Radius:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> RadiusObject | list[RadiusObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -670,6 +664,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -708,6 +703,7 @@ class Radius:
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
@@ -741,6 +737,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -813,6 +810,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -884,6 +882,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -921,76 +920,7 @@ class Radius:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: RadiusPayload | None = ...,
-        name: str | None = ...,
-        server: str | None = ...,
-        secret: str | None = ...,
-        secondary_server: str | None = ...,
-        secondary_secret: str | None = ...,
-        tertiary_server: str | None = ...,
-        tertiary_secret: str | None = ...,
-        timeout: int | None = ...,
-        status_ttl: int | None = ...,
-        all_usergroup: Literal["disable", "enable"] | None = ...,
-        use_management_vdom: Literal["enable", "disable"] | None = ...,
-        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
-        nas_ip: str | None = ...,
-        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
-        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
-        nas_id: str | None = ...,
-        acct_interim_interval: int | None = ...,
-        radius_coa: Literal["enable", "disable"] | None = ...,
-        radius_port: int | None = ...,
-        h3c_compatibility: Literal["enable", "disable"] | None = ...,
-        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        username_case_sensitive: Literal["enable", "disable"] | None = ...,
-        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
-        password_renewal: Literal["enable", "disable"] | None = ...,
-        require_message_authenticator: Literal["enable", "disable"] | None = ...,
-        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
-        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_case: Literal["uppercase", "lowercase"] | None = ...,
-        acct_all_servers: Literal["enable", "disable"] | None = ...,
-        switch_controller_acct_fast_framedip_detect: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
-        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
-        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        ca_cert: str | None = ...,
-        client_cert: str | None = ...,
-        server_identity_check: Literal["enable", "disable"] | None = ...,
-        account_key_processing: Literal["same", "strip"] | None = ...,
-        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
-        rsso: Literal["enable", "disable"] | None = ...,
-        rsso_radius_server_port: int | None = ...,
-        rsso_radius_response: Literal["enable", "disable"] | None = ...,
-        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
-        rsso_secret: str | None = ...,
-        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        sso_attribute_key: str | None = ...,
-        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
-        rsso_context_timeout: int | None = ...,
-        rsso_log_period: int | None = ...,
-        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
-        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
-        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
-        delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1024,6 +954,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1062,6 +993,7 @@ class Radius:
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
@@ -1095,6 +1027,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1167,6 +1100,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1238,6 +1172,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1275,76 +1210,7 @@ class Radius:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: RadiusPayload | None = ...,
-        name: str | None = ...,
-        server: str | None = ...,
-        secret: str | None = ...,
-        secondary_server: str | None = ...,
-        secondary_secret: str | None = ...,
-        tertiary_server: str | None = ...,
-        tertiary_secret: str | None = ...,
-        timeout: int | None = ...,
-        status_ttl: int | None = ...,
-        all_usergroup: Literal["disable", "enable"] | None = ...,
-        use_management_vdom: Literal["enable", "disable"] | None = ...,
-        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
-        nas_ip: str | None = ...,
-        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
-        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
-        nas_id: str | None = ...,
-        acct_interim_interval: int | None = ...,
-        radius_coa: Literal["enable", "disable"] | None = ...,
-        radius_port: int | None = ...,
-        h3c_compatibility: Literal["enable", "disable"] | None = ...,
-        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        username_case_sensitive: Literal["enable", "disable"] | None = ...,
-        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
-        password_renewal: Literal["enable", "disable"] | None = ...,
-        require_message_authenticator: Literal["enable", "disable"] | None = ...,
-        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
-        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_case: Literal["uppercase", "lowercase"] | None = ...,
-        acct_all_servers: Literal["enable", "disable"] | None = ...,
-        switch_controller_acct_fast_framedip_detect: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
-        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
-        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        ca_cert: str | None = ...,
-        client_cert: str | None = ...,
-        server_identity_check: Literal["enable", "disable"] | None = ...,
-        account_key_processing: Literal["same", "strip"] | None = ...,
-        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
-        rsso: Literal["enable", "disable"] | None = ...,
-        rsso_radius_server_port: int | None = ...,
-        rsso_radius_response: Literal["enable", "disable"] | None = ...,
-        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
-        rsso_secret: str | None = ...,
-        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
-        sso_attribute_key: str | None = ...,
-        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
-        rsso_context_timeout: int | None = ...,
-        rsso_log_period: int | None = ...,
-        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
-        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
-        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
-        delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1355,6 +1221,7 @@ class Radius:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
@@ -1385,14 +1252,7 @@ class Radius:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1430,6 +1290,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1482,8 +1343,6 @@ class Radius:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1511,6 +1370,10 @@ class RadiusDictMode:
     By default returns RadiusResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return RadiusObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1639,6 +1502,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1711,6 +1575,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1783,6 +1648,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1820,10 +1686,12 @@ class RadiusDictMode:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: RadiusPayload | None = ...,
@@ -1852,6 +1720,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1922,6 +1791,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -1994,6 +1864,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2066,6 +1937,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2103,10 +1975,12 @@ class RadiusDictMode:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: RadiusPayload | None = ...,
@@ -2135,6 +2009,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2203,10 +2078,12 @@ class RadiusDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -2249,6 +2126,7 @@ class RadiusDictMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2300,8 +2178,6 @@ class RadiusDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2325,6 +2201,10 @@ class RadiusObjectMode:
     By default returns RadiusObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return RadiusResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2453,6 +2333,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2525,6 +2406,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2597,6 +2479,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2669,6 +2552,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2706,10 +2590,12 @@ class RadiusObjectMode:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RadiusObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: RadiusPayload | None = ...,
@@ -2738,6 +2624,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2808,6 +2695,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2880,6 +2768,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -2952,6 +2841,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -3024,6 +2914,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -3061,10 +2952,12 @@ class RadiusObjectMode:
         delimiter: Literal["plus", "comma"] | None = ...,
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RadiusObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: RadiusPayload | None = ...,
@@ -3093,6 +2986,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -3172,10 +3066,12 @@ class RadiusObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RadiusObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -3218,6 +3114,7 @@ class RadiusObjectMode:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        class_: str | list[str] | list[dict[str, Any]] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -3269,8 +3166,6 @@ class RadiusObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -49,7 +49,7 @@ class VxlanRemoteIp6(BaseModel):
 # ============================================================================
 
 
-class VxlanIp_versionEnum(str, Enum):
+class VxlanIpVersionEnum(str, Enum):
     """Allowed values for ip_version field."""
     IPV4_UNICAST = "ipv4-unicast"
     IPV6_UNICAST = "ipv6-unicast"
@@ -68,7 +68,20 @@ class VxlanModel(BaseModel):
 
     Configure VXLAN devices.
 
-    Validation Rules:        - name: max_length=15 pattern=        - interface: max_length=15 pattern=        - vni: min=1 max=16777215 pattern=        - ip_version: pattern=        - remote_ip: pattern=        - local_ip: pattern=        - remote_ip6: pattern=        - local_ip6: pattern=        - dstport: min=1 max=65535 pattern=        - multicast_ttl: min=1 max=255 pattern=        - evpn_id: min=1 max=65535 pattern=        - learn_from_traffic: pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - interface: max_length=15 pattern=
+        - vni: min=1 max=16777215 pattern=
+        - ip_version: pattern=
+        - remote_ip: pattern=
+        - local_ip: pattern=
+        - remote_ip6: pattern=
+        - local_ip6: pattern=
+        - dstport: min=1 max=65535 pattern=
+        - multicast_ttl: min=1 max=255 pattern=
+        - evpn_id: min=1 max=65535 pattern=
+        - learn_from_traffic: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -80,7 +93,19 @@ class VxlanModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="VXLAN device or interface name. Must be a unique interface name.")    interface: str = Field(max_length=15, default="", description="Outgoing interface for VXLAN encapsulated traffic.")  # datasource: ['system.interface.name']    vni: int = Field(ge=1, le=16777215, default=0, description="VXLAN network ID.")    ip_version: VxlanIpVersionEnum = Field(default="ipv4-unicast", description="IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.")    remote_ip: list[VxlanRemoteIp] = Field(default=None, description="IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.")    local_ip: str | None = Field(default="0.0.0.0", description="IPv4 address to use as the source address for egress VXLAN packets.")    remote_ip6: list[VxlanRemoteIp6] = Field(description="IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.")    local_ip6: str | None = Field(default="::", description="IPv6 address to use as the source address for egress VXLAN packets.")    dstport: int | None = Field(ge=1, le=65535, default=4789, description="VXLAN destination port (1 - 65535, default = 4789).")    multicast_ttl: int = Field(ge=1, le=255, default=0, description="VXLAN multicast TTL (1-255, default = 0).")    evpn_id: int | None = Field(ge=1, le=65535, default=0, description="EVPN instance.")  # datasource: ['system.evpn.id']    learn_from_traffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable VXLAN MAC learning from traffic.")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="VXLAN device or interface name. Must be a unique interface name.")
+    interface: str = Field(max_length=15, default="", description="Outgoing interface for VXLAN encapsulated traffic.")  # datasource: ['system.interface.name']
+    vni: int = Field(ge=1, le=16777215, default=0, description="VXLAN network ID.")
+    ip_version: str | VxlanIpVersionEnum = Field(default="ipv4-unicast", description="IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.")
+    remote_ip: list[VxlanRemoteIp] | None = Field(default=None, description="IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.")
+    local_ip: str | None = Field(default="0.0.0.0", description="IPv4 address to use as the source address for egress VXLAN packets.")
+    remote_ip6: list[VxlanRemoteIp6] | None = Field(description="IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.")
+    local_ip6: str | None = Field(default="::", description="IPv6 address to use as the source address for egress VXLAN packets.")
+    dstport: int | None = Field(ge=1, le=65535, default=4789, description="VXLAN destination port (1 - 65535, default = 4789).")
+    multicast_ttl: int = Field(ge=1, le=255, default=0, description="VXLAN multicast TTL (1-255, default = 0).")
+    evpn_id: int | None = Field(ge=1, le=65535, default=0, description="EVPN instance.")  # datasource: ['system.evpn.id']
+    learn_from_traffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable VXLAN MAC learning from traffic.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -174,7 +199,7 @@ class VxlanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vxlan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -223,7 +248,7 @@ class VxlanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vxlan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "evpn_id", None)
@@ -260,9 +285,10 @@ class VxlanModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_evpn_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_evpn_id_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -284,5 +310,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.177204Z
+# Generated: 2026-01-14T22:43:40.127548Z
 # ============================================================================

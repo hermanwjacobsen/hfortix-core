@@ -129,6 +129,10 @@ class Global:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -149,6 +153,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -166,6 +171,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -182,6 +188,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # ================================================================
@@ -224,7 +231,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -243,7 +250,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -343,23 +350,6 @@ class Global:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GlobalObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -389,6 +379,7 @@ class Global:
         tls_active_probe: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
@@ -467,31 +458,7 @@ class Global:
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        fail_open: Literal["enable", "disable"] | None = ...,
-        database: Literal["regular", "extended"] | None = ...,
-        traffic_submit: Literal["enable", "disable"] | None = ...,
-        anomaly_mode: Literal["periodical", "continuous"] | None = ...,
-        session_limit_mode: Literal["accurate", "heuristic"] | None = ...,
-        socket_size: int | None = ...,
-        engine_count: int | None = ...,
-        sync_session_ttl: Literal["enable", "disable"] | None = ...,
-        deep_app_insp_timeout: int | None = ...,
-        deep_app_insp_db_limit: int | None = ...,
-        exclude_signatures: Literal["none", "ot"] | None = ...,
-        packet_log_queue_depth: int | None = ...,
-        ngfw_max_scan_range: int | None = ...,
-        av_mem_limit: int | None = ...,
-        machine_learning_detection: Literal["enable", "disable"] | None = ...,
-        tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -536,8 +503,6 @@ class Global:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -565,6 +530,10 @@ class GlobalDictMode:
     By default returns GlobalResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GlobalObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -740,10 +709,12 @@ class GlobalDictMode:
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -809,8 +780,6 @@ class GlobalDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -834,6 +803,10 @@ class GlobalObjectMode:
     By default returns GlobalObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1036,10 +1009,12 @@ class GlobalObjectMode:
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -1105,8 +1080,6 @@ class GlobalObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -462,7 +462,6 @@ class PolicyObject:
     groups: list[PolicyGroupsObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -485,6 +484,10 @@ class Policy:
     Primary Key: seq-num
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -505,6 +508,7 @@ class Policy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -522,6 +526,7 @@ class Policy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -538,6 +543,7 @@ class Policy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[PolicyResponse]: ...
     
     # ================================================================
@@ -580,7 +586,7 @@ class Policy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PolicyObject: ...
     
@@ -599,7 +605,7 @@ class Policy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[PolicyObject]: ...
     
@@ -699,23 +705,6 @@ class Policy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        seq_num: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> PolicyObject | list[PolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -755,6 +744,7 @@ class Policy:
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PolicyObject: ...
@@ -863,41 +853,7 @@ class Policy:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: PolicyPayload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -934,6 +890,7 @@ class Policy:
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PolicyObject: ...
@@ -1042,41 +999,7 @@ class Policy:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: PolicyPayload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1087,6 +1010,7 @@ class Policy:
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PolicyObject: ...
@@ -1117,14 +1041,7 @@ class Policy:
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        seq_num: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1179,8 +1096,6 @@ class Policy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1208,6 +1123,10 @@ class PolicyDictMode:
     By default returns PolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return PolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1412,10 +1331,12 @@ class PolicyDictMode:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: PolicyPayload | None = ...,
@@ -1555,10 +1476,12 @@ class PolicyDictMode:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: PolicyPayload | None = ...,
@@ -1620,10 +1543,12 @@ class PolicyDictMode:
         self,
         seq_num: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         seq_num: int,
@@ -1682,8 +1607,6 @@ class PolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1707,6 +1630,10 @@ class PolicyObjectMode:
     By default returns PolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return PolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1948,10 +1875,12 @@ class PolicyObjectMode:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: PolicyPayload | None = ...,
@@ -2128,10 +2057,12 @@ class PolicyObjectMode:
         users: str | list[str] | list[dict[str, Any]] | None = ...,
         groups: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: PolicyPayload | None = ...,
@@ -2204,10 +2135,12 @@ class PolicyObjectMode:
         self,
         seq_num: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         seq_num: int,
@@ -2266,8 +2199,6 @@ class PolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

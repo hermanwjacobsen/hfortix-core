@@ -26,7 +26,29 @@ class ProfileGroupModel(BaseModel):
 
     Configure profile groups.
 
-    Validation Rules:        - name: max_length=47 pattern=        - profile_protocol_options: max_length=47 pattern=        - ssl_ssh_profile: max_length=47 pattern=        - av_profile: max_length=47 pattern=        - webfilter_profile: max_length=47 pattern=        - dnsfilter_profile: max_length=47 pattern=        - emailfilter_profile: max_length=47 pattern=        - dlp_profile: max_length=47 pattern=        - file_filter_profile: max_length=47 pattern=        - ips_sensor: max_length=47 pattern=        - application_list: max_length=47 pattern=        - voip_profile: max_length=47 pattern=        - ips_voip_filter: max_length=47 pattern=        - sctp_filter_profile: max_length=47 pattern=        - diameter_filter_profile: max_length=47 pattern=        - virtual_patch_profile: max_length=47 pattern=        - icap_profile: max_length=47 pattern=        - videofilter_profile: max_length=47 pattern=        - waf_profile: max_length=47 pattern=        - ssh_filter_profile: max_length=47 pattern=        - casb_profile: max_length=47 pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - profile_protocol_options: max_length=47 pattern=
+        - ssl_ssh_profile: max_length=47 pattern=
+        - av_profile: max_length=47 pattern=
+        - webfilter_profile: max_length=47 pattern=
+        - dnsfilter_profile: max_length=47 pattern=
+        - emailfilter_profile: max_length=47 pattern=
+        - dlp_profile: max_length=47 pattern=
+        - file_filter_profile: max_length=47 pattern=
+        - ips_sensor: max_length=47 pattern=
+        - application_list: max_length=47 pattern=
+        - voip_profile: max_length=47 pattern=
+        - ips_voip_filter: max_length=47 pattern=
+        - sctp_filter_profile: max_length=47 pattern=
+        - diameter_filter_profile: max_length=47 pattern=
+        - virtual_patch_profile: max_length=47 pattern=
+        - icap_profile: max_length=47 pattern=
+        - videofilter_profile: max_length=47 pattern=
+        - waf_profile: max_length=47 pattern=
+        - ssh_filter_profile: max_length=47 pattern=
+        - casb_profile: max_length=47 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +60,28 @@ class ProfileGroupModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile group name.")    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']    ssl_ssh_profile: str | None = Field(max_length=47, default="certificate-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile group name.")
+    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']
+    ssl_ssh_profile: str | None = Field(max_length=47, default="certificate-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']
+    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']
+    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']
+    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']
+    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']
+    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']
+    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']
+    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']
+    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']
+    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']
+    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']
+    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']
+    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']
+    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']
+    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']
+    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']
+    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']
+    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']
+    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -402,7 +445,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile_protocol_options", None)
@@ -451,7 +494,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_ssh_profile", None)
@@ -500,7 +543,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -549,7 +592,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -598,7 +641,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dnsfilter_profile", None)
@@ -647,7 +690,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -696,7 +739,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -745,7 +788,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "file_filter_profile", None)
@@ -794,7 +837,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -821,7 +864,7 @@ class ProfileGroupModel(BaseModel):
         can be called before posting to the API to catch reference errors early.
 
         Datasource endpoints checked:
-        - application/list
+        - application/list_
         Args:
             client: FortiOS client instance (from fgt._client)
 
@@ -843,7 +886,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -852,13 +895,13 @@ class ProfileGroupModel(BaseModel):
 
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.application.list.exists(value):
+        if await client.api.cmdb.application.list_.exists(value):
             found = True
 
         if not found:
             errors.append(
                 f"Application-List '{value}' not found in "
-                "application/list"
+                "application/list_"
             )
         return errors
     async def validate_voip_profile_references(self, client: Any) -> list[str]:
@@ -892,7 +935,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "voip_profile", None)
@@ -941,7 +984,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_voip_filter", None)
@@ -990,7 +1033,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sctp_filter_profile", None)
@@ -1039,7 +1082,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "diameter_filter_profile", None)
@@ -1088,7 +1131,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "virtual_patch_profile", None)
@@ -1137,7 +1180,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "icap_profile", None)
@@ -1186,7 +1229,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "videofilter_profile", None)
@@ -1235,7 +1278,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "waf_profile", None)
@@ -1284,7 +1327,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssh_filter_profile", None)
@@ -1333,7 +1376,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -1370,27 +1413,46 @@ class ProfileGroupModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_profile_protocol_options_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_ssh_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_av_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dnsfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_emailfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dlp_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_file_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_sensor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_application_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_voip_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_voip_filter_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sctp_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_diameter_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_virtual_patch_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_icap_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_videofilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_waf_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssh_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_casb_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_ssh_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_av_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dnsfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_emailfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dlp_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_file_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_voip_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_voip_filter_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sctp_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_diameter_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_virtual_patch_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_icap_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_videofilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_waf_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssh_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_casb_profile_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1412,5 +1474,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.243376Z
+# Generated: 2026-01-14T22:43:35.287881Z
 # ============================================================================

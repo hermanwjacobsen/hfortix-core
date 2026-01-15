@@ -43,7 +43,7 @@ class SettingPayload(TypedDict, total=False):
     uploaduser: str  # Username required to log into the FTP server to up | MaxLen: 35
     uploadpass: str  # Password required to log into the FTP server to up | MaxLen: 128
     uploaddir: str  # The remote directory on the FTP server to upload l | MaxLen: 63
-    uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]  # Types of log files to upload. Separate multiple en | Default: traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl
+    uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]  # Types of log files to upload. Separate multiple en | Default: traffic event virus webfilter
     uploadsched: Literal["disable", "enable"]  # Set the schedule for uploading log files to the FT | Default: disable
     uploadtime: str  # Time of day at which log files are uploaded if upl
     upload_delete_files: Literal["enable", "disable"]  # Delete log files after uploading | Default: enable
@@ -87,7 +87,7 @@ class SettingResponse(TypedDict):
     uploaduser: str  # Username required to log into the FTP server to up | MaxLen: 35
     uploadpass: str  # Password required to log into the FTP server to up | MaxLen: 128
     uploaddir: str  # The remote directory on the FTP server to upload l | MaxLen: 63
-    uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]  # Types of log files to upload. Separate multiple en | Default: traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl
+    uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]  # Types of log files to upload. Separate multiple en | Default: traffic event virus webfilter
     uploadsched: Literal["disable", "enable"]  # Set the schedule for uploading log files to the FT | Default: disable
     uploadtime: str  # Time of day at which log files are uploaded if upl
     upload_delete_files: Literal["enable", "disable"]  # Delete log files after uploading | Default: enable
@@ -148,7 +148,7 @@ class SettingObject:
     uploadpass: str
     # The remote directory on the FTP server to upload log files t | MaxLen: 63
     uploaddir: str
-    # Types of log files to upload. Separate multiple entries with | Default: traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl
+    # Types of log files to upload. Separate multiple entries with | Default: traffic event virus webfilter
     uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]
     # Set the schedule for uploading log files to the FTP server | Default: disable
     uploadsched: Literal["disable", "enable"]
@@ -172,7 +172,6 @@ class SettingObject:
     vrf_select: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -194,6 +193,10 @@ class Setting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -214,6 +217,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -231,6 +235,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -247,6 +252,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # ================================================================
@@ -289,7 +295,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -308,7 +314,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -408,23 +414,6 @@ class Setting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -469,6 +458,7 @@ class Setting:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
@@ -592,46 +582,7 @@ class Setting:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ips_archive: Literal["enable", "disable"] | None = ...,
-        max_log_file_size: int | None = ...,
-        max_policy_packet_capture_size: int | None = ...,
-        roll_schedule: Literal["daily", "weekly"] | None = ...,
-        roll_day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | list[str] | None = ...,
-        roll_time: str | None = ...,
-        diskfull: Literal["overwrite", "nolog"] | None = ...,
-        log_quota: int | None = ...,
-        dlp_archive_quota: int | None = ...,
-        report_quota: int | None = ...,
-        maximum_log_age: int | None = ...,
-        upload: Literal["enable", "disable"] | None = ...,
-        upload_destination: Literal["ftp-server"] | None = ...,
-        uploadip: str | None = ...,
-        uploadport: int | None = ...,
-        source_ip: str | None = ...,
-        uploaduser: str | None = ...,
-        uploadpass: str | None = ...,
-        uploaddir: str | None = ...,
-        uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"] | list[str] | None = ...,
-        uploadsched: Literal["disable", "enable"] | None = ...,
-        uploadtime: str | None = ...,
-        upload_delete_files: Literal["enable", "disable"] | None = ...,
-        upload_ssl_conn: Literal["default", "high", "low", "disable"] | None = ...,
-        full_first_warning_threshold: int | None = ...,
-        full_second_warning_threshold: int | None = ...,
-        full_final_warning_threshold: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -691,8 +642,6 @@ class Setting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -720,6 +669,10 @@ class SettingDictMode:
     By default returns SettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -940,10 +893,12 @@ class SettingDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1039,8 +994,6 @@ class SettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1064,6 +1017,10 @@ class SettingObjectMode:
     By default returns SettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1326,10 +1283,12 @@ class SettingObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1425,8 +1384,6 @@ class SettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

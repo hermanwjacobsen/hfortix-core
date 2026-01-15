@@ -233,7 +233,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "location"] | None = None,
+        type_: Literal["default", "location"] | None = None,
         internet_service_id: int | None = None,
         country_id: int | None = None,
         region_id: int | None = None,
@@ -251,7 +251,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Internet Service name.
-            type: Internet Service name type.
+            type_: Internet Service name type.
             internet_service_id: Internet Service ID.
             country_id: Country or Area ID.
             region_id: Region ID.
@@ -290,7 +290,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             internet_service_id=internet_service_id,
             country_id=country_id,
             region_id=region_id,
@@ -326,7 +326,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "location"] | None = None,
+        type_: Literal["default", "location"] | None = None,
         internet_service_id: int | None = None,
         country_id: int | None = None,
         region_id: int | None = None,
@@ -344,7 +344,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Internet Service name.
-            type: Internet Service name type.
+            type_: Internet Service name type.
             internet_service_id: Internet Service ID.
             country_id: Country or Area ID.
             region_id: Region ID.
@@ -385,7 +385,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             internet_service_id=internet_service_id,
             country_id=country_id,
             region_id=region_id,
@@ -521,7 +521,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "location"] | None = None,
+        type_: Literal["default", "location"] | None = None,
         internet_service_id: int | None = None,
         country_id: int | None = None,
         region_id: int | None = None,
@@ -540,7 +540,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             internet_service_id: Field internet-service-id
             country_id: Field country-id
             region_id: Field region-id
@@ -589,7 +589,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             internet_service_id=internet_service_id,
             country_id=country_id,
             region_id=region_id,

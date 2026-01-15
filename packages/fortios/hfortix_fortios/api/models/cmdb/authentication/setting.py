@@ -59,7 +59,29 @@ class SettingModel(BaseModel):
 
     Configure authentication setting.
 
-    Validation Rules:        - active_auth_scheme: max_length=35 pattern=        - sso_auth_scheme: max_length=35 pattern=        - update_time: pattern=        - persistent_cookie: pattern=        - ip_auth_cookie: pattern=        - cookie_max_age: min=30 max=10080 pattern=        - cookie_refresh_div: min=2 max=4 pattern=        - captive_portal_type: pattern=        - captive_portal_ip: pattern=        - captive_portal_ip6: pattern=        - captive_portal: max_length=255 pattern=        - captive_portal6: max_length=255 pattern=        - cert_auth: pattern=        - cert_captive_portal: max_length=255 pattern=        - cert_captive_portal_ip: pattern=        - cert_captive_portal_port: min=1 max=65535 pattern=        - captive_portal_port: min=1 max=65535 pattern=        - auth_https: pattern=        - captive_portal_ssl_port: min=1 max=65535 pattern=        - user_cert_ca: pattern=        - dev_range: pattern=    """
+    Validation Rules:
+        - active_auth_scheme: max_length=35 pattern=
+        - sso_auth_scheme: max_length=35 pattern=
+        - update_time: pattern=
+        - persistent_cookie: pattern=
+        - ip_auth_cookie: pattern=
+        - cookie_max_age: min=30 max=10080 pattern=
+        - cookie_refresh_div: min=2 max=4 pattern=
+        - captive_portal_type: pattern=
+        - captive_portal_ip: pattern=
+        - captive_portal_ip6: pattern=
+        - captive_portal: max_length=255 pattern=
+        - captive_portal6: max_length=255 pattern=
+        - cert_auth: pattern=
+        - cert_captive_portal: max_length=255 pattern=
+        - cert_captive_portal_ip: pattern=
+        - cert_captive_portal_port: min=1 max=65535 pattern=
+        - captive_portal_port: min=1 max=65535 pattern=
+        - auth_https: pattern=
+        - captive_portal_ssl_port: min=1 max=65535 pattern=
+        - user_cert_ca: pattern=
+        - dev_range: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -71,7 +93,28 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    active_auth_scheme: str | None = Field(max_length=35, default="", description="Active authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    sso_auth_scheme: str | None = Field(max_length=35, default="", description="Single-Sign-On authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    update_time: str | None = Field(default="", description="Time of the last update.")    persistent_cookie: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable persistent cookie on web portal authentication (default = enable).")    ip_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable persistent cookie on IP based web portal authentication (default = disable).")    cookie_max_age: int | None = Field(ge=30, le=10080, default=480, description="Persistent web portal cookie maximum age in minutes (30 - 10080 (1 week), default = 480 (8 hours)).")    cookie_refresh_div: int | None = Field(ge=2, le=4, default=2, description="Refresh rate divider of persistent web portal cookie (default = 2). Refresh value = cookie-max-age/cookie-refresh-div.")    captive_portal_type: Literal["fqdn", "ip"] | None = Field(default="fqdn", description="Captive portal type.")    captive_portal_ip: str | None = Field(default="0.0.0.0", description="Captive portal IP address.")    captive_portal_ip6: str | None = Field(default="::", description="Captive portal IPv6 address.")    captive_portal: str | None = Field(max_length=255, default="", description="Captive portal host name.")  # datasource: ['firewall.address.name']    captive_portal6: str | None = Field(max_length=255, default="", description="IPv6 captive portal host name.")  # datasource: ['firewall.address6.name']    cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting certificate authentication to HTTPS portal.")    cert_captive_portal: str | None = Field(max_length=255, default="", description="Certificate captive portal host name.")  # datasource: ['firewall.address.name']    cert_captive_portal_ip: str | None = Field(default="0.0.0.0", description="Certificate captive portal IP address.")    cert_captive_portal_port: int | None = Field(ge=1, le=65535, default=7832, description="Certificate captive portal port number (1 - 65535, default = 7832).")    captive_portal_port: int | None = Field(ge=1, le=65535, default=7830, description="Captive portal port number (1 - 65535, default = 7830).")    auth_https: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redirecting HTTP user authentication to HTTPS.")    captive_portal_ssl_port: int | None = Field(ge=1, le=65535, default=7831, description="Captive portal SSL port number (1 - 65535, default = 7831).")    user_cert_ca: list[SettingUserCertCa] = Field(default=None, description="CA certificate used for client certificate verification.")    dev_range: list[SettingDevRange] = Field(default=None, description="Address range for the IP based device query.")    # ========================================================================
+    active_auth_scheme: str | None = Field(max_length=35, default="", description="Active authentication method (scheme name).")  # datasource: ['authentication.scheme.name']
+    sso_auth_scheme: str | None = Field(max_length=35, default="", description="Single-Sign-On authentication method (scheme name).")  # datasource: ['authentication.scheme.name']
+    update_time: str | None = Field(default="", description="Time of the last update.")
+    persistent_cookie: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable persistent cookie on web portal authentication (default = enable).")
+    ip_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable persistent cookie on IP based web portal authentication (default = disable).")
+    cookie_max_age: int | None = Field(ge=30, le=10080, default=480, description="Persistent web portal cookie maximum age in minutes (30 - 10080 (1 week), default = 480 (8 hours)).")
+    cookie_refresh_div: int | None = Field(ge=2, le=4, default=2, description="Refresh rate divider of persistent web portal cookie (default = 2). Refresh value = cookie-max-age/cookie-refresh-div.")
+    captive_portal_type: Literal["fqdn", "ip"] | None = Field(default="fqdn", description="Captive portal type.")
+    captive_portal_ip: str | None = Field(default="0.0.0.0", description="Captive portal IP address.")
+    captive_portal_ip6: str | None = Field(default="::", description="Captive portal IPv6 address.")
+    captive_portal: str | None = Field(max_length=255, default="", description="Captive portal host name.")  # datasource: ['firewall.address.name']
+    captive_portal6: str | None = Field(max_length=255, default="", description="IPv6 captive portal host name.")  # datasource: ['firewall.address6.name']
+    cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting certificate authentication to HTTPS portal.")
+    cert_captive_portal: str | None = Field(max_length=255, default="", description="Certificate captive portal host name.")  # datasource: ['firewall.address.name']
+    cert_captive_portal_ip: str | None = Field(default="0.0.0.0", description="Certificate captive portal IP address.")
+    cert_captive_portal_port: int | None = Field(ge=1, le=65535, default=7832, description="Certificate captive portal port number (1 - 65535, default = 7832).")
+    captive_portal_port: int | None = Field(ge=1, le=65535, default=7830, description="Captive portal port number (1 - 65535, default = 7830).")
+    auth_https: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redirecting HTTP user authentication to HTTPS.")
+    captive_portal_ssl_port: int | None = Field(ge=1, le=65535, default=7831, description="Captive portal SSL port number (1 - 65535, default = 7831).")
+    user_cert_ca: list[SettingUserCertCa] | None = Field(default=None, description="CA certificate used for client certificate verification.")
+    dev_range: list[SettingDevRange] | None = Field(default=None, description="Address range for the IP based device query.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -210,7 +253,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "active_auth_scheme", None)
@@ -259,7 +302,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sso_auth_scheme", None)
@@ -308,7 +351,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "captive_portal", None)
@@ -357,7 +400,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "captive_portal6", None)
@@ -406,7 +449,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "cert_captive_portal", None)
@@ -455,7 +498,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "user_cert_ca", [])
@@ -515,7 +558,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dev_range", [])
@@ -563,14 +606,20 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_active_auth_scheme_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sso_auth_scheme_references(client)
-        all_errors.extend(errors)        errors = await self.validate_captive_portal_references(client)
-        all_errors.extend(errors)        errors = await self.validate_captive_portal6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_cert_captive_portal_references(client)
-        all_errors.extend(errors)        errors = await self.validate_user_cert_ca_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dev_range_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sso_auth_scheme_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_captive_portal_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_captive_portal6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_cert_captive_portal_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_user_cert_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dev_range_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -592,5 +641,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.709224Z
+# Generated: 2026-01-14T22:43:34.570779Z
 # ============================================================================

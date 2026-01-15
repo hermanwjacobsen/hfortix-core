@@ -33,7 +33,7 @@ class IconIconlistItem(TypedDict):
     name: str  # Icon name. | MaxLen: 255
     lang: str  # Language code. | Default: eng | MaxLen: 3
     file: str  # Icon file. | MaxLen: 255
-    type: Literal["bmp", "gif", "jpeg", "png", "tiff"]  # Icon type. | Default: png
+    type_: Literal["bmp", "gif", "jpeg", "png", "tiff"]  # Icon type. | Default: png
     width: int  # Icon width. | Default: 0 | Min: 1 | Max: 65535
     height: int  # Icon height. | Default: 0 | Min: 1 | Max: 65535
 
@@ -55,7 +55,7 @@ class IconIconlistObject:
     # Icon file. | MaxLen: 255
     file: str
     # Icon type. | Default: png
-    type: Literal["bmp", "gif", "jpeg", "png", "tiff"]
+    type_: Literal["bmp", "gif", "jpeg", "png", "tiff"]
     # Icon width. | Default: 0 | Min: 1 | Max: 65535
     width: int
     # Icon height. | Default: 0 | Min: 1 | Max: 65535
@@ -120,6 +120,10 @@ class Icon:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -140,6 +144,7 @@ class Icon:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IconResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -157,6 +162,7 @@ class Icon:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IconResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -173,6 +179,7 @@ class Icon:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[IconResponse]: ...
     
     # ================================================================
@@ -215,7 +222,7 @@ class Icon:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IconObject: ...
     
@@ -234,7 +241,7 @@ class Icon:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[IconObject]: ...
     
@@ -334,23 +341,6 @@ class Icon:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IconObject | list[IconObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -366,6 +356,7 @@ class Icon:
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IconObject: ...
@@ -402,17 +393,7 @@ class Icon:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: IconPayload | None = ...,
-        name: str | None = ...,
-        icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -425,6 +406,7 @@ class Icon:
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IconObject: ...
@@ -461,17 +443,7 @@ class Icon:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IconPayload | None = ...,
-        name: str | None = ...,
-        icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -482,6 +454,7 @@ class Icon:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IconObject: ...
@@ -512,14 +485,7 @@ class Icon:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -550,8 +516,6 @@ class Icon:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -579,6 +543,10 @@ class IconDictMode:
     By default returns IconResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IconObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -711,10 +679,12 @@ class IconDictMode:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: IconPayload | None = ...,
@@ -758,10 +728,12 @@ class IconDictMode:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IconPayload | None = ...,
@@ -799,10 +771,12 @@ class IconDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -837,8 +811,6 @@ class IconDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -862,6 +834,10 @@ class IconObjectMode:
     By default returns IconObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IconResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1007,10 +983,12 @@ class IconObjectMode:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IconObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: IconPayload | None = ...,
@@ -1067,10 +1045,12 @@ class IconObjectMode:
         name: str | None = ...,
         icon_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IconObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IconPayload | None = ...,
@@ -1119,10 +1099,12 @@ class IconObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IconObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1157,8 +1139,6 @@ class IconObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

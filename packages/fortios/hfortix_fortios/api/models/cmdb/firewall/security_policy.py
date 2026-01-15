@@ -494,7 +494,89 @@ class SecurityPolicyModel(BaseModel):
 
     Configure NGFW IPv4/IPv6 application policies.
 
-    Validation Rules:        - uuid: pattern=        - policyid: min=0 max=4294967294 pattern=        - name: max_length=35 pattern=        - comments: max_length=1023 pattern=        - srcintf: pattern=        - dstintf: pattern=        - srcaddr: pattern=        - srcaddr_negate: pattern=        - dstaddr: pattern=        - dstaddr_negate: pattern=        - srcaddr6: pattern=        - srcaddr6_negate: pattern=        - dstaddr6: pattern=        - dstaddr6_negate: pattern=        - internet_service: pattern=        - internet_service_name: pattern=        - internet_service_negate: pattern=        - internet_service_group: pattern=        - internet_service_custom: pattern=        - internet_service_custom_group: pattern=        - internet_service_fortiguard: pattern=        - internet_service_src: pattern=        - internet_service_src_name: pattern=        - internet_service_src_negate: pattern=        - internet_service_src_group: pattern=        - internet_service_src_custom: pattern=        - internet_service_src_custom_group: pattern=        - internet_service_src_fortiguard: pattern=        - internet_service6: pattern=        - internet_service6_name: pattern=        - internet_service6_negate: pattern=        - internet_service6_group: pattern=        - internet_service6_custom: pattern=        - internet_service6_custom_group: pattern=        - internet_service6_fortiguard: pattern=        - internet_service6_src: pattern=        - internet_service6_src_name: pattern=        - internet_service6_src_negate: pattern=        - internet_service6_src_group: pattern=        - internet_service6_src_custom: pattern=        - internet_service6_src_custom_group: pattern=        - internet_service6_src_fortiguard: pattern=        - enforce_default_app_port: pattern=        - service: pattern=        - service_negate: pattern=        - action: pattern=        - send_deny_packet: pattern=        - schedule: max_length=35 pattern=        - status: pattern=        - logtraffic: pattern=        - learning_mode: pattern=        - nat46: pattern=        - nat64: pattern=        - profile_type: pattern=        - profile_group: max_length=47 pattern=        - profile_protocol_options: max_length=47 pattern=        - ssl_ssh_profile: max_length=47 pattern=        - av_profile: max_length=47 pattern=        - webfilter_profile: max_length=47 pattern=        - dnsfilter_profile: max_length=47 pattern=        - emailfilter_profile: max_length=47 pattern=        - dlp_profile: max_length=47 pattern=        - file_filter_profile: max_length=47 pattern=        - ips_sensor: max_length=47 pattern=        - application_list: max_length=47 pattern=        - voip_profile: max_length=47 pattern=        - ips_voip_filter: max_length=47 pattern=        - sctp_filter_profile: max_length=47 pattern=        - diameter_filter_profile: max_length=47 pattern=        - virtual_patch_profile: max_length=47 pattern=        - icap_profile: max_length=47 pattern=        - videofilter_profile: max_length=47 pattern=        - ssh_filter_profile: max_length=47 pattern=        - casb_profile: max_length=47 pattern=        - application: pattern=        - app_category: pattern=        - url_category: pattern=        - app_group: pattern=        - groups: pattern=        - users: pattern=        - fsso_groups: pattern=    """
+    Validation Rules:
+        - uuid: pattern=
+        - policyid: min=0 max=4294967294 pattern=
+        - name: max_length=35 pattern=
+        - comments: max_length=1023 pattern=
+        - srcintf: pattern=
+        - dstintf: pattern=
+        - srcaddr: pattern=
+        - srcaddr_negate: pattern=
+        - dstaddr: pattern=
+        - dstaddr_negate: pattern=
+        - srcaddr6: pattern=
+        - srcaddr6_negate: pattern=
+        - dstaddr6: pattern=
+        - dstaddr6_negate: pattern=
+        - internet_service: pattern=
+        - internet_service_name: pattern=
+        - internet_service_negate: pattern=
+        - internet_service_group: pattern=
+        - internet_service_custom: pattern=
+        - internet_service_custom_group: pattern=
+        - internet_service_fortiguard: pattern=
+        - internet_service_src: pattern=
+        - internet_service_src_name: pattern=
+        - internet_service_src_negate: pattern=
+        - internet_service_src_group: pattern=
+        - internet_service_src_custom: pattern=
+        - internet_service_src_custom_group: pattern=
+        - internet_service_src_fortiguard: pattern=
+        - internet_service6: pattern=
+        - internet_service6_name: pattern=
+        - internet_service6_negate: pattern=
+        - internet_service6_group: pattern=
+        - internet_service6_custom: pattern=
+        - internet_service6_custom_group: pattern=
+        - internet_service6_fortiguard: pattern=
+        - internet_service6_src: pattern=
+        - internet_service6_src_name: pattern=
+        - internet_service6_src_negate: pattern=
+        - internet_service6_src_group: pattern=
+        - internet_service6_src_custom: pattern=
+        - internet_service6_src_custom_group: pattern=
+        - internet_service6_src_fortiguard: pattern=
+        - enforce_default_app_port: pattern=
+        - service: pattern=
+        - service_negate: pattern=
+        - action: pattern=
+        - send_deny_packet: pattern=
+        - schedule: max_length=35 pattern=
+        - status: pattern=
+        - logtraffic: pattern=
+        - learning_mode: pattern=
+        - nat46: pattern=
+        - nat64: pattern=
+        - profile_type: pattern=
+        - profile_group: max_length=47 pattern=
+        - profile_protocol_options: max_length=47 pattern=
+        - ssl_ssh_profile: max_length=47 pattern=
+        - av_profile: max_length=47 pattern=
+        - webfilter_profile: max_length=47 pattern=
+        - dnsfilter_profile: max_length=47 pattern=
+        - emailfilter_profile: max_length=47 pattern=
+        - dlp_profile: max_length=47 pattern=
+        - file_filter_profile: max_length=47 pattern=
+        - ips_sensor: max_length=47 pattern=
+        - application_list: max_length=47 pattern=
+        - voip_profile: max_length=47 pattern=
+        - ips_voip_filter: max_length=47 pattern=
+        - sctp_filter_profile: max_length=47 pattern=
+        - diameter_filter_profile: max_length=47 pattern=
+        - virtual_patch_profile: max_length=47 pattern=
+        - icap_profile: max_length=47 pattern=
+        - videofilter_profile: max_length=47 pattern=
+        - ssh_filter_profile: max_length=47 pattern=
+        - casb_profile: max_length=47 pattern=
+        - application: pattern=
+        - app_category: pattern=
+        - url_category: pattern=
+        - app_group: pattern=
+        - groups: pattern=
+        - users: pattern=
+        - fsso_groups: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -506,7 +588,88 @@ class SecurityPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    policyid: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID.")    name: str | None = Field(max_length=35, default="", description="Policy name.")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    srcintf: list[SecurityPolicySrcintf] = Field(description="Incoming (ingress) interface.")    dstintf: list[SecurityPolicyDstintf] = Field(description="Outgoing (egress) interface.")    srcaddr: list[SecurityPolicySrcaddr] = Field(default=None, description="Source IPv4 address name and address group names.")    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")    dstaddr: list[SecurityPolicyDstaddr] = Field(default=None, description="Destination IPv4 address name and address group names.")    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")    srcaddr6: list[SecurityPolicySrcaddr6] = Field(default=None, description="Source IPv6 address name and address group names.")    srcaddr6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr6 specifies what the source address must NOT be.")    dstaddr6: list[SecurityPolicyDstaddr6] = Field(default=None, description="Destination IPv6 address name and address group names.")    dstaddr6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr6 specifies what the destination address must NOT be.")    internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.")    internet_service_name: list[SecurityPolicyInternetServiceName] = Field(default=None, description="Internet Service name.")    internet_service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service specifies what the service must NOT be.")    internet_service_group: list[SecurityPolicyInternetServiceGroup] = Field(default=None, description="Internet Service group name.")    internet_service_custom: list[SecurityPolicyInternetServiceCustom] = Field(default=None, description="Custom Internet Service name.")    internet_service_custom_group: list[SecurityPolicyInternetServiceCustomGroup] = Field(default=None, description="Custom Internet Service group name.")    internet_service_fortiguard: list[SecurityPolicyInternetServiceFortiguard] = Field(default=None, description="FortiGuard Internet Service name.")    internet_service_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.")    internet_service_src_name: list[SecurityPolicyInternetServiceSrcName] = Field(default=None, description="Internet Service source name.")    internet_service_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service-src specifies what the service must NOT be.")    internet_service_src_group: list[SecurityPolicyInternetServiceSrcGroup] = Field(default=None, description="Internet Service source group name.")    internet_service_src_custom: list[SecurityPolicyInternetServiceSrcCustom] = Field(default=None, description="Custom Internet Service source name.")    internet_service_src_custom_group: list[SecurityPolicyInternetServiceSrcCustomGroup] = Field(default=None, description="Custom Internet Service source group name.")    internet_service_src_fortiguard: list[SecurityPolicyInternetServiceSrcFortiguard] = Field(default=None, description="FortiGuard Internet Service source name.")    internet_service6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.")    internet_service6_name: list[SecurityPolicyInternetService6Name] = Field(default=None, description="IPv6 Internet Service name.")    internet_service6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6 specifies what the service must NOT be.")    internet_service6_group: list[SecurityPolicyInternetService6Group] = Field(default=None, description="Internet Service group name.")    internet_service6_custom: list[SecurityPolicyInternetService6Custom] = Field(default=None, description="Custom IPv6 Internet Service name.")    internet_service6_custom_group: list[SecurityPolicyInternetService6CustomGroup] = Field(default=None, description="Custom IPv6 Internet Service group name.")    internet_service6_fortiguard: list[SecurityPolicyInternetService6Fortiguard] = Field(default=None, description="FortiGuard IPv6 Internet Service name.")    internet_service6_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.")    internet_service6_src_name: list[SecurityPolicyInternetService6SrcName] = Field(default=None, description="IPv6 Internet Service source name.")    internet_service6_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6-src specifies what the service must NOT be.")    internet_service6_src_group: list[SecurityPolicyInternetService6SrcGroup] = Field(default=None, description="Internet Service6 source group name.")    internet_service6_src_custom: list[SecurityPolicyInternetService6SrcCustom] = Field(default=None, description="Custom IPv6 Internet Service source name.")    internet_service6_src_custom_group: list[SecurityPolicyInternetService6SrcCustomGroup] = Field(default=None, description="Custom Internet Service6 source group name.")    internet_service6_src_fortiguard: list[SecurityPolicyInternetService6SrcFortiguard] = Field(default=None, description="FortiGuard IPv6 Internet Service source name.")    enforce_default_app_port: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable default application port enforcement for allowed applications.")    service: list[SecurityPolicyService] = Field(default=None, description="Service and service group names.")    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled service specifies what the service must NOT be.")    action: Literal["accept", "deny"] | None = Field(default="deny", description="Policy action (accept/deny).")    send_deny_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to send a reply when a session is denied or blocked by a firewall policy.")    schedule: str = Field(max_length=35, default="", description="Schedule name.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable or disable this policy.")    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")    learning_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow everything, but log all of the meaningful data for security information gathering. A learning report will be generated.")    nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")    nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")    profile_type: Literal["single", "group"] | None = Field(default="single", description="Determine whether the firewall policy allows security profile groups or single profiles only.")    profile_group: str | None = Field(max_length=47, default="", description="Name of profile group.")  # datasource: ['firewall.profile-group.name']    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']    ssl_ssh_profile: str | None = Field(max_length=47, default="no-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    application: list[SecurityPolicyApplication] = Field(default=None, description="Application ID list.")    app_category: list[SecurityPolicyAppCategory] = Field(default=None, description="Application category ID list.")    url_category: str | None = Field(default="", description="URL categories or groups.")    app_group: list[SecurityPolicyAppGroup] = Field(default=None, description="Application group names.")    groups: list[SecurityPolicyGroups] = Field(default=None, description="Names of user groups that can authenticate with this policy.")    users: list[SecurityPolicyUsers] = Field(default=None, description="Names of individual users that can authenticate with this policy.")    fsso_groups: list[SecurityPolicyFssoGroups] = Field(default=None, description="Names of FSSO groups.")    # ========================================================================
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    policyid: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID.")
+    name: str | None = Field(max_length=35, default="", description="Policy name.")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    srcintf: list[SecurityPolicySrcintf] | None = Field(description="Incoming (ingress) interface.")
+    dstintf: list[SecurityPolicyDstintf] | None = Field(description="Outgoing (egress) interface.")
+    srcaddr: list[SecurityPolicySrcaddr] | None = Field(default=None, description="Source IPv4 address name and address group names.")
+    srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")
+    dstaddr: list[SecurityPolicyDstaddr] | None = Field(default=None, description="Destination IPv4 address name and address group names.")
+    dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")
+    srcaddr6: list[SecurityPolicySrcaddr6] | None = Field(default=None, description="Source IPv6 address name and address group names.")
+    srcaddr6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr6 specifies what the source address must NOT be.")
+    dstaddr6: list[SecurityPolicyDstaddr6] | None = Field(default=None, description="Destination IPv6 address name and address group names.")
+    dstaddr6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr6 specifies what the destination address must NOT be.")
+    internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.")
+    internet_service_name: list[SecurityPolicyInternetServiceName] | None = Field(default=None, description="Internet Service name.")
+    internet_service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service specifies what the service must NOT be.")
+    internet_service_group: list[SecurityPolicyInternetServiceGroup] | None = Field(default=None, description="Internet Service group name.")
+    internet_service_custom: list[SecurityPolicyInternetServiceCustom] | None = Field(default=None, description="Custom Internet Service name.")
+    internet_service_custom_group: list[SecurityPolicyInternetServiceCustomGroup] | None = Field(default=None, description="Custom Internet Service group name.")
+    internet_service_fortiguard: list[SecurityPolicyInternetServiceFortiguard] | None = Field(default=None, description="FortiGuard Internet Service name.")
+    internet_service_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.")
+    internet_service_src_name: list[SecurityPolicyInternetServiceSrcName] | None = Field(default=None, description="Internet Service source name.")
+    internet_service_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service-src specifies what the service must NOT be.")
+    internet_service_src_group: list[SecurityPolicyInternetServiceSrcGroup] | None = Field(default=None, description="Internet Service source group name.")
+    internet_service_src_custom: list[SecurityPolicyInternetServiceSrcCustom] | None = Field(default=None, description="Custom Internet Service source name.")
+    internet_service_src_custom_group: list[SecurityPolicyInternetServiceSrcCustomGroup] | None = Field(default=None, description="Custom Internet Service source group name.")
+    internet_service_src_fortiguard: list[SecurityPolicyInternetServiceSrcFortiguard] | None = Field(default=None, description="FortiGuard Internet Service source name.")
+    internet_service6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.")
+    internet_service6_name: list[SecurityPolicyInternetService6Name] | None = Field(default=None, description="IPv6 Internet Service name.")
+    internet_service6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6 specifies what the service must NOT be.")
+    internet_service6_group: list[SecurityPolicyInternetService6Group] | None = Field(default=None, description="Internet Service group name.")
+    internet_service6_custom: list[SecurityPolicyInternetService6Custom] | None = Field(default=None, description="Custom IPv6 Internet Service name.")
+    internet_service6_custom_group: list[SecurityPolicyInternetService6CustomGroup] | None = Field(default=None, description="Custom IPv6 Internet Service group name.")
+    internet_service6_fortiguard: list[SecurityPolicyInternetService6Fortiguard] | None = Field(default=None, description="FortiGuard IPv6 Internet Service name.")
+    internet_service6_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.")
+    internet_service6_src_name: list[SecurityPolicyInternetService6SrcName] | None = Field(default=None, description="IPv6 Internet Service source name.")
+    internet_service6_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6-src specifies what the service must NOT be.")
+    internet_service6_src_group: list[SecurityPolicyInternetService6SrcGroup] | None = Field(default=None, description="Internet Service6 source group name.")
+    internet_service6_src_custom: list[SecurityPolicyInternetService6SrcCustom] | None = Field(default=None, description="Custom IPv6 Internet Service source name.")
+    internet_service6_src_custom_group: list[SecurityPolicyInternetService6SrcCustomGroup] | None = Field(default=None, description="Custom Internet Service6 source group name.")
+    internet_service6_src_fortiguard: list[SecurityPolicyInternetService6SrcFortiguard] | None = Field(default=None, description="FortiGuard IPv6 Internet Service source name.")
+    enforce_default_app_port: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable default application port enforcement for allowed applications.")
+    service: list[SecurityPolicyService] | None = Field(default=None, description="Service and service group names.")
+    service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled service specifies what the service must NOT be.")
+    action: Literal["accept", "deny"] | None = Field(default="deny", description="Policy action (accept/deny).")
+    send_deny_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to send a reply when a session is denied or blocked by a firewall policy.")
+    schedule: str = Field(max_length=35, default="", description="Schedule name.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable or disable this policy.")
+    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")
+    learning_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow everything, but log all of the meaningful data for security information gathering. A learning report will be generated.")
+    nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")
+    nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")
+    profile_type: Literal["single", "group"] | None = Field(default="single", description="Determine whether the firewall policy allows security profile groups or single profiles only.")
+    profile_group: str | None = Field(max_length=47, default="", description="Name of profile group.")  # datasource: ['firewall.profile-group.name']
+    profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']
+    ssl_ssh_profile: str | None = Field(max_length=47, default="no-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']
+    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']
+    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']
+    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']
+    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']
+    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']
+    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']
+    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']
+    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']
+    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']
+    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']
+    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']
+    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']
+    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']
+    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']
+    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']
+    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']
+    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']
+    application: list[SecurityPolicyApplication] | None = Field(default=None, description="Application ID list.")
+    app_category: list[SecurityPolicyAppCategory] | None = Field(default=None, description="Application category ID list.")
+    url_category: str | None = Field(default="", description="URL categories or groups.")
+    app_group: list[SecurityPolicyAppGroup] | None = Field(default=None, description="Application group names.")
+    groups: list[SecurityPolicyGroups] | None = Field(default=None, description="Names of user groups that can authenticate with this policy.")
+    users: list[SecurityPolicyUsers] | None = Field(default=None, description="Names of individual users that can authenticate with this policy.")
+    fsso_groups: list[SecurityPolicyFssoGroups] | None = Field(default=None, description="Names of FSSO groups.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -885,7 +1048,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -947,7 +1110,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstintf", [])
@@ -1009,7 +1172,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -1071,7 +1234,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -1137,7 +1300,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -1199,7 +1362,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -1265,7 +1428,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_name", [])
@@ -1323,7 +1486,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_group", [])
@@ -1381,7 +1544,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_custom", [])
@@ -1439,7 +1602,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_custom_group", [])
@@ -1497,7 +1660,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_fortiguard", [])
@@ -1555,7 +1718,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_src_name", [])
@@ -1613,7 +1776,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_src_group", [])
@@ -1671,7 +1834,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_src_custom", [])
@@ -1729,7 +1892,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_src_custom_group", [])
@@ -1787,7 +1950,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_src_fortiguard", [])
@@ -1845,7 +2008,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_name", [])
@@ -1903,7 +2066,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_group", [])
@@ -1961,7 +2124,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_custom", [])
@@ -2019,7 +2182,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_custom_group", [])
@@ -2077,7 +2240,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_fortiguard", [])
@@ -2135,7 +2298,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_name", [])
@@ -2193,7 +2356,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_group", [])
@@ -2251,7 +2414,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom", [])
@@ -2309,7 +2472,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom_group", [])
@@ -2367,7 +2530,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service6_src_fortiguard", [])
@@ -2425,7 +2588,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -2485,7 +2648,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -2538,7 +2701,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile_group", None)
@@ -2587,7 +2750,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile_protocol_options", None)
@@ -2636,7 +2799,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_ssh_profile", None)
@@ -2685,7 +2848,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -2734,7 +2897,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -2783,7 +2946,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dnsfilter_profile", None)
@@ -2832,7 +2995,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -2881,7 +3044,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -2930,7 +3093,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "file_filter_profile", None)
@@ -2979,7 +3142,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -3006,7 +3169,7 @@ class SecurityPolicyModel(BaseModel):
         can be called before posting to the API to catch reference errors early.
 
         Datasource endpoints checked:
-        - application/list
+        - application/list_
         Args:
             client: FortiOS client instance (from fgt._client)
 
@@ -3028,7 +3191,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -3037,13 +3200,13 @@ class SecurityPolicyModel(BaseModel):
 
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.application.list.exists(value):
+        if await client.api.cmdb.application.list_.exists(value):
             found = True
 
         if not found:
             errors.append(
                 f"Application-List '{value}' not found in "
-                "application/list"
+                "application/list_"
             )
         return errors
     async def validate_voip_profile_references(self, client: Any) -> list[str]:
@@ -3077,7 +3240,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "voip_profile", None)
@@ -3126,7 +3289,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_voip_filter", None)
@@ -3175,7 +3338,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sctp_filter_profile", None)
@@ -3224,7 +3387,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "diameter_filter_profile", None)
@@ -3273,7 +3436,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "virtual_patch_profile", None)
@@ -3322,7 +3485,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "icap_profile", None)
@@ -3371,7 +3534,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "videofilter_profile", None)
@@ -3420,7 +3583,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssh_filter_profile", None)
@@ -3469,7 +3632,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -3518,7 +3681,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "app_group", [])
@@ -3576,7 +3739,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -3634,7 +3797,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "users", [])
@@ -3692,7 +3855,7 @@ class SecurityPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.security_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "fsso_groups", [])
@@ -3738,59 +3901,110 @@ class SecurityPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_src_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_src_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_src_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_src_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_src_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_custom_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service6_src_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_schedule_references(client)
-        all_errors.extend(errors)        errors = await self.validate_profile_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_profile_protocol_options_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_ssh_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_av_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dnsfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_emailfilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dlp_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_file_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_sensor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_application_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_voip_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_voip_filter_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sctp_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_diameter_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_virtual_patch_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_icap_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_videofilter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssh_filter_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_casb_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_app_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_groups_references(client)
-        all_errors.extend(errors)        errors = await self.validate_users_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fsso_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstintf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_src_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_src_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_src_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_src_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_src_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_custom_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service6_src_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_profile_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_profile_protocol_options_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_ssh_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_av_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dnsfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_emailfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dlp_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_file_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_voip_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_voip_filter_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sctp_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_diameter_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_virtual_patch_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_icap_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_videofilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssh_filter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_casb_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_app_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_users_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fsso_groups_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -3812,5 +4026,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.143131Z
+# Generated: 2026-01-14T22:43:35.118109Z
 # ============================================================================

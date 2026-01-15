@@ -303,7 +303,32 @@ class IkeModel(BaseModel):
 
     Configure IKE global attributes.
 
-    Validation Rules:        - embryonic_limit: min=50 max=20000 pattern=        - dh_multiprocess: pattern=        - dh_worker_count: min=1 max=2 pattern=        - dh_mode: pattern=        - dh_keypair_cache: pattern=        - dh_keypair_count: min=0 max=50000 pattern=        - dh_keypair_throttle: pattern=        - dh_group_1: pattern=        - dh_group_2: pattern=        - dh_group_5: pattern=        - dh_group_14: pattern=        - dh_group_15: pattern=        - dh_group_16: pattern=        - dh_group_17: pattern=        - dh_group_18: pattern=        - dh_group_19: pattern=        - dh_group_20: pattern=        - dh_group_21: pattern=        - dh_group_27: pattern=        - dh_group_28: pattern=        - dh_group_29: pattern=        - dh_group_30: pattern=        - dh_group_31: pattern=        - dh_group_32: pattern=    """
+    Validation Rules:
+        - embryonic_limit: min=50 max=20000 pattern=
+        - dh_multiprocess: pattern=
+        - dh_worker_count: min=1 max=2 pattern=
+        - dh_mode: pattern=
+        - dh_keypair_cache: pattern=
+        - dh_keypair_count: min=0 max=50000 pattern=
+        - dh_keypair_throttle: pattern=
+        - dh_group_1: pattern=
+        - dh_group_2: pattern=
+        - dh_group_5: pattern=
+        - dh_group_14: pattern=
+        - dh_group_15: pattern=
+        - dh_group_16: pattern=
+        - dh_group_17: pattern=
+        - dh_group_18: pattern=
+        - dh_group_19: pattern=
+        - dh_group_20: pattern=
+        - dh_group_21: pattern=
+        - dh_group_27: pattern=
+        - dh_group_28: pattern=
+        - dh_group_29: pattern=
+        - dh_group_30: pattern=
+        - dh_group_31: pattern=
+        - dh_group_32: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -315,7 +340,31 @@ class IkeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    embryonic_limit: int | None = Field(ge=50, le=20000, default=10000, description="Maximum number of IPsec tunnels to negotiate simultaneously.")    dh_multiprocess: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multiprocess Diffie-Hellman daemon for IKE.")    dh_worker_count: int | None = Field(ge=1, le=2, default=0, description="Number of Diffie-Hellman workers to start.")    dh_mode: Literal["software", "hardware"] | None = Field(default="software", description="Use software (CPU) or hardware (CPX) to perform Diffie-Hellman calculations.")    dh_keypair_cache: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Diffie-Hellman key pair cache.")    dh_keypair_count: int | None = Field(ge=0, le=50000, default=100, description="Number of key pairs to pre-generate for each Diffie-Hellman group (per-worker).")    dh_keypair_throttle: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Diffie-Hellman key pair cache CPU throttling.")    dh_group_1: list[IkeDhGroup1] = Field(default=None, description="Diffie-Hellman group 1 (MODP-768).")    dh_group_2: list[IkeDhGroup2] = Field(default=None, description="Diffie-Hellman group 2 (MODP-1024).")    dh_group_5: list[IkeDhGroup5] = Field(default=None, description="Diffie-Hellman group 5 (MODP-1536).")    dh_group_14: list[IkeDhGroup14] = Field(default=None, description="Diffie-Hellman group 14 (MODP-2048).")    dh_group_15: list[IkeDhGroup15] = Field(default=None, description="Diffie-Hellman group 15 (MODP-3072).")    dh_group_16: list[IkeDhGroup16] = Field(default=None, description="Diffie-Hellman group 16 (MODP-4096).")    dh_group_17: list[IkeDhGroup17] = Field(default=None, description="Diffie-Hellman group 17 (MODP-6144).")    dh_group_18: list[IkeDhGroup18] = Field(default=None, description="Diffie-Hellman group 18 (MODP-8192).")    dh_group_19: list[IkeDhGroup19] = Field(default=None, description="Diffie-Hellman group 19 (EC-P256).")    dh_group_20: list[IkeDhGroup20] = Field(default=None, description="Diffie-Hellman group 20 (EC-P384).")    dh_group_21: list[IkeDhGroup21] = Field(default=None, description="Diffie-Hellman group 21 (EC-P521).")    dh_group_27: list[IkeDhGroup27] = Field(default=None, description="Diffie-Hellman group 27 (EC-P224BP).")    dh_group_28: list[IkeDhGroup28] = Field(default=None, description="Diffie-Hellman group 28 (EC-P256BP).")    dh_group_29: list[IkeDhGroup29] = Field(default=None, description="Diffie-Hellman group 29 (EC-P384BP).")    dh_group_30: list[IkeDhGroup30] = Field(default=None, description="Diffie-Hellman group 30 (EC-P512BP).")    dh_group_31: list[IkeDhGroup31] = Field(default=None, description="Diffie-Hellman group 31 (EC-X25519).")    dh_group_32: list[IkeDhGroup32] = Field(default=None, description="Diffie-Hellman group 32 (EC-X448).")    # ========================================================================
+    embryonic_limit: int | None = Field(ge=50, le=20000, default=10000, description="Maximum number of IPsec tunnels to negotiate simultaneously.")
+    dh_multiprocess: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multiprocess Diffie-Hellman daemon for IKE.")
+    dh_worker_count: int | None = Field(ge=1, le=2, default=0, description="Number of Diffie-Hellman workers to start.")
+    dh_mode: Literal["software", "hardware"] | None = Field(default="software", description="Use software (CPU) or hardware (CPX) to perform Diffie-Hellman calculations.")
+    dh_keypair_cache: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Diffie-Hellman key pair cache.")
+    dh_keypair_count: int | None = Field(ge=0, le=50000, default=100, description="Number of key pairs to pre-generate for each Diffie-Hellman group (per-worker).")
+    dh_keypair_throttle: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Diffie-Hellman key pair cache CPU throttling.")
+    dh_group_1: list[IkeDhGroup1] | None = Field(default=None, description="Diffie-Hellman group 1 (MODP-768).")
+    dh_group_2: list[IkeDhGroup2] | None = Field(default=None, description="Diffie-Hellman group 2 (MODP-1024).")
+    dh_group_5: list[IkeDhGroup5] | None = Field(default=None, description="Diffie-Hellman group 5 (MODP-1536).")
+    dh_group_14: list[IkeDhGroup14] | None = Field(default=None, description="Diffie-Hellman group 14 (MODP-2048).")
+    dh_group_15: list[IkeDhGroup15] | None = Field(default=None, description="Diffie-Hellman group 15 (MODP-3072).")
+    dh_group_16: list[IkeDhGroup16] | None = Field(default=None, description="Diffie-Hellman group 16 (MODP-4096).")
+    dh_group_17: list[IkeDhGroup17] | None = Field(default=None, description="Diffie-Hellman group 17 (MODP-6144).")
+    dh_group_18: list[IkeDhGroup18] | None = Field(default=None, description="Diffie-Hellman group 18 (MODP-8192).")
+    dh_group_19: list[IkeDhGroup19] | None = Field(default=None, description="Diffie-Hellman group 19 (EC-P256).")
+    dh_group_20: list[IkeDhGroup20] | None = Field(default=None, description="Diffie-Hellman group 20 (EC-P384).")
+    dh_group_21: list[IkeDhGroup21] | None = Field(default=None, description="Diffie-Hellman group 21 (EC-P521).")
+    dh_group_27: list[IkeDhGroup27] | None = Field(default=None, description="Diffie-Hellman group 27 (EC-P224BP).")
+    dh_group_28: list[IkeDhGroup28] | None = Field(default=None, description="Diffie-Hellman group 28 (EC-P256BP).")
+    dh_group_29: list[IkeDhGroup29] | None = Field(default=None, description="Diffie-Hellman group 29 (EC-P384BP).")
+    dh_group_30: list[IkeDhGroup30] | None = Field(default=None, description="Diffie-Hellman group 30 (EC-P512BP).")
+    dh_group_31: list[IkeDhGroup31] | None = Field(default=None, description="Diffie-Hellman group 31 (EC-X25519).")
+    dh_group_32: list[IkeDhGroup32] | None = Field(default=None, description="Diffie-Hellman group 32 (EC-X448).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -364,5 +413,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.351080Z
+# Generated: 2026-01-14T22:43:35.412405Z
 # ============================================================================

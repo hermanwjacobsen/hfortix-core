@@ -599,6 +599,10 @@ class WidsProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -619,6 +623,7 @@ class WidsProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WidsProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -636,6 +641,7 @@ class WidsProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WidsProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -652,6 +658,7 @@ class WidsProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[WidsProfileResponse]: ...
     
     # ================================================================
@@ -694,7 +701,7 @@ class WidsProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> WidsProfileObject: ...
     
@@ -713,7 +720,7 @@ class WidsProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[WidsProfileObject]: ...
     
@@ -812,23 +819,6 @@ class WidsProfile:
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> WidsProfileObject | list[WidsProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
@@ -953,6 +943,7 @@ class WidsProfile:
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WidsProfileObject: ...
@@ -1313,125 +1304,7 @@ class WidsProfile:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: WidsProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
-        ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_bgscan_period: int | None = ...,
-        ap_bgscan_intv: int | None = ...,
-        ap_bgscan_duration: int | None = ...,
-        ap_bgscan_idle: int | None = ...,
-        ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_fgscan_report_intv: int | None = ...,
-        ap_scan_passive: Literal["enable", "disable"] | None = ...,
-        ap_scan_threshold: str | None = ...,
-        ap_auto_suppress: Literal["enable", "disable"] | None = ...,
-        wireless_bridge: Literal["enable", "disable"] | None = ...,
-        deauth_broadcast: Literal["enable", "disable"] | None = ...,
-        null_ssid_probe_resp: Literal["enable", "disable"] | None = ...,
-        long_duration_attack: Literal["enable", "disable"] | None = ...,
-        long_duration_thresh: int | None = ...,
-        invalid_mac_oui: Literal["enable", "disable"] | None = ...,
-        weak_wep_iv: Literal["enable", "disable"] | None = ...,
-        auth_frame_flood: Literal["enable", "disable"] | None = ...,
-        auth_flood_time: int | None = ...,
-        auth_flood_thresh: int | None = ...,
-        assoc_frame_flood: Literal["enable", "disable"] | None = ...,
-        assoc_flood_time: int | None = ...,
-        assoc_flood_thresh: int | None = ...,
-        reassoc_flood: Literal["enable", "disable"] | None = ...,
-        reassoc_flood_time: int | None = ...,
-        reassoc_flood_thresh: int | None = ...,
-        probe_flood: Literal["enable", "disable"] | None = ...,
-        probe_flood_time: int | None = ...,
-        probe_flood_thresh: int | None = ...,
-        bcn_flood: Literal["enable", "disable"] | None = ...,
-        bcn_flood_time: int | None = ...,
-        bcn_flood_thresh: int | None = ...,
-        rts_flood: Literal["enable", "disable"] | None = ...,
-        rts_flood_time: int | None = ...,
-        rts_flood_thresh: int | None = ...,
-        cts_flood: Literal["enable", "disable"] | None = ...,
-        cts_flood_time: int | None = ...,
-        cts_flood_thresh: int | None = ...,
-        client_flood: Literal["enable", "disable"] | None = ...,
-        client_flood_time: int | None = ...,
-        client_flood_thresh: int | None = ...,
-        block_ack_flood: Literal["enable", "disable"] | None = ...,
-        block_ack_flood_time: int | None = ...,
-        block_ack_flood_thresh: int | None = ...,
-        pspoll_flood: Literal["enable", "disable"] | None = ...,
-        pspoll_flood_time: int | None = ...,
-        pspoll_flood_thresh: int | None = ...,
-        netstumbler: Literal["enable", "disable"] | None = ...,
-        netstumbler_time: int | None = ...,
-        netstumbler_thresh: int | None = ...,
-        wellenreiter: Literal["enable", "disable"] | None = ...,
-        wellenreiter_time: int | None = ...,
-        wellenreiter_thresh: int | None = ...,
-        spoofed_deauth: Literal["enable", "disable"] | None = ...,
-        asleap_attack: Literal["enable", "disable"] | None = ...,
-        eapol_start_flood: Literal["enable", "disable"] | None = ...,
-        eapol_start_thresh: int | None = ...,
-        eapol_start_intv: int | None = ...,
-        eapol_logoff_flood: Literal["enable", "disable"] | None = ...,
-        eapol_logoff_thresh: int | None = ...,
-        eapol_logoff_intv: int | None = ...,
-        eapol_succ_flood: Literal["enable", "disable"] | None = ...,
-        eapol_succ_thresh: int | None = ...,
-        eapol_succ_intv: int | None = ...,
-        eapol_fail_flood: Literal["enable", "disable"] | None = ...,
-        eapol_fail_thresh: int | None = ...,
-        eapol_fail_intv: int | None = ...,
-        eapol_pre_succ_flood: Literal["enable", "disable"] | None = ...,
-        eapol_pre_succ_thresh: int | None = ...,
-        eapol_pre_succ_intv: int | None = ...,
-        eapol_pre_fail_flood: Literal["enable", "disable"] | None = ...,
-        eapol_pre_fail_thresh: int | None = ...,
-        eapol_pre_fail_intv: int | None = ...,
-        deauth_unknown_src_thresh: int | None = ...,
-        windows_bridge: Literal["enable", "disable"] | None = ...,
-        disassoc_broadcast: Literal["enable", "disable"] | None = ...,
-        ap_spoofing: Literal["enable", "disable"] | None = ...,
-        chan_based_mitm: Literal["enable", "disable"] | None = ...,
-        adhoc_valid_ssid: Literal["enable", "disable"] | None = ...,
-        adhoc_network: Literal["enable", "disable"] | None = ...,
-        eapol_key_overflow: Literal["enable", "disable"] | None = ...,
-        ap_impersonation: Literal["enable", "disable"] | None = ...,
-        invalid_addr_combination: Literal["enable", "disable"] | None = ...,
-        beacon_wrong_channel: Literal["enable", "disable"] | None = ...,
-        ht_greenfield: Literal["enable", "disable"] | None = ...,
-        overflow_ie: Literal["enable", "disable"] | None = ...,
-        malformed_ht_ie: Literal["enable", "disable"] | None = ...,
-        malformed_auth: Literal["enable", "disable"] | None = ...,
-        malformed_association: Literal["enable", "disable"] | None = ...,
-        ht_40mhz_intolerance: Literal["enable", "disable"] | None = ...,
-        valid_ssid_misuse: Literal["enable", "disable"] | None = ...,
-        valid_client_misassociation: Literal["enable", "disable"] | None = ...,
-        hotspotter_attack: Literal["enable", "disable"] | None = ...,
-        pwsave_dos_attack: Literal["enable", "disable"] | None = ...,
-        omerta_attack: Literal["enable", "disable"] | None = ...,
-        disconnect_station: Literal["enable", "disable"] | None = ...,
-        unencrypted_valid: Literal["enable", "disable"] | None = ...,
-        fata_jack: Literal["enable", "disable"] | None = ...,
-        risky_encryption: Literal["enable", "disable"] | None = ...,
-        fuzzed_beacon: Literal["enable", "disable"] | None = ...,
-        fuzzed_probe_request: Literal["enable", "disable"] | None = ...,
-        fuzzed_probe_response: Literal["enable", "disable"] | None = ...,
-        air_jack: Literal["enable", "disable"] | None = ...,
-        wpa_ft_attack: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1552,6 +1425,7 @@ class WidsProfile:
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WidsProfileObject: ...
@@ -1912,125 +1786,7 @@ class WidsProfile:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: WidsProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
-        ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_bgscan_period: int | None = ...,
-        ap_bgscan_intv: int | None = ...,
-        ap_bgscan_duration: int | None = ...,
-        ap_bgscan_idle: int | None = ...,
-        ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_fgscan_report_intv: int | None = ...,
-        ap_scan_passive: Literal["enable", "disable"] | None = ...,
-        ap_scan_threshold: str | None = ...,
-        ap_auto_suppress: Literal["enable", "disable"] | None = ...,
-        wireless_bridge: Literal["enable", "disable"] | None = ...,
-        deauth_broadcast: Literal["enable", "disable"] | None = ...,
-        null_ssid_probe_resp: Literal["enable", "disable"] | None = ...,
-        long_duration_attack: Literal["enable", "disable"] | None = ...,
-        long_duration_thresh: int | None = ...,
-        invalid_mac_oui: Literal["enable", "disable"] | None = ...,
-        weak_wep_iv: Literal["enable", "disable"] | None = ...,
-        auth_frame_flood: Literal["enable", "disable"] | None = ...,
-        auth_flood_time: int | None = ...,
-        auth_flood_thresh: int | None = ...,
-        assoc_frame_flood: Literal["enable", "disable"] | None = ...,
-        assoc_flood_time: int | None = ...,
-        assoc_flood_thresh: int | None = ...,
-        reassoc_flood: Literal["enable", "disable"] | None = ...,
-        reassoc_flood_time: int | None = ...,
-        reassoc_flood_thresh: int | None = ...,
-        probe_flood: Literal["enable", "disable"] | None = ...,
-        probe_flood_time: int | None = ...,
-        probe_flood_thresh: int | None = ...,
-        bcn_flood: Literal["enable", "disable"] | None = ...,
-        bcn_flood_time: int | None = ...,
-        bcn_flood_thresh: int | None = ...,
-        rts_flood: Literal["enable", "disable"] | None = ...,
-        rts_flood_time: int | None = ...,
-        rts_flood_thresh: int | None = ...,
-        cts_flood: Literal["enable", "disable"] | None = ...,
-        cts_flood_time: int | None = ...,
-        cts_flood_thresh: int | None = ...,
-        client_flood: Literal["enable", "disable"] | None = ...,
-        client_flood_time: int | None = ...,
-        client_flood_thresh: int | None = ...,
-        block_ack_flood: Literal["enable", "disable"] | None = ...,
-        block_ack_flood_time: int | None = ...,
-        block_ack_flood_thresh: int | None = ...,
-        pspoll_flood: Literal["enable", "disable"] | None = ...,
-        pspoll_flood_time: int | None = ...,
-        pspoll_flood_thresh: int | None = ...,
-        netstumbler: Literal["enable", "disable"] | None = ...,
-        netstumbler_time: int | None = ...,
-        netstumbler_thresh: int | None = ...,
-        wellenreiter: Literal["enable", "disable"] | None = ...,
-        wellenreiter_time: int | None = ...,
-        wellenreiter_thresh: int | None = ...,
-        spoofed_deauth: Literal["enable", "disable"] | None = ...,
-        asleap_attack: Literal["enable", "disable"] | None = ...,
-        eapol_start_flood: Literal["enable", "disable"] | None = ...,
-        eapol_start_thresh: int | None = ...,
-        eapol_start_intv: int | None = ...,
-        eapol_logoff_flood: Literal["enable", "disable"] | None = ...,
-        eapol_logoff_thresh: int | None = ...,
-        eapol_logoff_intv: int | None = ...,
-        eapol_succ_flood: Literal["enable", "disable"] | None = ...,
-        eapol_succ_thresh: int | None = ...,
-        eapol_succ_intv: int | None = ...,
-        eapol_fail_flood: Literal["enable", "disable"] | None = ...,
-        eapol_fail_thresh: int | None = ...,
-        eapol_fail_intv: int | None = ...,
-        eapol_pre_succ_flood: Literal["enable", "disable"] | None = ...,
-        eapol_pre_succ_thresh: int | None = ...,
-        eapol_pre_succ_intv: int | None = ...,
-        eapol_pre_fail_flood: Literal["enable", "disable"] | None = ...,
-        eapol_pre_fail_thresh: int | None = ...,
-        eapol_pre_fail_intv: int | None = ...,
-        deauth_unknown_src_thresh: int | None = ...,
-        windows_bridge: Literal["enable", "disable"] | None = ...,
-        disassoc_broadcast: Literal["enable", "disable"] | None = ...,
-        ap_spoofing: Literal["enable", "disable"] | None = ...,
-        chan_based_mitm: Literal["enable", "disable"] | None = ...,
-        adhoc_valid_ssid: Literal["enable", "disable"] | None = ...,
-        adhoc_network: Literal["enable", "disable"] | None = ...,
-        eapol_key_overflow: Literal["enable", "disable"] | None = ...,
-        ap_impersonation: Literal["enable", "disable"] | None = ...,
-        invalid_addr_combination: Literal["enable", "disable"] | None = ...,
-        beacon_wrong_channel: Literal["enable", "disable"] | None = ...,
-        ht_greenfield: Literal["enable", "disable"] | None = ...,
-        overflow_ie: Literal["enable", "disable"] | None = ...,
-        malformed_ht_ie: Literal["enable", "disable"] | None = ...,
-        malformed_auth: Literal["enable", "disable"] | None = ...,
-        malformed_association: Literal["enable", "disable"] | None = ...,
-        ht_40mhz_intolerance: Literal["enable", "disable"] | None = ...,
-        valid_ssid_misuse: Literal["enable", "disable"] | None = ...,
-        valid_client_misassociation: Literal["enable", "disable"] | None = ...,
-        hotspotter_attack: Literal["enable", "disable"] | None = ...,
-        pwsave_dos_attack: Literal["enable", "disable"] | None = ...,
-        omerta_attack: Literal["enable", "disable"] | None = ...,
-        disconnect_station: Literal["enable", "disable"] | None = ...,
-        unencrypted_valid: Literal["enable", "disable"] | None = ...,
-        fata_jack: Literal["enable", "disable"] | None = ...,
-        risky_encryption: Literal["enable", "disable"] | None = ...,
-        fuzzed_beacon: Literal["enable", "disable"] | None = ...,
-        fuzzed_probe_request: Literal["enable", "disable"] | None = ...,
-        fuzzed_probe_response: Literal["enable", "disable"] | None = ...,
-        air_jack: Literal["enable", "disable"] | None = ...,
-        wpa_ft_attack: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2041,6 +1797,7 @@ class WidsProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WidsProfileObject: ...
@@ -2071,14 +1828,7 @@ class WidsProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2217,8 +1967,6 @@ class WidsProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2246,6 +1994,10 @@ class WidsProfileDictMode:
     By default returns WidsProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return WidsProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2702,10 +2454,12 @@ class WidsProfileDictMode:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: WidsProfilePayload | None = ...,
@@ -3181,10 +2935,12 @@ class WidsProfileDictMode:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: WidsProfilePayload | None = ...,
@@ -3330,10 +3086,12 @@ class WidsProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -3476,8 +3234,6 @@ class WidsProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -3501,6 +3257,10 @@ class WidsProfileObjectMode:
     By default returns WidsProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return WidsProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -4078,10 +3838,12 @@ class WidsProfileObjectMode:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WidsProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: WidsProfilePayload | None = ...,
@@ -4678,10 +4440,12 @@ class WidsProfileObjectMode:
         air_jack: Literal["enable", "disable"] | None = ...,
         wpa_ft_attack: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WidsProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: WidsProfilePayload | None = ...,
@@ -4838,10 +4602,12 @@ class WidsProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WidsProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -4984,8 +4750,6 @@ class WidsProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

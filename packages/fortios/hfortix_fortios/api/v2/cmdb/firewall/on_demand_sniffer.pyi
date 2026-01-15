@@ -196,6 +196,10 @@ class OnDemandSniffer:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -216,6 +220,7 @@ class OnDemandSniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OnDemandSnifferResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -233,6 +238,7 @@ class OnDemandSniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OnDemandSnifferResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -249,6 +255,7 @@ class OnDemandSniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[OnDemandSnifferResponse]: ...
     
     # ================================================================
@@ -291,7 +298,7 @@ class OnDemandSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
     
@@ -310,7 +317,7 @@ class OnDemandSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[OnDemandSnifferObject]: ...
     
@@ -410,23 +417,6 @@ class OnDemandSniffer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OnDemandSnifferObject | list[OnDemandSnifferObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -448,6 +438,7 @@ class OnDemandSniffer:
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
@@ -502,23 +493,7 @@ class OnDemandSniffer:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: OnDemandSnifferPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
-        non_ip_packet: Literal["enable", "disable"] | None = ...,
-        advanced_filter: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -537,6 +512,7 @@ class OnDemandSniffer:
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
@@ -591,23 +567,7 @@ class OnDemandSniffer:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OnDemandSnifferPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
-        non_ip_packet: Literal["enable", "disable"] | None = ...,
-        advanced_filter: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -618,6 +578,7 @@ class OnDemandSniffer:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
@@ -648,14 +609,7 @@ class OnDemandSniffer:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -692,8 +646,6 @@ class OnDemandSniffer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -721,6 +673,10 @@ class OnDemandSnifferDictMode:
     By default returns OnDemandSnifferResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OnDemandSnifferObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -871,10 +827,12 @@ class OnDemandSnifferDictMode:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: OnDemandSnifferPayload | None = ...,
@@ -942,10 +900,12 @@ class OnDemandSnifferDictMode:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OnDemandSnifferPayload | None = ...,
@@ -989,10 +949,12 @@ class OnDemandSnifferDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1033,8 +995,6 @@ class OnDemandSnifferDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1058,6 +1018,10 @@ class OnDemandSnifferObjectMode:
     By default returns OnDemandSnifferObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OnDemandSnifferResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1227,10 +1191,12 @@ class OnDemandSnifferObjectMode:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: OnDemandSnifferPayload | None = ...,
@@ -1317,10 +1283,12 @@ class OnDemandSnifferObjectMode:
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OnDemandSnifferPayload | None = ...,
@@ -1375,10 +1343,12 @@ class OnDemandSnifferObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OnDemandSnifferObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1419,8 +1389,6 @@ class OnDemandSnifferObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

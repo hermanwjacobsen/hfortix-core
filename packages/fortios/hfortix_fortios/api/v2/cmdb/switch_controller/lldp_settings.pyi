@@ -85,6 +85,10 @@ class LldpSettings:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -105,6 +109,7 @@ class LldpSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LldpSettingsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -122,6 +127,7 @@ class LldpSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LldpSettingsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -138,6 +144,7 @@ class LldpSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LldpSettingsResponse: ...
     
     # ================================================================
@@ -180,7 +187,7 @@ class LldpSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LldpSettingsObject: ...
     
@@ -199,7 +206,7 @@ class LldpSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LldpSettingsObject: ...
     
@@ -299,23 +306,6 @@ class LldpSettings:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LldpSettingsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -334,6 +324,7 @@ class LldpSettings:
         device_detection: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LldpSettingsObject: ...
@@ -379,20 +370,7 @@ class LldpSettings:
         management_interface: Literal["internal", "mgmt"] | None = ...,
         device_detection: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LldpSettingsPayload | None = ...,
-        tx_hold: int | None = ...,
-        tx_interval: int | None = ...,
-        fast_start_interval: int | None = ...,
-        management_interface: Literal["internal", "mgmt"] | None = ...,
-        device_detection: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -426,8 +404,6 @@ class LldpSettings:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -455,6 +431,10 @@ class LldpSettingsDictMode:
     By default returns LldpSettingsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LldpSettingsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -597,10 +577,12 @@ class LldpSettingsDictMode:
         management_interface: Literal["internal", "mgmt"] | None = ...,
         device_detection: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LldpSettingsPayload | None = ...,
@@ -644,8 +626,6 @@ class LldpSettingsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -669,6 +649,10 @@ class LldpSettingsObjectMode:
     By default returns LldpSettingsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LldpSettingsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -827,10 +811,12 @@ class LldpSettingsObjectMode:
         management_interface: Literal["internal", "mgmt"] | None = ...,
         device_detection: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LldpSettingsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LldpSettingsPayload | None = ...,
@@ -874,8 +860,6 @@ class LldpSettingsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

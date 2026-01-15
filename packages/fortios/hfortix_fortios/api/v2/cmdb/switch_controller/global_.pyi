@@ -44,7 +44,7 @@ class GlobalPayload(TypedDict, total=False):
     mac_event_logging: Literal["enable", "disable"]  # Enable/disable MAC address event logging. | Default: disable
     bounce_quarantined_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: disable
     quarantine_mode: Literal["by-vlan", "by-redirect"]  # Quarantine mode. | Default: by-vlan
-    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
+    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
     custom_command: list[dict[str, Any]]  # List of custom commands to be pushed to all FortiS
     fips_enforce: Literal["disable", "enable"]  # Enable/disable enforcement of FIPS on managed Fort | Default: enable
     firmware_provision_on_authorization: Literal["enable", "disable"]  # Enable/disable automatic provisioning of latest fi | Default: disable
@@ -149,7 +149,7 @@ class GlobalResponse(TypedDict):
     mac_event_logging: Literal["enable", "disable"]  # Enable/disable MAC address event logging. | Default: disable
     bounce_quarantined_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: disable
     quarantine_mode: Literal["by-vlan", "by-redirect"]  # Quarantine mode. | Default: by-vlan
-    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
+    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
     custom_command: list[GlobalCustomcommandItem]  # List of custom commands to be pushed to all FortiS
     fips_enforce: Literal["disable", "enable"]  # Enable/disable enforcement of FIPS on managed Fort | Default: enable
     firmware_provision_on_authorization: Literal["enable", "disable"]  # Enable/disable automatic provisioning of latest fi | Default: disable
@@ -207,7 +207,7 @@ class GlobalObject:
     bounce_quarantined_link: Literal["disable", "enable"]
     # Quarantine mode. | Default: by-vlan
     quarantine_mode: Literal["by-vlan", "by-redirect"]
-    # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
+    # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
     update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]
     # List of custom commands to be pushed to all FortiSwitches in
     custom_command: list[GlobalCustomcommandObject]
@@ -243,6 +243,10 @@ class Global:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -263,6 +267,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -280,6 +285,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -296,6 +302,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # ================================================================
@@ -338,7 +345,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -357,7 +364,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -457,23 +464,6 @@ class Global:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GlobalObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -514,6 +504,7 @@ class Global:
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
@@ -625,42 +616,7 @@ class Global:
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -716,8 +672,6 @@ class Global:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -745,6 +699,10 @@ class GlobalDictMode:
     By default returns GlobalResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GlobalObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -953,10 +911,12 @@ class GlobalDictMode:
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -1044,8 +1004,6 @@ class GlobalDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1069,6 +1027,10 @@ class GlobalObjectMode:
     By default returns GlobalObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1315,10 +1277,12 @@ class GlobalObjectMode:
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -1406,8 +1370,6 @@ class GlobalObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

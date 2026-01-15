@@ -20,7 +20,7 @@ class IpDscpMapPayload(TypedDict, total=False):
     """
     name: str  # Dscp map name. | MaxLen: 63
     description: str  # Description of the ip-dscp map name. | MaxLen: 63
-    map: list[dict[str, Any]]  # Maps between IP-DSCP value to COS queue.
+    map_: list[dict[str, Any]]  # Maps between IP-DSCP value to COS queue.
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -79,7 +79,7 @@ class IpDscpMapResponse(TypedDict):
     """
     name: str  # Dscp map name. | MaxLen: 63
     description: str  # Description of the ip-dscp map name. | MaxLen: 63
-    map: list[IpDscpMapMapItem]  # Maps between IP-DSCP value to COS queue.
+    map_: list[IpDscpMapMapItem]  # Maps between IP-DSCP value to COS queue.
 
 
 @final
@@ -95,7 +95,7 @@ class IpDscpMapObject:
     # Description of the ip-dscp map name. | MaxLen: 63
     description: str
     # Maps between IP-DSCP value to COS queue.
-    map: list[IpDscpMapMapObject]
+    map_: list[IpDscpMapMapObject]
     
     # Common API response fields
     status: str
@@ -121,6 +121,10 @@ class IpDscpMap:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -141,6 +145,7 @@ class IpDscpMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpDscpMapResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -158,6 +163,7 @@ class IpDscpMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IpDscpMapResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -174,6 +180,7 @@ class IpDscpMap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[IpDscpMapResponse]: ...
     
     # ================================================================
@@ -216,7 +223,7 @@ class IpDscpMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
     
@@ -235,7 +242,7 @@ class IpDscpMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[IpDscpMapObject]: ...
     
@@ -335,23 +342,6 @@ class IpDscpMap:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IpDscpMapObject | list[IpDscpMapObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -365,9 +355,10 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
@@ -378,7 +369,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -392,7 +383,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -405,20 +396,9 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: IpDscpMapPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -429,9 +409,10 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
@@ -442,7 +423,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -456,7 +437,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -469,20 +450,9 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IpDscpMapPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -493,6 +463,7 @@ class IpDscpMap:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
@@ -523,14 +494,7 @@ class IpDscpMap:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -545,7 +509,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -562,8 +526,6 @@ class IpDscpMap:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -591,6 +553,10 @@ class IpDscpMapDictMode:
     By default returns IpDscpMapResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IpDscpMapObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -696,7 +662,7 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -710,7 +676,7 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -724,18 +690,20 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -747,7 +715,7 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -761,7 +729,7 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -775,18 +743,20 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -819,10 +789,12 @@ class IpDscpMapDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -842,7 +814,7 @@ class IpDscpMapDictMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -858,8 +830,6 @@ class IpDscpMapDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -883,6 +853,10 @@ class IpDscpMapObjectMode:
     By default returns IpDscpMapObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IpDscpMapResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -988,7 +962,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1002,7 +976,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -1016,7 +990,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1030,18 +1004,20 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1053,7 +1029,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -1067,7 +1043,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1081,7 +1057,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1095,18 +1071,20 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1150,10 +1128,12 @@ class IpDscpMapObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IpDscpMapObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1173,7 +1153,7 @@ class IpDscpMapObjectMode:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map_: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -1189,8 +1169,6 @@ class IpDscpMapObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -37,7 +37,7 @@ class ApcfgProfileCommandlistItem(TypedDict):
     """
     
     id: int  # Command ID. | Default: 0 | Min: 1 | Max: 255
-    type: Literal["non-password", "password"]  # The command type (default = non-password). | Default: non-password
+    type_: Literal["non-password", "password"]  # The command type (default = non-password). | Default: non-password
     name: str  # AP local configuration command name. | MaxLen: 63
     value: str  # AP local configuration command value. | MaxLen: 127
     passwd_value: str  # AP local configuration command password value. | MaxLen: 128
@@ -56,7 +56,7 @@ class ApcfgProfileCommandlistObject:
     # Command ID. | Default: 0 | Min: 1 | Max: 255
     id: int
     # The command type (default = non-password). | Default: non-password
-    type: Literal["non-password", "password"]
+    type_: Literal["non-password", "password"]
     # AP local configuration command name. | MaxLen: 63
     name: str
     # AP local configuration command value. | MaxLen: 127
@@ -141,6 +141,10 @@ class ApcfgProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -161,6 +165,7 @@ class ApcfgProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ApcfgProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -178,6 +183,7 @@ class ApcfgProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ApcfgProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -194,6 +200,7 @@ class ApcfgProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ApcfgProfileResponse]: ...
     
     # ================================================================
@@ -236,7 +243,7 @@ class ApcfgProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
     
@@ -255,7 +262,7 @@ class ApcfgProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ApcfgProfileObject]: ...
     
@@ -355,23 +362,6 @@ class ApcfgProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ApcfgProfileObject | list[ApcfgProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -393,6 +383,7 @@ class ApcfgProfile:
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
@@ -447,23 +438,7 @@ class ApcfgProfile:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -482,6 +457,7 @@ class ApcfgProfile:
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
@@ -536,23 +512,7 @@ class ApcfgProfile:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -563,6 +523,7 @@ class ApcfgProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
@@ -593,14 +554,7 @@ class ApcfgProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -637,8 +591,6 @@ class ApcfgProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -666,6 +618,10 @@ class ApcfgProfileDictMode:
     By default returns ApcfgProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ApcfgProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -816,10 +772,12 @@ class ApcfgProfileDictMode:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -887,10 +845,12 @@ class ApcfgProfileDictMode:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -934,10 +894,12 @@ class ApcfgProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -978,8 +940,6 @@ class ApcfgProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1003,6 +963,10 @@ class ApcfgProfileObjectMode:
     By default returns ApcfgProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ApcfgProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1172,10 +1136,12 @@ class ApcfgProfileObjectMode:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -1262,10 +1228,12 @@ class ApcfgProfileObjectMode:
         ac_port: int | None = ...,
         command_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -1320,10 +1288,12 @@ class ApcfgProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ApcfgProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1364,8 +1334,6 @@ class ApcfgProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

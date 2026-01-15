@@ -88,10 +88,10 @@ class BgpNeighbor(BaseModel):
     allowas_in_vpnv4: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for VPNv4 route.")
     allowas_in_vpnv6: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for VPNv6 route.")
     allowas_in_evpn: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for L2VPN EVPN route.")
-    attribute_unchanged: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="IPv4 List of attributes that should be unchanged.")
-    attribute_unchanged6: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="IPv6 List of attributes that should be unchanged.")
-    attribute_unchanged_vpnv4: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="List of attributes that should be unchanged for VPNv4 route.")
-    attribute_unchanged_vpnv6: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="List of attributes that should not be changed for VPNv6 route.")
+    attribute_unchanged: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="IPv4 List of attributes that should be unchanged.")
+    attribute_unchanged6: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="IPv6 List of attributes that should be unchanged.")
+    attribute_unchanged_vpnv4: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="List of attributes that should be unchanged for VPNv4 route.")
+    attribute_unchanged_vpnv6: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="List of attributes that should not be changed for VPNv6 route.")
     activate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family IPv4 for this neighbor.")
     activate6: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family IPv6 for this neighbor.")
     activate_vpnv4: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family VPNv4 for this neighbor.")
@@ -99,8 +99,8 @@ class BgpNeighbor(BaseModel):
     activate_evpn: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family L2VPN EVPN for this neighbor.")
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable BFD for this neighbor.")
     capability_dynamic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise dynamic capability to this neighbor.")
-    capability_orf: CapabilityOrfEnum | None = Field(default="none", description="Accept/Send IPv4 ORF lists to/from this neighbor.")
-    capability_orf6: CapabilityOrf6Enum | None = Field(default="none", description="Accept/Send IPv6 ORF lists to/from this neighbor.")
+    capability_orf: str | None = Field(default="none", description="Accept/Send IPv4 ORF lists to/from this neighbor.")
+    capability_orf6: str | None = Field(default="none", description="Accept/Send IPv6 ORF lists to/from this neighbor.")
     capability_graceful_restart: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise IPv4 graceful restart capability to this neighbor.")
     capability_graceful_restart6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise IPv6 graceful restart capability to this neighbor.")
     capability_graceful_restart_vpnv4: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise VPNv4 graceful restart capability to this neighbor.")
@@ -213,11 +213,11 @@ class BgpNeighbor(BaseModel):
     route_map_out_vpnv4_preferable: str | None = Field(max_length=35, default="", description="VPNv4 outbound route map filter if the peer is preferred.")  # datasource: ['router.route-map.name']
     route_map_out_vpnv6_preferable: str | None = Field(max_length=35, default="", description="VPNv6 outbound route map filter if this neighbor is preferred.")  # datasource: ['router.route-map.name']
     route_map_out_evpn: str | None = Field(max_length=35, default="", description="L2VPN EVPN outbound route map filter.")  # datasource: ['router.route-map.name']
-    send_community: SendCommunityEnum | None = Field(default="both", description="IPv4 Send community attribute to neighbor.")
-    send_community6: SendCommunity6Enum | None = Field(default="both", description="IPv6 Send community attribute to neighbor.")
-    send_community_vpnv4: SendCommunityVpnv4Enum | None = Field(default="both", description="Send community attribute to neighbor for VPNv4 address family.")
-    send_community_vpnv6: SendCommunityVpnv6Enum | None = Field(default="both", description="Enable/disable sending community attribute to this neighbor for VPNv6 address family.")
-    send_community_evpn: SendCommunityEvpnEnum | None = Field(default="both", description="Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.")
+    send_community: str | None = Field(default="both", description="IPv4 Send community attribute to neighbor.")
+    send_community6: str | None = Field(default="both", description="IPv6 Send community attribute to neighbor.")
+    send_community_vpnv4: str | None = Field(default="both", description="Send community attribute to neighbor for VPNv4 address family.")
+    send_community_vpnv6: str | None = Field(default="both", description="Enable/disable sending community attribute to this neighbor for VPNv6 address family.")
+    send_community_evpn: str | None = Field(default="both", description="Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.")
     keep_alive_timer: int | None = Field(ge=0, le=65535, default=4294967295, description="Keep alive timer interval (sec).")
     holdtime_timer: int | None = Field(ge=3, le=65535, default=4294967295, description="Interval (sec) before peer considered dead.")
     connect_timer: int | None = Field(ge=1, le=65535, default=4294967295, description="Interval (sec) for connect timer.")
@@ -226,18 +226,18 @@ class BgpNeighbor(BaseModel):
     update_source: str | None = Field(max_length=15, default="", description="Interface to use as source IP/IPv6 address of TCP connections.")  # datasource: ['system.interface.name']
     weight: int | None = Field(ge=0, le=65535, default=4294967295, description="Neighbor weight.")
     restart_time: int | None = Field(ge=0, le=3600, default=0, description="Graceful restart delay time (sec, 0 = global default).")
-    additional_path: AdditionalPathEnum | None = Field(default="disable", description="Enable/disable IPv4 additional-path capability.")
-    additional_path6: AdditionalPath6Enum | None = Field(default="disable", description="Enable/disable IPv6 additional-path capability.")
-    additional_path_vpnv4: AdditionalPathVpnv4Enum | None = Field(default="disable", description="Enable/disable VPNv4 additional-path capability.")
-    additional_path_vpnv6: AdditionalPathVpnv6Enum | None = Field(default="disable", description="Enable/disable VPNv6 additional-path capability.")
+    additional_path: str | None = Field(default="disable", description="Enable/disable IPv4 additional-path capability.")
+    additional_path6: str | None = Field(default="disable", description="Enable/disable IPv6 additional-path capability.")
+    additional_path_vpnv4: str | None = Field(default="disable", description="Enable/disable VPNv4 additional-path capability.")
+    additional_path_vpnv6: str | None = Field(default="disable", description="Enable/disable VPNv6 additional-path capability.")
     adv_additional_path: int | None = Field(ge=2, le=255, default=2, description="Number of IPv4 additional paths that can be advertised to this neighbor.")
     adv_additional_path6: int | None = Field(ge=2, le=255, default=2, description="Number of IPv6 additional paths that can be advertised to this neighbor.")
     adv_additional_path_vpnv4: int | None = Field(ge=2, le=255, default=2, description="Number of VPNv4 additional paths that can be advertised to this neighbor.")
     adv_additional_path_vpnv6: int | None = Field(ge=2, le=255, default=2, description="Number of VPNv6 additional paths that can be advertised to this neighbor.")
     password: Any = Field(max_length=128, default=None, description="Password used in MD5 authentication.")
     auth_options: str | None = Field(max_length=35, default="", description="Key-chain name for TCP authentication options.")  # datasource: ['router.key-chain.name']
-    conditional_advertise: list[ConditionalAdvertise] = Field(default=None, description="Conditional advertisement.")
-    conditional_advertise6: list[ConditionalAdvertise6] = Field(default=None, description="IPv6 conditional advertisement.")
+    conditional_advertise: list[dict[str, Any]] | None = Field(default=None, description="Conditional advertisement.")
+    conditional_advertise6: list[dict[str, Any]] | None = Field(default=None, description="IPv6 conditional advertisement.")
 
 
 class BgpNeighborGroup(BaseModel):
@@ -263,10 +263,10 @@ class BgpNeighborGroup(BaseModel):
     allowas_in_vpnv4: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for VPNv4 route.")
     allowas_in_vpnv6: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for VPNv6 route.")
     allowas_in_evpn: int | None = Field(ge=1, le=10, default=3, description="The maximum number of occurrence of my AS number allowed for L2VPN EVPN route.")
-    attribute_unchanged: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="IPv4 List of attributes that should be unchanged.")
-    attribute_unchanged6: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="IPv6 List of attributes that should be unchanged.")
-    attribute_unchanged_vpnv4: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="List of attributes that should be unchanged for VPNv4 route.")
-    attribute_unchanged_vpnv6: Literal["as-path", "med", "next-hop"] | None = Field(default="", description="List of attributes that should not be changed for VPNv6 route.")
+    attribute_unchanged: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="IPv4 List of attributes that should be unchanged.")
+    attribute_unchanged6: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="IPv6 List of attributes that should be unchanged.")
+    attribute_unchanged_vpnv4: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="List of attributes that should be unchanged for VPNv4 route.")
+    attribute_unchanged_vpnv6: Literal["as-path", "med", "next-hop"] | None = Field(default=None, description="List of attributes that should not be changed for VPNv6 route.")
     activate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family IPv4 for this neighbor.")
     activate6: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family IPv6 for this neighbor.")
     activate_vpnv4: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family VPNv4 for this neighbor.")
@@ -274,8 +274,8 @@ class BgpNeighborGroup(BaseModel):
     activate_evpn: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable address family L2VPN EVPN for this neighbor.")
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable BFD for this neighbor.")
     capability_dynamic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise dynamic capability to this neighbor.")
-    capability_orf: CapabilityOrfEnum | None = Field(default="none", description="Accept/Send IPv4 ORF lists to/from this neighbor.")
-    capability_orf6: CapabilityOrf6Enum | None = Field(default="none", description="Accept/Send IPv6 ORF lists to/from this neighbor.")
+    capability_orf: str | None = Field(default="none", description="Accept/Send IPv4 ORF lists to/from this neighbor.")
+    capability_orf6: str | None = Field(default="none", description="Accept/Send IPv6 ORF lists to/from this neighbor.")
     capability_graceful_restart: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise IPv4 graceful restart capability to this neighbor.")
     capability_graceful_restart6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise IPv6 graceful restart capability to this neighbor.")
     capability_graceful_restart_vpnv4: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable advertise VPNv4 graceful restart capability to this neighbor.")
@@ -389,11 +389,11 @@ class BgpNeighborGroup(BaseModel):
     route_map_out_vpnv4_preferable: str | None = Field(max_length=35, default="", description="VPNv4 outbound route map filter if the peer is preferred.")  # datasource: ['router.route-map.name']
     route_map_out_vpnv6_preferable: str | None = Field(max_length=35, default="", description="VPNv6 outbound route map filter if this neighbor is preferred.")  # datasource: ['router.route-map.name']
     route_map_out_evpn: str | None = Field(max_length=35, default="", description="L2VPN EVPN outbound route map filter.")  # datasource: ['router.route-map.name']
-    send_community: SendCommunityEnum | None = Field(default="both", description="IPv4 Send community attribute to neighbor.")
-    send_community6: SendCommunity6Enum | None = Field(default="both", description="IPv6 Send community attribute to neighbor.")
-    send_community_vpnv4: SendCommunityVpnv4Enum | None = Field(default="both", description="Send community attribute to neighbor for VPNv4 address family.")
-    send_community_vpnv6: SendCommunityVpnv6Enum | None = Field(default="both", description="Enable/disable sending community attribute to this neighbor for VPNv6 address family.")
-    send_community_evpn: SendCommunityEvpnEnum | None = Field(default="both", description="Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.")
+    send_community: str | None = Field(default="both", description="IPv4 Send community attribute to neighbor.")
+    send_community6: str | None = Field(default="both", description="IPv6 Send community attribute to neighbor.")
+    send_community_vpnv4: str | None = Field(default="both", description="Send community attribute to neighbor for VPNv4 address family.")
+    send_community_vpnv6: str | None = Field(default="both", description="Enable/disable sending community attribute to this neighbor for VPNv6 address family.")
+    send_community_evpn: str | None = Field(default="both", description="Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.")
     keep_alive_timer: int | None = Field(ge=0, le=65535, default=4294967295, description="Keep alive timer interval (sec).")
     holdtime_timer: int | None = Field(ge=3, le=65535, default=4294967295, description="Interval (sec) before peer considered dead.")
     connect_timer: int | None = Field(ge=1, le=65535, default=4294967295, description="Interval (sec) for connect timer.")
@@ -402,10 +402,10 @@ class BgpNeighborGroup(BaseModel):
     update_source: str | None = Field(max_length=15, default="", description="Interface to use as source IP/IPv6 address of TCP connections.")  # datasource: ['system.interface.name']
     weight: int | None = Field(ge=0, le=65535, default=4294967295, description="Neighbor weight.")
     restart_time: int | None = Field(ge=0, le=3600, default=0, description="Graceful restart delay time (sec, 0 = global default).")
-    additional_path: AdditionalPathEnum | None = Field(default="disable", description="Enable/disable IPv4 additional-path capability.")
-    additional_path6: AdditionalPath6Enum | None = Field(default="disable", description="Enable/disable IPv6 additional-path capability.")
-    additional_path_vpnv4: AdditionalPathVpnv4Enum | None = Field(default="disable", description="Enable/disable VPNv4 additional-path capability.")
-    additional_path_vpnv6: AdditionalPathVpnv6Enum | None = Field(default="disable", description="Enable/disable VPNv6 additional-path capability.")
+    additional_path: str | None = Field(default="disable", description="Enable/disable IPv4 additional-path capability.")
+    additional_path6: str | None = Field(default="disable", description="Enable/disable IPv6 additional-path capability.")
+    additional_path_vpnv4: str | None = Field(default="disable", description="Enable/disable VPNv4 additional-path capability.")
+    additional_path_vpnv6: str | None = Field(default="disable", description="Enable/disable VPNv6 additional-path capability.")
     adv_additional_path: int | None = Field(ge=2, le=255, default=2, description="Number of IPv4 additional paths that can be advertised to this neighbor.")
     adv_additional_path6: int | None = Field(ge=2, le=255, default=2, description="Number of IPv6 additional paths that can be advertised to this neighbor.")
     adv_additional_path_vpnv4: int | None = Field(ge=2, le=255, default=2, description="Number of VPNv4 additional paths that can be advertised to this neighbor.")
@@ -548,10 +548,10 @@ class BgpVrf(BaseModel):
     vrf: str | None = Field(max_length=7, default="", description="Origin VRF ID <0-511>.")
     role: Literal["standalone", "ce", "pe"] | None = Field(default="standalone", description="VRF role.")
     rd: str | None = Field(max_length=79, default="", description="Route Distinguisher: AA:NN|A.B.C.D:NN.")
-    export_rt: list[ExportRt] = Field(default=None, description="List of export route target.")
-    import_rt: list[ImportRt] = Field(default=None, description="List of import route target.")
+    export_rt: list[dict[str, Any]] | None = Field(default=None, description="List of export route target.")
+    import_rt: list[dict[str, Any]] | None = Field(default=None, description="List of import route target.")
     import_route_map: str | None = Field(max_length=35, default="", description="Import route map.")  # datasource: ['router.route-map.name']
-    leak_target: list[LeakTarget] = Field(default=None, description="Target VRF table.")
+    leak_target: list[dict[str, Any]] | None = Field(default=None, description="Target VRF table.")
 
 
 class BgpVrf6(BaseModel):
@@ -568,17 +568,17 @@ class BgpVrf6(BaseModel):
     vrf: str | None = Field(max_length=7, default="", description="Origin VRF ID <0-511>.")
     role: Literal["standalone", "ce", "pe"] | None = Field(default="standalone", description="VRF role.")
     rd: str | None = Field(max_length=79, default="", description="Route Distinguisher: AA:NN|A.B.C.D:NN.")
-    export_rt: list[ExportRt] = Field(default=None, description="List of export route target.")
-    import_rt: list[ImportRt] = Field(default=None, description="List of import route target.")
+    export_rt: list[dict[str, Any]] | None = Field(default=None, description="List of export route target.")
+    import_rt: list[dict[str, Any]] | None = Field(default=None, description="List of import route target.")
     import_route_map: str | None = Field(max_length=35, default="", description="Import route map.")  # datasource: ['router.route-map.name']
-    leak_target: list[LeakTarget] = Field(default=None, description="Target VRF table.")
+    leak_target: list[dict[str, Any]] | None = Field(default=None, description="Target VRF table.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 
-class BgpTag_resolve_modeEnum(str, Enum):
+class BgpTagResolveModeEnum(str, Enum):
     """Allowed values for tag_resolve_mode field."""
     DISABLE = "disable"
     PREFERRED = "preferred"
@@ -597,7 +597,74 @@ class BgpModel(BaseModel):
 
     Configure BGP.
 
-    Validation Rules:        - asn: pattern=        - router_id: pattern=        - keepalive_timer: min=0 max=65535 pattern=        - holdtime_timer: min=3 max=65535 pattern=        - always_compare_med: pattern=        - bestpath_as_path_ignore: pattern=        - bestpath_cmp_confed_aspath: pattern=        - bestpath_cmp_routerid: pattern=        - bestpath_med_confed: pattern=        - bestpath_med_missing_as_worst: pattern=        - client_to_client_reflection: pattern=        - dampening: pattern=        - deterministic_med: pattern=        - ebgp_multipath: pattern=        - ibgp_multipath: pattern=        - enforce_first_as: pattern=        - fast_external_failover: pattern=        - log_neighbour_changes: pattern=        - network_import_check: pattern=        - ignore_optional_capability: pattern=        - additional_path: pattern=        - additional_path6: pattern=        - additional_path_vpnv4: pattern=        - additional_path_vpnv6: pattern=        - multipath_recursive_distance: pattern=        - recursive_next_hop: pattern=        - recursive_inherit_priority: pattern=        - tag_resolve_mode: pattern=        - cluster_id: pattern=        - confederation_identifier: min=1 max=4294967295 pattern=        - confederation_peers: pattern=        - dampening_route_map: max_length=35 pattern=        - dampening_reachability_half_life: min=1 max=45 pattern=        - dampening_reuse: min=1 max=20000 pattern=        - dampening_suppress: min=1 max=20000 pattern=        - dampening_max_suppress_time: min=1 max=255 pattern=        - dampening_unreachability_half_life: min=1 max=45 pattern=        - default_local_preference: min=0 max=4294967295 pattern=        - scan_time: min=5 max=60 pattern=        - distance_external: min=1 max=255 pattern=        - distance_internal: min=1 max=255 pattern=        - distance_local: min=1 max=255 pattern=        - synchronization: pattern=        - graceful_restart: pattern=        - graceful_restart_time: min=1 max=3600 pattern=        - graceful_stalepath_time: min=1 max=3600 pattern=        - graceful_update_delay: min=1 max=3600 pattern=        - graceful_end_on_timer: pattern=        - additional_path_select: min=2 max=255 pattern=        - additional_path_select6: min=2 max=255 pattern=        - additional_path_select_vpnv4: min=2 max=255 pattern=        - additional_path_select_vpnv6: min=2 max=255 pattern=        - cross_family_conditional_adv: pattern=        - aggregate_address: pattern=        - aggregate_address6: pattern=        - neighbor: pattern=        - neighbor_group: pattern=        - neighbor_range: pattern=        - neighbor_range6: pattern=        - network: pattern=        - network6: pattern=        - redistribute: pattern=        - redistribute6: pattern=        - admin_distance: pattern=        - vrf: pattern=        - vrf6: pattern=    """
+    Validation Rules:
+        - asn: pattern=
+        - router_id: pattern=
+        - keepalive_timer: min=0 max=65535 pattern=
+        - holdtime_timer: min=3 max=65535 pattern=
+        - always_compare_med: pattern=
+        - bestpath_as_path_ignore: pattern=
+        - bestpath_cmp_confed_aspath: pattern=
+        - bestpath_cmp_routerid: pattern=
+        - bestpath_med_confed: pattern=
+        - bestpath_med_missing_as_worst: pattern=
+        - client_to_client_reflection: pattern=
+        - dampening: pattern=
+        - deterministic_med: pattern=
+        - ebgp_multipath: pattern=
+        - ibgp_multipath: pattern=
+        - enforce_first_as: pattern=
+        - fast_external_failover: pattern=
+        - log_neighbour_changes: pattern=
+        - network_import_check: pattern=
+        - ignore_optional_capability: pattern=
+        - additional_path: pattern=
+        - additional_path6: pattern=
+        - additional_path_vpnv4: pattern=
+        - additional_path_vpnv6: pattern=
+        - multipath_recursive_distance: pattern=
+        - recursive_next_hop: pattern=
+        - recursive_inherit_priority: pattern=
+        - tag_resolve_mode: pattern=
+        - cluster_id: pattern=
+        - confederation_identifier: min=1 max=4294967295 pattern=
+        - confederation_peers: pattern=
+        - dampening_route_map: max_length=35 pattern=
+        - dampening_reachability_half_life: min=1 max=45 pattern=
+        - dampening_reuse: min=1 max=20000 pattern=
+        - dampening_suppress: min=1 max=20000 pattern=
+        - dampening_max_suppress_time: min=1 max=255 pattern=
+        - dampening_unreachability_half_life: min=1 max=45 pattern=
+        - default_local_preference: min=0 max=4294967295 pattern=
+        - scan_time: min=5 max=60 pattern=
+        - distance_external: min=1 max=255 pattern=
+        - distance_internal: min=1 max=255 pattern=
+        - distance_local: min=1 max=255 pattern=
+        - synchronization: pattern=
+        - graceful_restart: pattern=
+        - graceful_restart_time: min=1 max=3600 pattern=
+        - graceful_stalepath_time: min=1 max=3600 pattern=
+        - graceful_update_delay: min=1 max=3600 pattern=
+        - graceful_end_on_timer: pattern=
+        - additional_path_select: min=2 max=255 pattern=
+        - additional_path_select6: min=2 max=255 pattern=
+        - additional_path_select_vpnv4: min=2 max=255 pattern=
+        - additional_path_select_vpnv6: min=2 max=255 pattern=
+        - cross_family_conditional_adv: pattern=
+        - aggregate_address: pattern=
+        - aggregate_address6: pattern=
+        - neighbor: pattern=
+        - neighbor_group: pattern=
+        - neighbor_range: pattern=
+        - neighbor_range6: pattern=
+        - network: pattern=
+        - network6: pattern=
+        - redistribute: pattern=
+        - redistribute6: pattern=
+        - admin_distance: pattern=
+        - vrf: pattern=
+        - vrf6: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -609,7 +676,73 @@ class BgpModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    asn: str = Field(default="", description="Router AS number, asplain/asdot/asdot+ format, 0 to disable BGP.")    router_id: str | None = Field(default="", description="Router ID.")    keepalive_timer: int | None = Field(ge=0, le=65535, default=60, description="Frequency to send keep alive requests.")    holdtime_timer: int | None = Field(ge=3, le=65535, default=180, description="Number of seconds to mark peer as dead.")    always_compare_med: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable always compare MED.")    bestpath_as_path_ignore: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignore AS path.")    bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare federation AS path length.")    bestpath_cmp_routerid: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare router ID for identical EBGP paths.")    bestpath_med_confed: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare MED among confederation paths.")    bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable treat missing MED as least preferred.")    client_to_client_reflection: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable client-to-client route reflection.")    dampening: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable route-flap dampening.")    deterministic_med: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforce deterministic comparison of MED.")    ebgp_multipath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable EBGP multi-path.")    ibgp_multipath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IBGP multi-path.")    enforce_first_as: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable enforce first AS for EBGP routes.")    fast_external_failover: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable reset peer BGP session if link goes down.")    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log BGP neighbor changes.")    network_import_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ensure BGP network route exists in IGP.")    ignore_optional_capability: Literal["enable", "disable"] | None = Field(default="enable", description="Do not send unknown optional capability notification message.")    additional_path: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP IPv4 additional paths.")    additional_path6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP IPv6 additional paths.")    additional_path_vpnv4: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP VPNv4 additional paths.")    additional_path_vpnv6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP VPNv6 additional paths.")    multipath_recursive_distance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of recursive distance to select multipath.")    recursive_next_hop: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable recursive resolution of next-hop using BGP route.")    recursive_inherit_priority: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable priority inheritance for recursive resolution.")    tag_resolve_mode: BgpTagResolveModeEnum | None = Field(default="disable", description="Configure tag-match mode. Resolves BGP routes with other routes containing the same tag.")    cluster_id: str | None = Field(default="0.0.0.0", description="Route reflector cluster ID.")    confederation_identifier: int | None = Field(ge=1, le=4294967295, default=0, description="Confederation identifier.")    confederation_peers: list[BgpConfederationPeers] = Field(default=None, description="Confederation peers.")    dampening_route_map: str | None = Field(max_length=35, default="", description="Criteria for dampening.")  # datasource: ['router.route-map.name']    dampening_reachability_half_life: int | None = Field(ge=1, le=45, default=15, description="Reachability half-life time for penalty (min).")    dampening_reuse: int | None = Field(ge=1, le=20000, default=750, description="Threshold to reuse routes.")    dampening_suppress: int | None = Field(ge=1, le=20000, default=2000, description="Threshold to suppress routes.")    dampening_max_suppress_time: int | None = Field(ge=1, le=255, default=60, description="Maximum minutes a route can be suppressed.")    dampening_unreachability_half_life: int | None = Field(ge=1, le=45, default=15, description="Unreachability half-life time for penalty (min).")    default_local_preference: int | None = Field(ge=0, le=4294967295, default=100, description="Default local preference.")    scan_time: int | None = Field(ge=5, le=60, default=60, description="Background scanner interval (sec), 0 to disable it.")    distance_external: int | None = Field(ge=1, le=255, default=20, description="Distance for routes external to the AS.")    distance_internal: int | None = Field(ge=1, le=255, default=200, description="Distance for routes internal to the AS.")    distance_local: int | None = Field(ge=1, le=255, default=200, description="Distance for routes local to the AS.")    synchronization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable only advertise routes from iBGP if routes present in an IGP.")    graceful_restart: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable BGP graceful restart capabilities.")    graceful_restart_time: int | None = Field(ge=1, le=3600, default=120, description="Time needed for neighbors to restart (sec).")    graceful_stalepath_time: int | None = Field(ge=1, le=3600, default=360, description="Time to hold stale paths of restarting neighbor (sec).")    graceful_update_delay: int | None = Field(ge=1, le=3600, default=120, description="Route advertisement/selection delay after restart (sec).")    graceful_end_on_timer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable to exit graceful restart on timer only.")    additional_path_select: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each IPv4 NLRI.")    additional_path_select6: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each IPv6 NLRI.")    additional_path_select_vpnv4: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each VPNv4 NLRI.")    additional_path_select_vpnv6: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each VPNv6 NLRI.")    cross_family_conditional_adv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable cross address family conditional advertisement.")    aggregate_address: list[BgpAggregateAddress] = Field(default=None, description="BGP aggregate address table.")    aggregate_address6: list[BgpAggregateAddress6] = Field(default=None, description="BGP IPv6 aggregate address table.")    neighbor: list[BgpNeighbor] = Field(default=None, description="BGP neighbor table.")    neighbor_group: list[BgpNeighborGroup] = Field(default=None, description="BGP neighbor group table.")    neighbor_range: list[BgpNeighborRange] = Field(default=None, description="BGP neighbor range table.")    neighbor_range6: list[BgpNeighborRange6] = Field(default=None, description="BGP IPv6 neighbor range table.")    network: list[BgpNetwork] = Field(default=None, description="BGP network table.")    network6: list[BgpNetwork6] = Field(default=None, description="BGP IPv6 network table.")    redistribute: list[BgpRedistribute] = Field(default=None, description="BGP IPv4 redistribute table.")    redistribute6: list[BgpRedistribute6] = Field(default=None, description="BGP IPv6 redistribute table.")    admin_distance: list[BgpAdminDistance] = Field(default=None, description="Administrative distance modifications.")    vrf: list[BgpVrf] = Field(default=None, description="BGP VRF leaking table.")    vrf6: list[BgpVrf6] = Field(default=None, description="BGP IPv6 VRF leaking table.")    # ========================================================================
+    asn: str = Field(default="", description="Router AS number, asplain/asdot/asdot+ format, 0 to disable BGP.")
+    router_id: str | None = Field(default="", description="Router ID.")
+    keepalive_timer: int | None = Field(ge=0, le=65535, default=60, description="Frequency to send keep alive requests.")
+    holdtime_timer: int | None = Field(ge=3, le=65535, default=180, description="Number of seconds to mark peer as dead.")
+    always_compare_med: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable always compare MED.")
+    bestpath_as_path_ignore: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignore AS path.")
+    bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare federation AS path length.")
+    bestpath_cmp_routerid: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare router ID for identical EBGP paths.")
+    bestpath_med_confed: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compare MED among confederation paths.")
+    bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable treat missing MED as least preferred.")
+    client_to_client_reflection: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable client-to-client route reflection.")
+    dampening: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable route-flap dampening.")
+    deterministic_med: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforce deterministic comparison of MED.")
+    ebgp_multipath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable EBGP multi-path.")
+    ibgp_multipath: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IBGP multi-path.")
+    enforce_first_as: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable enforce first AS for EBGP routes.")
+    fast_external_failover: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable reset peer BGP session if link goes down.")
+    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log BGP neighbor changes.")
+    network_import_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable ensure BGP network route exists in IGP.")
+    ignore_optional_capability: Literal["enable", "disable"] | None = Field(default="enable", description="Do not send unknown optional capability notification message.")
+    additional_path: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP IPv4 additional paths.")
+    additional_path6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP IPv6 additional paths.")
+    additional_path_vpnv4: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP VPNv4 additional paths.")
+    additional_path_vpnv6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable selection of BGP VPNv6 additional paths.")
+    multipath_recursive_distance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of recursive distance to select multipath.")
+    recursive_next_hop: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable recursive resolution of next-hop using BGP route.")
+    recursive_inherit_priority: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable priority inheritance for recursive resolution.")
+    tag_resolve_mode: str | BgpTagResolveModeEnum | None = Field(default="disable", description="Configure tag-match mode. Resolves BGP routes with other routes containing the same tag.")
+    cluster_id: str | None = Field(default="0.0.0.0", description="Route reflector cluster ID.")
+    confederation_identifier: int | None = Field(ge=1, le=4294967295, default=0, description="Confederation identifier.")
+    confederation_peers: list[BgpConfederationPeers] | None = Field(default=None, description="Confederation peers.")
+    dampening_route_map: str | None = Field(max_length=35, default="", description="Criteria for dampening.")  # datasource: ['router.route-map.name']
+    dampening_reachability_half_life: int | None = Field(ge=1, le=45, default=15, description="Reachability half-life time for penalty (min).")
+    dampening_reuse: int | None = Field(ge=1, le=20000, default=750, description="Threshold to reuse routes.")
+    dampening_suppress: int | None = Field(ge=1, le=20000, default=2000, description="Threshold to suppress routes.")
+    dampening_max_suppress_time: int | None = Field(ge=1, le=255, default=60, description="Maximum minutes a route can be suppressed.")
+    dampening_unreachability_half_life: int | None = Field(ge=1, le=45, default=15, description="Unreachability half-life time for penalty (min).")
+    default_local_preference: int | None = Field(ge=0, le=4294967295, default=100, description="Default local preference.")
+    scan_time: int | None = Field(ge=5, le=60, default=60, description="Background scanner interval (sec), 0 to disable it.")
+    distance_external: int | None = Field(ge=1, le=255, default=20, description="Distance for routes external to the AS.")
+    distance_internal: int | None = Field(ge=1, le=255, default=200, description="Distance for routes internal to the AS.")
+    distance_local: int | None = Field(ge=1, le=255, default=200, description="Distance for routes local to the AS.")
+    synchronization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable only advertise routes from iBGP if routes present in an IGP.")
+    graceful_restart: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable BGP graceful restart capabilities.")
+    graceful_restart_time: int | None = Field(ge=1, le=3600, default=120, description="Time needed for neighbors to restart (sec).")
+    graceful_stalepath_time: int | None = Field(ge=1, le=3600, default=360, description="Time to hold stale paths of restarting neighbor (sec).")
+    graceful_update_delay: int | None = Field(ge=1, le=3600, default=120, description="Route advertisement/selection delay after restart (sec).")
+    graceful_end_on_timer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable to exit graceful restart on timer only.")
+    additional_path_select: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each IPv4 NLRI.")
+    additional_path_select6: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each IPv6 NLRI.")
+    additional_path_select_vpnv4: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each VPNv4 NLRI.")
+    additional_path_select_vpnv6: int | None = Field(ge=2, le=255, default=2, description="Number of additional paths to be selected for each VPNv6 NLRI.")
+    cross_family_conditional_adv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable cross address family conditional advertisement.")
+    aggregate_address: list[BgpAggregateAddress] | None = Field(default=None, description="BGP aggregate address table.")
+    aggregate_address6: list[BgpAggregateAddress6] | None = Field(default=None, description="BGP IPv6 aggregate address table.")
+    neighbor: list[BgpNeighbor] | None = Field(default=None, description="BGP neighbor table.")
+    neighbor_group: list[BgpNeighborGroup] | None = Field(default=None, description="BGP neighbor group table.")
+    neighbor_range: list[BgpNeighborRange] | None = Field(default=None, description="BGP neighbor range table.")
+    neighbor_range6: list[BgpNeighborRange6] | None = Field(default=None, description="BGP IPv6 neighbor range table.")
+    network: list[BgpNetwork] | None = Field(default=None, description="BGP network table.")
+    network6: list[BgpNetwork6] | None = Field(default=None, description="BGP IPv6 network table.")
+    redistribute: list[BgpRedistribute] | None = Field(default=None, description="BGP IPv4 redistribute table.")
+    redistribute6: list[BgpRedistribute6] | None = Field(default=None, description="BGP IPv6 redistribute table.")
+    admin_distance: list[BgpAdminDistance] | None = Field(default=None, description="Administrative distance modifications.")
+    vrf: list[BgpVrf] | None = Field(default=None, description="BGP VRF leaking table.")
+    vrf6: list[BgpVrf6] | None = Field(default=None, description="BGP IPv6 VRF leaking table.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -688,7 +821,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dampening_route_map", None)
@@ -737,7 +870,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor", [])
@@ -795,7 +928,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor_group", [])
@@ -853,7 +986,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor_range", [])
@@ -911,7 +1044,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor_range6", [])
@@ -969,7 +1102,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "network", [])
@@ -1029,7 +1162,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "network6", [])
@@ -1087,7 +1220,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -1145,7 +1278,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute6", [])
@@ -1203,7 +1336,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "admin_distance", [])
@@ -1261,7 +1394,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vrf", [])
@@ -1319,7 +1452,7 @@ class BgpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.bgp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vrf6", [])
@@ -1365,19 +1498,30 @@ class BgpModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_dampening_route_map_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_range_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_range6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_network_references(client)
-        all_errors.extend(errors)        errors = await self.validate_network6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_admin_distance_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vrf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vrf6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_range_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_range6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_network_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_network6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_admin_distance_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vrf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vrf6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1399,5 +1543,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.230330Z
+# Generated: 2026-01-14T22:43:36.407129Z
 # ============================================================================

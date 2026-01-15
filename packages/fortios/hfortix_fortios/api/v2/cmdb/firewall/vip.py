@@ -299,7 +299,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = None,
         dns_mapping_ttl: int | None = None,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = None,
@@ -409,7 +409,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id: Custom defined ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             comment: Comment.
-            type: Configure a static NAT, load balance, server load balance, access proxy, DNS translation, or FQDN VIP.
+            type_: Configure a static NAT, load balance, server load balance, access proxy, DNS translation, or FQDN VIP.
             server_type: Protocol to be load balanced by the virtual server (also called the server load balance virtual IP).
             dns_mapping_ttl: DNS mapping TTL (Set to zero to use TTL in DNS response, default = 0).
             ldb_method: Method used to distribute sessions to real servers.
@@ -683,7 +683,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             server_type=server_type,
             dns_mapping_ttl=dns_mapping_ttl,
             ldb_method=ldb_method,
@@ -811,7 +811,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = None,
         dns_mapping_ttl: int | None = None,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = None,
@@ -921,7 +921,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id: Custom defined ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             comment: Comment.
-            type: Configure a static NAT, load balance, server load balance, access proxy, DNS translation, or FQDN VIP.
+            type_: Configure a static NAT, load balance, server load balance, access proxy, DNS translation, or FQDN VIP.
             server_type: Protocol to be load balanced by the virtual server (also called the server load balance virtual IP).
             dns_mapping_ttl: DNS mapping TTL (Set to zero to use TTL in DNS response, default = 0).
             ldb_method: Method used to distribute sessions to real servers.
@@ -1197,7 +1197,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             server_type=server_type,
             dns_mapping_ttl=dns_mapping_ttl,
             ldb_method=ldb_method,
@@ -1425,7 +1425,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         id: int | None = None,
         uuid: str | None = None,
         comment: str | None = None,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = None,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = None,
         dns_mapping_ttl: int | None = None,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = None,
@@ -1536,7 +1536,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id: Field id
             uuid: Field uuid
             comment: Field comment
-            type: Field type
+            type_: Field type
             server_type: Field server-type
             dns_mapping_ttl: Field dns-mapping-ttl
             ldb_method: Field ldb-method
@@ -1677,7 +1677,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             id=id,
             uuid=uuid,
             comment=comment,
-            type=type,
+            type_=type_,
             server_type=server_type,
             dns_mapping_ttl=dns_mapping_ttl,
             ldb_method=ldb_method,

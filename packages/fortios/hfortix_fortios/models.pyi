@@ -333,15 +333,6 @@ def process_response(
     client: Any = None,
     unwrap_single: bool = False,
 ) -> Any:
-    """Fallback for non-dict/list types - returns result as-is."""
-    ...
-
-def process_response(
-    result: Any,
-    response_mode: str | None,
-    client: Any = None,
-    unwrap_single: bool = False,
-) -> Any:
     """
     Process API response based on response_mode setting.
 

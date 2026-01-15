@@ -251,7 +251,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["src", "dst"] | None = None,
+        type_: Literal["src", "dst"] | None = None,
         uuid: str | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
         color: int | None = None,
@@ -270,7 +270,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Address group name.
-            type: Source or destination address group type.
+            type_: Source or destination address group type.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             member: Members of address group.
                 Default format: [{'name': 'value'}]
@@ -338,7 +338,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             uuid=uuid,
             member=member,
             color=color,
@@ -375,7 +375,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["src", "dst"] | None = None,
+        type_: Literal["src", "dst"] | None = None,
         uuid: str | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
         color: int | None = None,
@@ -394,7 +394,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Address group name.
-            type: Source or destination address group type.
+            type_: Source or destination address group type.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             member: Members of address group.
                 Default format: [{'name': 'value'}]
@@ -464,7 +464,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             uuid=uuid,
             member=member,
             color=color,
@@ -601,7 +601,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["src", "dst"] | None = None,
+        type_: Literal["src", "dst"] | None = None,
         uuid: str | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
         color: int | None = None,
@@ -621,7 +621,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             uuid: Field uuid
             member: Field member
             color: Field color
@@ -671,7 +671,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             uuid=uuid,
             member=member,
             color=color,

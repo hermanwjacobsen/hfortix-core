@@ -81,7 +81,7 @@ class AutomationActionSdnConnector(BaseModel):
 # ============================================================================
 
 
-class AutomationActionAction_typeEnum(str, Enum):
+class AutomationActionActionTypeEnum(str, Enum):
     """Allowed values for action_type field."""
     EMAIL = "email"
     FORTIEXPLORER_NOTIFICATION = "fortiexplorer-notification"
@@ -125,7 +125,48 @@ class AutomationActionModel(BaseModel):
 
     Action for automation stitches.
 
-    Validation Rules:        - name: max_length=64 pattern=        - description: max_length=255 pattern=        - action_type: pattern=        - system_action: pattern=        - tls_certificate: max_length=35 pattern=        - forticare_email: pattern=        - email_to: pattern=        - email_from: max_length=127 pattern=        - email_subject: max_length=511 pattern=        - minimum_interval: min=0 max=2592000 pattern=        - aws_api_key: max_length=123 pattern=        - azure_function_authorization: pattern=        - azure_api_key: max_length=123 pattern=        - alicloud_function_authorization: pattern=        - alicloud_access_key_id: max_length=35 pattern=        - alicloud_access_key_secret: max_length=59 pattern=        - message_type: pattern=        - message: max_length=4095 pattern=        - replacement_message: pattern=        - replacemsg_group: max_length=35 pattern=        - protocol: pattern=        - method: pattern=        - uri: max_length=1023 pattern=        - http_body: max_length=4095 pattern=        - port: min=1 max=65535 pattern=        - http_headers: pattern=        - form_data: pattern=        - verify_host_cert: pattern=        - script: max_length=1023 pattern=        - output_size: min=1 max=1024 pattern=        - timeout: min=0 max=300 pattern=        - duration: min=1 max=36000 pattern=        - output_interval: min=0 max=36000 pattern=        - file_only: pattern=        - execute_security_fabric: pattern=        - accprofile: max_length=35 pattern=        - regular_expression: max_length=1023 pattern=        - log_debug_print: pattern=        - security_tag: max_length=255 pattern=        - sdn_connector: pattern=    """
+    Validation Rules:
+        - name: max_length=64 pattern=
+        - description: max_length=255 pattern=
+        - action_type: pattern=
+        - system_action: pattern=
+        - tls_certificate: max_length=35 pattern=
+        - forticare_email: pattern=
+        - email_to: pattern=
+        - email_from: max_length=127 pattern=
+        - email_subject: max_length=511 pattern=
+        - minimum_interval: min=0 max=2592000 pattern=
+        - aws_api_key: max_length=123 pattern=
+        - azure_function_authorization: pattern=
+        - azure_api_key: max_length=123 pattern=
+        - alicloud_function_authorization: pattern=
+        - alicloud_access_key_id: max_length=35 pattern=
+        - alicloud_access_key_secret: max_length=59 pattern=
+        - message_type: pattern=
+        - message: max_length=4095 pattern=
+        - replacement_message: pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - protocol: pattern=
+        - method: pattern=
+        - uri: max_length=1023 pattern=
+        - http_body: max_length=4095 pattern=
+        - port: min=1 max=65535 pattern=
+        - http_headers: pattern=
+        - form_data: pattern=
+        - verify_host_cert: pattern=
+        - script: max_length=1023 pattern=
+        - output_size: min=1 max=1024 pattern=
+        - timeout: min=0 max=300 pattern=
+        - duration: min=1 max=36000 pattern=
+        - output_interval: min=0 max=36000 pattern=
+        - file_only: pattern=
+        - execute_security_fabric: pattern=
+        - accprofile: max_length=35 pattern=
+        - regular_expression: max_length=1023 pattern=
+        - log_debug_print: pattern=
+        - security_tag: max_length=255 pattern=
+        - sdn_connector: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -137,7 +178,47 @@ class AutomationActionModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=64, default="", description="Name.")    description: str | None = Field(max_length=255, default=None, description="Description.")    action_type: AutomationActionActionTypeEnum | None = Field(default="alert", description="Action type.")    system_action: Literal["reboot", "shutdown", "backup-config"] = Field(default="", description="System action type.")    tls_certificate: str | None = Field(max_length=35, default="", description="Custom TLS certificate for API request.")  # datasource: ['certificate.local.name']    forticare_email: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable use of your FortiCare email address as the email-to address.")    email_to: list[AutomationActionEmailTo] = Field(default=None, description="Email addresses.")    email_from: str | None = Field(max_length=127, default=None, description="Email sender name.")    email_subject: str | None = Field(max_length=511, default=None, description="Email subject.")    minimum_interval: int | None = Field(ge=0, le=2592000, default=0, description="Limit execution to no more than once in this interval (in seconds).")    aws_api_key: Any = Field(max_length=123, description="AWS API Gateway API key.")    azure_function_authorization: Literal["anonymous", "function", "admin"] = Field(default="anonymous", description="Azure function authorization level.")    azure_api_key: Any = Field(max_length=123, default=None, description="Azure function API key.")    alicloud_function_authorization: Literal["anonymous", "function"] = Field(default="anonymous", description="AliCloud function authorization type.")    alicloud_access_key_id: str = Field(max_length=35, default="", description="AliCloud AccessKey ID.")    alicloud_access_key_secret: Any = Field(max_length=59, description="AliCloud AccessKey secret.")    message_type: Literal["text", "json", "form-data"] = Field(default="text", description="Message type.")    message: str = Field(max_length=4095, default="Time: %%log.date%% %%log.time%%\nDevice: %%log.devid%% (%%log.vd%%)\nLevel: %%log.level%%\nEvent: %%log.logdesc%%\nRaw log:\n%%log%%", description="Message content.")    replacement_message: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable replacement message.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    protocol: Literal["http", "https"] = Field(default="http", description="Request protocol.")    method: AutomationActionMethodEnum = Field(default="post", description="Request method (POST, PUT, GET, PATCH or DELETE).")    uri: str = Field(max_length=1023, description="Request API URI.")    http_body: str | None = Field(max_length=4095, default=None, description="Request body (if necessary). Should be serialized json string.")    port: int | None = Field(ge=1, le=65535, default=0, description="Protocol port.")    http_headers: list[AutomationActionHttpHeaders] = Field(default=None, description="Request headers.")    form_data: list[AutomationActionFormData] = Field(default=None, description="Form data parts for content type multipart/form-data.")    verify_host_cert: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable verification of the remote host certificate.")    script: str = Field(max_length=1023, description="CLI script.")    output_size: int | None = Field(ge=1, le=1024, default=10, description="Number of megabytes to limit script output to (1 - 1024, default = 10).")    timeout: int | None = Field(ge=0, le=300, default=0, description="Maximum running time for this script in seconds (0 = no timeout).")    duration: int | None = Field(ge=1, le=36000, default=5, description="Maximum running time for this script in seconds.")    output_interval: int | None = Field(ge=0, le=36000, default=0, description="Collect the outputs for each output-interval in seconds (0 = no intermediate output).")    file_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the output in files only.")    execute_security_fabric: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable execution of CLI script on all or only one FortiGate unit in the Security Fabric.")    accprofile: str | None = Field(max_length=35, default="", description="Access profile for CLI script action to access FortiGate features.")  # datasource: ['system.accprofile.name']    regular_expression: str = Field(max_length=1023, description="Regular expression string.")    log_debug_print: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging debug print output from diagnose action.")    security_tag: str = Field(max_length=255, default="", description="NSX security tag.")    sdn_connector: list[AutomationActionSdnConnector] = Field(default=None, description="NSX SDN connector names.")    # ========================================================================
+    name: str | None = Field(max_length=64, default="", description="Name.")
+    description: str | None = Field(max_length=255, default=None, description="Description.")
+    action_type: str | AutomationActionActionTypeEnum | None = Field(default="alert", description="Action type.")
+    system_action: Literal["reboot", "shutdown", "backup-config"] | None = Field(default=None, description="System action type.")
+    tls_certificate: str | None = Field(max_length=35, default="", description="Custom TLS certificate for API request.")  # datasource: ['certificate.local.name']
+    forticare_email: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable use of your FortiCare email address as the email-to address.")
+    email_to: list[AutomationActionEmailTo] | None = Field(default=None, description="Email addresses.")
+    email_from: str | None = Field(max_length=127, default=None, description="Email sender name.")
+    email_subject: str | None = Field(max_length=511, default=None, description="Email subject.")
+    minimum_interval: int | None = Field(ge=0, le=2592000, default=0, description="Limit execution to no more than once in this interval (in seconds).")
+    aws_api_key: Any = Field(max_length=123, description="AWS API Gateway API key.")
+    azure_function_authorization: Literal["anonymous", "function", "admin"] = Field(default="anonymous", description="Azure function authorization level.")
+    azure_api_key: Any = Field(max_length=123, default=None, description="Azure function API key.")
+    alicloud_function_authorization: Literal["anonymous", "function"] = Field(default="anonymous", description="AliCloud function authorization type.")
+    alicloud_access_key_id: str = Field(max_length=35, default="", description="AliCloud AccessKey ID.")
+    alicloud_access_key_secret: Any = Field(max_length=59, description="AliCloud AccessKey secret.")
+    message_type: Literal["text", "json", "form-data"] = Field(default="text", description="Message type.")
+    message: str = Field(max_length=4095, default="Time: %%log.date%% %%log.time%%\nDevice: %%log.devid%% (%%log.vd%%)\nLevel: %%log.level%%\nEvent: %%log.logdesc%%\nRaw log:\n%%log%%", description="Message content.")
+    replacement_message: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable replacement message.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']
+    protocol: Literal["http", "https"] = Field(default="http", description="Request protocol.")
+    method: str | AutomationActionMethodEnum = Field(default="post", description="Request method (POST, PUT, GET, PATCH or DELETE).")
+    uri: str = Field(max_length=1023, description="Request API URI.")
+    http_body: str | None = Field(max_length=4095, default=None, description="Request body (if necessary). Should be serialized json string.")
+    port: int | None = Field(ge=1, le=65535, default=0, description="Protocol port.")
+    http_headers: list[AutomationActionHttpHeaders] | None = Field(default=None, description="Request headers.")
+    form_data: list[AutomationActionFormData] | None = Field(default=None, description="Form data parts for content type multipart/form-data.")
+    verify_host_cert: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable verification of the remote host certificate.")
+    script: str = Field(max_length=1023, description="CLI script.")
+    output_size: int | None = Field(ge=1, le=1024, default=10, description="Number of megabytes to limit script output to (1 - 1024, default = 10).")
+    timeout: int | None = Field(ge=0, le=300, default=0, description="Maximum running time for this script in seconds (0 = no timeout).")
+    duration: int | None = Field(ge=1, le=36000, default=5, description="Maximum running time for this script in seconds.")
+    output_interval: int | None = Field(ge=0, le=36000, default=0, description="Collect the outputs for each output-interval in seconds (0 = no intermediate output).")
+    file_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the output in files only.")
+    execute_security_fabric: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable execution of CLI script on all or only one FortiGate unit in the Security Fabric.")
+    accprofile: str | None = Field(max_length=35, default="", description="Access profile for CLI script action to access FortiGate features.")  # datasource: ['system.accprofile.name']
+    regular_expression: str = Field(max_length=1023, description="Regular expression string.")
+    log_debug_print: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging debug print output from diagnose action.")
+    security_tag: str = Field(max_length=255, default="", description="NSX security tag.")
+    sdn_connector: list[AutomationActionSdnConnector] | None = Field(default=None, description="NSX SDN connector names.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -246,7 +327,7 @@ class AutomationActionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "tls_certificate", None)
@@ -295,7 +376,7 @@ class AutomationActionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -344,7 +425,7 @@ class AutomationActionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "accprofile", None)
@@ -393,7 +474,7 @@ class AutomationActionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "sdn_connector", [])
@@ -439,11 +520,14 @@ class AutomationActionModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_tls_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_replacemsg_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_accprofile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sdn_connector_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_replacemsg_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_accprofile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sdn_connector_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -465,5 +549,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.389245Z
+# Generated: 2026-01-14T22:43:36.609049Z
 # ============================================================================

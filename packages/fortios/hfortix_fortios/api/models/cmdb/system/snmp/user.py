@@ -82,7 +82,7 @@ class UserEventsEnum(str, Enum):
     BFD = "bfd"
 
 
-class UserAuth_protoEnum(str, Enum):
+class UserAuthProtoEnum(str, Enum):
     """Allowed values for auth_proto field."""
     MD5 = "md5"
     SHA = "sha"
@@ -92,7 +92,7 @@ class UserAuth_protoEnum(str, Enum):
     SHA512 = "sha512"
 
 
-class UserPriv_protoEnum(str, Enum):
+class UserPrivProtoEnum(str, Enum):
     """Allowed values for priv_proto field."""
     AES = "aes"
     DES = "des"
@@ -111,7 +111,31 @@ class UserModel(BaseModel):
 
     SNMP user configuration.
 
-    Validation Rules:        - name: max_length=32 pattern=        - status: pattern=        - trap_status: pattern=        - trap_lport: min=1 max=65535 pattern=        - trap_rport: min=1 max=65535 pattern=        - queries: pattern=        - query_port: min=1 max=65535 pattern=        - notify_hosts: pattern=        - notify_hosts6: pattern=        - source_ip: pattern=        - source_ipv6: pattern=        - ha_direct: pattern=        - events: pattern=        - mib_view: max_length=32 pattern=        - vdoms: pattern=        - security_level: pattern=        - auth_proto: pattern=        - auth_pwd: max_length=128 pattern=        - priv_proto: pattern=        - priv_pwd: max_length=128 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - name: max_length=32 pattern=
+        - status: pattern=
+        - trap_status: pattern=
+        - trap_lport: min=1 max=65535 pattern=
+        - trap_rport: min=1 max=65535 pattern=
+        - queries: pattern=
+        - query_port: min=1 max=65535 pattern=
+        - notify_hosts: pattern=
+        - notify_hosts6: pattern=
+        - source_ip: pattern=
+        - source_ipv6: pattern=
+        - ha_direct: pattern=
+        - events: pattern=
+        - mib_view: max_length=32 pattern=
+        - vdoms: pattern=
+        - security_level: pattern=
+        - auth_proto: pattern=
+        - auth_pwd: max_length=128 pattern=
+        - priv_proto: pattern=
+        - priv_pwd: max_length=128 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -123,7 +147,30 @@ class UserModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=32, default="", description="SNMP user name.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP user.")    trap_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable traps for this SNMP user.")    trap_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMPv3 local trap port (default = 162).")    trap_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMPv3 trap remote port (default = 162).")    queries: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP queries for this user.")    query_port: int | None = Field(ge=1, le=65535, default=161, description="SNMPv3 query port (default = 161).")    notify_hosts: str | None = Field(default="", description="SNMP managers to send notifications (traps) to.")    notify_hosts6: str | None = Field(default="", description="IPv6 SNMP managers to send notifications (traps) to.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for SNMP trap.")    source_ipv6: str | None = Field(default="::", description="Source IPv6 for SNMP trap.")    ha_direct: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable direct management of HA cluster members.")    events: UserEventsEnum | None = Field(default="cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change bfd", description="SNMP notifications (traps) to send.")    mib_view: str | None = Field(max_length=32, default="", description="SNMP access control MIB view.")  # datasource: ['system.snmp.mib-view.name']    vdoms: list[UserVdoms] = Field(default=None, description="SNMP access control VDOMs.")    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = Field(default="no-auth-no-priv", description="Security level for message authentication and encryption.")    auth_proto: UserAuthProtoEnum | None = Field(default="sha", description="Authentication protocol.")    auth_pwd: Any = Field(max_length=128, description="Password for authentication protocol.")    priv_proto: UserPrivProtoEnum | None = Field(default="aes", description="Privacy (encryption) protocol.")    priv_pwd: Any = Field(max_length=128, description="Password for privacy (encryption) protocol.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    name: str = Field(max_length=32, default="", description="SNMP user name.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP user.")
+    trap_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable traps for this SNMP user.")
+    trap_lport: int | None = Field(ge=1, le=65535, default=162, description="SNMPv3 local trap port (default = 162).")
+    trap_rport: int | None = Field(ge=1, le=65535, default=162, description="SNMPv3 trap remote port (default = 162).")
+    queries: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP queries for this user.")
+    query_port: int | None = Field(ge=1, le=65535, default=161, description="SNMPv3 query port (default = 161).")
+    notify_hosts: str | None = Field(default="", description="SNMP managers to send notifications (traps) to.")
+    notify_hosts6: str | None = Field(default="", description="IPv6 SNMP managers to send notifications (traps) to.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP for SNMP trap.")
+    source_ipv6: str | None = Field(default="::", description="Source IPv6 for SNMP trap.")
+    ha_direct: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable direct management of HA cluster members.")
+    events: str | UserEventsEnum | None = Field(default=None, description="SNMP notifications (traps) to send.")
+    mib_view: str | None = Field(max_length=32, default="", description="SNMP access control MIB view.")  # datasource: ['system.snmp.mib-view.name']
+    vdoms: list[UserVdoms] | None = Field(default=None, description="SNMP access control VDOMs.")
+    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = Field(default="no-auth-no-priv", description="Security level for message authentication and encryption.")
+    auth_proto: str | UserAuthProtoEnum | None = Field(default="sha", description="Authentication protocol.")
+    auth_pwd: Any = Field(max_length=128, description="Password for authentication protocol.")
+    priv_proto: str | UserPrivProtoEnum | None = Field(default="aes", description="Privacy (encryption) protocol.")
+    priv_pwd: Any = Field(max_length=128, description="Password for privacy (encryption) protocol.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -217,7 +264,7 @@ class UserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "mib_view", None)
@@ -266,7 +313,7 @@ class UserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vdoms", [])
@@ -324,7 +371,7 @@ class UserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.snmp.user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -361,10 +408,12 @@ class UserModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_mib_view_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vdoms_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vdoms_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -386,5 +435,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.872249Z
+# Generated: 2026-01-14T22:43:37.207626Z
 # ============================================================================

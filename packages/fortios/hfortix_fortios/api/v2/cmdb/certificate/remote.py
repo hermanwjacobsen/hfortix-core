@@ -234,7 +234,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         remote: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -250,7 +250,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name.
             remote: Remote certificate.
-            range: Either the global or VDOM IP address range for the remote certificate.
+            range_: Either the global or VDOM IP address range for the remote certificate.
             source: Remote certificate source type.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
@@ -287,7 +287,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             remote=remote,
-            range=range,
+            range_=range_,
             source=source,
             data=payload_dict,
         )
@@ -321,7 +321,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         remote: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -337,7 +337,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name.
             remote: Remote certificate.
-            range: Either the global or VDOM IP address range for the remote certificate.
+            range_: Either the global or VDOM IP address range for the remote certificate.
             source: Remote certificate source type.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
@@ -376,7 +376,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             remote=remote,
-            range=range,
+            range_=range_,
             source=source,
             data=payload_dict,
         )
@@ -510,7 +510,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         remote: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -527,7 +527,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             remote: Field remote
-            range: Field range
+            range_: Field range
             source: Field source
             vdom: Virtual domain name
             raw_json: If True, return raw API response
@@ -574,7 +574,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             remote=remote,
-            range=range,
+            range_=range_,
             source=source,
             data=payload_dict,
         )

@@ -26,7 +26,14 @@ class InternetServiceNameModel(BaseModel):
 
     Define internet service names.
 
-    Validation Rules:        - name: max_length=63 pattern=        - type: pattern=        - internet_service_id: min=0 max=4294967295 pattern=        - country_id: min=0 max=4294967295 pattern=        - region_id: min=0 max=4294967295 pattern=        - city_id: min=0 max=4294967295 pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - type_: pattern=
+        - internet_service_id: min=0 max=4294967295 pattern=
+        - country_id: min=0 max=4294967295 pattern=
+        - region_id: min=0 max=4294967295 pattern=
+        - city_id: min=0 max=4294967295 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +45,13 @@ class InternetServiceNameModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="Internet Service name.")    type: Literal["default", "location"] | None = Field(default="default", description="Internet Service name type.")    internet_service_id: int = Field(ge=0, le=4294967295, default=0, description="Internet Service ID.")  # datasource: ['firewall.internet-service.id']    country_id: int | None = Field(ge=0, le=4294967295, default=0, description="Country or Area ID.")  # datasource: ['firewall.country.id']    region_id: int | None = Field(ge=0, le=4294967295, default=0, description="Region ID.")  # datasource: ['firewall.region.id']    city_id: int | None = Field(ge=0, le=4294967295, default=0, description="City ID.")  # datasource: ['firewall.city.id']    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="Internet Service name.")
+    type_: Literal["default", "location"] | None = Field(default="default", description="Internet Service name type.")
+    internet_service_id: int = Field(ge=0, le=4294967295, default=0, description="Internet Service ID.")  # datasource: ['firewall.internet-service.id']
+    country_id: int | None = Field(ge=0, le=4294967295, default=0, description="Country or Area ID.")  # datasource: ['firewall.country.id']
+    region_id: int | None = Field(ge=0, le=4294967295, default=0, description="Region ID.")  # datasource: ['firewall.region.id']
+    city_id: int | None = Field(ge=0, le=4294967295, default=0, description="City ID.")  # datasource: ['firewall.city.id']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -162,7 +175,7 @@ class InternetServiceNameModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_name.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "internet_service_id", None)
@@ -211,7 +224,7 @@ class InternetServiceNameModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_name.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "country_id", None)
@@ -260,7 +273,7 @@ class InternetServiceNameModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_name.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "region_id", None)
@@ -309,7 +322,7 @@ class InternetServiceNameModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_name.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "city_id", None)
@@ -346,11 +359,14 @@ class InternetServiceNameModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_internet_service_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_country_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_region_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_city_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_country_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_region_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_city_id_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -372,5 +388,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.656861Z
+# Generated: 2026-01-14T22:43:38.174672Z
 # ============================================================================

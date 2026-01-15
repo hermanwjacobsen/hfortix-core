@@ -29,11 +29,11 @@ class LayoutPage(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     paper: Literal["a4", "letter"] | None = Field(default="a4", description="Report page paper.")
-    column_break_before: Literal["heading1", "heading2", "heading3"] | None = Field(default="", description="Report page auto column break before heading.")
-    page_break_before: Literal["heading1", "heading2", "heading3"] | None = Field(default="", description="Report page auto page break before heading.")
-    options: Literal["header-on-first-page", "footer-on-first-page"] | None = Field(default="", description="Report page options.")
-    header: list[Header] = Field(default=None, description="Configure report page header.")
-    footer: list[Footer] = Field(default=None, description="Configure report page footer.")
+    column_break_before: Literal["heading1", "heading2", "heading3"] | None = Field(default=None, description="Report page auto column break before heading.")
+    page_break_before: Literal["heading1", "heading2", "heading3"] | None = Field(default=None, description="Report page auto page break before heading.")
+    options: Literal["header-on-first-page", "footer-on-first-page"] | None = Field(default=None, description="Report page options.")
+    header: list[dict[str, Any]] | None = Field(default=None, description="Configure report page header.")
+    footer: list[dict[str, Any]] | None = Field(default=None, description="Configure report page footer.")
 
 
 class LayoutBodyItem(BaseModel):
@@ -49,16 +49,16 @@ class LayoutBodyItem(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="Report item ID.")
     description: str | None = Field(max_length=63, default="", description="Description.")
-    type: TypeEnum | None = Field(default="text", description="Report item type.")
+    type_: str | None = Field(default="text", description="Report item type.")
     style: str | None = Field(max_length=71, default="", description="Report item style.")
     top_n: int | None = Field(ge=0, le=4294967295, default=0, description="Value of top.")
-    parameters: list[Parameters] = Field(default=None, description="Parameters.")
-    text_component: TextComponentEnum | None = Field(default="text", description="Report item text component.")
+    parameters: list[dict[str, Any]] | None = Field(default=None, description="Parameters.")
+    text_component: str | None = Field(default="text", description="Report item text component.")
     content: str | None = Field(max_length=511, default="", description="Report item text content.")
     img_src: str | None = Field(max_length=127, default="", description="Report item image file name.")
     chart: str | None = Field(max_length=71, default="", description="Report item chart name.")
-    chart_options: Literal["include-no-data", "hide-title", "show-caption"] | None = Field(default="include-no-data hide-title show-caption", description="Report chart options.")
-    misc_component: MiscComponentEnum | None = Field(default="hline", description="Report item miscellaneous component.")
+    chart_options: Literal["include-no-data", "hide-title", "show-caption"] | None = Field(default=None, description="Report chart options.")
+    misc_component: str | None = Field(default="hline", description="Report item miscellaneous component.")
     title: str | None = Field(max_length=511, default="", description="Report section title.")
 
 # ============================================================================
@@ -97,7 +97,25 @@ class LayoutModel(BaseModel):
 
     Report layout configuration.
 
-    Validation Rules:        - name: max_length=35 pattern=        - title: max_length=127 pattern=        - subtitle: max_length=127 pattern=        - description: max_length=127 pattern=        - style_theme: max_length=35 pattern=        - options: pattern=        - format: pattern=        - schedule_type: pattern=        - day: pattern=        - time: pattern=        - cutoff_option: pattern=        - cutoff_time: pattern=        - email_send: pattern=        - email_recipients: max_length=511 pattern=        - max_pdf_report: min=1 max=365 pattern=        - page: pattern=        - body_item: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - title: max_length=127 pattern=
+        - subtitle: max_length=127 pattern=
+        - description: max_length=127 pattern=
+        - style_theme: max_length=35 pattern=
+        - options: pattern=
+        - format_: pattern=
+        - schedule_type: pattern=
+        - day: pattern=
+        - time: pattern=
+        - cutoff_option: pattern=
+        - cutoff_time: pattern=
+        - email_send: pattern=
+        - email_recipients: max_length=511 pattern=
+        - max_pdf_report: min=1 max=365 pattern=
+        - page: pattern=
+        - body_item: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -109,7 +127,24 @@ class LayoutModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Report layout name.")    title: str | None = Field(max_length=127, default="", description="Report title.")    subtitle: str | None = Field(max_length=127, default="", description="Report subtitle.")    description: str | None = Field(max_length=127, default="", description="Description.")    style_theme: str = Field(max_length=35, default="", description="Report style theme.")    options: LayoutOptionsEnum | None = Field(default="include-table-of-content auto-numbering-heading view-chart-as-heading", description="Report layout options.")    format: Literal["pdf"] | None = Field(default="pdf", description="Report format.")    schedule_type: Literal["demand", "daily", "weekly"] | None = Field(default="daily", description="Report schedule type.")    day: LayoutDayEnum | None = Field(default="sunday", description="Schedule days of week to generate report.")    time: str | None = Field(default="", description="Schedule time to generate report (format = hh:mm).")    cutoff_option: Literal["run-time", "custom"] | None = Field(default="run-time", description="Cutoff-option is either run-time or custom.")    cutoff_time: str | None = Field(default="", description="Custom cutoff time to generate report (format = hh:mm).")    email_send: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending emails after reports are generated.")    email_recipients: str | None = Field(max_length=511, default="", description="Email recipients for generated reports.")    max_pdf_report: int | None = Field(ge=1, le=365, default=31, description="Maximum number of PDF reports to keep at one time (oldest report is overwritten).")    page: list[LayoutPage] = Field(default=None, description="Configure report page.")    body_item: list[LayoutBodyItem] = Field(default=None, description="Configure report body item.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Report layout name.")
+    title: str | None = Field(max_length=127, default="", description="Report title.")
+    subtitle: str | None = Field(max_length=127, default="", description="Report subtitle.")
+    description: str | None = Field(max_length=127, default="", description="Description.")
+    style_theme: str = Field(max_length=35, default="", description="Report style theme.")
+    options: str | LayoutOptionsEnum | None = Field(default=None, description="Report layout options.")
+    format_: Literal["pdf"] | None = Field(default="pdf", description="Report format.")
+    schedule_type: Literal["demand", "daily", "weekly"] | None = Field(default="daily", description="Report schedule type.")
+    day: str | LayoutDayEnum | None = Field(default="sunday", description="Schedule days of week to generate report.")
+    time: str | None = Field(default="", description="Schedule time to generate report (format = hh:mm).")
+    cutoff_option: Literal["run-time", "custom"] | None = Field(default="run-time", description="Cutoff-option is either run-time or custom.")
+    cutoff_time: str | None = Field(default="", description="Custom cutoff time to generate report (format = hh:mm).")
+    email_send: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending emails after reports are generated.")
+    email_recipients: str | None = Field(max_length=511, default="", description="Email recipients for generated reports.")
+    max_pdf_report: int | None = Field(ge=1, le=365, default=31, description="Maximum number of PDF reports to keep at one time (oldest report is overwritten).")
+    page: list[LayoutPage] | None = Field(default=None, description="Configure report page.")
+    body_item: list[LayoutBodyItem] | None = Field(default=None, description="Configure report body item.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -158,5 +193,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.907188Z
+# Generated: 2026-01-14T22:43:38.497809Z
 # ============================================================================

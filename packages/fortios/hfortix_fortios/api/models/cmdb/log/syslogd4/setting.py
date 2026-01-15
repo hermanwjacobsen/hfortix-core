@@ -66,7 +66,7 @@ class SettingFacilityEnum(str, Enum):
 
 
 class SettingFormatEnum(str, Enum):
-    """Allowed values for format field."""
+    """Allowed values for format_ field."""
     DEFAULT = "default"
     CSV = "csv"
     CEF = "cef"
@@ -74,7 +74,7 @@ class SettingFormatEnum(str, Enum):
     JSON = "json"
 
 
-class SettingEnc_algorithmEnum(str, Enum):
+class SettingEncAlgorithmEnum(str, Enum):
     """Allowed values for enc_algorithm field."""
     HIGH_MEDIUM = "high-medium"
     HIGH = "high"
@@ -82,7 +82,7 @@ class SettingEnc_algorithmEnum(str, Enum):
     DISABLE = "disable"
 
 
-class SettingSsl_min_proto_versionEnum(str, Enum):
+class SettingSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -103,7 +103,25 @@ class SettingModel(BaseModel):
 
     Global settings for remote syslog server.
 
-    Validation Rules:        - status: pattern=        - server: max_length=127 pattern=        - mode: pattern=        - port: min=0 max=65535 pattern=        - facility: pattern=        - source_ip_interface: max_length=15 pattern=        - source_ip: max_length=63 pattern=        - format: pattern=        - priority: pattern=        - max_log_rate: min=0 max=100000 pattern=        - enc_algorithm: pattern=        - ssl_min_proto_version: pattern=        - certificate: max_length=35 pattern=        - custom_field_name: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - server: max_length=127 pattern=
+        - mode: pattern=
+        - port: min=0 max=65535 pattern=
+        - facility: pattern=
+        - source_ip_interface: max_length=15 pattern=
+        - source_ip: max_length=63 pattern=
+        - format_: pattern=
+        - priority: pattern=
+        - max_log_rate: min=0 max=100000 pattern=
+        - enc_algorithm: pattern=
+        - ssl_min_proto_version: pattern=
+        - certificate: max_length=35 pattern=
+        - custom_field_name: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -115,7 +133,24 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable remote syslog logging.")    server: str = Field(max_length=127, default="", description="Address of remote syslog server.")    mode: Literal["udp", "legacy-reliable", "reliable"] | None = Field(default="udp", description="Remote syslog logging over UDP/Reliable TCP.")    port: int | None = Field(ge=0, le=65535, default=514, description="Server listen port.")    facility: SettingFacilityEnum | None = Field(default="local7", description="Remote syslog facility.")    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface of syslog.")  # datasource: ['system.interface.name']    source_ip: str | None = Field(max_length=63, default="", description="Source IP address of syslog.")    format: SettingFormatEnum | None = Field(default="default", description="Log format.")    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="Syslog maximum log rate in MBps (0 = unlimited).")    enc_algorithm: SettingEncAlgorithmEnum | None = Field(default="disable", description="Enable/disable reliable syslogging with TLS encryption.")    ssl_min_proto_version: SettingSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    certificate: str | None = Field(max_length=35, default="", description="Certificate used to communicate with Syslog server.")  # datasource: ['certificate.local.name']    custom_field_name: list[SettingCustomFieldName] = Field(default=None, description="Custom field name for CEF format logging.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable remote syslog logging.")
+    server: str = Field(max_length=127, default="", description="Address of remote syslog server.")
+    mode: Literal["udp", "legacy-reliable", "reliable"] | None = Field(default="udp", description="Remote syslog logging over UDP/Reliable TCP.")
+    port: int | None = Field(ge=0, le=65535, default=514, description="Server listen port.")
+    facility: str | SettingFacilityEnum | None = Field(default="local7", description="Remote syslog facility.")
+    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface of syslog.")  # datasource: ['system.interface.name']
+    source_ip: str | None = Field(max_length=63, default="", description="Source IP address of syslog.")
+    format_: str | SettingFormatEnum | None = Field(default="default", description="Log format.")
+    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")
+    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="Syslog maximum log rate in MBps (0 = unlimited).")
+    enc_algorithm: str | SettingEncAlgorithmEnum | None = Field(default="disable", description="Enable/disable reliable syslogging with TLS encryption.")
+    ssl_min_proto_version: str | SettingSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    certificate: str | None = Field(max_length=35, default="", description="Certificate used to communicate with Syslog server.")  # datasource: ['certificate.local.name']
+    custom_field_name: list[SettingCustomFieldName] | None = Field(default=None, description="Custom field name for CEF format logging.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -224,7 +259,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd4.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -273,7 +308,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd4.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "certificate", None)
@@ -322,7 +357,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd4.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -359,10 +394,12 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_source_ip_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_certificate_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -384,5 +421,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.705439Z
+# Generated: 2026-01-14T22:43:39.548567Z
 # ============================================================================

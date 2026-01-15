@@ -36,7 +36,7 @@ class NacPolicyPayload(TypedDict, total=False):
     match_remove: Literal["default", "link-down"]  # Options to remove the matched override devices. | Default: default
     mac: str  # NAC policy matching MAC address. | MaxLen: 17
     hw_vendor: str  # NAC policy matching hardware vendor. | MaxLen: 15
-    type: str  # NAC policy matching type. | MaxLen: 15
+    type_: str  # NAC policy matching type. | MaxLen: 15
     family: str  # NAC policy matching family. | MaxLen: 31
     os: str  # NAC policy matching operating system. | MaxLen: 31
     hw_version: str  # NAC policy matching hardware version. | MaxLen: 15
@@ -137,7 +137,7 @@ class NacPolicyResponse(TypedDict):
     match_remove: Literal["default", "link-down"]  # Options to remove the matched override devices. | Default: default
     mac: str  # NAC policy matching MAC address. | MaxLen: 17
     hw_vendor: str  # NAC policy matching hardware vendor. | MaxLen: 15
-    type: str  # NAC policy matching type. | MaxLen: 15
+    type_: str  # NAC policy matching type. | MaxLen: 15
     family: str  # NAC policy matching family. | MaxLen: 31
     os: str  # NAC policy matching operating system. | MaxLen: 31
     hw_version: str  # NAC policy matching hardware version. | MaxLen: 15
@@ -183,7 +183,7 @@ class NacPolicyObject:
     # NAC policy matching hardware vendor. | MaxLen: 15
     hw_vendor: str
     # NAC policy matching type. | MaxLen: 15
-    type: str
+    type_: str
     # NAC policy matching family. | MaxLen: 31
     family: str
     # NAC policy matching operating system. | MaxLen: 31
@@ -218,7 +218,6 @@ class NacPolicyObject:
     ssid_policy: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -241,6 +240,10 @@ class NacPolicy:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -261,6 +264,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NacPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -278,6 +282,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NacPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -294,6 +299,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[NacPolicyResponse]: ...
     
     # ================================================================
@@ -336,7 +342,7 @@ class NacPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NacPolicyObject: ...
     
@@ -355,7 +361,7 @@ class NacPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[NacPolicyObject]: ...
     
@@ -455,23 +461,6 @@ class NacPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> NacPolicyObject | list[NacPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -492,7 +481,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -511,6 +500,7 @@ class NacPolicy:
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NacPolicyObject: ...
@@ -528,7 +518,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -565,7 +555,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -601,7 +591,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -619,41 +609,7 @@ class NacPolicy:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -671,7 +627,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -690,6 +646,7 @@ class NacPolicy:
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NacPolicyObject: ...
@@ -707,7 +664,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -744,7 +701,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -780,7 +737,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -798,41 +755,7 @@ class NacPolicy:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -843,6 +766,7 @@ class NacPolicy:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NacPolicyObject: ...
@@ -873,14 +797,7 @@ class NacPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -902,7 +819,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -935,8 +852,6 @@ class NacPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -964,6 +879,10 @@ class NacPolicyDictMode:
     By default returns NacPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return NacPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1076,7 +995,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1113,7 +1032,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1150,7 +1069,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1168,10 +1087,12 @@ class NacPolicyDictMode:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -1184,7 +1105,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1219,7 +1140,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1256,7 +1177,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1293,7 +1214,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1311,10 +1232,12 @@ class NacPolicyDictMode:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -1327,7 +1250,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1376,10 +1299,12 @@ class NacPolicyDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1406,7 +1331,7 @@ class NacPolicyDictMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1438,8 +1363,6 @@ class NacPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1463,6 +1386,10 @@ class NacPolicyObjectMode:
     By default returns NacPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return NacPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1575,7 +1502,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1612,7 +1539,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1649,7 +1576,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1686,7 +1613,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1704,10 +1631,12 @@ class NacPolicyObjectMode:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -1720,7 +1649,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1755,7 +1684,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1792,7 +1721,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1829,7 +1758,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1866,7 +1795,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1884,10 +1813,12 @@ class NacPolicyObjectMode:
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -1900,7 +1831,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -1960,10 +1891,12 @@ class NacPolicyObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1990,7 +1923,7 @@ class NacPolicyObjectMode:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type: str | None = ...,
+        type_: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -2022,8 +1955,6 @@ class NacPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

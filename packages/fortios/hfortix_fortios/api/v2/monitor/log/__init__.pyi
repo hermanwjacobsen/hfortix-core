@@ -14,12 +14,12 @@ if TYPE_CHECKING:
     from .historic_daily_remote_logs import HistoricDailyRemoteLogs, HistoricDailyRemoteLogsDictMode, HistoricDailyRemoteLogsObjectMode
     from .hourly_disk_usage import HourlyDiskUsage, HourlyDiskUsageDictMode, HourlyDiskUsageObjectMode
     from .local_report_list import LocalReportList, LocalReportListDictMode, LocalReportListObjectMode
-    from .av_archive import AvArchiveDictMode, AvArchiveObjectMode
-    from .device import DeviceDictMode, DeviceObjectMode
+    from .av_archive import AvArchive, AvArchiveDictMode, AvArchiveObjectMode
+    from .device import Device, DeviceDictMode, DeviceObjectMode
     from .forticloud import Forticloud
-    from .forticloud_report import ForticloudReportDictMode, ForticloudReportObjectMode
-    from .local_report import LocalReportDictMode, LocalReportObjectMode
-    from .policy_archive import PolicyArchiveDictMode, PolicyArchiveObjectMode
+    from .forticloud_report import ForticloudReport, ForticloudReportDictMode, ForticloudReportObjectMode
+    from .local_report import LocalReport, LocalReportDictMode, LocalReportObjectMode
+    from .policy_archive import PolicyArchive, PolicyArchiveDictMode, PolicyArchiveObjectMode
     from .stats import Stats
 
 __all__ = [

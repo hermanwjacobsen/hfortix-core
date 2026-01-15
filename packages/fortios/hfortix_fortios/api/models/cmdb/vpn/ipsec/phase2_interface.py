@@ -243,7 +243,7 @@ class Phase2InterfaceAddke7Enum(str, Enum):
     VALUE_1094 = "1094"
 
 
-class Phase2InterfaceSrc_addr_typeEnum(str, Enum):
+class Phase2InterfaceSrcAddrTypeEnum(str, Enum):
     """Allowed values for src_addr_type field."""
     SUBNET = "subnet"
     RANGE = "range"
@@ -255,7 +255,7 @@ class Phase2InterfaceSrc_addr_typeEnum(str, Enum):
     NAME6 = "name6"
 
 
-class Phase2InterfaceDst_addr_typeEnum(str, Enum):
+class Phase2InterfaceDstAddrTypeEnum(str, Enum):
     """Allowed values for dst_addr_type field."""
     SUBNET = "subnet"
     RANGE = "range"
@@ -278,7 +278,60 @@ class Phase2InterfaceModel(BaseModel):
 
     Configure VPN autokey tunnel.
 
-    Validation Rules:        - name: max_length=35 pattern=        - phase1name: max_length=15 pattern=        - dhcp_ipsec: pattern=        - proposal: pattern=        - pfs: pattern=        - dhgrp: pattern=        - addke1: pattern=        - addke2: pattern=        - addke3: pattern=        - addke4: pattern=        - addke5: pattern=        - addke6: pattern=        - addke7: pattern=        - replay: pattern=        - keepalive: pattern=        - auto_negotiate: pattern=        - add_route: pattern=        - inbound_dscp_copy: pattern=        - auto_discovery_sender: pattern=        - auto_discovery_forwarder: pattern=        - keylifeseconds: min=120 max=172800 pattern=        - keylifekbs: min=5120 max=4294967295 pattern=        - keylife_type: pattern=        - single_source: pattern=        - route_overlap: pattern=        - encapsulation: pattern=        - l2tp: pattern=        - comments: max_length=255 pattern=        - initiator_ts_narrow: pattern=        - diffserv: pattern=        - diffservcode: pattern=        - protocol: min=0 max=255 pattern=        - src_name: max_length=79 pattern=        - src_name6: max_length=79 pattern=        - src_addr_type: pattern=        - src_start_ip: pattern=        - src_start_ip6: pattern=        - src_end_ip: pattern=        - src_end_ip6: pattern=        - src_subnet: pattern=        - src_subnet6: pattern=        - src_port: min=0 max=65535 pattern=        - dst_name: max_length=79 pattern=        - dst_name6: max_length=79 pattern=        - dst_addr_type: pattern=        - dst_start_ip: pattern=        - dst_start_ip6: pattern=        - dst_end_ip: pattern=        - dst_end_ip6: pattern=        - dst_subnet: pattern=        - dst_subnet6: pattern=        - dst_port: min=0 max=65535 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - phase1name: max_length=15 pattern=
+        - dhcp_ipsec: pattern=
+        - proposal: pattern=
+        - pfs: pattern=
+        - dhgrp: pattern=
+        - addke1: pattern=
+        - addke2: pattern=
+        - addke3: pattern=
+        - addke4: pattern=
+        - addke5: pattern=
+        - addke6: pattern=
+        - addke7: pattern=
+        - replay: pattern=
+        - keepalive: pattern=
+        - auto_negotiate: pattern=
+        - add_route: pattern=
+        - inbound_dscp_copy: pattern=
+        - auto_discovery_sender: pattern=
+        - auto_discovery_forwarder: pattern=
+        - keylifeseconds: min=120 max=172800 pattern=
+        - keylifekbs: min=5120 max=4294967295 pattern=
+        - keylife_type: pattern=
+        - single_source: pattern=
+        - route_overlap: pattern=
+        - encapsulation: pattern=
+        - l2tp: pattern=
+        - comments: max_length=255 pattern=
+        - initiator_ts_narrow: pattern=
+        - diffserv: pattern=
+        - diffservcode: pattern=
+        - protocol: min=0 max=255 pattern=
+        - src_name: max_length=79 pattern=
+        - src_name6: max_length=79 pattern=
+        - src_addr_type: pattern=
+        - src_start_ip: pattern=
+        - src_start_ip6: pattern=
+        - src_end_ip: pattern=
+        - src_end_ip6: pattern=
+        - src_subnet: pattern=
+        - src_subnet6: pattern=
+        - src_port: min=0 max=65535 pattern=
+        - dst_name: max_length=79 pattern=
+        - dst_name6: max_length=79 pattern=
+        - dst_addr_type: pattern=
+        - dst_start_ip: pattern=
+        - dst_start_ip6: pattern=
+        - dst_end_ip: pattern=
+        - dst_end_ip6: pattern=
+        - dst_subnet: pattern=
+        - dst_subnet6: pattern=
+        - dst_port: min=0 max=65535 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -290,7 +343,59 @@ class Phase2InterfaceModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="IPsec tunnel name.")    phase1name: str = Field(max_length=15, default="", description="Phase 1 determines the options required for phase 2.")  # datasource: ['vpn.ipsec.phase1-interface.name']    dhcp_ipsec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP-IPsec.")    proposal: Phase2InterfaceProposalEnum = Field(default="", description="Phase2 proposal.")    pfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PFS feature.")    dhgrp: Phase2InterfaceDhgrpEnum | None = Field(default="20", description="Phase2 DH group.")    addke1: Phase2InterfaceAddke1Enum | None = Field(default="", description="phase2 ADDKE1 group.")    addke2: Phase2InterfaceAddke2Enum | None = Field(default="", description="phase2 ADDKE2 group.")    addke3: Phase2InterfaceAddke3Enum | None = Field(default="", description="phase2 ADDKE3 group.")    addke4: Phase2InterfaceAddke4Enum | None = Field(default="", description="phase2 ADDKE4 group.")    addke5: Phase2InterfaceAddke5Enum | None = Field(default="", description="phase2 ADDKE5 group.")    addke6: Phase2InterfaceAddke6Enum | None = Field(default="", description="phase2 ADDKE6 group.")    addke7: Phase2InterfaceAddke7Enum | None = Field(default="", description="phase2 ADDKE7 group.")    replay: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable replay detection.")    keepalive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable keep alive.")    auto_negotiate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec SA auto-negotiation.")    add_route: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable automatic route addition.")    inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable copying of the DSCP in the ESP header to the inner IP header.")    auto_discovery_sender: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable sending short-cut messages.")    auto_discovery_forwarder: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable forwarding short-cut messages.")    keylifeseconds: int | None = Field(ge=120, le=172800, default=43200, description="Phase2 key life in time in seconds (120 - 172800).")    keylifekbs: int | None = Field(ge=5120, le=4294967295, default=5120, description="Phase2 key life in number of kilobytes of traffic (5120 - 4294967295).")    keylife_type: Literal["seconds", "kbs", "both"] | None = Field(default="seconds", description="Keylife type.")    single_source: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable single source IP restriction.")    route_overlap: Literal["use-old", "use-new", "allow"] | None = Field(default="use-new", description="Action for overlapping routes.")    encapsulation: Literal["tunnel-mode", "transport-mode"] | None = Field(default="tunnel-mode", description="ESP encapsulation mode.")    l2tp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable L2TP over IPsec.")    comments: str | None = Field(max_length=255, default=None, description="Comment.")    initiator_ts_narrow: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traffic selector narrowing for IKEv2 initiator.")    diffserv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable applying DSCP value to the IPsec tunnel outer IP header.")    diffservcode: str | None = Field(default="", description="DSCP value to be applied to the IPsec tunnel outer IP header.")    protocol: int | None = Field(ge=0, le=255, default=0, description="Quick mode protocol selector (1 - 255 or 0 for all).")    src_name: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    src_name6: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    src_addr_type: Phase2InterfaceSrcAddrTypeEnum | None = Field(default="subnet", description="Local proxy ID type.")    src_start_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID start.")    src_start_ip6: str | None = Field(default="::", description="Local proxy ID IPv6 start.")    src_end_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID end.")    src_end_ip6: str | None = Field(default="::", description="Local proxy ID IPv6 end.")    src_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Local proxy ID subnet.")    src_subnet6: str | None = Field(default="::/0", description="Local proxy ID IPv6 subnet.")    src_port: int | None = Field(ge=0, le=65535, default=0, description="Quick mode source port (1 - 65535 or 0 for all).")    dst_name: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    dst_name6: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    dst_addr_type: Phase2InterfaceDstAddrTypeEnum | None = Field(default="subnet", description="Remote proxy ID type.")    dst_start_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 start.")    dst_start_ip6: str | None = Field(default="::", description="Remote proxy ID IPv6 start.")    dst_end_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 end.")    dst_end_ip6: str | None = Field(default="::", description="Remote proxy ID IPv6 end.")    dst_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Remote proxy ID IPv4 subnet.")    dst_subnet6: str | None = Field(default="::/0", description="Remote proxy ID IPv6 subnet.")    dst_port: int | None = Field(ge=0, le=65535, default=0, description="Quick mode destination port (1 - 65535 or 0 for all).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="IPsec tunnel name.")
+    phase1name: str = Field(max_length=15, default="", description="Phase 1 determines the options required for phase 2.")  # datasource: ['vpn.ipsec.phase1-interface.name']
+    dhcp_ipsec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP-IPsec.")
+    proposal: str | Phase2InterfaceProposalEnum | None = Field(default=None, description="Phase2 proposal.")
+    pfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PFS feature.")
+    dhgrp: str | Phase2InterfaceDhgrpEnum | None = Field(default="20", description="Phase2 DH group.")
+    addke1: str | Phase2InterfaceAddke1Enum | None = Field(default=None, description="phase2 ADDKE1 group.")
+    addke2: str | Phase2InterfaceAddke2Enum | None = Field(default=None, description="phase2 ADDKE2 group.")
+    addke3: str | Phase2InterfaceAddke3Enum | None = Field(default=None, description="phase2 ADDKE3 group.")
+    addke4: str | Phase2InterfaceAddke4Enum | None = Field(default=None, description="phase2 ADDKE4 group.")
+    addke5: str | Phase2InterfaceAddke5Enum | None = Field(default=None, description="phase2 ADDKE5 group.")
+    addke6: str | Phase2InterfaceAddke6Enum | None = Field(default=None, description="phase2 ADDKE6 group.")
+    addke7: str | Phase2InterfaceAddke7Enum | None = Field(default=None, description="phase2 ADDKE7 group.")
+    replay: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable replay detection.")
+    keepalive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable keep alive.")
+    auto_negotiate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec SA auto-negotiation.")
+    add_route: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable automatic route addition.")
+    inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable copying of the DSCP in the ESP header to the inner IP header.")
+    auto_discovery_sender: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable sending short-cut messages.")
+    auto_discovery_forwarder: Literal["phase1", "enable", "disable"] | None = Field(default="phase1", description="Enable/disable forwarding short-cut messages.")
+    keylifeseconds: int | None = Field(ge=120, le=172800, default=43200, description="Phase2 key life in time in seconds (120 - 172800).")
+    keylifekbs: int | None = Field(ge=5120, le=4294967295, default=5120, description="Phase2 key life in number of kilobytes of traffic (5120 - 4294967295).")
+    keylife_type: Literal["seconds", "kbs", "both"] | None = Field(default="seconds", description="Keylife type.")
+    single_source: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable single source IP restriction.")
+    route_overlap: Literal["use-old", "use-new", "allow"] | None = Field(default="use-new", description="Action for overlapping routes.")
+    encapsulation: Literal["tunnel-mode", "transport-mode"] | None = Field(default="tunnel-mode", description="ESP encapsulation mode.")
+    l2tp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable L2TP over IPsec.")
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    initiator_ts_narrow: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traffic selector narrowing for IKEv2 initiator.")
+    diffserv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable applying DSCP value to the IPsec tunnel outer IP header.")
+    diffservcode: str | None = Field(default="", description="DSCP value to be applied to the IPsec tunnel outer IP header.")
+    protocol: int | None = Field(ge=0, le=255, default=0, description="Quick mode protocol selector (1 - 255 or 0 for all).")
+    src_name: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    src_name6: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    src_addr_type: str | Phase2InterfaceSrcAddrTypeEnum | None = Field(default="subnet", description="Local proxy ID type.")
+    src_start_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID start.")
+    src_start_ip6: str | None = Field(default="::", description="Local proxy ID IPv6 start.")
+    src_end_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID end.")
+    src_end_ip6: str | None = Field(default="::", description="Local proxy ID IPv6 end.")
+    src_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Local proxy ID subnet.")
+    src_subnet6: str | None = Field(default="::/0", description="Local proxy ID IPv6 subnet.")
+    src_port: int | None = Field(ge=0, le=65535, default=0, description="Quick mode source port (1 - 65535 or 0 for all).")
+    dst_name: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    dst_name6: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    dst_addr_type: str | Phase2InterfaceDstAddrTypeEnum | None = Field(default="subnet", description="Remote proxy ID type.")
+    dst_start_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 start.")
+    dst_start_ip6: str | None = Field(default="::", description="Remote proxy ID IPv6 start.")
+    dst_end_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 end.")
+    dst_end_ip6: str | None = Field(default="::", description="Remote proxy ID IPv6 end.")
+    dst_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Remote proxy ID IPv4 subnet.")
+    dst_subnet6: str | None = Field(default="::/0", description="Remote proxy ID IPv6 subnet.")
+    dst_port: int | None = Field(ge=0, le=65535, default=0, description="Quick mode destination port (1 - 65535 or 0 for all).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -429,7 +534,7 @@ class Phase2InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "phase1name", None)
@@ -478,7 +583,7 @@ class Phase2InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "src_name", None)
@@ -529,7 +634,7 @@ class Phase2InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "src_name6", None)
@@ -580,7 +685,7 @@ class Phase2InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dst_name", None)
@@ -631,7 +736,7 @@ class Phase2InterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dst_name6", None)
@@ -670,12 +775,16 @@ class Phase2InterfaceModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_phase1name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_src_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_src_name6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dst_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dst_name6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_src_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_src_name6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dst_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dst_name6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -697,5 +806,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.803817Z
+# Generated: 2026-01-14T22:43:34.690876Z
 # ============================================================================

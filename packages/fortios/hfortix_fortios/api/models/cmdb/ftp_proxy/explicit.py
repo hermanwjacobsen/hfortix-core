@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -35,7 +35,7 @@ class ExplicitSslCert(BaseModel):
 # ============================================================================
 
 
-class ExplicitSsl_dh_bitsEnum(str, Enum):
+class ExplicitSslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
     VALUE_768 = "768"
     VALUE_1024 = "1024"
@@ -54,7 +54,18 @@ class ExplicitModel(BaseModel):
 
     Configure explicit FTP proxy settings.
 
-    Validation Rules:        - status: pattern=        - incoming_port: pattern=        - incoming_ip: pattern=        - outgoing_ip: pattern=        - sec_default_action: pattern=        - server_data_mode: pattern=        - ssl: pattern=        - ssl_cert: pattern=        - ssl_dh_bits: pattern=        - ssl_algorithm: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - incoming_port: pattern=
+        - incoming_ip: pattern=
+        - outgoing_ip: pattern=
+        - sec_default_action: pattern=
+        - server_data_mode: pattern=
+        - ssl: pattern=
+        - ssl_cert: pattern=
+        - ssl_dh_bits: pattern=
+        - ssl_algorithm: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -66,7 +77,17 @@ class ExplicitModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTP proxy.")    incoming_port: str | None = Field(default="", description="Accept incoming FTP requests on one or more ports.")    incoming_ip: str | None = Field(default="0.0.0.0", description="Accept incoming FTP requests from this IP address. An interface must have this IP address.")    outgoing_ip: str | None = Field(default="", description="Outgoing FTP requests will leave from this IP address. An interface must have this IP address.")    sec_default_action: Literal["accept", "deny"] | None = Field(default="deny", description="Accept or deny explicit FTP proxy sessions when no FTP proxy firewall policy exists.")    server_data_mode: Literal["client", "passive"] | None = Field(default="client", description="Determine mode of data session on FTP server side.")    ssl: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTPS proxy.")    ssl_cert: list[ExplicitSslCert] = Field(default=None, description="List of certificate names to use for SSL connections to this server.")    ssl_dh_bits: ExplicitSslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTP proxy.")
+    incoming_port: str | None = Field(default="", description="Accept incoming FTP requests on one or more ports.")
+    incoming_ip: str | None = Field(default="0.0.0.0", description="Accept incoming FTP requests from this IP address. An interface must have this IP address.")
+    outgoing_ip: str | None = Field(default="", description="Outgoing FTP requests will leave from this IP address. An interface must have this IP address.")
+    sec_default_action: Literal["accept", "deny"] | None = Field(default="deny", description="Accept or deny explicit FTP proxy sessions when no FTP proxy firewall policy exists.")
+    server_data_mode: Literal["client", "passive"] | None = Field(default="client", description="Determine mode of data session on FTP server side.")
+    ssl: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the explicit FTPS proxy.")
+    ssl_cert: list[ExplicitSslCert] | None = Field(default=None, description="List of certificate names to use for SSL connections to this server.")
+    ssl_dh_bits: str | ExplicitSslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")
+    ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -130,7 +151,7 @@ class ExplicitModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ftp_proxy.explicit.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ssl_cert", [])
@@ -176,7 +197,7 @@ class ExplicitModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ssl_cert_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -199,5 +220,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.359141Z
+# Generated: 2026-01-14T22:43:35.421393Z
 # ============================================================================

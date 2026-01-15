@@ -76,7 +76,16 @@ class AutomationStitchModel(BaseModel):
 
     Automation stitches.
 
-    Validation Rules:        - name: max_length=35 pattern=        - description: max_length=255 pattern=        - status: pattern=        - trigger: max_length=35 pattern=        - condition: pattern=        - condition_logic: pattern=        - actions: pattern=        - destination: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - description: max_length=255 pattern=
+        - status: pattern=
+        - trigger: max_length=35 pattern=
+        - condition: pattern=
+        - condition_logic: pattern=
+        - actions: pattern=
+        - destination: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -88,7 +97,15 @@ class AutomationStitchModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Name.")    description: str | None = Field(max_length=255, default=None, description="Description.")    status: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable this stitch.")    trigger: str = Field(max_length=35, default="", description="Trigger name.")  # datasource: ['system.automation-trigger.name']    condition: list[AutomationStitchCondition] = Field(default=None, description="Automation conditions.")    condition_logic: Literal["and", "or"] = Field(default="and", description="Apply AND/OR logic to the specified automation conditions.")    actions: list[AutomationStitchActions] = Field(default=None, description="Configure stitch actions.")    destination: list[AutomationStitchDestination] = Field(default=None, description="Serial number/HA group-name of destination devices.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Name.")
+    description: str | None = Field(max_length=255, default=None, description="Description.")
+    status: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable this stitch.")
+    trigger: str = Field(max_length=35, default="", description="Trigger name.")  # datasource: ['system.automation-trigger.name']
+    condition: list[AutomationStitchCondition] | None = Field(default=None, description="Automation conditions.")
+    condition_logic: Literal["and", "or"] = Field(default="and", description="Apply AND/OR logic to the specified automation conditions.")
+    actions: list[AutomationStitchActions] | None = Field(default=None, description="Configure stitch actions.")
+    destination: list[AutomationStitchDestination] | None = Field(default=None, description="Serial number/HA group-name of destination devices.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -167,7 +184,7 @@ class AutomationStitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_stitch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "trigger", None)
@@ -216,7 +233,7 @@ class AutomationStitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_stitch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "condition", [])
@@ -274,7 +291,7 @@ class AutomationStitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_stitch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "actions", [])
@@ -332,7 +349,7 @@ class AutomationStitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_stitch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "destination", [])
@@ -378,11 +395,14 @@ class AutomationStitchModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_trigger_references(client)
-        all_errors.extend(errors)        errors = await self.validate_condition_references(client)
-        all_errors.extend(errors)        errors = await self.validate_actions_references(client)
-        all_errors.extend(errors)        errors = await self.validate_destination_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_condition_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_actions_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_destination_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -404,5 +424,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.400279Z
+# Generated: 2026-01-14T22:43:37.864232Z
 # ============================================================================

@@ -5,9 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.63] - 2026-01-14
 
 ### Fixed
+- **Endpoint Naming: Builtins no longer get underscore suffix** (`schema_parser.py`, `generate_tests.py`)
+  - Endpoint attributes like `list`, `filter`, `set` are now accessed without underscore suffix
+  - Only Python **keywords** (`global`, `class`, `import`) need underscore suffix
+  - Changed: `fgt.api.cmdb.application.list_` → `fgt.api.cmdb.application.list`
+  - Changed: `fgt.api.cmdb.log.syslogd.filter_` → `fgt.api.cmdb.log.syslogd.filter`
+  - Keywords still correctly use underscore: `fgt.api.cmdb.system.global_` (unchanged)
+
+## [0.5.62] - 2026-01-14
+
+### Fixed
+- **Test Generator: Fixed validator function name double underscore** (`generate_tests.py`, `test_basic.py.j2`)
+  - Test generator now uses shared `kebab_to_snake` from `utils.naming` which collapses multiple underscores
+  - Fixed `validate_system_global__post` → `validate_system_global_post` (single underscore)
+  - Fixed validator test to use `validate_{path}_post` instead of non-existent `validate_{name}_create`
+  - Eliminated 2 test failures for `global` endpoints in `system` and `web_proxy` categories
+
+- **Stub Generator: Fixed implementation functions in stub files** (`endpoint_class.pyi.j2`, `models.pyi`)
+  - Added missing `@overload` decorators to 6 Dict mode default methods (POST, PUT, DELETE)
+  - Removed non-`@overload` implementation of `process_response` in `models.pyi`
+  - Reduced mypy `[misc]` errors from 4,041 to 6
+
+- **Stub Generator: Fixed duplicate property definitions** (`endpoint_class.pyi.j2`)
+  - Added conditional checks to avoid duplicating `status` and `vdom` properties when they exist in schema
+  - Reduced mypy `[no-redef]` errors from 146 to 1
+
+- **Model Generator: Fixed missing Literal imports** (`model_generator.py`)
+  - `_get_imports_needed()` now checks child table fields for `Literal` usage
+  - Fixed 95 `[name-defined]` errors for missing `Literal` import
+
+- **Model Generator: Fixed list field type annotations** (`model_generator.py`)
+  - Changed list field types from `list[ChildModel]` to `list[ChildModel] | None`
+  - Allows `None` defaults in Pydantic `Field()` without type mismatch
+  - Reduced mypy `[arg-type]` errors from 1,081 to 86
+
+- **Model Generator: Added type annotations to validation methods** (`pydantic_model.py.j2`)
+  - Added `list[str]` type annotation to `errors` and `all_errors` variables
+  - Reduced mypy `[var-annotated]` errors from 1,092 to 0
+
+- **Core: Added type annotations to `fmt.py`** (`packages/core/hfortix_core/fmt.py`)
+  - Added type annotations to `all_keys` and `result` variables in `to_listdict()`
+
 - **Model Generator: Fixed enum syntax errors** (`pydantic_model.py.j2`, `model_generator.py`)
   - Enum values were rendered on a single line causing syntax errors
   - Changed `{%- endfor %}` to `{% endfor %}` to preserve newlines between enum values
@@ -34,7 +75,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `from_fortios_response()` method was using undefined `schema.pydantic_class_name`
   - Changed to `schema.class_name + "Model"` for correct forward reference
 
+- **Model Generator: Fixed Python builtin/keyword name conflicts** (`utils/naming.py`, `schema_parser.py`)
+  - Added `PYTHON_BUILTINS` set with 50+ reserved names (`list`, `dict`, `set`, `type`, `id`, etc.)
+  - Added common dict/object method names (`keys`, `values`, `items`, `get`, `update`, `pop`, etc.)
+  - Field names matching builtins now suffixed with underscore: `list` → `list_`, `values` → `values_`
+  - File names matching builtins also suffixed: `set.py` → `set_.py`, `filter.py` → `filter_.py`
+  - Fixed mypy `[valid-type]` errors (12 → 0) and `[no-redef]` errors (1 → 0)
+
+- **Model Generator: Fixed PascalCase conversion for enum/child class names** (`model_generator.py`, `pydantic_model.py.j2`)
+  - Added `_to_pascal()` filter for consistent snake_case/kebab-case → PascalCase conversion
+  - Fixed mismatch: enum class `Control_message_offloadEnum` vs reference `ControlMessageOffloadEnum`
+  - Now handles hyphens in names: `nac-quar` → `NacQuar` (previously caused syntax error)
+  - Reduced mypy `[name-defined]` errors from 815 to 0
+
+- **Model Generator: Fixed optional field type annotations** (`model_generator.py`)
+  - Added `default_will_be_none` logic to properly type optional fields
+  - Fields with invalid defaults (empty string for Literal, non-numeric string for int) now include `| None`
+  - Literal and Enum types now include `| None` when default will be None
+  - Reduced mypy `[assignment]` errors from 130+ to 0
+
+- **Model Generator: Fixed non-numeric string defaults for int fields** (`model_generator.py`)
+  - Int fields with string defaults like `"unspecified"` now use `default=None` instead
+  - String defaults that can be parsed as integers are converted: `"0"` → `0`
+  - Reduced mypy `[assignment]` errors for int fields
+
+- **Model Generator: Fixed string defaults for list fields** (`model_generator.py`)
+  - List fields with string defaults now use `default=None` instead
+  - Properly sets `| None` on list field types when default will be None
+
+- **Model Generator: Fixed duplicate enum member definitions** (`model_generator.py`)
+  - Schema options are now deduplicated while preserving order
+  - Prevents `Attempted to reuse member name` errors in enums
+  - Reduced mypy `[misc]` errors from 6 to 4
+
+- **Fixed `performance_test.py` credential validation** (`performance_test.py`)
+  - Added validation check before sync test: `if username is None or password is None: raise ValueError(...)`
+  - Added validation check before async concurrent test with captured credentials
+  - Uses conditional `FortiOS` instantiation based on token vs username/password auth
+  - Fixes Pylance/mypy `[arg-type]` errors for `str | None` passed to `FortiOS()`
+
+- **Test Generator: Fixed Python builtin method naming in paths** (`helpers/generate_tests.py`)
+  - Only endpoint METHOD names get underscore suffix for builtins (`list_`, `clear_`, `update_`)
+  - Module/directory names in path are NOT renamed (`license` stays `license`, not `license_`)
+  - Added `PYTHON_BUILTIN_METHODS` set for method-specific builtins (`list`, `dict`, `set`, `get`, `update`, `pop`, `clear`, `copy`, `keys`, `values`, `items`, `format`, `filter`)
+  - Fixed 40+ test collection errors for paths like `fgt.api.monitor.license_` (should be `license`)
+
 ### Changed
+- **Overall mypy error reduction: 20,200+ → 4,802 errors (76% reduction)**
+  - Remaining 4,798 errors are `[overload-overlap]` and `[overload-cannot-match]` (known mypy limitations)
+  - Only 4 `[misc]` errors remain (related to `__new__` return type in overloaded client stubs)
+  - All fixable generator issues resolved
+
 - **Model Generator: Improved code style compliance** (`pydantic_model.py.j2`, `model_generator.py`)
   - Added post-processing to strip trailing whitespace from generated files
   - Ensures newline at end of file (PEP 8)

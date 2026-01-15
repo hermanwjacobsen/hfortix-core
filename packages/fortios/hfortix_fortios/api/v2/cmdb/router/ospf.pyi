@@ -74,13 +74,13 @@ class OspfAreaItem(TypedDict):
     default_cost: int  # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 4294967295
     nssa_translator_role: Literal["candidate", "never", "always"]  # NSSA translator role type. | Default: candidate
     stub_type: Literal["no-summary", "summary"]  # Stub summary setting. | Default: summary
-    type: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
+    type_: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
     nssa_default_information_originate: Literal["enable", "always", "disable"]  # Redistribute, advertise, or do not originate Type- | Default: disable
     nssa_default_information_originate_metric: int  # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
     nssa_default_information_originate_metric_type: Literal["1", "2"]  # OSPF metric type for default routes. | Default: 2
     nssa_redistribution: Literal["enable", "disable"]  # Enable/disable redistribute into NSSA area. | Default: enable
     comments: str  # Comment. | MaxLen: 255
-    range: str  # OSPF area range configuration.
+    range_: str  # OSPF area range configuration.
     virtual_link: str  # OSPF virtual link configuration.
     filter_list: str  # OSPF area filter-list configuration.
 
@@ -218,7 +218,7 @@ class OspfAreaObject:
     # Stub summary setting. | Default: summary
     stub_type: Literal["no-summary", "summary"]
     # Area type setting. | Default: regular
-    type: Literal["regular", "nssa", "stub"]
+    type_: Literal["regular", "nssa", "stub"]
     # Redistribute, advertise, or do not originate Type-7 default | Default: disable
     nssa_default_information_originate: Literal["enable", "always", "disable"]
     # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
@@ -230,7 +230,7 @@ class OspfAreaObject:
     # Comment. | MaxLen: 255
     comments: str
     # OSPF area range configuration.
-    range: str
+    range_: str
     # OSPF virtual link configuration.
     virtual_link: str
     # OSPF area filter-list configuration.
@@ -614,6 +614,10 @@ class Ospf:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -634,6 +638,7 @@ class Ospf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OspfResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -651,6 +656,7 @@ class Ospf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OspfResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -667,6 +673,7 @@ class Ospf:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OspfResponse: ...
     
     # ================================================================
@@ -709,7 +716,7 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OspfObject: ...
     
@@ -728,7 +735,7 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OspfObject: ...
     
@@ -828,23 +835,6 @@ class Ospf:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OspfObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -891,6 +881,7 @@ class Ospf:
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OspfObject: ...
@@ -1020,48 +1011,7 @@ class Ospf:
         distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OspfPayload | None = ...,
-        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
-        auto_cost_ref_bandwidth: int | None = ...,
-        distance_external: int | None = ...,
-        distance_inter_area: int | None = ...,
-        distance_intra_area: int | None = ...,
-        database_overflow: Literal["enable", "disable"] | None = ...,
-        database_overflow_max_lsas: int | None = ...,
-        database_overflow_time_to_recover: int | None = ...,
-        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
-        default_information_metric: int | None = ...,
-        default_information_metric_type: Literal["1", "2"] | None = ...,
-        default_information_route_map: str | None = ...,
-        default_metric: int | None = ...,
-        distance: int | None = ...,
-        lsa_refresh_interval: int | None = ...,
-        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
-        router_id: str | None = ...,
-        spf_timers: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        distribute_list_in: str | None = ...,
-        distribute_route_map_in: str | None = ...,
-        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
-        restart_period: int | None = ...,
-        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1123,8 +1073,6 @@ class Ospf:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1152,6 +1100,10 @@ class OspfDictMode:
     By default returns OspfResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OspfObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1378,10 +1330,12 @@ class OspfDictMode:
         distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OspfPayload | None = ...,
@@ -1481,8 +1435,6 @@ class OspfDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1506,6 +1458,10 @@ class OspfObjectMode:
     By default returns OspfObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OspfResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1776,10 +1732,12 @@ class OspfObjectMode:
         distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OspfObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OspfPayload | None = ...,
@@ -1879,8 +1837,6 @@ class OspfObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

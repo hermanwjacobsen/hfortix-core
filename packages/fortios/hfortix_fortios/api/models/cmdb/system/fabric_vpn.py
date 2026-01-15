@@ -58,7 +58,7 @@ class FabricVpnAdvertisedSubnets(BaseModel):
     access: Literal["inbound", "bidirectional"] = Field(default="inbound", description="Access policy direction.")
     bgp_network: int | None = Field(ge=0, le=4294967295, default=0, description="Underlying BGP network.")  # datasource: ['router.bgp.network.id']
     firewall_address: str | None = Field(max_length=79, default="", description="Underlying firewall address.")  # datasource: ['firewall.address.name']
-    policies: int | None = Field(ge=0, le=4294967295, default="", description="Underlying policies.")  # datasource: ['firewall.policy.policyid']
+    policies: int | None = Field(ge=0, le=4294967295, default=None, description="Underlying policies.")  # datasource: ['firewall.policy.policyid']
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -76,7 +76,22 @@ class FabricVpnModel(BaseModel):
 
     Setup for self orchestrated fabric auto discovery VPN.
 
-    Validation Rules:        - status: pattern=        - sync_mode: pattern=        - branch_name: max_length=35 pattern=        - policy_rule: pattern=        - vpn_role: pattern=        - overlays: pattern=        - advertised_subnets: pattern=        - loopback_address_block: pattern=        - loopback_interface: max_length=15 pattern=        - loopback_advertised_subnet: min=0 max=4294967295 pattern=        - psksecret: pattern=        - bgp_as: pattern=        - sdwan_zone: max_length=35 pattern=        - health_checks: max_length=35 pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - sync_mode: pattern=
+        - branch_name: max_length=35 pattern=
+        - policy_rule: pattern=
+        - vpn_role: pattern=
+        - overlays: pattern=
+        - advertised_subnets: pattern=
+        - loopback_address_block: pattern=
+        - loopback_interface: max_length=15 pattern=
+        - loopback_advertised_subnet: min=0 max=4294967295 pattern=
+        - psksecret: pattern=
+        - bgp_as: pattern=
+        - sdwan_zone: max_length=35 pattern=
+        - health_checks: max_length=35 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -88,7 +103,21 @@ class FabricVpnModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable Fabric VPN.")    sync_mode: Literal["enable", "disable"] = Field(default="enable", description="Setting synchronized by fabric or manual.")    branch_name: str | None = Field(max_length=35, default="", description="Branch name.")    policy_rule: Literal["health-check", "manual", "auto"] | None = Field(default="health-check", description="Policy creation rule.")    vpn_role: Literal["hub", "spoke"] = Field(default="hub", description="Fabric VPN role.")    overlays: list[FabricVpnOverlays] = Field(default=None, description="Local overlay interfaces table.")    advertised_subnets: list[FabricVpnAdvertisedSubnets] = Field(default=None, description="Local advertised subnets.")    loopback_address_block: Any = Field(default="0.0.0.0 0.0.0.0", description="IPv4 address and subnet mask for hub's loopback address, syntax: X.X.X.X/24.")    loopback_interface: str | None = Field(max_length=15, default="", description="Loopback interface.")  # datasource: ['system.interface.name']    loopback_advertised_subnet: int | None = Field(ge=0, le=4294967295, default=0, description="Loopback advertised subnet reference.")  # datasource: ['system.fabric-vpn.advertised-subnets.id']    psksecret: Any = Field(description="Pre-shared secret for ADVPN.")    bgp_as: str = Field(default="", description="BGP Router AS number, asplain/asdot/asdot+ format.")    sdwan_zone: str | None = Field(max_length=35, default="", description="Reference to created SD-WAN zone.")  # datasource: ['system.sdwan.zone.name']    health_checks: str | None = Field(max_length=35, default="", description="Underlying health checks.")  # datasource: ['system.sdwan.health-check.name']    # ========================================================================
+    status: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable Fabric VPN.")
+    sync_mode: Literal["enable", "disable"] = Field(default="enable", description="Setting synchronized by fabric or manual.")
+    branch_name: str | None = Field(max_length=35, default="", description="Branch name.")
+    policy_rule: Literal["health-check", "manual", "auto"] | None = Field(default="health-check", description="Policy creation rule.")
+    vpn_role: Literal["hub", "spoke"] = Field(default="hub", description="Fabric VPN role.")
+    overlays: list[FabricVpnOverlays] | None = Field(default=None, description="Local overlay interfaces table.")
+    advertised_subnets: list[FabricVpnAdvertisedSubnets] | None = Field(default=None, description="Local advertised subnets.")
+    loopback_address_block: Any = Field(default="0.0.0.0 0.0.0.0", description="IPv4 address and subnet mask for hub's loopback address, syntax: X.X.X.X/24.")
+    loopback_interface: str | None = Field(max_length=15, default="", description="Loopback interface.")  # datasource: ['system.interface.name']
+    loopback_advertised_subnet: int | None = Field(ge=0, le=4294967295, default=0, description="Loopback advertised subnet reference.")  # datasource: ['system.fabric-vpn.advertised-subnets.id']
+    psksecret: Any = Field(description="Pre-shared secret for ADVPN.")
+    bgp_as: str = Field(default="", description="BGP Router AS number, asplain/asdot/asdot+ format.")
+    sdwan_zone: str | None = Field(max_length=35, default="", description="Reference to created SD-WAN zone.")  # datasource: ['system.sdwan.zone.name']
+    health_checks: str | None = Field(max_length=35, default="", description="Underlying health checks.")  # datasource: ['system.sdwan.health-check.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -212,7 +241,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "overlays", [])
@@ -270,7 +299,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "advertised_subnets", [])
@@ -328,7 +357,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "loopback_interface", None)
@@ -377,7 +406,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "loopback_advertised_subnet", None)
@@ -426,7 +455,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sdwan_zone", None)
@@ -475,7 +504,7 @@ class FabricVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fabric_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "health_checks", None)
@@ -512,13 +541,18 @@ class FabricVpnModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_overlays_references(client)
-        all_errors.extend(errors)        errors = await self.validate_advertised_subnets_references(client)
-        all_errors.extend(errors)        errors = await self.validate_loopback_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_loopback_advertised_subnet_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sdwan_zone_references(client)
-        all_errors.extend(errors)        errors = await self.validate_health_checks_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_advertised_subnets_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_loopback_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_loopback_advertised_subnet_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sdwan_zone_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_health_checks_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -540,5 +574,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.503142Z
+# Generated: 2026-01-14T22:43:37.991818Z
 # ============================================================================

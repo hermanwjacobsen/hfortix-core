@@ -146,7 +146,6 @@ class FctemsOverrideObject:
     verifying_ca: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -169,6 +168,10 @@ class FctemsOverride:
     Primary Key: ems-id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -189,6 +192,7 @@ class FctemsOverride:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FctemsOverrideResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -206,6 +210,7 @@ class FctemsOverride:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FctemsOverrideResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -222,6 +227,7 @@ class FctemsOverride:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[FctemsOverrideResponse]: ...
     
     # ================================================================
@@ -264,7 +270,7 @@ class FctemsOverride:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
     
@@ -283,7 +289,7 @@ class FctemsOverride:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FctemsOverrideObject]: ...
     
@@ -383,23 +389,6 @@ class FctemsOverride:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        ems_id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FctemsOverrideObject | list[FctemsOverrideObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -437,6 +426,7 @@ class FctemsOverride:
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
@@ -539,39 +529,7 @@ class FctemsOverride:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: FctemsOverridePayload | None = ...,
-        ems_id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        dirty_reason: Literal["none", "mismatched-ems-sn"] | None = ...,
-        fortinetone_cloud_authentication: Literal["enable", "disable"] | None = ...,
-        cloud_authentication_access_key: str | None = ...,
-        server: str | None = ...,
-        https_port: int | None = ...,
-        serial_number: str | None = ...,
-        tenant_id: str | None = ...,
-        source_ip: str | None = ...,
-        pull_sysinfo: Literal["enable", "disable"] | None = ...,
-        pull_vulnerabilities: Literal["enable", "disable"] | None = ...,
-        pull_tags: Literal["enable", "disable"] | None = ...,
-        pull_malware_hash: Literal["enable", "disable"] | None = ...,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = ...,
-        call_timeout: int | None = ...,
-        out_of_sync_threshold: int | None = ...,
-        send_tags_to_all_vdoms: Literal["enable", "disable"] | None = ...,
-        websocket_override: Literal["enable", "disable"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        trust_ca_cn: Literal["enable", "disable"] | None = ...,
-        verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -606,6 +564,7 @@ class FctemsOverride:
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
@@ -708,39 +667,7 @@ class FctemsOverride:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FctemsOverridePayload | None = ...,
-        ems_id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        dirty_reason: Literal["none", "mismatched-ems-sn"] | None = ...,
-        fortinetone_cloud_authentication: Literal["enable", "disable"] | None = ...,
-        cloud_authentication_access_key: str | None = ...,
-        server: str | None = ...,
-        https_port: int | None = ...,
-        serial_number: str | None = ...,
-        tenant_id: str | None = ...,
-        source_ip: str | None = ...,
-        pull_sysinfo: Literal["enable", "disable"] | None = ...,
-        pull_vulnerabilities: Literal["enable", "disable"] | None = ...,
-        pull_tags: Literal["enable", "disable"] | None = ...,
-        pull_malware_hash: Literal["enable", "disable"] | None = ...,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = ...,
-        call_timeout: int | None = ...,
-        out_of_sync_threshold: int | None = ...,
-        send_tags_to_all_vdoms: Literal["enable", "disable"] | None = ...,
-        websocket_override: Literal["enable", "disable"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        trust_ca_cn: Literal["enable", "disable"] | None = ...,
-        verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -751,6 +678,7 @@ class FctemsOverride:
         ems_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
@@ -781,14 +709,7 @@ class FctemsOverride:
         self,
         ems_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -841,8 +762,6 @@ class FctemsOverride:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -870,6 +789,10 @@ class FctemsOverrideDictMode:
     By default returns FctemsOverrideResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FctemsOverrideObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1068,10 +991,12 @@ class FctemsOverrideDictMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: FctemsOverridePayload | None = ...,
@@ -1203,10 +1128,12 @@ class FctemsOverrideDictMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FctemsOverridePayload | None = ...,
@@ -1266,10 +1193,12 @@ class FctemsOverrideDictMode:
         self,
         ems_id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         ems_id: int,
@@ -1326,8 +1255,6 @@ class FctemsOverrideDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1351,6 +1278,10 @@ class FctemsOverrideObjectMode:
     By default returns FctemsOverrideObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FctemsOverrideResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1584,10 +1515,12 @@ class FctemsOverrideObjectMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: FctemsOverridePayload | None = ...,
@@ -1754,10 +1687,12 @@ class FctemsOverrideObjectMode:
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FctemsOverridePayload | None = ...,
@@ -1828,10 +1763,12 @@ class FctemsOverrideObjectMode:
         self,
         ems_id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FctemsOverrideObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         ems_id: int,
@@ -1888,8 +1825,6 @@ class FctemsOverrideObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

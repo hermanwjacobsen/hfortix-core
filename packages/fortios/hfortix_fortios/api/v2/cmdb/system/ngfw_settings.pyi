@@ -77,6 +77,10 @@ class NgfwSettings:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -97,6 +101,7 @@ class NgfwSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NgfwSettingsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -114,6 +119,7 @@ class NgfwSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NgfwSettingsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -130,6 +136,7 @@ class NgfwSettings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> NgfwSettingsResponse: ...
     
     # ================================================================
@@ -172,7 +179,7 @@ class NgfwSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NgfwSettingsObject: ...
     
@@ -191,7 +198,7 @@ class NgfwSettings:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> NgfwSettingsObject: ...
     
@@ -291,23 +298,6 @@ class NgfwSettings:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> NgfwSettingsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -324,6 +314,7 @@ class NgfwSettings:
         tcp_halfopen_match_timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> NgfwSettingsObject: ...
@@ -363,18 +354,7 @@ class NgfwSettings:
         tcp_match_timeout: int | None = ...,
         tcp_halfopen_match_timeout: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: NgfwSettingsPayload | None = ...,
-        match_timeout: int | None = ...,
-        tcp_match_timeout: int | None = ...,
-        tcp_halfopen_match_timeout: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -406,8 +386,6 @@ class NgfwSettings:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -435,6 +413,10 @@ class NgfwSettingsDictMode:
     By default returns NgfwSettingsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return NgfwSettingsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -571,10 +553,12 @@ class NgfwSettingsDictMode:
         tcp_match_timeout: int | None = ...,
         tcp_halfopen_match_timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: NgfwSettingsPayload | None = ...,
@@ -614,8 +598,6 @@ class NgfwSettingsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -639,6 +621,10 @@ class NgfwSettingsObjectMode:
     By default returns NgfwSettingsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return NgfwSettingsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -789,10 +775,12 @@ class NgfwSettingsObjectMode:
         tcp_match_timeout: int | None = ...,
         tcp_halfopen_match_timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> NgfwSettingsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: NgfwSettingsPayload | None = ...,
@@ -832,8 +820,6 @@ class NgfwSettingsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -65,7 +65,27 @@ class ExtenderModel(BaseModel):
 
     Extender controller configuration.
 
-    Validation Rules:        - name: max_length=19 pattern=        - id: max_length=19 pattern=        - authorized: pattern=        - ext_name: max_length=31 pattern=        - description: max_length=255 pattern=        - vdom: min=0 max=4294967295 pattern=        - device_id: min=0 max=4294967295 pattern=        - extension_type: pattern=        - profile: max_length=31 pattern=        - override_allowaccess: pattern=        - allowaccess: pattern=        - override_login_password_change: pattern=        - login_password_change: pattern=        - login_password: max_length=27 pattern=        - override_enforce_bandwidth: pattern=        - enforce_bandwidth: pattern=        - bandwidth_limit: min=1 max=16776000 pattern=        - wan_extension: pattern=        - firmware_provision_latest: pattern=    """
+    Validation Rules:
+        - name: max_length=19 pattern=
+        - id: max_length=19 pattern=
+        - authorized: pattern=
+        - ext_name: max_length=31 pattern=
+        - description: max_length=255 pattern=
+        - vdom: min=0 max=4294967295 pattern=
+        - device_id: min=0 max=4294967295 pattern=
+        - extension_type: pattern=
+        - profile: max_length=31 pattern=
+        - override_allowaccess: pattern=
+        - allowaccess: pattern=
+        - override_login_password_change: pattern=
+        - login_password_change: pattern=
+        - login_password: max_length=27 pattern=
+        - override_enforce_bandwidth: pattern=
+        - enforce_bandwidth: pattern=
+        - bandwidth_limit: min=1 max=16776000 pattern=
+        - wan_extension: pattern=
+        - firmware_provision_latest: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -77,7 +97,26 @@ class ExtenderModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=19, default="", description="FortiExtender entry name.")    id: str = Field(max_length=19, default="", description="FortiExtender serial number.")    authorized: Literal["discovered", "disable", "enable"] = Field(default="discovered", description="FortiExtender Administration (enable or disable).")    ext_name: str | None = Field(max_length=31, default="", description="FortiExtender name.")    description: str | None = Field(max_length=255, default="", description="Description.")    vdom: int | None = Field(ge=0, le=4294967295, default=1, description="VDOM.")    device_id: int | None = Field(ge=0, le=4294967295, default=1026, description="Device ID.")    extension_type: Literal["wan-extension", "lan-extension"] = Field(default="", description="Extension type for this FortiExtender.")    profile: str | None = Field(max_length=31, default="", description="FortiExtender profile configuration.")  # datasource: ['extension-controller.extender-profile.name']    override_allowaccess: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile management access configuration.")    allowaccess: ExtenderAllowaccessEnum | None = Field(default="", description="Control management access to the managed extender. Separate entries with a space.")    override_login_password_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile login-password (administrator password) setting.")    login_password_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed extender (yes, default, or no, default = no).")    login_password: Any = Field(max_length=27, description="Set the managed extender's administrator password.")    override_enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile enforce-bandwidth setting.")    enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforcement of bandwidth on LAN extension interface.")    bandwidth_limit: int = Field(ge=1, le=16776000, default=1024, description="FortiExtender LAN extension bandwidth limit (Mbps).")    wan_extension: list[ExtenderWanExtension] = Field(default=None, description="FortiExtender wan extension configuration.")    firmware_provision_latest: Literal["disable", "once"] | None = Field(default="disable", description="Enable/disable one-time automatic provisioning of the latest firmware version.")    # ========================================================================
+    name: str = Field(max_length=19, default="", description="FortiExtender entry name.")
+    id: str = Field(max_length=19, default="", description="FortiExtender serial number.")
+    authorized: Literal["discovered", "disable", "enable"] = Field(default="discovered", description="FortiExtender Administration (enable or disable).")
+    ext_name: str | None = Field(max_length=31, default="", description="FortiExtender name.")
+    description: str | None = Field(max_length=255, default="", description="Description.")
+    vdom: int | None = Field(ge=0, le=4294967295, default=1, description="VDOM.")
+    device_id: int | None = Field(ge=0, le=4294967295, default=1026, description="Device ID.")
+    extension_type: Literal["wan-extension", "lan-extension"] | None = Field(default=None, description="Extension type for this FortiExtender.")
+    profile: str | None = Field(max_length=31, default="", description="FortiExtender profile configuration.")  # datasource: ['extension-controller.extender-profile.name']
+    override_allowaccess: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile management access configuration.")
+    allowaccess: str | ExtenderAllowaccessEnum | None = Field(default=None, description="Control management access to the managed extender. Separate entries with a space.")
+    override_login_password_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile login-password (administrator password) setting.")
+    login_password_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed extender (yes, default, or no, default = no).")
+    login_password: Any = Field(max_length=27, description="Set the managed extender's administrator password.")
+    override_enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to override the extender profile enforce-bandwidth setting.")
+    enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforcement of bandwidth on LAN extension interface.")
+    bandwidth_limit: int = Field(ge=1, le=16776000, default=1024, description="FortiExtender LAN extension bandwidth limit (Mbps).")
+    wan_extension: list[ExtenderWanExtension] | None = Field(default=None, description="FortiExtender wan extension configuration.")
+    firmware_provision_latest: Literal["disable", "once"] | None = Field(default="disable", description="Enable/disable one-time automatic provisioning of the latest firmware version.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -156,7 +195,7 @@ class ExtenderModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.extension_controller.extender.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "profile", None)
@@ -205,7 +244,7 @@ class ExtenderModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.extension_controller.extender.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "wan_extension", [])
@@ -251,9 +290,10 @@ class ExtenderModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_wan_extension_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_wan_extension_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -275,5 +315,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.311372Z
+# Generated: 2026-01-14T22:43:37.753873Z
 # ============================================================================

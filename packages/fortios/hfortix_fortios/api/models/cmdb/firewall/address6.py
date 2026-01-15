@@ -45,7 +45,7 @@ class Address6Tagging(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=63, default="", description="Tagging entry name.")
     category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    tags: list[dict[str, Any]] | None = Field(default=None, description="Tags.")
 
 
 class Address6SubnetSegment(BaseModel):
@@ -60,7 +60,7 @@ class Address6SubnetSegment(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     name: str = Field(max_length=63, default="", description="Name.")
-    type: Literal["any", "specific"] = Field(default="any", description="Subnet segment type.")
+    type_: Literal["any", "specific"] = Field(default="any", description="Subnet segment type.")
     value: str = Field(max_length=35, default="", description="Subnet segment value.")
 
 
@@ -83,7 +83,7 @@ class Address6List(BaseModel):
 
 
 class Address6TypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     IPPREFIX = "ipprefix"
     IPRANGE = "iprange"
     FQDN = "fqdn"
@@ -106,7 +106,37 @@ class Address6Model(BaseModel):
 
     Configure IPv6 firewall addresses.
 
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type: pattern=        - route_tag: min=1 max=4294967295 pattern=        - macaddr: pattern=        - sdn: max_length=35 pattern=        - ip6: pattern=        - wildcard: pattern=        - start_ip: pattern=        - end_ip: pattern=        - fqdn: max_length=255 pattern=        - country: max_length=2 pattern=        - cache_ttl: min=0 max=86400 pattern=        - color: min=0 max=32 pattern=        - obj_id: max_length=255 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - template: max_length=63 pattern=        - subnet_segment: pattern=        - host_type: pattern=        - host: pattern=        - tenant: max_length=35 pattern=        - epg_name: max_length=255 pattern=        - sdn_tag: max_length=15 pattern=        - filter: max_length=2047 pattern=        - list: pattern=        - sdn_addr_type: pattern=        - passive_fqdn_learning: pattern=        - fabric_object: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - uuid: pattern=
+        - type_: pattern=
+        - route_tag: min=1 max=4294967295 pattern=
+        - macaddr: pattern=
+        - sdn: max_length=35 pattern=
+        - ip6: pattern=
+        - wildcard: pattern=
+        - start_ip: pattern=
+        - end_ip: pattern=
+        - fqdn: max_length=255 pattern=
+        - country: max_length=2 pattern=
+        - cache_ttl: min=0 max=86400 pattern=
+        - color: min=0 max=32 pattern=
+        - obj_id: max_length=255 pattern=
+        - tagging: pattern=
+        - comment: max_length=255 pattern=
+        - template: max_length=63 pattern=
+        - subnet_segment: pattern=
+        - host_type: pattern=
+        - host: pattern=
+        - tenant: max_length=35 pattern=
+        - epg_name: max_length=255 pattern=
+        - sdn_tag: max_length=15 pattern=
+        - filter_: max_length=2047 pattern=
+        - list_: pattern=
+        - sdn_addr_type: pattern=
+        - passive_fqdn_learning: pattern=
+        - fabric_object: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -118,7 +148,36 @@ class Address6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="Address name.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    type: Address6TypeEnum | None = Field(default="ipprefix", description="Type of IPv6 address object (default = ipprefix).")    route_tag: int | None = Field(ge=1, le=4294967295, default=0, description="route-tag address.")    macaddr: list[Address6Macaddr] = Field(default=None, description="Multiple MAC address ranges.")    sdn: str | None = Field(max_length=35, default="", description="SDN.")  # datasource: ['system.sdn-connector.name']    ip6: str | None = Field(default="::/0", description="IPv6 address prefix (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx).")    wildcard: Any = Field(default=":: ::", description="IPv6 address and wildcard netmask.")    start_ip: str | None = Field(default="::", description="First IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")    end_ip: str | None = Field(default="::", description="Final IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")    country: str | None = Field(max_length=2, default="", description="IPv6 addresses associated to a specific country.")    cache_ttl: int | None = Field(ge=0, le=86400, default=0, description="Minimal TTL of individual IPv6 addresses in FQDN cache.")    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (range 1 to 32, default = 0, which sets the value to 1).")    obj_id: str | None = Field(max_length=255, default=None, description="Object ID for NSX.")    tagging: list[Address6Tagging] = Field(default=None, description="Config object tagging.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    template: str = Field(max_length=63, default="", description="IPv6 address template.")  # datasource: ['firewall.address6-template.name']    subnet_segment: list[Address6SubnetSegment] = Field(default=None, description="IPv6 subnet segments.")    host_type: Literal["any", "specific"] | None = Field(default="any", description="Host type.")    host: str | None = Field(default="::", description="Host Address.")    tenant: str | None = Field(max_length=35, default="", description="Tenant.")    epg_name: str | None = Field(max_length=255, default="", description="Endpoint group name.")    sdn_tag: str | None = Field(max_length=15, default="", description="SDN Tag.")    filter: str = Field(max_length=2047, description="Match criteria filter.")    list: list[Address6List] = Field(default=None, description="IP address list.")    sdn_addr_type: Literal["private", "public", "all"] | None = Field(default="private", description="Type of addresses to collect.")    passive_fqdn_learning: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).")    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="Address name.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    type_: str | Address6TypeEnum | None = Field(default="ipprefix", description="Type of IPv6 address object (default = ipprefix).")
+    route_tag: int | None = Field(ge=1, le=4294967295, default=0, description="route-tag address.")
+    macaddr: list[Address6Macaddr] | None = Field(default=None, description="Multiple MAC address ranges.")
+    sdn: str | None = Field(max_length=35, default="", description="SDN.")  # datasource: ['system.sdn-connector.name']
+    ip6: str | None = Field(default="::/0", description="IPv6 address prefix (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx).")
+    wildcard: Any = Field(default=":: ::", description="IPv6 address and wildcard netmask.")
+    start_ip: str | None = Field(default="::", description="First IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")
+    end_ip: str | None = Field(default="::", description="Final IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")
+    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")
+    country: str | None = Field(max_length=2, default="", description="IPv6 addresses associated to a specific country.")
+    cache_ttl: int | None = Field(ge=0, le=86400, default=0, description="Minimal TTL of individual IPv6 addresses in FQDN cache.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (range 1 to 32, default = 0, which sets the value to 1).")
+    obj_id: str | None = Field(max_length=255, default=None, description="Object ID for NSX.")
+    tagging: list[Address6Tagging] | None = Field(default=None, description="Config object tagging.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    template: str = Field(max_length=63, default="", description="IPv6 address template.")  # datasource: ['firewall.address6-template.name']
+    subnet_segment: list[Address6SubnetSegment] | None = Field(default=None, description="IPv6 subnet segments.")
+    host_type: Literal["any", "specific"] | None = Field(default="any", description="Host type.")
+    host: str | None = Field(default="::", description="Host Address.")
+    tenant: str | None = Field(max_length=35, default="", description="Tenant.")
+    epg_name: str | None = Field(max_length=255, default="", description="Endpoint group name.")
+    sdn_tag: str | None = Field(max_length=15, default="", description="SDN Tag.")
+    filter_: str = Field(max_length=2047, description="Match criteria filter.")
+    list_: list[Address6List] | None = Field(default=None, description="IP address list.")
+    sdn_addr_type: Literal["private", "public", "all"] | None = Field(default="private", description="Type of addresses to collect.")
+    passive_fqdn_learning: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).")
+    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -212,7 +271,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "sdn", None)
@@ -261,7 +320,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -319,7 +378,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "template", None)
@@ -356,10 +415,12 @@ class Address6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_sdn_references(client)
-        all_errors.extend(errors)        errors = await self.validate_tagging_references(client)
-        all_errors.extend(errors)        errors = await self.validate_template_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_tagging_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_template_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -381,5 +442,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.624210Z
+# Generated: 2026-01-14T22:43:39.449252Z
 # ============================================================================

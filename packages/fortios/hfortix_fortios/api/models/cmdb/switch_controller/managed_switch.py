@@ -61,7 +61,7 @@ class ManagedSwitchPorts(BaseModel):
     port_name: str = Field(max_length=15, default="", description="Switch port name.")
     port_owner: str | None = Field(max_length=15, default="", description="Switch port name.")
     switch_id: str | None = Field(max_length=35, default="", description="Switch id.")
-    speed: SpeedEnum | None = Field(default="auto", description="Switch port speed; default and available settings depend on hardware.")
+    speed: str | None = Field(default="auto", description="Switch port speed; default and available settings depend on hardware.")
     status: Literal["up", "down"] | None = Field(default="up", description="Switch port admin status: up or down.")
     poe_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PoE status.")
     ip_source_guard: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable IP source guard.")
@@ -91,7 +91,7 @@ class ManagedSwitchPorts(BaseModel):
     poe_max_power: str | None = Field(max_length=35, default="", description="PoE maximum power.")
     poe_mode_bt_cabable: int | None = Field(ge=0, le=1, default=0, description="PoE mode IEEE 802.3BT capable.")
     poe_port_mode: Literal["ieee802-3af", "ieee802-3at", "ieee802-3bt"] | None = Field(default="ieee802-3at", description="Configure PoE port mode.")
-    poe_port_priority: PoePortPriorityEnum | None = Field(default="low-priority", description="Configure PoE port priority.")
+    poe_port_priority: str | None = Field(default="low-priority", description="Configure PoE port priority.")
     poe_port_power: Literal["normal", "perpetual", "perpetual-fast"] | None = Field(default="normal", description="Configure PoE port power.")
     flags: int | None = Field(ge=0, le=4294967295, default=0, description="Port properties flags.")
     isl_local_trunk_name: str | None = Field(max_length=15, default="", description="ISL local trunk name.")
@@ -102,17 +102,17 @@ class ManagedSwitchPorts(BaseModel):
     fgt_peer_device_name: str | None = Field(max_length=35, default="", description="FGT peer device name.")
     vlan: str | None = Field(max_length=15, default="", description="Assign switch ports to a VLAN.")  # datasource: ['system.interface.name']
     allowed_vlans_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable all defined vlans on this port.")
-    allowed_vlans: list[AllowedVlans] = Field(default=None, description="Configure switch port tagged VLANs.")
-    untagged_vlans: list[UntaggedVlans] = Field(default=None, description="Configure switch port untagged VLANs.")
-    type: Literal["physical", "trunk"] | None = Field(default="physical", description="Interface type: physical or trunk port.")
+    allowed_vlans: list[dict[str, Any]] | None = Field(default=None, description="Configure switch port tagged VLANs.")
+    untagged_vlans: list[dict[str, Any]] | None = Field(default=None, description="Configure switch port untagged VLANs.")
+    type_: Literal["physical", "trunk"] | None = Field(default="physical", description="Interface type: physical or trunk port.")
     access_mode: Literal["dynamic", "nac", "static"] | None = Field(default="static", description="Access mode of the port.")
     matched_dpp_policy: str | None = Field(max_length=63, default="", description="Matched child policy in the dynamic port policy.")
     matched_dpp_intf_tags: str | None = Field(max_length=63, default="", description="Matched interface tags in the dynamic port policy.")
-    acl_group: list[AclGroup] = Field(default=None, description="ACL groups on this port.")
-    fortiswitch_acls: list[FortiswitchAcls] = Field(default=None, description="ACLs on this port.")
+    acl_group: list[dict[str, Any]] | None = Field(default=None, description="ACL groups on this port.")
+    fortiswitch_acls: list[dict[str, Any]] | None = Field(default=None, description="ACLs on this port.")
     dhcp_snooping: Literal["untrusted", "trusted"] | None = Field(default="untrusted", description="Trusted or untrusted DHCP-snooping interface.")
     dhcp_snoop_option82_trust: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowance of DHCP with option-82 on untrusted interface.")
-    dhcp_snoop_option82_override: list[DhcpSnoopOption82Override] = Field(default=None, description="Configure DHCP snooping option 82 override.")
+    dhcp_snoop_option82_override: list[dict[str, Any]] | None = Field(default=None, description="Configure DHCP snooping option 82 override.")
     arp_inspection_trust: Literal["untrusted", "trusted"] | None = Field(default="untrusted", description="Trusted or untrusted dynamic ARP inspection.")
     igmp_snooping_flood_reports: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable flooding of IGMP reports to this interface when igmp-snooping enabled.")
     mcast_snooping_flood_traffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable flooding of IGMP snooping traffic to this interface.")
@@ -127,8 +127,8 @@ class ManagedSwitchPorts(BaseModel):
     sflow_counter_interval: int | None = Field(ge=0, le=255, default=0, description="sFlow sampling counter polling interval in seconds (0 - 255).")
     sample_direction: Literal["tx", "rx", "both"] | None = Field(default="both", description="Packet sampling direction.")
     fec_capable: int | None = Field(ge=0, le=1, default=0, description="FEC capable.")
-    fec_state: FecStateEnum | None = Field(default="detect-by-module", description="State of forward error correction.")
-    flow_control: FlowControlEnum | None = Field(default="disable", description="Flow control direction.")
+    fec_state: str | None = Field(default="detect-by-module", description="State of forward error correction.")
+    flow_control: str | None = Field(default="disable", description="Flow control direction.")
     pause_meter: int | None = Field(ge=128, le=2147483647, default=0, description="Configure ingress pause metering rate, in kbps (default = 0, disabled).")
     pause_meter_resume: Literal["75%", "50%", "25%"] | None = Field(default="50%", description="Resume threshold for resuming traffic on ingress port.")
     loop_guard: Literal["enabled", "disabled"] | None = Field(default="disabled", description="Enable/disable loop-guard on this interface, an STP optimization used to prevent network loops.")
@@ -138,17 +138,17 @@ class ManagedSwitchPorts(BaseModel):
     storm_control_policy: str | None = Field(max_length=63, default="default", description="Switch controller storm control policy from available options.")  # datasource: ['switch-controller.storm-control-policy.name']
     port_security_policy: str | None = Field(max_length=31, default="", description="Switch controller authentication policy to apply to this managed switch from available options.")  # datasource: ['switch-controller.security-policy.802-1X.name']
     export_to_pool: str | None = Field(max_length=35, default="", description="Switch controller export port to pool-list.")  # datasource: ['switch-controller.virtual-port-pool.name']
-    interface_tags: list[InterfaceTags] = Field(default=None, description="Tag(s) associated with the interface for various features including virtual port pool, dynamic port policy.")
+    interface_tags: list[dict[str, Any]] | None = Field(default=None, description="Tag(s) associated with the interface for various features including virtual port pool, dynamic port policy.")
     learning_limit: int | None = Field(ge=0, le=128, default=0, description="Limit the number of dynamic MAC addresses on this Port (1 - 128, 0 = no limit, default).")
     sticky_mac: Literal["enable", "disable"] | None = Field(default="disable", description="Enable or disable sticky-mac on the interface.")
-    lldp_status: LldpStatusEnum | None = Field(default="tx-rx", description="LLDP transmit and receive status.")
+    lldp_status: str | None = Field(default="tx-rx", description="LLDP transmit and receive status.")
     lldp_profile: str | None = Field(max_length=63, default="default-auto-isl", description="LLDP port TLV profile.")  # datasource: ['switch-controller.lldp-profile.name']
     export_to: str | None = Field(max_length=31, default="", description="Export managed-switch port to a tenant VDOM.")  # datasource: ['system.vdom.name']
     mac_addr: str | None = Field(default="00:00:00:00:00:00", description="Port/Trunk MAC.")
     allow_arp_monitor: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/Disable allow ARP monitor.")
     qnq: str | None = Field(max_length=15, default="", description="802.1AD VLANs in the VDom.")  # datasource: ['system.interface.name']
     log_mac_event: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for dynamic MAC address events.")
-    port_selection_criteria: PortSelectionCriteriaEnum | None = Field(default="src-dst-ip", description="Algorithm for aggregate port selection.")
+    port_selection_criteria: str | None = Field(default="src-dst-ip", description="Algorithm for aggregate port selection.")
     description: str | None = Field(max_length=63, default="", description="Description for port.")
     lacp_speed: Literal["slow", "fast"] | None = Field(default="slow", description="End Link Aggregation Control Protocol (LACP) messages every 30 seconds (slow) or every second (fast).")
     mode: Literal["static", "lacp-passive", "lacp-active"] | None = Field(default="static", description="LACP mode: ignore and do not send control messages, or negotiate 802.3ad aggregation passively or actively.")
@@ -157,7 +157,7 @@ class ManagedSwitchPorts(BaseModel):
     mclag: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable multi-chassis link aggregation (MCLAG).")
     min_bundle: int | None = Field(ge=1, le=24, default=1, description="Minimum size of LAG bundle (1 - 24, default = 1).")
     max_bundle: int | None = Field(ge=1, le=24, default=24, description="Maximum size of LAG bundle (1 - 24, default = 24).")
-    members: list[Members] = Field(default=None, description="Aggregated LAG bundle interfaces.")
+    members: list[dict[str, Any]] | None = Field(default=None, description="Aggregated LAG bundle interfaces.")
     fallback_port: str | None = Field(max_length=79, default="", description="LACP fallback port.")
 
 
@@ -174,7 +174,7 @@ class ManagedSwitchIpSourceGuard(BaseModel):
         str_strip_whitespace = True
     port: str | None = Field(max_length=15, default="", description="Ingress interface to which source guard is bound.")
     description: str | None = Field(max_length=63, default="", description="Description.")
-    binding_entry: list[BindingEntry] = Field(description="IP and MAC address configuration.")
+    binding_entry: list[dict[str, Any]] | None = Field(description="IP and MAC address configuration.")
 
 
 class ManagedSwitchStpSettings(BaseModel):
@@ -210,7 +210,7 @@ class ManagedSwitchStpInstance(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: str | None = Field(max_length=2, default="", description="Instance ID.")
-    priority: PriorityEnum | None = Field(default="32768", description="Priority.")
+    priority: str | None = Field(default="32768", description="Priority.")
 
 
 class ManagedSwitchSnmpSysinfo(BaseModel):
@@ -261,7 +261,7 @@ class ManagedSwitchSnmpCommunity(BaseModel):
     id: int = Field(ge=0, le=4294967295, default=0, description="SNMP community ID.")
     name: str = Field(max_length=35, default="", description="SNMP community name.")
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this SNMP community.")
-    hosts: list[Hosts] = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")
+    hosts: list[dict[str, Any]] | None = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")
     query_v1_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SNMP v1 queries.")
     query_v1_port: int | None = Field(ge=0, le=65535, default=161, description="SNMP v1 query port (default = 161).")
     query_v2c_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")
@@ -272,7 +272,7 @@ class ManagedSwitchSnmpCommunity(BaseModel):
     trap_v2c_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")
     trap_v2c_lport: int | None = Field(ge=0, le=65535, default=162, description="SNMP v2c trap local port (default = 162).")
     trap_v2c_rport: int | None = Field(ge=0, le=65535, default=162, description="SNMP v2c trap remote port (default = 162).")
-    events: EventsEnum | None = Field(default="cpu-high mem-low log-full intf-ip ent-conf-change l2mac", description="SNMP notifications (traps) to send.")
+    events: str | None = Field(default=None, description="SNMP notifications (traps) to send.")
 
 
 class ManagedSwitchSnmpUser(BaseModel):
@@ -290,9 +290,9 @@ class ManagedSwitchSnmpUser(BaseModel):
     queries: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SNMP queries for this user.")
     query_port: int | None = Field(ge=0, le=65535, default=161, description="SNMPv3 query port (default = 161).")
     security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = Field(default="no-auth-no-priv", description="Security level for message authentication and encryption.")
-    auth_proto: AuthProtoEnum | None = Field(default="sha256", description="Authentication protocol.")
+    auth_proto: str | None = Field(default="sha256", description="Authentication protocol.")
     auth_pwd: Any = Field(max_length=128, description="Password for authentication protocol.")
-    priv_proto: PrivProtoEnum | None = Field(default="aes128", description="Privacy (encryption) protocol.")
+    priv_proto: str | None = Field(default="aes128", description="Privacy (encryption) protocol.")
     priv_pwd: Any = Field(max_length=128, description="Password for privacy (encryption) protocol.")
 
 
@@ -309,7 +309,7 @@ class ManagedSwitchSwitchLog(BaseModel):
         str_strip_whitespace = True
     local_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to configure local logging settings that override global logging settings.")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable adding FortiSwitch logs to the FortiGate event log.")
-    severity: SeverityEnum | None = Field(default="notification", description="Severity of FortiSwitch logs that are added to the FortiGate event log.")
+    severity: str | None = Field(default="notification", description="Severity of FortiSwitch logs that are added to the FortiGate event log.")
 
 
 class ManagedSwitchRemoteLog(BaseModel):
@@ -327,9 +327,9 @@ class ManagedSwitchRemoteLog(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging by FortiSwitch device to a remote syslog server.")
     server: str = Field(max_length=63, default="", description="IPv4 address of the remote syslog server.")
     port: int | None = Field(ge=0, le=65535, default=514, description="Remote syslog server listening port.")
-    severity: SeverityEnum | None = Field(default="information", description="Severity of logs to be transferred to remote log server.")
+    severity: str | None = Field(default="information", description="Severity of logs to be transferred to remote log server.")
     csv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable comma-separated value (CSV) strings.")
-    facility: FacilityEnum | None = Field(default="local7", description="Facility to log to remote syslog server.")
+    facility: str | None = Field(default="local7", description="Facility to log to remote syslog server.")
 
 
 class ManagedSwitchStormControl(BaseModel):
@@ -366,8 +366,8 @@ class ManagedSwitchMirror(BaseModel):
     status: Literal["active", "inactive"] | None = Field(default="inactive", description="Active/inactive mirror configuration.")
     switching_packet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable switching functionality when mirroring.")
     dst: str | None = Field(max_length=63, default="", description="Destination port.")
-    src_ingress: list[SrcIngress] = Field(default=None, description="Source ingress interfaces.")
-    src_egress: list[SrcEgress] = Field(default=None, description="Source egress interfaces.")
+    src_ingress: list[dict[str, Any]] | None = Field(default=None, description="Source ingress interfaces.")
+    src_egress: list[dict[str, Any]] | None = Field(default=None, description="Source egress interfaces.")
 
 
 class ManagedSwitchStaticMac(BaseModel):
@@ -382,7 +382,7 @@ class ManagedSwitchStaticMac(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
-    type: Literal["static", "sticky"] | None = Field(default="static", description="Type.")
+    type_: Literal["static", "sticky"] | None = Field(default="static", description="Type.")
     vlan: str | None = Field(max_length=15, default="", description="Vlan.")  # datasource: ['system.interface.name']
     mac: str | None = Field(default="00:00:00:00:00:00", description="MAC address.")
     interface: str | None = Field(max_length=35, default="", description="Interface name.")
@@ -436,10 +436,10 @@ class ManagedSwitchIgmpSnooping(BaseModel):
     local_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global IGMP snooping configuration.")
     aging_time: int | None = Field(ge=15, le=3600, default=300, description="Maximum time to retain a multicast snooping entry for which no packets have been seen (15 - 3600 sec, default = 300).")
     flood_unknown_multicast: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unknown multicast flooding.")
-    vlans: list[Vlans] = Field(default=None, description="Configure IGMP snooping VLAN.")
+    vlans: list[dict[str, Any]] | None = Field(default=None, description="Configure IGMP snooping VLAN.")
 
 
-class ManagedSwitch8021xSettings(BaseModel):
+class ManagedSwitch8021XSettings(BaseModel):
     """
     Child table model for 802-1X-settings.
 
@@ -456,10 +456,10 @@ class ManagedSwitch8021xSettings(BaseModel):
     max_reauth_attempt: int | None = Field(ge=0, le=15, default=3, description="Maximum number of authentication attempts (0 - 15, default = 3).")
     tx_period: int | None = Field(ge=12, le=60, default=30, description="802.1X Tx period (seconds, default=30).")
     mab_reauth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable or disable MAB reauthentication settings.")
-    mac_username_delimiter: MacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")
-    mac_password_delimiter: MacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")
-    mac_calling_station_delimiter: MacCallingStationDelimiterEnum | None = Field(default="hyphen", description="MAC calling station delimiter (default = hyphen).")
-    mac_called_station_delimiter: MacCalledStationDelimiterEnum | None = Field(default="hyphen", description="MAC called station delimiter (default = hyphen).")
+    mac_username_delimiter: str | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")
+    mac_password_delimiter: str | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")
+    mac_calling_station_delimiter: str | None = Field(default="hyphen", description="MAC calling station delimiter (default = hyphen).")
+    mac_called_station_delimiter: str | None = Field(default="hyphen", description="MAC called station delimiter (default = hyphen).")
     mac_case: Literal["lowercase", "uppercase"] | None = Field(default="lowercase", description="MAC case (default = lowercase).")
 
 
@@ -495,9 +495,9 @@ class ManagedSwitchSystemInterface(BaseModel):
     mode: Literal["static", "dhcp"] | None = Field(default="static", description="Interface addressing mode.")
     ip: Any = Field(default="0.0.0.0 0.0.0.0", description="IP and mask for this interface.")
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable interface status.")
-    allowaccess: AllowaccessEnum | None = Field(default="", description="Permitted types of management access to this interface.")
+    allowaccess: str | None = Field(default=None, description="Permitted types of management access to this interface.")
     vlan: str = Field(max_length=15, default="", description="VLAN name.")  # datasource: ['system.interface.name']
-    type: Literal["vlan", "physical"] | None = Field(default="vlan", description="Interface type.")
+    type_: Literal["vlan", "physical"] | None = Field(default="vlan", description="Interface type.")
     interface: str = Field(max_length=63, default="", description="Interface name.")  # datasource: ['switch-controller.managed-switch.ports.port-name']
     vrf: str | None = Field(max_length=63, default="", description="VRF for this route.")  # datasource: ['switch-controller.managed-switch.router-vrf.name']
 
@@ -552,15 +552,15 @@ class ManagedSwitchSystemDhcpServer(BaseModel):
     default_gateway: str | None = Field(default="0.0.0.0", description="Default gateway IP address assigned by the DHCP server.")
     netmask: str = Field(default="0.0.0.0", description="Netmask assigned by the DHCP server.")
     interface: str = Field(max_length=15, default="", description="DHCP server can assign IP configurations to clients connected to this interface.")  # datasource: ['switch-controller.managed-switch.system-interface.name']
-    ip_range: list[IpRange] = Field(default=None, description="DHCP IP range configuration.")
-    options: list[Options] = Field(default=None, description="DHCP options.")
+    ip_range: list[dict[str, Any]] | None = Field(default=None, description="DHCP IP range configuration.")
+    options: list[dict[str, Any]] | None = Field(default=None, description="DHCP options.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 
-class ManagedSwitchPurdue_levelEnum(str, Enum):
+class ManagedSwitchPurdueLevelEnum(str, Enum):
     """Allowed values for purdue_level field."""
     VALUE_1 = "1"
     VALUE_1_5 = "1.5"
@@ -584,7 +584,76 @@ class ManagedSwitchModel(BaseModel):
 
     Configure FortiSwitch devices that are managed by this FortiGate.
 
-    Validation Rules:        - switch_id: max_length=35 pattern=        - sn: max_length=16 pattern=        - description: max_length=63 pattern=        - switch_profile: max_length=35 pattern=        - access_profile: max_length=31 pattern=        - purdue_level: pattern=        - fsw_wan1_peer: max_length=35 pattern=        - fsw_wan1_admin: pattern=        - poe_pre_standard_detection: pattern=        - dhcp_server_access_list: pattern=        - poe_detection_type: min=0 max=255 pattern=        - max_poe_budget: min=0 max=65535 pattern=        - directly_connected: min=0 max=1 pattern=        - version: min=0 max=255 pattern=        - max_allowed_trunk_members: min=0 max=255 pattern=        - pre_provisioned: min=0 max=255 pattern=        - l3_discovered: min=0 max=1 pattern=        - mgmt_mode: min=0 max=255 pattern=        - tunnel_discovered: min=0 max=1 pattern=        - tdr_supported: max_length=31 pattern=        - dynamic_capability: pattern=        - switch_device_tag: max_length=32 pattern=        - switch_dhcp_opt43_key: max_length=63 pattern=        - mclag_igmp_snooping_aware: pattern=        - dynamically_discovered: min=0 max=1 pattern=        - ptp_status: pattern=        - ptp_profile: max_length=63 pattern=        - radius_nas_ip_override: pattern=        - radius_nas_ip: pattern=        - route_offload: pattern=        - route_offload_mclag: pattern=        - route_offload_router: pattern=        - vlan: pattern=        - type: pattern=        - owner_vdom: max_length=31 pattern=        - flow_identity: pattern=        - staged_image_version: max_length=127 pattern=        - delayed_restart_trigger: min=0 max=255 pattern=        - firmware_provision: pattern=        - firmware_provision_version: max_length=35 pattern=        - firmware_provision_latest: pattern=        - ports: pattern=        - ip_source_guard: pattern=        - stp_settings: pattern=        - stp_instance: pattern=        - override_snmp_sysinfo: pattern=        - snmp_sysinfo: pattern=        - override_snmp_trap_threshold: pattern=        - snmp_trap_threshold: pattern=        - override_snmp_community: pattern=        - snmp_community: pattern=        - override_snmp_user: pattern=        - snmp_user: pattern=        - qos_drop_policy: pattern=        - qos_red_probability: min=0 max=100 pattern=        - switch_log: pattern=        - remote_log: pattern=        - storm_control: pattern=        - mirror: pattern=        - static_mac: pattern=        - custom_command: pattern=        - dhcp_snooping_static_client: pattern=        - igmp_snooping: pattern=        - x802_1X_settings: pattern=        - router_vrf: pattern=        - system_interface: pattern=        - router_static: pattern=        - system_dhcp_server: pattern=    """
+    Validation Rules:
+        - switch_id: max_length=35 pattern=
+        - sn: max_length=16 pattern=
+        - description: max_length=63 pattern=
+        - switch_profile: max_length=35 pattern=
+        - access_profile: max_length=31 pattern=
+        - purdue_level: pattern=
+        - fsw_wan1_peer: max_length=35 pattern=
+        - fsw_wan1_admin: pattern=
+        - poe_pre_standard_detection: pattern=
+        - dhcp_server_access_list: pattern=
+        - poe_detection_type: min=0 max=255 pattern=
+        - max_poe_budget: min=0 max=65535 pattern=
+        - directly_connected: min=0 max=1 pattern=
+        - version: min=0 max=255 pattern=
+        - max_allowed_trunk_members: min=0 max=255 pattern=
+        - pre_provisioned: min=0 max=255 pattern=
+        - l3_discovered: min=0 max=1 pattern=
+        - mgmt_mode: min=0 max=255 pattern=
+        - tunnel_discovered: min=0 max=1 pattern=
+        - tdr_supported: max_length=31 pattern=
+        - dynamic_capability: pattern=
+        - switch_device_tag: max_length=32 pattern=
+        - switch_dhcp_opt43_key: max_length=63 pattern=
+        - mclag_igmp_snooping_aware: pattern=
+        - dynamically_discovered: min=0 max=1 pattern=
+        - ptp_status: pattern=
+        - ptp_profile: max_length=63 pattern=
+        - radius_nas_ip_override: pattern=
+        - radius_nas_ip: pattern=
+        - route_offload: pattern=
+        - route_offload_mclag: pattern=
+        - route_offload_router: pattern=
+        - vlan: pattern=
+        - type_: pattern=
+        - owner_vdom: max_length=31 pattern=
+        - flow_identity: pattern=
+        - staged_image_version: max_length=127 pattern=
+        - delayed_restart_trigger: min=0 max=255 pattern=
+        - firmware_provision: pattern=
+        - firmware_provision_version: max_length=35 pattern=
+        - firmware_provision_latest: pattern=
+        - ports: pattern=
+        - ip_source_guard: pattern=
+        - stp_settings: pattern=
+        - stp_instance: pattern=
+        - override_snmp_sysinfo: pattern=
+        - snmp_sysinfo: pattern=
+        - override_snmp_trap_threshold: pattern=
+        - snmp_trap_threshold: pattern=
+        - override_snmp_community: pattern=
+        - snmp_community: pattern=
+        - override_snmp_user: pattern=
+        - snmp_user: pattern=
+        - qos_drop_policy: pattern=
+        - qos_red_probability: min=0 max=100 pattern=
+        - switch_log: pattern=
+        - remote_log: pattern=
+        - storm_control: pattern=
+        - mirror: pattern=
+        - static_mac: pattern=
+        - custom_command: pattern=
+        - dhcp_snooping_static_client: pattern=
+        - igmp_snooping: pattern=
+        - x802_1X_settings: pattern=
+        - router_vrf: pattern=
+        - system_interface: pattern=
+        - router_static: pattern=
+        - system_dhcp_server: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -596,7 +665,75 @@ class ManagedSwitchModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    switch_id: str = Field(max_length=35, default="", description="Managed-switch name.")    sn: str = Field(max_length=16, default="", description="Managed-switch serial number.")    description: str | None = Field(max_length=63, default="", description="Description.")    switch_profile: str | None = Field(max_length=35, default="default", description="FortiSwitch profile.")  # datasource: ['switch-controller.switch-profile.name']    access_profile: str | None = Field(max_length=31, default="default", description="FortiSwitch access profile.")  # datasource: ['switch-controller.security-policy.local-access.name']    purdue_level: ManagedSwitchPurdueLevelEnum | None = Field(default="3", description="Purdue Level of this FortiSwitch.")    fsw_wan1_peer: str = Field(max_length=35, default="", description="FortiSwitch WAN1 peer port.")  # datasource: ['system.interface.name']    fsw_wan1_admin: Literal["discovered", "disable", "enable"] | None = Field(default="discovered", description="FortiSwitch WAN1 admin status; enable to authorize the FortiSwitch as a managed switch.")    poe_pre_standard_detection: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PoE pre-standard detection.")    dhcp_server_access_list: Literal["global", "enable", "disable"] | None = Field(default="global", description="DHCP snooping server access list.")    poe_detection_type: int | None = Field(ge=0, le=255, default=0, description="PoE detection type for FortiSwitch.")    max_poe_budget: int | None = Field(ge=0, le=65535, default=0, description="Max PoE budget for FortiSwitch.")    directly_connected: int | None = Field(ge=0, le=1, default=0, description="Directly connected FortiSwitch.")    version: int | None = Field(ge=0, le=255, default=0, description="FortiSwitch version.")    max_allowed_trunk_members: int | None = Field(ge=0, le=255, default=0, description="FortiSwitch maximum allowed trunk members.")    pre_provisioned: int | None = Field(ge=0, le=255, default=0, description="Pre-provisioned managed switch.")    l3_discovered: int | None = Field(ge=0, le=1, default=0, description="Layer 3 management discovered.")    mgmt_mode: int | None = Field(ge=0, le=255, default=0, description="FortiLink management mode.")    tunnel_discovered: int | None = Field(ge=0, le=1, default=0, description="SOCKS tunnel management discovered.")    tdr_supported: str | None = Field(max_length=31, default="", description="TDR supported.")    dynamic_capability: str | None = Field(default="0x00000000000000000000000000000000", description="List of features this FortiSwitch supports (not configurable) that is sent to the FortiGate device for subsequent configuration initiated by the FortiGate device.")    switch_device_tag: str | None = Field(max_length=32, default="", description="User definable label/tag.")    switch_dhcp_opt43_key: str | None = Field(max_length=63, default="", description="DHCP option43 key.")    mclag_igmp_snooping_aware: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable MCLAG IGMP-snooping awareness.")    dynamically_discovered: int | None = Field(ge=0, le=1, default=0, description="Dynamically discovered FortiSwitch.")    ptp_status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable PTP profile on this FortiSwitch.")    ptp_profile: str | None = Field(max_length=63, default="default", description="PTP profile configuration.")  # datasource: ['switch-controller.ptp.profile.name']    radius_nas_ip_override: Literal["disable", "enable"] | None = Field(default="disable", description="Use locally defined NAS-IP.")    radius_nas_ip: str = Field(default="0.0.0.0", description="NAS-IP address.")    route_offload: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable route offload on this FortiSwitch.")    route_offload_mclag: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable route offload MCLAG on this FortiSwitch.")    route_offload_router: list[ManagedSwitchRouteOffloadRouter] = Field(default=None, description="Configure route offload MCLAG IP address.")    vlan: list[ManagedSwitchVlan] = Field(default=None, description="Configure VLAN assignment priority.")    type: Literal["virtual", "physical"] | None = Field(default="physical", description="Indication of switch type, physical or virtual.")    owner_vdom: str | None = Field(max_length=31, default="", description="VDOM which owner of port belongs to.")    flow_identity: str | None = Field(default="00000000", description="Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).")    staged_image_version: str | None = Field(max_length=127, default="", description="Staged image version for FortiSwitch.")    delayed_restart_trigger: int | None = Field(ge=0, le=255, default=0, description="Delayed restart triggered for this FortiSwitch.")    firmware_provision: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable provisioning of firmware to FortiSwitches on join connection.")    firmware_provision_version: str | None = Field(max_length=35, default="", description="Firmware version to provision to this FortiSwitch on bootup (major.minor.build, i.e. 6.2.1234).")    firmware_provision_latest: Literal["disable", "once"] | None = Field(default="disable", description="Enable/disable one-time automatic provisioning of the latest firmware version.")    ports: list[ManagedSwitchPorts] = Field(default=None, description="Managed-switch port list.")    ip_source_guard: list[ManagedSwitchIpSourceGuard] = Field(default=None, description="IP source guard.")    stp_settings: list[ManagedSwitchStpSettings] = Field(default=None, description="Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.")    stp_instance: list[ManagedSwitchStpInstance] = Field(default=None, description="Configuration method to edit Spanning Tree Protocol (STP) instances.")    override_snmp_sysinfo: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP system information.")    snmp_sysinfo: list[ManagedSwitchSnmpSysinfo] = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) system info.")    override_snmp_trap_threshold: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP trap threshold values.")    snmp_trap_threshold: list[ManagedSwitchSnmpTrapThreshold] = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.")    override_snmp_community: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP communities.")    snmp_community: list[ManagedSwitchSnmpCommunity] = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) communities.")    override_snmp_user: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP users.")    snmp_user: list[ManagedSwitchSnmpUser] = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) users.")    qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = Field(default="taildrop", description="Set QoS drop-policy.")    qos_red_probability: int | None = Field(ge=0, le=100, default=12, description="Set QoS RED/WRED drop probability.")    switch_log: list[ManagedSwitchSwitchLog] = Field(default=None, description="Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).")    remote_log: list[ManagedSwitchRemoteLog] = Field(default=None, description="Configure logging by FortiSwitch device to a remote syslog server.")    storm_control: list[ManagedSwitchStormControl] = Field(default=None, description="Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.")    mirror: list[ManagedSwitchMirror] = Field(default=None, description="Configuration method to edit FortiSwitch packet mirror.")    static_mac: list[ManagedSwitchStaticMac] = Field(default=None, description="Configuration method to edit FortiSwitch Static and Sticky MAC.")    custom_command: list[ManagedSwitchCustomCommand] = Field(default=None, description="Configuration method to edit FortiSwitch commands to be pushed to this FortiSwitch device upon rebooting the FortiGate switch controller or the FortiSwitch.")    dhcp_snooping_static_client: list[ManagedSwitchDhcpSnoopingStaticClient] = Field(default=None, description="Configure FortiSwitch DHCP snooping static clients.")    igmp_snooping: list[ManagedSwitchIgmpSnooping] = Field(default=None, description="Configure FortiSwitch IGMP snooping global settings.")    x802_1X_settings: list[ManagedSwitchX8021XSettings] = Field(default=None, description="Configuration method to edit FortiSwitch 802.1X global settings.")    router_vrf: list[ManagedSwitchRouterVrf] = Field(default=None, description="Configure VRF.")    system_interface: list[ManagedSwitchSystemInterface] = Field(default=None, description="Configure system interface on FortiSwitch.")    router_static: list[ManagedSwitchRouterStatic] = Field(default=None, description="Configure static routes.")    system_dhcp_server: list[ManagedSwitchSystemDhcpServer] = Field(default=None, description="Configure DHCP servers.")    # ========================================================================
+    switch_id: str = Field(max_length=35, default="", description="Managed-switch name.")
+    sn: str = Field(max_length=16, default="", description="Managed-switch serial number.")
+    description: str | None = Field(max_length=63, default="", description="Description.")
+    switch_profile: str | None = Field(max_length=35, default="default", description="FortiSwitch profile.")  # datasource: ['switch-controller.switch-profile.name']
+    access_profile: str | None = Field(max_length=31, default="default", description="FortiSwitch access profile.")  # datasource: ['switch-controller.security-policy.local-access.name']
+    purdue_level: str | ManagedSwitchPurdueLevelEnum | None = Field(default="3", description="Purdue Level of this FortiSwitch.")
+    fsw_wan1_peer: str = Field(max_length=35, default="", description="FortiSwitch WAN1 peer port.")  # datasource: ['system.interface.name']
+    fsw_wan1_admin: Literal["discovered", "disable", "enable"] | None = Field(default="discovered", description="FortiSwitch WAN1 admin status; enable to authorize the FortiSwitch as a managed switch.")
+    poe_pre_standard_detection: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PoE pre-standard detection.")
+    dhcp_server_access_list: Literal["global", "enable", "disable"] | None = Field(default="global", description="DHCP snooping server access list.")
+    poe_detection_type: int | None = Field(ge=0, le=255, default=0, description="PoE detection type for FortiSwitch.")
+    max_poe_budget: int | None = Field(ge=0, le=65535, default=0, description="Max PoE budget for FortiSwitch.")
+    directly_connected: int | None = Field(ge=0, le=1, default=0, description="Directly connected FortiSwitch.")
+    version: int | None = Field(ge=0, le=255, default=0, description="FortiSwitch version.")
+    max_allowed_trunk_members: int | None = Field(ge=0, le=255, default=0, description="FortiSwitch maximum allowed trunk members.")
+    pre_provisioned: int | None = Field(ge=0, le=255, default=0, description="Pre-provisioned managed switch.")
+    l3_discovered: int | None = Field(ge=0, le=1, default=0, description="Layer 3 management discovered.")
+    mgmt_mode: int | None = Field(ge=0, le=255, default=0, description="FortiLink management mode.")
+    tunnel_discovered: int | None = Field(ge=0, le=1, default=0, description="SOCKS tunnel management discovered.")
+    tdr_supported: str | None = Field(max_length=31, default="", description="TDR supported.")
+    dynamic_capability: str | None = Field(default="0x00000000000000000000000000000000", description="List of features this FortiSwitch supports (not configurable) that is sent to the FortiGate device for subsequent configuration initiated by the FortiGate device.")
+    switch_device_tag: str | None = Field(max_length=32, default="", description="User definable label/tag.")
+    switch_dhcp_opt43_key: str | None = Field(max_length=63, default="", description="DHCP option43 key.")
+    mclag_igmp_snooping_aware: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable MCLAG IGMP-snooping awareness.")
+    dynamically_discovered: int | None = Field(ge=0, le=1, default=0, description="Dynamically discovered FortiSwitch.")
+    ptp_status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable PTP profile on this FortiSwitch.")
+    ptp_profile: str | None = Field(max_length=63, default="default", description="PTP profile configuration.")  # datasource: ['switch-controller.ptp.profile.name']
+    radius_nas_ip_override: Literal["disable", "enable"] | None = Field(default="disable", description="Use locally defined NAS-IP.")
+    radius_nas_ip: str = Field(default="0.0.0.0", description="NAS-IP address.")
+    route_offload: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable route offload on this FortiSwitch.")
+    route_offload_mclag: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable route offload MCLAG on this FortiSwitch.")
+    route_offload_router: list[ManagedSwitchRouteOffloadRouter] | None = Field(default=None, description="Configure route offload MCLAG IP address.")
+    vlan: list[ManagedSwitchVlan] | None = Field(default=None, description="Configure VLAN assignment priority.")
+    type_: Literal["virtual", "physical"] | None = Field(default="physical", description="Indication of switch type, physical or virtual.")
+    owner_vdom: str | None = Field(max_length=31, default="", description="VDOM which owner of port belongs to.")
+    flow_identity: str | None = Field(default="00000000", description="Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).")
+    staged_image_version: str | None = Field(max_length=127, default="", description="Staged image version for FortiSwitch.")
+    delayed_restart_trigger: int | None = Field(ge=0, le=255, default=0, description="Delayed restart triggered for this FortiSwitch.")
+    firmware_provision: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable provisioning of firmware to FortiSwitches on join connection.")
+    firmware_provision_version: str | None = Field(max_length=35, default="", description="Firmware version to provision to this FortiSwitch on bootup (major.minor.build, i.e. 6.2.1234).")
+    firmware_provision_latest: Literal["disable", "once"] | None = Field(default="disable", description="Enable/disable one-time automatic provisioning of the latest firmware version.")
+    ports: list[ManagedSwitchPorts] | None = Field(default=None, description="Managed-switch port list.")
+    ip_source_guard: list[ManagedSwitchIpSourceGuard] | None = Field(default=None, description="IP source guard.")
+    stp_settings: list[ManagedSwitchStpSettings] | None = Field(default=None, description="Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.")
+    stp_instance: list[ManagedSwitchStpInstance] | None = Field(default=None, description="Configuration method to edit Spanning Tree Protocol (STP) instances.")
+    override_snmp_sysinfo: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP system information.")
+    snmp_sysinfo: list[ManagedSwitchSnmpSysinfo] | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) system info.")
+    override_snmp_trap_threshold: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP trap threshold values.")
+    snmp_trap_threshold: list[ManagedSwitchSnmpTrapThreshold] | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.")
+    override_snmp_community: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP communities.")
+    snmp_community: list[ManagedSwitchSnmpCommunity] | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) communities.")
+    override_snmp_user: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP users.")
+    snmp_user: list[ManagedSwitchSnmpUser] | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) users.")
+    qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = Field(default="taildrop", description="Set QoS drop-policy.")
+    qos_red_probability: int | None = Field(ge=0, le=100, default=12, description="Set QoS RED/WRED drop probability.")
+    switch_log: list[ManagedSwitchSwitchLog] | None = Field(default=None, description="Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).")
+    remote_log: list[ManagedSwitchRemoteLog] | None = Field(default=None, description="Configure logging by FortiSwitch device to a remote syslog server.")
+    storm_control: list[ManagedSwitchStormControl] | None = Field(default=None, description="Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.")
+    mirror: list[ManagedSwitchMirror] | None = Field(default=None, description="Configuration method to edit FortiSwitch packet mirror.")
+    static_mac: list[ManagedSwitchStaticMac] | None = Field(default=None, description="Configuration method to edit FortiSwitch Static and Sticky MAC.")
+    custom_command: list[ManagedSwitchCustomCommand] | None = Field(default=None, description="Configuration method to edit FortiSwitch commands to be pushed to this FortiSwitch device upon rebooting the FortiGate switch controller or the FortiSwitch.")
+    dhcp_snooping_static_client: list[ManagedSwitchDhcpSnoopingStaticClient] | None = Field(default=None, description="Configure FortiSwitch DHCP snooping static clients.")
+    igmp_snooping: list[ManagedSwitchIgmpSnooping] | None = Field(default=None, description="Configure FortiSwitch IGMP snooping global settings.")
+    x802_1X_settings: list[ManagedSwitch8021XSettings] | None = Field(default=None, description="Configuration method to edit FortiSwitch 802.1X global settings.")
+    router_vrf: list[ManagedSwitchRouterVrf] | None = Field(default=None, description="Configure VRF.")
+    system_interface: list[ManagedSwitchSystemInterface] | None = Field(default=None, description="Configure system interface on FortiSwitch.")
+    router_static: list[ManagedSwitchRouterStatic] | None = Field(default=None, description="Configure static routes.")
+    system_dhcp_server: list[ManagedSwitchSystemDhcpServer] | None = Field(default=None, description="Configure DHCP servers.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -720,7 +857,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_profile", None)
@@ -769,7 +906,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "access_profile", None)
@@ -818,7 +955,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fsw_wan1_peer", None)
@@ -867,7 +1004,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ptp_profile", None)
@@ -916,7 +1053,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "route_offload_router", [])
@@ -974,7 +1111,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "vlan", [])
@@ -1032,7 +1169,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ports", [])
@@ -1090,7 +1227,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "static_mac", [])
@@ -1148,7 +1285,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "custom_command", [])
@@ -1206,7 +1343,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dhcp_snooping_static_client", [])
@@ -1264,7 +1401,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "router_vrf", [])
@@ -1322,7 +1459,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "system_interface", [])
@@ -1380,7 +1517,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "router_static", [])
@@ -1438,7 +1575,7 @@ class ManagedSwitchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.managed_switch.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "system_dhcp_server", [])
@@ -1484,21 +1621,34 @@ class ManagedSwitchModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_switch_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_access_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fsw_wan1_peer_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ptp_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_route_offload_router_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vlan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ports_references(client)
-        all_errors.extend(errors)        errors = await self.validate_static_mac_references(client)
-        all_errors.extend(errors)        errors = await self.validate_custom_command_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dhcp_snooping_static_client_references(client)
-        all_errors.extend(errors)        errors = await self.validate_router_vrf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_system_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_router_static_references(client)
-        all_errors.extend(errors)        errors = await self.validate_system_dhcp_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_access_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fsw_wan1_peer_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ptp_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_route_offload_router_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vlan_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ports_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_static_mac_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_custom_command_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dhcp_snooping_static_client_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_router_vrf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_system_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_router_static_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_system_dhcp_server_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1514,11 +1664,11 @@ ManagedSwitchModelDict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ManagedSwitchModel",    "ManagedSwitchRouteOffloadRouter",    "ManagedSwitchVlan",    "ManagedSwitchPorts",    "ManagedSwitchIpSourceGuard",    "ManagedSwitchStpSettings",    "ManagedSwitchStpInstance",    "ManagedSwitchSnmpSysinfo",    "ManagedSwitchSnmpTrapThreshold",    "ManagedSwitchSnmpCommunity",    "ManagedSwitchSnmpUser",    "ManagedSwitchSwitchLog",    "ManagedSwitchRemoteLog",    "ManagedSwitchStormControl",    "ManagedSwitchMirror",    "ManagedSwitchStaticMac",    "ManagedSwitchCustomCommand",    "ManagedSwitchDhcpSnoopingStaticClient",    "ManagedSwitchIgmpSnooping",    "ManagedSwitch8021xSettings",    "ManagedSwitchRouterVrf",    "ManagedSwitchSystemInterface",    "ManagedSwitchRouterStatic",    "ManagedSwitchSystemDhcpServer",]
+    "ManagedSwitchModel",    "ManagedSwitchRouteOffloadRouter",    "ManagedSwitchVlan",    "ManagedSwitchPorts",    "ManagedSwitchIpSourceGuard",    "ManagedSwitchStpSettings",    "ManagedSwitchStpInstance",    "ManagedSwitchSnmpSysinfo",    "ManagedSwitchSnmpTrapThreshold",    "ManagedSwitchSnmpCommunity",    "ManagedSwitchSnmpUser",    "ManagedSwitchSwitchLog",    "ManagedSwitchRemoteLog",    "ManagedSwitchStormControl",    "ManagedSwitchMirror",    "ManagedSwitchStaticMac",    "ManagedSwitchCustomCommand",    "ManagedSwitchDhcpSnoopingStaticClient",    "ManagedSwitchIgmpSnooping",    "ManagedSwitch8021XSettings",    "ManagedSwitchRouterVrf",    "ManagedSwitchSystemInterface",    "ManagedSwitchRouterStatic",    "ManagedSwitchSystemDhcpServer",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.638834Z
+# Generated: 2026-01-14T22:43:38.152050Z
 # ============================================================================

@@ -27,7 +27,7 @@ class MulticastPolicy6Payload(TypedDict, total=False):
         }
     """
     id: int  # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
     name: str  # Policy name. | MaxLen: 35
     srcintf: str  # IPv6 source interface name. | MaxLen: 35
@@ -119,7 +119,7 @@ class MulticastPolicy6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     id: int  # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
     name: str  # Policy name. | MaxLen: 35
     srcintf: str  # IPv6 source interface name. | MaxLen: 35
@@ -147,7 +147,7 @@ class MulticastPolicy6Object:
     
     # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
     id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable this policy. | Default: enable
     status: Literal["enable", "disable"]
@@ -181,7 +181,6 @@ class MulticastPolicy6Object:
     comments: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -204,6 +203,10 @@ class MulticastPolicy6:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -224,6 +227,7 @@ class MulticastPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MulticastPolicy6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -241,6 +245,7 @@ class MulticastPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MulticastPolicy6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -257,6 +262,7 @@ class MulticastPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[MulticastPolicy6Response]: ...
     
     # ================================================================
@@ -299,7 +305,7 @@ class MulticastPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
     
@@ -318,7 +324,7 @@ class MulticastPolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[MulticastPolicy6Object]: ...
     
@@ -418,23 +424,6 @@ class MulticastPolicy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> MulticastPolicy6Object | list[MulticastPolicy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -465,6 +454,7 @@ class MulticastPolicy6:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
@@ -546,32 +536,7 @@ class MulticastPolicy6:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -599,6 +564,7 @@ class MulticastPolicy6:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
@@ -680,32 +646,7 @@ class MulticastPolicy6:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -716,6 +657,7 @@ class MulticastPolicy6:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
@@ -746,14 +688,7 @@ class MulticastPolicy6:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -799,8 +734,6 @@ class MulticastPolicy6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -828,6 +761,10 @@ class MulticastPolicy6DictMode:
     By default returns MulticastPolicy6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return MulticastPolicy6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1005,10 +942,12 @@ class MulticastPolicy6DictMode:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -1112,10 +1051,12 @@ class MulticastPolicy6DictMode:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -1168,10 +1109,12 @@ class MulticastPolicy6DictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1221,8 +1164,6 @@ class MulticastPolicy6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1246,6 +1187,10 @@ class MulticastPolicy6ObjectMode:
     By default returns MulticastPolicy6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return MulticastPolicy6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1451,10 +1396,12 @@ class MulticastPolicy6ObjectMode:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -1586,10 +1533,12 @@ class MulticastPolicy6ObjectMode:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -1653,10 +1602,12 @@ class MulticastPolicy6ObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MulticastPolicy6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1706,8 +1657,6 @@ class MulticastPolicy6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

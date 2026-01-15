@@ -20,7 +20,7 @@ class CaPayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 79
     ca: str  # CA certificate as a PEM file.
-    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the CA | Default: vdom
+    range_: Literal["global", "vdom"]  # Either global or VDOM IP address range for the CA | Default: vdom
     source: Literal["factory", "user", "bundle"]  # CA certificate source type. | Default: user
     ssl_inspection_trusted: Literal["enable", "disable"]  # Enable/disable this CA as a trusted CA for SSL ins | Default: enable
     scep_url: str  # URL of the SCEP server. | MaxLen: 255
@@ -47,7 +47,7 @@ class CaResponse(TypedDict):
     """
     name: str  # Name. | MaxLen: 79
     ca: str  # CA certificate as a PEM file.
-    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the CA | Default: vdom
+    range_: Literal["global", "vdom"]  # Either global or VDOM IP address range for the CA | Default: vdom
     source: Literal["factory", "user", "bundle"]  # CA certificate source type. | Default: user
     ssl_inspection_trusted: Literal["enable", "disable"]  # Enable/disable this CA as a trusted CA for SSL ins | Default: enable
     scep_url: str  # URL of the SCEP server. | MaxLen: 255
@@ -74,7 +74,7 @@ class CaObject:
     # CA certificate as a PEM file.
     ca: str
     # Either global or VDOM IP address range for the CA certificat | Default: vdom
-    range: Literal["global", "vdom"]
+    range_: Literal["global", "vdom"]
     # CA certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
     # Enable/disable this CA as a trusted CA for SSL inspection. | Default: enable
@@ -122,6 +122,10 @@ class Ca:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -142,6 +146,7 @@ class Ca:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CaResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -159,6 +164,7 @@ class Ca:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CaResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -175,6 +181,7 @@ class Ca:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CaResponse]: ...
     
     # ================================================================
@@ -217,7 +224,7 @@ class Ca:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CaObject: ...
     
@@ -236,7 +243,7 @@ class Ca:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CaObject]: ...
     
@@ -336,23 +343,6 @@ class Ca:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CaObject | list[CaObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -366,7 +356,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -380,6 +370,7 @@ class Ca:
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CaObject: ...
@@ -390,7 +381,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -415,7 +406,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -439,7 +430,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -452,29 +443,7 @@ class Ca:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CaPayload | None = ...,
-        name: str | None = ...,
-        ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
-        scep_url: str | None = ...,
-        est_url: str | None = ...,
-        auto_update_days: int | None = ...,
-        auto_update_days_warning: int | None = ...,
-        source_ip: str | None = ...,
-        ca_identifier: str | None = ...,
-        obsolete: Literal["disable", "enable"] | None = ...,
-        fabric_ca: Literal["disable", "enable"] | None = ...,
-        details: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -485,7 +454,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -499,6 +468,7 @@ class Ca:
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CaObject: ...
@@ -509,7 +479,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -534,7 +504,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -558,7 +528,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -571,29 +541,7 @@ class Ca:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CaPayload | None = ...,
-        name: str | None = ...,
-        ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
-        scep_url: str | None = ...,
-        est_url: str | None = ...,
-        auto_update_days: int | None = ...,
-        auto_update_days_warning: int | None = ...,
-        source_ip: str | None = ...,
-        ca_identifier: str | None = ...,
-        obsolete: Literal["disable", "enable"] | None = ...,
-        fabric_ca: Literal["disable", "enable"] | None = ...,
-        details: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -608,7 +556,7 @@ class Ca:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -636,8 +584,6 @@ class Ca:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -665,6 +611,10 @@ class CaDictMode:
     By default returns CaResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CaObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -770,7 +720,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -795,7 +745,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -820,7 +770,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -833,16 +783,18 @@ class CaDictMode:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -865,7 +817,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -890,7 +842,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -915,7 +867,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -928,16 +880,18 @@ class CaDictMode:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -966,7 +920,7 @@ class CaDictMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -993,8 +947,6 @@ class CaDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1018,6 +970,10 @@ class CaObjectMode:
     By default returns CaObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CaResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1123,7 +1079,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1148,7 +1104,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1173,7 +1129,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1198,7 +1154,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1211,16 +1167,18 @@ class CaObjectMode:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CaObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1243,7 +1201,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1268,7 +1226,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1293,7 +1251,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1318,7 +1276,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1331,16 +1289,18 @@ class CaObjectMode:
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CaObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1369,7 +1329,7 @@ class CaObjectMode:
         payload_dict: CaPayload | None = ...,
         name: str | None = ...,
         ca: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = ...,
         scep_url: str | None = ...,
@@ -1396,8 +1356,6 @@ class CaObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

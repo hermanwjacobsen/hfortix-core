@@ -292,7 +292,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["disable", "enable"] | None = None,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
         proxy: str | None = None,
         use_metadata_iam: Literal["disable", "enable"] | None = None,
         microsoft_365: Literal["disable", "enable"] | None = None,
@@ -358,7 +358,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: SDN connector name.
             status: Enable/disable connection to the remote SDN connector.
-            type: Type of SDN connector.
+            type_: Type of SDN connector.
             proxy: SDN proxy.
             use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
             microsoft_365: Enable to use as Microsoft 365 connector.
@@ -574,7 +574,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             proxy=proxy,
             use_metadata_iam=use_metadata_iam,
             microsoft_365=microsoft_365,
@@ -658,7 +658,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["disable", "enable"] | None = None,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
         proxy: str | None = None,
         use_metadata_iam: Literal["disable", "enable"] | None = None,
         microsoft_365: Literal["disable", "enable"] | None = None,
@@ -724,7 +724,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: SDN connector name.
             status: Enable/disable connection to the remote SDN connector.
-            type: Type of SDN connector.
+            type_: Type of SDN connector.
             proxy: SDN proxy.
             use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
             microsoft_365: Enable to use as Microsoft 365 connector.
@@ -942,7 +942,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             proxy=proxy,
             use_metadata_iam=use_metadata_iam,
             microsoft_365=microsoft_365,
@@ -1126,7 +1126,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         status: Literal["disable", "enable"] | None = None,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
+        type_: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
         proxy: str | None = None,
         use_metadata_iam: Literal["disable", "enable"] | None = None,
         microsoft_365: Literal["disable", "enable"] | None = None,
@@ -1193,7 +1193,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             status: Field status
-            type: Field type
+            type_: Field type
             proxy: Field proxy
             use_metadata_iam: Field use-metadata-iam
             microsoft_365: Field microsoft-365
@@ -1290,7 +1290,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             status=status,
-            type=type,
+            type_=type_,
             proxy=proxy,
             use_metadata_iam=use_metadata_iam,
             microsoft_365=microsoft_365,

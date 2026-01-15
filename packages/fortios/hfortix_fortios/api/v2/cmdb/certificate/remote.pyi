@@ -20,7 +20,7 @@ class RemotePayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     remote: str  # Remote certificate.
-    range: Literal["global", "vdom"]  # Either the global or VDOM IP address range for the | Default: global
+    range_: Literal["global", "vdom"]  # Either the global or VDOM IP address range for the | Default: global
     source: Literal["factory", "user", "bundle"]  # Remote certificate source type. | Default: user
 
 # Nested TypedDicts for table field children (dict mode)
@@ -37,7 +37,7 @@ class RemoteResponse(TypedDict):
     """
     name: str  # Name. | MaxLen: 35
     remote: str  # Remote certificate.
-    range: Literal["global", "vdom"]  # Either the global or VDOM IP address range for the | Default: global
+    range_: Literal["global", "vdom"]  # Either the global or VDOM IP address range for the | Default: global
     source: Literal["factory", "user", "bundle"]  # Remote certificate source type. | Default: user
 
 
@@ -54,7 +54,7 @@ class RemoteObject:
     # Remote certificate.
     remote: str
     # Either the global or VDOM IP address range for the remote ce | Default: global
-    range: Literal["global", "vdom"]
+    range_: Literal["global", "vdom"]
     # Remote certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
     
@@ -82,6 +82,10 @@ class Remote:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -102,6 +106,7 @@ class Remote:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RemoteResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -119,6 +124,7 @@ class Remote:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RemoteResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -135,6 +141,7 @@ class Remote:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[RemoteResponse]: ...
     
     # ================================================================
@@ -177,7 +184,7 @@ class Remote:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> RemoteObject: ...
     
@@ -196,7 +203,7 @@ class Remote:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[RemoteObject]: ...
     
@@ -296,23 +303,6 @@ class Remote:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> RemoteObject | list[RemoteObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -326,10 +316,11 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RemoteObject: ...
@@ -340,7 +331,7 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -355,7 +346,7 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -369,22 +360,10 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: RemotePayload | None = ...,
-        name: str | None = ...,
-        remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -399,7 +378,7 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -417,8 +396,6 @@ class Remote:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -446,6 +423,10 @@ class RemoteDictMode:
     By default returns RemoteResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return RemoteObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -552,7 +533,7 @@ class RemoteDictMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -567,7 +548,7 @@ class RemoteDictMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -582,19 +563,21 @@ class RemoteDictMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -613,7 +596,7 @@ class RemoteDictMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -630,8 +613,6 @@ class RemoteDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -655,6 +636,10 @@ class RemoteObjectMode:
     By default returns RemoteObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return RemoteResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -761,7 +746,7 @@ class RemoteObjectMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -776,7 +761,7 @@ class RemoteObjectMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -791,7 +776,7 @@ class RemoteObjectMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -806,19 +791,21 @@ class RemoteObjectMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RemoteObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -837,7 +824,7 @@ class RemoteObjectMode:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -854,8 +841,6 @@ class RemoteObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

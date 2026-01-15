@@ -8,11 +8,11 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .arp import Arp, ArpDictMode, ArpObjectMode
     from .reverse_ip_lookup import ReverseIpLookup, ReverseIpLookupDictMode, ReverseIpLookupObjectMode
-    from .ddns import DdnsDictMode, DdnsObjectMode
-    from .debug_flow import DebugFlowDictMode, DebugFlowObjectMode
-    from .dns import DnsDictMode, DnsObjectMode
-    from .fortiguard import FortiguardDictMode, FortiguardObjectMode
-    from .lldp import LldpDictMode, LldpObjectMode
+    from .ddns import Ddns, DdnsDictMode, DdnsObjectMode
+    from .debug_flow import DebugFlow, DebugFlowDictMode, DebugFlowObjectMode
+    from .dns import Dns, DnsDictMode, DnsObjectMode
+    from .fortiguard import Fortiguard, FortiguardDictMode, FortiguardObjectMode
+    from .lldp import Lldp, LldpDictMode, LldpObjectMode
 
 __all__ = [
     "Arp",

@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class LogAddrgrp_logEnum(str, Enum):
+class LogAddrgrpLogEnum(str, Enum):
     """Allowed values for addrgrp_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -28,7 +28,7 @@ class LogAddrgrp_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogBle_logEnum(str, Enum):
+class LogBleLogEnum(str, Enum):
     """Allowed values for ble_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -40,7 +40,7 @@ class LogBle_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogClb_logEnum(str, Enum):
+class LogClbLogEnum(str, Enum):
     """Allowed values for clb_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -52,7 +52,7 @@ class LogClb_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogDhcp_starv_logEnum(str, Enum):
+class LogDhcpStarvLogEnum(str, Enum):
     """Allowed values for dhcp_starv_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -64,7 +64,7 @@ class LogDhcp_starv_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogLed_sched_logEnum(str, Enum):
+class LogLedSchedLogEnum(str, Enum):
     """Allowed values for led_sched_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -76,7 +76,7 @@ class LogLed_sched_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogRadio_event_logEnum(str, Enum):
+class LogRadioEventLogEnum(str, Enum):
     """Allowed values for radio_event_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -88,7 +88,7 @@ class LogRadio_event_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogRogue_event_logEnum(str, Enum):
+class LogRogueEventLogEnum(str, Enum):
     """Allowed values for rogue_event_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -100,7 +100,7 @@ class LogRogue_event_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogSta_event_logEnum(str, Enum):
+class LogStaEventLogEnum(str, Enum):
     """Allowed values for sta_event_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -112,7 +112,7 @@ class LogSta_event_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogSta_locate_logEnum(str, Enum):
+class LogStaLocateLogEnum(str, Enum):
     """Allowed values for sta_locate_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -124,7 +124,7 @@ class LogSta_locate_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogWids_logEnum(str, Enum):
+class LogWidsLogEnum(str, Enum):
     """Allowed values for wids_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -136,7 +136,7 @@ class LogWids_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogWtp_event_logEnum(str, Enum):
+class LogWtpEventLogEnum(str, Enum):
     """Allowed values for wtp_event_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -148,7 +148,7 @@ class LogWtp_event_logEnum(str, Enum):
     DEBUG = "debug"
 
 
-class LogWtp_fips_event_logEnum(str, Enum):
+class LogWtpFipsEventLogEnum(str, Enum):
     """Allowed values for wtp_fips_event_log field."""
     EMERGENCY = "emergency"
     ALERT = "alert"
@@ -171,7 +171,21 @@ class LogModel(BaseModel):
 
     Configure wireless controller event log filters.
 
-    Validation Rules:        - status: pattern=        - addrgrp_log: pattern=        - ble_log: pattern=        - clb_log: pattern=        - dhcp_starv_log: pattern=        - led_sched_log: pattern=        - radio_event_log: pattern=        - rogue_event_log: pattern=        - sta_event_log: pattern=        - sta_locate_log: pattern=        - wids_log: pattern=        - wtp_event_log: pattern=        - wtp_fips_event_log: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - addrgrp_log: pattern=
+        - ble_log: pattern=
+        - clb_log: pattern=
+        - dhcp_starv_log: pattern=
+        - led_sched_log: pattern=
+        - radio_event_log: pattern=
+        - rogue_event_log: pattern=
+        - sta_event_log: pattern=
+        - sta_locate_log: pattern=
+        - wids_log: pattern=
+        - wtp_event_log: pattern=
+        - wtp_fips_event_log: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -183,7 +197,20 @@ class LogModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable wireless event logging.")    addrgrp_log: LogAddrgrpLogEnum | None = Field(default="notification", description="Lowest severity level to log address group message.")    ble_log: LogBleLogEnum | None = Field(default="notification", description="Lowest severity level to log BLE detection message.")    clb_log: LogClbLogEnum | None = Field(default="notification", description="Lowest severity level to log client load balancing message.")    dhcp_starv_log: LogDhcpStarvLogEnum | None = Field(default="notification", description="Lowest severity level to log DHCP starvation event message.")    led_sched_log: LogLedSchedLogEnum | None = Field(default="notification", description="Lowest severity level to log LED schedule event message.")    radio_event_log: LogRadioEventLogEnum | None = Field(default="notification", description="Lowest severity level to log radio event message.")    rogue_event_log: LogRogueEventLogEnum | None = Field(default="notification", description="Lowest severity level to log rogue AP event message.")    sta_event_log: LogStaEventLogEnum | None = Field(default="notification", description="Lowest severity level to log station event message.")    sta_locate_log: LogStaLocateLogEnum | None = Field(default="notification", description="Lowest severity level to log station locate message.")    wids_log: LogWidsLogEnum | None = Field(default="notification", description="Lowest severity level to log WIDS message.")    wtp_event_log: LogWtpEventLogEnum | None = Field(default="notification", description="Lowest severity level to log WTP event message.")    wtp_fips_event_log: LogWtpFipsEventLogEnum | None = Field(default="notification", description="Lowest severity level to log FAP fips event message.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable wireless event logging.")
+    addrgrp_log: str | LogAddrgrpLogEnum | None = Field(default="notification", description="Lowest severity level to log address group message.")
+    ble_log: str | LogBleLogEnum | None = Field(default="notification", description="Lowest severity level to log BLE detection message.")
+    clb_log: str | LogClbLogEnum | None = Field(default="notification", description="Lowest severity level to log client load balancing message.")
+    dhcp_starv_log: str | LogDhcpStarvLogEnum | None = Field(default="notification", description="Lowest severity level to log DHCP starvation event message.")
+    led_sched_log: str | LogLedSchedLogEnum | None = Field(default="notification", description="Lowest severity level to log LED schedule event message.")
+    radio_event_log: str | LogRadioEventLogEnum | None = Field(default="notification", description="Lowest severity level to log radio event message.")
+    rogue_event_log: str | LogRogueEventLogEnum | None = Field(default="notification", description="Lowest severity level to log rogue AP event message.")
+    sta_event_log: str | LogStaEventLogEnum | None = Field(default="notification", description="Lowest severity level to log station event message.")
+    sta_locate_log: str | LogStaLocateLogEnum | None = Field(default="notification", description="Lowest severity level to log station locate message.")
+    wids_log: str | LogWidsLogEnum | None = Field(default="notification", description="Lowest severity level to log WIDS message.")
+    wtp_event_log: str | LogWtpEventLogEnum | None = Field(default="notification", description="Lowest severity level to log WTP event message.")
+    wtp_fips_event_log: str | LogWtpFipsEventLogEnum | None = Field(default="notification", description="Lowest severity level to log FAP fips event message.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -232,5 +259,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.786770Z
+# Generated: 2026-01-14T22:43:35.853008Z
 # ============================================================================

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -31,9 +32,9 @@ class ServerIpRange(BaseModel):
     start_ip: str = Field(default="0.0.0.0", description="Start of IP range.")
     end_ip: str = Field(default="0.0.0.0", description="End of IP range.")
     vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this range.")
-    vci_string: list[VciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    vci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
     uci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this range.")
-    uci_string: list[UciString] = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
+    uci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
     lease_time: int | None = Field(ge=300, le=8640000, default=0, description="Lease time in seconds, 0 means default lease time.")
 
 
@@ -64,13 +65,13 @@ class ServerOptions(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
     code: int = Field(ge=0, le=255, default=0, description="DHCP option code.")
-    type: TypeEnum | None = Field(default="hex", description="DHCP option type.")
+    type_: str | None = Field(default="hex", description="DHCP option type.")
     value: str | None = Field(max_length=312, default="", description="DHCP option value.")
     ip: str | None = Field(default="", description="DHCP option IPs.")
     vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this option.")
-    vci_string: list[VciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    vci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
     uci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this option.")
-    uci_string: list[UciString] = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
+    uci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
 
 
 class ServerVciString(BaseModel):
@@ -102,9 +103,9 @@ class ServerExcludeRange(BaseModel):
     start_ip: str = Field(default="0.0.0.0", description="Start of IP range.")
     end_ip: str = Field(default="0.0.0.0", description="End of IP range.")
     vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this range.")
-    vci_string: list[VciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    vci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
     uci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this range.")
-    uci_string: list[UciString] = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
+    uci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more UCI strings in quotes separated by spaces.")
     lease_time: int | None = Field(ge=300, le=8640000, default=0, description="Lease time in seconds, 0 means default lease time.")
 
 
@@ -120,7 +121,7 @@ class ServerReservedAddress(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
-    type: Literal["mac", "option82"] | None = Field(default="mac", description="DHCP reserved-address type.")
+    type_: Literal["mac", "option82"] | None = Field(default="mac", description="DHCP reserved-address type.")
     ip: str = Field(default="0.0.0.0", description="IP address to be reserved for the MAC address.")
     mac: str = Field(default="00:00:00:00:00:00", description="MAC address of the client that will get the reserved IP address.")
     action: Literal["assign", "block", "reserved"] | None = Field(default="reserved", description="Options for the DHCP server to configure the client with the reserved MAC address.")
@@ -146,7 +147,60 @@ class ServerModel(BaseModel):
 
     Configure DHCP servers.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - lease_time: min=300 max=8640000 pattern=        - mac_acl_default_action: pattern=        - forticlient_on_net_status: pattern=        - dns_service: pattern=        - dns_server1: pattern=        - dns_server2: pattern=        - dns_server3: pattern=        - dns_server4: pattern=        - wifi_ac_service: pattern=        - wifi_ac1: pattern=        - wifi_ac2: pattern=        - wifi_ac3: pattern=        - ntp_service: pattern=        - ntp_server1: pattern=        - ntp_server2: pattern=        - ntp_server3: pattern=        - domain: max_length=35 pattern=        - wins_server1: pattern=        - wins_server2: pattern=        - default_gateway: pattern=        - next_server: pattern=        - netmask: pattern=        - interface: max_length=15 pattern=        - ip_range: pattern=        - timezone_option: pattern=        - timezone: max_length=63 pattern=        - tftp_server: pattern=        - filename: max_length=127 pattern=        - options: pattern=        - server_type: pattern=        - ip_mode: pattern=        - conflicted_ip_timeout: min=60 max=8640000 pattern=        - ipsec_lease_hold: min=0 max=8640000 pattern=        - auto_configuration: pattern=        - dhcp_settings_from_fortiipam: pattern=        - auto_managed_status: pattern=        - ddns_update: pattern=        - ddns_update_override: pattern=        - ddns_server_ip: pattern=        - ddns_zone: max_length=64 pattern=        - ddns_auth: pattern=        - ddns_keyname: max_length=64 pattern=        - ddns_key: pattern=        - ddns_ttl: min=60 max=86400 pattern=        - vci_match: pattern=        - vci_string: pattern=        - exclude_range: pattern=        - shared_subnet: pattern=        - relay_agent: pattern=        - reserved_address: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - lease_time: min=300 max=8640000 pattern=
+        - mac_acl_default_action: pattern=
+        - forticlient_on_net_status: pattern=
+        - dns_service: pattern=
+        - dns_server1: pattern=
+        - dns_server2: pattern=
+        - dns_server3: pattern=
+        - dns_server4: pattern=
+        - wifi_ac_service: pattern=
+        - wifi_ac1: pattern=
+        - wifi_ac2: pattern=
+        - wifi_ac3: pattern=
+        - ntp_service: pattern=
+        - ntp_server1: pattern=
+        - ntp_server2: pattern=
+        - ntp_server3: pattern=
+        - domain: max_length=35 pattern=
+        - wins_server1: pattern=
+        - wins_server2: pattern=
+        - default_gateway: pattern=
+        - next_server: pattern=
+        - netmask: pattern=
+        - interface: max_length=15 pattern=
+        - ip_range: pattern=
+        - timezone_option: pattern=
+        - timezone: max_length=63 pattern=
+        - tftp_server: pattern=
+        - filename: max_length=127 pattern=
+        - options: pattern=
+        - server_type: pattern=
+        - ip_mode: pattern=
+        - conflicted_ip_timeout: min=60 max=8640000 pattern=
+        - ipsec_lease_hold: min=0 max=8640000 pattern=
+        - auto_configuration: pattern=
+        - dhcp_settings_from_fortiipam: pattern=
+        - auto_managed_status: pattern=
+        - ddns_update: pattern=
+        - ddns_update_override: pattern=
+        - ddns_server_ip: pattern=
+        - ddns_zone: max_length=64 pattern=
+        - ddns_auth: pattern=
+        - ddns_keyname: max_length=64 pattern=
+        - ddns_key: pattern=
+        - ddns_ttl: min=60 max=86400 pattern=
+        - vci_match: pattern=
+        - vci_string: pattern=
+        - exclude_range: pattern=
+        - shared_subnet: pattern=
+        - relay_agent: pattern=
+        - reserved_address: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -158,7 +212,59 @@ class ServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this DHCP configuration.")    lease_time: int | None = Field(ge=300, le=8640000, default=604800, description="Lease time in seconds, 0 means unlimited.")    mac_acl_default_action: Literal["assign", "block"] | None = Field(default="assign", description="MAC access control default action (allow or block assigning IP settings).")    forticlient_on_net_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable FortiClient-On-Net service for this DHCP server.")    dns_service: Literal["local", "default", "specify"] | None = Field(default="specify", description="Options for assigning DNS servers to DHCP clients.")    dns_server1: str | None = Field(default="0.0.0.0", description="DNS server 1.")    dns_server2: str | None = Field(default="0.0.0.0", description="DNS server 2.")    dns_server3: str | None = Field(default="0.0.0.0", description="DNS server 3.")    dns_server4: str | None = Field(default="0.0.0.0", description="DNS server 4.")    wifi_ac_service: Literal["specify", "local"] | None = Field(default="specify", description="Options for assigning WiFi access controllers to DHCP clients.")    wifi_ac1: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 1 IP address (DHCP option 138, RFC 5417).")    wifi_ac2: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 2 IP address (DHCP option 138, RFC 5417).")    wifi_ac3: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 3 IP address (DHCP option 138, RFC 5417).")    ntp_service: Literal["local", "default", "specify"] | None = Field(default="specify", description="Options for assigning Network Time Protocol (NTP) servers to DHCP clients.")    ntp_server1: str | None = Field(default="0.0.0.0", description="NTP server 1.")    ntp_server2: str | None = Field(default="0.0.0.0", description="NTP server 2.")    ntp_server3: str | None = Field(default="0.0.0.0", description="NTP server 3.")    domain: str | None = Field(max_length=35, default="", description="Domain name suffix for the IP addresses that the DHCP server assigns to clients.")    wins_server1: str | None = Field(default="0.0.0.0", description="WINS server 1.")    wins_server2: str | None = Field(default="0.0.0.0", description="WINS server 2.")    default_gateway: str | None = Field(default="0.0.0.0", description="Default gateway IP address assigned by the DHCP server.")    next_server: str | None = Field(default="0.0.0.0", description="IP address of a server (for example, a TFTP sever) that DHCP clients can download a boot file from.")    netmask: str = Field(default="0.0.0.0", description="Netmask assigned by the DHCP server.")    interface: str = Field(max_length=15, default="", description="DHCP server can assign IP configurations to clients connected to this interface.")  # datasource: ['system.interface.name']    ip_range: list[ServerIpRange] = Field(default=None, description="DHCP IP range configuration.")    timezone_option: Literal["disable", "default", "specify"] | None = Field(default="disable", description="Options for the DHCP server to set the client's time zone.")    timezone: str = Field(max_length=63, default="", description="Select the time zone to be assigned to DHCP clients.")  # datasource: ['system.timezone.name']    tftp_server: list[ServerTftpServer] = Field(default=None, description="One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.")    filename: str | None = Field(max_length=127, default="", description="Name of the boot file on the TFTP server.")    options: list[ServerOptions] = Field(default=None, description="DHCP options.")    server_type: Literal["regular", "ipsec"] | None = Field(default="regular", description="DHCP server can be a normal DHCP server or an IPsec DHCP server.")    ip_mode: Literal["range", "usrgrp"] | None = Field(default="range", description="Method used to assign client IP.")    conflicted_ip_timeout: int | None = Field(ge=60, le=8640000, default=1800, description="Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.")    ipsec_lease_hold: int | None = Field(ge=0, le=8640000, default=60, description="DHCP over IPsec leases expire this many seconds after tunnel down (0 to disable forced-expiry).")    auto_configuration: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable auto configuration.")    dhcp_settings_from_fortiipam: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable populating of DHCP server settings from FortiIPAM.")    auto_managed_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable use of this DHCP server once this interface has been assigned an IP address from FortiIPAM.")    ddns_update: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DDNS update for DHCP.")    ddns_update_override: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DDNS update override for DHCP.")    ddns_server_ip: str | None = Field(default="0.0.0.0", description="DDNS server IP.")    ddns_zone: str | None = Field(max_length=64, default="", description="Zone of your domain name (ex. DDNS.com).")    ddns_auth: Literal["disable", "tsig"] | None = Field(default="disable", description="DDNS authentication mode.")    ddns_keyname: str | None = Field(max_length=64, default="", description="DDNS update key name.")    ddns_key: Any = Field(default=None, description="DDNS update key (base 64 encoding).")    ddns_ttl: int | None = Field(ge=60, le=86400, default=300, description="TTL.")    vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.")    vci_string: list[ServerVciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")    exclude_range: list[ServerExcludeRange] = Field(default=None, description="Exclude one or more ranges of IP addresses from being assigned to clients.")    shared_subnet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable shared subnet.")    relay_agent: str | None = Field(default="0.0.0.0", description="Relay agent IP.")    reserved_address: list[ServerReservedAddress] = Field(default=None, description="Options for the DHCP server to assign IP settings to specific MAC addresses.")    # ========================================================================
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
+    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this DHCP configuration.")
+    lease_time: int | None = Field(ge=300, le=8640000, default=604800, description="Lease time in seconds, 0 means unlimited.")
+    mac_acl_default_action: Literal["assign", "block"] | None = Field(default="assign", description="MAC access control default action (allow or block assigning IP settings).")
+    forticlient_on_net_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable FortiClient-On-Net service for this DHCP server.")
+    dns_service: Literal["local", "default", "specify"] | None = Field(default="specify", description="Options for assigning DNS servers to DHCP clients.")
+    dns_server1: str | None = Field(default="0.0.0.0", description="DNS server 1.")
+    dns_server2: str | None = Field(default="0.0.0.0", description="DNS server 2.")
+    dns_server3: str | None = Field(default="0.0.0.0", description="DNS server 3.")
+    dns_server4: str | None = Field(default="0.0.0.0", description="DNS server 4.")
+    wifi_ac_service: Literal["specify", "local"] | None = Field(default="specify", description="Options for assigning WiFi access controllers to DHCP clients.")
+    wifi_ac1: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 1 IP address (DHCP option 138, RFC 5417).")
+    wifi_ac2: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 2 IP address (DHCP option 138, RFC 5417).")
+    wifi_ac3: str | None = Field(default="0.0.0.0", description="WiFi Access Controller 3 IP address (DHCP option 138, RFC 5417).")
+    ntp_service: Literal["local", "default", "specify"] | None = Field(default="specify", description="Options for assigning Network Time Protocol (NTP) servers to DHCP clients.")
+    ntp_server1: str | None = Field(default="0.0.0.0", description="NTP server 1.")
+    ntp_server2: str | None = Field(default="0.0.0.0", description="NTP server 2.")
+    ntp_server3: str | None = Field(default="0.0.0.0", description="NTP server 3.")
+    domain: str | None = Field(max_length=35, default="", description="Domain name suffix for the IP addresses that the DHCP server assigns to clients.")
+    wins_server1: str | None = Field(default="0.0.0.0", description="WINS server 1.")
+    wins_server2: str | None = Field(default="0.0.0.0", description="WINS server 2.")
+    default_gateway: str | None = Field(default="0.0.0.0", description="Default gateway IP address assigned by the DHCP server.")
+    next_server: str | None = Field(default="0.0.0.0", description="IP address of a server (for example, a TFTP sever) that DHCP clients can download a boot file from.")
+    netmask: str = Field(default="0.0.0.0", description="Netmask assigned by the DHCP server.")
+    interface: str = Field(max_length=15, default="", description="DHCP server can assign IP configurations to clients connected to this interface.")  # datasource: ['system.interface.name']
+    ip_range: list[ServerIpRange] | None = Field(default=None, description="DHCP IP range configuration.")
+    timezone_option: Literal["disable", "default", "specify"] | None = Field(default="disable", description="Options for the DHCP server to set the client's time zone.")
+    timezone: str = Field(max_length=63, default="", description="Select the time zone to be assigned to DHCP clients.")  # datasource: ['system.timezone.name']
+    tftp_server: list[ServerTftpServer] | None = Field(default=None, description="One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.")
+    filename: str | None = Field(max_length=127, default="", description="Name of the boot file on the TFTP server.")
+    options: list[ServerOptions] | None = Field(default=None, description="DHCP options.")
+    server_type: Literal["regular", "ipsec"] | None = Field(default="regular", description="DHCP server can be a normal DHCP server or an IPsec DHCP server.")
+    ip_mode: Literal["range", "usrgrp"] | None = Field(default="range", description="Method used to assign client IP.")
+    conflicted_ip_timeout: int | None = Field(ge=60, le=8640000, default=1800, description="Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.")
+    ipsec_lease_hold: int | None = Field(ge=0, le=8640000, default=60, description="DHCP over IPsec leases expire this many seconds after tunnel down (0 to disable forced-expiry).")
+    auto_configuration: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable auto configuration.")
+    dhcp_settings_from_fortiipam: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable populating of DHCP server settings from FortiIPAM.")
+    auto_managed_status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable use of this DHCP server once this interface has been assigned an IP address from FortiIPAM.")
+    ddns_update: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DDNS update for DHCP.")
+    ddns_update_override: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DDNS update override for DHCP.")
+    ddns_server_ip: str | None = Field(default="0.0.0.0", description="DDNS server IP.")
+    ddns_zone: str | None = Field(max_length=64, default="", description="Zone of your domain name (ex. DDNS.com).")
+    ddns_auth: Literal["disable", "tsig"] | None = Field(default="disable", description="DDNS authentication mode.")
+    ddns_keyname: str | None = Field(max_length=64, default="", description="DDNS update key name.")
+    ddns_key: Any = Field(default=None, description="DDNS update key (base 64 encoding).")
+    ddns_ttl: int | None = Field(ge=60, le=86400, default=300, description="TTL.")
+    vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.")
+    vci_string: list[ServerVciString] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    exclude_range: list[ServerExcludeRange] | None = Field(default=None, description="Exclude one or more ranges of IP addresses from being assigned to clients.")
+    shared_subnet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable shared subnet.")
+    relay_agent: str | None = Field(default="0.0.0.0", description="Relay agent IP.")
+    reserved_address: list[ServerReservedAddress] | None = Field(default=None, description="Options for the DHCP server to assign IP settings to specific MAC addresses.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -252,7 +358,7 @@ class ServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dhcp.server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -301,7 +407,7 @@ class ServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dhcp.server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "timezone", None)
@@ -338,9 +444,10 @@ class ServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_timezone_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_timezone_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -362,5 +469,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.274411Z
+# Generated: 2026-01-14T22:43:37.706594Z
 # ============================================================================

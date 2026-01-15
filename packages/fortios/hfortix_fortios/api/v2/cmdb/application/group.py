@@ -257,7 +257,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        type: Literal["application", "filter"] | None = None,
+        type_: Literal["application", "filter"] | None = None,
         application: str | list[str] | list[dict[str, Any]] | None = None,
         category: str | list[str] | list[dict[str, Any]] | None = None,
         risk: str | list[str] | list[dict[str, Any]] | None = None,
@@ -280,7 +280,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Application group name.
             comment: Comments.
-            type: Application group type.
+            type_: Application group type.
             application: Application ID list.
                 Default format: [{'id': 1}]
                 Supported formats:
@@ -365,7 +365,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             comment=comment,
-            type=type,
+            type_=type_,
             application=application,
             category=category,
             risk=risk,
@@ -406,7 +406,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        type: Literal["application", "filter"] | None = None,
+        type_: Literal["application", "filter"] | None = None,
         application: str | list[str] | list[dict[str, Any]] | None = None,
         category: str | list[str] | list[dict[str, Any]] | None = None,
         risk: str | list[str] | list[dict[str, Any]] | None = None,
@@ -429,7 +429,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Application group name.
             comment: Comments.
-            type: Application group type.
+            type_: Application group type.
             application: Application ID list.
                 Default format: [{'id': 1}]
                 Supported formats:
@@ -516,7 +516,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             comment=comment,
-            type=type,
+            type_=type_,
             application=application,
             category=category,
             risk=risk,
@@ -657,7 +657,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        type: Literal["application", "filter"] | None = None,
+        type_: Literal["application", "filter"] | None = None,
         application: str | list[str] | list[dict[str, Any]] | None = None,
         category: str | list[str] | list[dict[str, Any]] | None = None,
         risk: str | list[str] | list[dict[str, Any]] | None = None,
@@ -681,7 +681,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             comment: Field comment
-            type: Field type
+            type_: Field type
             application: Field application
             category: Field category
             risk: Field risk
@@ -735,7 +735,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             comment=comment,
-            type=type,
+            type_=type_,
             application=application,
             category=category,
             risk=risk,

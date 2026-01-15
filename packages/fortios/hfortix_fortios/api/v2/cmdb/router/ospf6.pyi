@@ -56,7 +56,7 @@ class Ospf6AreaItem(TypedDict):
     default_cost: int  # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 16777215
     nssa_translator_role: Literal["candidate", "never", "always"]  # NSSA translator role type. | Default: candidate
     stub_type: Literal["no-summary", "summary"]  # Stub summary setting. | Default: summary
-    type: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
+    type_: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
     nssa_default_information_originate: Literal["enable", "disable"]  # Enable/disable originate type 7 default into NSSA | Default: disable
     nssa_default_information_originate_metric: int  # OSPFv3 default metric. | Default: 10 | Min: 0 | Max: 16777214
     nssa_default_information_originate_metric_type: Literal["1", "2"]  # OSPFv3 metric type for default routes. | Default: 2
@@ -66,7 +66,7 @@ class Ospf6AreaItem(TypedDict):
     ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]  # Authentication algorithm. | Default: md5
     ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]  # Encryption algorithm. | Default: null
     ipsec_keys: str  # IPsec authentication and encryption keys.
-    range: str  # OSPF6 area range configuration.
+    range_: str  # OSPF6 area range configuration.
     virtual_link: str  # OSPF6 virtual link configuration.
 
 
@@ -155,7 +155,7 @@ class Ospf6AreaObject:
     # Stub summary setting. | Default: summary
     stub_type: Literal["no-summary", "summary"]
     # Area type setting. | Default: regular
-    type: Literal["regular", "nssa", "stub"]
+    type_: Literal["regular", "nssa", "stub"]
     # Enable/disable originate type 7 default into NSSA area. | Default: disable
     nssa_default_information_originate: Literal["enable", "disable"]
     # OSPFv3 default metric. | Default: 10 | Min: 0 | Max: 16777214
@@ -175,7 +175,7 @@ class Ospf6AreaObject:
     # IPsec authentication and encryption keys.
     ipsec_keys: str
     # OSPF6 area range configuration.
-    range: str
+    range_: str
     # OSPF6 virtual link configuration.
     virtual_link: str
     
@@ -424,6 +424,10 @@ class Ospf6:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -444,6 +448,7 @@ class Ospf6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ospf6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -461,6 +466,7 @@ class Ospf6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ospf6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -477,6 +483,7 @@ class Ospf6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ospf6Response: ...
     
     # ================================================================
@@ -519,7 +526,7 @@ class Ospf6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Ospf6Object: ...
     
@@ -538,7 +545,7 @@ class Ospf6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Ospf6Object: ...
     
@@ -638,23 +645,6 @@ class Ospf6:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Ospf6Object | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -687,6 +677,7 @@ class Ospf6:
         summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ospf6Object: ...
@@ -774,34 +765,7 @@ class Ospf6:
         passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
         summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Ospf6Payload | None = ...,
-        abr_type: Literal["cisco", "ibm", "standard"] | None = ...,
-        auto_cost_ref_bandwidth: int | None = ...,
-        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        default_information_metric: int | None = ...,
-        default_information_metric_type: Literal["1", "2"] | None = ...,
-        default_information_route_map: str | None = ...,
-        default_metric: int | None = ...,
-        router_id: str | None = ...,
-        spf_timers: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        restart_mode: Literal["none", "graceful-restart"] | None = ...,
-        restart_period: int | None = ...,
-        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf6_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -849,8 +813,6 @@ class Ospf6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -878,6 +840,10 @@ class Ospf6DictMode:
     By default returns Ospf6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return Ospf6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1062,10 +1028,12 @@ class Ospf6DictMode:
         passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
         summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Ospf6Payload | None = ...,
@@ -1137,8 +1105,6 @@ class Ospf6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1162,6 +1128,10 @@ class Ospf6ObjectMode:
     By default returns Ospf6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Ospf6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1376,10 +1346,12 @@ class Ospf6ObjectMode:
         passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
         summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ospf6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Ospf6Payload | None = ...,
@@ -1451,8 +1423,6 @@ class Ospf6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

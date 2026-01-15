@@ -32,7 +32,7 @@ class SnmpCommunityPayload(TypedDict, total=False):
     trap_v2c_status: Literal["disable", "enable"]  # Enable/disable SNMP v2c traps. | Default: enable
     trap_v2c_lport: int  # SNMP v2c trap local port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     trap_v2c_rport: int  # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
-    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
+    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -94,7 +94,7 @@ class SnmpCommunityResponse(TypedDict):
     trap_v2c_status: Literal["disable", "enable"]  # Enable/disable SNMP v2c traps. | Default: enable
     trap_v2c_lport: int  # SNMP v2c trap local port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     trap_v2c_rport: int  # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
-    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
+    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf
 
 
 @final
@@ -133,11 +133,10 @@ class SnmpCommunityObject:
     trap_v2c_lport: int
     # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     trap_v2c_rport: int
-    # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
+    # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf
     events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -160,6 +159,10 @@ class SnmpCommunity:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -180,6 +183,7 @@ class SnmpCommunity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SnmpCommunityResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -197,6 +201,7 @@ class SnmpCommunity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SnmpCommunityResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -213,6 +218,7 @@ class SnmpCommunity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SnmpCommunityResponse]: ...
     
     # ================================================================
@@ -255,7 +261,7 @@ class SnmpCommunity:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
     
@@ -274,7 +280,7 @@ class SnmpCommunity:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SnmpCommunityObject]: ...
     
@@ -374,23 +380,6 @@ class SnmpCommunity:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SnmpCommunityObject | list[SnmpCommunityObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -419,6 +408,7 @@ class SnmpCommunity:
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
@@ -494,30 +484,7 @@ class SnmpCommunity:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SnmpCommunityPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        query_v1_status: Literal["disable", "enable"] | None = ...,
-        query_v1_port: int | None = ...,
-        query_v2c_status: Literal["disable", "enable"] | None = ...,
-        query_v2c_port: int | None = ...,
-        trap_v1_status: Literal["disable", "enable"] | None = ...,
-        trap_v1_lport: int | None = ...,
-        trap_v1_rport: int | None = ...,
-        trap_v2c_status: Literal["disable", "enable"] | None = ...,
-        trap_v2c_lport: int | None = ...,
-        trap_v2c_rport: int | None = ...,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -543,6 +510,7 @@ class SnmpCommunity:
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
@@ -618,30 +586,7 @@ class SnmpCommunity:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SnmpCommunityPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        query_v1_status: Literal["disable", "enable"] | None = ...,
-        query_v1_port: int | None = ...,
-        query_v2c_status: Literal["disable", "enable"] | None = ...,
-        query_v2c_port: int | None = ...,
-        trap_v1_status: Literal["disable", "enable"] | None = ...,
-        trap_v1_lport: int | None = ...,
-        trap_v1_rport: int | None = ...,
-        trap_v2c_status: Literal["disable", "enable"] | None = ...,
-        trap_v2c_lport: int | None = ...,
-        trap_v2c_rport: int | None = ...,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -652,6 +597,7 @@ class SnmpCommunity:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
@@ -682,14 +628,7 @@ class SnmpCommunity:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -733,8 +672,6 @@ class SnmpCommunity:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -762,6 +699,10 @@ class SnmpCommunityDictMode:
     By default returns SnmpCommunityResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SnmpCommunityObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -933,10 +874,12 @@ class SnmpCommunityDictMode:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SnmpCommunityPayload | None = ...,
@@ -1032,10 +975,12 @@ class SnmpCommunityDictMode:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SnmpCommunityPayload | None = ...,
@@ -1086,10 +1031,12 @@ class SnmpCommunityDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1137,8 +1084,6 @@ class SnmpCommunityDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1162,6 +1107,10 @@ class SnmpCommunityObjectMode:
     By default returns SnmpCommunityObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SnmpCommunityResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1359,10 +1308,12 @@ class SnmpCommunityObjectMode:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SnmpCommunityPayload | None = ...,
@@ -1484,10 +1435,12 @@ class SnmpCommunityObjectMode:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SnmpCommunityPayload | None = ...,
@@ -1549,10 +1502,12 @@ class SnmpCommunityObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnmpCommunityObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1600,8 +1555,6 @@ class SnmpCommunityObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

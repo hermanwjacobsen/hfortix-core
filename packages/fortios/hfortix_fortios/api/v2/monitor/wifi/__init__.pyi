@@ -15,17 +15,17 @@ if TYPE_CHECKING:
     from .station_capability import StationCapability, StationCapabilityDictMode, StationCapabilityObjectMode
     from .statistics import Statistics, StatisticsDictMode, StatisticsObjectMode
     from .unassociated_devices import UnassociatedDevices, UnassociatedDevicesDictMode, UnassociatedDevicesObjectMode
-    from .ap_profile import ApProfileDictMode, ApProfileObjectMode
+    from .ap_profile import ApProfile, ApProfileDictMode, ApProfileObjectMode
     from .client_ns import Client
     from .euclid import Euclid
     from .firmware import Firmware
     from .managed_ap import ManagedAp
-    from .nac_device import NacDeviceDictMode, NacDeviceObjectMode
-    from .network import NetworkDictMode, NetworkObjectMode
+    from .nac_device import NacDevice, NacDeviceDictMode, NacDeviceObjectMode
+    from .network import Network, NetworkDictMode, NetworkObjectMode
     from .region_image import RegionImage
     from .rogue_ap import RogueAp
     from .spectrum import Spectrum
-    from .ssid import SsidDictMode, SsidObjectMode
+    from .ssid import Ssid, SsidDictMode, SsidObjectMode
     from .vlan_probe import VlanProbe
 
 __all__ = [

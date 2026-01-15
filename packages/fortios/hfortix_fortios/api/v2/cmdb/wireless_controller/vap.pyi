@@ -142,7 +142,7 @@ class VapPayload(TypedDict, total=False):
     igmp_snooping: Literal["enable", "disable"]  # Enable/disable IGMP snooping. | Default: disable
     dhcp_address_enforcement: Literal["enable", "disable"]  # Enable/disable DHCP address enforcement | Default: disable
     broadcast_suppression: Literal["dhcp-up", "dhcp-down", "dhcp-starvation", "dhcp-ucast", "arp-known", "arp-unknown", "arp-reply", "arp-poison", "arp-proxy", "netbios-ns", "netbios-ds", "ipv6", "all-other-mc", "all-other-bc"]  # Optional suppression of broadcast messages. For ex | Default: dhcp-up dhcp-ucast arp-known
-    ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"]  # Optional rules of IPv6 packets. For example, you c | Default: drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad
+    ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"]  # Optional rules of IPv6 packets. For example, you c | Default: drop-icmp6ra drop-icmp6rs drop
     me_disable_thresh: int  # Disable multicast enhancement when this many clien | Default: 32 | Min: 2 | Max: 256
     mu_mimo: Literal["enable", "disable"]  # Enable/disable Multi-user MIMO (default = enable). | Default: enable
     probe_resp_suppression: Literal["enable", "disable"]  # Enable/disable probe response suppression | Default: disable
@@ -519,7 +519,7 @@ class VapResponse(TypedDict):
     igmp_snooping: Literal["enable", "disable"]  # Enable/disable IGMP snooping. | Default: disable
     dhcp_address_enforcement: Literal["enable", "disable"]  # Enable/disable DHCP address enforcement | Default: disable
     broadcast_suppression: Literal["dhcp-up", "dhcp-down", "dhcp-starvation", "dhcp-ucast", "arp-known", "arp-unknown", "arp-reply", "arp-poison", "arp-proxy", "netbios-ns", "netbios-ds", "ipv6", "all-other-mc", "all-other-bc"]  # Optional suppression of broadcast messages. For ex | Default: dhcp-up dhcp-ucast arp-known
-    ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"]  # Optional rules of IPv6 packets. For example, you c | Default: drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad
+    ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"]  # Optional rules of IPv6 packets. For example, you c | Default: drop-icmp6ra drop-icmp6rs drop
     me_disable_thresh: int  # Disable multicast enhancement when this many clien | Default: 32 | Min: 2 | Max: 256
     mu_mimo: Literal["enable", "disable"]  # Enable/disable Multi-user MIMO (default = enable). | Default: enable
     probe_resp_suppression: Literal["enable", "disable"]  # Enable/disable probe response suppression | Default: disable
@@ -810,7 +810,7 @@ class VapObject:
     dhcp_address_enforcement: Literal["enable", "disable"]
     # Optional suppression of broadcast messages. For example, you | Default: dhcp-up dhcp-ucast arp-known
     broadcast_suppression: Literal["dhcp-up", "dhcp-down", "dhcp-starvation", "dhcp-ucast", "arp-known", "arp-unknown", "arp-reply", "arp-poison", "arp-proxy", "netbios-ns", "netbios-ds", "ipv6", "all-other-mc", "all-other-bc"]
-    # Optional rules of IPv6 packets. For example, you can keep RA | Default: drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad
+    # Optional rules of IPv6 packets. For example, you can keep RA | Default: drop-icmp6ra drop-icmp6rs drop
     ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"]
     # Disable multicast enhancement when this many clients are rec | Default: 32 | Min: 2 | Max: 256
     me_disable_thresh: int
@@ -961,6 +961,10 @@ class Vap:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -981,6 +985,7 @@ class Vap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VapResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -998,6 +1003,7 @@ class Vap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VapResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -1014,6 +1020,7 @@ class Vap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VapResponse]: ...
     
     # ================================================================
@@ -1056,7 +1063,7 @@ class Vap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VapObject: ...
     
@@ -1075,7 +1082,7 @@ class Vap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VapObject]: ...
     
@@ -1174,23 +1181,6 @@ class Vap:
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VapObject | list[VapObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
@@ -1377,6 +1367,7 @@ class Vap:
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VapObject: ...
@@ -1923,187 +1914,7 @@ class Vap:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VapPayload | None = ...,
-        name: str | None = ...,
-        pre_auth: Literal["enable", "disable"] | None = ...,
-        external_pre_auth: Literal["enable", "disable"] | None = ...,
-        mesh_backhaul: Literal["enable", "disable"] | None = ...,
-        atf_weight: int | None = ...,
-        max_clients: int | None = ...,
-        max_clients_ap: int | None = ...,
-        ssid: str | None = ...,
-        broadcast_ssid: Literal["enable", "disable"] | None = ...,
-        security: Literal["open", "wep64", "wep128", "wpa-personal", "wpa-enterprise", "wpa-only-personal", "wpa-only-enterprise", "wpa2-only-personal", "wpa2-only-enterprise", "wpa3-enterprise", "wpa3-only-enterprise", "wpa3-enterprise-transition", "wpa3-sae", "wpa3-sae-transition", "owe", "osen"] | None = ...,
-        pmf: Literal["disable", "enable", "optional"] | None = ...,
-        pmf_assoc_comeback_timeout: int | None = ...,
-        pmf_sa_query_retry_timeout: int | None = ...,
-        beacon_protection: Literal["disable", "enable"] | None = ...,
-        okc: Literal["disable", "enable"] | None = ...,
-        mbo: Literal["disable", "enable"] | None = ...,
-        gas_comeback_delay: int | None = ...,
-        gas_fragmentation_limit: int | None = ...,
-        mbo_cell_data_conn_pref: Literal["excluded", "prefer-not", "prefer-use"] | None = ...,
-        x80211k: Literal["disable", "enable"] | None = ...,
-        x80211v: Literal["disable", "enable"] | None = ...,
-        neighbor_report_dual_band: Literal["disable", "enable"] | None = ...,
-        fast_bss_transition: Literal["disable", "enable"] | None = ...,
-        ft_mobility_domain: int | None = ...,
-        ft_r0_key_lifetime: int | None = ...,
-        ft_over_ds: Literal["disable", "enable"] | None = ...,
-        sae_groups: Literal["19", "20", "21"] | list[str] | None = ...,
-        owe_groups: Literal["19", "20", "21"] | list[str] | None = ...,
-        owe_transition: Literal["disable", "enable"] | None = ...,
-        owe_transition_ssid: str | None = ...,
-        additional_akms: Literal["akm6", "akm24"] | list[str] | None = ...,
-        eapol_key_retries: Literal["disable", "enable"] | None = ...,
-        tkip_counter_measure: Literal["enable", "disable"] | None = ...,
-        external_web: str | None = ...,
-        external_web_format: Literal["auto-detect", "no-query-string", "partial-query-string"] | None = ...,
-        external_logout: str | None = ...,
-        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_calling_station_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_called_station_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_case: Literal["uppercase", "lowercase"] | None = ...,
-        called_station_id_type: Literal["mac", "ip", "apname"] | None = ...,
-        mac_auth_bypass: Literal["enable", "disable"] | None = ...,
-        radius_mac_auth: Literal["enable", "disable"] | None = ...,
-        radius_mac_auth_server: str | None = ...,
-        radius_mac_auth_block_interval: int | None = ...,
-        radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
-        radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: Literal["radius", "usergroup"] | None = ...,
-        encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
-        keyindex: int | None = ...,
-        key: str | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        sae_h2e_only: Literal["enable", "disable"] | None = ...,
-        sae_hnp_only: Literal["enable", "disable"] | None = ...,
-        sae_pk: Literal["enable", "disable"] | None = ...,
-        sae_private_key: str | None = ...,
-        akm24_only: Literal["disable", "enable"] | None = ...,
-        radius_server: str | None = ...,
-        nas_filter_rule: Literal["enable", "disable"] | None = ...,
-        domain_name_stripping: Literal["disable", "enable"] | None = ...,
-        mlo: Literal["disable", "enable"] | None = ...,
-        local_standalone: Literal["enable", "disable"] | None = ...,
-        local_standalone_nat: Literal["enable", "disable"] | None = ...,
-        ip: str | None = ...,
-        dhcp_lease_time: int | None = ...,
-        local_standalone_dns: Literal["enable", "disable"] | None = ...,
-        local_standalone_dns_ip: str | list[str] | None = ...,
-        local_lan_partition: Literal["enable", "disable"] | None = ...,
-        local_bridging: Literal["enable", "disable"] | None = ...,
-        local_lan: Literal["allow", "deny"] | None = ...,
-        local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
-        captive_portal: Literal["enable", "disable"] | None = ...,
-        captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
-        portal_message_override_group: str | None = ...,
-        portal_message_overrides: str | None = ...,
-        portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        security_exempt_list: str | None = ...,
-        security_redirect_url: str | None = ...,
-        auth_cert: str | None = ...,
-        auth_portal_addr: str | None = ...,
-        intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
-        ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
-        high_efficiency: Literal["enable", "disable"] | None = ...,
-        target_wake_time: Literal["enable", "disable"] | None = ...,
-        port_macauth: Literal["disable", "radius", "address-group"] | None = ...,
-        port_macauth_timeout: int | None = ...,
-        port_macauth_reauth_timeout: int | None = ...,
-        bss_color_partial: Literal["enable", "disable"] | None = ...,
-        mpsk_profile: str | None = ...,
-        split_tunneling: Literal["enable", "disable"] | None = ...,
-        nac: Literal["enable", "disable"] | None = ...,
-        nac_profile: str | None = ...,
-        vlanid: int | None = ...,
-        vlan_auto: Literal["enable", "disable"] | None = ...,
-        dynamic_vlan: Literal["enable", "disable"] | None = ...,
-        captive_portal_fw_accounting: Literal["enable", "disable"] | None = ...,
-        captive_portal_ac_name: str | None = ...,
-        captive_portal_auth_timeout: int | None = ...,
-        multicast_rate: Literal["0", "6000", "12000", "24000"] | None = ...,
-        multicast_enhance: Literal["enable", "disable"] | None = ...,
-        igmp_snooping: Literal["enable", "disable"] | None = ...,
-        dhcp_address_enforcement: Literal["enable", "disable"] | None = ...,
-        broadcast_suppression: Literal["dhcp-up", "dhcp-down", "dhcp-starvation", "dhcp-ucast", "arp-known", "arp-unknown", "arp-reply", "arp-poison", "arp-proxy", "netbios-ns", "netbios-ds", "ipv6", "all-other-mc", "all-other-bc"] | list[str] | None = ...,
-        ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"] | list[str] | None = ...,
-        me_disable_thresh: int | None = ...,
-        mu_mimo: Literal["enable", "disable"] | None = ...,
-        probe_resp_suppression: Literal["enable", "disable"] | None = ...,
-        probe_resp_threshold: str | None = ...,
-        radio_sensitivity: Literal["enable", "disable"] | None = ...,
-        quarantine: Literal["enable", "disable"] | None = ...,
-        radio_5g_threshold: str | None = ...,
-        radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
-        dhcp_option82_remote_id_insertion: Literal["style-1", "disable"] | None = ...,
-        ptk_rekey: Literal["enable", "disable"] | None = ...,
-        ptk_rekey_intv: int | None = ...,
-        gtk_rekey: Literal["enable", "disable"] | None = ...,
-        gtk_rekey_intv: int | None = ...,
-        eap_reauth: Literal["enable", "disable"] | None = ...,
-        eap_reauth_intv: int | None = ...,
-        roaming_acct_interim_update: Literal["enable", "disable"] | None = ...,
-        qos_profile: str | None = ...,
-        hotspot20_profile: str | None = ...,
-        access_control_list: str | None = ...,
-        primary_wag_profile: str | None = ...,
-        secondary_wag_profile: str | None = ...,
-        tunnel_echo_interval: int | None = ...,
-        tunnel_fallback_interval: int | None = ...,
-        rates_11a: Literal["6", "6-basic", "9", "9-basic", "12", "12-basic", "18", "18-basic", "24", "24-basic", "36", "36-basic", "48", "48-basic", "54", "54-basic"] | list[str] | None = ...,
-        rates_11bg: Literal["1", "1-basic", "2", "2-basic", "5.5", "5.5-basic", "11", "11-basic", "6", "6-basic", "9", "9-basic", "12", "12-basic", "18", "18-basic", "24", "24-basic", "36", "36-basic", "48", "48-basic", "54", "54-basic"] | list[str] | None = ...,
-        rates_11n_ss12: Literal["mcs0/1", "mcs1/1", "mcs2/1", "mcs3/1", "mcs4/1", "mcs5/1", "mcs6/1", "mcs7/1", "mcs8/2", "mcs9/2", "mcs10/2", "mcs11/2", "mcs12/2", "mcs13/2", "mcs14/2", "mcs15/2"] | list[str] | None = ...,
-        rates_11n_ss34: Literal["mcs16/3", "mcs17/3", "mcs18/3", "mcs19/3", "mcs20/3", "mcs21/3", "mcs22/3", "mcs23/3", "mcs24/4", "mcs25/4", "mcs26/4", "mcs27/4", "mcs28/4", "mcs29/4", "mcs30/4", "mcs31/4"] | list[str] | None = ...,
-        rates_11ac_mcs_map: str | None = ...,
-        rates_11ax_mcs_map: str | None = ...,
-        rates_11be_mcs_map: str | None = ...,
-        rates_11be_mcs_map_160: str | None = ...,
-        rates_11be_mcs_map_320: str | None = ...,
-        utm_profile: str | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        antivirus_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
-        address_group: str | None = ...,
-        address_group_policy: Literal["disable", "allow", "deny"] | None = ...,
-        sticky_client_remove: Literal["enable", "disable"] | None = ...,
-        sticky_client_threshold_5g: str | None = ...,
-        sticky_client_threshold_2g: str | None = ...,
-        sticky_client_threshold_6g: str | None = ...,
-        bstm_rssi_disassoc_timer: int | None = ...,
-        bstm_load_balancing_disassoc_timer: int | None = ...,
-        bstm_disassociation_imminent: Literal["enable", "disable"] | None = ...,
-        beacon_advertising: Literal["name", "model", "serial-number"] | list[str] | None = ...,
-        osen: Literal["enable", "disable"] | None = ...,
-        application_detection_engine: Literal["enable", "disable"] | None = ...,
-        application_dscp_marking: Literal["enable", "disable"] | None = ...,
-        application_report_intv: int | None = ...,
-        l3_roaming: Literal["enable", "disable"] | None = ...,
-        l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2286,6 +2097,7 @@ class Vap:
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VapObject: ...
@@ -2832,187 +2644,7 @@ class Vap:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VapPayload | None = ...,
-        name: str | None = ...,
-        pre_auth: Literal["enable", "disable"] | None = ...,
-        external_pre_auth: Literal["enable", "disable"] | None = ...,
-        mesh_backhaul: Literal["enable", "disable"] | None = ...,
-        atf_weight: int | None = ...,
-        max_clients: int | None = ...,
-        max_clients_ap: int | None = ...,
-        ssid: str | None = ...,
-        broadcast_ssid: Literal["enable", "disable"] | None = ...,
-        security: Literal["open", "wep64", "wep128", "wpa-personal", "wpa-enterprise", "wpa-only-personal", "wpa-only-enterprise", "wpa2-only-personal", "wpa2-only-enterprise", "wpa3-enterprise", "wpa3-only-enterprise", "wpa3-enterprise-transition", "wpa3-sae", "wpa3-sae-transition", "owe", "osen"] | None = ...,
-        pmf: Literal["disable", "enable", "optional"] | None = ...,
-        pmf_assoc_comeback_timeout: int | None = ...,
-        pmf_sa_query_retry_timeout: int | None = ...,
-        beacon_protection: Literal["disable", "enable"] | None = ...,
-        okc: Literal["disable", "enable"] | None = ...,
-        mbo: Literal["disable", "enable"] | None = ...,
-        gas_comeback_delay: int | None = ...,
-        gas_fragmentation_limit: int | None = ...,
-        mbo_cell_data_conn_pref: Literal["excluded", "prefer-not", "prefer-use"] | None = ...,
-        x80211k: Literal["disable", "enable"] | None = ...,
-        x80211v: Literal["disable", "enable"] | None = ...,
-        neighbor_report_dual_band: Literal["disable", "enable"] | None = ...,
-        fast_bss_transition: Literal["disable", "enable"] | None = ...,
-        ft_mobility_domain: int | None = ...,
-        ft_r0_key_lifetime: int | None = ...,
-        ft_over_ds: Literal["disable", "enable"] | None = ...,
-        sae_groups: Literal["19", "20", "21"] | list[str] | None = ...,
-        owe_groups: Literal["19", "20", "21"] | list[str] | None = ...,
-        owe_transition: Literal["disable", "enable"] | None = ...,
-        owe_transition_ssid: str | None = ...,
-        additional_akms: Literal["akm6", "akm24"] | list[str] | None = ...,
-        eapol_key_retries: Literal["disable", "enable"] | None = ...,
-        tkip_counter_measure: Literal["enable", "disable"] | None = ...,
-        external_web: str | None = ...,
-        external_web_format: Literal["auto-detect", "no-query-string", "partial-query-string"] | None = ...,
-        external_logout: str | None = ...,
-        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_calling_station_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_called_station_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
-        mac_case: Literal["uppercase", "lowercase"] | None = ...,
-        called_station_id_type: Literal["mac", "ip", "apname"] | None = ...,
-        mac_auth_bypass: Literal["enable", "disable"] | None = ...,
-        radius_mac_auth: Literal["enable", "disable"] | None = ...,
-        radius_mac_auth_server: str | None = ...,
-        radius_mac_auth_block_interval: int | None = ...,
-        radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
-        radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: Literal["radius", "usergroup"] | None = ...,
-        encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
-        keyindex: int | None = ...,
-        key: str | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        sae_h2e_only: Literal["enable", "disable"] | None = ...,
-        sae_hnp_only: Literal["enable", "disable"] | None = ...,
-        sae_pk: Literal["enable", "disable"] | None = ...,
-        sae_private_key: str | None = ...,
-        akm24_only: Literal["disable", "enable"] | None = ...,
-        radius_server: str | None = ...,
-        nas_filter_rule: Literal["enable", "disable"] | None = ...,
-        domain_name_stripping: Literal["disable", "enable"] | None = ...,
-        mlo: Literal["disable", "enable"] | None = ...,
-        local_standalone: Literal["enable", "disable"] | None = ...,
-        local_standalone_nat: Literal["enable", "disable"] | None = ...,
-        ip: str | None = ...,
-        dhcp_lease_time: int | None = ...,
-        local_standalone_dns: Literal["enable", "disable"] | None = ...,
-        local_standalone_dns_ip: str | list[str] | None = ...,
-        local_lan_partition: Literal["enable", "disable"] | None = ...,
-        local_bridging: Literal["enable", "disable"] | None = ...,
-        local_lan: Literal["allow", "deny"] | None = ...,
-        local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
-        captive_portal: Literal["enable", "disable"] | None = ...,
-        captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
-        portal_message_override_group: str | None = ...,
-        portal_message_overrides: str | None = ...,
-        portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
-        security_exempt_list: str | None = ...,
-        security_redirect_url: str | None = ...,
-        auth_cert: str | None = ...,
-        auth_portal_addr: str | None = ...,
-        intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
-        ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
-        high_efficiency: Literal["enable", "disable"] | None = ...,
-        target_wake_time: Literal["enable", "disable"] | None = ...,
-        port_macauth: Literal["disable", "radius", "address-group"] | None = ...,
-        port_macauth_timeout: int | None = ...,
-        port_macauth_reauth_timeout: int | None = ...,
-        bss_color_partial: Literal["enable", "disable"] | None = ...,
-        mpsk_profile: str | None = ...,
-        split_tunneling: Literal["enable", "disable"] | None = ...,
-        nac: Literal["enable", "disable"] | None = ...,
-        nac_profile: str | None = ...,
-        vlanid: int | None = ...,
-        vlan_auto: Literal["enable", "disable"] | None = ...,
-        dynamic_vlan: Literal["enable", "disable"] | None = ...,
-        captive_portal_fw_accounting: Literal["enable", "disable"] | None = ...,
-        captive_portal_ac_name: str | None = ...,
-        captive_portal_auth_timeout: int | None = ...,
-        multicast_rate: Literal["0", "6000", "12000", "24000"] | None = ...,
-        multicast_enhance: Literal["enable", "disable"] | None = ...,
-        igmp_snooping: Literal["enable", "disable"] | None = ...,
-        dhcp_address_enforcement: Literal["enable", "disable"] | None = ...,
-        broadcast_suppression: Literal["dhcp-up", "dhcp-down", "dhcp-starvation", "dhcp-ucast", "arp-known", "arp-unknown", "arp-reply", "arp-poison", "arp-proxy", "netbios-ns", "netbios-ds", "ipv6", "all-other-mc", "all-other-bc"] | list[str] | None = ...,
-        ipv6_rules: Literal["drop-icmp6ra", "drop-icmp6rs", "drop-llmnr6", "drop-icmp6mld2", "drop-dhcp6s", "drop-dhcp6c", "ndp-proxy", "drop-ns-dad", "drop-ns-nondad"] | list[str] | None = ...,
-        me_disable_thresh: int | None = ...,
-        mu_mimo: Literal["enable", "disable"] | None = ...,
-        probe_resp_suppression: Literal["enable", "disable"] | None = ...,
-        probe_resp_threshold: str | None = ...,
-        radio_sensitivity: Literal["enable", "disable"] | None = ...,
-        quarantine: Literal["enable", "disable"] | None = ...,
-        radio_5g_threshold: str | None = ...,
-        radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
-        dhcp_option82_remote_id_insertion: Literal["style-1", "disable"] | None = ...,
-        ptk_rekey: Literal["enable", "disable"] | None = ...,
-        ptk_rekey_intv: int | None = ...,
-        gtk_rekey: Literal["enable", "disable"] | None = ...,
-        gtk_rekey_intv: int | None = ...,
-        eap_reauth: Literal["enable", "disable"] | None = ...,
-        eap_reauth_intv: int | None = ...,
-        roaming_acct_interim_update: Literal["enable", "disable"] | None = ...,
-        qos_profile: str | None = ...,
-        hotspot20_profile: str | None = ...,
-        access_control_list: str | None = ...,
-        primary_wag_profile: str | None = ...,
-        secondary_wag_profile: str | None = ...,
-        tunnel_echo_interval: int | None = ...,
-        tunnel_fallback_interval: int | None = ...,
-        rates_11a: Literal["6", "6-basic", "9", "9-basic", "12", "12-basic", "18", "18-basic", "24", "24-basic", "36", "36-basic", "48", "48-basic", "54", "54-basic"] | list[str] | None = ...,
-        rates_11bg: Literal["1", "1-basic", "2", "2-basic", "5.5", "5.5-basic", "11", "11-basic", "6", "6-basic", "9", "9-basic", "12", "12-basic", "18", "18-basic", "24", "24-basic", "36", "36-basic", "48", "48-basic", "54", "54-basic"] | list[str] | None = ...,
-        rates_11n_ss12: Literal["mcs0/1", "mcs1/1", "mcs2/1", "mcs3/1", "mcs4/1", "mcs5/1", "mcs6/1", "mcs7/1", "mcs8/2", "mcs9/2", "mcs10/2", "mcs11/2", "mcs12/2", "mcs13/2", "mcs14/2", "mcs15/2"] | list[str] | None = ...,
-        rates_11n_ss34: Literal["mcs16/3", "mcs17/3", "mcs18/3", "mcs19/3", "mcs20/3", "mcs21/3", "mcs22/3", "mcs23/3", "mcs24/4", "mcs25/4", "mcs26/4", "mcs27/4", "mcs28/4", "mcs29/4", "mcs30/4", "mcs31/4"] | list[str] | None = ...,
-        rates_11ac_mcs_map: str | None = ...,
-        rates_11ax_mcs_map: str | None = ...,
-        rates_11be_mcs_map: str | None = ...,
-        rates_11be_mcs_map_160: str | None = ...,
-        rates_11be_mcs_map_320: str | None = ...,
-        utm_profile: str | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        antivirus_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
-        address_group: str | None = ...,
-        address_group_policy: Literal["disable", "allow", "deny"] | None = ...,
-        sticky_client_remove: Literal["enable", "disable"] | None = ...,
-        sticky_client_threshold_5g: str | None = ...,
-        sticky_client_threshold_2g: str | None = ...,
-        sticky_client_threshold_6g: str | None = ...,
-        bstm_rssi_disassoc_timer: int | None = ...,
-        bstm_load_balancing_disassoc_timer: int | None = ...,
-        bstm_disassociation_imminent: Literal["enable", "disable"] | None = ...,
-        beacon_advertising: Literal["name", "model", "serial-number"] | list[str] | None = ...,
-        osen: Literal["enable", "disable"] | None = ...,
-        application_detection_engine: Literal["enable", "disable"] | None = ...,
-        application_dscp_marking: Literal["enable", "disable"] | None = ...,
-        application_report_intv: int | None = ...,
-        l3_roaming: Literal["enable", "disable"] | None = ...,
-        l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -3023,6 +2655,7 @@ class Vap:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VapObject: ...
@@ -3053,14 +2686,7 @@ class Vap:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -3261,8 +2887,6 @@ class Vap:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -3290,6 +2914,10 @@ class VapDictMode:
     By default returns VapResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VapObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -3932,10 +3560,12 @@ class VapDictMode:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VapPayload | None = ...,
@@ -4659,10 +4289,12 @@ class VapDictMode:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VapPayload | None = ...,
@@ -4870,10 +4502,12 @@ class VapDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -5078,8 +4712,6 @@ class VapDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -5103,6 +4735,10 @@ class VapObjectMode:
     By default returns VapObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VapResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -5928,10 +5564,12 @@ class VapObjectMode:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VapObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VapPayload | None = ...,
@@ -6838,10 +6476,12 @@ class VapObjectMode:
         l3_roaming: Literal["enable", "disable"] | None = ...,
         l3_roaming_mode: Literal["direct", "indirect"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VapObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VapPayload | None = ...,
@@ -7060,10 +6700,12 @@ class VapObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VapObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -7268,8 +6910,6 @@ class VapObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

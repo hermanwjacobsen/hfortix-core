@@ -12,6 +12,10 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
     Category: service
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -32,6 +36,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> dict[str, Any]: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -49,6 +54,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> dict[str, Any]: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -65,6 +71,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> dict[str, Any]: ...
     
     # ================================================================
@@ -107,7 +114,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiObject: ...
     
@@ -126,7 +133,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiObject: ...
     
@@ -226,23 +233,6 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FortiObject | dict[str, Any]: ...
-    
     # PUT overloads
     @overload
     def put(
@@ -250,6 +240,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiObject: ...
@@ -280,15 +271,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         self,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: dict[str, Any] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -317,8 +300,6 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -346,6 +327,10 @@ class FabricAdminLockoutExistsOnFirmwareUpdateDictMode:
     By default returns FabricAdminLockoutExistsOnFirmwareUpdateResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FabricAdminLockoutExistsOnFirmwareUpdateObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -473,10 +458,12 @@ class FabricAdminLockoutExistsOnFirmwareUpdateDictMode:
         self,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: dict[str, Any] | None = ...,
@@ -510,8 +497,6 @@ class FabricAdminLockoutExistsOnFirmwareUpdateDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -535,6 +520,10 @@ class FabricAdminLockoutExistsOnFirmwareUpdateObjectMode:
     By default returns FabricAdminLockoutExistsOnFirmwareUpdateObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FabricAdminLockoutExistsOnFirmwareUpdateResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -673,10 +662,12 @@ class FabricAdminLockoutExistsOnFirmwareUpdateObjectMode:
         self,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FortiObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: dict[str, Any] | None = ...,
@@ -710,8 +701,6 @@ class FabricAdminLockoutExistsOnFirmwareUpdateObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

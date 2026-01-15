@@ -235,7 +235,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         sdn: str | None = None,
         comment: str | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -251,7 +251,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name: Dynamic Network Service name.
             sdn: SDN connector name.
             comment: Comment.
-            filter: Match criteria filter.
+            filter_: Match criteria filter.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -288,7 +288,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name=name,
             sdn=sdn,
             comment=comment,
-            filter=filter,
+            filter_=filter_,
             data=payload_dict,
         )
         
@@ -322,7 +322,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         sdn: str | None = None,
         comment: str | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -338,7 +338,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name: Dynamic Network Service name.
             sdn: SDN connector name.
             comment: Comment.
-            filter: Match criteria filter.
+            filter_: Match criteria filter.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -377,7 +377,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name=name,
             sdn=sdn,
             comment=comment,
-            filter=filter,
+            filter_=filter_,
             data=payload_dict,
         )
 
@@ -511,7 +511,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         sdn: str | None = None,
         comment: str | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -528,7 +528,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name: Field name
             sdn: Field sdn
             comment: Field comment
-            filter: Field filter
+            filter_: Field filter
             vdom: Virtual domain name
             raw_json: If True, return raw API response
             response_mode: Override client-level response_mode
@@ -575,7 +575,7 @@ class NetworkServiceDynamic(CRUDEndpoint, MetadataMixin):
             name=name,
             sdn=sdn,
             comment=comment,
-            filter=filter,
+            filter_=filter_,
             data=payload_dict,
         )
         

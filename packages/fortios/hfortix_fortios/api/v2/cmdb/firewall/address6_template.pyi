@@ -19,7 +19,7 @@ class Address6TemplatePayload(TypedDict, total=False):
         }
     """
     name: str  # IPv6 address template name. | MaxLen: 63
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     ip6: str  # IPv6 address prefix. | Default: ::/0
     subnet_segment_count: int  # Number of IPv6 subnet segments. | Default: 0 | Min: 1 | Max: 6
     subnet_segment: list[dict[str, Any]]  # IPv6 subnet segments.
@@ -38,7 +38,7 @@ class Address6TemplateSubnetsegmentItem(TypedDict):
     name: str  # Subnet segment name. | MaxLen: 63
     bits: int  # Number of bits. | Default: 0 | Min: 1 | Max: 16
     exclusive: Literal["enable", "disable"]  # Enable/disable exclusive value. | Default: disable
-    values: str  # Subnet segment values.
+    values_: str  # Subnet segment values.
 
 
 # Nested classes for table field children (object mode)
@@ -60,7 +60,7 @@ class Address6TemplateSubnetsegmentObject:
     # Enable/disable exclusive value. | Default: disable
     exclusive: Literal["enable", "disable"]
     # Subnet segment values.
-    values: str
+    values_: str
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -81,7 +81,7 @@ class Address6TemplateResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # IPv6 address template name. | MaxLen: 63
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     ip6: str  # IPv6 address prefix. | Default: ::/0
     subnet_segment_count: int  # Number of IPv6 subnet segments. | Default: 0 | Min: 1 | Max: 6
     subnet_segment: list[Address6TemplateSubnetsegmentItem]  # IPv6 subnet segments.
@@ -98,7 +98,7 @@ class Address6TemplateObject:
     
     # IPv6 address template name. | MaxLen: 63
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # IPv6 address prefix. | Default: ::/0
     ip6: str
@@ -133,6 +133,10 @@ class Address6Template:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -153,6 +157,7 @@ class Address6Template:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Address6TemplateResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -170,6 +175,7 @@ class Address6Template:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Address6TemplateResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -186,6 +192,7 @@ class Address6Template:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Address6TemplateResponse]: ...
     
     # ================================================================
@@ -228,7 +235,7 @@ class Address6Template:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
     
@@ -247,7 +254,7 @@ class Address6Template:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Address6TemplateObject]: ...
     
@@ -347,23 +354,6 @@ class Address6Template:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Address6TemplateObject | list[Address6TemplateObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -383,6 +373,7 @@ class Address6Template:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
@@ -431,21 +422,7 @@ class Address6Template:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Address6TemplatePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        ip6: str | None = ...,
-        subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -462,6 +439,7 @@ class Address6Template:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
@@ -510,21 +488,7 @@ class Address6Template:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Address6TemplatePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        ip6: str | None = ...,
-        subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -535,6 +499,7 @@ class Address6Template:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
@@ -565,14 +530,7 @@ class Address6Template:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -607,8 +565,6 @@ class Address6Template:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -636,6 +592,10 @@ class Address6TemplateDictMode:
     By default returns Address6TemplateResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return Address6TemplateObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -780,10 +740,12 @@ class Address6TemplateDictMode:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Address6TemplatePayload | None = ...,
@@ -843,10 +805,12 @@ class Address6TemplateDictMode:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Address6TemplatePayload | None = ...,
@@ -888,10 +852,12 @@ class Address6TemplateDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -930,8 +896,6 @@ class Address6TemplateDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -955,6 +919,10 @@ class Address6TemplateObjectMode:
     By default returns Address6TemplateObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Address6TemplateResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1116,10 +1084,12 @@ class Address6TemplateObjectMode:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Address6TemplatePayload | None = ...,
@@ -1196,10 +1166,12 @@ class Address6TemplateObjectMode:
         subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Address6TemplatePayload | None = ...,
@@ -1252,10 +1224,12 @@ class Address6TemplateObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Address6TemplateObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1294,8 +1268,6 @@ class Address6TemplateObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

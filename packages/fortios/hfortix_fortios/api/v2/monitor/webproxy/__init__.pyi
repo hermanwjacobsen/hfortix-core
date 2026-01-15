@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .pacfile import PacfileDictMode, PacfileObjectMode
+    from .pacfile import Pacfile, PacfileDictMode, PacfileObjectMode
 
 __all__ = [
     "WebproxyDictMode",

@@ -161,6 +161,10 @@ class Ike:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -181,6 +185,7 @@ class Ike:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IkeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -198,6 +203,7 @@ class Ike:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IkeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -214,6 +220,7 @@ class Ike:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IkeResponse: ...
     
     # ================================================================
@@ -256,7 +263,7 @@ class Ike:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IkeObject: ...
     
@@ -275,7 +282,7 @@ class Ike:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IkeObject: ...
     
@@ -375,23 +382,6 @@ class Ike:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IkeObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -429,6 +419,7 @@ class Ike:
         dh_group_32: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IkeObject: ...
@@ -531,39 +522,7 @@ class Ike:
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IkePayload | None = ...,
-        embryonic_limit: int | None = ...,
-        dh_multiprocess: Literal["enable", "disable"] | None = ...,
-        dh_worker_count: int | None = ...,
-        dh_mode: Literal["software", "hardware"] | None = ...,
-        dh_keypair_cache: Literal["enable", "disable"] | None = ...,
-        dh_keypair_count: int | None = ...,
-        dh_keypair_throttle: Literal["enable", "disable"] | None = ...,
-        dh_group_1: str | None = ...,
-        dh_group_2: str | None = ...,
-        dh_group_5: str | None = ...,
-        dh_group_14: str | None = ...,
-        dh_group_15: str | None = ...,
-        dh_group_16: str | None = ...,
-        dh_group_17: str | None = ...,
-        dh_group_18: str | None = ...,
-        dh_group_19: str | None = ...,
-        dh_group_20: str | None = ...,
-        dh_group_21: str | None = ...,
-        dh_group_27: str | None = ...,
-        dh_group_28: str | None = ...,
-        dh_group_29: str | None = ...,
-        dh_group_30: str | None = ...,
-        dh_group_31: str | None = ...,
-        dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -616,8 +575,6 @@ class Ike:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -645,6 +602,10 @@ class IkeDictMode:
     By default returns IkeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IkeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -844,10 +805,12 @@ class IkeDictMode:
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IkePayload | None = ...,
@@ -929,8 +892,6 @@ class IkeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -954,6 +915,10 @@ class IkeObjectMode:
     By default returns IkeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IkeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1188,10 +1153,12 @@ class IkeObjectMode:
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IkeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IkePayload | None = ...,
@@ -1273,8 +1240,6 @@ class IkeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

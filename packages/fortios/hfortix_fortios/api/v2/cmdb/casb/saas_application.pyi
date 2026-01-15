@@ -21,7 +21,7 @@ class SaasApplicationPayload(TypedDict, total=False):
     name: str  # SaaS application name. | MaxLen: 79
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # Enable/disable setting. | Default: enable
-    type: Literal["built-in", "customized"]  # SaaS application type. | Default: customized
+    type_: Literal["built-in", "customized"]  # SaaS application type. | Default: customized
     casb_name: str  # SaaS application signature name. | MaxLen: 79
     description: str  # SaaS application description. | MaxLen: 63
     domains: list[dict[str, Any]]  # SaaS application domain list.
@@ -49,7 +49,7 @@ class SaasApplicationOutputattributesItem(TypedDict):
     
     name: str  # CASB attribute name. | MaxLen: 79
     description: str  # CASB attribute description. | MaxLen: 63
-    type: Literal["string", "string-list", "integer", "integer-list", "boolean"]  # CASB attribute format type. | Default: string
+    type_: Literal["string", "string-list", "integer", "integer-list", "boolean"]  # CASB attribute format type. | Default: string
     optional: Literal["enable", "disable"]  # CASB output attribute optional. | Default: disable
 
 
@@ -62,7 +62,7 @@ class SaasApplicationInputattributesItem(TypedDict):
     
     name: str  # CASB attribute name. | MaxLen: 79
     description: str  # CASB attribute description. | MaxLen: 63
-    type: Literal["string"]  # CASB attribute format type. | Default: string
+    type_: Literal["string"]  # CASB attribute format type. | Default: string
     required: Literal["enable", "disable"]  # CASB input attribute required. | Default: enable
     default: Literal["string", "string-list"]  # CASB attribute default value. | Default: string
     fallback_input: Literal["enable", "disable"]  # CASB attribute legacy input. | Default: disable
@@ -104,7 +104,7 @@ class SaasApplicationOutputattributesObject:
     # CASB attribute description. | MaxLen: 63
     description: str
     # CASB attribute format type. | Default: string
-    type: Literal["string", "string-list", "integer", "integer-list", "boolean"]
+    type_: Literal["string", "string-list", "integer", "integer-list", "boolean"]
     # CASB output attribute optional. | Default: disable
     optional: Literal["enable", "disable"]
     
@@ -131,7 +131,7 @@ class SaasApplicationInputattributesObject:
     # CASB attribute description. | MaxLen: 63
     description: str
     # CASB attribute format type. | Default: string
-    type: Literal["string"]
+    type_: Literal["string"]
     # CASB input attribute required. | Default: enable
     required: Literal["enable", "disable"]
     # CASB attribute default value. | Default: string
@@ -160,7 +160,7 @@ class SaasApplicationResponse(TypedDict):
     name: str  # SaaS application name. | MaxLen: 79
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # Enable/disable setting. | Default: enable
-    type: Literal["built-in", "customized"]  # SaaS application type. | Default: customized
+    type_: Literal["built-in", "customized"]  # SaaS application type. | Default: customized
     casb_name: str  # SaaS application signature name. | MaxLen: 79
     description: str  # SaaS application description. | MaxLen: 63
     domains: list[SaasApplicationDomainsItem]  # SaaS application domain list.
@@ -183,7 +183,7 @@ class SaasApplicationObject:
     # Enable/disable setting. | Default: enable
     status: Literal["enable", "disable"]
     # SaaS application type. | Default: customized
-    type: Literal["built-in", "customized"]
+    type_: Literal["built-in", "customized"]
     # SaaS application signature name. | MaxLen: 79
     casb_name: str
     # SaaS application description. | MaxLen: 63
@@ -196,7 +196,6 @@ class SaasApplicationObject:
     input_attributes: list[SaasApplicationInputattributesObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -219,6 +218,10 @@ class SaasApplication:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -239,6 +242,7 @@ class SaasApplication:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SaasApplicationResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -256,6 +260,7 @@ class SaasApplication:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SaasApplicationResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -272,6 +277,7 @@ class SaasApplication:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SaasApplicationResponse]: ...
     
     # ================================================================
@@ -314,7 +320,7 @@ class SaasApplication:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
     
@@ -333,7 +339,7 @@ class SaasApplication:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SaasApplicationObject]: ...
     
@@ -433,23 +439,6 @@ class SaasApplication:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SaasApplicationObject | list[SaasApplicationObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -464,7 +453,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -472,6 +461,7 @@ class SaasApplication:
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
@@ -483,7 +473,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -503,7 +493,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -522,31 +512,14 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SaasApplicationPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -558,7 +531,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -566,6 +539,7 @@ class SaasApplication:
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
@@ -577,7 +551,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -597,7 +571,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -616,31 +590,14 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SaasApplicationPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -651,6 +608,7 @@ class SaasApplication:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
@@ -681,14 +639,7 @@ class SaasApplication:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -704,7 +655,7 @@ class SaasApplication:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -726,8 +677,6 @@ class SaasApplication:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -755,6 +704,10 @@ class SaasApplicationDictMode:
     By default returns SaasApplicationResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SaasApplicationObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -861,7 +814,7 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -881,7 +834,7 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -901,24 +854,26 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -936,7 +891,7 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -956,7 +911,7 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -976,24 +931,26 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1031,10 +988,12 @@ class SaasApplicationDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1055,7 +1014,7 @@ class SaasApplicationDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1076,8 +1035,6 @@ class SaasApplicationDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1101,6 +1058,10 @@ class SaasApplicationObjectMode:
     By default returns SaasApplicationObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SaasApplicationResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1207,7 +1168,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1227,7 +1188,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1247,7 +1208,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1267,24 +1228,26 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1302,7 +1265,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1322,7 +1285,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1342,7 +1305,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1362,24 +1325,26 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
         output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1428,10 +1393,12 @@ class SaasApplicationObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SaasApplicationObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1452,7 +1419,7 @@ class SaasApplicationObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type_: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1473,8 +1440,6 @@ class SaasApplicationObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

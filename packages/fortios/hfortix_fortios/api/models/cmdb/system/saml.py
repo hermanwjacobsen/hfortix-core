@@ -38,7 +38,7 @@ class SamlServiceProviders(BaseModel):
     idp_entity_id: str | None = Field(max_length=255, default="", description="IDP entity ID.")
     idp_single_sign_on_url: str | None = Field(max_length=255, default="", description="IDP single sign-on URL.")
     idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout URL.")
-    assertion_attributes: list[AssertionAttributes] = Field(default=None, description="Customized SAML attributes to send along with assertion.")
+    assertion_attributes: list[dict[str, Any]] | None = Field(default=None, description="Customized SAML attributes to send along with assertion.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -56,7 +56,27 @@ class SamlModel(BaseModel):
 
     Global settings for SAML authentication.
 
-    Validation Rules:        - status: pattern=        - role: pattern=        - default_login_page: pattern=        - default_profile: max_length=35 pattern=        - cert: max_length=35 pattern=        - binding_protocol: pattern=        - portal_url: max_length=255 pattern=        - entity_id: max_length=255 pattern=        - single_sign_on_url: max_length=255 pattern=        - single_logout_url: max_length=255 pattern=        - idp_entity_id: max_length=255 pattern=        - idp_single_sign_on_url: max_length=255 pattern=        - idp_single_logout_url: max_length=255 pattern=        - idp_cert: max_length=35 pattern=        - server_address: max_length=63 pattern=        - require_signed_resp_and_asrt: pattern=        - tolerance: min=0 max=4294967295 pattern=        - life: min=0 max=4294967295 pattern=        - service_providers: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - role: pattern=
+        - default_login_page: pattern=
+        - default_profile: max_length=35 pattern=
+        - cert: max_length=35 pattern=
+        - binding_protocol: pattern=
+        - portal_url: max_length=255 pattern=
+        - entity_id: max_length=255 pattern=
+        - single_sign_on_url: max_length=255 pattern=
+        - single_logout_url: max_length=255 pattern=
+        - idp_entity_id: max_length=255 pattern=
+        - idp_single_sign_on_url: max_length=255 pattern=
+        - idp_single_logout_url: max_length=255 pattern=
+        - idp_cert: max_length=35 pattern=
+        - server_address: max_length=63 pattern=
+        - require_signed_resp_and_asrt: pattern=
+        - tolerance: min=0 max=4294967295 pattern=
+        - life: min=0 max=4294967295 pattern=
+        - service_providers: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -68,7 +88,26 @@ class SamlModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SAML authentication (default = disable).")    role: Literal["identity-provider", "service-provider"] | None = Field(default="service-provider", description="SAML role.")    default_login_page: Literal["normal", "sso"] = Field(default="normal", description="Choose default login page.")    default_profile: str = Field(max_length=35, default="", description="Default profile for new SSO admin.")  # datasource: ['system.accprofile.name']    cert: str | None = Field(max_length=35, default="", description="Certificate to sign SAML messages.")  # datasource: ['certificate.local.name']    binding_protocol: Literal["post", "redirect"] | None = Field(default="redirect", description="IdP Binding protocol.")    portal_url: str | None = Field(max_length=255, default="", description="SP portal URL.")    entity_id: str = Field(max_length=255, default="", description="SP entity ID.")    single_sign_on_url: str | None = Field(max_length=255, default="", description="SP single sign-on URL.")    single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")    idp_entity_id: str | None = Field(max_length=255, default="", description="IDP entity ID.")    idp_single_sign_on_url: str | None = Field(max_length=255, default="", description="IDP single sign-on URL.")    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout URL.")    idp_cert: str = Field(max_length=35, default="", description="IDP certificate name.")  # datasource: ['certificate.remote.name']    server_address: str = Field(max_length=63, default="", description="Server address.")    require_signed_resp_and_asrt: Literal["enable", "disable"] | None = Field(default="disable", description="Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).")    tolerance: int | None = Field(ge=0, le=4294967295, default=5, description="Tolerance to the range of time when the assertion is valid (in minutes).")    life: int | None = Field(ge=0, le=4294967295, default=30, description="Length of the range of time when the assertion is valid (in minutes).")    service_providers: list[SamlServiceProviders] = Field(default=None, description="Authorized service providers.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SAML authentication (default = disable).")
+    role: Literal["identity-provider", "service-provider"] | None = Field(default="service-provider", description="SAML role.")
+    default_login_page: Literal["normal", "sso"] = Field(default="normal", description="Choose default login page.")
+    default_profile: str = Field(max_length=35, default="", description="Default profile for new SSO admin.")  # datasource: ['system.accprofile.name']
+    cert: str | None = Field(max_length=35, default="", description="Certificate to sign SAML messages.")  # datasource: ['certificate.local.name']
+    binding_protocol: Literal["post", "redirect"] | None = Field(default="redirect", description="IdP Binding protocol.")
+    portal_url: str | None = Field(max_length=255, default="", description="SP portal URL.")
+    entity_id: str = Field(max_length=255, default="", description="SP entity ID.")
+    single_sign_on_url: str | None = Field(max_length=255, default="", description="SP single sign-on URL.")
+    single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")
+    idp_entity_id: str | None = Field(max_length=255, default="", description="IDP entity ID.")
+    idp_single_sign_on_url: str | None = Field(max_length=255, default="", description="IDP single sign-on URL.")
+    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout URL.")
+    idp_cert: str = Field(max_length=35, default="", description="IDP certificate name.")  # datasource: ['certificate.remote.name']
+    server_address: str = Field(max_length=63, default="", description="Server address.")
+    require_signed_resp_and_asrt: Literal["enable", "disable"] | None = Field(default="disable", description="Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).")
+    tolerance: int | None = Field(ge=0, le=4294967295, default=5, description="Tolerance to the range of time when the assertion is valid (in minutes).")
+    life: int | None = Field(ge=0, le=4294967295, default=30, description="Length of the range of time when the assertion is valid (in minutes).")
+    service_providers: list[SamlServiceProviders] | None = Field(default=None, description="Authorized service providers.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -177,7 +216,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "default_profile", None)
@@ -226,7 +265,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "cert", None)
@@ -275,7 +314,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "idp_cert", None)
@@ -324,7 +363,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service_providers", [])
@@ -370,11 +409,14 @@ class SamlModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_default_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_idp_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_providers_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_idp_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_providers_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -396,5 +438,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.896245Z
+# Generated: 2026-01-14T22:43:38.484152Z
 # ============================================================================

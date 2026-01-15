@@ -205,6 +205,10 @@ class Setting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -225,6 +229,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -242,6 +247,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -258,6 +264,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # ================================================================
@@ -300,7 +307,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -319,7 +326,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -419,23 +426,6 @@ class Setting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -484,6 +474,7 @@ class Setting:
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
@@ -619,50 +610,7 @@ class Setting:
         debug_interval: int | None = ...,
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        username: str | None = ...,
-        mailto1: str | None = ...,
-        mailto2: str | None = ...,
-        mailto3: str | None = ...,
-        filter_mode: Literal["category", "threshold"] | None = ...,
-        email_interval: int | None = ...,
-        IPS_logs: Literal["enable", "disable"] | None = ...,
-        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
-        HA_logs: Literal["enable", "disable"] | None = ...,
-        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
-        FDS_update_logs: Literal["enable", "disable"] | None = ...,
-        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
-        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
-        antivirus_logs: Literal["enable", "disable"] | None = ...,
-        webfilter_logs: Literal["enable", "disable"] | None = ...,
-        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
-        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
-        admin_login_logs: Literal["enable", "disable"] | None = ...,
-        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
-        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
-        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
-        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
-        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
-        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
-        ssh_logs: Literal["enable", "disable"] | None = ...,
-        local_disk_usage: int | None = ...,
-        emergency_interval: int | None = ...,
-        alert_interval: int | None = ...,
-        critical_interval: int | None = ...,
-        error_interval: int | None = ...,
-        warning_interval: int | None = ...,
-        notification_interval: int | None = ...,
-        information_interval: int | None = ...,
-        debug_interval: int | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -726,8 +674,6 @@ class Setting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -755,6 +701,10 @@ class SettingDictMode:
     By default returns SettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -987,10 +937,12 @@ class SettingDictMode:
         debug_interval: int | None = ...,
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1094,8 +1046,6 @@ class SettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1119,6 +1069,10 @@ class SettingObjectMode:
     By default returns SettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1397,10 +1351,12 @@ class SettingObjectMode:
         debug_interval: int | None = ...,
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1504,8 +1460,6 @@ class SettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

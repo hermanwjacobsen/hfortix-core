@@ -154,7 +154,6 @@ class AcmeObject:
     status: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -176,6 +175,10 @@ class Acme:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -196,6 +199,7 @@ class Acme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AcmeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -213,6 +217,7 @@ class Acme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AcmeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -229,6 +234,7 @@ class Acme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AcmeResponse: ...
     
     # ================================================================
@@ -271,7 +277,7 @@ class Acme:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AcmeObject: ...
     
@@ -290,7 +296,7 @@ class Acme:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AcmeObject: ...
     
@@ -390,23 +396,6 @@ class Acme:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AcmeObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -427,6 +416,7 @@ class Acme:
         status: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AcmeObject: ...
@@ -478,22 +468,7 @@ class Acme:
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        use_ha_direct: Literal["enable", "disable"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
-        acc_details: str | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -529,8 +504,6 @@ class Acme:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -558,6 +531,10 @@ class AcmeDictMode:
     By default returns AcmeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AcmeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -706,10 +683,12 @@ class AcmeDictMode:
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
@@ -757,8 +736,6 @@ class AcmeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -782,6 +759,10 @@ class AcmeObjectMode:
     By default returns AcmeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AcmeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -948,10 +929,12 @@ class AcmeObjectMode:
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AcmeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
@@ -999,8 +982,6 @@ class AcmeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

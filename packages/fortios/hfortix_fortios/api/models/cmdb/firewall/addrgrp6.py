@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from uuid import UUID
 
@@ -58,7 +58,7 @@ class Addrgrp6Tagging(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=63, default="", description="Tagging entry name.")
     category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    tags: list[dict[str, Any]] | None = Field(default=None, description="Tags.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -76,7 +76,17 @@ class Addrgrp6Model(BaseModel):
 
     Configure IPv6 address groups.
 
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - color: min=0 max=32 pattern=        - comment: max_length=255 pattern=        - member: pattern=        - exclude: pattern=        - exclude_member: pattern=        - tagging: pattern=        - fabric_object: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - uuid: pattern=
+        - color: min=0 max=32 pattern=
+        - comment: max_length=255 pattern=
+        - member: pattern=
+        - exclude: pattern=
+        - exclude_member: pattern=
+        - tagging: pattern=
+        - fabric_object: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -88,7 +98,16 @@ class Addrgrp6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=79, default="", description="IPv6 address group name.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets the value to 1).")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    member: list[Addrgrp6Member] = Field(default=None, description="Address objects contained within the group.")    exclude: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address6 exclusion.")    exclude_member: list[Addrgrp6ExcludeMember] = Field(description="Address6 exclusion member.")    tagging: list[Addrgrp6Tagging] = Field(default=None, description="Config object tagging.")    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    # ========================================================================
+    name: str = Field(max_length=79, default="", description="IPv6 address group name.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets the value to 1).")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    member: list[Addrgrp6Member] | None = Field(default=None, description="Address objects contained within the group.")
+    exclude: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address6 exclusion.")
+    exclude_member: list[Addrgrp6ExcludeMember] | None = Field(description="Address6 exclusion member.")
+    tagging: list[Addrgrp6Tagging] | None = Field(default=None, description="Config object tagging.")
+    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -152,7 +171,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "member", [])
@@ -212,7 +231,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "exclude_member", [])
@@ -272,7 +291,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -318,10 +337,12 @@ class Addrgrp6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_exclude_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_tagging_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_exclude_member_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_tagging_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -343,5 +364,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.742619Z
+# Generated: 2026-01-14T22:43:35.807769Z
 # ============================================================================

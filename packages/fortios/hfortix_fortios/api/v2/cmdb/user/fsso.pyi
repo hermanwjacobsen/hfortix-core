@@ -27,7 +27,7 @@ class FssoPayload(TypedDict, total=False):
         }
     """
     name: str  # Name. | MaxLen: 35
-    type: Literal["default", "fortinac"]  # Server type. | Default: default
+    type_: Literal["default", "fortinac"]  # Server type. | Default: default
     server: str  # Domain name or IP address of the first FSSO collec | MaxLen: 63
     port: int  # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     password: str  # Password of the first FSSO collector agent. | MaxLen: 128
@@ -73,7 +73,7 @@ class FssoResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Name. | MaxLen: 35
-    type: Literal["default", "fortinac"]  # Server type. | Default: default
+    type_: Literal["default", "fortinac"]  # Server type. | Default: default
     server: str  # Domain name or IP address of the first FSSO collec | MaxLen: 63
     port: int  # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     password: str  # Password of the first FSSO collector agent. | MaxLen: 128
@@ -118,7 +118,7 @@ class FssoObject:
     # Name. | MaxLen: 35
     name: str
     # Server type. | Default: default
-    type: Literal["default", "fortinac"]
+    type_: Literal["default", "fortinac"]
     # Domain name or IP address of the first FSSO collector agent. | MaxLen: 63
     server: str
     # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
@@ -206,6 +206,10 @@ class Fsso:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -226,6 +230,7 @@ class Fsso:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FssoResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -243,6 +248,7 @@ class Fsso:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FssoResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -259,6 +265,7 @@ class Fsso:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[FssoResponse]: ...
     
     # ================================================================
@@ -301,7 +308,7 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FssoObject: ...
     
@@ -320,7 +327,7 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FssoObject]: ...
     
@@ -420,23 +427,6 @@ class Fsso:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FssoObject | list[FssoObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -449,7 +439,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -483,6 +473,7 @@ class Fsso:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
@@ -492,7 +483,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -536,7 +527,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -579,7 +570,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -612,48 +603,7 @@ class Fsso:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: FssoPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
-        server: str | None = ...,
-        port: int | None = ...,
-        password: str | None = ...,
-        server2: str | None = ...,
-        port2: int | None = ...,
-        password2: str | None = ...,
-        server3: str | None = ...,
-        port3: int | None = ...,
-        password3: str | None = ...,
-        server4: str | None = ...,
-        port4: int | None = ...,
-        password4: str | None = ...,
-        server5: str | None = ...,
-        port5: int | None = ...,
-        password5: str | None = ...,
-        logon_timeout: int | None = ...,
-        ldap_server: str | None = ...,
-        group_poll_interval: int | None = ...,
-        ldap_poll: Literal["enable", "disable"] | None = ...,
-        ldap_poll_interval: int | None = ...,
-        ldap_poll_filter: str | None = ...,
-        user_info_server: str | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
-        sni: str | None = ...,
-        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
-        ssl_trusted_cert: str | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -663,7 +613,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -697,6 +647,7 @@ class Fsso:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
@@ -706,7 +657,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -750,7 +701,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -793,7 +744,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -826,48 +777,7 @@ class Fsso:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FssoPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
-        server: str | None = ...,
-        port: int | None = ...,
-        password: str | None = ...,
-        server2: str | None = ...,
-        port2: int | None = ...,
-        password2: str | None = ...,
-        server3: str | None = ...,
-        port3: int | None = ...,
-        password3: str | None = ...,
-        server4: str | None = ...,
-        port4: int | None = ...,
-        password4: str | None = ...,
-        server5: str | None = ...,
-        port5: int | None = ...,
-        password5: str | None = ...,
-        logon_timeout: int | None = ...,
-        ldap_server: str | None = ...,
-        group_poll_interval: int | None = ...,
-        ldap_poll: Literal["enable", "disable"] | None = ...,
-        ldap_poll_interval: int | None = ...,
-        ldap_poll_filter: str | None = ...,
-        user_info_server: str | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
-        sni: str | None = ...,
-        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
-        ssl_trusted_cert: str | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -878,6 +788,7 @@ class Fsso:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
@@ -908,14 +819,7 @@ class Fsso:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -929,7 +833,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -977,8 +881,6 @@ class Fsso:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1006,6 +908,10 @@ class FssoDictMode:
     By default returns FssoResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FssoObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1110,7 +1016,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1154,7 +1060,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1198,7 +1104,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1231,15 +1137,17 @@ class FssoDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1281,7 +1189,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1325,7 +1233,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1369,7 +1277,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1402,15 +1310,17 @@ class FssoDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1474,10 +1384,12 @@ class FssoDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1496,7 +1408,7 @@ class FssoDictMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1543,8 +1455,6 @@ class FssoDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1568,6 +1478,10 @@ class FssoObjectMode:
     By default returns FssoObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FssoResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1672,7 +1586,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1716,7 +1630,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1760,7 +1674,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1804,7 +1718,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1837,15 +1751,17 @@ class FssoObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1887,7 +1803,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1931,7 +1847,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -1975,7 +1891,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -2019,7 +1935,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -2052,15 +1968,17 @@ class FssoObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -2135,10 +2053,12 @@ class FssoObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2157,7 +2077,7 @@ class FssoObjectMode:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type_: Literal["default", "fortinac"] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -2204,8 +2124,6 @@ class FssoObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

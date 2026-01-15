@@ -126,6 +126,10 @@ class Peer:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -146,6 +150,7 @@ class Peer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PeerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -163,6 +168,7 @@ class Peer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PeerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -179,6 +185,7 @@ class Peer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[PeerResponse]: ...
     
     # ================================================================
@@ -221,7 +228,7 @@ class Peer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PeerObject: ...
     
@@ -240,7 +247,7 @@ class Peer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[PeerObject]: ...
     
@@ -340,23 +347,6 @@ class Peer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> PeerObject | list[PeerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -383,6 +373,7 @@ class Peer:
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PeerObject: ...
@@ -452,28 +443,7 @@ class Peer:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: PeerPayload | None = ...,
-        name: str | None = ...,
-        mandatory_ca_verify: Literal["enable", "disable"] | None = ...,
-        ca: str | None = ...,
-        subject: str | None = ...,
-        cn: str | None = ...,
-        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = ...,
-        mfa_mode: Literal["none", "password", "subject-identity"] | None = ...,
-        mfa_server: str | None = ...,
-        mfa_username: str | None = ...,
-        mfa_password: str | None = ...,
-        ocsp_override_server: str | None = ...,
-        two_factor: Literal["enable", "disable"] | None = ...,
-        passwd: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -497,6 +467,7 @@ class Peer:
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PeerObject: ...
@@ -566,28 +537,7 @@ class Peer:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: PeerPayload | None = ...,
-        name: str | None = ...,
-        mandatory_ca_verify: Literal["enable", "disable"] | None = ...,
-        ca: str | None = ...,
-        subject: str | None = ...,
-        cn: str | None = ...,
-        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = ...,
-        mfa_mode: Literal["none", "password", "subject-identity"] | None = ...,
-        mfa_server: str | None = ...,
-        mfa_username: str | None = ...,
-        mfa_password: str | None = ...,
-        ocsp_override_server: str | None = ...,
-        two_factor: Literal["enable", "disable"] | None = ...,
-        passwd: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -598,6 +548,7 @@ class Peer:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PeerObject: ...
@@ -628,14 +579,7 @@ class Peer:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -677,8 +621,6 @@ class Peer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -706,6 +648,10 @@ class PeerDictMode:
     By default returns PeerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return PeerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -871,10 +817,12 @@ class PeerDictMode:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: PeerPayload | None = ...,
@@ -962,10 +910,12 @@ class PeerDictMode:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: PeerPayload | None = ...,
@@ -1014,10 +964,12 @@ class PeerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1063,8 +1015,6 @@ class PeerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1088,6 +1038,10 @@ class PeerObjectMode:
     By default returns PeerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return PeerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1277,10 +1231,12 @@ class PeerObjectMode:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PeerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: PeerPayload | None = ...,
@@ -1392,10 +1348,12 @@ class PeerObjectMode:
         two_factor: Literal["enable", "disable"] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PeerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: PeerPayload | None = ...,
@@ -1455,10 +1413,12 @@ class PeerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PeerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1504,8 +1464,6 @@ class PeerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -26,7 +26,7 @@ class GlobalPayload(TypedDict, total=False):
     rolling_wtp_upgrade: Literal["enable", "disable"]  # Enable/disable rolling WTP upgrade | Default: disable
     rolling_wtp_upgrade_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -80 | MaxLen: 7
     max_retransmit: int  # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-lis
     data_ethernet_II: Literal["enable", "disable"]  # Configure the wireless controller to use Ethernet | Default: enable
     link_aggregation: Literal["enable", "disable"]  # Enable/disable calculating the CAPWAP transmit has | Default: disable
     mesh_eth_type: int  # Mesh Ethernet identifier included in backhaul pack | Default: 8755 | Min: 0 | Max: 65535
@@ -72,7 +72,7 @@ class GlobalResponse(TypedDict):
     rolling_wtp_upgrade: Literal["enable", "disable"]  # Enable/disable rolling WTP upgrade | Default: disable
     rolling_wtp_upgrade_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -80 | MaxLen: 7
     max_retransmit: int  # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-lis
     data_ethernet_II: Literal["enable", "disable"]  # Configure the wireless controller to use Ethernet | Default: enable
     link_aggregation: Literal["enable", "disable"]  # Enable/disable calculating the CAPWAP transmit has | Default: disable
     mesh_eth_type: int  # Mesh Ethernet identifier included in backhaul pack | Default: 8755 | Min: 0 | Max: 65535
@@ -123,7 +123,7 @@ class GlobalObject:
     rolling_wtp_upgrade_threshold: str
     # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
     max_retransmit: int
-    # Configure CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    # Configure CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-lis
     control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]
     # Configure the wireless controller to use Ethernet II or 802. | Default: enable
     data_ethernet_II: Literal["enable", "disable"]
@@ -197,6 +197,10 @@ class Global:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -217,6 +221,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -234,6 +239,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -250,6 +256,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GlobalResponse: ...
     
     # ================================================================
@@ -292,7 +299,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -311,7 +318,7 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -411,23 +418,6 @@ class Global:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GlobalObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -474,6 +464,7 @@ class Global:
         max_ble_device: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
@@ -603,48 +594,7 @@ class Global:
         max_wids_entry: int | None = ...,
         max_ble_device: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        acd_process_count: int | None = ...,
-        wpad_process_count: int | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
-        rolling_wtp_upgrade_threshold: str | None = ...,
-        max_retransmit: int | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        data_ethernet_II: Literal["enable", "disable"] | None = ...,
-        link_aggregation: Literal["enable", "disable"] | None = ...,
-        mesh_eth_type: int | None = ...,
-        fiapp_eth_type: int | None = ...,
-        discovery_mc_addr: str | None = ...,
-        discovery_mc_addr6: str | None = ...,
-        max_clients: int | None = ...,
-        rogue_scan_mac_adjacency: int | None = ...,
-        ipsec_base_ip: str | None = ...,
-        wtp_share: Literal["enable", "disable"] | None = ...,
-        tunnel_mode: Literal["compatible", "strict"] | None = ...,
-        nac_interval: int | None = ...,
-        ap_log_server: Literal["enable", "disable"] | None = ...,
-        ap_log_server_ip: str | None = ...,
-        ap_log_server_port: int | None = ...,
-        max_sta_offline: int | None = ...,
-        max_sta_offline_ip2mac: int | None = ...,
-        max_sta_cap: int | None = ...,
-        max_sta_cap_wtp: int | None = ...,
-        max_rogue_ap: int | None = ...,
-        max_rogue_ap_wtp: int | None = ...,
-        max_rogue_sta: int | None = ...,
-        max_wids_entry: int | None = ...,
-        max_ble_device: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -706,8 +656,6 @@ class Global:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -735,6 +683,10 @@ class GlobalDictMode:
     By default returns GlobalResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GlobalObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -961,10 +913,12 @@ class GlobalDictMode:
         max_wids_entry: int | None = ...,
         max_ble_device: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -1064,8 +1018,6 @@ class GlobalDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1089,6 +1041,10 @@ class GlobalObjectMode:
     By default returns GlobalObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1359,10 +1315,12 @@ class GlobalObjectMode:
         max_wids_entry: int | None = ...,
         max_ble_device: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GlobalObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -1462,8 +1420,6 @@ class GlobalObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

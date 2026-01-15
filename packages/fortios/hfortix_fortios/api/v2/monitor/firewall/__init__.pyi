@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     from .acl import Acl
     from .acl6 import Acl6
     from .central_snat_map import CentralSnatMap
-    from .clearpass_address import ClearpassAddressDictMode, ClearpassAddressObjectMode
+    from .clearpass_address import ClearpassAddress, ClearpassAddressDictMode, ClearpassAddressObjectMode
     from .dnat import Dnat
     from .gtp import Gtp
     from .ippool import Ippool
@@ -42,13 +42,13 @@ if TYPE_CHECKING:
     from .multicast_policy6 import MulticastPolicy6
     from .per_ip_shaper import PerIpShaper
     from .policy import Policy
-    from .proxy import ProxyDictMode, ProxyObjectMode
+    from .proxy import Proxy, ProxyDictMode, ProxyObjectMode
     from .proxy_policy import ProxyPolicy
     from .security_policy import SecurityPolicy
-    from .session import SessionDictMode, SessionObjectMode
-    from .session6 import Session6DictMode, Session6ObjectMode
+    from .session import Session, SessionDictMode, SessionObjectMode
+    from .session6 import Session6, Session6DictMode, Session6ObjectMode
     from .shaper import Shaper
-    from .ztna_firewall_policy import ZtnaFirewallPolicyDictMode, ZtnaFirewallPolicyObjectMode
+    from .ztna_firewall_policy import ZtnaFirewallPolicy, ZtnaFirewallPolicyDictMode, ZtnaFirewallPolicyObjectMode
 
 __all__ = [
     "Address6Dynamic",

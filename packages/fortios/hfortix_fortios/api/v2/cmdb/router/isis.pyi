@@ -554,6 +554,10 @@ class Isis:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -574,6 +578,7 @@ class Isis:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IsisResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -591,6 +596,7 @@ class Isis:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IsisResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -607,6 +613,7 @@ class Isis:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> IsisResponse: ...
     
     # ================================================================
@@ -649,7 +656,7 @@ class Isis:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IsisObject: ...
     
@@ -668,7 +675,7 @@ class Isis:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> IsisObject: ...
     
@@ -768,23 +775,6 @@ class Isis:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> IsisObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -839,6 +829,7 @@ class Isis:
         redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IsisObject: ...
@@ -992,56 +983,7 @@ class Isis:
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: IsisPayload | None = ...,
-        is_type: Literal["level-1-2", "level-1", "level-2-only"] | None = ...,
-        adv_passive_only: Literal["enable", "disable"] | None = ...,
-        adv_passive_only6: Literal["enable", "disable"] | None = ...,
-        auth_mode_l1: Literal["password", "md5"] | None = ...,
-        auth_mode_l2: Literal["password", "md5"] | None = ...,
-        auth_password_l1: str | None = ...,
-        auth_password_l2: str | None = ...,
-        auth_keychain_l1: str | None = ...,
-        auth_keychain_l2: str | None = ...,
-        auth_sendonly_l1: Literal["enable", "disable"] | None = ...,
-        auth_sendonly_l2: Literal["enable", "disable"] | None = ...,
-        ignore_lsp_errors: Literal["enable", "disable"] | None = ...,
-        lsp_gen_interval_l1: int | None = ...,
-        lsp_gen_interval_l2: int | None = ...,
-        lsp_refresh_interval: int | None = ...,
-        max_lsp_lifetime: int | None = ...,
-        spf_interval_exp_l1: str | None = ...,
-        spf_interval_exp_l2: str | None = ...,
-        dynamic_hostname: Literal["enable", "disable"] | None = ...,
-        adjacency_check: Literal["enable", "disable"] | None = ...,
-        adjacency_check6: Literal["enable", "disable"] | None = ...,
-        overload_bit: Literal["enable", "disable"] | None = ...,
-        overload_bit_suppress: Literal["external", "interlevel"] | list[str] | None = ...,
-        overload_bit_on_startup: int | None = ...,
-        default_originate: Literal["enable", "disable"] | None = ...,
-        default_originate6: Literal["enable", "disable"] | None = ...,
-        metric_style: Literal["narrow", "wide", "transition", "narrow-transition", "narrow-transition-l1", "narrow-transition-l2", "wide-l1", "wide-l2", "wide-transition", "wide-transition-l1", "wide-transition-l2", "transition-l1", "transition-l2"] | None = ...,
-        redistribute_l1: Literal["enable", "disable"] | None = ...,
-        redistribute_l1_list: str | None = ...,
-        redistribute_l2: Literal["enable", "disable"] | None = ...,
-        redistribute_l2_list: str | None = ...,
-        redistribute6_l1: Literal["enable", "disable"] | None = ...,
-        redistribute6_l1_list: str | None = ...,
-        redistribute6_l2: Literal["enable", "disable"] | None = ...,
-        redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1111,8 +1053,6 @@ class Isis:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1140,6 +1080,10 @@ class IsisDictMode:
     By default returns IsisResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return IsisObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1390,10 +1334,12 @@ class IsisDictMode:
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: IsisPayload | None = ...,
@@ -1509,8 +1455,6 @@ class IsisDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1534,6 +1478,10 @@ class IsisObjectMode:
     By default returns IsisObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return IsisResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1836,10 +1784,12 @@ class IsisObjectMode:
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> IsisObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: IsisPayload | None = ...,
@@ -1955,8 +1905,6 @@ class IsisObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

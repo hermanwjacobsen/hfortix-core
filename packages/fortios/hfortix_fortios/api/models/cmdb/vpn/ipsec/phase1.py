@@ -132,7 +132,7 @@ class Phase1PeertypeEnum(str, Enum):
     PEERGRP = "peergrp"
 
 
-class Phase1Assign_ip_fromEnum(str, Enum):
+class Phase1AssignIpFromEnum(str, Enum):
     """Allowed values for assign_ip_from field."""
     RANGE = "range"
     USRGRP = "usrgrp"
@@ -201,7 +201,7 @@ class Phase1ProposalEnum(str, Enum):
     SEED_SHA512 = "seed-sha512"
 
 
-class Phase1Localid_typeEnum(str, Enum):
+class Phase1LocalidTypeEnum(str, Enum):
     """Allowed values for localid_type field."""
     AUTO = "auto"
     FQDN = "fqdn"
@@ -372,7 +372,7 @@ class Phase1Addke7Enum(str, Enum):
     VALUE_1094 = "1094"
 
 
-class Phase1Wizard_typeEnum(str, Enum):
+class Phase1WizardTypeEnum(str, Enum):
     """Allowed values for wizard_type field."""
     CUSTOM = "custom"
     DIALUP_FORTICLIENT = "dialup-forticlient"
@@ -399,7 +399,7 @@ class Phase1XauthtypeEnum(str, Enum):
     AUTO = "auto"
 
 
-class Phase1Signature_hash_algEnum(str, Enum):
+class Phase1SignatureHashAlgEnum(str, Enum):
     """Allowed values for signature_hash_alg field."""
     SHA1 = "sha1"
     SHA2_256 = "sha2-256"
@@ -407,7 +407,7 @@ class Phase1Signature_hash_algEnum(str, Enum):
     SHA2_512 = "sha2-512"
 
 
-class Phase1Remote_gw_matchEnum(str, Enum):
+class Phase1RemoteGwMatchEnum(str, Enum):
     """Allowed values for remote_gw_match field."""
     ANY = "any"
     IPMASK = "ipmask"
@@ -416,7 +416,7 @@ class Phase1Remote_gw_matchEnum(str, Enum):
     ZTNA = "ztna"
 
 
-class Phase1Remote_gw6_matchEnum(str, Enum):
+class Phase1RemoteGw6MatchEnum(str, Enum):
     """Allowed values for remote_gw6_match field."""
     ANY = "any"
     IPPREFIX = "ipprefix"
@@ -424,7 +424,7 @@ class Phase1Remote_gw6_matchEnum(str, Enum):
     GEOGRAPHY = "geography"
 
 
-class Phase1Cert_peer_username_validationEnum(str, Enum):
+class Phase1CertPeerUsernameValidationEnum(str, Enum):
     """Allowed values for cert_peer_username_validation field."""
     NONE = "none"
     OTHERNAME = "othername"
@@ -443,7 +443,170 @@ class Phase1Model(BaseModel):
 
     Configure VPN remote gateway.
 
-    Validation Rules:        - name: max_length=35 pattern=        - type: pattern=        - interface: max_length=35 pattern=        - ike_version: pattern=        - remote_gw: pattern=        - local_gw: pattern=        - remotegw_ddns: max_length=63 pattern=        - keylife: min=120 max=172800 pattern=        - certificate: pattern=        - authmethod: pattern=        - authmethod_remote: pattern=        - mode: pattern=        - peertype: pattern=        - peerid: max_length=255 pattern=        - usrgrp: max_length=35 pattern=        - peer: max_length=35 pattern=        - peergrp: max_length=35 pattern=        - mode_cfg: pattern=        - mode_cfg_allow_client_selector: pattern=        - assign_ip: pattern=        - assign_ip_from: pattern=        - ipv4_start_ip: pattern=        - ipv4_end_ip: pattern=        - ipv4_netmask: pattern=        - dhcp_ra_giaddr: pattern=        - dhcp6_ra_linkaddr: pattern=        - dns_mode: pattern=        - ipv4_dns_server1: pattern=        - ipv4_dns_server2: pattern=        - ipv4_dns_server3: pattern=        - internal_domain_list: pattern=        - dns_suffix_search: pattern=        - ipv4_wins_server1: pattern=        - ipv4_wins_server2: pattern=        - ipv4_exclude_range: pattern=        - ipv4_split_include: max_length=79 pattern=        - split_include_service: max_length=79 pattern=        - ipv4_name: max_length=79 pattern=        - ipv6_start_ip: pattern=        - ipv6_end_ip: pattern=        - ipv6_prefix: min=1 max=128 pattern=        - ipv6_dns_server1: pattern=        - ipv6_dns_server2: pattern=        - ipv6_dns_server3: pattern=        - ipv6_exclude_range: pattern=        - ipv6_split_include: max_length=79 pattern=        - ipv6_name: max_length=79 pattern=        - ip_delay_interval: min=0 max=28800 pattern=        - unity_support: pattern=        - domain: max_length=63 pattern=        - banner: max_length=1024 pattern=        - include_local_lan: pattern=        - ipv4_split_exclude: max_length=79 pattern=        - ipv6_split_exclude: max_length=79 pattern=        - save_password: pattern=        - client_auto_negotiate: pattern=        - client_keep_alive: pattern=        - backup_gateway: pattern=        - proposal: pattern=        - add_route: pattern=        - add_gw_route: pattern=        - psksecret: pattern=        - psksecret_remote: pattern=        - keepalive: min=5 max=900 pattern=        - distance: min=1 max=255 pattern=        - priority: min=1 max=65535 pattern=        - localid: max_length=63 pattern=        - localid_type: pattern=        - auto_negotiate: pattern=        - negotiate_timeout: min=1 max=300 pattern=        - fragmentation: pattern=        - dpd: pattern=        - dpd_retrycount: min=1 max=10 pattern=        - dpd_retryinterval: pattern=        - comments: max_length=255 pattern=        - npu_offload: pattern=        - send_cert_chain: pattern=        - dhgrp: pattern=        - addke1: pattern=        - addke2: pattern=        - addke3: pattern=        - addke4: pattern=        - addke5: pattern=        - addke6: pattern=        - addke7: pattern=        - suite_b: pattern=        - eap: pattern=        - eap_identity: pattern=        - eap_exclude_peergrp: max_length=35 pattern=        - eap_cert_auth: pattern=        - acct_verify: pattern=        - ppk: pattern=        - ppk_secret: pattern=        - ppk_identity: max_length=35 pattern=        - wizard_type: pattern=        - xauthtype: pattern=        - reauth: pattern=        - authusr: max_length=64 pattern=        - authpasswd: max_length=128 pattern=        - group_authentication: pattern=        - group_authentication_secret: pattern=        - authusrgrp: max_length=35 pattern=        - mesh_selector_type: pattern=        - idle_timeout: pattern=        - shared_idle_timeout: pattern=        - idle_timeoutinterval: min=5 max=43200 pattern=        - ha_sync_esp_seqno: pattern=        - fgsp_sync: pattern=        - inbound_dscp_copy: pattern=        - nattraversal: pattern=        - esn: pattern=        - fragmentation_mtu: min=500 max=16000 pattern=        - childless_ike: pattern=        - azure_ad_autoconnect: pattern=        - client_resume: pattern=        - client_resume_interval: min=120 max=172800 pattern=        - rekey: pattern=        - digital_signature_auth: pattern=        - signature_hash_alg: pattern=        - rsa_signature_format: pattern=        - rsa_signature_hash_override: pattern=        - enforce_unique_id: pattern=        - cert_id_validation: pattern=        - fec_egress: pattern=        - fec_send_timeout: min=1 max=1000 pattern=        - fec_base: min=1 max=20 pattern=        - fec_codec: pattern=        - fec_redundant: min=1 max=5 pattern=        - fec_ingress: pattern=        - fec_receive_timeout: min=1 max=1000 pattern=        - fec_health_check: max_length=35 pattern=        - fec_mapping_profile: max_length=35 pattern=        - network_overlay: pattern=        - network_id: min=0 max=255 pattern=        - dev_id_notification: pattern=        - dev_id: max_length=63 pattern=        - loopback_asymroute: pattern=        - link_cost: min=0 max=255 pattern=        - kms: max_length=35 pattern=        - exchange_fgt_device_id: pattern=        - ipv6_auto_linklocal: pattern=        - ems_sn_check: pattern=        - cert_trust_store: pattern=        - qkd: pattern=        - qkd_hybrid: pattern=        - qkd_profile: max_length=35 pattern=        - transport: pattern=        - fortinet_esp: pattern=        - auto_transport_threshold: min=1 max=300 pattern=        - remote_gw_match: pattern=        - remote_gw_subnet: pattern=        - remote_gw_start_ip: pattern=        - remote_gw_end_ip: pattern=        - remote_gw_country: max_length=2 pattern=        - remote_gw_ztna_tags: pattern=        - remote_gw6_match: pattern=        - remote_gw6_subnet: pattern=        - remote_gw6_start_ip: pattern=        - remote_gw6_end_ip: pattern=        - remote_gw6_country: max_length=2 pattern=        - cert_peer_username_validation: pattern=        - cert_peer_username_strip: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - type_: pattern=
+        - interface: max_length=35 pattern=
+        - ike_version: pattern=
+        - remote_gw: pattern=
+        - local_gw: pattern=
+        - remotegw_ddns: max_length=63 pattern=
+        - keylife: min=120 max=172800 pattern=
+        - certificate: pattern=
+        - authmethod: pattern=
+        - authmethod_remote: pattern=
+        - mode: pattern=
+        - peertype: pattern=
+        - peerid: max_length=255 pattern=
+        - usrgrp: max_length=35 pattern=
+        - peer: max_length=35 pattern=
+        - peergrp: max_length=35 pattern=
+        - mode_cfg: pattern=
+        - mode_cfg_allow_client_selector: pattern=
+        - assign_ip: pattern=
+        - assign_ip_from: pattern=
+        - ipv4_start_ip: pattern=
+        - ipv4_end_ip: pattern=
+        - ipv4_netmask: pattern=
+        - dhcp_ra_giaddr: pattern=
+        - dhcp6_ra_linkaddr: pattern=
+        - dns_mode: pattern=
+        - ipv4_dns_server1: pattern=
+        - ipv4_dns_server2: pattern=
+        - ipv4_dns_server3: pattern=
+        - internal_domain_list: pattern=
+        - dns_suffix_search: pattern=
+        - ipv4_wins_server1: pattern=
+        - ipv4_wins_server2: pattern=
+        - ipv4_exclude_range: pattern=
+        - ipv4_split_include: max_length=79 pattern=
+        - split_include_service: max_length=79 pattern=
+        - ipv4_name: max_length=79 pattern=
+        - ipv6_start_ip: pattern=
+        - ipv6_end_ip: pattern=
+        - ipv6_prefix: min=1 max=128 pattern=
+        - ipv6_dns_server1: pattern=
+        - ipv6_dns_server2: pattern=
+        - ipv6_dns_server3: pattern=
+        - ipv6_exclude_range: pattern=
+        - ipv6_split_include: max_length=79 pattern=
+        - ipv6_name: max_length=79 pattern=
+        - ip_delay_interval: min=0 max=28800 pattern=
+        - unity_support: pattern=
+        - domain: max_length=63 pattern=
+        - banner: max_length=1024 pattern=
+        - include_local_lan: pattern=
+        - ipv4_split_exclude: max_length=79 pattern=
+        - ipv6_split_exclude: max_length=79 pattern=
+        - save_password: pattern=
+        - client_auto_negotiate: pattern=
+        - client_keep_alive: pattern=
+        - backup_gateway: pattern=
+        - proposal: pattern=
+        - add_route: pattern=
+        - add_gw_route: pattern=
+        - psksecret: pattern=
+        - psksecret_remote: pattern=
+        - keepalive: min=5 max=900 pattern=
+        - distance: min=1 max=255 pattern=
+        - priority: min=1 max=65535 pattern=
+        - localid: max_length=63 pattern=
+        - localid_type: pattern=
+        - auto_negotiate: pattern=
+        - negotiate_timeout: min=1 max=300 pattern=
+        - fragmentation: pattern=
+        - dpd: pattern=
+        - dpd_retrycount: min=1 max=10 pattern=
+        - dpd_retryinterval: pattern=
+        - comments: max_length=255 pattern=
+        - npu_offload: pattern=
+        - send_cert_chain: pattern=
+        - dhgrp: pattern=
+        - addke1: pattern=
+        - addke2: pattern=
+        - addke3: pattern=
+        - addke4: pattern=
+        - addke5: pattern=
+        - addke6: pattern=
+        - addke7: pattern=
+        - suite_b: pattern=
+        - eap: pattern=
+        - eap_identity: pattern=
+        - eap_exclude_peergrp: max_length=35 pattern=
+        - eap_cert_auth: pattern=
+        - acct_verify: pattern=
+        - ppk: pattern=
+        - ppk_secret: pattern=
+        - ppk_identity: max_length=35 pattern=
+        - wizard_type: pattern=
+        - xauthtype: pattern=
+        - reauth: pattern=
+        - authusr: max_length=64 pattern=
+        - authpasswd: max_length=128 pattern=
+        - group_authentication: pattern=
+        - group_authentication_secret: pattern=
+        - authusrgrp: max_length=35 pattern=
+        - mesh_selector_type: pattern=
+        - idle_timeout: pattern=
+        - shared_idle_timeout: pattern=
+        - idle_timeoutinterval: min=5 max=43200 pattern=
+        - ha_sync_esp_seqno: pattern=
+        - fgsp_sync: pattern=
+        - inbound_dscp_copy: pattern=
+        - nattraversal: pattern=
+        - esn: pattern=
+        - fragmentation_mtu: min=500 max=16000 pattern=
+        - childless_ike: pattern=
+        - azure_ad_autoconnect: pattern=
+        - client_resume: pattern=
+        - client_resume_interval: min=120 max=172800 pattern=
+        - rekey: pattern=
+        - digital_signature_auth: pattern=
+        - signature_hash_alg: pattern=
+        - rsa_signature_format: pattern=
+        - rsa_signature_hash_override: pattern=
+        - enforce_unique_id: pattern=
+        - cert_id_validation: pattern=
+        - fec_egress: pattern=
+        - fec_send_timeout: min=1 max=1000 pattern=
+        - fec_base: min=1 max=20 pattern=
+        - fec_codec: pattern=
+        - fec_redundant: min=1 max=5 pattern=
+        - fec_ingress: pattern=
+        - fec_receive_timeout: min=1 max=1000 pattern=
+        - fec_health_check: max_length=35 pattern=
+        - fec_mapping_profile: max_length=35 pattern=
+        - network_overlay: pattern=
+        - network_id: min=0 max=255 pattern=
+        - dev_id_notification: pattern=
+        - dev_id: max_length=63 pattern=
+        - loopback_asymroute: pattern=
+        - link_cost: min=0 max=255 pattern=
+        - kms: max_length=35 pattern=
+        - exchange_fgt_device_id: pattern=
+        - ipv6_auto_linklocal: pattern=
+        - ems_sn_check: pattern=
+        - cert_trust_store: pattern=
+        - qkd: pattern=
+        - qkd_hybrid: pattern=
+        - qkd_profile: max_length=35 pattern=
+        - transport: pattern=
+        - fortinet_esp: pattern=
+        - auto_transport_threshold: min=1 max=300 pattern=
+        - remote_gw_match: pattern=
+        - remote_gw_subnet: pattern=
+        - remote_gw_start_ip: pattern=
+        - remote_gw_end_ip: pattern=
+        - remote_gw_country: max_length=2 pattern=
+        - remote_gw_ztna_tags: pattern=
+        - remote_gw6_match: pattern=
+        - remote_gw6_subnet: pattern=
+        - remote_gw6_start_ip: pattern=
+        - remote_gw6_end_ip: pattern=
+        - remote_gw6_country: max_length=2 pattern=
+        - cert_peer_username_validation: pattern=
+        - cert_peer_username_strip: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -455,7 +618,169 @@ class Phase1Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="IPsec remote gateway name.")    type: Literal["static", "dynamic", "ddns"] | None = Field(default="static", description="Remote gateway type.")    interface: str = Field(max_length=35, default="", description="Local physical, aggregate, or VLAN outgoing interface.")  # datasource: ['system.interface.name']    ike_version: Literal["1", "2"] | None = Field(default="1", description="IKE protocol version.")    remote_gw: str = Field(default="0.0.0.0", description="Remote VPN gateway.")    local_gw: str | None = Field(default="0.0.0.0", description="Local VPN gateway.")    remotegw_ddns: str = Field(max_length=63, default="", description="Domain name of remote gateway. For example, name.ddns.com.")    keylife: int | None = Field(ge=120, le=172800, default=86400, description="Time to wait in seconds before phase 1 encryption key expires.")    certificate: list[Phase1Certificate] = Field(description="Names of up to 4 signed personal certificates.")    authmethod: Literal["psk", "signature"] | None = Field(default="psk", description="Authentication method.")    authmethod_remote: Literal["psk", "signature"] | None = Field(default="", description="Authentication method (remote side).")    mode: Literal["aggressive", "main"] | None = Field(default="main", description="ID protection mode used to establish a secure channel.")    peertype: Phase1PeertypeEnum | None = Field(default="peer", description="Accept this peer type.")    peerid: str = Field(max_length=255, default="", description="Accept this peer identity.")    usrgrp: str = Field(max_length=35, default="", description="User group name for dialup peers.")  # datasource: ['user.group.name']    peer: str = Field(max_length=35, default="", description="Accept this peer certificate.")  # datasource: ['user.peer.name']    peergrp: str = Field(max_length=35, default="", description="Accept this peer certificate group.")  # datasource: ['user.peergrp.name']    mode_cfg: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable configuration method.")    mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable mode-cfg client to use custom phase2 selectors.")    assign_ip: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable assignment of IP to IPsec interface via configuration method.")    assign_ip_from: Phase1AssignIpFromEnum | None = Field(default="range", description="Method by which the IP address will be assigned.")    ipv4_start_ip: str = Field(default="0.0.0.0", description="Start of IPv4 range.")    ipv4_end_ip: str = Field(default="0.0.0.0", description="End of IPv4 range.")    ipv4_netmask: str | None = Field(default="255.255.255.255", description="IPv4 Netmask.")    dhcp_ra_giaddr: str | None = Field(default="0.0.0.0", description="Relay agent gateway IP address to use in the giaddr field of DHCP requests.")    dhcp6_ra_linkaddr: str | None = Field(default="::", description="Relay agent IPv6 link address to use in DHCP6 requests.")    dns_mode: Literal["manual", "auto"] | None = Field(default="manual", description="DNS server mode.")    ipv4_dns_server1: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 1.")    ipv4_dns_server2: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 2.")    ipv4_dns_server3: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 3.")    internal_domain_list: list[Phase1InternalDomainList] = Field(default=None, description="One or more internal domain names in quotes separated by spaces.")    dns_suffix_search: list[Phase1DnsSuffixSearch] = Field(default=None, description="One or more DNS domain name suffixes in quotes separated by spaces.")    ipv4_wins_server1: str | None = Field(default="0.0.0.0", description="WINS server 1.")    ipv4_wins_server2: str | None = Field(default="0.0.0.0", description="WINS server 2.")    ipv4_exclude_range: list[Phase1Ipv4ExcludeRange] = Field(default=None, description="Configuration Method IPv4 exclude ranges.")    ipv4_split_include: str | None = Field(max_length=79, default="", description="IPv4 split-include subnets.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    split_include_service: str | None = Field(max_length=79, default="", description="Split-include services.")  # datasource: ['firewall.service.group.name', 'firewall.service.custom.name']    ipv4_name: str | None = Field(max_length=79, default="", description="IPv4 address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    ipv6_start_ip: str = Field(default="::", description="Start of IPv6 range.")    ipv6_end_ip: str = Field(default="::", description="End of IPv6 range.")    ipv6_prefix: int | None = Field(ge=1, le=128, default=128, description="IPv6 prefix.")    ipv6_dns_server1: str | None = Field(default="::", description="IPv6 DNS server 1.")    ipv6_dns_server2: str | None = Field(default="::", description="IPv6 DNS server 2.")    ipv6_dns_server3: str | None = Field(default="::", description="IPv6 DNS server 3.")    ipv6_exclude_range: list[Phase1Ipv6ExcludeRange] = Field(default=None, description="Configuration method IPv6 exclude ranges.")    ipv6_split_include: str | None = Field(max_length=79, default="", description="IPv6 split-include subnets.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    ipv6_name: str | None = Field(max_length=79, default="", description="IPv6 address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    ip_delay_interval: int | None = Field(ge=0, le=28800, default=0, description="IP address reuse delay interval in seconds (0 - 28800).")    unity_support: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable support for Cisco UNITY Configuration Method extensions.")    domain: str | None = Field(max_length=63, default="", description="Instruct unity clients about the single default DNS domain.")    banner: str | None = Field(max_length=1024, default=None, description="Message that unity client should display after connecting.")    include_local_lan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allow local LAN access on unity clients.")    ipv4_split_exclude: str | None = Field(max_length=79, default="", description="IPv4 subnets that should not be sent over the IPsec tunnel.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    ipv6_split_exclude: str | None = Field(max_length=79, default="", description="IPv6 subnets that should not be sent over the IPsec tunnel.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    save_password: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable saving XAuth username and password on VPN clients.")    client_auto_negotiate: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing the VPN client to bring up the tunnel when there is no traffic.")    client_keep_alive: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing the VPN client to keep the tunnel up when there is no traffic.")    backup_gateway: list[Phase1BackupGateway] = Field(default=None, description="Instruct unity clients about the backup gateway address(es).")    proposal: Phase1ProposalEnum = Field(default="", description="Phase1 proposal.")    add_route: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable control addition of a route to peer destination selector.")    add_gw_route: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatically add a route to the remote gateway.")    psksecret: Any = Field(description="Pre-shared secret for PSK authentication (ASCII string or hexadecimal encoded with a leading 0x).")    psksecret_remote: Any = Field(description="Pre-shared secret for remote side PSK authentication (ASCII string or hexadecimal encoded with a leading 0x).")    keepalive: int | None = Field(ge=5, le=900, default=10, description="NAT-T keep alive interval.")    distance: int | None = Field(ge=1, le=255, default=15, description="Distance for routes added by IKE (1 - 255).")    priority: int | None = Field(ge=1, le=65535, default=1, description="Priority for routes added by IKE (1 - 65535).")    localid: str | None = Field(max_length=63, default="", description="Local ID.")    localid_type: Phase1LocalidTypeEnum | None = Field(default="auto", description="Local ID type.")    auto_negotiate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic initiation of IKE SA negotiation.")    negotiate_timeout: int | None = Field(ge=1, le=300, default=30, description="IKE SA negotiation timeout in seconds (1 - 300).")    fragmentation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable fragment IKE message on re-transmission.")    dpd: Literal["disable", "on-idle", "on-demand"] | None = Field(default="on-demand", description="Dead Peer Detection mode.")    dpd_retrycount: int | None = Field(ge=1, le=10, default=3, description="Number of DPD retry attempts.")    dpd_retryinterval: str | None = Field(default="", description="DPD retry interval.")    comments: str | None = Field(max_length=255, default=None, description="Comment.")    npu_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading NPU.")    send_cert_chain: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending certificate chain.")    dhgrp: Phase1DhgrpEnum | None = Field(default="20", description="DH group.")    addke1: Phase1Addke1Enum | None = Field(default="", description="ADDKE1 group.")    addke2: Phase1Addke2Enum | None = Field(default="", description="ADDKE2 group.")    addke3: Phase1Addke3Enum | None = Field(default="", description="ADDKE3 group.")    addke4: Phase1Addke4Enum | None = Field(default="", description="ADDKE4 group.")    addke5: Phase1Addke5Enum | None = Field(default="", description="ADDKE5 group.")    addke6: Phase1Addke6Enum | None = Field(default="", description="ADDKE6 group.")    addke7: Phase1Addke7Enum | None = Field(default="", description="ADDKE7 group.")    suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = Field(default="disable", description="Use Suite-B.")    eap: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 EAP authentication.")    eap_identity: Literal["use-id-payload", "send-request"] | None = Field(default="use-id-payload", description="IKEv2 EAP peer identity type.")    eap_exclude_peergrp: str | None = Field(max_length=35, default="", description="Peer group excluded from EAP authentication.")  # datasource: ['user.peergrp.name']    eap_cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable peer certificate authentication in addition to EAP if peer is a FortiClient endpoint.")    acct_verify: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification of RADIUS accounting record.")    ppk: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable IKEv2 Postquantum Preshared Key (PPK).")    ppk_secret: Any = Field(description="IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal encoded with a leading 0x).")    ppk_identity: str | None = Field(max_length=35, default="", description="IKEv2 Postquantum Preshared Key Identity.")    wizard_type: Phase1WizardTypeEnum | None = Field(default="custom", description="GUI VPN Wizard Type.")    xauthtype: Phase1XauthtypeEnum | None = Field(default="disable", description="XAuth type.")    reauth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable re-authentication upon IKE SA lifetime expiration.")    authusr: str = Field(max_length=64, default="", description="XAuth user name.")    authpasswd: Any = Field(max_length=128, description="XAuth password (max 35 characters).")    group_authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 IDi group authentication.")    group_authentication_secret: Any = Field(description="Password for IKEv2 ID group authentication. ASCII string or hexadecimal indicated by a leading 0x.")    authusrgrp: str | None = Field(max_length=35, default="", description="Authentication user group.")  # datasource: ['user.group.name']    mesh_selector_type: Literal["disable", "subnet", "host"] | None = Field(default="disable", description="Add selectors containing subsets of the configuration depending on traffic.")    idle_timeout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec tunnel idle timeout.")    shared_idle_timeout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec tunnel shared idle timeout.")    idle_timeoutinterval: int | None = Field(ge=5, le=43200, default=15, description="IPsec tunnel idle timeout in minutes (5 - 43200).")    ha_sync_esp_seqno: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sequence number jump ahead for IPsec HA.")    fgsp_sync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec syncing of tunnels for FGSP IPsec.")    inbound_dscp_copy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable copy the dscp in the ESP header to the inner IP Header.")    nattraversal: Literal["enable", "disable", "forced"] | None = Field(default="enable", description="Enable/disable NAT traversal.")    esn: Literal["require", "allow", "disable"] | None = Field(default="disable", description="Extended sequence number (ESN) negotiation.")    fragmentation_mtu: int | None = Field(ge=500, le=16000, default=1200, description="IKE fragmentation MTU (500 - 16000).")    childless_ike: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable childless IKEv2 initiation (RFC 6023).")    azure_ad_autoconnect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Azure AD Auto-Connect for FortiClient.")    client_resume: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable resumption of offline FortiClient sessions.  When a FortiClient enabled laptop is closed or enters sleep/hibernate mode, enabling this feature allows FortiClient to keep the tunnel during this period, and allows users to immediately resume using the IPsec tunnel when the device wakes up.")    client_resume_interval: int | None = Field(ge=120, le=172800, default=7200, description="Maximum time in seconds during which a VPN client may resume using a tunnel after a client PC has entered sleep mode or temporarily lost its network connection (120 - 172800, default = 7200).")    rekey: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable phase1 rekey.")    digital_signature_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 Digital Signature Authentication (RFC 7427).")    signature_hash_alg: Phase1SignatureHashAlgEnum = Field(default="sha2-512", description="Digital Signature Authentication hash algorithms.")    rsa_signature_format: Literal["pkcs1", "pss"] | None = Field(default="pkcs1", description="Digital Signature Authentication RSA signature format.")    rsa_signature_hash_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 RSA signature hash algorithm override.")    enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = Field(default="disable", description="Enable/disable peer ID uniqueness check.")    cert_id_validation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable cross validation of peer ID and the identity in the peer's certificate as specified in RFC 4945.")    fec_egress: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Forward Error Correction for egress IPsec traffic.")    fec_send_timeout: int | None = Field(ge=1, le=1000, default=5, description="Timeout in milliseconds before sending Forward Error Correction packets (1 - 1000).")    fec_base: int | None = Field(ge=1, le=20, default=10, description="Number of base Forward Error Correction packets (1 - 20).")    fec_codec: Literal["rs", "xor"] | None = Field(default="rs", description="Forward Error Correction encoding/decoding algorithm.")    fec_redundant: int | None = Field(ge=1, le=5, default=1, description="Number of redundant Forward Error Correction packets (1 - 5 for reed-solomon, 1 for xor).")    fec_ingress: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Forward Error Correction for ingress IPsec traffic.")    fec_receive_timeout: int | None = Field(ge=1, le=1000, default=50, description="Timeout in milliseconds before dropping Forward Error Correction packets (1 - 1000).")    fec_health_check: str | None = Field(max_length=35, default="", description="SD-WAN health check.")  # datasource: ['system.sdwan.health-check.name']    fec_mapping_profile: str | None = Field(max_length=35, default="", description="Forward Error Correction (FEC) mapping profile.")  # datasource: ['vpn.ipsec.fec.name']    network_overlay: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable network overlays.")    network_id: int = Field(ge=0, le=255, default=0, description="VPN gateway network ID.")    dev_id_notification: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable device ID notification.")    dev_id: str = Field(max_length=63, default="", description="Device ID carried by the device ID notification.")    loopback_asymroute: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable asymmetric routing for IKE traffic on loopback interface.")    link_cost: int | None = Field(ge=0, le=255, default=0, description="VPN tunnel underlay link cost.")    kms: str | None = Field(max_length=35, default="", description="Key Management Services server.")  # datasource: ['vpn.kmip-server.name']    exchange_fgt_device_id: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable device identifier exchange with peer FortiGate units for use of VPN monitor data by FortiManager.")    ipv6_auto_linklocal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable auto generation of IPv6 link-local address using last 8 bytes of mode-cfg assigned IPv6 address.")    ems_sn_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification of EMS serial number.")    cert_trust_store: Literal["local", "ems"] | None = Field(default="local", description="CA certificate trust store.")    qkd: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable use of Quantum Key Distribution (QKD) server.")    qkd_hybrid: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable use of Quantum Key Distribution (QKD) hybrid keys.")    qkd_profile: str | None = Field(max_length=35, default="", description="Quantum Key Distribution (QKD) server profile.")  # datasource: ['vpn.qkd.name']    transport: Literal["udp", "auto", "tcp"] | None = Field(default="auto", description="Set IKE transport protocol.")    fortinet_esp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Fortinet ESP encapsulation.")    auto_transport_threshold: int | None = Field(ge=1, le=300, default=15, description="Timeout in seconds before falling back to next transport protocol.")    remote_gw_match: Phase1RemoteGwMatchEnum | None = Field(default="any", description="Set type of IPv4 remote gateway address matching.")    remote_gw_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="IPv4 address and subnet mask.")    remote_gw_start_ip: str | None = Field(default="0.0.0.0", description="First IPv4 address in the range.")    remote_gw_end_ip: str | None = Field(default="0.0.0.0", description="Last IPv4 address in the range.")    remote_gw_country: str | None = Field(max_length=2, default="", description="IPv4 addresses associated to a specific country.")    remote_gw_ztna_tags: list[Phase1RemoteGwZtnaTags] = Field(description="IPv4 ZTNA posture tags.")    remote_gw6_match: Phase1RemoteGw6MatchEnum | None = Field(default="any", description="Set type of IPv6 remote gateway address matching.")    remote_gw6_subnet: str | None = Field(default="::/0", description="IPv6 address and prefix.")    remote_gw6_start_ip: str | None = Field(default="::", description="First IPv6 address in the range.")    remote_gw6_end_ip: str | None = Field(default="::", description="Last IPv6 address in the range.")    remote_gw6_country: str | None = Field(max_length=2, default="", description="IPv6 addresses associated to a specific country.")    cert_peer_username_validation: Phase1CertPeerUsernameValidationEnum | None = Field(default="none", description="Enable/disable cross validation of peer username and the identity in the peer's certificate.")    cert_peer_username_strip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable domain stripping on certificate identity.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="IPsec remote gateway name.")
+    type_: Literal["static", "dynamic", "ddns"] | None = Field(default="static", description="Remote gateway type.")
+    interface: str = Field(max_length=35, default="", description="Local physical, aggregate, or VLAN outgoing interface.")  # datasource: ['system.interface.name']
+    ike_version: Literal["1", "2"] | None = Field(default="1", description="IKE protocol version.")
+    remote_gw: str = Field(default="0.0.0.0", description="Remote VPN gateway.")
+    local_gw: str | None = Field(default="0.0.0.0", description="Local VPN gateway.")
+    remotegw_ddns: str = Field(max_length=63, default="", description="Domain name of remote gateway. For example, name.ddns.com.")
+    keylife: int | None = Field(ge=120, le=172800, default=86400, description="Time to wait in seconds before phase 1 encryption key expires.")
+    certificate: list[Phase1Certificate] | None = Field(description="Names of up to 4 signed personal certificates.")
+    authmethod: Literal["psk", "signature"] | None = Field(default="psk", description="Authentication method.")
+    authmethod_remote: Literal["psk", "signature"] | None = Field(default=None, description="Authentication method (remote side).")
+    mode: Literal["aggressive", "main"] | None = Field(default="main", description="ID protection mode used to establish a secure channel.")
+    peertype: str | Phase1PeertypeEnum | None = Field(default="peer", description="Accept this peer type.")
+    peerid: str = Field(max_length=255, default="", description="Accept this peer identity.")
+    usrgrp: str = Field(max_length=35, default="", description="User group name for dialup peers.")  # datasource: ['user.group.name']
+    peer: str = Field(max_length=35, default="", description="Accept this peer certificate.")  # datasource: ['user.peer.name']
+    peergrp: str = Field(max_length=35, default="", description="Accept this peer certificate group.")  # datasource: ['user.peergrp.name']
+    mode_cfg: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable configuration method.")
+    mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable mode-cfg client to use custom phase2 selectors.")
+    assign_ip: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable assignment of IP to IPsec interface via configuration method.")
+    assign_ip_from: str | Phase1AssignIpFromEnum | None = Field(default="range", description="Method by which the IP address will be assigned.")
+    ipv4_start_ip: str = Field(default="0.0.0.0", description="Start of IPv4 range.")
+    ipv4_end_ip: str = Field(default="0.0.0.0", description="End of IPv4 range.")
+    ipv4_netmask: str | None = Field(default="255.255.255.255", description="IPv4 Netmask.")
+    dhcp_ra_giaddr: str | None = Field(default="0.0.0.0", description="Relay agent gateway IP address to use in the giaddr field of DHCP requests.")
+    dhcp6_ra_linkaddr: str | None = Field(default="::", description="Relay agent IPv6 link address to use in DHCP6 requests.")
+    dns_mode: Literal["manual", "auto"] | None = Field(default="manual", description="DNS server mode.")
+    ipv4_dns_server1: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 1.")
+    ipv4_dns_server2: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 2.")
+    ipv4_dns_server3: str | None = Field(default="0.0.0.0", description="IPv4 DNS server 3.")
+    internal_domain_list: list[Phase1InternalDomainList] | None = Field(default=None, description="One or more internal domain names in quotes separated by spaces.")
+    dns_suffix_search: list[Phase1DnsSuffixSearch] | None = Field(default=None, description="One or more DNS domain name suffixes in quotes separated by spaces.")
+    ipv4_wins_server1: str | None = Field(default="0.0.0.0", description="WINS server 1.")
+    ipv4_wins_server2: str | None = Field(default="0.0.0.0", description="WINS server 2.")
+    ipv4_exclude_range: list[Phase1Ipv4ExcludeRange] | None = Field(default=None, description="Configuration Method IPv4 exclude ranges.")
+    ipv4_split_include: str | None = Field(max_length=79, default="", description="IPv4 split-include subnets.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    split_include_service: str | None = Field(max_length=79, default="", description="Split-include services.")  # datasource: ['firewall.service.group.name', 'firewall.service.custom.name']
+    ipv4_name: str | None = Field(max_length=79, default="", description="IPv4 address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    ipv6_start_ip: str = Field(default="::", description="Start of IPv6 range.")
+    ipv6_end_ip: str = Field(default="::", description="End of IPv6 range.")
+    ipv6_prefix: int | None = Field(ge=1, le=128, default=128, description="IPv6 prefix.")
+    ipv6_dns_server1: str | None = Field(default="::", description="IPv6 DNS server 1.")
+    ipv6_dns_server2: str | None = Field(default="::", description="IPv6 DNS server 2.")
+    ipv6_dns_server3: str | None = Field(default="::", description="IPv6 DNS server 3.")
+    ipv6_exclude_range: list[Phase1Ipv6ExcludeRange] | None = Field(default=None, description="Configuration method IPv6 exclude ranges.")
+    ipv6_split_include: str | None = Field(max_length=79, default="", description="IPv6 split-include subnets.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    ipv6_name: str | None = Field(max_length=79, default="", description="IPv6 address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    ip_delay_interval: int | None = Field(ge=0, le=28800, default=0, description="IP address reuse delay interval in seconds (0 - 28800).")
+    unity_support: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable support for Cisco UNITY Configuration Method extensions.")
+    domain: str | None = Field(max_length=63, default="", description="Instruct unity clients about the single default DNS domain.")
+    banner: str | None = Field(max_length=1024, default=None, description="Message that unity client should display after connecting.")
+    include_local_lan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allow local LAN access on unity clients.")
+    ipv4_split_exclude: str | None = Field(max_length=79, default="", description="IPv4 subnets that should not be sent over the IPsec tunnel.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    ipv6_split_exclude: str | None = Field(max_length=79, default="", description="IPv6 subnets that should not be sent over the IPsec tunnel.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    save_password: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable saving XAuth username and password on VPN clients.")
+    client_auto_negotiate: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing the VPN client to bring up the tunnel when there is no traffic.")
+    client_keep_alive: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowing the VPN client to keep the tunnel up when there is no traffic.")
+    backup_gateway: list[Phase1BackupGateway] | None = Field(default=None, description="Instruct unity clients about the backup gateway address(es).")
+    proposal: str | Phase1ProposalEnum | None = Field(default=None, description="Phase1 proposal.")
+    add_route: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable control addition of a route to peer destination selector.")
+    add_gw_route: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatically add a route to the remote gateway.")
+    psksecret: Any = Field(description="Pre-shared secret for PSK authentication (ASCII string or hexadecimal encoded with a leading 0x).")
+    psksecret_remote: Any = Field(description="Pre-shared secret for remote side PSK authentication (ASCII string or hexadecimal encoded with a leading 0x).")
+    keepalive: int | None = Field(ge=5, le=900, default=10, description="NAT-T keep alive interval.")
+    distance: int | None = Field(ge=1, le=255, default=15, description="Distance for routes added by IKE (1 - 255).")
+    priority: int | None = Field(ge=1, le=65535, default=1, description="Priority for routes added by IKE (1 - 65535).")
+    localid: str | None = Field(max_length=63, default="", description="Local ID.")
+    localid_type: str | Phase1LocalidTypeEnum | None = Field(default="auto", description="Local ID type.")
+    auto_negotiate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic initiation of IKE SA negotiation.")
+    negotiate_timeout: int | None = Field(ge=1, le=300, default=30, description="IKE SA negotiation timeout in seconds (1 - 300).")
+    fragmentation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable fragment IKE message on re-transmission.")
+    dpd: Literal["disable", "on-idle", "on-demand"] | None = Field(default="on-demand", description="Dead Peer Detection mode.")
+    dpd_retrycount: int | None = Field(ge=1, le=10, default=3, description="Number of DPD retry attempts.")
+    dpd_retryinterval: str | None = Field(default="", description="DPD retry interval.")
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    npu_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading NPU.")
+    send_cert_chain: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending certificate chain.")
+    dhgrp: str | Phase1DhgrpEnum | None = Field(default="20", description="DH group.")
+    addke1: str | Phase1Addke1Enum | None = Field(default=None, description="ADDKE1 group.")
+    addke2: str | Phase1Addke2Enum | None = Field(default=None, description="ADDKE2 group.")
+    addke3: str | Phase1Addke3Enum | None = Field(default=None, description="ADDKE3 group.")
+    addke4: str | Phase1Addke4Enum | None = Field(default=None, description="ADDKE4 group.")
+    addke5: str | Phase1Addke5Enum | None = Field(default=None, description="ADDKE5 group.")
+    addke6: str | Phase1Addke6Enum | None = Field(default=None, description="ADDKE6 group.")
+    addke7: str | Phase1Addke7Enum | None = Field(default=None, description="ADDKE7 group.")
+    suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = Field(default="disable", description="Use Suite-B.")
+    eap: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 EAP authentication.")
+    eap_identity: Literal["use-id-payload", "send-request"] | None = Field(default="use-id-payload", description="IKEv2 EAP peer identity type.")
+    eap_exclude_peergrp: str | None = Field(max_length=35, default="", description="Peer group excluded from EAP authentication.")  # datasource: ['user.peergrp.name']
+    eap_cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable peer certificate authentication in addition to EAP if peer is a FortiClient endpoint.")
+    acct_verify: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification of RADIUS accounting record.")
+    ppk: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable IKEv2 Postquantum Preshared Key (PPK).")
+    ppk_secret: Any = Field(description="IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal encoded with a leading 0x).")
+    ppk_identity: str | None = Field(max_length=35, default="", description="IKEv2 Postquantum Preshared Key Identity.")
+    wizard_type: str | Phase1WizardTypeEnum | None = Field(default="custom", description="GUI VPN Wizard Type.")
+    xauthtype: str | Phase1XauthtypeEnum | None = Field(default="disable", description="XAuth type.")
+    reauth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable re-authentication upon IKE SA lifetime expiration.")
+    authusr: str = Field(max_length=64, default="", description="XAuth user name.")
+    authpasswd: Any = Field(max_length=128, description="XAuth password (max 35 characters).")
+    group_authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 IDi group authentication.")
+    group_authentication_secret: Any = Field(description="Password for IKEv2 ID group authentication. ASCII string or hexadecimal indicated by a leading 0x.")
+    authusrgrp: str | None = Field(max_length=35, default="", description="Authentication user group.")  # datasource: ['user.group.name']
+    mesh_selector_type: Literal["disable", "subnet", "host"] | None = Field(default="disable", description="Add selectors containing subsets of the configuration depending on traffic.")
+    idle_timeout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec tunnel idle timeout.")
+    shared_idle_timeout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec tunnel shared idle timeout.")
+    idle_timeoutinterval: int | None = Field(ge=5, le=43200, default=15, description="IPsec tunnel idle timeout in minutes (5 - 43200).")
+    ha_sync_esp_seqno: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sequence number jump ahead for IPsec HA.")
+    fgsp_sync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec syncing of tunnels for FGSP IPsec.")
+    inbound_dscp_copy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable copy the dscp in the ESP header to the inner IP Header.")
+    nattraversal: Literal["enable", "disable", "forced"] | None = Field(default="enable", description="Enable/disable NAT traversal.")
+    esn: Literal["require", "allow", "disable"] | None = Field(default="disable", description="Extended sequence number (ESN) negotiation.")
+    fragmentation_mtu: int | None = Field(ge=500, le=16000, default=1200, description="IKE fragmentation MTU (500 - 16000).")
+    childless_ike: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable childless IKEv2 initiation (RFC 6023).")
+    azure_ad_autoconnect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Azure AD Auto-Connect for FortiClient.")
+    client_resume: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable resumption of offline FortiClient sessions.  When a FortiClient enabled laptop is closed or enters sleep/hibernate mode, enabling this feature allows FortiClient to keep the tunnel during this period, and allows users to immediately resume using the IPsec tunnel when the device wakes up.")
+    client_resume_interval: int | None = Field(ge=120, le=172800, default=7200, description="Maximum time in seconds during which a VPN client may resume using a tunnel after a client PC has entered sleep mode or temporarily lost its network connection (120 - 172800, default = 7200).")
+    rekey: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable phase1 rekey.")
+    digital_signature_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 Digital Signature Authentication (RFC 7427).")
+    signature_hash_alg: str | Phase1SignatureHashAlgEnum = Field(default="sha2-512", description="Digital Signature Authentication hash algorithms.")
+    rsa_signature_format: Literal["pkcs1", "pss"] | None = Field(default="pkcs1", description="Digital Signature Authentication RSA signature format.")
+    rsa_signature_hash_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IKEv2 RSA signature hash algorithm override.")
+    enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = Field(default="disable", description="Enable/disable peer ID uniqueness check.")
+    cert_id_validation: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable cross validation of peer ID and the identity in the peer's certificate as specified in RFC 4945.")
+    fec_egress: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Forward Error Correction for egress IPsec traffic.")
+    fec_send_timeout: int | None = Field(ge=1, le=1000, default=5, description="Timeout in milliseconds before sending Forward Error Correction packets (1 - 1000).")
+    fec_base: int | None = Field(ge=1, le=20, default=10, description="Number of base Forward Error Correction packets (1 - 20).")
+    fec_codec: Literal["rs", "xor"] | None = Field(default="rs", description="Forward Error Correction encoding/decoding algorithm.")
+    fec_redundant: int | None = Field(ge=1, le=5, default=1, description="Number of redundant Forward Error Correction packets (1 - 5 for reed-solomon, 1 for xor).")
+    fec_ingress: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Forward Error Correction for ingress IPsec traffic.")
+    fec_receive_timeout: int | None = Field(ge=1, le=1000, default=50, description="Timeout in milliseconds before dropping Forward Error Correction packets (1 - 1000).")
+    fec_health_check: str | None = Field(max_length=35, default="", description="SD-WAN health check.")  # datasource: ['system.sdwan.health-check.name']
+    fec_mapping_profile: str | None = Field(max_length=35, default="", description="Forward Error Correction (FEC) mapping profile.")  # datasource: ['vpn.ipsec.fec.name']
+    network_overlay: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable network overlays.")
+    network_id: int = Field(ge=0, le=255, default=0, description="VPN gateway network ID.")
+    dev_id_notification: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable device ID notification.")
+    dev_id: str = Field(max_length=63, default="", description="Device ID carried by the device ID notification.")
+    loopback_asymroute: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable asymmetric routing for IKE traffic on loopback interface.")
+    link_cost: int | None = Field(ge=0, le=255, default=0, description="VPN tunnel underlay link cost.")
+    kms: str | None = Field(max_length=35, default="", description="Key Management Services server.")  # datasource: ['vpn.kmip-server.name']
+    exchange_fgt_device_id: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable device identifier exchange with peer FortiGate units for use of VPN monitor data by FortiManager.")
+    ipv6_auto_linklocal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable auto generation of IPv6 link-local address using last 8 bytes of mode-cfg assigned IPv6 address.")
+    ems_sn_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification of EMS serial number.")
+    cert_trust_store: Literal["local", "ems"] | None = Field(default="local", description="CA certificate trust store.")
+    qkd: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable use of Quantum Key Distribution (QKD) server.")
+    qkd_hybrid: Literal["disable", "allow", "require"] | None = Field(default="disable", description="Enable/disable use of Quantum Key Distribution (QKD) hybrid keys.")
+    qkd_profile: str | None = Field(max_length=35, default="", description="Quantum Key Distribution (QKD) server profile.")  # datasource: ['vpn.qkd.name']
+    transport: Literal["udp", "auto", "tcp"] | None = Field(default="auto", description="Set IKE transport protocol.")
+    fortinet_esp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Fortinet ESP encapsulation.")
+    auto_transport_threshold: int | None = Field(ge=1, le=300, default=15, description="Timeout in seconds before falling back to next transport protocol.")
+    remote_gw_match: str | Phase1RemoteGwMatchEnum | None = Field(default="any", description="Set type of IPv4 remote gateway address matching.")
+    remote_gw_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="IPv4 address and subnet mask.")
+    remote_gw_start_ip: str | None = Field(default="0.0.0.0", description="First IPv4 address in the range.")
+    remote_gw_end_ip: str | None = Field(default="0.0.0.0", description="Last IPv4 address in the range.")
+    remote_gw_country: str | None = Field(max_length=2, default="", description="IPv4 addresses associated to a specific country.")
+    remote_gw_ztna_tags: list[Phase1RemoteGwZtnaTags] | None = Field(description="IPv4 ZTNA posture tags.")
+    remote_gw6_match: str | Phase1RemoteGw6MatchEnum | None = Field(default="any", description="Set type of IPv6 remote gateway address matching.")
+    remote_gw6_subnet: str | None = Field(default="::/0", description="IPv6 address and prefix.")
+    remote_gw6_start_ip: str | None = Field(default="::", description="First IPv6 address in the range.")
+    remote_gw6_end_ip: str | None = Field(default="::", description="Last IPv6 address in the range.")
+    remote_gw6_country: str | None = Field(max_length=2, default="", description="IPv6 addresses associated to a specific country.")
+    cert_peer_username_validation: str | Phase1CertPeerUsernameValidationEnum | None = Field(default="none", description="Enable/disable cross validation of peer username and the identity in the peer's certificate.")
+    cert_peer_username_strip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable domain stripping on certificate identity.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -774,7 +1099,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -823,7 +1148,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "certificate", [])
@@ -881,7 +1206,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "usrgrp", None)
@@ -930,7 +1255,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "peer", None)
@@ -979,7 +1304,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "peergrp", None)
@@ -1028,7 +1353,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv4_split_include", None)
@@ -1079,7 +1404,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "split_include_service", None)
@@ -1130,7 +1455,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv4_name", None)
@@ -1181,7 +1506,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv6_split_include", None)
@@ -1232,7 +1557,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv6_name", None)
@@ -1283,7 +1608,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv4_split_exclude", None)
@@ -1334,7 +1659,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ipv6_split_exclude", None)
@@ -1385,7 +1710,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "eap_exclude_peergrp", None)
@@ -1434,7 +1759,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "authusrgrp", None)
@@ -1483,7 +1808,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fec_health_check", None)
@@ -1532,7 +1857,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fec_mapping_profile", None)
@@ -1581,7 +1906,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "kms", None)
@@ -1630,7 +1955,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "qkd_profile", None)
@@ -1679,7 +2004,7 @@ class Phase1Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase1.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "remote_gw_ztna_tags", [])
@@ -1727,26 +2052,44 @@ class Phase1Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_usrgrp_references(client)
-        all_errors.extend(errors)        errors = await self.validate_peer_references(client)
-        all_errors.extend(errors)        errors = await self.validate_peergrp_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv4_split_include_references(client)
-        all_errors.extend(errors)        errors = await self.validate_split_include_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv4_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv6_split_include_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv6_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv4_split_exclude_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ipv6_split_exclude_references(client)
-        all_errors.extend(errors)        errors = await self.validate_eap_exclude_peergrp_references(client)
-        all_errors.extend(errors)        errors = await self.validate_authusrgrp_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fec_health_check_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fec_mapping_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_kms_references(client)
-        all_errors.extend(errors)        errors = await self.validate_qkd_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_remote_gw_ztna_tags_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_certificate_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_usrgrp_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_peer_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_peergrp_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv4_split_include_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_split_include_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv4_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv6_split_include_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv6_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv4_split_exclude_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ipv6_split_exclude_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_eap_exclude_peergrp_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_authusrgrp_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fec_health_check_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fec_mapping_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_kms_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_qkd_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_remote_gw_ztna_tags_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1768,5 +2111,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.850475Z
+# Generated: 2026-01-14T22:43:39.728679Z
 # ============================================================================

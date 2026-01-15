@@ -78,13 +78,13 @@ if TYPE_CHECKING:
     from .vip6 import Vip6, Vip6DictMode, Vip6ObjectMode
     from .vipgrp import Vipgrp, VipgrpDictMode, VipgrpObjectMode
     from .vipgrp6 import Vipgrp6, Vipgrp6DictMode, Vipgrp6ObjectMode
-    from .ipmacbinding import IpmacbindingDictMode, IpmacbindingObjectMode
-    from .schedule import ScheduleDictMode, ScheduleObjectMode
-    from .service import ServiceDictMode, ServiceObjectMode
-    from .shaper import ShaperDictMode, ShaperObjectMode
-    from .ssh import SshDictMode, SshObjectMode
-    from .ssl import SslDictMode, SslObjectMode
-    from .wildcard_fqdn import WildcardFqdnDictMode, WildcardFqdnObjectMode
+    from .ipmacbinding import Ipmacbinding, IpmacbindingDictMode, IpmacbindingObjectMode
+    from .schedule import Schedule, ScheduleDictMode, ScheduleObjectMode
+    from .service import Service, ServiceDictMode, ServiceObjectMode
+    from .shaper import Shaper, ShaperDictMode, ShaperObjectMode
+    from .ssh import Ssh, SshDictMode, SshObjectMode
+    from .ssl import Ssl, SslDictMode, SslObjectMode
+    from .wildcard_fqdn import WildcardFqdn, WildcardFqdnDictMode, WildcardFqdnObjectMode
 
 __all__ = [
     "DosPolicy",

@@ -81,7 +81,6 @@ class ReverseConnectorObject:
     trusted_server_ca: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -104,6 +103,10 @@ class ReverseConnector:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -124,6 +127,7 @@ class ReverseConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ReverseConnectorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -141,6 +145,7 @@ class ReverseConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ReverseConnectorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -157,6 +162,7 @@ class ReverseConnector:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ReverseConnectorResponse]: ...
     
     # ================================================================
@@ -199,7 +205,7 @@ class ReverseConnector:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
     
@@ -218,7 +224,7 @@ class ReverseConnector:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ReverseConnectorObject]: ...
     
@@ -318,23 +324,6 @@ class ReverseConnector:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ReverseConnectorObject | list[ReverseConnectorObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -356,6 +345,7 @@ class ReverseConnector:
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
@@ -410,23 +400,7 @@ class ReverseConnector:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ReverseConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        address: str | None = ...,
-        port: int | None = ...,
-        health_check_interval: int | None = ...,
-        ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        certificate: str | None = ...,
-        trusted_server_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -445,6 +419,7 @@ class ReverseConnector:
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
@@ -499,23 +474,7 @@ class ReverseConnector:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ReverseConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        address: str | None = ...,
-        port: int | None = ...,
-        health_check_interval: int | None = ...,
-        ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        certificate: str | None = ...,
-        trusted_server_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -526,6 +485,7 @@ class ReverseConnector:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
@@ -556,14 +516,7 @@ class ReverseConnector:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -600,8 +553,6 @@ class ReverseConnector:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -629,6 +580,10 @@ class ReverseConnectorDictMode:
     By default returns ReverseConnectorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ReverseConnectorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -779,10 +734,12 @@ class ReverseConnectorDictMode:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
@@ -850,10 +807,12 @@ class ReverseConnectorDictMode:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
@@ -897,10 +856,12 @@ class ReverseConnectorDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -941,8 +902,6 @@ class ReverseConnectorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -966,6 +925,10 @@ class ReverseConnectorObjectMode:
     By default returns ReverseConnectorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ReverseConnectorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1135,10 +1098,12 @@ class ReverseConnectorObjectMode:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
@@ -1225,10 +1190,12 @@ class ReverseConnectorObjectMode:
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
@@ -1283,10 +1250,12 @@ class ReverseConnectorObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReverseConnectorObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1327,8 +1296,6 @@ class ReverseConnectorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

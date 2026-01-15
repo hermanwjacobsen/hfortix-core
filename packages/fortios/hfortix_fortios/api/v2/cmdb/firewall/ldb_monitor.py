@@ -233,7 +233,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
         interval: int | None = None,
         timeout: int | None = None,
         retry: int | None = None,
@@ -258,7 +258,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Monitor name.
-            type: Select the Monitor type used by the health check monitor to check the health of the server (PING | TCP | HTTP | HTTPS | DNS).
+            type_: Select the Monitor type used by the health check monitor to check the health of the server (PING | TCP | HTTP | HTTPS | DNS).
             interval: Time between health checks (5 - 65535 sec, default = 10).
             timeout: Time to wait to receive response to a health check from a server. Reaching the timeout means the health check failed (1 - 255 sec, default = 2).
             retry: Number health check attempts before the server is considered down (1 - 255, default = 3).
@@ -304,7 +304,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interval=interval,
             timeout=timeout,
             retry=retry,
@@ -347,7 +347,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
         interval: int | None = None,
         timeout: int | None = None,
         retry: int | None = None,
@@ -372,7 +372,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Monitor name.
-            type: Select the Monitor type used by the health check monitor to check the health of the server (PING | TCP | HTTP | HTTPS | DNS).
+            type_: Select the Monitor type used by the health check monitor to check the health of the server (PING | TCP | HTTP | HTTPS | DNS).
             interval: Time between health checks (5 - 65535 sec, default = 10).
             timeout: Time to wait to receive response to a health check from a server. Reaching the timeout means the health check failed (1 - 255 sec, default = 2).
             retry: Number health check attempts before the server is considered down (1 - 255, default = 3).
@@ -420,7 +420,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interval=interval,
             timeout=timeout,
             retry=retry,
@@ -563,7 +563,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
+        type_: Literal["ping", "tcp", "http", "https", "dns"] | None = None,
         interval: int | None = None,
         timeout: int | None = None,
         retry: int | None = None,
@@ -589,7 +589,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             interval: Field interval
             timeout: Field timeout
             retry: Field retry
@@ -645,7 +645,7 @@ class LdbMonitor(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interval=interval,
             timeout=timeout,
             retry=retry,

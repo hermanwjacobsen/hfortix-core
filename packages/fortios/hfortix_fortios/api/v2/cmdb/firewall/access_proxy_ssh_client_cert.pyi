@@ -44,7 +44,7 @@ class AccessProxySshClientCertCertextensionItem(TypedDict):
     
     name: str  # Name of certificate extension. | MaxLen: 127
     critical: Literal["no", "yes"]  # Critical option. | Default: no
-    type: Literal["fixed", "user"]  # Type of certificate extension. | Default: fixed
+    type_: Literal["fixed", "user"]  # Type of certificate extension. | Default: fixed
     data: str  # Data of certificate extension. | MaxLen: 127
 
 
@@ -63,7 +63,7 @@ class AccessProxySshClientCertCertextensionObject:
     # Critical option. | Default: no
     critical: Literal["no", "yes"]
     # Type of certificate extension. | Default: fixed
-    type: Literal["fixed", "user"]
+    type_: Literal["fixed", "user"]
     # Data of certificate extension. | MaxLen: 127
     data: str
     
@@ -147,6 +147,10 @@ class AccessProxySshClientCert:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -167,6 +171,7 @@ class AccessProxySshClientCert:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxySshClientCertResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -184,6 +189,7 @@ class AccessProxySshClientCert:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxySshClientCertResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -200,6 +206,7 @@ class AccessProxySshClientCert:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AccessProxySshClientCertResponse]: ...
     
     # ================================================================
@@ -242,7 +249,7 @@ class AccessProxySshClientCert:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
     
@@ -261,7 +268,7 @@ class AccessProxySshClientCert:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AccessProxySshClientCertObject]: ...
     
@@ -361,23 +368,6 @@ class AccessProxySshClientCert:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AccessProxySshClientCertObject | list[AccessProxySshClientCertObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -400,6 +390,7 @@ class AccessProxySshClientCert:
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
@@ -457,24 +448,7 @@ class AccessProxySshClientCert:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AccessProxySshClientCertPayload | None = ...,
-        name: str | None = ...,
-        source_address: Literal["enable", "disable"] | None = ...,
-        permit_x11_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_agent_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_port_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_pty: Literal["enable", "disable"] | None = ...,
-        permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -494,6 +468,7 @@ class AccessProxySshClientCert:
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
@@ -551,24 +526,7 @@ class AccessProxySshClientCert:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AccessProxySshClientCertPayload | None = ...,
-        name: str | None = ...,
-        source_address: Literal["enable", "disable"] | None = ...,
-        permit_x11_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_agent_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_port_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_pty: Literal["enable", "disable"] | None = ...,
-        permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth_ca: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -579,6 +537,7 @@ class AccessProxySshClientCert:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
@@ -609,14 +568,7 @@ class AccessProxySshClientCert:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -654,8 +606,6 @@ class AccessProxySshClientCert:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -683,6 +633,10 @@ class AccessProxySshClientCertDictMode:
     By default returns AccessProxySshClientCertResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AccessProxySshClientCertObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -836,10 +790,12 @@ class AccessProxySshClientCertDictMode:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
@@ -911,10 +867,12 @@ class AccessProxySshClientCertDictMode:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
@@ -959,10 +917,12 @@ class AccessProxySshClientCertDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1004,8 +964,6 @@ class AccessProxySshClientCertDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1029,6 +987,10 @@ class AccessProxySshClientCertObjectMode:
     By default returns AccessProxySshClientCertObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AccessProxySshClientCertResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1202,10 +1164,12 @@ class AccessProxySshClientCertObjectMode:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
@@ -1297,10 +1261,12 @@ class AccessProxySshClientCertObjectMode:
         cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
@@ -1356,10 +1322,12 @@ class AccessProxySshClientCertObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxySshClientCertObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1401,8 +1369,6 @@ class AccessProxySshClientCertObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

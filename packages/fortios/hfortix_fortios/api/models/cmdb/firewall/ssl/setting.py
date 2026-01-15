@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class SettingSsl_dh_bitsEnum(str, Enum):
+class SettingSslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
     VALUE_768 = "768"
     VALUE_1024 = "1024"
@@ -35,7 +35,19 @@ class SettingModel(BaseModel):
 
     SSL proxy settings.
 
-    Validation Rules:        - proxy_connect_timeout: min=1 max=60 pattern=        - ssl_dh_bits: pattern=        - ssl_send_empty_frags: pattern=        - no_matching_cipher_action: pattern=        - cert_manager_cache_timeout: min=24 max=720 pattern=        - resigned_short_lived_certificate: pattern=        - cert_cache_capacity: min=0 max=500 pattern=        - cert_cache_timeout: min=1 max=120 pattern=        - session_cache_capacity: min=0 max=1000 pattern=        - session_cache_timeout: min=1 max=60 pattern=        - abbreviate_handshake: pattern=    """
+    Validation Rules:
+        - proxy_connect_timeout: min=1 max=60 pattern=
+        - ssl_dh_bits: pattern=
+        - ssl_send_empty_frags: pattern=
+        - no_matching_cipher_action: pattern=
+        - cert_manager_cache_timeout: min=24 max=720 pattern=
+        - resigned_short_lived_certificate: pattern=
+        - cert_cache_capacity: min=0 max=500 pattern=
+        - cert_cache_timeout: min=1 max=120 pattern=
+        - session_cache_capacity: min=0 max=1000 pattern=
+        - session_cache_timeout: min=1 max=60 pattern=
+        - abbreviate_handshake: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -47,7 +59,18 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    proxy_connect_timeout: int = Field(ge=1, le=60, default=30, description="Time limit to make an internal connection to the appropriate proxy process (1 - 60 sec, default = 30).")    ssl_dh_bits: SettingSslDhBitsEnum = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    ssl_send_empty_frags: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable sending empty fragments to avoid attack on CBC IV (for SSL 3.0 and TLS 1.0 only).")    no_matching_cipher_action: Literal["bypass", "drop"] = Field(default="bypass", description="Bypass or drop the connection when no matching cipher is found.")    cert_manager_cache_timeout: int = Field(ge=24, le=720, default=72, description="Time limit for certificate manager to keep FortiGate re-signed server certificate (24 - 720 hours, default = 72).")    resigned_short_lived_certificate: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable short-lived certificate.")    cert_cache_capacity: int = Field(ge=0, le=500, default=200, description="Maximum capacity of the host certificate cache (0 - 500, default = 200).")    cert_cache_timeout: int = Field(ge=1, le=120, default=10, description="Time limit to keep certificate cache (1 - 120 min, default = 10).")    session_cache_capacity: int = Field(ge=0, le=1000, default=500, description="Capacity of the SSL session cache (--Obsolete--) (1 - 1000, default = 500).")    session_cache_timeout: int = Field(ge=1, le=60, default=20, description="Time limit to keep SSL session state (1 - 60 min, default = 20).")    abbreviate_handshake: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of SSL abbreviated handshake.")    # ========================================================================
+    proxy_connect_timeout: int = Field(ge=1, le=60, default=30, description="Time limit to make an internal connection to the appropriate proxy process (1 - 60 sec, default = 30).")
+    ssl_dh_bits: str | SettingSslDhBitsEnum = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")
+    ssl_send_empty_frags: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable sending empty fragments to avoid attack on CBC IV (for SSL 3.0 and TLS 1.0 only).")
+    no_matching_cipher_action: Literal["bypass", "drop"] = Field(default="bypass", description="Bypass or drop the connection when no matching cipher is found.")
+    cert_manager_cache_timeout: int = Field(ge=24, le=720, default=72, description="Time limit for certificate manager to keep FortiGate re-signed server certificate (24 - 720 hours, default = 72).")
+    resigned_short_lived_certificate: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable short-lived certificate.")
+    cert_cache_capacity: int = Field(ge=0, le=500, default=200, description="Maximum capacity of the host certificate cache (0 - 500, default = 200).")
+    cert_cache_timeout: int = Field(ge=1, le=120, default=10, description="Time limit to keep certificate cache (1 - 120 min, default = 10).")
+    session_cache_capacity: int = Field(ge=0, le=1000, default=500, description="Capacity of the SSL session cache (--Obsolete--) (1 - 1000, default = 500).")
+    session_cache_timeout: int = Field(ge=1, le=60, default=20, description="Time limit to keep SSL session state (1 - 60 min, default = 20).")
+    abbreviate_handshake: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of SSL abbreviated handshake.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -96,5 +119,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.066725Z
+# Generated: 2026-01-14T22:43:39.986398Z
 # ============================================================================

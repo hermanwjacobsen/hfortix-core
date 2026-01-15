@@ -256,7 +256,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "folder"] | None = None,
+        type_: Literal["default", "folder"] | None = None,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
@@ -280,7 +280,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Address group name.
-            type: Address group type.
+            type_: Address group type.
             category: Address group category.
             allow_routing: Enable/disable use of this group in routing configurations.
             member: Address objects contained within the group.
@@ -366,7 +366,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             category=category,
             allow_routing=allow_routing,
             member=member,
@@ -408,7 +408,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "folder"] | None = None,
+        type_: Literal["default", "folder"] | None = None,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
@@ -432,7 +432,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Address group name.
-            type: Address group type.
+            type_: Address group type.
             category: Address group category.
             allow_routing: Enable/disable use of this group in routing configurations.
             member: Address objects contained within the group.
@@ -520,7 +520,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             category=category,
             allow_routing=allow_routing,
             member=member,
@@ -662,7 +662,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["default", "folder"] | None = None,
+        type_: Literal["default", "folder"] | None = None,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
@@ -687,7 +687,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             category: Field category
             allow_routing: Field allow-routing
             member: Field member
@@ -742,7 +742,7 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             category=category,
             allow_routing=allow_routing,
             member=member,

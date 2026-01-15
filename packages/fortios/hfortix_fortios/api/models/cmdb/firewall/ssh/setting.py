@@ -26,7 +26,17 @@ class SettingModel(BaseModel):
 
     SSH proxy settings.
 
-    Validation Rules:        - caname: max_length=35 pattern=        - untrusted_caname: max_length=35 pattern=        - hostkey_rsa2048: max_length=35 pattern=        - hostkey_dsa1024: max_length=35 pattern=        - hostkey_ecdsa256: max_length=35 pattern=        - hostkey_ecdsa384: max_length=35 pattern=        - hostkey_ecdsa521: max_length=35 pattern=        - hostkey_ed25519: max_length=35 pattern=        - host_trusted_checking: pattern=    """
+    Validation Rules:
+        - caname: max_length=35 pattern=
+        - untrusted_caname: max_length=35 pattern=
+        - hostkey_rsa2048: max_length=35 pattern=
+        - hostkey_dsa1024: max_length=35 pattern=
+        - hostkey_ecdsa256: max_length=35 pattern=
+        - hostkey_ecdsa384: max_length=35 pattern=
+        - hostkey_ecdsa521: max_length=35 pattern=
+        - hostkey_ed25519: max_length=35 pattern=
+        - host_trusted_checking: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +48,16 @@ class SettingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    caname: str | None = Field(max_length=35, default="", description="CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    untrusted_caname: str | None = Field(max_length=35, default="", description="Untrusted CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    hostkey_rsa2048: str | None = Field(max_length=35, default="", description="RSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    hostkey_dsa1024: str | None = Field(max_length=35, default="", description="DSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    hostkey_ecdsa256: str | None = Field(max_length=35, default="", description="ECDSA nid256 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    hostkey_ecdsa384: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    hostkey_ecdsa521: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    hostkey_ed25519: str | None = Field(max_length=35, default="", description="ED25519 hostkey used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    host_trusted_checking: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable host trusted checking.")    # ========================================================================
+    caname: str | None = Field(max_length=35, default="", description="CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']
+    untrusted_caname: str | None = Field(max_length=35, default="", description="Untrusted CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']
+    hostkey_rsa2048: str | None = Field(max_length=35, default="", description="RSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    hostkey_dsa1024: str | None = Field(max_length=35, default="", description="DSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    hostkey_ecdsa256: str | None = Field(max_length=35, default="", description="ECDSA nid256 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    hostkey_ecdsa384: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    hostkey_ecdsa521: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    hostkey_ed25519: str | None = Field(max_length=35, default="", description="ED25519 hostkey used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']
+    host_trusted_checking: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable host trusted checking.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -222,7 +241,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "caname", None)
@@ -271,7 +290,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "untrusted_caname", None)
@@ -320,7 +339,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_rsa2048", None)
@@ -369,7 +388,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_dsa1024", None)
@@ -418,7 +437,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa256", None)
@@ -467,7 +486,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa384", None)
@@ -516,7 +535,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa521", None)
@@ -565,7 +584,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "hostkey_ed25519", None)
@@ -602,15 +621,22 @@ class SettingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_caname_references(client)
-        all_errors.extend(errors)        errors = await self.validate_untrusted_caname_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_rsa2048_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_dsa1024_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_ecdsa256_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_ecdsa384_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_ecdsa521_references(client)
-        all_errors.extend(errors)        errors = await self.validate_hostkey_ed25519_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_untrusted_caname_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_rsa2048_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_dsa1024_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_ecdsa256_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_ecdsa384_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_ecdsa521_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_hostkey_ed25519_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -632,5 +658,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.291097Z
+# Generated: 2026-01-14T22:43:40.270498Z
 # ============================================================================

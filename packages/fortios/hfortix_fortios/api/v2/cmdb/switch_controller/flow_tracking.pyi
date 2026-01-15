@@ -20,7 +20,7 @@ class FlowTrackingPayload(TypedDict, total=False):
     """
     sample_mode: Literal["local", "perimeter", "device-ingress"]  # Configure sample mode for the flow tracking. | Default: perimeter
     sample_rate: int  # Configure sample rate for the perimeter and device | Default: 512 | Min: 0 | Max: 99999
-    format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]  # Configure flow tracking protocol. | Default: netflow9
+    format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"]  # Configure flow tracking protocol. | Default: netflow9
     collectors: list[dict[str, Any]]  # Configure collectors for the flow.
     level: Literal["vlan", "ip", "port", "proto", "mac"]  # Configure flow tracking level. | Default: ip
     max_export_pkt_size: int  # Configure flow max export packet size | Default: 512 | Min: 512 | Max: 9216
@@ -122,7 +122,7 @@ class FlowTrackingResponse(TypedDict):
     """
     sample_mode: Literal["local", "perimeter", "device-ingress"]  # Configure sample mode for the flow tracking. | Default: perimeter
     sample_rate: int  # Configure sample rate for the perimeter and device | Default: 512 | Min: 0 | Max: 99999
-    format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]  # Configure flow tracking protocol. | Default: netflow9
+    format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"]  # Configure flow tracking protocol. | Default: netflow9
     collectors: list[FlowTrackingCollectorsItem]  # Configure collectors for the flow.
     level: Literal["vlan", "ip", "port", "proto", "mac"]  # Configure flow tracking level. | Default: ip
     max_export_pkt_size: int  # Configure flow max export packet size | Default: 512 | Min: 512 | Max: 9216
@@ -150,7 +150,7 @@ class FlowTrackingObject:
     # Configure sample rate for the perimeter and device-ingress s | Default: 512 | Min: 0 | Max: 99999
     sample_rate: int
     # Configure flow tracking protocol. | Default: netflow9
-    format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]
+    format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"]
     # Configure collectors for the flow.
     collectors: list[FlowTrackingCollectorsObject]
     # Configure flow tracking level. | Default: ip
@@ -199,6 +199,10 @@ class FlowTracking:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -219,6 +223,7 @@ class FlowTracking:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FlowTrackingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -236,6 +241,7 @@ class FlowTracking:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FlowTrackingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -252,6 +258,7 @@ class FlowTracking:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FlowTrackingResponse: ...
     
     # ================================================================
@@ -294,7 +301,7 @@ class FlowTracking:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FlowTrackingObject: ...
     
@@ -313,7 +320,7 @@ class FlowTracking:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FlowTrackingObject: ...
     
@@ -413,23 +420,6 @@ class FlowTracking:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FlowTrackingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -443,7 +433,7 @@ class FlowTracking:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -458,6 +448,7 @@ class FlowTracking:
         aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FlowTrackingObject: ...
@@ -468,7 +459,7 @@ class FlowTracking:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -494,7 +485,7 @@ class FlowTracking:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -519,7 +510,7 @@ class FlowTracking:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -533,30 +524,7 @@ class FlowTracking:
         timeout_udp: int | None = ...,
         aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FlowTrackingPayload | None = ...,
-        sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
-        sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
-        level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
-        max_export_pkt_size: int | None = ...,
-        template_export_period: int | None = ...,
-        timeout_general: int | None = ...,
-        timeout_icmp: int | None = ...,
-        timeout_max: int | None = ...,
-        timeout_tcp: int | None = ...,
-        timeout_tcp_fin: int | None = ...,
-        timeout_tcp_rst: int | None = ...,
-        timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -571,7 +539,7 @@ class FlowTracking:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -600,8 +568,6 @@ class FlowTracking:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -629,6 +595,10 @@ class FlowTrackingDictMode:
     By default returns FlowTrackingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FlowTrackingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -735,7 +705,7 @@ class FlowTrackingDictMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -761,7 +731,7 @@ class FlowTrackingDictMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -787,7 +757,7 @@ class FlowTrackingDictMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -801,16 +771,18 @@ class FlowTrackingDictMode:
         timeout_udp: int | None = ...,
         aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -840,7 +812,7 @@ class FlowTrackingDictMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -868,8 +840,6 @@ class FlowTrackingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -893,6 +863,10 @@ class FlowTrackingObjectMode:
     By default returns FlowTrackingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FlowTrackingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -999,7 +973,7 @@ class FlowTrackingObjectMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1025,7 +999,7 @@ class FlowTrackingObjectMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1051,7 +1025,7 @@ class FlowTrackingObjectMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1077,7 +1051,7 @@ class FlowTrackingObjectMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1091,16 +1065,18 @@ class FlowTrackingObjectMode:
         timeout_udp: int | None = ...,
         aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FlowTrackingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1130,7 +1106,7 @@ class FlowTrackingObjectMode:
         payload_dict: FlowTrackingPayload | None = ...,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format_: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
         collectors: str | list[str] | list[dict[str, Any]] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
@@ -1158,8 +1134,6 @@ class FlowTrackingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

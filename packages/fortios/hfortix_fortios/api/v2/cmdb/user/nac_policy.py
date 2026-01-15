@@ -259,7 +259,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         match_remove: Literal["default", "link-down"] | None = None,
         mac: str | None = None,
         hw_vendor: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         family: str | None = None,
         os: str | None = None,
         hw_version: str | None = None,
@@ -297,7 +297,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove: Options to remove the matched override devices.
             mac: NAC policy matching MAC address.
             hw_vendor: NAC policy matching hardware vendor.
-            type: NAC policy matching type.
+            type_: NAC policy matching type.
             family: NAC policy matching family.
             os: NAC policy matching operating system.
             hw_version: NAC policy matching hardware version.
@@ -384,7 +384,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove=match_remove,
             mac=mac,
             hw_vendor=hw_vendor,
-            type=type,
+            type_=type_,
             family=family,
             os=os,
             hw_version=hw_version,
@@ -440,7 +440,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         match_remove: Literal["default", "link-down"] | None = None,
         mac: str | None = None,
         hw_vendor: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         family: str | None = None,
         os: str | None = None,
         hw_version: str | None = None,
@@ -478,7 +478,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove: Options to remove the matched override devices.
             mac: NAC policy matching MAC address.
             hw_vendor: NAC policy matching hardware vendor.
-            type: NAC policy matching type.
+            type_: NAC policy matching type.
             family: NAC policy matching family.
             os: NAC policy matching operating system.
             hw_version: NAC policy matching hardware version.
@@ -567,7 +567,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove=match_remove,
             mac=mac,
             hw_vendor=hw_vendor,
-            type=type,
+            type_=type_,
             family=family,
             os=os,
             hw_version=hw_version,
@@ -723,7 +723,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         match_remove: Literal["default", "link-down"] | None = None,
         mac: str | None = None,
         hw_vendor: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         family: str | None = None,
         os: str | None = None,
         hw_version: str | None = None,
@@ -762,7 +762,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove: Field match-remove
             mac: Field mac
             hw_vendor: Field hw-vendor
-            type: Field type
+            type_: Field type
             family: Field family
             os: Field os
             hw_version: Field hw-version
@@ -831,7 +831,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             match_remove=match_remove,
             mac=mac,
             hw_vendor=hw_vendor,
-            type=type,
+            type_=type_,
             family=family,
             os=os,
             hw_version=hw_version,

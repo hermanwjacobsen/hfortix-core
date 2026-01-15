@@ -45,7 +45,21 @@ class FssoPollingModel(BaseModel):
 
     Configure FSSO active directory servers for polling mode.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - server: max_length=63 pattern=        - default_domain: max_length=35 pattern=        - port: min=0 max=65535 pattern=        - user: max_length=35 pattern=        - password: max_length=128 pattern=        - ldap_server: max_length=35 pattern=        - logon_history: min=0 max=48 pattern=        - polling_frequency: min=1 max=30 pattern=        - adgrp: pattern=        - smbv1: pattern=        - smb_ntlmv1_auth: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - server: max_length=63 pattern=
+        - default_domain: max_length=35 pattern=
+        - port: min=0 max=65535 pattern=
+        - user: max_length=35 pattern=
+        - password: max_length=128 pattern=
+        - ldap_server: max_length=35 pattern=
+        - logon_history: min=0 max=48 pattern=
+        - polling_frequency: min=1 max=30 pattern=
+        - adgrp: pattern=
+        - smbv1: pattern=
+        - smb_ntlmv1_auth: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -57,7 +71,20 @@ class FssoPollingModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Active Directory server ID.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable polling for the status of this Active Directory server.")    server: str = Field(max_length=63, default="", description="Host name or IP address of the Active Directory server.")    default_domain: str | None = Field(max_length=35, default="", description="Default domain managed by this Active Directory server.")    port: int | None = Field(ge=0, le=65535, default=0, description="Port to communicate with this Active Directory server.")    user: str = Field(max_length=35, default="", description="User name required to log into this Active Directory server.")    password: Any = Field(max_length=128, default=None, description="Password required to log into this Active Directory server.")    ldap_server: str = Field(max_length=35, default="", description="LDAP server name used in LDAP connection strings.")  # datasource: ['user.ldap.name']    logon_history: int | None = Field(ge=0, le=48, default=8, description="Number of hours of logon history to keep, 0 means keep all history.")    polling_frequency: int | None = Field(ge=1, le=30, default=10, description="Polling frequency (every 1 to 30 seconds).")    adgrp: list[FssoPollingAdgrp] = Field(default=None, description="LDAP Group Info.")    smbv1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support of SMBv1 for Samba.")    smb_ntlmv1_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support of NTLMv1 for Samba authentication.")    # ========================================================================
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="Active Directory server ID.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable polling for the status of this Active Directory server.")
+    server: str = Field(max_length=63, default="", description="Host name or IP address of the Active Directory server.")
+    default_domain: str | None = Field(max_length=35, default="", description="Default domain managed by this Active Directory server.")
+    port: int | None = Field(ge=0, le=65535, default=0, description="Port to communicate with this Active Directory server.")
+    user: str = Field(max_length=35, default="", description="User name required to log into this Active Directory server.")
+    password: Any = Field(max_length=128, default=None, description="Password required to log into this Active Directory server.")
+    ldap_server: str = Field(max_length=35, default="", description="LDAP server name used in LDAP connection strings.")  # datasource: ['user.ldap.name']
+    logon_history: int | None = Field(ge=0, le=48, default=8, description="Number of hours of logon history to keep, 0 means keep all history.")
+    polling_frequency: int | None = Field(ge=1, le=30, default=10, description="Polling frequency (every 1 to 30 seconds).")
+    adgrp: list[FssoPollingAdgrp] | None = Field(default=None, description="LDAP Group Info.")
+    smbv1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support of SMBv1 for Samba.")
+    smb_ntlmv1_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support of NTLMv1 for Samba authentication.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -136,7 +163,7 @@ class FssoPollingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.fsso_polling.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ldap_server", None)
@@ -173,7 +200,7 @@ class FssoPollingModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ldap_server_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -196,5 +223,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.676797Z
+# Generated: 2026-01-14T22:43:35.736191Z
 # ============================================================================

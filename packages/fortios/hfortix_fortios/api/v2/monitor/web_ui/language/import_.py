@@ -14,10 +14,10 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.monitor.web_ui_language_import_.get()
+    >>> items = fgt.api.monitor.web_ui_language_import.get()
     >>>
     >>> # Create with auto-normalization (strings/lists converted automatically)
-    >>> result = fgt.api.monitor.web_ui_language_import_.post(
+    >>> result = fgt.api.monitor.web_ui_language_import.post(
     ...     name="example",
     ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
     ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
@@ -136,21 +136,21 @@ class Import(CRUDEndpoint, MetadataMixin):
 
         Examples:
             >>> # Get all web_ui/language/import_ objects
-            >>> result = fgt.api.monitor.web_ui_language_import_.get()
+            >>> result = fgt.api.monitor.web_ui_language_import.get()
             >>> print(f"Found {len(result['results'])} objects")
             
             >>> # Get with filter
-            >>> result = fgt.api.monitor.web_ui_language_import_.get(
+            >>> result = fgt.api.monitor.web_ui_language_import.get(
             ...     filter=["name==test", "status==enable"]
             ... )
             
             >>> # Get with pagination
-            >>> result = fgt.api.monitor.web_ui_language_import_.get(
+            >>> result = fgt.api.monitor.web_ui_language_import.get(
             ...     start=0, count=100
             ... )
             
             >>> # Get schema information  
-            >>> schema = fgt.api.monitor.web_ui_language_import_.get_schema()
+            >>> schema = fgt.api.monitor.web_ui_language_import.get_schema()
 
         See Also:
             - post(): Create new web_ui/language/import_ object
@@ -209,8 +209,8 @@ class Import(CRUDEndpoint, MetadataMixin):
             
         Example:
             >>> # Check before creating
-            >>> if not fgt.api.monitor.web_ui_language_import_.exists(name="myobj"):
-            ...     fgt.api.monitor.web_ui_language_import_.post(payload_dict=data)
+            >>> if not fgt.api.monitor.web_ui_language_import.exists(name="myobj"):
+            ...     fgt.api.monitor.web_ui_language_import.post(payload_dict=data)
         """
         # Try to fetch the object - 404 means it doesn't exist
         try:

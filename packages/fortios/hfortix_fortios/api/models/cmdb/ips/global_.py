@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -49,7 +49,24 @@ class GlobalModel(BaseModel):
 
     Configure IPS global parameter.
 
-    Validation Rules:        - fail_open: pattern=        - database: pattern=        - traffic_submit: pattern=        - anomaly_mode: pattern=        - session_limit_mode: pattern=        - socket_size: min=0 max=512 pattern=        - engine_count: min=0 max=255 pattern=        - sync_session_ttl: pattern=        - deep_app_insp_timeout: min=0 max=2147483647 pattern=        - deep_app_insp_db_limit: min=0 max=2147483647 pattern=        - exclude_signatures: pattern=        - packet_log_queue_depth: min=128 max=4096 pattern=        - ngfw_max_scan_range: min=0 max=4294967295 pattern=        - av_mem_limit: min=10 max=50 pattern=        - machine_learning_detection: pattern=        - tls_active_probe: pattern=    """
+    Validation Rules:
+        - fail_open: pattern=
+        - database: pattern=
+        - traffic_submit: pattern=
+        - anomaly_mode: pattern=
+        - session_limit_mode: pattern=
+        - socket_size: min=0 max=512 pattern=
+        - engine_count: min=0 max=255 pattern=
+        - sync_session_ttl: pattern=
+        - deep_app_insp_timeout: min=0 max=2147483647 pattern=
+        - deep_app_insp_db_limit: min=0 max=2147483647 pattern=
+        - exclude_signatures: pattern=
+        - packet_log_queue_depth: min=128 max=4096 pattern=
+        - ngfw_max_scan_range: min=0 max=4294967295 pattern=
+        - av_mem_limit: min=10 max=50 pattern=
+        - machine_learning_detection: pattern=
+        - tls_active_probe: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -61,7 +78,23 @@ class GlobalModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    fail_open: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow traffic if the IPS buffer is full. Default is disable and IPS traffic is blocked when the IPS buffer is full.")    database: Literal["regular", "extended"] | None = Field(default="extended", description="Regular or extended IPS database. Regular protects against the latest common and in-the-wild attacks. Extended includes protection from legacy attacks.")    traffic_submit: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable submitting attack data found by this FortiGate to FortiGuard.")    anomaly_mode: Literal["periodical", "continuous"] | None = Field(default="continuous", description="Global blocking mode for rate-based anomalies.")    session_limit_mode: Literal["accurate", "heuristic"] | None = Field(default="heuristic", description="Method of counting concurrent sessions used by session limit anomalies. Choose between greater accuracy (accurate) or improved performance (heuristics).")    socket_size: int | None = Field(ge=0, le=512, default=256, description="IPS socket buffer size. Max and default value depend on available memory. Can be changed to tune performance.")    engine_count: int | None = Field(ge=0, le=255, default=0, description="Number of IPS engines running. If set to the default value of 0, FortiOS sets the number to optimize performance depending on the number of CPU cores.")    sync_session_ttl: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of kernel session TTL for IPS sessions.")    deep_app_insp_timeout: int | None = Field(ge=0, le=2147483647, default=0, description="Timeout for Deep application inspection (1 - 2147483647 sec., 0 = use recommended setting).")    deep_app_insp_db_limit: int | None = Field(ge=0, le=2147483647, default=0, description="Limit on number of entries in deep application inspection database (1 - 2147483647, use recommended setting = 0).")    exclude_signatures: Literal["none", "ot"] | None = Field(default="ot", description="Excluded signatures.")    packet_log_queue_depth: int | None = Field(ge=128, le=4096, default=128, description="Packet/pcap log queue depth per IPS engine.")    ngfw_max_scan_range: int | None = Field(ge=0, le=4294967295, default=4096, description="NGFW policy-mode app detection threshold.")    av_mem_limit: int | None = Field(ge=10, le=50, default=0, description="Maximum percentage of system memory allowed for use on AV scanning (10 - 50, default = zero). To disable set to zero. When disabled, there is no limit on the AV memory usage.")    machine_learning_detection: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable machine learning detection.")    tls_active_probe: list[GlobalTlsActiveProbe] = Field(default=None, description="TLS active probe configuration.")    # ========================================================================
+    fail_open: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow traffic if the IPS buffer is full. Default is disable and IPS traffic is blocked when the IPS buffer is full.")
+    database: Literal["regular", "extended"] | None = Field(default="extended", description="Regular or extended IPS database. Regular protects against the latest common and in-the-wild attacks. Extended includes protection from legacy attacks.")
+    traffic_submit: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable submitting attack data found by this FortiGate to FortiGuard.")
+    anomaly_mode: Literal["periodical", "continuous"] | None = Field(default="continuous", description="Global blocking mode for rate-based anomalies.")
+    session_limit_mode: Literal["accurate", "heuristic"] | None = Field(default="heuristic", description="Method of counting concurrent sessions used by session limit anomalies. Choose between greater accuracy (accurate) or improved performance (heuristics).")
+    socket_size: int | None = Field(ge=0, le=512, default=256, description="IPS socket buffer size. Max and default value depend on available memory. Can be changed to tune performance.")
+    engine_count: int | None = Field(ge=0, le=255, default=0, description="Number of IPS engines running. If set to the default value of 0, FortiOS sets the number to optimize performance depending on the number of CPU cores.")
+    sync_session_ttl: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of kernel session TTL for IPS sessions.")
+    deep_app_insp_timeout: int | None = Field(ge=0, le=2147483647, default=0, description="Timeout for Deep application inspection (1 - 2147483647 sec., 0 = use recommended setting).")
+    deep_app_insp_db_limit: int | None = Field(ge=0, le=2147483647, default=0, description="Limit on number of entries in deep application inspection database (1 - 2147483647, use recommended setting = 0).")
+    exclude_signatures: Literal["none", "ot"] | None = Field(default="ot", description="Excluded signatures.")
+    packet_log_queue_depth: int | None = Field(ge=128, le=4096, default=128, description="Packet/pcap log queue depth per IPS engine.")
+    ngfw_max_scan_range: int | None = Field(ge=0, le=4294967295, default=4096, description="NGFW policy-mode app detection threshold.")
+    av_mem_limit: int | None = Field(ge=10, le=50, default=0, description="Maximum percentage of system memory allowed for use on AV scanning (10 - 50, default = zero). To disable set to zero. When disabled, there is no limit on the AV memory usage.")
+    machine_learning_detection: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable machine learning detection.")
+    tls_active_probe: list[GlobalTlsActiveProbe] | None = Field(default=None, description="TLS active probe configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -125,7 +158,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ips.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tls_active_probe", [])
@@ -171,7 +204,7 @@ class GlobalModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_tls_active_probe_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -194,5 +227,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.353967Z
+# Generated: 2026-01-14T22:43:40.347891Z
 # ============================================================================

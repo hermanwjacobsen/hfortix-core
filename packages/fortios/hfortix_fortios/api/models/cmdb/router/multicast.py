@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -53,7 +53,7 @@ class MulticastPimSmGlobal(BaseModel):
     ssm_range: str | None = Field(max_length=35, default="", description="Groups allowed to source specific multicast.")  # datasource: ['router.access-list.name']
     register_rate_limit: int | None = Field(ge=0, le=65535, default=0, description="Limit of packets/sec per source registered through this RP (0 - 65535, default = 0 which means unlimited).")
     pim_use_sdwan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.")
-    rp_address: list[RpAddress] = Field(default=None, description="Statically configure RP addresses.")
+    rp_address: list[dict[str, Any]] | None = Field(default=None, description="Statically configure RP addresses.")
 
 
 class MulticastPimSmGlobalVrf(BaseModel):
@@ -74,7 +74,7 @@ class MulticastPimSmGlobalVrf(BaseModel):
     bsr_hash: int | None = Field(ge=0, le=32, default=10, description="BSR hash length (0 - 32, default = 10).")
     bsr_allow_quick_refresh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable accept BSR quick refresh packets from neighbors.")
     cisco_crp_prefix: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable making candidate RP compatible with old Cisco IOS.")
-    rp_address: list[RpAddress] = Field(default=None, description="Statically configure RP addresses.")
+    rp_address: list[dict[str, Any]] | None = Field(default=None, description="Statically configure RP addresses.")
 
 
 class MulticastInterface(BaseModel):
@@ -108,8 +108,8 @@ class MulticastInterface(BaseModel):
     static_group: str | None = Field(max_length=35, default="", description="Statically set multicast groups to forward out.")  # datasource: ['router.multicast-flow.name']
     rpf_nbr_fail_back: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fail back for RPF neighbor query.")
     rpf_nbr_fail_back_filter: str | None = Field(max_length=35, default="", description="Filter for fail back RPF neighbors.")  # datasource: ['router.access-list.name']
-    join_group: list[JoinGroup] = Field(default=None, description="Join multicast groups.")
-    igmp: list[Igmp] = Field(default=None, description="IGMP configuration options.")
+    join_group: list[dict[str, Any]] | None = Field(default=None, description="Join multicast groups.")
+    igmp: list[dict[str, Any]] | None = Field(default=None, description="IGMP configuration options.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -127,7 +127,14 @@ class MulticastModel(BaseModel):
 
     Configure router multicast.
 
-    Validation Rules:        - route_threshold: min=1 max=2147483647 pattern=        - route_limit: min=1 max=2147483647 pattern=        - multicast_routing: pattern=        - pim_sm_global: pattern=        - pim_sm_global_vrf: pattern=        - interface: pattern=    """
+    Validation Rules:
+        - route_threshold: min=1 max=2147483647 pattern=
+        - route_limit: min=1 max=2147483647 pattern=
+        - multicast_routing: pattern=
+        - pim_sm_global: pattern=
+        - pim_sm_global_vrf: pattern=
+        - interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -139,7 +146,13 @@ class MulticastModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    route_threshold: int | None = Field(ge=1, le=2147483647, default="", description="Generate warnings when the number of multicast routes exceeds this number, must not be greater than route-limit.")    route_limit: int | None = Field(ge=1, le=2147483647, default=2147483647, description="Maximum number of multicast routes.")    multicast_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP multicast routing.")    pim_sm_global: list[MulticastPimSmGlobal] = Field(default=None, description="PIM sparse-mode global settings.")    pim_sm_global_vrf: list[MulticastPimSmGlobalVrf] = Field(default=None, description="per-VRF PIM sparse-mode global settings.")    interface: list[MulticastInterface] = Field(default=None, description="PIM interfaces.")    # ========================================================================
+    route_threshold: int | None = Field(ge=1, le=2147483647, default=None, description="Generate warnings when the number of multicast routes exceeds this number, must not be greater than route-limit.")
+    route_limit: int | None = Field(ge=1, le=2147483647, default=2147483647, description="Maximum number of multicast routes.")
+    multicast_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP multicast routing.")
+    pim_sm_global: list[MulticastPimSmGlobal] | None = Field(default=None, description="PIM sparse-mode global settings.")
+    pim_sm_global_vrf: list[MulticastPimSmGlobalVrf] | None = Field(default=None, description="per-VRF PIM sparse-mode global settings.")
+    interface: list[MulticastInterface] | None = Field(default=None, description="PIM interfaces.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -203,7 +216,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "pim_sm_global", [])
@@ -261,7 +274,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "pim_sm_global_vrf", [])
@@ -319,7 +332,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -365,10 +378,12 @@ class MulticastModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_pim_sm_global_references(client)
-        all_errors.extend(errors)        errors = await self.validate_pim_sm_global_vrf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_pim_sm_global_vrf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -390,5 +405,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.193685Z
+# Generated: 2026-01-14T22:43:40.147499Z
 # ============================================================================

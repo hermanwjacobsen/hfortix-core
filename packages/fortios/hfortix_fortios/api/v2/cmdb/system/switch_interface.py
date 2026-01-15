@@ -254,7 +254,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         span_dest_port: str | None = None,
         span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["switch", "hub"] | None = None,
+        type_: Literal["switch", "hub"] | None = None,
         intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
         span: Literal["disable", "enable"] | None = None,
@@ -286,7 +286,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
                   - Single string: "value" → [{'interface-name': 'value'}]
                   - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
                   - List of dicts: [{'interface-name': 'value'}] (recommended)
-            type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
+            type_: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
             span: Enable/disable port spanning. Port spanning echoes traffic received by the software switch to the span destination port.
@@ -346,7 +346,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
             member=member,
-            type=type,
+            type_=type_,
             intra_switch_policy=intra_switch_policy,
             mac_ttl=mac_ttl,
             span=span,
@@ -385,7 +385,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         span_dest_port: str | None = None,
         span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["switch", "hub"] | None = None,
+        type_: Literal["switch", "hub"] | None = None,
         intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
         span: Literal["disable", "enable"] | None = None,
@@ -417,7 +417,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
                   - Single string: "value" → [{'interface-name': 'value'}]
                   - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
                   - List of dicts: [{'interface-name': 'value'}] (recommended)
-            type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
+            type_: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
             span: Enable/disable port spanning. Port spanning echoes traffic received by the software switch to the span destination port.
@@ -479,7 +479,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
             member=member,
-            type=type,
+            type_=type_,
             intra_switch_policy=intra_switch_policy,
             mac_ttl=mac_ttl,
             span=span,
@@ -618,7 +618,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         span_dest_port: str | None = None,
         span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
         member: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["switch", "hub"] | None = None,
+        type_: Literal["switch", "hub"] | None = None,
         intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
         span: Literal["disable", "enable"] | None = None,
@@ -640,7 +640,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             span_dest_port: Field span-dest-port
             span_source_port: Field span-source-port
             member: Field member
-            type: Field type
+            type_: Field type
             intra_switch_policy: Field intra-switch-policy
             mac_ttl: Field mac-ttl
             span: Field span
@@ -692,7 +692,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
             member=member,
-            type=type,
+            type_=type_,
             intra_switch_policy=intra_switch_policy,
             mac_ttl=mac_ttl,
             span=span,

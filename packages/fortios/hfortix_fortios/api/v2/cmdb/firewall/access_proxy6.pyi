@@ -349,6 +349,10 @@ class AccessProxy6:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -369,6 +373,7 @@ class AccessProxy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxy6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -386,6 +391,7 @@ class AccessProxy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxy6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -402,6 +408,7 @@ class AccessProxy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AccessProxy6Response]: ...
     
     # ================================================================
@@ -444,7 +451,7 @@ class AccessProxy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
     
@@ -463,7 +470,7 @@ class AccessProxy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AccessProxy6Object]: ...
     
@@ -563,23 +570,6 @@ class AccessProxy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AccessProxy6Object | list[AccessProxy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -606,6 +596,7 @@ class AccessProxy6:
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
@@ -675,28 +666,7 @@ class AccessProxy6:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AccessProxy6Payload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        log_blocked_traffic: Literal["enable", "disable"] | None = ...,
-        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -720,6 +690,7 @@ class AccessProxy6:
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
@@ -789,28 +760,7 @@ class AccessProxy6:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AccessProxy6Payload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        log_blocked_traffic: Literal["enable", "disable"] | None = ...,
-        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -821,6 +771,7 @@ class AccessProxy6:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
@@ -851,14 +802,7 @@ class AccessProxy6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -900,8 +844,6 @@ class AccessProxy6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -929,6 +871,10 @@ class AccessProxy6DictMode:
     By default returns AccessProxy6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return AccessProxy6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1094,10 +1040,12 @@ class AccessProxy6DictMode:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AccessProxy6Payload | None = ...,
@@ -1185,10 +1133,12 @@ class AccessProxy6DictMode:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AccessProxy6Payload | None = ...,
@@ -1237,10 +1187,12 @@ class AccessProxy6DictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1286,8 +1238,6 @@ class AccessProxy6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1311,6 +1261,10 @@ class AccessProxy6ObjectMode:
     By default returns AccessProxy6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AccessProxy6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1500,10 +1454,12 @@ class AccessProxy6ObjectMode:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AccessProxy6Payload | None = ...,
@@ -1615,10 +1571,12 @@ class AccessProxy6ObjectMode:
         api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
         api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AccessProxy6Payload | None = ...,
@@ -1678,10 +1636,12 @@ class AccessProxy6ObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxy6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1727,8 +1687,6 @@ class AccessProxy6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -220,7 +220,6 @@ class FabricVpnObject:
     health_checks: list[dict[str, Any]]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -242,6 +241,10 @@ class FabricVpn:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -262,6 +265,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FabricVpnResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -279,6 +283,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FabricVpnResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -295,6 +300,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FabricVpnResponse: ...
     
     # ================================================================
@@ -337,7 +343,7 @@ class FabricVpn:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FabricVpnObject: ...
     
@@ -356,7 +362,7 @@ class FabricVpn:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FabricVpnObject: ...
     
@@ -456,23 +462,6 @@ class FabricVpn:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FabricVpnObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -500,6 +489,7 @@ class FabricVpn:
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FabricVpnObject: ...
@@ -572,29 +562,7 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -637,8 +605,6 @@ class FabricVpn:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -666,6 +632,10 @@ class FabricVpnDictMode:
     By default returns FabricVpnResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FabricVpnObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -835,10 +805,12 @@ class FabricVpnDictMode:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FabricVpnPayload | None = ...,
@@ -900,8 +872,6 @@ class FabricVpnDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -925,6 +895,10 @@ class FabricVpnObjectMode:
     By default returns FabricVpnObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FabricVpnResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1119,10 +1093,12 @@ class FabricVpnObjectMode:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FabricVpnObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FabricVpnPayload | None = ...,
@@ -1184,8 +1160,6 @@ class FabricVpnObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -64,7 +64,7 @@ class SslSshProfileSslexemptItem(TypedDict):
     """
     
     id: int  # ID number. | Default: 0 | Min: 0 | Max: 512
-    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]  # Type of address object (IPv4 or IPv6) or FortiGuar | Default: fortiguard-category
+    type_: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]  # Type of address object (IPv4 or IPv6) or FortiGuar | Default: fortiguard-category
     fortiguard_category: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
     address: str  # IPv4 address object. | MaxLen: 79
     address6: str  # IPv6 address object. | MaxLen: 79
@@ -123,7 +123,7 @@ class SslSshProfileSslexemptObject:
     # ID number. | Default: 0 | Min: 0 | Max: 512
     id: int
     # Type of address object (IPv4 or IPv6) or FortiGuard category | Default: fortiguard-category
-    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]
+    type_: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]
     # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
     fortiguard_category: int
     # IPv4 address object. | MaxLen: 79
@@ -354,6 +354,10 @@ class SslSshProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -374,6 +378,7 @@ class SslSshProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SslSshProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -391,6 +396,7 @@ class SslSshProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SslSshProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -407,6 +413,7 @@ class SslSshProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SslSshProfileResponse]: ...
     
     # ================================================================
@@ -449,7 +456,7 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
@@ -468,7 +475,7 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SslSshProfileObject]: ...
     
@@ -568,23 +575,6 @@ class SslSshProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SslSshProfileObject | list[SslSshProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -627,6 +617,7 @@ class SslSshProfile:
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
@@ -744,44 +735,7 @@ class SslSshProfile:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SslSshProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        ssl: str | None = ...,
-        https: str | None = ...,
-        ftps: str | None = ...,
-        imaps: str | None = ...,
-        pop3s: str | None = ...,
-        smtps: str | None = ...,
-        ssh: str | None = ...,
-        dot: str | None = ...,
-        allowlist: Literal["enable", "disable"] | None = ...,
-        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
-        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
-        use_ssl_server: Literal["disable", "enable"] | None = ...,
-        caname: str | None = ...,
-        untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
-        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
-        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
-        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
-        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
-        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
-        rpc_over_https: Literal["enable", "disable"] | None = ...,
-        mapi_over_https: Literal["enable", "disable"] | None = ...,
-        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -821,6 +775,7 @@ class SslSshProfile:
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
@@ -938,44 +893,7 @@ class SslSshProfile:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SslSshProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        ssl: str | None = ...,
-        https: str | None = ...,
-        ftps: str | None = ...,
-        imaps: str | None = ...,
-        pop3s: str | None = ...,
-        smtps: str | None = ...,
-        ssh: str | None = ...,
-        dot: str | None = ...,
-        allowlist: Literal["enable", "disable"] | None = ...,
-        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
-        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
-        use_ssl_server: Literal["disable", "enable"] | None = ...,
-        caname: str | None = ...,
-        untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
-        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
-        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
-        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
-        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
-        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
-        rpc_over_https: Literal["enable", "disable"] | None = ...,
-        mapi_over_https: Literal["enable", "disable"] | None = ...,
-        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -986,6 +904,7 @@ class SslSshProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
@@ -1016,14 +935,7 @@ class SslSshProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1081,8 +993,6 @@ class SslSshProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1110,6 +1020,10 @@ class SslSshProfileDictMode:
     By default returns SslSshProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SslSshProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1323,10 +1237,12 @@ class SslSshProfileDictMode:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SslSshProfilePayload | None = ...,
@@ -1478,10 +1394,12 @@ class SslSshProfileDictMode:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SslSshProfilePayload | None = ...,
@@ -1546,10 +1464,12 @@ class SslSshProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1611,8 +1531,6 @@ class SslSshProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1636,6 +1554,10 @@ class SslSshProfileObjectMode:
     By default returns SslSshProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SslSshProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1889,10 +1811,12 @@ class SslSshProfileObjectMode:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SslSshProfilePayload | None = ...,
@@ -2084,10 +2008,12 @@ class SslSshProfileObjectMode:
         mapi_over_https: Literal["enable", "disable"] | None = ...,
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SslSshProfilePayload | None = ...,
@@ -2163,10 +2089,12 @@ class SslSshProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2228,8 +2156,6 @@ class SslSshProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -35,7 +35,7 @@ class HsProfileOsuProvider(BaseModel):
 # ============================================================================
 
 
-class HsProfileAccess_network_typeEnum(str, Enum):
+class HsProfileAccessNetworkTypeEnum(str, Enum):
     """Allowed values for access_network_type field."""
     PRIVATE_NETWORK = "private-network"
     PRIVATE_NETWORK_WITH_GUEST_ACCESS = "private-network-with-guest-access"
@@ -47,7 +47,7 @@ class HsProfileAccess_network_typeEnum(str, Enum):
     WILDCARD = "wildcard"
 
 
-class HsProfileVenue_groupEnum(str, Enum):
+class HsProfileVenueGroupEnum(str, Enum):
     """Allowed values for venue_group field."""
     UNSPECIFIED = "unspecified"
     ASSEMBLY = "assembly"
@@ -63,7 +63,7 @@ class HsProfileVenue_groupEnum(str, Enum):
     OUTDOOR = "outdoor"
 
 
-class HsProfileVenue_typeEnum(str, Enum):
+class HsProfileVenueTypeEnum(str, Enum):
     """Allowed values for venue_type field."""
     UNSPECIFIED = "unspecified"
     ARENA = "arena"
@@ -133,7 +133,51 @@ class HsProfileModel(BaseModel):
 
     Configure hotspot profile.
 
-    Validation Rules:        - name: max_length=35 pattern=        - release: min=1 max=3 pattern=        - access_network_type: pattern=        - access_network_internet: pattern=        - access_network_asra: pattern=        - access_network_esr: pattern=        - access_network_uesa: pattern=        - venue_group: pattern=        - venue_type: pattern=        - hessid: pattern=        - proxy_arp: pattern=        - l2tif: pattern=        - pame_bi: pattern=        - anqp_domain_id: min=0 max=65535 pattern=        - domain_name: max_length=255 pattern=        - osu_ssid: max_length=255 pattern=        - gas_comeback_delay: min=100 max=10000 pattern=        - gas_fragmentation_limit: min=512 max=4096 pattern=        - dgaf: pattern=        - deauth_request_timeout: min=30 max=120 pattern=        - wnm_sleep_mode: pattern=        - bss_transition: pattern=        - venue_name: max_length=35 pattern=        - venue_url: max_length=35 pattern=        - roaming_consortium: max_length=35 pattern=        - nai_realm: max_length=35 pattern=        - oper_friendly_name: max_length=35 pattern=        - oper_icon: max_length=35 pattern=        - advice_of_charge: max_length=35 pattern=        - osu_provider_nai: max_length=35 pattern=        - terms_and_conditions: max_length=35 pattern=        - osu_provider: pattern=        - wan_metrics: max_length=35 pattern=        - network_auth: max_length=35 pattern=        - x3gpp_plmn: max_length=35 pattern=        - conn_cap: max_length=35 pattern=        - qos_map: max_length=35 pattern=        - ip_addr_type: max_length=35 pattern=        - wba_open_roaming: pattern=        - wba_financial_clearing_provider: max_length=127 pattern=        - wba_data_clearing_provider: max_length=127 pattern=        - wba_charging_currency: max_length=3 pattern=        - wba_charging_rate: min=0 max=4294967295 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - release: min=1 max=3 pattern=
+        - access_network_type: pattern=
+        - access_network_internet: pattern=
+        - access_network_asra: pattern=
+        - access_network_esr: pattern=
+        - access_network_uesa: pattern=
+        - venue_group: pattern=
+        - venue_type: pattern=
+        - hessid: pattern=
+        - proxy_arp: pattern=
+        - l2tif: pattern=
+        - pame_bi: pattern=
+        - anqp_domain_id: min=0 max=65535 pattern=
+        - domain_name: max_length=255 pattern=
+        - osu_ssid: max_length=255 pattern=
+        - gas_comeback_delay: min=100 max=10000 pattern=
+        - gas_fragmentation_limit: min=512 max=4096 pattern=
+        - dgaf: pattern=
+        - deauth_request_timeout: min=30 max=120 pattern=
+        - wnm_sleep_mode: pattern=
+        - bss_transition: pattern=
+        - venue_name: max_length=35 pattern=
+        - venue_url: max_length=35 pattern=
+        - roaming_consortium: max_length=35 pattern=
+        - nai_realm: max_length=35 pattern=
+        - oper_friendly_name: max_length=35 pattern=
+        - oper_icon: max_length=35 pattern=
+        - advice_of_charge: max_length=35 pattern=
+        - osu_provider_nai: max_length=35 pattern=
+        - terms_and_conditions: max_length=35 pattern=
+        - osu_provider: pattern=
+        - wan_metrics: max_length=35 pattern=
+        - network_auth: max_length=35 pattern=
+        - x3gpp_plmn: max_length=35 pattern=
+        - conn_cap: max_length=35 pattern=
+        - qos_map: max_length=35 pattern=
+        - ip_addr_type: max_length=35 pattern=
+        - wba_open_roaming: pattern=
+        - wba_financial_clearing_provider: max_length=127 pattern=
+        - wba_data_clearing_provider: max_length=127 pattern=
+        - wba_charging_currency: max_length=3 pattern=
+        - wba_charging_rate: min=0 max=4294967295 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -145,7 +189,50 @@ class HsProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Hotspot profile name.")    release: int | None = Field(ge=1, le=3, default=2, description="Hotspot 2.0 Release number (1, 2, 3, default = 2).")    access_network_type: HsProfileAccessNetworkTypeEnum | None = Field(default="private-network", description="Access network type.")    access_network_internet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable connectivity to the Internet.")    access_network_asra: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable additional step required for access (ASRA).")    access_network_esr: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable emergency services reachable (ESR).")    access_network_uesa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unauthenticated emergency service accessible (UESA).")    venue_group: HsProfileVenueGroupEnum | None = Field(default="unspecified", description="Venue group.")    venue_type: HsProfileVenueTypeEnum | None = Field(default="unspecified", description="Venue type.")    hessid: str | None = Field(default="00:00:00:00:00:00", description="Homogeneous extended service set identifier (HESSID).")    proxy_arp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Proxy ARP.")    l2tif: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Layer 2 traffic inspection and filtering.")    pame_bi: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable Pre-Association Message Exchange BSSID Independent (PAME-BI).")    anqp_domain_id: int | None = Field(ge=0, le=65535, default=0, description="ANQP Domain ID (0-65535).")    domain_name: str | None = Field(max_length=255, default="", description="Domain name.")    osu_ssid: str | None = Field(max_length=255, default="", description="Online sign up (OSU) SSID.")    gas_comeback_delay: int | None = Field(ge=100, le=10000, default=500, description="GAS comeback delay (0 or 100 - 10000 milliseconds, default = 500).")    gas_fragmentation_limit: int | None = Field(ge=512, le=4096, default=1024, description="GAS fragmentation limit (512 - 4096, default = 1024).")    dgaf: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable downstream group-addressed forwarding (DGAF).")    deauth_request_timeout: int | None = Field(ge=30, le=120, default=60, description="Deauthentication request timeout (in seconds).")    wnm_sleep_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable wireless network management (WNM) sleep mode.")    bss_transition: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable basic service set (BSS) transition Support.")    venue_name: str | None = Field(max_length=35, default="", description="Venue name.")  # datasource: ['wireless-controller.hotspot20.anqp-venue-name.name']    venue_url: str | None = Field(max_length=35, default="", description="Venue name.")  # datasource: ['wireless-controller.hotspot20.anqp-venue-url.name']    roaming_consortium: str | None = Field(max_length=35, default="", description="Roaming consortium list name.")  # datasource: ['wireless-controller.hotspot20.anqp-roaming-consortium.name']    nai_realm: str | None = Field(max_length=35, default="", description="NAI realm list name.")  # datasource: ['wireless-controller.hotspot20.anqp-nai-realm.name']    oper_friendly_name: str | None = Field(max_length=35, default="", description="Operator friendly name.")  # datasource: ['wireless-controller.hotspot20.h2qp-operator-name.name']    oper_icon: str | None = Field(max_length=35, default="", description="Operator icon.")  # datasource: ['wireless-controller.hotspot20.icon.name']    advice_of_charge: str | None = Field(max_length=35, default="", description="Advice of charge.")  # datasource: ['wireless-controller.hotspot20.h2qp-advice-of-charge.name']    osu_provider_nai: str | None = Field(max_length=35, default="", description="OSU Provider NAI.")  # datasource: ['wireless-controller.hotspot20.h2qp-osu-provider-nai.name']    terms_and_conditions: str | None = Field(max_length=35, default="", description="Terms and conditions.")  # datasource: ['wireless-controller.hotspot20.h2qp-terms-and-conditions.name']    osu_provider: list[HsProfileOsuProvider] = Field(default=None, description="Manually selected list of OSU provider(s).")    wan_metrics: str | None = Field(max_length=35, default="", description="WAN metric name.")  # datasource: ['wireless-controller.hotspot20.h2qp-wan-metric.name']    network_auth: str | None = Field(max_length=35, default="", description="Network authentication name.")  # datasource: ['wireless-controller.hotspot20.anqp-network-auth-type.name']    x3gpp_plmn: str | None = Field(max_length=35, default="", description="3GPP PLMN name.")  # datasource: ['wireless-controller.hotspot20.anqp-3gpp-cellular.name']    conn_cap: str | None = Field(max_length=35, default="", description="Connection capability name.")  # datasource: ['wireless-controller.hotspot20.h2qp-conn-capability.name']    qos_map: str | None = Field(max_length=35, default="", description="QoS MAP set ID.")  # datasource: ['wireless-controller.hotspot20.qos-map.name']    ip_addr_type: str | None = Field(max_length=35, default="", description="IP address type name.")  # datasource: ['wireless-controller.hotspot20.anqp-ip-address-type.name']    wba_open_roaming: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable WBA open roaming support.")    wba_financial_clearing_provider: str | None = Field(max_length=127, default="", description="WBA ID of financial clearing provider.")    wba_data_clearing_provider: str | None = Field(max_length=127, default="", description="WBA ID of data clearing provider.")    wba_charging_currency: str | None = Field(max_length=3, default="", description="Three letter currency code.")    wba_charging_rate: int | None = Field(ge=0, le=4294967295, default=0, description="Number of currency units per kilobyte.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Hotspot profile name.")
+    release: int | None = Field(ge=1, le=3, default=2, description="Hotspot 2.0 Release number (1, 2, 3, default = 2).")
+    access_network_type: str | HsProfileAccessNetworkTypeEnum | None = Field(default="private-network", description="Access network type.")
+    access_network_internet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable connectivity to the Internet.")
+    access_network_asra: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable additional step required for access (ASRA).")
+    access_network_esr: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable emergency services reachable (ESR).")
+    access_network_uesa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unauthenticated emergency service accessible (UESA).")
+    venue_group: str | HsProfileVenueGroupEnum | None = Field(default="unspecified", description="Venue group.")
+    venue_type: str | HsProfileVenueTypeEnum | None = Field(default="unspecified", description="Venue type.")
+    hessid: str | None = Field(default="00:00:00:00:00:00", description="Homogeneous extended service set identifier (HESSID).")
+    proxy_arp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Proxy ARP.")
+    l2tif: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Layer 2 traffic inspection and filtering.")
+    pame_bi: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable Pre-Association Message Exchange BSSID Independent (PAME-BI).")
+    anqp_domain_id: int | None = Field(ge=0, le=65535, default=0, description="ANQP Domain ID (0-65535).")
+    domain_name: str | None = Field(max_length=255, default="", description="Domain name.")
+    osu_ssid: str | None = Field(max_length=255, default="", description="Online sign up (OSU) SSID.")
+    gas_comeback_delay: int | None = Field(ge=100, le=10000, default=500, description="GAS comeback delay (0 or 100 - 10000 milliseconds, default = 500).")
+    gas_fragmentation_limit: int | None = Field(ge=512, le=4096, default=1024, description="GAS fragmentation limit (512 - 4096, default = 1024).")
+    dgaf: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable downstream group-addressed forwarding (DGAF).")
+    deauth_request_timeout: int | None = Field(ge=30, le=120, default=60, description="Deauthentication request timeout (in seconds).")
+    wnm_sleep_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable wireless network management (WNM) sleep mode.")
+    bss_transition: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable basic service set (BSS) transition Support.")
+    venue_name: str | None = Field(max_length=35, default="", description="Venue name.")  # datasource: ['wireless-controller.hotspot20.anqp-venue-name.name']
+    venue_url: str | None = Field(max_length=35, default="", description="Venue name.")  # datasource: ['wireless-controller.hotspot20.anqp-venue-url.name']
+    roaming_consortium: str | None = Field(max_length=35, default="", description="Roaming consortium list name.")  # datasource: ['wireless-controller.hotspot20.anqp-roaming-consortium.name']
+    nai_realm: str | None = Field(max_length=35, default="", description="NAI realm list name.")  # datasource: ['wireless-controller.hotspot20.anqp-nai-realm.name']
+    oper_friendly_name: str | None = Field(max_length=35, default="", description="Operator friendly name.")  # datasource: ['wireless-controller.hotspot20.h2qp-operator-name.name']
+    oper_icon: str | None = Field(max_length=35, default="", description="Operator icon.")  # datasource: ['wireless-controller.hotspot20.icon.name']
+    advice_of_charge: str | None = Field(max_length=35, default="", description="Advice of charge.")  # datasource: ['wireless-controller.hotspot20.h2qp-advice-of-charge.name']
+    osu_provider_nai: str | None = Field(max_length=35, default="", description="OSU Provider NAI.")  # datasource: ['wireless-controller.hotspot20.h2qp-osu-provider-nai.name']
+    terms_and_conditions: str | None = Field(max_length=35, default="", description="Terms and conditions.")  # datasource: ['wireless-controller.hotspot20.h2qp-terms-and-conditions.name']
+    osu_provider: list[HsProfileOsuProvider] | None = Field(default=None, description="Manually selected list of OSU provider(s).")
+    wan_metrics: str | None = Field(max_length=35, default="", description="WAN metric name.")  # datasource: ['wireless-controller.hotspot20.h2qp-wan-metric.name']
+    network_auth: str | None = Field(max_length=35, default="", description="Network authentication name.")  # datasource: ['wireless-controller.hotspot20.anqp-network-auth-type.name']
+    x3gpp_plmn: str | None = Field(max_length=35, default="", description="3GPP PLMN name.")  # datasource: ['wireless-controller.hotspot20.anqp-3gpp-cellular.name']
+    conn_cap: str | None = Field(max_length=35, default="", description="Connection capability name.")  # datasource: ['wireless-controller.hotspot20.h2qp-conn-capability.name']
+    qos_map: str | None = Field(max_length=35, default="", description="QoS MAP set ID.")  # datasource: ['wireless-controller.hotspot20.qos-map.name']
+    ip_addr_type: str | None = Field(max_length=35, default="", description="IP address type name.")  # datasource: ['wireless-controller.hotspot20.anqp-ip-address-type.name']
+    wba_open_roaming: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable WBA open roaming support.")
+    wba_financial_clearing_provider: str | None = Field(max_length=127, default="", description="WBA ID of financial clearing provider.")
+    wba_data_clearing_provider: str | None = Field(max_length=127, default="", description="WBA ID of data clearing provider.")
+    wba_charging_currency: str | None = Field(max_length=3, default="", description="Three letter currency code.")
+    wba_charging_rate: int | None = Field(ge=0, le=4294967295, default=0, description="Number of currency units per kilobyte.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -434,7 +521,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "venue_name", None)
@@ -483,7 +570,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "venue_url", None)
@@ -532,7 +619,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "roaming_consortium", None)
@@ -581,7 +668,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "nai_realm", None)
@@ -630,7 +717,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "oper_friendly_name", None)
@@ -679,7 +766,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "oper_icon", None)
@@ -728,7 +815,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "advice_of_charge", None)
@@ -777,7 +864,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "osu_provider_nai", None)
@@ -826,7 +913,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "terms_and_conditions", None)
@@ -875,7 +962,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "osu_provider", [])
@@ -933,7 +1020,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "wan_metrics", None)
@@ -982,7 +1069,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "network_auth", None)
@@ -1031,7 +1118,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "x3gpp_plmn", None)
@@ -1080,7 +1167,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "conn_cap", None)
@@ -1129,7 +1216,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "qos_map", None)
@@ -1178,7 +1265,7 @@ class HsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.hs_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ip_addr_type", None)
@@ -1215,23 +1302,38 @@ class HsProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_venue_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_venue_url_references(client)
-        all_errors.extend(errors)        errors = await self.validate_roaming_consortium_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nai_realm_references(client)
-        all_errors.extend(errors)        errors = await self.validate_oper_friendly_name_references(client)
-        all_errors.extend(errors)        errors = await self.validate_oper_icon_references(client)
-        all_errors.extend(errors)        errors = await self.validate_advice_of_charge_references(client)
-        all_errors.extend(errors)        errors = await self.validate_osu_provider_nai_references(client)
-        all_errors.extend(errors)        errors = await self.validate_terms_and_conditions_references(client)
-        all_errors.extend(errors)        errors = await self.validate_osu_provider_references(client)
-        all_errors.extend(errors)        errors = await self.validate_wan_metrics_references(client)
-        all_errors.extend(errors)        errors = await self.validate_network_auth_references(client)
-        all_errors.extend(errors)        errors = await self.validate_x3gpp_plmn_references(client)
-        all_errors.extend(errors)        errors = await self.validate_conn_cap_references(client)
-        all_errors.extend(errors)        errors = await self.validate_qos_map_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ip_addr_type_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_venue_url_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_roaming_consortium_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nai_realm_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_oper_friendly_name_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_oper_icon_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_advice_of_charge_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_osu_provider_nai_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_terms_and_conditions_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_osu_provider_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_wan_metrics_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_network_auth_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_x3gpp_plmn_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_conn_cap_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_qos_map_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ip_addr_type_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -1253,5 +1355,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.915558Z
+# Generated: 2026-01-14T22:43:34.840410Z
 # ============================================================================

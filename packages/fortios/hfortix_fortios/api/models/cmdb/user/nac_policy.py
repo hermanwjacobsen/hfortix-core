@@ -69,7 +69,34 @@ class NacPolicyModel(BaseModel):
 
     Configure NAC policy matching pattern to identify matching NAC devices.
 
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - category: pattern=        - status: pattern=        - match_type: pattern=        - match_period: min=0 max=120 pattern=        - match_remove: pattern=        - mac: max_length=17 pattern=        - hw_vendor: max_length=15 pattern=        - type: max_length=15 pattern=        - family: max_length=31 pattern=        - os: max_length=31 pattern=        - hw_version: max_length=15 pattern=        - sw_version: max_length=15 pattern=        - host: max_length=64 pattern=        - user: max_length=64 pattern=        - src: max_length=15 pattern=        - user_group: max_length=35 pattern=        - ems_tag: max_length=79 pattern=        - fortivoice_tag: max_length=79 pattern=        - severity: pattern=        - switch_fortilink: max_length=15 pattern=        - switch_group: pattern=        - switch_mac_policy: max_length=63 pattern=        - firewall_address: max_length=79 pattern=        - ssid_policy: max_length=35 pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - description: max_length=63 pattern=
+        - category: pattern=
+        - status: pattern=
+        - match_type: pattern=
+        - match_period: min=0 max=120 pattern=
+        - match_remove: pattern=
+        - mac: max_length=17 pattern=
+        - hw_vendor: max_length=15 pattern=
+        - type_: max_length=15 pattern=
+        - family: max_length=31 pattern=
+        - os: max_length=31 pattern=
+        - hw_version: max_length=15 pattern=
+        - sw_version: max_length=15 pattern=
+        - host: max_length=64 pattern=
+        - user: max_length=64 pattern=
+        - src: max_length=15 pattern=
+        - user_group: max_length=35 pattern=
+        - ems_tag: max_length=79 pattern=
+        - fortivoice_tag: max_length=79 pattern=
+        - severity: pattern=
+        - switch_fortilink: max_length=15 pattern=
+        - switch_group: pattern=
+        - switch_mac_policy: max_length=63 pattern=
+        - firewall_address: max_length=79 pattern=
+        - ssid_policy: max_length=35 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -81,7 +108,33 @@ class NacPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="NAC policy name.")    description: str | None = Field(max_length=63, default="", description="Description for the NAC policy matching pattern.")    category: NacPolicyCategoryEnum | None = Field(default="device", description="Category of NAC policy.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NAC policy.")    match_type: Literal["dynamic", "override"] | None = Field(default="dynamic", description="Match and retain the devices based on the type.")    match_period: int | None = Field(ge=0, le=120, default=0, description="Number of days the matched devices will be retained (0 - always retain)")    match_remove: Literal["default", "link-down"] | None = Field(default="default", description="Options to remove the matched override devices.")    mac: str | None = Field(max_length=17, default="", description="NAC policy matching MAC address.")    hw_vendor: str | None = Field(max_length=15, default="", description="NAC policy matching hardware vendor.")    type: str | None = Field(max_length=15, default="", description="NAC policy matching type.")    family: str | None = Field(max_length=31, default="", description="NAC policy matching family.")    os: str | None = Field(max_length=31, default="", description="NAC policy matching operating system.")    hw_version: str | None = Field(max_length=15, default="", description="NAC policy matching hardware version.")    sw_version: str | None = Field(max_length=15, default="", description="NAC policy matching software version.")    host: str | None = Field(max_length=64, default="", description="NAC policy matching host.")    user: str | None = Field(max_length=64, default="", description="NAC policy matching user.")    src: str | None = Field(max_length=15, default="", description="NAC policy matching source.")    user_group: str | None = Field(max_length=35, default="", description="NAC policy matching user group.")  # datasource: ['user.group.name']    ems_tag: str | None = Field(max_length=79, default="", description="NAC policy matching EMS tag.")  # datasource: ['firewall.address.name']    fortivoice_tag: str | None = Field(max_length=79, default="", description="NAC policy matching FortiVoice tag.")  # datasource: ['firewall.address.name']    severity: list[NacPolicySeverity] = Field(default=None, description="NAC policy matching devices vulnerability severity lists.")    switch_fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface for which this NAC policy belongs to.")  # datasource: ['system.interface.name']    switch_group: list[NacPolicySwitchGroup] = Field(default=None, description="List of managed FortiSwitch groups on which NAC policy can be applied.")    switch_mac_policy: str | None = Field(max_length=63, default="", description="Switch MAC policy action to be applied on the matched NAC policy.")  # datasource: ['switch-controller.mac-policy.name']    firewall_address: str | None = Field(max_length=79, default="", description="Dynamic firewall address to associate MAC which match this policy.")  # datasource: ['firewall.address.name']    ssid_policy: str | None = Field(max_length=35, default="", description="SSID policy to be applied on the matched NAC policy.")  # datasource: ['wireless-controller.ssid-policy.name']    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="NAC policy name.")
+    description: str | None = Field(max_length=63, default="", description="Description for the NAC policy matching pattern.")
+    category: str | NacPolicyCategoryEnum | None = Field(default="device", description="Category of NAC policy.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NAC policy.")
+    match_type: Literal["dynamic", "override"] | None = Field(default="dynamic", description="Match and retain the devices based on the type.")
+    match_period: int | None = Field(ge=0, le=120, default=0, description="Number of days the matched devices will be retained (0 - always retain)")
+    match_remove: Literal["default", "link-down"] | None = Field(default="default", description="Options to remove the matched override devices.")
+    mac: str | None = Field(max_length=17, default="", description="NAC policy matching MAC address.")
+    hw_vendor: str | None = Field(max_length=15, default="", description="NAC policy matching hardware vendor.")
+    type_: str | None = Field(max_length=15, default="", description="NAC policy matching type.")
+    family: str | None = Field(max_length=31, default="", description="NAC policy matching family.")
+    os: str | None = Field(max_length=31, default="", description="NAC policy matching operating system.")
+    hw_version: str | None = Field(max_length=15, default="", description="NAC policy matching hardware version.")
+    sw_version: str | None = Field(max_length=15, default="", description="NAC policy matching software version.")
+    host: str | None = Field(max_length=64, default="", description="NAC policy matching host.")
+    user: str | None = Field(max_length=64, default="", description="NAC policy matching user.")
+    src: str | None = Field(max_length=15, default="", description="NAC policy matching source.")
+    user_group: str | None = Field(max_length=35, default="", description="NAC policy matching user group.")  # datasource: ['user.group.name']
+    ems_tag: str | None = Field(max_length=79, default="", description="NAC policy matching EMS tag.")  # datasource: ['firewall.address.name']
+    fortivoice_tag: str | None = Field(max_length=79, default="", description="NAC policy matching FortiVoice tag.")  # datasource: ['firewall.address.name']
+    severity: list[NacPolicySeverity] | None = Field(default=None, description="NAC policy matching devices vulnerability severity lists.")
+    switch_fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface for which this NAC policy belongs to.")  # datasource: ['system.interface.name']
+    switch_group: list[NacPolicySwitchGroup] | None = Field(default=None, description="List of managed FortiSwitch groups on which NAC policy can be applied.")
+    switch_mac_policy: str | None = Field(max_length=63, default="", description="Switch MAC policy action to be applied on the matched NAC policy.")  # datasource: ['switch-controller.mac-policy.name']
+    firewall_address: str | None = Field(max_length=79, default="", description="Dynamic firewall address to associate MAC which match this policy.")  # datasource: ['firewall.address.name']
+    ssid_policy: str | None = Field(max_length=35, default="", description="SSID policy to be applied on the matched NAC policy.")  # datasource: ['wireless-controller.ssid-policy.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -250,7 +303,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "user_group", None)
@@ -299,7 +352,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ems_tag", None)
@@ -348,7 +401,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortivoice_tag", None)
@@ -397,7 +450,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_fortilink", None)
@@ -446,7 +499,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "switch_group", [])
@@ -504,7 +557,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "switch_mac_policy", None)
@@ -553,7 +606,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "firewall_address", None)
@@ -602,7 +655,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssid_policy", None)
@@ -639,15 +692,22 @@ class NacPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_user_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ems_tag_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fortivoice_tag_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_fortilink_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_switch_mac_policy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_firewall_address_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssid_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ems_tag_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fortivoice_tag_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_fortilink_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_switch_mac_policy_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_firewall_address_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssid_policy_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -669,5 +729,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.537654Z
+# Generated: 2026-01-14T22:43:38.035239Z
 # ============================================================================

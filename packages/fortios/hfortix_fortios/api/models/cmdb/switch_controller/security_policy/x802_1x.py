@@ -45,7 +45,31 @@ class X8021xModel(BaseModel):
 
     Configure 802.1x MAC Authentication Bypass (MAB) policies.
 
-    Validation Rules:        - name: max_length=31 pattern=        - security_mode: pattern=        - user_group: pattern=        - mac_auth_bypass: pattern=        - auth_order: pattern=        - auth_priority: pattern=        - open_auth: pattern=        - eap_passthru: pattern=        - eap_auto_untagged_vlans: pattern=        - guest_vlan: pattern=        - guest_vlan_id: max_length=15 pattern=        - guest_auth_delay: min=1 max=900 pattern=        - auth_fail_vlan: pattern=        - auth_fail_vlan_id: max_length=15 pattern=        - framevid_apply: pattern=        - radius_timeout_overwrite: pattern=        - policy_type: pattern=        - authserver_timeout_period: min=3 max=15 pattern=        - authserver_timeout_vlan: pattern=        - authserver_timeout_vlanid: max_length=15 pattern=        - authserver_timeout_tagged: pattern=        - authserver_timeout_tagged_vlanid: max_length=15 pattern=        - dacl: pattern=    """
+    Validation Rules:
+        - name: max_length=31 pattern=
+        - security_mode: pattern=
+        - user_group: pattern=
+        - mac_auth_bypass: pattern=
+        - auth_order: pattern=
+        - auth_priority: pattern=
+        - open_auth: pattern=
+        - eap_passthru: pattern=
+        - eap_auto_untagged_vlans: pattern=
+        - guest_vlan: pattern=
+        - guest_vlan_id: max_length=15 pattern=
+        - guest_auth_delay: min=1 max=900 pattern=
+        - auth_fail_vlan: pattern=
+        - auth_fail_vlan_id: max_length=15 pattern=
+        - framevid_apply: pattern=
+        - radius_timeout_overwrite: pattern=
+        - policy_type: pattern=
+        - authserver_timeout_period: min=3 max=15 pattern=
+        - authserver_timeout_vlan: pattern=
+        - authserver_timeout_vlanid: max_length=15 pattern=
+        - authserver_timeout_tagged: pattern=
+        - authserver_timeout_tagged_vlanid: max_length=15 pattern=
+        - dacl: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -57,7 +81,30 @@ class X8021xModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=31, default="", description="Policy name.")    security_mode: Literal["802.1X", "802.1X-mac-based"] | None = Field(default="802.1X", description="Port or MAC based 802.1X security mode.")    user_group: list[X8021xUserGroup] = Field(description="Name of user-group to assign to this MAC Authentication Bypass (MAB) policy.")    mac_auth_bypass: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MAB for this policy.")    auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = Field(default="mab-dot1x", description="Configure authentication order.")    auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = Field(default="legacy", description="Configure authentication priority.")    open_auth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable open authentication for this policy.")    eap_passthru: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable EAP pass-through mode, allowing protocols (such as LLDP) to pass through ports for more flexible authentication.")    eap_auto_untagged_vlans: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable automatic inclusion of untagged VLANs.")    guest_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable the guest VLAN feature to allow limited access to non-802.1X-compliant clients.")    guest_vlan_id: str = Field(max_length=15, default="", description="Guest VLAN name.")  # datasource: ['system.interface.name']    guest_auth_delay: int | None = Field(ge=1, le=900, default=30, description="Guest authentication delay (1 - 900  sec, default = 30).")    auth_fail_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to allow limited access to clients that cannot authenticate.")    auth_fail_vlan_id: str = Field(max_length=15, default="", description="VLAN ID on which authentication failed.")  # datasource: ['system.interface.name']    framevid_apply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable the capability to apply the EAP/MAB frame VLAN to the port native VLAN.")    radius_timeout_overwrite: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to override the global RADIUS session timeout.")    policy_type: Literal["802.1X"] | None = Field(default="802.1X", description="Policy type.")    authserver_timeout_period: int | None = Field(ge=3, le=15, default=3, description="Authentication server timeout period (3 - 15 sec, default = 3).")    authserver_timeout_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the authentication server timeout VLAN to allow limited access when RADIUS is unavailable.")    authserver_timeout_vlanid: str = Field(max_length=15, default="", description="Authentication server timeout VLAN name.")  # datasource: ['system.interface.name']    authserver_timeout_tagged: Literal["disable", "lldp-voice", "static"] | None = Field(default="disable", description="Configure timeout option for the tagged VLAN which allows limited access when the authentication server is unavailable.")    authserver_timeout_tagged_vlanid: str = Field(max_length=15, default="", description="Tagged VLAN name for which the timeout option is applied to (only one VLAN ID).")  # datasource: ['system.interface.name']    dacl: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic access control list on this interface.")    # ========================================================================
+    name: str | None = Field(max_length=31, default="", description="Policy name.")
+    security_mode: Literal["802.1X", "802.1X-mac-based"] | None = Field(default="802.1X", description="Port or MAC based 802.1X security mode.")
+    user_group: list[X8021xUserGroup] | None = Field(description="Name of user-group to assign to this MAC Authentication Bypass (MAB) policy.")
+    mac_auth_bypass: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MAB for this policy.")
+    auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = Field(default="mab-dot1x", description="Configure authentication order.")
+    auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = Field(default="legacy", description="Configure authentication priority.")
+    open_auth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable open authentication for this policy.")
+    eap_passthru: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable EAP pass-through mode, allowing protocols (such as LLDP) to pass through ports for more flexible authentication.")
+    eap_auto_untagged_vlans: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable automatic inclusion of untagged VLANs.")
+    guest_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable the guest VLAN feature to allow limited access to non-802.1X-compliant clients.")
+    guest_vlan_id: str = Field(max_length=15, default="", description="Guest VLAN name.")  # datasource: ['system.interface.name']
+    guest_auth_delay: int | None = Field(ge=1, le=900, default=30, description="Guest authentication delay (1 - 900  sec, default = 30).")
+    auth_fail_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to allow limited access to clients that cannot authenticate.")
+    auth_fail_vlan_id: str = Field(max_length=15, default="", description="VLAN ID on which authentication failed.")  # datasource: ['system.interface.name']
+    framevid_apply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable the capability to apply the EAP/MAB frame VLAN to the port native VLAN.")
+    radius_timeout_overwrite: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to override the global RADIUS session timeout.")
+    policy_type: Literal["802.1X"] | None = Field(default="802.1X", description="Policy type.")
+    authserver_timeout_period: int | None = Field(ge=3, le=15, default=3, description="Authentication server timeout period (3 - 15 sec, default = 3).")
+    authserver_timeout_vlan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the authentication server timeout VLAN to allow limited access when RADIUS is unavailable.")
+    authserver_timeout_vlanid: str = Field(max_length=15, default="", description="Authentication server timeout VLAN name.")  # datasource: ['system.interface.name']
+    authserver_timeout_tagged: Literal["disable", "lldp-voice", "static"] | None = Field(default="disable", description="Configure timeout option for the tagged VLAN which allows limited access when the authentication server is unavailable.")
+    authserver_timeout_tagged_vlanid: str = Field(max_length=15, default="", description="Tagged VLAN name for which the timeout option is applied to (only one VLAN ID).")  # datasource: ['system.interface.name']
+    dacl: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic access control list on this interface.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -181,7 +228,7 @@ class X8021xModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.security_policy.x802_1x.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "user_group", [])
@@ -239,7 +286,7 @@ class X8021xModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.security_policy.x802_1x.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "guest_vlan_id", None)
@@ -288,7 +335,7 @@ class X8021xModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.security_policy.x802_1x.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_fail_vlan_id", None)
@@ -337,7 +384,7 @@ class X8021xModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.security_policy.x802_1x.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "authserver_timeout_vlanid", None)
@@ -386,7 +433,7 @@ class X8021xModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.security_policy.x802_1x.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "authserver_timeout_tagged_vlanid", None)
@@ -423,12 +470,16 @@ class X8021xModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_user_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_guest_vlan_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_fail_vlan_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_authserver_timeout_vlanid_references(client)
-        all_errors.extend(errors)        errors = await self.validate_authserver_timeout_tagged_vlanid_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_guest_vlan_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_fail_vlan_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_authserver_timeout_vlanid_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_authserver_timeout_tagged_vlanid_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -450,5 +501,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.104639Z
+# Generated: 2026-01-14T22:43:36.249432Z
 # ============================================================================

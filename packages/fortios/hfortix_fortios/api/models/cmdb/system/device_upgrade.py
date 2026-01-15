@@ -52,7 +52,7 @@ class DeviceUpgradeStatusEnum(str, Enum):
     FAILED = "failed"
 
 
-class DeviceUpgradeDevice_typeEnum(str, Enum):
+class DeviceUpgradeDeviceTypeEnum(str, Enum):
     """Allowed values for device_type field."""
     FORTIGATE = "fortigate"
     FORTISWITCH = "fortiswitch"
@@ -60,7 +60,7 @@ class DeviceUpgradeDevice_typeEnum(str, Enum):
     FORTIEXTENDER = "fortiextender"
 
 
-class DeviceUpgradeFailure_reasonEnum(str, Enum):
+class DeviceUpgradeFailureReasonEnum(str, Enum):
     """Allowed values for failure_reason field."""
     NONE = "none"
     INTERNAL = "internal"
@@ -93,7 +93,24 @@ class DeviceUpgradeModel(BaseModel):
 
     Independent upgrades for managed devices.
 
-    Validation Rules:        - vdom: max_length=31 pattern=        - status: pattern=        - ha_reboot_controller: max_length=79 pattern=        - next_path_index: min=0 max=10 pattern=        - known_ha_members: pattern=        - initial_version: pattern=        - starter_admin: max_length=64 pattern=        - serial: max_length=79 pattern=        - timing: pattern=        - maximum_minutes: min=5 max=10080 pattern=        - time: pattern=        - setup_time: pattern=        - upgrade_path: pattern=        - device_type: pattern=        - allow_download: pattern=        - failure_reason: pattern=    """
+    Validation Rules:
+        - vdom: max_length=31 pattern=
+        - status: pattern=
+        - ha_reboot_controller: max_length=79 pattern=
+        - next_path_index: min=0 max=10 pattern=
+        - known_ha_members: pattern=
+        - initial_version: pattern=
+        - starter_admin: max_length=64 pattern=
+        - serial: max_length=79 pattern=
+        - timing: pattern=
+        - maximum_minutes: min=5 max=10080 pattern=
+        - time: pattern=
+        - setup_time: pattern=
+        - upgrade_path: pattern=
+        - device_type: pattern=
+        - allow_download: pattern=
+        - failure_reason: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -105,7 +122,23 @@ class DeviceUpgradeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    vdom: str | None = Field(max_length=31, default="", description="Limit upgrade to this virtual domain (VDOM).")  # datasource: ['system.vdom.name']    status: DeviceUpgradeStatusEnum = Field(default="disabled", description="Current status of the upgrade.")    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")    known_ha_members: list[DeviceUpgradeKnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")    serial: str = Field(max_length=79, default="", description="Serial number of the node to include.")    timing: Literal["immediate", "scheduled"] = Field(default="immediate", description="Run immediately or at a scheduled time.")    maximum_minutes: int = Field(ge=5, le=10080, default=15, description="Maximum number of minutes to allow for immediate upgrade preparation.")    time: str = Field(default="", description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")    setup_time: str = Field(default="", description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")    upgrade_path: str = Field(default="", description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")    device_type: DeviceUpgradeDeviceTypeEnum = Field(default="fortigate", description="Fortinet device type.")    allow_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download firmware images.")    failure_reason: DeviceUpgradeFailureReasonEnum | None = Field(default="none", description="Upgrade failure reason.")    # ========================================================================
+    vdom: str | None = Field(max_length=31, default="", description="Limit upgrade to this virtual domain (VDOM).")  # datasource: ['system.vdom.name']
+    status: str | DeviceUpgradeStatusEnum = Field(default="disabled", description="Current status of the upgrade.")
+    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")
+    next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")
+    known_ha_members: list[DeviceUpgradeKnownHaMembers] | None = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")
+    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")
+    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")
+    serial: str = Field(max_length=79, default="", description="Serial number of the node to include.")
+    timing: Literal["immediate", "scheduled"] = Field(default="immediate", description="Run immediately or at a scheduled time.")
+    maximum_minutes: int = Field(ge=5, le=10080, default=15, description="Maximum number of minutes to allow for immediate upgrade preparation.")
+    time: str = Field(default="", description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")
+    setup_time: str = Field(default="", description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")
+    upgrade_path: str = Field(default="", description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")
+    device_type: str | DeviceUpgradeDeviceTypeEnum = Field(default="fortigate", description="Fortinet device type.")
+    allow_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download firmware images.")
+    failure_reason: str | DeviceUpgradeFailureReasonEnum | None = Field(default="none", description="Upgrade failure reason.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -184,7 +217,7 @@ class DeviceUpgradeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.device_upgrade.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -221,7 +254,7 @@ class DeviceUpgradeModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vdom_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -244,5 +277,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.913997Z
+# Generated: 2026-01-14T22:43:39.801675Z
 # ============================================================================

@@ -131,6 +131,10 @@ class ManualkeyInterface:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -151,6 +155,7 @@ class ManualkeyInterface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ManualkeyInterfaceResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -168,6 +173,7 @@ class ManualkeyInterface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ManualkeyInterfaceResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -184,6 +190,7 @@ class ManualkeyInterface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ManualkeyInterfaceResponse]: ...
     
     # ================================================================
@@ -226,7 +233,7 @@ class ManualkeyInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
     
@@ -245,7 +252,7 @@ class ManualkeyInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ManualkeyInterfaceObject]: ...
     
@@ -345,23 +352,6 @@ class ManualkeyInterface:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ManualkeyInterfaceObject | list[ManualkeyInterfaceObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -390,6 +380,7 @@ class ManualkeyInterface:
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
@@ -465,30 +456,7 @@ class ManualkeyInterface:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ManualkeyInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        addr_type: Literal["4", "6"] | None = ...,
-        remote_gw: str | None = ...,
-        remote_gw6: str | None = ...,
-        local_gw: str | None = ...,
-        local_gw6: str | None = ...,
-        auth_alg: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = ...,
-        enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = ...,
-        auth_key: str | None = ...,
-        enc_key: str | None = ...,
-        local_spi: str | None = ...,
-        remote_spi: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -514,6 +482,7 @@ class ManualkeyInterface:
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
@@ -589,30 +558,7 @@ class ManualkeyInterface:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ManualkeyInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        addr_type: Literal["4", "6"] | None = ...,
-        remote_gw: str | None = ...,
-        remote_gw6: str | None = ...,
-        local_gw: str | None = ...,
-        local_gw6: str | None = ...,
-        auth_alg: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = ...,
-        enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = ...,
-        auth_key: str | None = ...,
-        enc_key: str | None = ...,
-        local_spi: str | None = ...,
-        remote_spi: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -623,6 +569,7 @@ class ManualkeyInterface:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
@@ -653,14 +600,7 @@ class ManualkeyInterface:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -704,8 +644,6 @@ class ManualkeyInterface:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -733,6 +671,10 @@ class ManualkeyInterfaceDictMode:
     By default returns ManualkeyInterfaceResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ManualkeyInterfaceObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -904,10 +846,12 @@ class ManualkeyInterfaceDictMode:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ManualkeyInterfacePayload | None = ...,
@@ -1003,10 +947,12 @@ class ManualkeyInterfaceDictMode:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ManualkeyInterfacePayload | None = ...,
@@ -1057,10 +1003,12 @@ class ManualkeyInterfaceDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1108,8 +1056,6 @@ class ManualkeyInterfaceDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1133,6 +1079,10 @@ class ManualkeyInterfaceObjectMode:
     By default returns ManualkeyInterfaceObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ManualkeyInterfaceResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1330,10 +1280,12 @@ class ManualkeyInterfaceObjectMode:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ManualkeyInterfacePayload | None = ...,
@@ -1455,10 +1407,12 @@ class ManualkeyInterfaceObjectMode:
         remote_spi: str | None = ...,
         npu_offload: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ManualkeyInterfacePayload | None = ...,
@@ -1520,10 +1474,12 @@ class ManualkeyInterfaceObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ManualkeyInterfaceObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1571,8 +1527,6 @@ class ManualkeyInterfaceObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

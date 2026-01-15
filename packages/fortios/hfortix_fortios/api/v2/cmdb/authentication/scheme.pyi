@@ -179,6 +179,10 @@ class Scheme:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -199,6 +203,7 @@ class Scheme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SchemeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -216,6 +221,7 @@ class Scheme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SchemeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -232,6 +238,7 @@ class Scheme:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SchemeResponse]: ...
     
     # ================================================================
@@ -274,7 +281,7 @@ class Scheme:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SchemeObject: ...
     
@@ -293,7 +300,7 @@ class Scheme:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SchemeObject]: ...
     
@@ -393,23 +400,6 @@ class Scheme:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SchemeObject | list[SchemeObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -441,6 +431,7 @@ class Scheme:
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SchemeObject: ...
@@ -525,33 +516,7 @@ class Scheme:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SchemePayload | None = ...,
-        name: str | None = ...,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list[str] | None = ...,
-        negotiate_ntlm: Literal["enable", "disable"] | None = ...,
-        kerberos_keytab: str | None = ...,
-        domain_controller: str | None = ...,
-        saml_server: str | None = ...,
-        saml_timeout: int | None = ...,
-        fsso_agent_for_ntlm: str | None = ...,
-        require_tfa: Literal["enable", "disable"] | None = ...,
-        fsso_guest: Literal["enable", "disable"] | None = ...,
-        user_cert: Literal["enable", "disable"] | None = ...,
-        cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssh_ca: str | None = ...,
-        external_idp: str | None = ...,
-        group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
-        digest_rfc2069: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -580,6 +545,7 @@ class Scheme:
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SchemeObject: ...
@@ -664,33 +630,7 @@ class Scheme:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SchemePayload | None = ...,
-        name: str | None = ...,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list[str] | None = ...,
-        negotiate_ntlm: Literal["enable", "disable"] | None = ...,
-        kerberos_keytab: str | None = ...,
-        domain_controller: str | None = ...,
-        saml_server: str | None = ...,
-        saml_timeout: int | None = ...,
-        fsso_agent_for_ntlm: str | None = ...,
-        require_tfa: Literal["enable", "disable"] | None = ...,
-        fsso_guest: Literal["enable", "disable"] | None = ...,
-        user_cert: Literal["enable", "disable"] | None = ...,
-        cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssh_ca: str | None = ...,
-        external_idp: str | None = ...,
-        group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
-        digest_rfc2069: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -701,6 +641,7 @@ class Scheme:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SchemeObject: ...
@@ -731,14 +672,7 @@ class Scheme:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -785,8 +719,6 @@ class Scheme:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -814,6 +746,10 @@ class SchemeDictMode:
     By default returns SchemeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SchemeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -994,10 +930,12 @@ class SchemeDictMode:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SchemePayload | None = ...,
@@ -1105,10 +1043,12 @@ class SchemeDictMode:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SchemePayload | None = ...,
@@ -1162,10 +1102,12 @@ class SchemeDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1216,8 +1158,6 @@ class SchemeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1241,6 +1181,10 @@ class SchemeObjectMode:
     By default returns SchemeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SchemeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1450,10 +1394,12 @@ class SchemeObjectMode:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SchemeObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SchemePayload | None = ...,
@@ -1590,10 +1536,12 @@ class SchemeObjectMode:
         digest_algo: Literal["md5", "sha-256"] | list[str] | None = ...,
         digest_rfc2069: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SchemeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SchemePayload | None = ...,
@@ -1658,10 +1606,12 @@ class SchemeObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SchemeObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1712,8 +1662,6 @@ class SchemeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

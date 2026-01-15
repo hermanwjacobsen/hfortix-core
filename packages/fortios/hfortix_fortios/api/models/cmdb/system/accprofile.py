@@ -192,7 +192,37 @@ class AccprofileModel(BaseModel):
 
     Configure access profiles for system administrators.
 
-    Validation Rules:        - name: max_length=35 pattern=        - scope: pattern=        - comments: max_length=255 pattern=        - secfabgrp: pattern=        - ftviewgrp: pattern=        - authgrp: pattern=        - sysgrp: pattern=        - netgrp: pattern=        - loggrp: pattern=        - fwgrp: pattern=        - vpngrp: pattern=        - utmgrp: pattern=        - wanoptgrp: pattern=        - wifi: pattern=        - netgrp_permission: pattern=        - sysgrp_permission: pattern=        - fwgrp_permission: pattern=        - loggrp_permission: pattern=        - utmgrp_permission: pattern=        - secfabgrp_permission: pattern=        - admintimeout_override: pattern=        - admintimeout: min=1 max=480 pattern=        - cli_diagnose: pattern=        - cli_get: pattern=        - cli_show: pattern=        - cli_exec: pattern=        - cli_config: pattern=        - system_execute_ssh: pattern=        - system_execute_telnet: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - scope: pattern=
+        - comments: max_length=255 pattern=
+        - secfabgrp: pattern=
+        - ftviewgrp: pattern=
+        - authgrp: pattern=
+        - sysgrp: pattern=
+        - netgrp: pattern=
+        - loggrp: pattern=
+        - fwgrp: pattern=
+        - vpngrp: pattern=
+        - utmgrp: pattern=
+        - wanoptgrp: pattern=
+        - wifi: pattern=
+        - netgrp_permission: pattern=
+        - sysgrp_permission: pattern=
+        - fwgrp_permission: pattern=
+        - loggrp_permission: pattern=
+        - utmgrp_permission: pattern=
+        - secfabgrp_permission: pattern=
+        - admintimeout_override: pattern=
+        - admintimeout: min=1 max=480 pattern=
+        - cli_diagnose: pattern=
+        - cli_get: pattern=
+        - cli_show: pattern=
+        - cli_exec: pattern=
+        - cli_config: pattern=
+        - system_execute_ssh: pattern=
+        - system_execute_telnet: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -204,7 +234,36 @@ class AccprofileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Profile name.")    scope: Literal["vdom", "global"] | None = Field(default="vdom", description="Scope of admin access: global or specific VDOM(s).")    comments: str | None = Field(max_length=255, default=None, description="Comment.")    secfabgrp: AccprofileSecfabgrpEnum | None = Field(default="none", description="Security Fabric.")    ftviewgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="FortiView.")    authgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to Users and Devices.")    sysgrp: AccprofileSysgrpEnum | None = Field(default="none", description="System Configuration.")    netgrp: AccprofileNetgrpEnum | None = Field(default="none", description="Network Configuration.")    loggrp: AccprofileLoggrpEnum | None = Field(default="none", description="Administrator access to Logging and Reporting including viewing log messages.")    fwgrp: AccprofileFwgrpEnum | None = Field(default="none", description="Administrator access to the Firewall configuration.")    vpngrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to IPsec, SSL, PPTP, and L2TP VPN.")    utmgrp: AccprofileUtmgrpEnum | None = Field(default="none", description="Administrator access to Security Profiles.")    wanoptgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to WAN Opt & Cache.")    wifi: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to the WiFi controller and Switch controller.")    netgrp_permission: list[AccprofileNetgrpPermission] = Field(default=None, description="Custom network permission.")    sysgrp_permission: list[AccprofileSysgrpPermission] = Field(default=None, description="Custom system permission.")    fwgrp_permission: list[AccprofileFwgrpPermission] = Field(default=None, description="Custom firewall permission.")    loggrp_permission: list[AccprofileLoggrpPermission] = Field(default=None, description="Custom Log & Report permission.")    utmgrp_permission: list[AccprofileUtmgrpPermission] = Field(default=None, description="Custom Security Profile permissions.")    secfabgrp_permission: list[AccprofileSecfabgrpPermission] = Field(default=None, description="Custom Security Fabric permissions.")    admintimeout_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global administrator idle timeout.")    admintimeout: int | None = Field(ge=1, le=480, default=10, description="Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).")    cli_diagnose: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run diagnostic commands.")    cli_get: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run get commands.")    cli_show: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run show commands.")    cli_exec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run execute commands.")    cli_config: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run config commands.")    system_execute_ssh: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable permission to execute SSH commands.")    system_execute_telnet: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable permission to execute TELNET commands.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Profile name.")
+    scope: Literal["vdom", "global"] | None = Field(default="vdom", description="Scope of admin access: global or specific VDOM(s).")
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    secfabgrp: str | AccprofileSecfabgrpEnum | None = Field(default="none", description="Security Fabric.")
+    ftviewgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="FortiView.")
+    authgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to Users and Devices.")
+    sysgrp: str | AccprofileSysgrpEnum | None = Field(default="none", description="System Configuration.")
+    netgrp: str | AccprofileNetgrpEnum | None = Field(default="none", description="Network Configuration.")
+    loggrp: str | AccprofileLoggrpEnum | None = Field(default="none", description="Administrator access to Logging and Reporting including viewing log messages.")
+    fwgrp: str | AccprofileFwgrpEnum | None = Field(default="none", description="Administrator access to the Firewall configuration.")
+    vpngrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to IPsec, SSL, PPTP, and L2TP VPN.")
+    utmgrp: str | AccprofileUtmgrpEnum | None = Field(default="none", description="Administrator access to Security Profiles.")
+    wanoptgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to WAN Opt & Cache.")
+    wifi: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to the WiFi controller and Switch controller.")
+    netgrp_permission: list[AccprofileNetgrpPermission] | None = Field(default=None, description="Custom network permission.")
+    sysgrp_permission: list[AccprofileSysgrpPermission] | None = Field(default=None, description="Custom system permission.")
+    fwgrp_permission: list[AccprofileFwgrpPermission] | None = Field(default=None, description="Custom firewall permission.")
+    loggrp_permission: list[AccprofileLoggrpPermission] | None = Field(default=None, description="Custom Log & Report permission.")
+    utmgrp_permission: list[AccprofileUtmgrpPermission] | None = Field(default=None, description="Custom Security Profile permissions.")
+    secfabgrp_permission: list[AccprofileSecfabgrpPermission] | None = Field(default=None, description="Custom Security Fabric permissions.")
+    admintimeout_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global administrator idle timeout.")
+    admintimeout: int | None = Field(ge=1, le=480, default=10, description="Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).")
+    cli_diagnose: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run diagnostic commands.")
+    cli_get: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run get commands.")
+    cli_show: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run show commands.")
+    cli_exec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run execute commands.")
+    cli_config: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run config commands.")
+    system_execute_ssh: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable permission to execute SSH commands.")
+    system_execute_telnet: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable permission to execute TELNET commands.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -253,5 +312,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.942190Z
+# Generated: 2026-01-14T22:43:38.538813Z
 # ============================================================================

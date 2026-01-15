@@ -19,12 +19,12 @@ class AddrgrpPayload(TypedDict, total=False):
         }
     """
     name: str  # Address group name. | MaxLen: 79
-    type: Literal["default", "folder"]  # Address group type. | Default: default
+    type_: Literal["default", "folder"]  # Address group type. | Default: default
     category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]  # Address group category. | Default: default
     allow_routing: Literal["enable", "disable"]  # Enable/disable use of this group in routing config | Default: disable
     member: list[dict[str, Any]]  # Address objects contained within the group.
     comment: str  # Comment. | MaxLen: 255
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     exclude: Literal["enable", "disable"]  # Enable/disable address exclusion. | Default: disable
     exclude_member: list[dict[str, Any]]  # Address exclusion member.
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
@@ -143,12 +143,12 @@ class AddrgrpResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Address group name. | MaxLen: 79
-    type: Literal["default", "folder"]  # Address group type. | Default: default
+    type_: Literal["default", "folder"]  # Address group type. | Default: default
     category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]  # Address group category. | Default: default
     allow_routing: Literal["enable", "disable"]  # Enable/disable use of this group in routing config | Default: disable
     member: list[AddrgrpMemberItem]  # Address objects contained within the group.
     comment: str  # Comment. | MaxLen: 255
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     exclude: Literal["enable", "disable"]  # Enable/disable address exclusion. | Default: disable
     exclude_member: list[AddrgrpExcludememberItem]  # Address exclusion member.
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
@@ -167,7 +167,7 @@ class AddrgrpObject:
     # Address group name. | MaxLen: 79
     name: str
     # Address group type. | Default: default
-    type: Literal["default", "folder"]
+    type_: Literal["default", "folder"]
     # Address group category. | Default: default
     category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]
     # Enable/disable use of this group in routing configurations. | Default: disable
@@ -176,7 +176,7 @@ class AddrgrpObject:
     member: list[AddrgrpMemberObject]
     # Comment. | MaxLen: 255
     comment: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable address exclusion. | Default: disable
     exclude: Literal["enable", "disable"]
@@ -213,6 +213,10 @@ class Addrgrp:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -233,6 +237,7 @@ class Addrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AddrgrpResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -250,6 +255,7 @@ class Addrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AddrgrpResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -266,6 +272,7 @@ class Addrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AddrgrpResponse]: ...
     
     # ================================================================
@@ -308,7 +315,7 @@ class Addrgrp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AddrgrpObject: ...
     
@@ -327,7 +334,7 @@ class Addrgrp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AddrgrpObject]: ...
     
@@ -427,23 +434,6 @@ class Addrgrp:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AddrgrpObject | list[AddrgrpObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -456,7 +446,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -469,6 +459,7 @@ class Addrgrp:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AddrgrpObject: ...
@@ -478,7 +469,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -501,7 +492,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -523,7 +514,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -535,27 +526,7 @@ class Addrgrp:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
-        category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        uuid: str | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -565,7 +536,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -578,6 +549,7 @@ class Addrgrp:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AddrgrpObject: ...
@@ -587,7 +559,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -610,7 +582,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -632,7 +604,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -644,27 +616,7 @@ class Addrgrp:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
-        category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        uuid: str | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -675,6 +627,7 @@ class Addrgrp:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AddrgrpObject: ...
@@ -705,14 +658,7 @@ class Addrgrp:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -726,7 +672,7 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -753,8 +699,6 @@ class Addrgrp:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -782,6 +726,10 @@ class AddrgrpDictMode:
     By default returns AddrgrpResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AddrgrpObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -886,7 +834,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -909,7 +857,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -932,7 +880,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -944,15 +892,17 @@ class AddrgrpDictMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -973,7 +923,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -996,7 +946,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1019,7 +969,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1031,15 +981,17 @@ class AddrgrpDictMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1082,10 +1034,12 @@ class AddrgrpDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1104,7 +1058,7 @@ class AddrgrpDictMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1130,8 +1084,6 @@ class AddrgrpDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1155,6 +1107,10 @@ class AddrgrpObjectMode:
     By default returns AddrgrpObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AddrgrpResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1259,7 +1215,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1282,7 +1238,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1305,7 +1261,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1328,7 +1284,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1340,15 +1296,17 @@ class AddrgrpObjectMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AddrgrpObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1369,7 +1327,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1392,7 +1350,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1415,7 +1373,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1438,7 +1396,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1450,15 +1408,17 @@ class AddrgrpObjectMode:
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AddrgrpObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1512,10 +1472,12 @@ class AddrgrpObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AddrgrpObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1534,7 +1496,7 @@ class AddrgrpObjectMode:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
+        type_: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1560,8 +1522,6 @@ class AddrgrpObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

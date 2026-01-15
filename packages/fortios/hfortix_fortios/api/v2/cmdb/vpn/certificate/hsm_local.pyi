@@ -28,7 +28,7 @@ class HsmLocalPayload(TypedDict, total=False):
     vendor: Literal["unknown", "gch"]  # HSM vendor. | Default: unknown
     api_version: Literal["unknown", "gch-default"]  # API version for communicating with HSM. | Default: unknown
     certificate: str  # PEM format certificate.
-    range: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: vdom
+    range_: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: vdom
     source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
     gch_url: str  # Google Cloud HSM key URL | MaxLen: 1024
     gch_project: str  # Google Cloud HSM project ID. | MaxLen: 31
@@ -57,7 +57,7 @@ class HsmLocalResponse(TypedDict):
     vendor: Literal["unknown", "gch"]  # HSM vendor. | Default: unknown
     api_version: Literal["unknown", "gch-default"]  # API version for communicating with HSM. | Default: unknown
     certificate: str  # PEM format certificate.
-    range: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: vdom
+    range_: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: vdom
     source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
     gch_url: str  # Google Cloud HSM key URL | MaxLen: 1024
     gch_project: str  # Google Cloud HSM project ID. | MaxLen: 31
@@ -89,7 +89,7 @@ class HsmLocalObject:
     # PEM format certificate.
     certificate: str
     # Either a global or VDOM IP address range for the certificate | Default: vdom
-    range: Literal["global", "vdom"]
+    range_: Literal["global", "vdom"]
     # Certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
     # Google Cloud HSM key URL | MaxLen: 1024
@@ -135,6 +135,10 @@ class HsmLocal:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -155,6 +159,7 @@ class HsmLocal:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HsmLocalResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -172,6 +177,7 @@ class HsmLocal:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HsmLocalResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -188,6 +194,7 @@ class HsmLocal:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[HsmLocalResponse]: ...
     
     # ================================================================
@@ -230,7 +237,7 @@ class HsmLocal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> HsmLocalObject: ...
     
@@ -249,7 +256,7 @@ class HsmLocal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[HsmLocalObject]: ...
     
@@ -349,23 +356,6 @@ class HsmLocal:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> HsmLocalObject | list[HsmLocalObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -382,7 +372,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -395,6 +385,7 @@ class HsmLocal:
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HsmLocalObject: ...
@@ -408,7 +399,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -435,7 +426,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -461,7 +452,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -473,31 +464,7 @@ class HsmLocal:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: HsmLocalPayload | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        vendor: Literal["unknown", "gch"] | None = ...,
-        api_version: Literal["unknown", "gch-default"] | None = ...,
-        certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        gch_url: str | None = ...,
-        gch_project: str | None = ...,
-        gch_location: str | None = ...,
-        gch_keyring: str | None = ...,
-        gch_cryptokey: str | None = ...,
-        gch_cryptokey_version: str | None = ...,
-        gch_cloud_service_name: str | None = ...,
-        gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
-        details: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -511,7 +478,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -524,6 +491,7 @@ class HsmLocal:
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HsmLocalObject: ...
@@ -537,7 +505,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -564,7 +532,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -590,7 +558,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -602,31 +570,7 @@ class HsmLocal:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: HsmLocalPayload | None = ...,
-        name: str | None = ...,
-        comments: str | None = ...,
-        vendor: Literal["unknown", "gch"] | None = ...,
-        api_version: Literal["unknown", "gch-default"] | None = ...,
-        certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        gch_url: str | None = ...,
-        gch_project: str | None = ...,
-        gch_location: str | None = ...,
-        gch_keyring: str | None = ...,
-        gch_cryptokey: str | None = ...,
-        gch_cryptokey_version: str | None = ...,
-        gch_cloud_service_name: str | None = ...,
-        gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
-        details: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -637,6 +581,7 @@ class HsmLocal:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HsmLocalObject: ...
@@ -667,14 +612,7 @@ class HsmLocal:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -692,7 +630,7 @@ class HsmLocal:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -719,8 +657,6 @@ class HsmLocal:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -748,6 +684,10 @@ class HsmLocalDictMode:
     By default returns HsmLocalResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return HsmLocalObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -856,7 +796,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -883,7 +823,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -910,7 +850,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -922,10 +862,12 @@ class HsmLocalDictMode:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: HsmLocalPayload | None = ...,
@@ -934,7 +876,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -959,7 +901,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -986,7 +928,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1013,7 +955,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1025,10 +967,12 @@ class HsmLocalDictMode:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: HsmLocalPayload | None = ...,
@@ -1037,7 +981,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1080,10 +1024,12 @@ class HsmLocalDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1106,7 +1052,7 @@ class HsmLocalDictMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1132,8 +1078,6 @@ class HsmLocalDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1157,6 +1101,10 @@ class HsmLocalObjectMode:
     By default returns HsmLocalObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return HsmLocalResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1265,7 +1213,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1292,7 +1240,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1319,7 +1267,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1346,7 +1294,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1358,10 +1306,12 @@ class HsmLocalObjectMode:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HsmLocalObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: HsmLocalPayload | None = ...,
@@ -1370,7 +1320,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1395,7 +1345,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1422,7 +1372,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1449,7 +1399,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1476,7 +1426,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1488,10 +1438,12 @@ class HsmLocalObjectMode:
         gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HsmLocalObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: HsmLocalPayload | None = ...,
@@ -1500,7 +1452,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1554,10 +1506,12 @@ class HsmLocalObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HsmLocalObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1580,7 +1534,7 @@ class HsmLocalObjectMode:
         vendor: Literal["unknown", "gch"] | None = ...,
         api_version: Literal["unknown", "gch-default"] | None = ...,
         certificate: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         gch_url: str | None = ...,
         gch_project: str | None = ...,
@@ -1606,8 +1560,6 @@ class HsmLocalObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

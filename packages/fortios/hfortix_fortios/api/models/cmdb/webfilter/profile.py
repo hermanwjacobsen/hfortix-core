@@ -29,13 +29,13 @@ class ProfileOverride(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     ovrd_cookie: Literal["allow", "deny"] | None = Field(default="deny", description="Allow/deny browser-based (cookie) overrides.")
-    ovrd_scope: OvrdScopeEnum | None = Field(default="user", description="Override scope.")
+    ovrd_scope: str | None = Field(default="user", description="Override scope.")
     profile_type: Literal["list", "radius"] | None = Field(default="list", description="Override profile type.")
     ovrd_dur_mode: Literal["constant", "ask"] | None = Field(default="constant", description="Override duration mode.")
     ovrd_dur: str | None = Field(default="15m", description="Override duration.")
-    profile_attribute: ProfileAttributeEnum | None = Field(default="Login-LAT-Service", description="Profile attribute to retrieve from the RADIUS server.")
-    ovrd_user_group: list[OvrdUserGroup] = Field(default=None, description="User groups with permission to use the override.")
-    profile: list[Profile] = Field(default=None, description="Web filter profile with permission to create overrides.")
+    profile_attribute: str | None = Field(default="Login-LAT-Service", description="Profile attribute to retrieve from the RADIUS server.")
+    ovrd_user_group: list[dict[str, Any]] | None = Field(default=None, description="User groups with permission to use the override.")
+    profile: list[dict[str, Any]] | None = Field(default=None, description="Web filter profile with permission to create overrides.")
 
 
 class ProfileWeb(BaseModel):
@@ -54,12 +54,12 @@ class ProfileWeb(BaseModel):
     urlfilter_table: int | None = Field(ge=0, le=4294967295, default=0, description="URL filter table ID.")  # datasource: ['webfilter.urlfilter.id']
     content_header_list: int | None = Field(ge=0, le=4294967295, default=0, description="Content header list.")  # datasource: ['webfilter.content-header.id']
     blocklist: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic addition of URLs detected by FortiSandbox to blocklist.")
-    allowlist: AllowlistEnum | None = Field(default="", description="FortiGuard allowlist settings.")
-    safe_search: Literal["url", "header"] | None = Field(default="", description="Safe search type.")
+    allowlist: str | None = Field(default=None, description="FortiGuard allowlist settings.")
+    safe_search: Literal["url", "header"] | None = Field(default=None, description="Safe search type.")
     youtube_restrict: Literal["none", "strict", "moderate"] | None = Field(default="none", description="YouTube EDU filter level.")
     vimeo_restrict: str | None = Field(max_length=63, default="", description="Set Vimeo-restrict (\"7\" = don't show mature content, \"134\" = don't show unrated and mature content). A value of cookie \"content_rating\".")
     log_search: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all search phrases.")
-    keyword_match: list[KeywordMatch] = Field(default=None, description="Search keywords to log when match is found.")
+    keyword_match: list[dict[str, Any]] | None = Field(default=None, description="Search keywords to log when match is found.")
 
 
 class ProfileFtgdWf(BaseModel):
@@ -73,12 +73,12 @@ class ProfileFtgdWf(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    options: OptionsEnum | None = Field(default="ftgd-disable", description="Options for FortiGuard Web Filter.")
+    options: str | None = Field(default="ftgd-disable", description="Options for FortiGuard Web Filter.")
     exempt_quota: str | None = Field(default="17", description="Do not stop quota for these categories.")
     ovrd: str | None = Field(default="", description="Allow web filter profile overrides.")
-    filters: list[Filters] = Field(default=None, description="FortiGuard filters.")
-    risk: list[Risk] = Field(default=None, description="FortiGuard risk level settings.")
-    quota: list[Quota] = Field(default=None, description="FortiGuard traffic quota settings.")
+    filters: list[dict[str, Any]] | None = Field(default=None, description="FortiGuard filters.")
+    risk: list[dict[str, Any]] | None = Field(default=None, description="FortiGuard risk level settings.")
+    quota: list[dict[str, Any]] | None = Field(default=None, description="FortiGuard traffic quota settings.")
     max_quota_timeout: int | None = Field(ge=1, le=86400, default=300, description="Maximum FortiGuard quota used by single page view in seconds (excludes streams).")
     rate_javascript_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating JavaScript by URL.")
     rate_css_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating CSS by URL.")
@@ -102,8 +102,8 @@ class ProfileAntiphish(BaseModel):
     check_basic_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking of HTTP Basic Auth field for known credentials.")
     check_username_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable username only matching of credentials. Action will be taken for valid usernames regardless of password validity.")
     max_body_len: int | None = Field(ge=0, le=4294967295, default=1024, description="Maximum size of a POST body to check for credentials.")
-    inspection_entries: list[InspectionEntries] = Field(default=None, description="AntiPhishing entries.")
-    custom_patterns: list[CustomPatterns] = Field(default=None, description="Custom username and password regex patterns.")
+    inspection_entries: list[dict[str, Any]] | None = Field(default=None, description="AntiPhishing entries.")
+    custom_patterns: list[dict[str, Any]] | None = Field(default=None, description="Custom username and password regex patterns.")
     authentication: Literal["domain-controller", "ldap"] = Field(default="domain-controller", description="Authentication methods.")
     domain_controller: str | None = Field(max_length=63, default="", description="Domain for which to verify received credentials against.")  # datasource: ['user.domain-controller.name', 'credential-store.domain-controller.server-name']
     ldap: str | None = Field(max_length=63, default="", description="LDAP server for which to verify received credentials against.")  # datasource: ['user.ldap.name']
@@ -143,7 +143,7 @@ class ProfileOptionsEnum(str, Enum):
     PER_USER_BAL = "per-user-bal"
 
 
-class ProfileOvrd_permEnum(str, Enum):
+class ProfileOvrdPermEnum(str, Enum):
     """Allowed values for ovrd_perm field."""
     BANNEDWORD_OVERRIDE = "bannedword-override"
     URLFILTER_OVERRIDE = "urlfilter-override"
@@ -162,7 +162,43 @@ class ProfileModel(BaseModel):
 
     Configure Web filter profiles.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - feature_set: pattern=        - replacemsg_group: max_length=35 pattern=        - options: pattern=        - https_replacemsg: pattern=        - web_flow_log_encoding: pattern=        - ovrd_perm: pattern=        - post_action: pattern=        - override: pattern=        - web: pattern=        - ftgd_wf: pattern=        - antiphish: pattern=        - wisp: pattern=        - wisp_servers: pattern=        - wisp_algorithm: pattern=        - log_all_url: pattern=        - web_content_log: pattern=        - web_filter_activex_log: pattern=        - web_filter_command_block_log: pattern=        - web_filter_cookie_log: pattern=        - web_filter_applet_log: pattern=        - web_filter_jscript_log: pattern=        - web_filter_js_log: pattern=        - web_filter_vbs_log: pattern=        - web_filter_unknown_log: pattern=        - web_filter_referer_log: pattern=        - web_filter_cookie_removal_log: pattern=        - web_url_log: pattern=        - web_invalid_domain_log: pattern=        - web_ftgd_err_log: pattern=        - web_ftgd_quota_usage: pattern=        - extended_log: pattern=        - web_extended_all_action_log: pattern=        - web_antiphishing_log: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - feature_set: pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - options: pattern=
+        - https_replacemsg: pattern=
+        - web_flow_log_encoding: pattern=
+        - ovrd_perm: pattern=
+        - post_action: pattern=
+        - override: pattern=
+        - web: pattern=
+        - ftgd_wf: pattern=
+        - antiphish: pattern=
+        - wisp: pattern=
+        - wisp_servers: pattern=
+        - wisp_algorithm: pattern=
+        - log_all_url: pattern=
+        - web_content_log: pattern=
+        - web_filter_activex_log: pattern=
+        - web_filter_command_block_log: pattern=
+        - web_filter_cookie_log: pattern=
+        - web_filter_applet_log: pattern=
+        - web_filter_jscript_log: pattern=
+        - web_filter_js_log: pattern=
+        - web_filter_vbs_log: pattern=
+        - web_filter_unknown_log: pattern=
+        - web_filter_referer_log: pattern=
+        - web_filter_cookie_removal_log: pattern=
+        - web_url_log: pattern=
+        - web_invalid_domain_log: pattern=
+        - web_ftgd_err_log: pattern=
+        - web_ftgd_quota_usage: pattern=
+        - extended_log: pattern=
+        - web_extended_all_action_log: pattern=
+        - web_antiphishing_log: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -174,7 +210,42 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile name.")    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    options: ProfileOptionsEnum | None = Field(default="", description="Options.")    https_replacemsg: Literal["enable", "disable"] | None = Field(default="enable", description="Enable replacement messages for HTTPS.")    web_flow_log_encoding: Literal["utf-8", "punycode"] | None = Field(default="utf-8", description="Log encoding in flow mode.")    ovrd_perm: ProfileOvrdPermEnum | None = Field(default="", description="Permitted override types.")    post_action: Literal["normal", "block"] | None = Field(default="normal", description="Action taken for HTTP POST traffic.")    override: list[ProfileOverride] = Field(default=None, description="Web Filter override settings.")    web: list[ProfileWeb] = Field(default=None, description="Web content filtering settings.")    ftgd_wf: list[ProfileFtgdWf] = Field(default=None, description="FortiGuard Web Filter settings.")    antiphish: list[ProfileAntiphish] = Field(default=None, description="AntiPhishing profile.")    wisp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy WISP.")    wisp_servers: list[ProfileWispServers] = Field(default=None, description="WISP servers.")    wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = Field(default="auto-learning", description="WISP server selection algorithm.")    log_all_url: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all URLs visited.")    web_content_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging logging blocked web content.")    web_filter_activex_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging ActiveX.")    web_filter_command_block_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging blocked commands.")    web_filter_cookie_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging cookie filtering.")    web_filter_applet_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging Java applets.")    web_filter_jscript_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging JScripts.")    web_filter_js_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging Java scripts.")    web_filter_vbs_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging VBS scripts.")    web_filter_unknown_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging unknown scripts.")    web_filter_referer_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging referrers.")    web_filter_cookie_removal_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging blocked cookies.")    web_url_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging URL filtering.")    web_invalid_domain_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging invalid domain names.")    web_ftgd_err_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging rating errors.")    web_ftgd_quota_usage: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging daily quota usage.")    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging for web filtering.")    web_extended_all_action_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended any filter action logging for web filtering.")    web_antiphishing_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging of AntiPhishing checks.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']
+    options: str | ProfileOptionsEnum | None = Field(default=None, description="Options.")
+    https_replacemsg: Literal["enable", "disable"] | None = Field(default="enable", description="Enable replacement messages for HTTPS.")
+    web_flow_log_encoding: Literal["utf-8", "punycode"] | None = Field(default="utf-8", description="Log encoding in flow mode.")
+    ovrd_perm: str | ProfileOvrdPermEnum | None = Field(default=None, description="Permitted override types.")
+    post_action: Literal["normal", "block"] | None = Field(default="normal", description="Action taken for HTTP POST traffic.")
+    override: list[ProfileOverride] | None = Field(default=None, description="Web Filter override settings.")
+    web: list[ProfileWeb] | None = Field(default=None, description="Web content filtering settings.")
+    ftgd_wf: list[ProfileFtgdWf] | None = Field(default=None, description="FortiGuard Web Filter settings.")
+    antiphish: list[ProfileAntiphish] | None = Field(default=None, description="AntiPhishing profile.")
+    wisp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy WISP.")
+    wisp_servers: list[ProfileWispServers] | None = Field(default=None, description="WISP servers.")
+    wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = Field(default="auto-learning", description="WISP server selection algorithm.")
+    log_all_url: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all URLs visited.")
+    web_content_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging logging blocked web content.")
+    web_filter_activex_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging ActiveX.")
+    web_filter_command_block_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging blocked commands.")
+    web_filter_cookie_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging cookie filtering.")
+    web_filter_applet_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging Java applets.")
+    web_filter_jscript_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging JScripts.")
+    web_filter_js_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging Java scripts.")
+    web_filter_vbs_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging VBS scripts.")
+    web_filter_unknown_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging unknown scripts.")
+    web_filter_referer_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging referrers.")
+    web_filter_cookie_removal_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging blocked cookies.")
+    web_url_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging URL filtering.")
+    web_invalid_domain_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging invalid domain names.")
+    web_ftgd_err_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging rating errors.")
+    web_ftgd_quota_usage: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging daily quota usage.")
+    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging for web filtering.")
+    web_extended_all_action_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended any filter action logging for web filtering.")
+    web_antiphishing_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging of AntiPhishing checks.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -253,7 +324,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -302,7 +373,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "web", [])
@@ -360,7 +431,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "antiphish", [])
@@ -418,7 +489,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "wisp_servers", [])
@@ -464,11 +535,14 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_replacemsg_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_web_references(client)
-        all_errors.extend(errors)        errors = await self.validate_antiphish_references(client)
-        all_errors.extend(errors)        errors = await self.validate_wisp_servers_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_web_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_antiphish_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_wisp_servers_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -490,5 +564,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.383138Z
+# Generated: 2026-01-14T22:43:34.151776Z
 # ============================================================================

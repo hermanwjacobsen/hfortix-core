@@ -281,7 +281,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["static", "dynamic", "ddns"] | None = None,
+        type_: Literal["static", "dynamic", "ddns"] | None = None,
         interface: str | None = None,
         ip_version: Literal["4", "6"] | None = None,
         ike_version: Literal["1", "2"] | None = None,
@@ -492,7 +492,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: IPsec remote gateway name.
-            type: Remote gateway type.
+            type_: Remote gateway type.
             interface: Local physical, aggregate, or VLAN outgoing interface.
             ip_version: IP version to use for VPN interface.
             ike_version: IKE protocol version.
@@ -826,7 +826,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interface=interface,
             ip_version=ip_version,
             ike_version=ike_version,
@@ -1055,7 +1055,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["static", "dynamic", "ddns"] | None = None,
+        type_: Literal["static", "dynamic", "ddns"] | None = None,
         interface: str | None = None,
         ip_version: Literal["4", "6"] | None = None,
         ike_version: Literal["1", "2"] | None = None,
@@ -1266,7 +1266,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: IPsec remote gateway name.
-            type: Remote gateway type.
+            type_: Remote gateway type.
             interface: Local physical, aggregate, or VLAN outgoing interface.
             ip_version: IP version to use for VPN interface.
             ike_version: IKE protocol version.
@@ -1602,7 +1602,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interface=interface,
             ip_version=ip_version,
             ike_version=ike_version,
@@ -1931,7 +1931,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["static", "dynamic", "ddns"] | None = None,
+        type_: Literal["static", "dynamic", "ddns"] | None = None,
         interface: str | None = None,
         ip_version: Literal["4", "6"] | None = None,
         ike_version: Literal["1", "2"] | None = None,
@@ -2143,7 +2143,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             interface: Field interface
             ip_version: Field ip-version
             ike_version: Field ike-version
@@ -2385,7 +2385,7 @@ class Phase1Interface(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             interface=interface,
             ip_version=ip_version,
             ike_version=ike_version,

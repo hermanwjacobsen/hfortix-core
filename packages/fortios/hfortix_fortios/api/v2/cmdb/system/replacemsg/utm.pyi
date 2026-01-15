@@ -21,7 +21,7 @@ class UtmPayload(TypedDict, total=False):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -38,7 +38,7 @@ class UtmResponse(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 @final
@@ -56,7 +56,7 @@ class UtmObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Common API response fields
     status: str
@@ -82,6 +82,10 @@ class Utm:
     Primary Key: msg-type
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -102,6 +106,7 @@ class Utm:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UtmResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -119,6 +124,7 @@ class Utm:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UtmResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -135,6 +141,7 @@ class Utm:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[UtmResponse]: ...
     
     # ================================================================
@@ -177,7 +184,7 @@ class Utm:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> UtmObject: ...
     
@@ -196,7 +203,7 @@ class Utm:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[UtmObject]: ...
     
@@ -296,23 +303,6 @@ class Utm:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        msg_type: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> UtmObject | list[UtmObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -327,9 +317,10 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmObject: ...
@@ -341,7 +332,7 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -356,7 +347,7 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -370,21 +361,9 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: UtmPayload | None = ...,
-        msg_type: str | None = ...,
-        buffer: str | None = ...,
-        header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -396,9 +375,10 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmObject: ...
@@ -410,7 +390,7 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -425,7 +405,7 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -439,21 +419,9 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: UtmPayload | None = ...,
-        msg_type: str | None = ...,
-        buffer: str | None = ...,
-        header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -464,6 +432,7 @@ class Utm:
         msg_type: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UtmObject: ...
@@ -494,14 +463,7 @@ class Utm:
         self,
         msg_type: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        msg_type: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -517,7 +479,7 @@ class Utm:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -534,8 +496,6 @@ class Utm:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -563,6 +523,10 @@ class UtmDictMode:
     By default returns UtmResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return UtmObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -669,7 +633,7 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -684,7 +648,7 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -699,19 +663,21 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: UtmPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -724,7 +690,7 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -739,7 +705,7 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -754,19 +720,21 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: UtmPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -799,10 +767,12 @@ class UtmDictMode:
         self,
         msg_type: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         msg_type: str,
@@ -823,7 +793,7 @@ class UtmDictMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -839,8 +809,6 @@ class UtmDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +832,10 @@ class UtmObjectMode:
     By default returns UtmObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return UtmResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -970,7 +942,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -985,7 +957,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -1000,7 +972,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1015,19 +987,21 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: UtmPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1040,7 +1014,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -1055,7 +1029,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1070,7 +1044,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1085,19 +1059,21 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: UtmPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1141,10 +1117,12 @@ class UtmObjectMode:
         self,
         msg_type: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UtmObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         msg_type: str,
@@ -1165,7 +1143,7 @@ class UtmObjectMode:
         msg_type: str | None = ...,
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        format_: Literal["none", "text", "html"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -1181,8 +1159,6 @@ class UtmObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -182,6 +182,10 @@ class Vxlan:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -202,6 +206,7 @@ class Vxlan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VxlanResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -219,6 +224,7 @@ class Vxlan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VxlanResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -235,6 +241,7 @@ class Vxlan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VxlanResponse]: ...
     
     # ================================================================
@@ -277,7 +284,7 @@ class Vxlan:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VxlanObject: ...
     
@@ -296,7 +303,7 @@ class Vxlan:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VxlanObject]: ...
     
@@ -396,23 +403,6 @@ class Vxlan:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VxlanObject | list[VxlanObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -438,6 +428,7 @@ class Vxlan:
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VxlanObject: ...
@@ -504,27 +495,7 @@ class Vxlan:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VxlanPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
-        remote_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        local_ip: str | None = ...,
-        remote_ip6: str | list[str] | list[dict[str, Any]] | None = ...,
-        local_ip6: str | None = ...,
-        dstport: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_id: int | None = ...,
-        learn_from_traffic: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -547,6 +518,7 @@ class Vxlan:
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VxlanObject: ...
@@ -613,27 +585,7 @@ class Vxlan:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VxlanPayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
-        remote_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        local_ip: str | None = ...,
-        remote_ip6: str | list[str] | list[dict[str, Any]] | None = ...,
-        local_ip6: str | None = ...,
-        dstport: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_id: int | None = ...,
-        learn_from_traffic: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -644,6 +596,7 @@ class Vxlan:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VxlanObject: ...
@@ -674,14 +627,7 @@ class Vxlan:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -722,8 +668,6 @@ class Vxlan:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -751,6 +695,10 @@ class VxlanDictMode:
     By default returns VxlanResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VxlanObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -913,10 +861,12 @@ class VxlanDictMode:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VxlanPayload | None = ...,
@@ -1000,10 +950,12 @@ class VxlanDictMode:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VxlanPayload | None = ...,
@@ -1051,10 +1003,12 @@ class VxlanDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1099,8 +1053,6 @@ class VxlanDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1124,6 +1076,10 @@ class VxlanObjectMode:
     By default returns VxlanObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VxlanResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1309,10 +1265,12 @@ class VxlanObjectMode:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VxlanObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VxlanPayload | None = ...,
@@ -1419,10 +1377,12 @@ class VxlanObjectMode:
         evpn_id: int | None = ...,
         learn_from_traffic: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VxlanObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VxlanPayload | None = ...,
@@ -1481,10 +1441,12 @@ class VxlanObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VxlanObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1529,8 +1491,6 @@ class VxlanObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

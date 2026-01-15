@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class PeerCn_typeEnum(str, Enum):
+class PeerCnTypeEnum(str, Enum):
     """Allowed values for cn_type field."""
     STRING = "string"
     EMAIL = "email"
@@ -36,7 +36,21 @@ class PeerModel(BaseModel):
 
     Configure peer users.
 
-    Validation Rules:        - name: max_length=35 pattern=        - mandatory_ca_verify: pattern=        - ca: max_length=127 pattern=        - subject: max_length=255 pattern=        - cn: max_length=255 pattern=        - cn_type: pattern=        - mfa_mode: pattern=        - mfa_server: max_length=35 pattern=        - mfa_username: max_length=35 pattern=        - mfa_password: max_length=128 pattern=        - ocsp_override_server: max_length=35 pattern=        - two_factor: pattern=        - passwd: max_length=128 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - mandatory_ca_verify: pattern=
+        - ca: max_length=127 pattern=
+        - subject: max_length=255 pattern=
+        - cn: max_length=255 pattern=
+        - cn_type: pattern=
+        - mfa_mode: pattern=
+        - mfa_server: max_length=35 pattern=
+        - mfa_username: max_length=35 pattern=
+        - mfa_password: max_length=128 pattern=
+        - ocsp_override_server: max_length=35 pattern=
+        - two_factor: pattern=
+        - passwd: max_length=128 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -48,7 +62,20 @@ class PeerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Peer name.")    mandatory_ca_verify: Literal["enable", "disable"] | None = Field(default="enable", description="Determine what happens to the peer if the CA certificate is not installed. Disable to automatically consider the peer certificate as valid.")    ca: str | None = Field(max_length=127, default="", description="Name of the CA certificate.")  # datasource: ['vpn.certificate.ca.name']    subject: str | None = Field(max_length=255, default="", description="Peer certificate name constraints.")    cn: str | None = Field(max_length=255, default="", description="Peer certificate common name.")    cn_type: PeerCnTypeEnum | None = Field(default="string", description="Peer certificate common name type.")    mfa_mode: Literal["none", "password", "subject-identity"] | None = Field(default="none", description="MFA mode for remote peer authentication/authorization.")    mfa_server: str | None = Field(max_length=35, default="", description="Name of a remote authenticator. Performs client access right check.")  # datasource: ['user.radius.name', 'user.ldap.name']    mfa_username: str | None = Field(max_length=35, default="", description="Unified username for remote authentication.")    mfa_password: Any = Field(max_length=128, default=None, description="Unified password for remote authentication. This field may be left empty when RADIUS authentication is used, in which case the FortiGate will use the RADIUS username as a password. ")    ocsp_override_server: str | None = Field(max_length=35, default="", description="Online Certificate Status Protocol (OCSP) server for certificate retrieval.")  # datasource: ['vpn.certificate.ocsp-server.name']    two_factor: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable two-factor authentication, applying certificate and password-based authentication.")    passwd: Any = Field(max_length=128, default=None, description="Peer's password used for two-factor authentication.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Peer name.")
+    mandatory_ca_verify: Literal["enable", "disable"] | None = Field(default="enable", description="Determine what happens to the peer if the CA certificate is not installed. Disable to automatically consider the peer certificate as valid.")
+    ca: str | None = Field(max_length=127, default="", description="Name of the CA certificate.")  # datasource: ['vpn.certificate.ca.name']
+    subject: str | None = Field(max_length=255, default="", description="Peer certificate name constraints.")
+    cn: str | None = Field(max_length=255, default="", description="Peer certificate common name.")
+    cn_type: str | PeerCnTypeEnum | None = Field(default="string", description="Peer certificate common name type.")
+    mfa_mode: Literal["none", "password", "subject-identity"] | None = Field(default="none", description="MFA mode for remote peer authentication/authorization.")
+    mfa_server: str | None = Field(max_length=35, default="", description="Name of a remote authenticator. Performs client access right check.")  # datasource: ['user.radius.name', 'user.ldap.name']
+    mfa_username: str | None = Field(max_length=35, default="", description="Unified username for remote authentication.")
+    mfa_password: Any = Field(max_length=128, default=None, description="Unified password for remote authentication. This field may be left empty when RADIUS authentication is used, in which case the FortiGate will use the RADIUS username as a password. ")
+    ocsp_override_server: str | None = Field(max_length=35, default="", description="Online Certificate Status Protocol (OCSP) server for certificate retrieval.")  # datasource: ['vpn.certificate.ocsp-server.name']
+    two_factor: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable two-factor authentication, applying certificate and password-based authentication.")
+    passwd: Any = Field(max_length=128, default=None, description="Peer's password used for two-factor authentication.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -157,7 +184,7 @@ class PeerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.peer.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ca", None)
@@ -206,7 +233,7 @@ class PeerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.peer.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "mfa_server", None)
@@ -257,7 +284,7 @@ class PeerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.peer.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ocsp_override_server", None)
@@ -294,10 +321,12 @@ class PeerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ca_references(client)
-        all_errors.extend(errors)        errors = await self.validate_mfa_server_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ocsp_override_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_mfa_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ocsp_override_server_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -319,5 +348,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.875109Z
+# Generated: 2026-01-14T22:43:35.959706Z
 # ============================================================================

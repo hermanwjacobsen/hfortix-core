@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -28,7 +29,7 @@ class CentralManagementServerList(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
-    server_type: ServerTypeEnum = Field(default="", description="FortiGuard service type.")
+    server_type: str | None = Field(default=None, description="FortiGuard service type.")
     addr_type: Literal["ipv4", "ipv6", "fqdn"] | None = Field(default="ipv4", description="Indicate whether the FortiGate communicates with the override server using an IPv4 address, an IPv6 address or a FQDN.")
     server_address: str = Field(default="0.0.0.0", description="IPv4 address of override server.")
     server_address6: str = Field(default="::", description="IPv6 address of override server.")
@@ -50,7 +51,32 @@ class CentralManagementModel(BaseModel):
 
     Configure central management.
 
-    Validation Rules:        - mode: pattern=        - type: pattern=        - fortigate_cloud_sso_default_profile: max_length=35 pattern=        - schedule_config_restore: pattern=        - schedule_script_restore: pattern=        - allow_push_configuration: pattern=        - allow_push_firmware: pattern=        - allow_remote_firmware_upgrade: pattern=        - allow_monitor: pattern=        - serial_number: pattern=        - fmg: pattern=        - fmg_source_ip: pattern=        - fmg_source_ip6: pattern=        - local_cert: max_length=35 pattern=        - ca_cert: pattern=        - vdom: max_length=31 pattern=        - server_list: pattern=        - fmg_update_port: pattern=        - fmg_update_http_header: pattern=        - include_default_servers: pattern=        - enc_algorithm: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - mode: pattern=
+        - type_: pattern=
+        - fortigate_cloud_sso_default_profile: max_length=35 pattern=
+        - schedule_config_restore: pattern=
+        - schedule_script_restore: pattern=
+        - allow_push_configuration: pattern=
+        - allow_push_firmware: pattern=
+        - allow_remote_firmware_upgrade: pattern=
+        - allow_monitor: pattern=
+        - serial_number: pattern=
+        - fmg: pattern=
+        - fmg_source_ip: pattern=
+        - fmg_source_ip6: pattern=
+        - local_cert: max_length=35 pattern=
+        - ca_cert: pattern=
+        - vdom: max_length=31 pattern=
+        - server_list: pattern=
+        - fmg_update_port: pattern=
+        - fmg_update_http_header: pattern=
+        - include_default_servers: pattern=
+        - enc_algorithm: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -62,7 +88,31 @@ class CentralManagementModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    mode: Literal["normal", "backup"] | None = Field(default="normal", description="Central management mode.")    type: Literal["fortimanager", "fortiguard", "none"] | None = Field(default="fortiguard", description="Central management type.")    fortigate_cloud_sso_default_profile: str | None = Field(max_length=35, default="", description="Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.")  # datasource: ['system.accprofile.name']    schedule_config_restore: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to restore the configuration of this FortiGate.")    schedule_script_restore: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.")    allow_push_configuration: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to push configuration changes to this FortiGate.")    allow_push_firmware: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to push firmware updates to this FortiGate.")    allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable remotely upgrading the firmware on this FortiGate from the central management server.")    allow_monitor: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to remotely monitor this FortiGate unit.")    serial_number: str | None = Field(default="", description="Serial number.")    fmg: str | None = Field(default="", description="IP address or FQDN of the FortiManager.")    fmg_source_ip: str | None = Field(default="0.0.0.0", description="IPv4 source address that this FortiGate uses when communicating with FortiManager.")    fmg_source_ip6: str | None = Field(default="::", description="IPv6 source address that this FortiGate uses when communicating with FortiManager.")    local_cert: str | None = Field(max_length=35, default="", description="Certificate to be used by FGFM protocol.")  # datasource: ['certificate.local.name']    ca_cert: str | None = Field(default="", description="CA certificate to be used by FGFM protocol.")  # datasource: ['certificate.ca.name']    vdom: str | None = Field(max_length=31, default="root", description="Virtual domain (VDOM) name to use when communicating with FortiManager.")  # datasource: ['system.vdom.name']    server_list: list[CentralManagementServerList] = Field(default=None, description="Additional severs that the FortiGate can use for updates (for AV, IPS, updates) and ratings (for web filter and antispam ratings) servers.")    fmg_update_port: Literal["8890", "443"] | None = Field(default="8890", description="Port used to communicate with FortiManager that is acting as a FortiGuard update server.")    fmg_update_http_header: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inclusion of HTTP header in update request.")    include_default_servers: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable inclusion of public FortiGuard servers in the override server list.")    enc_algorithm: Literal["default", "high", "low"] | None = Field(default="high", description="Encryption strength for communications between the FortiGate and central management.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    mode: Literal["normal", "backup"] | None = Field(default="normal", description="Central management mode.")
+    type_: Literal["fortimanager", "fortiguard", "none"] | None = Field(default="fortiguard", description="Central management type.")
+    fortigate_cloud_sso_default_profile: str | None = Field(max_length=35, default="", description="Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.")  # datasource: ['system.accprofile.name']
+    schedule_config_restore: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to restore the configuration of this FortiGate.")
+    schedule_script_restore: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.")
+    allow_push_configuration: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to push configuration changes to this FortiGate.")
+    allow_push_firmware: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to push firmware updates to this FortiGate.")
+    allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable remotely upgrading the firmware on this FortiGate from the central management server.")
+    allow_monitor: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowing the central management server to remotely monitor this FortiGate unit.")
+    serial_number: str | None = Field(default="", description="Serial number.")
+    fmg: str | None = Field(default="", description="IP address or FQDN of the FortiManager.")
+    fmg_source_ip: str | None = Field(default="0.0.0.0", description="IPv4 source address that this FortiGate uses when communicating with FortiManager.")
+    fmg_source_ip6: str | None = Field(default="::", description="IPv6 source address that this FortiGate uses when communicating with FortiManager.")
+    local_cert: str | None = Field(max_length=35, default="", description="Certificate to be used by FGFM protocol.")  # datasource: ['certificate.local.name']
+    ca_cert: str | None = Field(default="", description="CA certificate to be used by FGFM protocol.")  # datasource: ['certificate.ca.name']
+    vdom: str | None = Field(max_length=31, default="root", description="Virtual domain (VDOM) name to use when communicating with FortiManager.")  # datasource: ['system.vdom.name']
+    server_list: list[CentralManagementServerList] | None = Field(default=None, description="Additional severs that the FortiGate can use for updates (for AV, IPS, updates) and ratings (for web filter and antispam ratings) servers.")
+    fmg_update_port: Literal["8890", "443"] | None = Field(default="8890", description="Port used to communicate with FortiManager that is acting as a FortiGuard update server.")
+    fmg_update_http_header: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inclusion of HTTP header in update request.")
+    include_default_servers: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable inclusion of public FortiGuard servers in the override server list.")
+    enc_algorithm: Literal["default", "high", "low"] | None = Field(default="high", description="Encryption strength for communications between the FortiGate and central management.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -201,7 +251,7 @@ class CentralManagementModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.central_management.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortigate_cloud_sso_default_profile", None)
@@ -250,7 +300,7 @@ class CentralManagementModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.central_management.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "local_cert", None)
@@ -299,7 +349,7 @@ class CentralManagementModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.central_management.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ca_cert", None)
@@ -348,7 +398,7 @@ class CentralManagementModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.central_management.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -397,7 +447,7 @@ class CentralManagementModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.central_management.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -434,12 +484,16 @@ class CentralManagementModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fortigate_cloud_sso_default_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_local_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ca_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vdom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_local_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ca_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vdom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -461,5 +515,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.732198Z
+# Generated: 2026-01-14T22:43:38.277037Z
 # ============================================================================

@@ -59,7 +59,7 @@ class SettingAuthportsItem(TypedDict):
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["http", "https", "ftp", "telnet"]  # Service type. | Default: http
+    type_: Literal["http", "https", "ftp", "telnet"]  # Service type. | Default: http
     port: int  # Non-standard port for firewall user authentication | Default: 1024 | Min: 1 | Max: 65535
 
 
@@ -86,7 +86,7 @@ class SettingAuthportsObject:
     # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Service type. | Default: http
-    type: Literal["http", "https", "ftp", "telnet"]
+    type_: Literal["http", "https", "ftp", "telnet"]
     # Non-standard port for firewall user authentication. | Default: 1024 | Min: 1 | Max: 65535
     port: int
     
@@ -235,6 +235,10 @@ class Setting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -255,6 +259,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -272,6 +277,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -288,6 +294,7 @@ class Setting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SettingResponse: ...
     
     # ================================================================
@@ -330,7 +337,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -349,7 +356,7 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -449,23 +456,6 @@ class Setting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -503,6 +493,7 @@ class Setting:
         cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
@@ -605,39 +596,7 @@ class Setting:
         cors: Literal["disable", "enable"] | None = ...,
         cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
-        auth_cert: str | None = ...,
-        auth_ca_cert: str | None = ...,
-        auth_secure_http: Literal["enable", "disable"] | None = ...,
-        auth_http_basic: Literal["enable", "disable"] | None = ...,
-        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
-        auth_src_mac: Literal["enable", "disable"] | None = ...,
-        auth_on_demand: Literal["always", "implicitly"] | None = ...,
-        auth_timeout: int | None = ...,
-        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
-        auth_portal_timeout: int | None = ...,
-        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
-        auth_blackout_time: int | None = ...,
-        auth_invalid_max: int | None = ...,
-        auth_lockout_threshold: int | None = ...,
-        auth_lockout_duration: int | None = ...,
-        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
-        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
-        default_user_password_policy: str | None = ...,
-        cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -690,8 +649,6 @@ class Setting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -719,6 +676,10 @@ class SettingDictMode:
     By default returns SettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -918,10 +879,12 @@ class SettingDictMode:
         cors: Literal["disable", "enable"] | None = ...,
         cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1003,8 +966,6 @@ class SettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1028,6 +989,10 @@ class SettingObjectMode:
     By default returns SettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1262,10 +1227,12 @@ class SettingObjectMode:
         cors: Literal["disable", "enable"] | None = ...,
         cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -1347,8 +1314,6 @@ class SettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

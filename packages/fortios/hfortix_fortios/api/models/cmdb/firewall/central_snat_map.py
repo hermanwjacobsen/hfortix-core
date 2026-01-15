@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from uuid import UUID
 
@@ -144,7 +144,30 @@ class CentralSnatMapModel(BaseModel):
 
     Configure IPv4 and IPv6 central SNAT policies.
 
-    Validation Rules:        - policyid: min=0 max=4294967295 pattern=        - uuid: pattern=        - status: pattern=        - type: pattern=        - srcintf: pattern=        - dstintf: pattern=        - orig_addr: pattern=        - orig_addr6: pattern=        - dst_addr: pattern=        - dst_addr6: pattern=        - protocol: min=0 max=255 pattern=        - orig_port: pattern=        - nat: pattern=        - nat46: pattern=        - nat64: pattern=        - nat_ippool: pattern=        - nat_ippool6: pattern=        - port_preserve: pattern=        - port_random: pattern=        - nat_port: pattern=        - dst_port: pattern=        - comments: max_length=1023 pattern=    """
+    Validation Rules:
+        - policyid: min=0 max=4294967295 pattern=
+        - uuid: pattern=
+        - status: pattern=
+        - type_: pattern=
+        - srcintf: pattern=
+        - dstintf: pattern=
+        - orig_addr: pattern=
+        - orig_addr6: pattern=
+        - dst_addr: pattern=
+        - dst_addr6: pattern=
+        - protocol: min=0 max=255 pattern=
+        - orig_port: pattern=
+        - nat: pattern=
+        - nat46: pattern=
+        - nat64: pattern=
+        - nat_ippool: pattern=
+        - nat_ippool6: pattern=
+        - port_preserve: pattern=
+        - port_random: pattern=
+        - nat_port: pattern=
+        - dst_port: pattern=
+        - comments: max_length=1023 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -156,7 +179,29 @@ class CentralSnatMapModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of this policy.")    type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="IPv4/IPv6 source NAT.")    srcintf: list[CentralSnatMapSrcintf] = Field(description="Source interface name from available interfaces.")    dstintf: list[CentralSnatMapDstintf] = Field(description="Destination interface name from available interfaces.")    orig_addr: list[CentralSnatMapOrigAddr] = Field(description="IPv4 Original address.")    orig_addr6: list[CentralSnatMapOrigAddr6] = Field(description="IPv6 Original address.")    dst_addr: list[CentralSnatMapDstAddr] = Field(description="IPv4 Destination address.")    dst_addr6: list[CentralSnatMapDstAddr6] = Field(description="IPv6 Destination address.")    protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type (0 - 255).")    orig_port: str | None = Field(default="", description="Original TCP port (1 to 65535, 0 means any port).")    nat: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable source NAT.")    nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")    nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")    nat_ippool: list[CentralSnatMapNatIppool] = Field(default=None, description="Name of the IP pools to be used to translate addresses from available IP Pools.")    nat_ippool6: list[CentralSnatMapNatIppool6] = Field(default=None, description="IPv6 pools to be used for source NAT.")    port_preserve: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable preservation of the original source port from source NAT if it has not been used.")    port_random: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable random source port selection for source NAT.")    nat_port: str | None = Field(default="", description="Translated port or port range (1 to 65535, 0 means any port).")    dst_port: str | None = Field(default="", description="Destination port or port range (1 to 65535, 0 means any port).")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    # ========================================================================
+    policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of this policy.")
+    type_: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="IPv4/IPv6 source NAT.")
+    srcintf: list[CentralSnatMapSrcintf] | None = Field(description="Source interface name from available interfaces.")
+    dstintf: list[CentralSnatMapDstintf] | None = Field(description="Destination interface name from available interfaces.")
+    orig_addr: list[CentralSnatMapOrigAddr] | None = Field(description="IPv4 Original address.")
+    orig_addr6: list[CentralSnatMapOrigAddr6] | None = Field(description="IPv6 Original address.")
+    dst_addr: list[CentralSnatMapDstAddr] | None = Field(description="IPv4 Destination address.")
+    dst_addr6: list[CentralSnatMapDstAddr6] | None = Field(description="IPv6 Destination address.")
+    protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type (0 - 255).")
+    orig_port: str | None = Field(default="", description="Original TCP port (1 to 65535, 0 means any port).")
+    nat: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable source NAT.")
+    nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")
+    nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")
+    nat_ippool: list[CentralSnatMapNatIppool] | None = Field(default=None, description="Name of the IP pools to be used to translate addresses from available IP Pools.")
+    nat_ippool6: list[CentralSnatMapNatIppool6] | None = Field(default=None, description="IPv6 pools to be used for source NAT.")
+    port_preserve: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable preservation of the original source port from source NAT if it has not been used.")
+    port_random: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable random source port selection for source NAT.")
+    nat_port: str | None = Field(default="", description="Translated port or port range (1 to 65535, 0 means any port).")
+    dst_port: str | None = Field(default="", description="Destination port or port range (1 to 65535, 0 means any port).")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -220,7 +265,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -282,7 +327,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstintf", [])
@@ -344,7 +389,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "orig_addr", [])
@@ -406,7 +451,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "orig_addr6", [])
@@ -468,7 +513,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dst_addr", [])
@@ -528,7 +573,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dst_addr6", [])
@@ -588,7 +633,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "nat_ippool", [])
@@ -646,7 +691,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "nat_ippool6", [])
@@ -692,15 +737,22 @@ class CentralSnatMapModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_orig_addr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_orig_addr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dst_addr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dst_addr6_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nat_ippool_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nat_ippool6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstintf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_orig_addr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_orig_addr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dst_addr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dst_addr6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nat_ippool_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nat_ippool6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -722,5 +774,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.825033Z
+# Generated: 2026-01-14T22:43:37.150987Z
 # ============================================================================

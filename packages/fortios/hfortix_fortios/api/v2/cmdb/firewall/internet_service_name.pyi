@@ -27,7 +27,7 @@ class InternetServiceNamePayload(TypedDict, total=False):
         }
     """
     name: str  # Internet Service name. | MaxLen: 63
-    type: Literal["default", "location"]  # Internet Service name type. | Default: default
+    type_: Literal["default", "location"]  # Internet Service name type. | Default: default
     internet_service_id: int  # Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
     country_id: int  # Country or Area ID. | Default: 0 | Min: 0 | Max: 4294967295
     region_id: int  # Region ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -46,7 +46,7 @@ class InternetServiceNameResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Internet Service name. | MaxLen: 63
-    type: Literal["default", "location"]  # Internet Service name type. | Default: default
+    type_: Literal["default", "location"]  # Internet Service name type. | Default: default
     internet_service_id: int  # Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
     country_id: int  # Country or Area ID. | Default: 0 | Min: 0 | Max: 4294967295
     region_id: int  # Region ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -64,7 +64,7 @@ class InternetServiceNameObject:
     # Internet Service name. | MaxLen: 63
     name: str
     # Internet Service name type. | Default: default
-    type: Literal["default", "location"]
+    type_: Literal["default", "location"]
     # Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
     internet_service_id: int
     # Country or Area ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -98,6 +98,10 @@ class InternetServiceName:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -118,6 +122,7 @@ class InternetServiceName:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceNameResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -135,6 +140,7 @@ class InternetServiceName:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InternetServiceNameResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -151,6 +157,7 @@ class InternetServiceName:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InternetServiceNameResponse]: ...
     
     # ================================================================
@@ -193,7 +200,7 @@ class InternetServiceName:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
     
@@ -212,7 +219,7 @@ class InternetServiceName:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InternetServiceNameObject]: ...
     
@@ -312,23 +319,6 @@ class InternetServiceName:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InternetServiceNameObject | list[InternetServiceNameObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -341,13 +331,14 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
@@ -357,7 +348,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -374,7 +365,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -390,27 +381,13 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InternetServiceNamePayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
-        internet_service_id: int | None = ...,
-        country_id: int | None = ...,
-        region_id: int | None = ...,
-        city_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -420,13 +397,14 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
@@ -436,7 +414,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -453,7 +431,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -469,27 +447,13 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InternetServiceNamePayload | None = ...,
-        name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
-        internet_service_id: int | None = ...,
-        country_id: int | None = ...,
-        region_id: int | None = ...,
-        city_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -500,6 +464,7 @@ class InternetServiceName:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
@@ -530,14 +495,7 @@ class InternetServiceName:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -551,7 +509,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -572,8 +530,6 @@ class InternetServiceName:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -601,6 +557,10 @@ class InternetServiceNameDictMode:
     By default returns InternetServiceNameResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return InternetServiceNameObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -705,7 +665,7 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -722,7 +682,7 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -739,21 +699,23 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -768,7 +730,7 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -785,7 +747,7 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -802,21 +764,23 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -853,10 +817,12 @@ class InternetServiceNameDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -875,7 +841,7 @@ class InternetServiceNameDictMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -895,8 +861,6 @@ class InternetServiceNameDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -920,6 +884,10 @@ class InternetServiceNameObjectMode:
     By default returns InternetServiceNameObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InternetServiceNameResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1024,7 +992,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1041,7 +1009,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1058,7 +1026,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1075,21 +1043,23 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1104,7 +1074,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1121,7 +1091,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1138,7 +1108,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1155,21 +1125,23 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1217,10 +1189,12 @@ class InternetServiceNameObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InternetServiceNameObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1239,7 +1213,7 @@ class InternetServiceNameObjectMode:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type_: Literal["default", "location"] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -1259,8 +1233,6 @@ class InternetServiceNameObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

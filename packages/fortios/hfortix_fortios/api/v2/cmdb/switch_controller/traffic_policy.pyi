@@ -24,7 +24,7 @@ class TrafficPolicyPayload(TypedDict, total=False):
     guaranteed_bandwidth: int  # Guaranteed bandwidth in kbps | Default: 10000 | Min: 0 | Max: 524287000
     guaranteed_burst: int  # Guaranteed burst size in bytes | Default: 45000 | Min: 0 | Max: 4294967295
     maximum_burst: int  # Maximum burst size in bytes | Default: 67500 | Min: 0 | Max: 4294967295
-    type: Literal["ingress", "egress"]  # Configure type of policy(ingress/egress). | Default: ingress
+    type_: Literal["ingress", "egress"]  # Configure type of policy(ingress/egress). | Default: ingress
     cos_queue: int  # COS queue(0 - 7), or unset to disable. | Min: 0 | Max: 7
 
 # Nested TypedDicts for table field children (dict mode)
@@ -45,7 +45,7 @@ class TrafficPolicyResponse(TypedDict):
     guaranteed_bandwidth: int  # Guaranteed bandwidth in kbps | Default: 10000 | Min: 0 | Max: 524287000
     guaranteed_burst: int  # Guaranteed burst size in bytes | Default: 45000 | Min: 0 | Max: 4294967295
     maximum_burst: int  # Maximum burst size in bytes | Default: 67500 | Min: 0 | Max: 4294967295
-    type: Literal["ingress", "egress"]  # Configure type of policy(ingress/egress). | Default: ingress
+    type_: Literal["ingress", "egress"]  # Configure type of policy(ingress/egress). | Default: ingress
     cos_queue: int  # COS queue(0 - 7), or unset to disable. | Min: 0 | Max: 7
 
 
@@ -70,7 +70,7 @@ class TrafficPolicyObject:
     # Maximum burst size in bytes (max value = 4294967295). | Default: 67500 | Min: 0 | Max: 4294967295
     maximum_burst: int
     # Configure type of policy(ingress/egress). | Default: ingress
-    type: Literal["ingress", "egress"]
+    type_: Literal["ingress", "egress"]
     # COS queue(0 - 7), or unset to disable. | Min: 0 | Max: 7
     cos_queue: int
     
@@ -98,6 +98,10 @@ class TrafficPolicy:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -118,6 +122,7 @@ class TrafficPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TrafficPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -135,6 +140,7 @@ class TrafficPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> TrafficPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -151,6 +157,7 @@ class TrafficPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[TrafficPolicyResponse]: ...
     
     # ================================================================
@@ -193,7 +200,7 @@ class TrafficPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
     
@@ -212,7 +219,7 @@ class TrafficPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[TrafficPolicyObject]: ...
     
@@ -312,23 +319,6 @@ class TrafficPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> TrafficPolicyObject | list[TrafficPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -346,10 +336,11 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
@@ -364,7 +355,7 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -383,7 +374,7 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -401,26 +392,10 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: TrafficPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        policer_status: Literal["enable", "disable"] | None = ...,
-        guaranteed_bandwidth: int | None = ...,
-        guaranteed_burst: int | None = ...,
-        maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
-        cos_queue: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -435,10 +410,11 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
@@ -453,7 +429,7 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -472,7 +448,7 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -490,26 +466,10 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: TrafficPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        policer_status: Literal["enable", "disable"] | None = ...,
-        guaranteed_bandwidth: int | None = ...,
-        guaranteed_burst: int | None = ...,
-        maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
-        cos_queue: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -520,6 +480,7 @@ class TrafficPolicy:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
@@ -550,14 +511,7 @@ class TrafficPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -576,7 +530,7 @@ class TrafficPolicy:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -594,8 +548,6 @@ class TrafficPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -623,6 +575,10 @@ class TrafficPolicyDictMode:
     By default returns TrafficPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return TrafficPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -732,7 +688,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -751,7 +707,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -770,13 +726,15 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: TrafficPolicyPayload | None = ...,
@@ -786,7 +744,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -803,7 +761,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -822,7 +780,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -841,13 +799,15 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: TrafficPolicyPayload | None = ...,
@@ -857,7 +817,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -891,10 +851,12 @@ class TrafficPolicyDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -918,7 +880,7 @@ class TrafficPolicyDictMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -935,8 +897,6 @@ class TrafficPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -960,6 +920,10 @@ class TrafficPolicyObjectMode:
     By default returns TrafficPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return TrafficPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1069,7 +1033,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1088,7 +1052,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1107,7 +1071,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1126,13 +1090,15 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: TrafficPolicyPayload | None = ...,
@@ -1142,7 +1108,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1159,7 +1125,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1178,7 +1144,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1197,7 +1163,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1216,13 +1182,15 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: TrafficPolicyPayload | None = ...,
@@ -1232,7 +1200,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1277,10 +1245,12 @@ class TrafficPolicyObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> TrafficPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1304,7 +1274,7 @@ class TrafficPolicyObjectMode:
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type_: Literal["ingress", "egress"] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -1321,8 +1291,6 @@ class TrafficPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -47,7 +47,15 @@ class PtpModel(BaseModel):
 
     Configure system PTP information.
 
-    Validation Rules:        - status: pattern=        - mode: pattern=        - delay_mechanism: pattern=        - request_interval: min=1 max=6 pattern=        - interface: max_length=15 pattern=        - server_mode: pattern=        - server_interface: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - mode: pattern=
+        - delay_mechanism: pattern=
+        - request_interval: min=1 max=6 pattern=
+        - interface: max_length=15 pattern=
+        - server_mode: pattern=
+        - server_interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -59,7 +67,14 @@ class PtpModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable setting the FortiGate system time by synchronizing with an PTP Server.")    mode: Literal["multicast", "hybrid"] | None = Field(default="multicast", description="Multicast transmission or hybrid transmission.")    delay_mechanism: Literal["E2E", "P2P"] | None = Field(default="E2E", description="End to end delay detection or peer to peer delay detection.")    request_interval: int | None = Field(ge=1, le=6, default=1, description="The delay request value is the logarithmic mean interval in seconds between the delay request messages sent by the slave to the master.")    interface: str = Field(max_length=15, default="", description="PTP client will reply through this interface.")  # datasource: ['system.interface.name']    server_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiGate PTP server mode. Your FortiGate becomes an PTP server for other devices on your network.")    server_interface: list[PtpServerInterface] = Field(default=None, description="FortiGate interface(s) with PTP server mode enabled. Devices on your network can contact these interfaces for PTP services.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable setting the FortiGate system time by synchronizing with an PTP Server.")
+    mode: Literal["multicast", "hybrid"] | None = Field(default="multicast", description="Multicast transmission or hybrid transmission.")
+    delay_mechanism: Literal["E2E", "P2P"] | None = Field(default="E2E", description="End to end delay detection or peer to peer delay detection.")
+    request_interval: int | None = Field(ge=1, le=6, default=1, description="The delay request value is the logarithmic mean interval in seconds between the delay request messages sent by the slave to the master.")
+    interface: str = Field(max_length=15, default="", description="PTP client will reply through this interface.")  # datasource: ['system.interface.name']
+    server_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiGate PTP server mode. Your FortiGate becomes an PTP server for other devices on your network.")
+    server_interface: list[PtpServerInterface] | None = Field(default=None, description="FortiGate interface(s) with PTP server mode enabled. Devices on your network can contact these interfaces for PTP services.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -138,7 +153,7 @@ class PtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ptp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -187,7 +202,7 @@ class PtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ptp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "server_interface", [])
@@ -233,9 +248,10 @@ class PtpModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_server_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_server_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -257,5 +273,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.717536Z
+# Generated: 2026-01-14T22:43:38.252162Z
 # ============================================================================

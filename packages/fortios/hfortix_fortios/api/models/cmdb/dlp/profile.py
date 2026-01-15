@@ -30,18 +30,18 @@ class ProfileRule(BaseModel):
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
     name: str | None = Field(max_length=35, default="", description="Filter name.")
-    severity: SeverityEnum | None = Field(default="medium", description="Select the severity or threat level that matches this filter.")
-    type: Literal["file", "message"] | None = Field(default="file", description="Select whether to check the content of messages (an email message) or files (downloaded files or email attachments).")
-    proto: ProtoEnum | None = Field(default="", description="Check messages or files over one or more of these protocols.")
-    filter_by: FilterByEnum | None = Field(default="none", description="Select the type of content to match.")
+    severity: str | None = Field(default="medium", description="Select the severity or threat level that matches this filter.")
+    type_: Literal["file", "message"] | None = Field(default="file", description="Select whether to check the content of messages (an email message) or files (downloaded files or email attachments).")
+    proto: str | None = Field(default=None, description="Check messages or files over one or more of these protocols.")
+    filter_by: str | None = Field(default="none", description="Select the type of content to match.")
     file_size: int | None = Field(ge=0, le=4193280, default=0, description="Match files greater than or equal to this size (KB).")
-    sensitivity: list[Sensitivity] = Field(description="Select a DLP file pattern sensitivity to match.")
+    sensitivity: list[dict[str, Any]] | None = Field(description="Select a DLP file pattern sensitivity to match.")
     match_percentage: int | None = Field(ge=1, le=100, default=10, description="Percentage of fingerprints in the fingerprint databases designated with the selected sensitivity to match.")
     file_type: int | None = Field(ge=0, le=4294967295, default=0, description="Select the number of a DLP file pattern table to match.")  # datasource: ['dlp.filepattern.id']
-    sensor: list[Sensor] = Field(description="Select DLP sensors.")
+    sensor: list[dict[str, Any]] | None = Field(description="Select DLP sensors.")
     label: str = Field(max_length=35, default="", description="Select DLP label.")  # datasource: ['dlp.label.name']
     archive: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DLP archiving.")
-    action: ActionEnum | None = Field(default="allow", description="Action to take with content that this DLP profile matches.")
+    action: str | None = Field(default="allow", description="Action to take with content that this DLP profile matches.")
     expiry: str | None = Field(default="5m", description="Quarantine duration in days, hours, minutes (format = dddhhmm).")
 
 # ============================================================================
@@ -49,7 +49,7 @@ class ProfileRule(BaseModel):
 # ============================================================================
 
 
-class ProfileFull_archive_protoEnum(str, Enum):
+class ProfileFullArchiveProtoEnum(str, Enum):
     """Allowed values for full_archive_proto field."""
     SMTP = "smtp"
     POP3 = "pop3"
@@ -63,7 +63,7 @@ class ProfileFull_archive_protoEnum(str, Enum):
     CIFS = "cifs"
 
 
-class ProfileSummary_protoEnum(str, Enum):
+class ProfileSummaryProtoEnum(str, Enum):
     """Allowed values for summary_proto field."""
     SMTP = "smtp"
     POP3 = "pop3"
@@ -88,7 +88,19 @@ class ProfileModel(BaseModel):
 
     Configure DLP profiles.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - feature_set: pattern=        - replacemsg_group: max_length=35 pattern=        - rule: pattern=        - dlp_log: pattern=        - extended_log: pattern=        - nac_quar_log: pattern=        - full_archive_proto: pattern=        - summary_proto: pattern=        - fortidata_error_action: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - feature_set: pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - rule: pattern=
+        - dlp_log: pattern=
+        - extended_log: pattern=
+        - nac_quar_log: pattern=
+        - full_archive_proto: pattern=
+        - summary_proto: pattern=
+        - fortidata_error_action: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -100,7 +112,18 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Name of the DLP profile.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group used by this DLP profile.")  # datasource: ['system.replacemsg-group.name']    rule: list[ProfileRule] = Field(default=None, description="Set up DLP rules for this profile.")    dlp_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DLP logging.")    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging for data loss prevention.")    nac_quar_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAC quarantine logging.")    full_archive_proto: ProfileFullArchiveProtoEnum | None = Field(default="", description="Protocols to always content archive.")    summary_proto: ProfileSummaryProtoEnum | None = Field(default="", description="Protocols to always log summary.")    fortidata_error_action: Literal["log-only", "block", "ignore"] | None = Field(default="block", description="Action to take if FortiData query fails.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Name of the DLP profile.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group used by this DLP profile.")  # datasource: ['system.replacemsg-group.name']
+    rule: list[ProfileRule] | None = Field(default=None, description="Set up DLP rules for this profile.")
+    dlp_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DLP logging.")
+    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging for data loss prevention.")
+    nac_quar_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAC quarantine logging.")
+    full_archive_proto: str | ProfileFullArchiveProtoEnum | None = Field(default=None, description="Protocols to always content archive.")
+    summary_proto: str | ProfileSummaryProtoEnum | None = Field(default=None, description="Protocols to always log summary.")
+    fortidata_error_action: Literal["log-only", "block", "ignore"] | None = Field(default="block", description="Action to take if FortiData query fails.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -179,7 +202,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -228,7 +251,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "rule", [])
@@ -274,9 +297,10 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_replacemsg_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_rule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_rule_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -298,5 +322,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.870647Z
+# Generated: 2026-01-14T22:43:39.749856Z
 # ============================================================================

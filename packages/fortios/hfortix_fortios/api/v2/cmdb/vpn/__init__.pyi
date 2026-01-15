@@ -10,8 +10,8 @@ if TYPE_CHECKING:
     from .l2tp import L2tp, L2tpDictMode, L2tpObjectMode
     from .pptp import Pptp, PptpDictMode, PptpObjectMode
     from .qkd import Qkd, QkdDictMode, QkdObjectMode
-    from .certificate import CertificateDictMode, CertificateObjectMode
-    from .ipsec import IpsecDictMode, IpsecObjectMode
+    from .certificate import Certificate, CertificateDictMode, CertificateObjectMode
+    from .ipsec import Ipsec, IpsecDictMode, IpsecObjectMode
 
 __all__ = [
     "KmipServer",

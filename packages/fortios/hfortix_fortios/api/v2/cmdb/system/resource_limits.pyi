@@ -137,6 +137,10 @@ class ResourceLimits:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -157,6 +161,7 @@ class ResourceLimits:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ResourceLimitsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -174,6 +179,7 @@ class ResourceLimits:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ResourceLimitsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -190,6 +196,7 @@ class ResourceLimits:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ResourceLimitsResponse: ...
     
     # ================================================================
@@ -232,7 +239,7 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
@@ -251,7 +258,7 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
@@ -351,23 +358,6 @@ class ResourceLimits:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ResourceLimitsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -399,6 +389,7 @@ class ResourceLimits:
         log_disk_quota: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
@@ -483,33 +474,7 @@ class ResourceLimits:
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ResourceLimitsPayload | None = ...,
-        session: int | None = ...,
-        ipsec_phase1: int | None = ...,
-        ipsec_phase2: int | None = ...,
-        ipsec_phase1_interface: int | None = ...,
-        ipsec_phase2_interface: int | None = ...,
-        dialup_tunnel: int | None = ...,
-        firewall_policy: int | None = ...,
-        firewall_address: int | None = ...,
-        firewall_addrgrp: int | None = ...,
-        custom_service: int | None = ...,
-        service_group: int | None = ...,
-        onetime_schedule: int | None = ...,
-        recurring_schedule: int | None = ...,
-        user: int | None = ...,
-        user_group: int | None = ...,
-        sslvpn: int | None = ...,
-        proxy: int | None = ...,
-        log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -556,8 +521,6 @@ class ResourceLimits:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -585,6 +548,10 @@ class ResourceLimitsDictMode:
     By default returns ResourceLimitsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ResourceLimitsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -766,10 +733,12 @@ class ResourceLimitsDictMode:
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ResourceLimitsPayload | None = ...,
@@ -839,8 +808,6 @@ class ResourceLimitsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +831,10 @@ class ResourceLimitsObjectMode:
     By default returns ResourceLimitsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ResourceLimitsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1074,10 +1045,12 @@ class ResourceLimitsObjectMode:
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ResourceLimitsPayload | None = ...,
@@ -1147,8 +1120,6 @@ class ResourceLimitsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

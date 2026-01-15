@@ -57,7 +57,7 @@ class RadiusAccountingServer(BaseModel):
 # ============================================================================
 
 
-class RadiusAuth_typeEnum(str, Enum):
+class RadiusAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
     AUTO = "auto"
     MS_CHAP_V2 = "ms_chap_v2"
@@ -66,7 +66,7 @@ class RadiusAuth_typeEnum(str, Enum):
     PAP = "pap"
 
 
-class RadiusMac_username_delimiterEnum(str, Enum):
+class RadiusMacUsernameDelimiterEnum(str, Enum):
     """Allowed values for mac_username_delimiter field."""
     HYPHEN = "hyphen"
     SINGLE_HYPHEN = "single-hyphen"
@@ -74,7 +74,7 @@ class RadiusMac_username_delimiterEnum(str, Enum):
     NONE = "none"
 
 
-class RadiusMac_password_delimiterEnum(str, Enum):
+class RadiusMacPasswordDelimiterEnum(str, Enum):
     """Allowed values for mac_password_delimiter field."""
     HYPHEN = "hyphen"
     SINGLE_HYPHEN = "single-hyphen"
@@ -82,7 +82,7 @@ class RadiusMac_password_delimiterEnum(str, Enum):
     NONE = "none"
 
 
-class RadiusSwitch_controller_service_typeEnum(str, Enum):
+class RadiusSwitchControllerServiceTypeEnum(str, Enum):
     """Allowed values for switch_controller_service_type field."""
     LOGIN = "login"
     FRAMED = "framed"
@@ -97,7 +97,7 @@ class RadiusSwitch_controller_service_typeEnum(str, Enum):
     CALLBACK_ADMINISTRATIVE = "callback-administrative"
 
 
-class RadiusTls_min_proto_versionEnum(str, Enum):
+class RadiusTlsMinProtoVersionEnum(str, Enum):
     """Allowed values for tls_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -107,7 +107,7 @@ class RadiusTls_min_proto_versionEnum(str, Enum):
     TLSV1_3 = "TLSv1-3"
 
 
-class RadiusAccount_key_cert_fieldEnum(str, Enum):
+class RadiusAccountKeyCertFieldEnum(str, Enum):
     """Allowed values for account_key_cert_field field."""
     OTHERNAME = "othername"
     RFC822NAME = "rfc822name"
@@ -115,7 +115,7 @@ class RadiusAccount_key_cert_fieldEnum(str, Enum):
     CN = "cn"
 
 
-class RadiusRsso_endpoint_attributeEnum(str, Enum):
+class RadiusRssoEndpointAttributeEnum(str, Enum):
     """Allowed values for rsso_endpoint_attribute field."""
     USER_NAME = "User-Name"
     NAS_IP_ADDRESS = "NAS-IP-Address"
@@ -141,7 +141,7 @@ class RadiusRsso_endpoint_attributeEnum(str, Enum):
     ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
 
 
-class RadiusRsso_endpoint_block_attributeEnum(str, Enum):
+class RadiusRssoEndpointBlockAttributeEnum(str, Enum):
     """Allowed values for rsso_endpoint_block_attribute field."""
     USER_NAME = "User-Name"
     NAS_IP_ADDRESS = "NAS-IP-Address"
@@ -167,7 +167,7 @@ class RadiusRsso_endpoint_block_attributeEnum(str, Enum):
     ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
 
 
-class RadiusSso_attributeEnum(str, Enum):
+class RadiusSsoAttributeEnum(str, Enum):
     """Allowed values for sso_attribute field."""
     USER_NAME = "User-Name"
     NAS_IP_ADDRESS = "NAS-IP-Address"
@@ -193,7 +193,7 @@ class RadiusSso_attributeEnum(str, Enum):
     ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
 
 
-class RadiusRsso_log_flagsEnum(str, Enum):
+class RadiusRssoLogFlagsEnum(str, Enum):
     """Allowed values for rsso_log_flags field."""
     PROTOCOL_ERROR = "protocol-error"
     PROFILE_MISSING = "profile-missing"
@@ -215,7 +215,70 @@ class RadiusModel(BaseModel):
 
     Configure RADIUS server entries.
 
-    Validation Rules:        - name: max_length=35 pattern=        - server: max_length=63 pattern=        - secret: max_length=128 pattern=        - secondary_server: max_length=63 pattern=        - secondary_secret: max_length=128 pattern=        - tertiary_server: max_length=63 pattern=        - tertiary_secret: max_length=128 pattern=        - timeout: min=1 max=300 pattern=        - status_ttl: min=0 max=600 pattern=        - all_usergroup: pattern=        - use_management_vdom: pattern=        - switch_controller_nas_ip_dynamic: pattern=        - nas_ip: pattern=        - nas_id_type: pattern=        - call_station_id_type: pattern=        - nas_id: max_length=255 pattern=        - acct_interim_interval: min=60 max=86400 pattern=        - radius_coa: pattern=        - radius_port: min=0 max=65535 pattern=        - h3c_compatibility: pattern=        - auth_type: pattern=        - source_ip: max_length=63 pattern=        - source_ip_interface: max_length=15 pattern=        - username_case_sensitive: pattern=        - group_override_attr_type: pattern=        - class_: pattern=        - password_renewal: pattern=        - require_message_authenticator: pattern=        - password_encoding: pattern=        - mac_username_delimiter: pattern=        - mac_password_delimiter: pattern=        - mac_case: pattern=        - acct_all_servers: pattern=        - switch_controller_acct_fast_framedip_detect: min=2 max=600 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=        - switch_controller_service_type: pattern=        - transport_protocol: pattern=        - tls_min_proto_version: pattern=        - ca_cert: max_length=79 pattern=        - client_cert: max_length=35 pattern=        - server_identity_check: pattern=        - account_key_processing: pattern=        - account_key_cert_field: pattern=        - rsso: pattern=        - rsso_radius_server_port: min=0 max=65535 pattern=        - rsso_radius_response: pattern=        - rsso_validate_request_secret: pattern=        - rsso_secret: max_length=31 pattern=        - rsso_endpoint_attribute: pattern=        - rsso_endpoint_block_attribute: pattern=        - sso_attribute: pattern=        - sso_attribute_key: max_length=35 pattern=        - sso_attribute_value_override: pattern=        - rsso_context_timeout: min=0 max=4294967295 pattern=        - rsso_log_period: min=0 max=4294967295 pattern=        - rsso_log_flags: pattern=        - rsso_flush_ip_session: pattern=        - rsso_ep_one_ip_only: pattern=        - delimiter: pattern=        - accounting_server: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - server: max_length=63 pattern=
+        - secret: max_length=128 pattern=
+        - secondary_server: max_length=63 pattern=
+        - secondary_secret: max_length=128 pattern=
+        - tertiary_server: max_length=63 pattern=
+        - tertiary_secret: max_length=128 pattern=
+        - timeout: min=1 max=300 pattern=
+        - status_ttl: min=0 max=600 pattern=
+        - all_usergroup: pattern=
+        - use_management_vdom: pattern=
+        - switch_controller_nas_ip_dynamic: pattern=
+        - nas_ip: pattern=
+        - nas_id_type: pattern=
+        - call_station_id_type: pattern=
+        - nas_id: max_length=255 pattern=
+        - acct_interim_interval: min=60 max=86400 pattern=
+        - radius_coa: pattern=
+        - radius_port: min=0 max=65535 pattern=
+        - h3c_compatibility: pattern=
+        - auth_type: pattern=
+        - source_ip: max_length=63 pattern=
+        - source_ip_interface: max_length=15 pattern=
+        - username_case_sensitive: pattern=
+        - group_override_attr_type: pattern=
+        - class_: pattern=
+        - password_renewal: pattern=
+        - require_message_authenticator: pattern=
+        - password_encoding: pattern=
+        - mac_username_delimiter: pattern=
+        - mac_password_delimiter: pattern=
+        - mac_case: pattern=
+        - acct_all_servers: pattern=
+        - switch_controller_acct_fast_framedip_detect: min=2 max=600 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+        - switch_controller_service_type: pattern=
+        - transport_protocol: pattern=
+        - tls_min_proto_version: pattern=
+        - ca_cert: max_length=79 pattern=
+        - client_cert: max_length=35 pattern=
+        - server_identity_check: pattern=
+        - account_key_processing: pattern=
+        - account_key_cert_field: pattern=
+        - rsso: pattern=
+        - rsso_radius_server_port: min=0 max=65535 pattern=
+        - rsso_radius_response: pattern=
+        - rsso_validate_request_secret: pattern=
+        - rsso_secret: max_length=31 pattern=
+        - rsso_endpoint_attribute: pattern=
+        - rsso_endpoint_block_attribute: pattern=
+        - sso_attribute: pattern=
+        - sso_attribute_key: max_length=35 pattern=
+        - sso_attribute_value_override: pattern=
+        - rsso_context_timeout: min=0 max=4294967295 pattern=
+        - rsso_log_period: min=0 max=4294967295 pattern=
+        - rsso_log_flags: pattern=
+        - rsso_flush_ip_session: pattern=
+        - rsso_ep_one_ip_only: pattern=
+        - delimiter: pattern=
+        - accounting_server: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -227,7 +290,69 @@ class RadiusModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="RADIUS server entry name.")    server: str = Field(max_length=63, default="", description="Primary RADIUS server CN domain name or IP address.")    secret: Any = Field(max_length=128, description="Pre-shared secret key used to access the primary RADIUS server.")    secondary_server: str | None = Field(max_length=63, default="", description="Secondary RADIUS CN domain name or IP address.")    secondary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the secondary server.")    tertiary_server: str | None = Field(max_length=63, default="", description="Tertiary RADIUS CN domain name or IP address.")    tertiary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the tertiary server.")    timeout: int | None = Field(ge=1, le=300, default=5, description="Time in seconds to retry connecting server.")    status_ttl: int | None = Field(ge=0, le=600, default=300, description="Time for which server reachability is cached so that when a server is unreachable, it will not be retried for at least this period of time (0 = cache disabled, default = 300).")    all_usergroup: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatically including this RADIUS server in all user groups.")    use_management_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using management VDOM to send requests.")    switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/Disable switch-controller nas-ip dynamic to dynamically set nas-ip.")    nas_ip: str | None = Field(default="0.0.0.0", description="IP address used to communicate with the RADIUS server and used as NAS-IP-Address and Called-Station-ID attributes.")    nas_id_type: Literal["legacy", "custom", "hostname"] | None = Field(default="legacy", description="NAS identifier type configuration (default = legacy).")    call_station_id_type: Literal["legacy", "IP", "MAC"] | None = Field(default="legacy", description="Calling & Called station identifier type configuration (default = legacy), this option is not available for 802.1x authentication. ")    nas_id: str | None = Field(max_length=255, default="", description="Custom NAS identifier.")    acct_interim_interval: int | None = Field(ge=60, le=86400, default=0, description="Time in seconds between each accounting interim update message.")    radius_coa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow a mechanism to change the attributes of an authentication, authorization, and accounting session after it is authenticated.")    radius_port: int | None = Field(ge=0, le=65535, default=0, description="RADIUS service port number.")    h3c_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compatibility with the H3C, a mechanism that performs security checking for authentication.")    auth_type: RadiusAuthTypeEnum | None = Field(default="auto", description="Authentication methods/protocols permitted for this RADIUS server.")    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to the RADIUS server.")    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface for communication with the RADIUS server.")  # datasource: ['system.interface.name']    username_case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable case sensitive user names.")    group_override_attr_type: Literal["filter-Id", "class"] | None = Field(default="", description="RADIUS attribute type to override user group information.")    class_: list[RadiusClass] = Field(default=None, description="Class attribute name(s).")    password_renewal: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable password renewal.")    require_message_authenticator: Literal["enable", "disable"] | None = Field(default="enable", description="Require message authenticator in authentication response.")    password_encoding: Literal["auto", "ISO-8859-1"] | None = Field(default="auto", description="Password encoding.")    mac_username_delimiter: RadiusMacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")    mac_password_delimiter: RadiusMacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")    mac_case: Literal["uppercase", "lowercase"] | None = Field(default="lowercase", description="MAC authentication case (default = lowercase).")    acct_all_servers: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of accounting messages to all configured servers (default = disable).")    switch_controller_acct_fast_framedip_detect: int | None = Field(ge=2, le=600, default=2, description="Switch controller accounting message Framed-IP detection from DHCP snooping (seconds, default=2).")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    switch_controller_service_type: RadiusSwitchControllerServiceTypeEnum | None = Field(default="", description="RADIUS service type.")    transport_protocol: Literal["udp", "tcp", "tls"] | None = Field(default="udp", description="Transport protocol to be used (default = udp).")    tls_min_proto_version: RadiusTlsMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for TLS connections (default is to follow system global setting).")    ca_cert: str | None = Field(max_length=79, default="", description="CA of server to trust under TLS.")  # datasource: ['vpn.certificate.ca.name']    client_cert: str | None = Field(max_length=35, default="", description="Client certificate to use under TLS.")  # datasource: ['vpn.certificate.local.name']    server_identity_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable RADIUS server identity check (verify server domain name/IP address against the server certificate).")    account_key_processing: Literal["same", "strip"] | None = Field(default="same", description="Account key processing operation. The FortiGate will keep either the whole domain or strip the domain from the subject identity.")    account_key_cert_field: RadiusAccountKeyCertFieldEnum | None = Field(default="othername", description="Define subject identity field in certificate for user access right checking.")    rsso: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable RADIUS based single sign on feature.")    rsso_radius_server_port: int = Field(ge=0, le=65535, default=1813, description="UDP port to listen on for RADIUS Start and Stop records.")    rsso_radius_response: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable sending RADIUS response packets after receiving Start and Stop records.")    rsso_validate_request_secret: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable validating the RADIUS request shared secret in the Start or End record.")    rsso_secret: Any = Field(max_length=31, description="RADIUS secret used by the RADIUS accounting server.")    rsso_endpoint_attribute: RadiusRssoEndpointAttributeEnum = Field(default="Calling-Station-Id", description="RADIUS attributes used to extract the user end point identifier from the RADIUS Start record.")    rsso_endpoint_block_attribute: RadiusRssoEndpointBlockAttributeEnum = Field(default="", description="RADIUS attributes used to block a user.")    sso_attribute: RadiusSsoAttributeEnum = Field(default="Class", description="RADIUS attribute that contains the profile group name to be extracted from the RADIUS Start record.")    sso_attribute_key: str | None = Field(max_length=35, default="", description="Key prefix for SSO group value in the SSO attribute.")    sso_attribute_value_override: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable override old attribute value with new value for the same endpoint.")    rsso_context_timeout: int = Field(ge=0, le=4294967295, default=28800, description="Time in seconds before the logged out user is removed from the \"user context list\" of logged on users.")    rsso_log_period: int = Field(ge=0, le=4294967295, default=0, description="Time interval in seconds that group event log messages will be generated for dynamic profile events.")    rsso_log_flags: RadiusRssoLogFlagsEnum | None = Field(default="protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other", description="Events to log.")    rsso_flush_ip_session: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable flushing user IP sessions on RADIUS accounting Stop messages.")    rsso_ep_one_ip_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.")    delimiter: Literal["plus", "comma"] | None = Field(default="plus", description="Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character \"+\").")    accounting_server: list[RadiusAccountingServer] = Field(default=None, description="Additional accounting servers.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="RADIUS server entry name.")
+    server: str = Field(max_length=63, default="", description="Primary RADIUS server CN domain name or IP address.")
+    secret: Any = Field(max_length=128, description="Pre-shared secret key used to access the primary RADIUS server.")
+    secondary_server: str | None = Field(max_length=63, default="", description="Secondary RADIUS CN domain name or IP address.")
+    secondary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the secondary server.")
+    tertiary_server: str | None = Field(max_length=63, default="", description="Tertiary RADIUS CN domain name or IP address.")
+    tertiary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the tertiary server.")
+    timeout: int | None = Field(ge=1, le=300, default=5, description="Time in seconds to retry connecting server.")
+    status_ttl: int | None = Field(ge=0, le=600, default=300, description="Time for which server reachability is cached so that when a server is unreachable, it will not be retried for at least this period of time (0 = cache disabled, default = 300).")
+    all_usergroup: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatically including this RADIUS server in all user groups.")
+    use_management_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using management VDOM to send requests.")
+    switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/Disable switch-controller nas-ip dynamic to dynamically set nas-ip.")
+    nas_ip: str | None = Field(default="0.0.0.0", description="IP address used to communicate with the RADIUS server and used as NAS-IP-Address and Called-Station-ID attributes.")
+    nas_id_type: Literal["legacy", "custom", "hostname"] | None = Field(default="legacy", description="NAS identifier type configuration (default = legacy).")
+    call_station_id_type: Literal["legacy", "IP", "MAC"] | None = Field(default="legacy", description="Calling & Called station identifier type configuration (default = legacy), this option is not available for 802.1x authentication. ")
+    nas_id: str | None = Field(max_length=255, default="", description="Custom NAS identifier.")
+    acct_interim_interval: int | None = Field(ge=60, le=86400, default=0, description="Time in seconds between each accounting interim update message.")
+    radius_coa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow a mechanism to change the attributes of an authentication, authorization, and accounting session after it is authenticated.")
+    radius_port: int | None = Field(ge=0, le=65535, default=0, description="RADIUS service port number.")
+    h3c_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compatibility with the H3C, a mechanism that performs security checking for authentication.")
+    auth_type: str | RadiusAuthTypeEnum | None = Field(default="auto", description="Authentication methods/protocols permitted for this RADIUS server.")
+    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to the RADIUS server.")
+    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface for communication with the RADIUS server.")  # datasource: ['system.interface.name']
+    username_case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable case sensitive user names.")
+    group_override_attr_type: Literal["filter-Id", "class"] | None = Field(default=None, description="RADIUS attribute type to override user group information.")
+    class_: list[RadiusClass] | None = Field(default=None, description="Class attribute name(s).")
+    password_renewal: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable password renewal.")
+    require_message_authenticator: Literal["enable", "disable"] | None = Field(default="enable", description="Require message authenticator in authentication response.")
+    password_encoding: Literal["auto", "ISO-8859-1"] | None = Field(default="auto", description="Password encoding.")
+    mac_username_delimiter: str | RadiusMacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")
+    mac_password_delimiter: str | RadiusMacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")
+    mac_case: Literal["uppercase", "lowercase"] | None = Field(default="lowercase", description="MAC authentication case (default = lowercase).")
+    acct_all_servers: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of accounting messages to all configured servers (default = disable).")
+    switch_controller_acct_fast_framedip_detect: int | None = Field(ge=2, le=600, default=2, description="Switch controller accounting message Framed-IP detection from DHCP snooping (seconds, default=2).")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    switch_controller_service_type: str | RadiusSwitchControllerServiceTypeEnum | None = Field(default=None, description="RADIUS service type.")
+    transport_protocol: Literal["udp", "tcp", "tls"] | None = Field(default="udp", description="Transport protocol to be used (default = udp).")
+    tls_min_proto_version: str | RadiusTlsMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for TLS connections (default is to follow system global setting).")
+    ca_cert: str | None = Field(max_length=79, default="", description="CA of server to trust under TLS.")  # datasource: ['vpn.certificate.ca.name']
+    client_cert: str | None = Field(max_length=35, default="", description="Client certificate to use under TLS.")  # datasource: ['vpn.certificate.local.name']
+    server_identity_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable RADIUS server identity check (verify server domain name/IP address against the server certificate).")
+    account_key_processing: Literal["same", "strip"] | None = Field(default="same", description="Account key processing operation. The FortiGate will keep either the whole domain or strip the domain from the subject identity.")
+    account_key_cert_field: str | RadiusAccountKeyCertFieldEnum | None = Field(default="othername", description="Define subject identity field in certificate for user access right checking.")
+    rsso: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable RADIUS based single sign on feature.")
+    rsso_radius_server_port: int = Field(ge=0, le=65535, default=1813, description="UDP port to listen on for RADIUS Start and Stop records.")
+    rsso_radius_response: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable sending RADIUS response packets after receiving Start and Stop records.")
+    rsso_validate_request_secret: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable validating the RADIUS request shared secret in the Start or End record.")
+    rsso_secret: Any = Field(max_length=31, description="RADIUS secret used by the RADIUS accounting server.")
+    rsso_endpoint_attribute: str | RadiusRssoEndpointAttributeEnum = Field(default="Calling-Station-Id", description="RADIUS attributes used to extract the user end point identifier from the RADIUS Start record.")
+    rsso_endpoint_block_attribute: str | RadiusRssoEndpointBlockAttributeEnum | None = Field(default=None, description="RADIUS attributes used to block a user.")
+    sso_attribute: str | RadiusSsoAttributeEnum = Field(default="Class", description="RADIUS attribute that contains the profile group name to be extracted from the RADIUS Start record.")
+    sso_attribute_key: str | None = Field(max_length=35, default="", description="Key prefix for SSO group value in the SSO attribute.")
+    sso_attribute_value_override: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable override old attribute value with new value for the same endpoint.")
+    rsso_context_timeout: int = Field(ge=0, le=4294967295, default=28800, description="Time in seconds before the logged out user is removed from the \"user context list\" of logged on users.")
+    rsso_log_period: int = Field(ge=0, le=4294967295, default=0, description="Time interval in seconds that group event log messages will be generated for dynamic profile events.")
+    rsso_log_flags: str | RadiusRssoLogFlagsEnum | None = Field(default=None, description="Events to log.")
+    rsso_flush_ip_session: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable flushing user IP sessions on RADIUS accounting Stop messages.")
+    rsso_ep_one_ip_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.")
+    delimiter: Literal["plus", "comma"] | None = Field(default="plus", description="Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character \"+\").")
+    accounting_server: list[RadiusAccountingServer] | None = Field(default=None, description="Additional accounting servers.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -351,7 +476,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -400,7 +525,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -449,7 +574,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ca_cert", None)
@@ -498,7 +623,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "client_cert", None)
@@ -547,7 +672,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "accounting_server", [])
@@ -593,12 +718,16 @@ class RadiusModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_source_ip_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ca_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_client_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_accounting_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ca_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_client_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_accounting_server_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -620,5 +749,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.743871Z
+# Generated: 2026-01-14T22:43:39.596239Z
 # ============================================================================

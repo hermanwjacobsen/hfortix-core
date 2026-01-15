@@ -26,7 +26,21 @@ class CrlModel(BaseModel):
 
     Certificate Revocation List as a PEM file.
 
-    Validation Rules:        - name: max_length=35 pattern=        - crl: pattern=        - range: pattern=        - source: pattern=        - update_vdom: max_length=31 pattern=        - ldap_server: max_length=35 pattern=        - ldap_username: max_length=63 pattern=        - ldap_password: max_length=128 pattern=        - http_url: max_length=255 pattern=        - scep_url: max_length=255 pattern=        - scep_cert: max_length=35 pattern=        - update_interval: min=0 max=4294967295 pattern=        - source_ip: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - crl: pattern=
+        - range_: pattern=
+        - source: pattern=
+        - update_vdom: max_length=31 pattern=
+        - ldap_server: max_length=35 pattern=
+        - ldap_username: max_length=63 pattern=
+        - ldap_password: max_length=128 pattern=
+        - http_url: max_length=255 pattern=
+        - scep_url: max_length=255 pattern=
+        - scep_cert: max_length=35 pattern=
+        - update_interval: min=0 max=4294967295 pattern=
+        - source_ip: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +52,20 @@ class CrlModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Name.")    crl: str | None = Field(default="", description="Certificate Revocation List as a PEM file.")    range: Literal["global", "vdom"] | None = Field(default="vdom", description="Either global or VDOM IP address range for the certificate.")    source: Literal["factory", "user", "bundle"] | None = Field(default="user", description="Certificate source type.")    update_vdom: str | None = Field(max_length=31, default="root", description="VDOM for CRL update.")  # datasource: ['system.vdom.name']    ldap_server: str | None = Field(max_length=35, default="", description="LDAP server name for CRL auto-update.")    ldap_username: str | None = Field(max_length=63, default="", description="LDAP server user name.")    ldap_password: Any = Field(max_length=128, default=None, description="LDAP server user password.")    http_url: str | None = Field(max_length=255, default="", description="HTTP server URL for CRL auto-update.")    scep_url: str | None = Field(max_length=255, default="", description="SCEP server URL for CRL auto-update.")    scep_cert: str | None = Field(max_length=35, default="Fortinet_CA_SSL", description="Local certificate for SCEP communication for CRL auto-update.")  # datasource: ['vpn.certificate.local.name']    update_interval: int | None = Field(ge=0, le=4294967295, default=0, description="Time in seconds before the FortiGate checks for an updated CRL. Set to 0 to update only when it expires.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communications to a HTTP or SCEP CA server.")    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Name.")
+    crl: str | None = Field(default="", description="Certificate Revocation List as a PEM file.")
+    range_: Literal["global", "vdom"] | None = Field(default="vdom", description="Either global or VDOM IP address range for the certificate.")
+    source: Literal["factory", "user", "bundle"] | None = Field(default="user", description="Certificate source type.")
+    update_vdom: str | None = Field(max_length=31, default="root", description="VDOM for CRL update.")  # datasource: ['system.vdom.name']
+    ldap_server: str | None = Field(max_length=35, default="", description="LDAP server name for CRL auto-update.")
+    ldap_username: str | None = Field(max_length=63, default="", description="LDAP server user name.")
+    ldap_password: Any = Field(max_length=128, default=None, description="LDAP server user password.")
+    http_url: str | None = Field(max_length=255, default="", description="HTTP server URL for CRL auto-update.")
+    scep_url: str | None = Field(max_length=255, default="", description="SCEP server URL for CRL auto-update.")
+    scep_cert: str | None = Field(max_length=35, default="Fortinet_CA_SSL", description="Local certificate for SCEP communication for CRL auto-update.")  # datasource: ['vpn.certificate.local.name']
+    update_interval: int | None = Field(ge=0, le=4294967295, default=0, description="Time in seconds before the FortiGate checks for an updated CRL. Set to 0 to update only when it expires.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communications to a HTTP or SCEP CA server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -132,7 +159,7 @@ class CrlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.crl.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "update_vdom", None)
@@ -181,7 +208,7 @@ class CrlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.crl.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "scep_cert", None)
@@ -218,9 +245,10 @@ class CrlModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_update_vdom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_scep_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_scep_cert_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -242,5 +270,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.646545Z
+# Generated: 2026-01-14T22:43:34.488945Z
 # ============================================================================

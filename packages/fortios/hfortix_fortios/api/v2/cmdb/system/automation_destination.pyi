@@ -19,7 +19,7 @@ class AutomationDestinationPayload(TypedDict, total=False):
         }
     """
     name: str  # Name. | MaxLen: 35
-    type: Literal["fortigate", "ha-cluster"]  # Destination type. | Default: fortigate
+    type_: Literal["fortigate", "ha-cluster"]  # Destination type. | Default: fortigate
     destination: list[dict[str, Any]]  # Destinations.
     ha_group_id: int  # Cluster group ID set for this destination | Default: 0 | Min: 0 | Max: 255
 
@@ -67,7 +67,7 @@ class AutomationDestinationResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Name. | MaxLen: 35
-    type: Literal["fortigate", "ha-cluster"]  # Destination type. | Default: fortigate
+    type_: Literal["fortigate", "ha-cluster"]  # Destination type. | Default: fortigate
     destination: list[AutomationDestinationDestinationItem]  # Destinations.
     ha_group_id: int  # Cluster group ID set for this destination | Default: 0 | Min: 0 | Max: 255
 
@@ -83,7 +83,7 @@ class AutomationDestinationObject:
     # Name. | MaxLen: 35
     name: str
     # Destination type. | Default: fortigate
-    type: Literal["fortigate", "ha-cluster"]
+    type_: Literal["fortigate", "ha-cluster"]
     # Destinations.
     destination: list[AutomationDestinationDestinationObject]
     # Cluster group ID set for this destination (default = 0). | Default: 0 | Min: 0 | Max: 255
@@ -113,6 +113,10 @@ class AutomationDestination:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -133,6 +137,7 @@ class AutomationDestination:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationDestinationResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -150,6 +155,7 @@ class AutomationDestination:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationDestinationResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -166,6 +172,7 @@ class AutomationDestination:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AutomationDestinationResponse]: ...
     
     # ================================================================
@@ -208,7 +215,7 @@ class AutomationDestination:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
     
@@ -227,7 +234,7 @@ class AutomationDestination:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AutomationDestinationObject]: ...
     
@@ -327,23 +334,6 @@ class AutomationDestination:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AutomationDestinationObject | list[AutomationDestinationObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -356,11 +346,12 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
@@ -370,7 +361,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -385,7 +376,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -399,23 +390,11 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AutomationDestinationPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_group_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -425,11 +404,12 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
@@ -439,7 +419,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -454,7 +434,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -468,23 +448,11 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AutomationDestinationPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_group_id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -495,6 +463,7 @@ class AutomationDestination:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
@@ -525,14 +494,7 @@ class AutomationDestination:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -546,7 +508,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -565,8 +527,6 @@ class AutomationDestination:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -594,6 +554,10 @@ class AutomationDestinationDictMode:
     By default returns AutomationDestinationResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AutomationDestinationObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -698,7 +662,7 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -713,7 +677,7 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -728,19 +692,21 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -753,7 +719,7 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -768,7 +734,7 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -783,19 +749,21 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -830,10 +798,12 @@ class AutomationDestinationDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -852,7 +822,7 @@ class AutomationDestinationDictMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -870,8 +840,6 @@ class AutomationDestinationDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -895,6 +863,10 @@ class AutomationDestinationObjectMode:
     By default returns AutomationDestinationObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AutomationDestinationResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -999,7 +971,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1014,7 +986,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1029,7 +1001,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1044,19 +1016,21 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1069,7 +1043,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1084,7 +1058,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1099,7 +1073,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1114,19 +1088,21 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1172,10 +1148,12 @@ class AutomationDestinationObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationDestinationObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1194,7 +1172,7 @@ class AutomationDestinationObjectMode:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type_: Literal["fortigate", "ha-cluster"] | None = ...,
         destination: str | list[str] | list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -1212,8 +1190,6 @@ class AutomationDestinationObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

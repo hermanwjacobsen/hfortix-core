@@ -83,6 +83,10 @@ class MacAddressTable:
     Primary Key: mac
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -103,6 +107,7 @@ class MacAddressTable:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MacAddressTableResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -120,6 +125,7 @@ class MacAddressTable:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> MacAddressTableResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -136,6 +142,7 @@ class MacAddressTable:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[MacAddressTableResponse]: ...
     
     # ================================================================
@@ -178,7 +185,7 @@ class MacAddressTable:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
     
@@ -197,7 +204,7 @@ class MacAddressTable:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[MacAddressTableObject]: ...
     
@@ -297,23 +304,6 @@ class MacAddressTable:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        mac: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> MacAddressTableObject | list[MacAddressTableObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -330,6 +320,7 @@ class MacAddressTable:
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
@@ -369,18 +360,7 @@ class MacAddressTable:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: MacAddressTablePayload | None = ...,
-        mac: str | None = ...,
-        interface: str | None = ...,
-        reply_substitute: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -394,6 +374,7 @@ class MacAddressTable:
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
@@ -433,18 +414,7 @@ class MacAddressTable:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: MacAddressTablePayload | None = ...,
-        mac: str | None = ...,
-        interface: str | None = ...,
-        reply_substitute: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -455,6 +425,7 @@ class MacAddressTable:
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
@@ -485,14 +456,7 @@ class MacAddressTable:
         self,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        mac: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -524,8 +488,6 @@ class MacAddressTable:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -553,6 +515,10 @@ class MacAddressTableDictMode:
     By default returns MacAddressTableResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return MacAddressTableObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -688,10 +654,12 @@ class MacAddressTableDictMode:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: MacAddressTablePayload | None = ...,
@@ -739,10 +707,12 @@ class MacAddressTableDictMode:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: MacAddressTablePayload | None = ...,
@@ -781,10 +751,12 @@ class MacAddressTableDictMode:
         self,
         mac: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         mac: str,
@@ -820,8 +792,6 @@ class MacAddressTableDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -845,6 +815,10 @@ class MacAddressTableObjectMode:
     By default returns MacAddressTableObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return MacAddressTableResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -994,10 +968,12 @@ class MacAddressTableObjectMode:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: MacAddressTablePayload | None = ...,
@@ -1059,10 +1035,12 @@ class MacAddressTableObjectMode:
         interface: str | None = ...,
         reply_substitute: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: MacAddressTablePayload | None = ...,
@@ -1112,10 +1090,12 @@ class MacAddressTableObjectMode:
         self,
         mac: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MacAddressTableObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         mac: str,
@@ -1151,8 +1131,6 @@ class MacAddressTableObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

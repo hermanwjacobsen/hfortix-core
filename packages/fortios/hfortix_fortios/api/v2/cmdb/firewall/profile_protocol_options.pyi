@@ -139,6 +139,10 @@ class ProfileProtocolOptions:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -159,6 +163,7 @@ class ProfileProtocolOptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileProtocolOptionsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -176,6 +181,7 @@ class ProfileProtocolOptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileProtocolOptionsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -192,6 +198,7 @@ class ProfileProtocolOptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ProfileProtocolOptionsResponse]: ...
     
     # ================================================================
@@ -234,7 +241,7 @@ class ProfileProtocolOptions:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
     
@@ -253,7 +260,7 @@ class ProfileProtocolOptions:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ProfileProtocolOptionsObject]: ...
     
@@ -353,23 +360,6 @@ class ProfileProtocolOptions:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProfileProtocolOptionsObject | list[ProfileProtocolOptionsObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -400,6 +390,7 @@ class ProfileProtocolOptions:
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
@@ -481,32 +472,7 @@ class ProfileProtocolOptions:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ProfileProtocolOptionsPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        replacemsg_group: str | None = ...,
-        oversize_log: Literal["disable", "enable"] | None = ...,
-        switching_protocols_log: Literal["disable", "enable"] | None = ...,
-        http: str | None = ...,
-        ftp: str | None = ...,
-        imap: str | None = ...,
-        mapi: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        nntp: str | None = ...,
-        ssh: str | None = ...,
-        dns: str | None = ...,
-        cifs: str | None = ...,
-        mail_signature: str | None = ...,
-        rpc_over_http: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +500,7 @@ class ProfileProtocolOptions:
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
@@ -615,32 +582,7 @@ class ProfileProtocolOptions:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProfileProtocolOptionsPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        replacemsg_group: str | None = ...,
-        oversize_log: Literal["disable", "enable"] | None = ...,
-        switching_protocols_log: Literal["disable", "enable"] | None = ...,
-        http: str | None = ...,
-        ftp: str | None = ...,
-        imap: str | None = ...,
-        mapi: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        nntp: str | None = ...,
-        ssh: str | None = ...,
-        dns: str | None = ...,
-        cifs: str | None = ...,
-        mail_signature: str | None = ...,
-        rpc_over_http: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -651,6 +593,7 @@ class ProfileProtocolOptions:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
@@ -681,14 +624,7 @@ class ProfileProtocolOptions:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -734,8 +670,6 @@ class ProfileProtocolOptions:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -763,6 +697,10 @@ class ProfileProtocolOptionsDictMode:
     By default returns ProfileProtocolOptionsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProfileProtocolOptionsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -940,10 +878,12 @@ class ProfileProtocolOptionsDictMode:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ProfileProtocolOptionsPayload | None = ...,
@@ -1047,10 +987,12 @@ class ProfileProtocolOptionsDictMode:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProfileProtocolOptionsPayload | None = ...,
@@ -1103,10 +1045,12 @@ class ProfileProtocolOptionsDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1156,8 +1100,6 @@ class ProfileProtocolOptionsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1181,6 +1123,10 @@ class ProfileProtocolOptionsObjectMode:
     By default returns ProfileProtocolOptionsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProfileProtocolOptionsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1386,10 +1332,12 @@ class ProfileProtocolOptionsObjectMode:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ProfileProtocolOptionsPayload | None = ...,
@@ -1521,10 +1469,12 @@ class ProfileProtocolOptionsObjectMode:
         mail_signature: str | None = ...,
         rpc_over_http: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProfileProtocolOptionsPayload | None = ...,
@@ -1588,10 +1538,12 @@ class ProfileProtocolOptionsObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileProtocolOptionsObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1641,8 +1593,6 @@ class ProfileProtocolOptionsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

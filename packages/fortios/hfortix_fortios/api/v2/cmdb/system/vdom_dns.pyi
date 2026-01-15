@@ -166,6 +166,10 @@ class VdomDns:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -186,6 +190,7 @@ class VdomDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VdomDnsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -203,6 +208,7 @@ class VdomDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VdomDnsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -219,6 +225,7 @@ class VdomDns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VdomDnsResponse: ...
     
     # ================================================================
@@ -261,7 +268,7 @@ class VdomDns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VdomDnsObject: ...
     
@@ -280,7 +287,7 @@ class VdomDns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VdomDnsObject: ...
     
@@ -380,23 +387,6 @@ class VdomDns:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VdomDnsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -426,6 +416,7 @@ class VdomDns:
         alt_secondary: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VdomDnsObject: ...
@@ -504,31 +495,7 @@ class VdomDns:
         alt_primary: str | None = ...,
         alt_secondary: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VdomDnsPayload | None = ...,
-        vdom_dns: Literal["enable", "disable"] | None = ...,
-        primary: str | None = ...,
-        secondary: str | None = ...,
-        protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
-        ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_primary: str | None = ...,
-        ip6_secondary: str | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        server_select_method: Literal["least-rtt", "failover"] | None = ...,
-        alt_primary: str | None = ...,
-        alt_secondary: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -573,8 +540,6 @@ class VdomDns:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -602,6 +567,10 @@ class VdomDnsDictMode:
     By default returns VdomDnsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VdomDnsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -777,10 +746,12 @@ class VdomDnsDictMode:
         alt_primary: str | None = ...,
         alt_secondary: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VdomDnsPayload | None = ...,
@@ -846,8 +817,6 @@ class VdomDnsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -871,6 +840,10 @@ class VdomDnsObjectMode:
     By default returns VdomDnsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VdomDnsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1073,10 +1046,12 @@ class VdomDnsObjectMode:
         alt_primary: str | None = ...,
         alt_secondary: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VdomDnsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VdomDnsPayload | None = ...,
@@ -1142,8 +1117,6 @@ class VdomDnsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

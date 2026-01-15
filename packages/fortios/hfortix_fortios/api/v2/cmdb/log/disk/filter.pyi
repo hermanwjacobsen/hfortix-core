@@ -44,7 +44,7 @@ class FilterFreestyleItem(TypedDict):
     
     id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     category: Literal["traffic", "event", "virus", "webfilter", "attack", "spam", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]  # Log category. | Default: traffic
-    filter: str  # Free style filter string. | MaxLen: 1023
+    filter_: str  # Free style filter string. | MaxLen: 1023
     filter_type: Literal["include", "exclude"]  # Include/exclude logs that match the filter. | Default: include
 
 
@@ -63,7 +63,7 @@ class FilterFreestyleObject:
     # Log category. | Default: traffic
     category: Literal["traffic", "event", "virus", "webfilter", "attack", "spam", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]
     # Free style filter string. | MaxLen: 1023
-    filter: str
+    filter_: str
     # Include/exclude logs that match the filter. | Default: include
     filter_type: Literal["include", "exclude"]
     
@@ -161,6 +161,10 @@ class Filter:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -181,6 +185,7 @@ class Filter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FilterResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -198,6 +203,7 @@ class Filter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FilterResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -214,6 +220,7 @@ class Filter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FilterResponse: ...
     
     # ================================================================
@@ -256,7 +263,7 @@ class Filter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FilterObject: ...
     
@@ -275,7 +282,7 @@ class Filter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FilterObject: ...
     
@@ -375,23 +382,6 @@ class Filter:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FilterObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -419,6 +409,7 @@ class Filter:
         free_style: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FilterObject: ...
@@ -491,29 +482,7 @@ class Filter:
         debug: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FilterPayload | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
-        forward_traffic: Literal["enable", "disable"] | None = ...,
-        local_traffic: Literal["enable", "disable"] | None = ...,
-        multicast_traffic: Literal["enable", "disable"] | None = ...,
-        sniffer_traffic: Literal["enable", "disable"] | None = ...,
-        ztna_traffic: Literal["enable", "disable"] | None = ...,
-        http_transaction: Literal["enable", "disable"] | None = ...,
-        anomaly: Literal["enable", "disable"] | None = ...,
-        voip: Literal["enable", "disable"] | None = ...,
-        dlp_archive: Literal["enable", "disable"] | None = ...,
-        gtp: Literal["enable", "disable"] | None = ...,
-        forti_switch: Literal["enable", "disable"] | None = ...,
-        debug: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -556,8 +525,6 @@ class Filter:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -585,6 +552,10 @@ class FilterDictMode:
     By default returns FilterResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FilterObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -754,10 +725,12 @@ class FilterDictMode:
         debug: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FilterPayload | None = ...,
@@ -819,8 +792,6 @@ class FilterDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -844,6 +815,10 @@ class FilterObjectMode:
     By default returns FilterObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FilterResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1038,10 +1013,12 @@ class FilterObjectMode:
         debug: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FilterObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FilterPayload | None = ...,
@@ -1103,8 +1080,6 @@ class FilterObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

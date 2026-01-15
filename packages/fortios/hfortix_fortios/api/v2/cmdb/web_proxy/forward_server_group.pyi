@@ -120,6 +120,10 @@ class ForwardServerGroup:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -140,6 +144,7 @@ class ForwardServerGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ForwardServerGroupResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -157,6 +162,7 @@ class ForwardServerGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ForwardServerGroupResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -173,6 +179,7 @@ class ForwardServerGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ForwardServerGroupResponse]: ...
     
     # ================================================================
@@ -215,7 +222,7 @@ class ForwardServerGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
     
@@ -234,7 +241,7 @@ class ForwardServerGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ForwardServerGroupObject]: ...
     
@@ -334,23 +341,6 @@ class ForwardServerGroup:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ForwardServerGroupObject | list[ForwardServerGroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -369,6 +359,7 @@ class ForwardServerGroup:
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
@@ -414,20 +405,7 @@ class ForwardServerGroup:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ForwardServerGroupPayload | None = ...,
-        name: str | None = ...,
-        affinity: Literal["enable", "disable"] | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -443,6 +421,7 @@ class ForwardServerGroup:
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
@@ -488,20 +467,7 @@ class ForwardServerGroup:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ForwardServerGroupPayload | None = ...,
-        name: str | None = ...,
-        affinity: Literal["enable", "disable"] | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -512,6 +478,7 @@ class ForwardServerGroup:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
@@ -542,14 +509,7 @@ class ForwardServerGroup:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -583,8 +543,6 @@ class ForwardServerGroup:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -612,6 +570,10 @@ class ForwardServerGroupDictMode:
     By default returns ForwardServerGroupResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ForwardServerGroupObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -753,10 +715,12 @@ class ForwardServerGroupDictMode:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
@@ -812,10 +776,12 @@ class ForwardServerGroupDictMode:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
@@ -856,10 +822,12 @@ class ForwardServerGroupDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -897,8 +865,6 @@ class ForwardServerGroupDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -922,6 +888,10 @@ class ForwardServerGroupObjectMode:
     By default returns ForwardServerGroupObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ForwardServerGroupResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1079,10 +1049,12 @@ class ForwardServerGroupObjectMode:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
@@ -1154,10 +1126,12 @@ class ForwardServerGroupObjectMode:
         group_down_option: Literal["block", "pass"] | None = ...,
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
@@ -1209,10 +1183,12 @@ class ForwardServerGroupObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ForwardServerGroupObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1250,8 +1226,6 @@ class ForwardServerGroupObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

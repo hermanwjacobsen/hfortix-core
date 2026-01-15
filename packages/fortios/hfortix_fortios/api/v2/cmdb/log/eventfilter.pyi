@@ -137,6 +137,10 @@ class Eventfilter:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -157,6 +161,7 @@ class Eventfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EventfilterResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -174,6 +179,7 @@ class Eventfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EventfilterResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -190,6 +196,7 @@ class Eventfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> EventfilterResponse: ...
     
     # ================================================================
@@ -232,7 +239,7 @@ class Eventfilter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> EventfilterObject: ...
     
@@ -251,7 +258,7 @@ class Eventfilter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> EventfilterObject: ...
     
@@ -351,23 +358,6 @@ class Eventfilter:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> EventfilterObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -399,6 +389,7 @@ class Eventfilter:
         webproxy: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> EventfilterObject: ...
@@ -483,33 +474,7 @@ class Eventfilter:
         web_svc: Literal["enable", "disable"] | None = ...,
         webproxy: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: EventfilterPayload | None = ...,
-        event: Literal["enable", "disable"] | None = ...,
-        system: Literal["enable", "disable"] | None = ...,
-        vpn: Literal["enable", "disable"] | None = ...,
-        user: Literal["enable", "disable"] | None = ...,
-        router: Literal["enable", "disable"] | None = ...,
-        wireless_activity: Literal["enable", "disable"] | None = ...,
-        wan_opt: Literal["enable", "disable"] | None = ...,
-        endpoint: Literal["enable", "disable"] | None = ...,
-        ha: Literal["enable", "disable"] | None = ...,
-        security_rating: Literal["enable", "disable"] | None = ...,
-        fortiextender: Literal["enable", "disable"] | None = ...,
-        connector: Literal["enable", "disable"] | None = ...,
-        sdwan: Literal["enable", "disable"] | None = ...,
-        cifs: Literal["enable", "disable"] | None = ...,
-        switch_controller: Literal["enable", "disable"] | None = ...,
-        rest_api: Literal["enable", "disable"] | None = ...,
-        web_svc: Literal["enable", "disable"] | None = ...,
-        webproxy: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -556,8 +521,6 @@ class Eventfilter:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -585,6 +548,10 @@ class EventfilterDictMode:
     By default returns EventfilterResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return EventfilterObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -766,10 +733,12 @@ class EventfilterDictMode:
         web_svc: Literal["enable", "disable"] | None = ...,
         webproxy: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: EventfilterPayload | None = ...,
@@ -839,8 +808,6 @@ class EventfilterDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -864,6 +831,10 @@ class EventfilterObjectMode:
     By default returns EventfilterObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return EventfilterResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1074,10 +1045,12 @@ class EventfilterObjectMode:
         web_svc: Literal["enable", "disable"] | None = ...,
         webproxy: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> EventfilterObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: EventfilterPayload | None = ...,
@@ -1147,8 +1120,6 @@ class EventfilterObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

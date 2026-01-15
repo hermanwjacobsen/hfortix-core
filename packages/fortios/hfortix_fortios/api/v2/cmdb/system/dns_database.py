@@ -249,7 +249,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
         status: Literal["enable", "disable"] | None = None,
         domain: str | None = None,
         allow_transfer: str | list[str] | None = None,
-        type: Literal["primary", "secondary"] | None = None,
+        type_: Literal["primary", "secondary"] | None = None,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = None,
         ip_primary: str | None = None,
         primary_name: str | None = None,
@@ -282,7 +282,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this DNS zone.
             domain: Domain name.
             allow_transfer: DNS zone transfer IP address list.
-            type: Zone type (primary to manage entries directly, secondary to import entries from other zones).
+            type_: Zone type (primary to manage entries directly, secondary to import entries from other zones).
             view: Zone view (public to serve public clients, shadow to serve internal clients).
             ip_primary: IP address of primary DNS server. Entries in this primary DNS server and imported into the DNS zone.
             primary_name: Domain name of the default DNS server for this zone.
@@ -349,7 +349,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status=status,
             domain=domain,
             allow_transfer=allow_transfer,
-            type=type,
+            type_=type_,
             view=view,
             ip_primary=ip_primary,
             primary_name=primary_name,
@@ -400,7 +400,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
         status: Literal["enable", "disable"] | None = None,
         domain: str | None = None,
         allow_transfer: str | list[str] | None = None,
-        type: Literal["primary", "secondary"] | None = None,
+        type_: Literal["primary", "secondary"] | None = None,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = None,
         ip_primary: str | None = None,
         primary_name: str | None = None,
@@ -433,7 +433,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this DNS zone.
             domain: Domain name.
             allow_transfer: DNS zone transfer IP address list.
-            type: Zone type (primary to manage entries directly, secondary to import entries from other zones).
+            type_: Zone type (primary to manage entries directly, secondary to import entries from other zones).
             view: Zone view (public to serve public clients, shadow to serve internal clients).
             ip_primary: IP address of primary DNS server. Entries in this primary DNS server and imported into the DNS zone.
             primary_name: Domain name of the default DNS server for this zone.
@@ -502,7 +502,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status=status,
             domain=domain,
             allow_transfer=allow_transfer,
-            type=type,
+            type_=type_,
             view=view,
             ip_primary=ip_primary,
             primary_name=primary_name,
@@ -653,7 +653,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
         status: Literal["enable", "disable"] | None = None,
         domain: str | None = None,
         allow_transfer: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["primary", "secondary"] | None = None,
+        type_: Literal["primary", "secondary"] | None = None,
         view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = None,
         ip_primary: str | None = None,
         primary_name: str | None = None,
@@ -687,7 +687,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status: Field status
             domain: Field domain
             allow_transfer: Field allow-transfer
-            type: Field type
+            type_: Field type
             view: Field view
             ip_primary: Field ip-primary
             primary_name: Field primary-name
@@ -751,7 +751,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             status=status,
             domain=domain,
             allow_transfer=allow_transfer,
-            type=type,
+            type_=type_,
             view=view,
             ip_primary=ip_primary,
             primary_name=primary_name,

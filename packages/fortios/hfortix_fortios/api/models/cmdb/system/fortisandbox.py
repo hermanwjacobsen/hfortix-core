@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class FortisandboxSsl_min_proto_versionEnum(str, Enum):
+class FortisandboxSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -37,7 +37,22 @@ class FortisandboxModel(BaseModel):
 
     Configure FortiSandbox.
 
-    Validation Rules:        - status: pattern=        - forticloud: pattern=        - inline_scan: pattern=        - server: max_length=63 pattern=        - source_ip: max_length=63 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=        - enc_algorithm: pattern=        - ssl_min_proto_version: pattern=        - email: max_length=63 pattern=        - ca: max_length=79 pattern=        - cn: max_length=127 pattern=        - certificate_verification: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - forticloud: pattern=
+        - inline_scan: pattern=
+        - server: max_length=63 pattern=
+        - source_ip: max_length=63 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+        - enc_algorithm: pattern=
+        - ssl_min_proto_version: pattern=
+        - email: max_length=63 pattern=
+        - ca: max_length=79 pattern=
+        - cn: max_length=127 pattern=
+        - certificate_verification: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -49,7 +64,21 @@ class FortisandboxModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox.")    forticloud: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox Cloud.")    inline_scan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox inline scan.")    server: str = Field(max_length=63, default="", description="Server IP address or FQDN of the remote FortiSandbox.")    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to FortiSandbox.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    enc_algorithm: Literal["default", "high", "low"] | None = Field(default="default", description="Configure the level of SSL protection for secure communication with FortiSandbox.")    ssl_min_proto_version: FortisandboxSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    email: str | None = Field(max_length=63, default="", description="Notifier email address.")    ca: str | None = Field(max_length=79, default="", description="The CA that signs remote FortiSandbox certificate, empty for no check.")  # datasource: ['vpn.certificate.ca.name']    cn: str | None = Field(max_length=127, default="", description="The CN of remote server certificate, case sensitive, empty for no check.")    certificate_verification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable identity verification of FortiSandbox by use of certificate.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox.")
+    forticloud: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox Cloud.")
+    inline_scan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiSandbox inline scan.")
+    server: str = Field(max_length=63, default="", description="Server IP address or FQDN of the remote FortiSandbox.")
+    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to FortiSandbox.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    enc_algorithm: Literal["default", "high", "low"] | None = Field(default="default", description="Configure the level of SSL protection for secure communication with FortiSandbox.")
+    ssl_min_proto_version: str | FortisandboxSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    email: str | None = Field(max_length=63, default="", description="Notifier email address.")
+    ca: str | None = Field(max_length=79, default="", description="The CA that signs remote FortiSandbox certificate, empty for no check.")  # datasource: ['vpn.certificate.ca.name']
+    cn: str | None = Field(max_length=127, default="", description="The CN of remote server certificate, case sensitive, empty for no check.")
+    certificate_verification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable identity verification of FortiSandbox by use of certificate.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -143,7 +172,7 @@ class FortisandboxModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fortisandbox.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -192,7 +221,7 @@ class FortisandboxModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fortisandbox.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ca", None)
@@ -229,9 +258,10 @@ class FortisandboxModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ca_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -253,5 +283,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.495954Z
+# Generated: 2026-01-14T22:43:37.982513Z
 # ============================================================================

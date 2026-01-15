@@ -28,8 +28,8 @@ class ProxyAddressPayload(TypedDict, total=False):
         }
     """
     name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
     host: str  # Address object for the host. | MaxLen: 79
     host_regex: str  # Host name as a regular expression. | MaxLen: 255
     path: str  # URL path as a regular expression. | MaxLen: 255
@@ -201,8 +201,8 @@ class ProxyAddressResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
     host: str  # Address object for the host. | MaxLen: 79
     host_regex: str  # Host name as a regular expression. | MaxLen: 255
     path: str  # URL path as a regular expression. | MaxLen: 255
@@ -233,10 +233,10 @@ class ProxyAddressObject:
     
     # Address name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Proxy address type. | Default: url
-    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]
+    type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]
     # Address object for the host. | MaxLen: 79
     host: str
     # Host name as a regular expression. | MaxLen: 255
@@ -298,6 +298,10 @@ class ProxyAddress:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -318,6 +322,7 @@ class ProxyAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProxyAddressResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -335,6 +340,7 @@ class ProxyAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProxyAddressResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -351,6 +357,7 @@ class ProxyAddress:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ProxyAddressResponse]: ...
     
     # ================================================================
@@ -393,7 +400,7 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
@@ -412,7 +419,7 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ProxyAddressObject]: ...
     
@@ -512,23 +519,6 @@ class ProxyAddress:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProxyAddressObject | list[ProxyAddressObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -542,7 +532,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -563,6 +553,7 @@ class ProxyAddress:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
@@ -573,7 +564,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -605,7 +596,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -636,7 +627,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -656,36 +647,7 @@ class ProxyAddress:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ProxyAddressPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
-        host: str | None = ...,
-        host_regex: str | None = ...,
-        path: str | None = ...,
-        query: str | None = ...,
-        referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
-        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
-        ua_min_ver: str | None = ...,
-        ua_max_ver: str | None = ...,
-        header_name: str | None = ...,
-        header: str | None = ...,
-        case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -696,7 +658,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -717,6 +679,7 @@ class ProxyAddress:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
@@ -727,7 +690,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -759,7 +722,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -790,7 +753,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -810,36 +773,7 @@ class ProxyAddress:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProxyAddressPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
-        host: str | None = ...,
-        host_regex: str | None = ...,
-        path: str | None = ...,
-        query: str | None = ...,
-        referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
-        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
-        ua_min_ver: str | None = ...,
-        ua_max_ver: str | None = ...,
-        header_name: str | None = ...,
-        header: str | None = ...,
-        case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -850,6 +784,7 @@ class ProxyAddress:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
@@ -880,14 +815,7 @@ class ProxyAddress:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -902,7 +830,7 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -937,8 +865,6 @@ class ProxyAddress:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -966,6 +892,10 @@ class ProxyAddressDictMode:
     By default returns ProxyAddressResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProxyAddressObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1071,7 +1001,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1103,7 +1033,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1135,7 +1065,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1155,16 +1085,18 @@ class ProxyAddressDictMode:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1194,7 +1126,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1226,7 +1158,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1258,7 +1190,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1278,16 +1210,18 @@ class ProxyAddressDictMode:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1338,10 +1272,12 @@ class ProxyAddressDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1361,7 +1297,7 @@ class ProxyAddressDictMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1395,8 +1331,6 @@ class ProxyAddressDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1420,6 +1354,10 @@ class ProxyAddressObjectMode:
     By default returns ProxyAddressObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProxyAddressResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1525,7 +1463,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1557,7 +1495,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1589,7 +1527,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1621,7 +1559,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1641,16 +1579,18 @@ class ProxyAddressObjectMode:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1680,7 +1620,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1712,7 +1652,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1744,7 +1684,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1776,7 +1716,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1796,16 +1736,18 @@ class ProxyAddressObjectMode:
         comment: str | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1867,10 +1809,12 @@ class ProxyAddressObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1890,7 +1834,7 @@ class ProxyAddressObjectMode:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
@@ -1924,8 +1868,6 @@ class ProxyAddressObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

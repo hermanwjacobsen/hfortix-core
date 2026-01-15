@@ -26,7 +26,16 @@ class ReverseConnectorModel(BaseModel):
 
     Configure ZTNA Reverse-Connector.
 
-    Validation Rules:        - name: max_length=35 pattern=        - status: pattern=        - address: max_length=255 pattern=        - port: min=0 max=65535 pattern=        - health_check_interval: min=0 max=600 pattern=        - ssl_max_version: pattern=        - certificate: max_length=35 pattern=        - trusted_server_ca: max_length=79 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - status: pattern=
+        - address: max_length=255 pattern=
+        - port: min=0 max=65535 pattern=
+        - health_check_interval: min=0 max=600 pattern=
+        - ssl_max_version: pattern=
+        - certificate: max_length=35 pattern=
+        - trusted_server_ca: max_length=79 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +47,15 @@ class ReverseConnectorModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Reverse-Connector name")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Reverse-Connector status.")    address: str = Field(max_length=255, default="", description="Connector service edge adress(IP or FQDN).")    port: int | None = Field(ge=0, le=65535, default=0, description="Port number that traffic uses to connect to connector service edge(0 - 65535;).")    health_check_interval: int | None = Field(ge=0, le=600, default=60, description="Health check interval in seconds (0 - 600, default = 60, 0 = disable).")    ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = Field(default="tls-1.3", description="Highest TLS version acceptable from a server.")    certificate: str | None = Field(max_length=35, default="", description="The name of the certificate to use for SSL handshake.")  # datasource: ['vpn.certificate.local.name']    trusted_server_ca: str | None = Field(max_length=79, default="", description="Trusted Server CA certificate used by SSL connection.")  # datasource: ['vpn.certificate.ca.name']    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Reverse-Connector name")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Reverse-Connector status.")
+    address: str = Field(max_length=255, default="", description="Connector service edge adress(IP or FQDN).")
+    port: int | None = Field(ge=0, le=65535, default=0, description="Port number that traffic uses to connect to connector service edge(0 - 65535;).")
+    health_check_interval: int | None = Field(ge=0, le=600, default=60, description="Health check interval in seconds (0 - 600, default = 60, 0 = disable).")
+    ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = Field(default="tls-1.3", description="Highest TLS version acceptable from a server.")
+    certificate: str | None = Field(max_length=35, default="", description="The name of the certificate to use for SSL handshake.")  # datasource: ['vpn.certificate.local.name']
+    trusted_server_ca: str | None = Field(max_length=79, default="", description="Trusted Server CA certificate used by SSL connection.")  # datasource: ['vpn.certificate.ca.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -132,7 +149,7 @@ class ReverseConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.reverse_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "certificate", None)
@@ -181,7 +198,7 @@ class ReverseConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.reverse_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "trusted_server_ca", None)
@@ -218,9 +235,10 @@ class ReverseConnectorModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_certificate_references(client)
-        all_errors.extend(errors)        errors = await self.validate_trusted_server_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_trusted_server_ca_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -242,5 +260,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.434454Z
+# Generated: 2026-01-14T22:43:39.156842Z
 # ============================================================================

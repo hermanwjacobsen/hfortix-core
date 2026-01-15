@@ -20,7 +20,7 @@ class HostKeyPayload(TypedDict, total=False):
     """
     name: str  # SSH public key name. | MaxLen: 35
     status: Literal["trusted", "revoked"]  # Set the trust status of the public key. | Default: trusted
-    type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]  # Set the type of the public key. | Default: RSA
+    type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]  # Set the type of the public key. | Default: RSA
     nid: Literal["256", "384", "521"]  # Set the nid of the ECDSA key. | Default: 256
     usage: Literal["transparent-proxy", "access-proxy"]  # Usage for this public key. | Default: transparent-proxy
     ip: str  # IP address of the SSH server. | Default: 0.0.0.0
@@ -42,7 +42,7 @@ class HostKeyResponse(TypedDict):
     """
     name: str  # SSH public key name. | MaxLen: 35
     status: Literal["trusted", "revoked"]  # Set the trust status of the public key. | Default: trusted
-    type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]  # Set the type of the public key. | Default: RSA
+    type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]  # Set the type of the public key. | Default: RSA
     nid: Literal["256", "384", "521"]  # Set the nid of the ECDSA key. | Default: 256
     usage: Literal["transparent-proxy", "access-proxy"]  # Usage for this public key. | Default: transparent-proxy
     ip: str  # IP address of the SSH server. | Default: 0.0.0.0
@@ -64,7 +64,7 @@ class HostKeyObject:
     # Set the trust status of the public key. | Default: trusted
     status: Literal["trusted", "revoked"]
     # Set the type of the public key. | Default: RSA
-    type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]
+    type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]
     # Set the nid of the ECDSA key. | Default: 256
     nid: Literal["256", "384", "521"]
     # Usage for this public key. | Default: transparent-proxy
@@ -79,7 +79,6 @@ class HostKeyObject:
     public_key: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -102,6 +101,10 @@ class HostKey:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -122,6 +125,7 @@ class HostKey:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HostKeyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -139,6 +143,7 @@ class HostKey:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> HostKeyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -155,6 +160,7 @@ class HostKey:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[HostKeyResponse]: ...
     
     # ================================================================
@@ -197,7 +203,7 @@ class HostKey:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> HostKeyObject: ...
     
@@ -216,7 +222,7 @@ class HostKey:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[HostKeyObject]: ...
     
@@ -316,23 +322,6 @@ class HostKey:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> HostKeyObject | list[HostKeyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -346,7 +335,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -355,6 +344,7 @@ class HostKey:
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HostKeyObject: ...
@@ -365,7 +355,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -385,7 +375,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -404,7 +394,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -412,24 +402,7 @@ class HostKey:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: HostKeyPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
-        nid: Literal["256", "384", "521"] | None = ...,
-        usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
-        ip: str | None = ...,
-        port: int | None = ...,
-        hostname: str | None = ...,
-        public_key: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -440,7 +413,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -449,6 +422,7 @@ class HostKey:
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HostKeyObject: ...
@@ -459,7 +433,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -479,7 +453,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -498,7 +472,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -506,24 +480,7 @@ class HostKey:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: HostKeyPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
-        nid: Literal["256", "384", "521"] | None = ...,
-        usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
-        ip: str | None = ...,
-        port: int | None = ...,
-        hostname: str | None = ...,
-        public_key: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +491,7 @@ class HostKey:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> HostKeyObject: ...
@@ -564,14 +522,7 @@ class HostKey:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -586,7 +537,7 @@ class HostKey:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -609,8 +560,6 @@ class HostKey:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +587,10 @@ class HostKeyDictMode:
     By default returns HostKeyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return HostKeyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -743,7 +696,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -763,7 +716,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -783,7 +736,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -791,16 +744,18 @@ class HostKeyDictMode:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -818,7 +773,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -838,7 +793,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -858,7 +813,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -866,16 +821,18 @@ class HostKeyDictMode:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -914,10 +871,12 @@ class HostKeyDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -937,7 +896,7 @@ class HostKeyDictMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -959,8 +918,6 @@ class HostKeyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +941,10 @@ class HostKeyObjectMode:
     By default returns HostKeyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return HostKeyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1089,7 +1050,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1109,7 +1070,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1129,7 +1090,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1149,7 +1110,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1157,16 +1118,18 @@ class HostKeyObjectMode:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HostKeyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1184,7 +1147,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1204,7 +1167,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1224,7 +1187,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1244,7 +1207,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1252,16 +1215,18 @@ class HostKeyObjectMode:
         hostname: str | None = ...,
         public_key: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HostKeyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1311,10 +1276,12 @@ class HostKeyObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> HostKeyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1334,7 +1301,7 @@ class HostKeyObjectMode:
         payload_dict: HostKeyPayload | None = ...,
         name: str | None = ...,
         status: Literal["trusted", "revoked"] | None = ...,
-        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
+        type_: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = ...,
         nid: Literal["256", "384", "521"] | None = ...,
         usage: Literal["transparent-proxy", "access-proxy"] | None = ...,
         ip: str | None = ...,
@@ -1356,8 +1323,6 @@ class HostKeyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

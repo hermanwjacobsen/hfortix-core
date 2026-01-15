@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -28,11 +28,11 @@ class ExtenderProfileCellular(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    dataplan: list[Dataplan] = Field(default=None, description="Dataplan names.")
-    controller_report: list[ControllerReport] = Field(default=None, description="FortiExtender controller report configuration.")
-    sms_notification: list[SmsNotification] = Field(default=None, description="FortiExtender cellular SMS notification configuration.")
-    modem1: list[Modem1] = Field(default=None, description="Configuration options for modem 1.")
-    modem2: list[Modem2] = Field(default=None, description="Configuration options for modem 2.")
+    dataplan: list[dict[str, Any]] | None = Field(default=None, description="Dataplan names.")
+    controller_report: list[dict[str, Any]] | None = Field(default=None, description="FortiExtender controller report configuration.")
+    sms_notification: list[dict[str, Any]] | None = Field(default=None, description="FortiExtender cellular SMS notification configuration.")
+    modem1: list[dict[str, Any]] | None = Field(default=None, description="Configuration options for modem 1.")
+    modem2: list[dict[str, Any]] | None = Field(default=None, description="Configuration options for modem 2.")
 
 
 class ExtenderProfileWifi(BaseModel):
@@ -46,9 +46,9 @@ class ExtenderProfileWifi(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    country: CountryEnum | None = Field(default="--", description="Country in which this FEX will operate (default = NA).")
-    radio_1: list[Radio1] = Field(default=None, description="Radio-1 config for Wi-Fi 2.4GHz")
-    radio_2: list[Radio2] = Field(default=None, description="Radio-2 config for Wi-Fi 5GHz")
+    country: str | None = Field(default="--", description="Country in which this FEX will operate (default = NA).")
+    radio_1: list[dict[str, Any]] | None = Field(default=None, description="Radio-1 config for Wi-Fi 2.4GHz")
+    radio_2: list[dict[str, Any]] | None = Field(default=None, description="Radio-2 config for Wi-Fi 5GHz")
 
 
 class ExtenderProfileLanExtension(BaseModel):
@@ -66,9 +66,9 @@ class ExtenderProfileLanExtension(BaseModel):
     ipsec_tunnel: str | None = Field(max_length=15, default="", description="IPsec tunnel name.")
     backhaul_interface: str | None = Field(max_length=15, default="", description="IPsec phase1 interface.")  # datasource: ['system.interface.name']
     backhaul_ip: str | None = Field(max_length=63, default="", description="IPsec phase1 IPv4/FQDN. Used to specify the external IP/FQDN when the FortiGate unit is behind a NAT device.")
-    backhaul: list[Backhaul] = Field(default=None, description="LAN extension backhaul tunnel configuration.")
-    downlinks: list[Downlinks] = Field(default=None, description="Config FortiExtender downlink interface for LAN extension.")
-    traffic_split_services: list[TrafficSplitServices] = Field(default=None, description="Config FortiExtender traffic split interface for LAN extension.")
+    backhaul: list[dict[str, Any]] | None = Field(default=None, description="LAN extension backhaul tunnel configuration.")
+    downlinks: list[dict[str, Any]] | None = Field(default=None, description="Config FortiExtender downlink interface for LAN extension.")
+    traffic_split_services: list[dict[str, Any]] | None = Field(default=None, description="Config FortiExtender traffic split interface for LAN extension.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -128,7 +128,20 @@ class ExtenderProfileModel(BaseModel):
 
     FortiExtender extender profile configuration.
 
-    Validation Rules:        - name: max_length=31 pattern=        - id: min=0 max=102400000 pattern=        - model: pattern=        - extension: pattern=        - allowaccess: pattern=        - login_password_change: pattern=        - login_password: max_length=27 pattern=        - enforce_bandwidth: pattern=        - bandwidth_limit: min=1 max=16776000 pattern=        - cellular: pattern=        - wifi: pattern=        - lan_extension: pattern=    """
+    Validation Rules:
+        - name: max_length=31 pattern=
+        - id: min=0 max=102400000 pattern=
+        - model: pattern=
+        - extension: pattern=
+        - allowaccess: pattern=
+        - login_password_change: pattern=
+        - login_password: max_length=27 pattern=
+        - enforce_bandwidth: pattern=
+        - bandwidth_limit: min=1 max=16776000 pattern=
+        - cellular: pattern=
+        - wifi: pattern=
+        - lan_extension: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -140,7 +153,19 @@ class ExtenderProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=31, default="", description="FortiExtender profile name.")    id: int | None = Field(ge=0, le=102400000, default=32, description="ID.")    model: ExtenderProfileModelEnum = Field(default="FX201E", description="Model.")    extension: Literal["wan-extension", "lan-extension"] = Field(default="wan-extension", description="Extension option.")    allowaccess: ExtenderProfileAllowaccessEnum | None = Field(default="", description="Control management access to the managed extender. Separate entries with a space.")    login_password_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed extender (yes, default, or no, default = no).")    login_password: Any = Field(max_length=27, description="Set the managed extender's administrator password.")    enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforcement of bandwidth on LAN extension interface.")    bandwidth_limit: int = Field(ge=1, le=16776000, default=1024, description="FortiExtender LAN extension bandwidth limit (Mbps).")    cellular: list[ExtenderProfileCellular] = Field(description="FortiExtender cellular configuration.")    wifi: list[ExtenderProfileWifi] = Field(default=None, description="FortiExtender Wi-Fi configuration.")    lan_extension: list[ExtenderProfileLanExtension] = Field(description="FortiExtender LAN extension configuration.")    # ========================================================================
+    name: str | None = Field(max_length=31, default="", description="FortiExtender profile name.")
+    id: int | None = Field(ge=0, le=102400000, default=32, description="ID.")
+    model: str | ExtenderProfileModelEnum = Field(default="FX201E", description="Model.")
+    extension: Literal["wan-extension", "lan-extension"] = Field(default="wan-extension", description="Extension option.")
+    allowaccess: str | ExtenderProfileAllowaccessEnum | None = Field(default=None, description="Control management access to the managed extender. Separate entries with a space.")
+    login_password_change: Literal["yes", "default", "no"] | None = Field(default="no", description="Change or reset the administrator password of a managed extender (yes, default, or no, default = no).")
+    login_password: Any = Field(max_length=27, description="Set the managed extender's administrator password.")
+    enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforcement of bandwidth on LAN extension interface.")
+    bandwidth_limit: int = Field(ge=1, le=16776000, default=1024, description="FortiExtender LAN extension bandwidth limit (Mbps).")
+    cellular: list[ExtenderProfileCellular] | None = Field(description="FortiExtender cellular configuration.")
+    wifi: list[ExtenderProfileWifi] | None = Field(default=None, description="FortiExtender Wi-Fi configuration.")
+    lan_extension: list[ExtenderProfileLanExtension] | None = Field(description="FortiExtender LAN extension configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -204,7 +229,7 @@ class ExtenderProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.extension_controller.extender_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "lan_extension", [])
@@ -250,7 +275,7 @@ class ExtenderProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_lan_extension_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -273,5 +298,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.811029Z
+# Generated: 2026-01-14T22:43:35.880186Z
 # ============================================================================

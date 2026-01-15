@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -27,16 +28,16 @@ class ProfileProtocolOptionsHttp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 80).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 80).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
     proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")
-    options: OptionsEnum | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: str | None = Field(default=None, description="One or more options that can be applied to the session.")
     comfort_interval: int | None = Field(ge=1, le=900, default=10, description="Interval between successive transmissions of data for client comforting (seconds).")
     comfort_amount: int | None = Field(ge=1, le=65535, default=1, description="Number of bytes to send in each transmission for client comforting (bytes).")
     range_block: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable blocking of partial downloads.")
     strip_x_forwarded_for: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable stripping of HTTP X-Forwarded-For header.")
-    post_lang: PostLangEnum | None = Field(default="", description="ID codes for character sets to be used to convert to UTF-8 for banned words and DLP on HTTP posts (maximum of 5 character sets).")
+    post_lang: str | None = Field(default=None, description="ID codes for character sets to be used to convert to UTF-8 for banned words and DLP on HTTP posts (maximum of 5 character sets).")
     streaming_content_bypass: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable bypassing of streaming content from buffering.")
     switching_protocols: Literal["bypass", "block"] | None = Field(default="bypass", description="Bypass from scanning, or block a connection that attempts to switch protocol.")
     unknown_http_version: Literal["reject", "tunnel", "best-effort"] | None = Field(default="reject", description="How to handle HTTP sessions that do not comply with HTTP 0.9, 1.0, or 1.1.")
@@ -52,8 +53,8 @@ class ProfileProtocolOptionsHttp(BaseModel):
     verify_dns_for_policy_matching: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable verification of DNS for policy matching.")
     block_page_status_code: int | None = Field(ge=100, le=599, default=403, description="Code number returned for blocked HTTP pages (non-FortiGuard only) (100 - 599, default = 403).")
     retry_count: int | None = Field(ge=0, le=100, default=0, description="Number of attempts to retry HTTP connection (0 - 100, default = 0).")
-    domain_fronting: DomainFrontingEnum | None = Field(default="block", description="Configure HTTP domain fronting (default = block).")
-    tcp_window_type: TcpWindowTypeEnum | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
+    domain_fronting: str | None = Field(default="block", description="Configure HTTP domain fronting (default = block).")
+    tcp_window_type: str | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
     tcp_window_minimum: int | None = Field(ge=65536, le=1048576, default=131072, description="Minimum dynamic TCP window size.")
     tcp_window_maximum: int | None = Field(ge=1048576, le=16777216, default=8388608, description="Maximum dynamic TCP window size.")
     tcp_window_size: int | None = Field(ge=65536, le=16777216, default=262144, description="Set TCP static window size.")
@@ -72,10 +73,10 @@ class ProfileProtocolOptionsFtp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 21).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 21).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
-    options: OptionsEnum | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: str | None = Field(default=None, description="One or more options that can be applied to the session.")
     comfort_interval: int | None = Field(ge=1, le=900, default=10, description="Interval between successive transmissions of data for client comforting (seconds).")
     comfort_amount: int | None = Field(ge=1, le=65535, default=1, description="Number of bytes to send in each transmission for client comforting (bytes).")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
@@ -83,7 +84,7 @@ class ProfileProtocolOptionsFtp(BaseModel):
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
     stream_based_uncompressed_limit: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum stream-based uncompressed data size that will be scanned in megabytes. Stream-based uncompression used only under certain conditions (unlimited = 0, default = 0).")
     scan_bzip2: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable scanning of BZip2 compressed files.")
-    tcp_window_type: TcpWindowTypeEnum | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
+    tcp_window_type: str | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
     tcp_window_minimum: int | None = Field(ge=65536, le=1048576, default=131072, description="Minimum dynamic TCP window size.")
     tcp_window_maximum: int | None = Field(ge=1048576, le=16777216, default=8388608, description="Maximum dynamic TCP window size.")
     tcp_window_size: int | None = Field(ge=65536, le=16777216, default=262144, description="Set TCP static window size.")
@@ -102,11 +103,11 @@ class ProfileProtocolOptionsImap(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 143).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 143).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
     proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")
-    options: Literal["fragmail", "oversize"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["fragmail", "oversize"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
@@ -125,9 +126,9 @@ class ProfileProtocolOptionsMapi(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 135).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 135).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
-    options: Literal["fragmail", "oversize"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["fragmail", "oversize"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
@@ -145,11 +146,11 @@ class ProfileProtocolOptionsPop3(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 110).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 110).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
     proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")
-    options: Literal["fragmail", "oversize"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["fragmail", "oversize"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
@@ -168,11 +169,11 @@ class ProfileProtocolOptionsSmtp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 25).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 25).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
     proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")
-    options: Literal["fragmail", "oversize", "splice"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["fragmail", "oversize", "splice"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
@@ -192,11 +193,11 @@ class ProfileProtocolOptionsNntp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 119).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 119).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
     inspect_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the inspection of all ports for the protocol.")
     proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")
-    options: Literal["oversize", "splice"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["oversize", "splice"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
@@ -214,7 +215,7 @@ class ProfileProtocolOptionsSsh(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    options: Literal["oversize", "clientcomfort", "servercomfort"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["oversize", "clientcomfort", "servercomfort"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     comfort_interval: int | None = Field(ge=1, le=900, default=10, description="Interval between successive transmissions of data for client comforting (seconds).")
     comfort_amount: int | None = Field(ge=1, le=65535, default=1, description="Number of bytes to send in each transmission for client comforting (bytes).")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
@@ -222,7 +223,7 @@ class ProfileProtocolOptionsSsh(BaseModel):
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
     stream_based_uncompressed_limit: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum stream-based uncompressed data size that will be scanned in megabytes. Stream-based uncompression used only under certain conditions (unlimited = 0, default = 0).")
     scan_bzip2: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable scanning of BZip2 compressed files.")
-    tcp_window_type: TcpWindowTypeEnum | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
+    tcp_window_type: str | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
     tcp_window_minimum: int | None = Field(ge=65536, le=1048576, default=131072, description="Minimum dynamic TCP window size.")
     tcp_window_maximum: int | None = Field(ge=1048576, le=16777216, default=8388608, description="Maximum dynamic TCP window size.")
     tcp_window_size: int | None = Field(ge=65536, le=16777216, default=262144, description="Set TCP static window size.")
@@ -240,7 +241,7 @@ class ProfileProtocolOptionsDns(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 53).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 53).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
 
 
@@ -255,20 +256,20 @@ class ProfileProtocolOptionsCifs(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    ports: int = Field(ge=1, le=65535, default="", description="Ports to scan for content (1 - 65535, default = 445).")
+    ports: int | None = Field(ge=1, le=65535, default=None, description="Ports to scan for content (1 - 65535, default = 445).")
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of scanning for this protocol.")
-    options: Literal["oversize"] | None = Field(default="", description="One or more options that can be applied to the session.")
+    options: Literal["oversize"] | None = Field(default=None, description="One or more options that can be applied to the session.")
     oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory file size that can be scanned (MB).")
     uncompressed_oversize_limit: int | None = Field(ge=1, le=4095, default=10, description="Maximum in-memory uncompressed file size that can be scanned (MB).")
     uncompressed_nest_limit: int | None = Field(ge=2, le=100, default=12, description="Maximum nested levels of compression that can be uncompressed and scanned (2 - 100, default = 12).")
     scan_bzip2: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable scanning of BZip2 compressed files.")
-    tcp_window_type: TcpWindowTypeEnum | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
+    tcp_window_type: str | None = Field(default="auto-tuning", description="TCP window type to use for this protocol.")
     tcp_window_minimum: int | None = Field(ge=65536, le=1048576, default=131072, description="Minimum dynamic TCP window size.")
     tcp_window_maximum: int | None = Field(ge=1048576, le=16777216, default=8388608, description="Maximum dynamic TCP window size.")
     tcp_window_size: int | None = Field(ge=65536, le=16777216, default=262144, description="Set TCP static window size.")
     server_credential_type: Literal["none", "credential-replication", "credential-keytab"] = Field(default="none", description="CIFS server credential type.")
     domain_controller: str = Field(max_length=63, default="", description="Domain for which to decrypt CIFS traffic.")  # datasource: ['user.domain-controller.name', 'credential-store.domain-controller.server-name']
-    server_keytab: list[ServerKeytab] = Field(default=None, description="Server keytab.")
+    server_keytab: list[dict[str, Any]] | None = Field(default=None, description="Server keytab.")
 
 
 class ProfileProtocolOptionsMailSignature(BaseModel):
@@ -301,7 +302,25 @@ class ProfileProtocolOptionsModel(BaseModel):
 
     Configure protocol options.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - replacemsg_group: max_length=35 pattern=        - oversize_log: pattern=        - switching_protocols_log: pattern=        - http: pattern=        - ftp: pattern=        - imap: pattern=        - mapi: pattern=        - pop3: pattern=        - smtp: pattern=        - nntp: pattern=        - ssh: pattern=        - dns: pattern=        - cifs: pattern=        - mail_signature: pattern=        - rpc_over_http: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - oversize_log: pattern=
+        - switching_protocols_log: pattern=
+        - http: pattern=
+        - ftp: pattern=
+        - imap: pattern=
+        - mapi: pattern=
+        - pop3: pattern=
+        - smtp: pattern=
+        - nntp: pattern=
+        - ssh: pattern=
+        - dns: pattern=
+        - cifs: pattern=
+        - mail_signature: pattern=
+        - rpc_over_http: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -313,7 +332,24 @@ class ProfileProtocolOptionsModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Name.")    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Name of the replacement message group to be used.")  # datasource: ['system.replacemsg-group.name']    oversize_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for antivirus oversize file blocking.")    switching_protocols_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for HTTP/HTTPS switching protocols.")    http: list[ProfileProtocolOptionsHttp] = Field(default=None, description="Configure HTTP protocol options.")    ftp: list[ProfileProtocolOptionsFtp] = Field(default=None, description="Configure FTP protocol options.")    imap: list[ProfileProtocolOptionsImap] = Field(default=None, description="Configure IMAP protocol options.")    mapi: list[ProfileProtocolOptionsMapi] = Field(default=None, description="Configure MAPI protocol options.")    pop3: list[ProfileProtocolOptionsPop3] = Field(default=None, description="Configure POP3 protocol options.")    smtp: list[ProfileProtocolOptionsSmtp] = Field(default=None, description="Configure SMTP protocol options.")    nntp: list[ProfileProtocolOptionsNntp] = Field(default=None, description="Configure NNTP protocol options.")    ssh: list[ProfileProtocolOptionsSsh] = Field(default=None, description="Configure SFTP and SCP protocol options.")    dns: list[ProfileProtocolOptionsDns] = Field(default=None, description="Configure DNS protocol options.")    cifs: list[ProfileProtocolOptionsCifs] = Field(default=None, description="Configure CIFS protocol options.")    mail_signature: list[ProfileProtocolOptionsMailSignature] = Field(default=None, description="Configure Mail signature.")    rpc_over_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inspection of RPC over HTTP.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Name.")
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Name of the replacement message group to be used.")  # datasource: ['system.replacemsg-group.name']
+    oversize_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for antivirus oversize file blocking.")
+    switching_protocols_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for HTTP/HTTPS switching protocols.")
+    http: list[ProfileProtocolOptionsHttp] | None = Field(default=None, description="Configure HTTP protocol options.")
+    ftp: list[ProfileProtocolOptionsFtp] | None = Field(default=None, description="Configure FTP protocol options.")
+    imap: list[ProfileProtocolOptionsImap] | None = Field(default=None, description="Configure IMAP protocol options.")
+    mapi: list[ProfileProtocolOptionsMapi] | None = Field(default=None, description="Configure MAPI protocol options.")
+    pop3: list[ProfileProtocolOptionsPop3] | None = Field(default=None, description="Configure POP3 protocol options.")
+    smtp: list[ProfileProtocolOptionsSmtp] | None = Field(default=None, description="Configure SMTP protocol options.")
+    nntp: list[ProfileProtocolOptionsNntp] | None = Field(default=None, description="Configure NNTP protocol options.")
+    ssh: list[ProfileProtocolOptionsSsh] | None = Field(default=None, description="Configure SFTP and SCP protocol options.")
+    dns: list[ProfileProtocolOptionsDns] | None = Field(default=None, description="Configure DNS protocol options.")
+    cifs: list[ProfileProtocolOptionsCifs] | None = Field(default=None, description="Configure CIFS protocol options.")
+    mail_signature: list[ProfileProtocolOptionsMailSignature] | None = Field(default=None, description="Configure Mail signature.")
+    rpc_over_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inspection of RPC over HTTP.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -392,7 +428,7 @@ class ProfileProtocolOptionsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_protocol_options.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -441,7 +477,7 @@ class ProfileProtocolOptionsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_protocol_options.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "cifs", [])
@@ -489,9 +525,10 @@ class ProfileProtocolOptionsModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_replacemsg_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_cifs_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_cifs_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -513,5 +550,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.327935Z
+# Generated: 2026-01-14T22:43:35.387439Z
 # ============================================================================

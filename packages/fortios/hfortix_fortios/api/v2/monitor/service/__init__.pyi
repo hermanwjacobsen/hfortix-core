@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .ldap import LdapDictMode, LdapObjectMode
+    from .ldap import Ldap, LdapDictMode, LdapObjectMode
 
 __all__ = [
     "ServiceDictMode",

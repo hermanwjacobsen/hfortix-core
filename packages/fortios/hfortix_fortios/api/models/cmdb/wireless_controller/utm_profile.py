@@ -26,7 +26,16 @@ class UtmProfileModel(BaseModel):
 
     Configure UTM (Unified Threat Management) profile.
 
-    Validation Rules:        - name: max_length=35 pattern=        - comment: max_length=63 pattern=        - utm_log: pattern=        - ips_sensor: max_length=47 pattern=        - application_list: max_length=47 pattern=        - antivirus_profile: max_length=47 pattern=        - webfilter_profile: max_length=47 pattern=        - scan_botnet_connections: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - comment: max_length=63 pattern=
+        - utm_log: pattern=
+        - ips_sensor: max_length=47 pattern=
+        - application_list: max_length=47 pattern=
+        - antivirus_profile: max_length=47 pattern=
+        - webfilter_profile: max_length=47 pattern=
+        - scan_botnet_connections: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +47,15 @@ class UtmProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="UTM profile name.")    comment: str | None = Field(max_length=63, default="", description="Comment.")    utm_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UTM logging.")    ips_sensor: str | None = Field(max_length=47, default="", description="IPS sensor name.")  # datasource: ['ips.sensor.name']    application_list: str | None = Field(max_length=47, default="", description="Application control list name.")  # datasource: ['application.list.name']    antivirus_profile: str | None = Field(max_length=47, default="", description="AntiVirus profile name.")  # datasource: ['antivirus.profile.name']    webfilter_profile: str | None = Field(max_length=47, default="", description="WebFilter profile name.")  # datasource: ['webfilter.profile.name']    scan_botnet_connections: Literal["disable", "monitor", "block"] | None = Field(default="monitor", description="Block or monitor connections to Botnet servers or disable Botnet scanning.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="UTM profile name.")
+    comment: str | None = Field(max_length=63, default="", description="Comment.")
+    utm_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UTM logging.")
+    ips_sensor: str | None = Field(max_length=47, default="", description="IPS sensor name.")  # datasource: ['ips.sensor.name']
+    application_list: str | None = Field(max_length=47, default="", description="Application control list name.")  # datasource: ['application.list.name']
+    antivirus_profile: str | None = Field(max_length=47, default="", description="AntiVirus profile name.")  # datasource: ['antivirus.profile.name']
+    webfilter_profile: str | None = Field(max_length=47, default="", description="WebFilter profile name.")  # datasource: ['webfilter.profile.name']
+    scan_botnet_connections: Literal["disable", "monitor", "block"] | None = Field(default="monitor", description="Block or monitor connections to Botnet servers or disable Botnet scanning.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -162,7 +179,7 @@ class UtmProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.utm_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -189,7 +206,7 @@ class UtmProfileModel(BaseModel):
         can be called before posting to the API to catch reference errors early.
 
         Datasource endpoints checked:
-        - application/list
+        - application/list_
         Args:
             client: FortiOS client instance (from fgt._client)
 
@@ -211,7 +228,7 @@ class UtmProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.utm_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -220,13 +237,13 @@ class UtmProfileModel(BaseModel):
 
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.application.list.exists(value):
+        if await client.api.cmdb.application.list_.exists(value):
             found = True
 
         if not found:
             errors.append(
                 f"Application-List '{value}' not found in "
-                "application/list"
+                "application/list_"
             )
         return errors
     async def validate_antivirus_profile_references(self, client: Any) -> list[str]:
@@ -260,7 +277,7 @@ class UtmProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.utm_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "antivirus_profile", None)
@@ -309,7 +326,7 @@ class UtmProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.utm_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -346,11 +363,14 @@ class UtmProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ips_sensor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_application_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_antivirus_profile_references(client)
-        all_errors.extend(errors)        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_antivirus_profile_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_webfilter_profile_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -372,5 +392,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.739092Z
+# Generated: 2026-01-14T22:43:34.608514Z
 # ============================================================================

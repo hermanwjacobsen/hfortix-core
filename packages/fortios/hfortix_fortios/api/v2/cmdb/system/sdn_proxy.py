@@ -233,7 +233,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["general", "fortimanager"] | None = None,
+        type_: Literal["general", "fortimanager"] | None = None,
         server: str | None = None,
         server_port: int | None = None,
         username: str | None = None,
@@ -251,7 +251,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: SDN proxy name.
-            type: Type of SDN proxy.
+            type_: Type of SDN proxy.
             server: Server address of the SDN proxy.
             server_port: Port number of the SDN proxy.
             username: SDN proxy username.
@@ -290,7 +290,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             server_port=server_port,
             username=username,
@@ -326,7 +326,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["general", "fortimanager"] | None = None,
+        type_: Literal["general", "fortimanager"] | None = None,
         server: str | None = None,
         server_port: int | None = None,
         username: str | None = None,
@@ -344,7 +344,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: SDN proxy name.
-            type: Type of SDN proxy.
+            type_: Type of SDN proxy.
             server: Server address of the SDN proxy.
             server_port: Port number of the SDN proxy.
             username: SDN proxy username.
@@ -385,7 +385,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             server_port=server_port,
             username=username,
@@ -521,7 +521,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["general", "fortimanager"] | None = None,
+        type_: Literal["general", "fortimanager"] | None = None,
         server: str | None = None,
         server_port: int | None = None,
         username: str | None = None,
@@ -540,7 +540,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             server: Field server
             server_port: Field server-port
             username: Field username
@@ -589,7 +589,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             server=server,
             server_port=server_port,
             username=username,

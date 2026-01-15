@@ -291,7 +291,6 @@ class FortiguardObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -310,6 +309,10 @@ class Fortiguard:
     Path: system/fortiguard
     Category: cmdb
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -331,6 +334,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -348,6 +352,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -364,6 +369,7 @@ class Fortiguard:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FortiguardResponse: ...
     
     # ================================================================
@@ -406,7 +412,7 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
@@ -425,7 +431,7 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
@@ -525,23 +531,6 @@ class Fortiguard:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FortiguardObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -614,6 +603,7 @@ class Fortiguard:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
@@ -821,74 +811,7 @@ class Fortiguard:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FortiguardPayload | None = ...,
-        fortiguard_anycast: Literal["enable", "disable"] | None = ...,
-        fortiguard_anycast_source: Literal["fortinet", "aws", "debug"] | None = ...,
-        protocol: Literal["udp", "http", "https"] | None = ...,
-        port: Literal["8888", "53", "80", "443"] | None = ...,
-        load_balance_servers: int | None = ...,
-        auto_join_forticloud: Literal["enable", "disable"] | None = ...,
-        update_server_location: Literal["automatic", "usa", "eu"] | None = ...,
-        sandbox_region: str | None = ...,
-        sandbox_inline_scan: Literal["enable", "disable"] | None = ...,
-        update_ffdb: Literal["enable", "disable"] | None = ...,
-        update_uwdb: Literal["enable", "disable"] | None = ...,
-        update_dldb: Literal["enable", "disable"] | None = ...,
-        update_extdb: Literal["enable", "disable"] | None = ...,
-        update_build_proxy: Literal["enable", "disable"] | None = ...,
-        persistent_connection: Literal["enable", "disable"] | None = ...,
-        auto_firmware_upgrade: Literal["enable", "disable"] | None = ...,
-        auto_firmware_upgrade_day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | list[str] | None = ...,
-        auto_firmware_upgrade_delay: int | None = ...,
-        auto_firmware_upgrade_start_hour: int | None = ...,
-        auto_firmware_upgrade_end_hour: int | None = ...,
-        FDS_license_expiring_days: int | None = ...,
-        subscribe_update_notification: Literal["enable", "disable"] | None = ...,
-        antispam_force_off: Literal["enable", "disable"] | None = ...,
-        antispam_cache: Literal["enable", "disable"] | None = ...,
-        antispam_cache_ttl: int | None = ...,
-        antispam_cache_mpermille: int | None = ...,
-        antispam_license: int | None = ...,
-        antispam_expiration: int | None = ...,
-        antispam_timeout: int | None = ...,
-        outbreak_prevention_force_off: Literal["enable", "disable"] | None = ...,
-        outbreak_prevention_cache: Literal["enable", "disable"] | None = ...,
-        outbreak_prevention_cache_ttl: int | None = ...,
-        outbreak_prevention_cache_mpermille: int | None = ...,
-        outbreak_prevention_license: int | None = ...,
-        outbreak_prevention_expiration: int | None = ...,
-        outbreak_prevention_timeout: int | None = ...,
-        webfilter_force_off: Literal["enable", "disable"] | None = ...,
-        webfilter_cache: Literal["enable", "disable"] | None = ...,
-        webfilter_cache_ttl: int | None = ...,
-        webfilter_license: int | None = ...,
-        webfilter_expiration: int | None = ...,
-        webfilter_timeout: int | None = ...,
-        sdns_server_ip: str | list[str] | None = ...,
-        sdns_server_port: int | None = ...,
-        anycast_sdns_server_ip: str | None = ...,
-        anycast_sdns_server_port: int | None = ...,
-        sdns_options: Literal["include-question-section"] | list[str] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        proxy_server_ip: str | None = ...,
-        proxy_server_port: int | None = ...,
-        proxy_username: str | None = ...,
-        proxy_password: str | None = ...,
-        ddns_server_ip: str | None = ...,
-        ddns_server_ip6: str | None = ...,
-        ddns_server_port: int | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -976,8 +899,6 @@ class Fortiguard:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1005,6 +926,10 @@ class FortiguardDictMode:
     By default returns FortiguardResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FortiguardObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1309,10 +1234,12 @@ class FortiguardDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FortiguardPayload | None = ...,
@@ -1464,8 +1391,6 @@ class FortiguardDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1489,6 +1414,10 @@ class FortiguardObjectMode:
     By default returns FortiguardObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FortiguardResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1863,10 +1792,12 @@ class FortiguardObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FortiguardPayload | None = ...,
@@ -2018,8 +1949,6 @@ class FortiguardObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

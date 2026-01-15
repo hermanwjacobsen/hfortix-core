@@ -233,7 +233,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["local-vap", "lan-ext-vap"] | None = None,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = None,
         ssid: str | None = None,
         max_clients: int | None = None,
         broadcast_ssid: Literal["disable", "enable"] | None = None,
@@ -266,7 +266,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Wi-Fi VAP name.
-            type: Wi-Fi VAP type local-vap / lan-extension-vap.
+            type_: Wi-Fi VAP type local-vap / lan-extension-vap.
             ssid: Wi-Fi SSID.
             max_clients: Wi-Fi max clients (0 - 512), default = 0 (no limit) 
             broadcast_ssid: Wi-Fi broadcast SSID enable / disable.
@@ -320,7 +320,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             ssid=ssid,
             max_clients=max_clients,
             broadcast_ssid=broadcast_ssid,
@@ -371,7 +371,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["local-vap", "lan-ext-vap"] | None = None,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = None,
         ssid: str | None = None,
         max_clients: int | None = None,
         broadcast_ssid: Literal["disable", "enable"] | None = None,
@@ -404,7 +404,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Wi-Fi VAP name.
-            type: Wi-Fi VAP type local-vap / lan-extension-vap.
+            type_: Wi-Fi VAP type local-vap / lan-extension-vap.
             ssid: Wi-Fi SSID.
             max_clients: Wi-Fi max clients (0 - 512), default = 0 (no limit) 
             broadcast_ssid: Wi-Fi broadcast SSID enable / disable.
@@ -460,7 +460,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             ssid=ssid,
             max_clients=max_clients,
             broadcast_ssid=broadcast_ssid,
@@ -611,7 +611,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["local-vap", "lan-ext-vap"] | None = None,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = None,
         ssid: str | None = None,
         max_clients: int | None = None,
         broadcast_ssid: Literal["disable", "enable"] | None = None,
@@ -645,7 +645,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             ssid: Field ssid
             max_clients: Field max-clients
             broadcast_ssid: Field broadcast-ssid
@@ -709,7 +709,7 @@ class ExtenderVap(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             ssid=ssid,
             max_clients=max_clients,
             broadcast_ssid=broadcast_ssid,

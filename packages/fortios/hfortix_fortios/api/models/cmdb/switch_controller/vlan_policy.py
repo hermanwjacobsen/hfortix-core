@@ -59,7 +59,16 @@ class VlanPolicyModel(BaseModel):
 
     Configure VLAN policy to be applied on the managed FortiSwitch ports through dynamic-port-policy.
 
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - fortilink: max_length=15 pattern=        - vlan: max_length=15 pattern=        - allowed_vlans: pattern=        - untagged_vlans: pattern=        - allowed_vlans_all: pattern=        - discard_mode: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - description: max_length=63 pattern=
+        - fortilink: max_length=15 pattern=
+        - vlan: max_length=15 pattern=
+        - allowed_vlans: pattern=
+        - untagged_vlans: pattern=
+        - allowed_vlans_all: pattern=
+        - discard_mode: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -71,7 +80,15 @@ class VlanPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="VLAN policy name.")    description: str | None = Field(max_length=63, default="", description="Description for the VLAN policy.")    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this VLAN policy belongs to.")  # datasource: ['system.interface.name']    vlan: str | None = Field(max_length=15, default="", description="Native VLAN to be applied when using this VLAN policy.")  # datasource: ['system.interface.name']    allowed_vlans: list[VlanPolicyAllowedVlans] = Field(default=None, description="Allowed VLANs to be applied when using this VLAN policy.")    untagged_vlans: list[VlanPolicyUntaggedVlans] = Field(default=None, description="Untagged VLANs to be applied when using this VLAN policy.")    allowed_vlans_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable all defined VLANs when using this VLAN policy.")    discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = Field(default="none", description="Discard mode to be applied when using this VLAN policy.")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="VLAN policy name.")
+    description: str | None = Field(max_length=63, default="", description="Description for the VLAN policy.")
+    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this VLAN policy belongs to.")  # datasource: ['system.interface.name']
+    vlan: str | None = Field(max_length=15, default="", description="Native VLAN to be applied when using this VLAN policy.")  # datasource: ['system.interface.name']
+    allowed_vlans: list[VlanPolicyAllowedVlans] | None = Field(default=None, description="Allowed VLANs to be applied when using this VLAN policy.")
+    untagged_vlans: list[VlanPolicyUntaggedVlans] | None = Field(default=None, description="Untagged VLANs to be applied when using this VLAN policy.")
+    allowed_vlans_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable all defined VLANs when using this VLAN policy.")
+    discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = Field(default="none", description="Discard mode to be applied when using this VLAN policy.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -165,7 +182,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -214,7 +231,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vlan", None)
@@ -263,7 +280,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "allowed_vlans", [])
@@ -321,7 +338,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "untagged_vlans", [])
@@ -367,11 +384,14 @@ class VlanPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_fortilink_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vlan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_allowed_vlans_references(client)
-        all_errors.extend(errors)        errors = await self.validate_untagged_vlans_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vlan_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_allowed_vlans_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_untagged_vlans_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -393,5 +413,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.016167Z
+# Generated: 2026-01-14T22:43:37.393801Z
 # ============================================================================

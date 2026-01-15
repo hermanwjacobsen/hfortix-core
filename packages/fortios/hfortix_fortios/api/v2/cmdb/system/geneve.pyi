@@ -26,7 +26,7 @@ class GenevePayload(TypedDict, total=False):
     name: str  # GENEVE device or interface name. Must be an unique | MaxLen: 15
     interface: str  # Outgoing interface for GENEVE encapsulated traffic | MaxLen: 15
     vni: int  # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
-    type: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
+    type_: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
     ip_version: Literal["ipv4-unicast", "ipv6-unicast"]  # IP version to use for the GENEVE interface and so | Default: ipv4-unicast
     remote_ip: str  # IPv4 address of the GENEVE interface on the device | Default: 0.0.0.0
     remote_ip6: str  # IPv6 IP address of the GENEVE interface on the dev | Default: ::
@@ -47,7 +47,7 @@ class GeneveResponse(TypedDict):
     name: str  # GENEVE device or interface name. Must be an unique | MaxLen: 15
     interface: str  # Outgoing interface for GENEVE encapsulated traffic | MaxLen: 15
     vni: int  # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
-    type: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
+    type_: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
     ip_version: Literal["ipv4-unicast", "ipv6-unicast"]  # IP version to use for the GENEVE interface and so | Default: ipv4-unicast
     remote_ip: str  # IPv4 address of the GENEVE interface on the device | Default: 0.0.0.0
     remote_ip6: str  # IPv6 IP address of the GENEVE interface on the dev | Default: ::
@@ -69,7 +69,7 @@ class GeneveObject:
     # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
     vni: int
     # GENEVE type. | Default: ethernet
-    type: Literal["ethernet", "ppp"]
+    type_: Literal["ethernet", "ppp"]
     # IP version to use for the GENEVE interface and so for commun | Default: ipv4-unicast
     ip_version: Literal["ipv4-unicast", "ipv6-unicast"]
     # IPv4 address of the GENEVE interface on the device at the re | Default: 0.0.0.0
@@ -103,6 +103,10 @@ class Geneve:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -123,6 +127,7 @@ class Geneve:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GeneveResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -140,6 +145,7 @@ class Geneve:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GeneveResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -156,6 +162,7 @@ class Geneve:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[GeneveResponse]: ...
     
     # ================================================================
@@ -198,7 +205,7 @@ class Geneve:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GeneveObject: ...
     
@@ -217,7 +224,7 @@ class Geneve:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[GeneveObject]: ...
     
@@ -317,23 +324,6 @@ class Geneve:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GeneveObject | list[GeneveObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -348,13 +338,14 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GeneveObject: ...
@@ -366,7 +357,7 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -385,7 +376,7 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -403,29 +394,13 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -437,13 +412,14 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GeneveObject: ...
@@ -455,7 +431,7 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -474,7 +450,7 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -492,29 +468,13 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -525,6 +485,7 @@ class Geneve:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GeneveObject: ...
@@ -555,14 +516,7 @@ class Geneve:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -578,7 +532,7 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -599,8 +553,6 @@ class Geneve:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -628,6 +580,10 @@ class GeneveDictMode:
     By default returns GeneveResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GeneveObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -734,7 +690,7 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -753,7 +709,7 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -772,23 +728,25 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: GenevePayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -805,7 +763,7 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -824,7 +782,7 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -843,23 +801,25 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GenevePayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -896,10 +856,12 @@ class GeneveDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -920,7 +882,7 @@ class GeneveDictMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -940,8 +902,6 @@ class GeneveDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -965,6 +925,10 @@ class GeneveObjectMode:
     By default returns GeneveObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GeneveResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1071,7 +1035,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1090,7 +1054,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1109,7 +1073,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1128,23 +1092,25 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GeneveObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: GenevePayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1161,7 +1127,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1180,7 +1146,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1199,7 +1165,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1218,23 +1184,25 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GeneveObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GenevePayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1282,10 +1250,12 @@ class GeneveObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GeneveObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1306,7 +1276,7 @@ class GeneveObjectMode:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
+        type_: Literal["ethernet", "ppp"] | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
@@ -1326,8 +1296,6 @@ class GeneveObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

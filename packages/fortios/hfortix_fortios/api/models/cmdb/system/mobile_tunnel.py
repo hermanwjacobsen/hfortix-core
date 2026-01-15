@@ -47,7 +47,23 @@ class MobileTunnelModel(BaseModel):
 
     Configure Mobile tunnels, an implementation of Network Mobility (NEMO) extensions for Mobile IPv4 RFC5177.
 
-    Validation Rules:        - name: max_length=15 pattern=        - status: pattern=        - roaming_interface: max_length=15 pattern=        - home_agent: pattern=        - home_address: pattern=        - renew_interval: min=5 max=60 pattern=        - lifetime: min=180 max=65535 pattern=        - reg_interval: min=5 max=300 pattern=        - reg_retry: min=1 max=30 pattern=        - n_mhae_spi: min=0 max=4294967295 pattern=        - n_mhae_key_type: pattern=        - n_mhae_key: pattern=        - hash_algorithm: pattern=        - tunnel_mode: pattern=        - network: pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - status: pattern=
+        - roaming_interface: max_length=15 pattern=
+        - home_agent: pattern=
+        - home_address: pattern=
+        - renew_interval: min=5 max=60 pattern=
+        - lifetime: min=180 max=65535 pattern=
+        - reg_interval: min=5 max=300 pattern=
+        - reg_retry: min=1 max=30 pattern=
+        - n_mhae_spi: min=0 max=4294967295 pattern=
+        - n_mhae_key_type: pattern=
+        - n_mhae_key: pattern=
+        - hash_algorithm: pattern=
+        - tunnel_mode: pattern=
+        - network: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -59,7 +75,22 @@ class MobileTunnelModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="Tunnel name.")    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this mobile tunnel.")    roaming_interface: str = Field(max_length=15, default="", description="Select the associated interface name from available options.")  # datasource: ['system.interface.name']    home_agent: str = Field(default="0.0.0.0", description="IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx).")    home_address: str | None = Field(default="0.0.0.0", description="Home IP address (Format: xxx.xxx.xxx.xxx).")    renew_interval: int = Field(ge=5, le=60, default=60, description="Time before lifetime expiration to send NMMO HA re-registration (5 - 60, default = 60).")    lifetime: int = Field(ge=180, le=65535, default=65535, description="NMMO HA registration request lifetime (180 - 65535 sec, default = 65535).")    reg_interval: int = Field(ge=5, le=300, default=5, description="NMMO HA registration interval (5 - 300, default = 5).")    reg_retry: int = Field(ge=1, le=30, default=3, description="Maximum number of NMMO HA registration retries (1 to 30, default = 3).")    n_mhae_spi: int = Field(ge=0, le=4294967295, default=256, description="NEMO authentication SPI (default: 256).")    n_mhae_key_type: Literal["ascii", "base64"] = Field(default="ascii", description="NEMO authentication key type (ASCII or base64).")    n_mhae_key: Any = Field(default=None, description="NEMO authentication key.")    hash_algorithm: Literal["hmac-md5"] = Field(default="hmac-md5", description="Hash Algorithm (Keyed MD5).")    tunnel_mode: Literal["gre"] = Field(default="gre", description="NEMO tunnel mode (GRE tunnel).")    network: list[MobileTunnelNetwork] = Field(default=None, description="NEMO network configuration.")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="Tunnel name.")
+    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this mobile tunnel.")
+    roaming_interface: str = Field(max_length=15, default="", description="Select the associated interface name from available options.")  # datasource: ['system.interface.name']
+    home_agent: str = Field(default="0.0.0.0", description="IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx).")
+    home_address: str | None = Field(default="0.0.0.0", description="Home IP address (Format: xxx.xxx.xxx.xxx).")
+    renew_interval: int = Field(ge=5, le=60, default=60, description="Time before lifetime expiration to send NMMO HA re-registration (5 - 60, default = 60).")
+    lifetime: int = Field(ge=180, le=65535, default=65535, description="NMMO HA registration request lifetime (180 - 65535 sec, default = 65535).")
+    reg_interval: int = Field(ge=5, le=300, default=5, description="NMMO HA registration interval (5 - 300, default = 5).")
+    reg_retry: int = Field(ge=1, le=30, default=3, description="Maximum number of NMMO HA registration retries (1 to 30, default = 3).")
+    n_mhae_spi: int = Field(ge=0, le=4294967295, default=256, description="NEMO authentication SPI (default: 256).")
+    n_mhae_key_type: Literal["ascii", "base64"] = Field(default="ascii", description="NEMO authentication key type (ASCII or base64).")
+    n_mhae_key: Any = Field(default=None, description="NEMO authentication key.")
+    hash_algorithm: Literal["hmac-md5"] = Field(default="hmac-md5", description="Hash Algorithm (Keyed MD5).")
+    tunnel_mode: Literal["gre"] = Field(default="gre", description="NEMO tunnel mode (GRE tunnel).")
+    network: list[MobileTunnelNetwork] | None = Field(default=None, description="NEMO network configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -138,7 +169,7 @@ class MobileTunnelModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.mobile_tunnel.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "roaming_interface", None)
@@ -187,7 +218,7 @@ class MobileTunnelModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.mobile_tunnel.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "network", [])
@@ -233,9 +264,10 @@ class MobileTunnelModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_roaming_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_network_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_network_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -257,5 +289,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.524047Z
+# Generated: 2026-01-14T22:43:35.605836Z
 # ============================================================================

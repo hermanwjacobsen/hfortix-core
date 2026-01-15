@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -29,11 +30,11 @@ class ProfileRules(BaseModel):
         str_strip_whitespace = True
     name: str = Field(max_length=35, default="", description="File-filter rule name.")
     comment: str | None = Field(max_length=255, default=None, description="Comment.")
-    protocol: ProtocolEnum | None = Field(default="http ftp smtp imap pop3 mapi cifs ssh", description="Protocols to apply rule to.")
+    protocol: str | None = Field(default=None, description="Protocols to apply rule to.")
     action: Literal["log-only", "block"] | None = Field(default="log-only", description="Action taken for matched file.")
     direction: Literal["incoming", "outgoing", "any"] | None = Field(default="any", description="Traffic direction (HTTP, FTP, SSH, CIFS, and MAPI only).")
     password_protected: Literal["yes", "any"] | None = Field(default="any", description="Match password-protected files.")
-    file_type: list[FileType] = Field(description="Select file type.")
+    file_type: list[dict[str, Any]] | None = Field(description="Select file type.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -51,7 +52,16 @@ class ProfileModel(BaseModel):
 
     Configure file-filter profiles.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - feature_set: pattern=        - replacemsg_group: max_length=35 pattern=        - log: pattern=        - extended_log: pattern=        - scan_archive_contents: pattern=        - rules: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - feature_set: pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - log: pattern=
+        - extended_log: pattern=
+        - scan_archive_contents: pattern=
+        - rules: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -63,7 +73,15 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable file-filter logging.")    extended_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable file-filter extended logging.")    scan_archive_contents: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable archive contents scan.")    rules: list[ProfileRules] = Field(default=None, description="File filter rules.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']
+    log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable file-filter logging.")
+    extended_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable file-filter extended logging.")
+    scan_archive_contents: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable archive contents scan.")
+    rules: list[ProfileRules] | None = Field(default=None, description="File filter rules.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -142,7 +160,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.file_filter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -179,7 +197,7 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_replacemsg_group_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -202,5 +220,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.955362Z
+# Generated: 2026-01-14T22:43:37.316690Z
 # ============================================================================

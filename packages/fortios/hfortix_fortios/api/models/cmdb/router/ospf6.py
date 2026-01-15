@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -31,18 +32,18 @@ class Ospf6Area(BaseModel):
     default_cost: int | None = Field(ge=0, le=16777215, default=10, description="Summary default cost of stub or NSSA area.")
     nssa_translator_role: Literal["candidate", "never", "always"] | None = Field(default="candidate", description="NSSA translator role type.")
     stub_type: Literal["no-summary", "summary"] | None = Field(default="summary", description="Stub summary setting.")
-    type: Literal["regular", "nssa", "stub"] | None = Field(default="regular", description="Area type setting.")
+    type_: Literal["regular", "nssa", "stub"] | None = Field(default="regular", description="Area type setting.")
     nssa_default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable originate type 7 default into NSSA area.")
     nssa_default_information_originate_metric: int | None = Field(ge=0, le=16777214, default=10, description="OSPFv3 default metric.")
     nssa_default_information_originate_metric_type: Literal["1", "2"] | None = Field(default="2", description="OSPFv3 metric type for default routes.")
     nssa_redistribution: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redistribute into NSSA area.")
     authentication: Literal["none", "ah", "esp"] | None = Field(default="none", description="Authentication mode.")
     key_rollover_interval: int | None = Field(ge=300, le=216000, default=300, description="Key roll-over interval.")
-    ipsec_auth_alg: IpsecAuthAlgEnum | None = Field(default="md5", description="Authentication algorithm.")
-    ipsec_enc_alg: IpsecEncAlgEnum | None = Field(default="null", description="Encryption algorithm.")
-    ipsec_keys: list[IpsecKeys] = Field(default=None, description="IPsec authentication and encryption keys.")
-    range: list[Range] = Field(default=None, description="OSPF6 area range configuration.")
-    virtual_link: list[VirtualLink] = Field(default=None, description="OSPF6 virtual link configuration.")
+    ipsec_auth_alg: str | None = Field(default="md5", description="Authentication algorithm.")
+    ipsec_enc_alg: str | None = Field(default="null", description="Encryption algorithm.")
+    ipsec_keys: list[dict[str, Any]] | None = Field(default=None, description="IPsec authentication and encryption keys.")
+    range_: list[dict[str, Any]] | None = Field(default=None, description="OSPF6 area range configuration.")
+    virtual_link: list[dict[str, Any]] | None = Field(default=None, description="OSPF6 virtual link configuration.")
 
 
 class Ospf6Ospf6Interface(BaseModel):
@@ -66,16 +67,16 @@ class Ospf6Ospf6Interface(BaseModel):
     dead_interval: int | None = Field(ge=1, le=65535, default=0, description="Dead interval.")
     hello_interval: int | None = Field(ge=1, le=65535, default=0, description="Hello interval.")
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable OSPF6 routing on this interface.")
-    network_type: NetworkTypeEnum | None = Field(default="broadcast", description="Network type.")
+    network_type: str | None = Field(default="broadcast", description="Network type.")
     bfd: Literal["global", "enable", "disable"] | None = Field(default="global", description="Enable/disable Bidirectional Forwarding Detection (BFD).")
     mtu: int | None = Field(ge=576, le=65535, default=0, description="MTU for OSPFv3 packets.")
     mtu_ignore: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignoring MTU field in DBD packets.")
-    authentication: AuthenticationEnum | None = Field(default="area", description="Authentication mode.")
+    authentication: str | None = Field(default="area", description="Authentication mode.")
     key_rollover_interval: int | None = Field(ge=300, le=216000, default=300, description="Key roll-over interval.")
-    ipsec_auth_alg: IpsecAuthAlgEnum | None = Field(default="md5", description="Authentication algorithm.")
-    ipsec_enc_alg: IpsecEncAlgEnum | None = Field(default="null", description="Encryption algorithm.")
-    ipsec_keys: list[IpsecKeys] = Field(default=None, description="IPsec authentication and encryption keys.")
-    neighbor: list[Neighbor] = Field(default=None, description="OSPFv3 neighbors are used when OSPFv3 runs on non-broadcast media.")
+    ipsec_auth_alg: str | None = Field(default="md5", description="Authentication algorithm.")
+    ipsec_enc_alg: str | None = Field(default="null", description="Encryption algorithm.")
+    ipsec_keys: list[dict[str, Any]] | None = Field(default=None, description="IPsec authentication and encryption keys.")
+    neighbor: list[dict[str, Any]] | None = Field(default=None, description="OSPFv3 neighbors are used when OSPFv3 runs on non-broadcast media.")
 
 
 class Ospf6Redistribute(BaseModel):
@@ -142,7 +143,27 @@ class Ospf6Model(BaseModel):
 
     Configure IPv6 OSPF.
 
-    Validation Rules:        - abr_type: pattern=        - auto_cost_ref_bandwidth: min=1 max=1000000 pattern=        - default_information_originate: pattern=        - log_neighbour_changes: pattern=        - default_information_metric: min=1 max=16777214 pattern=        - default_information_metric_type: pattern=        - default_information_route_map: max_length=35 pattern=        - default_metric: min=1 max=16777214 pattern=        - router_id: pattern=        - spf_timers: pattern=        - bfd: pattern=        - restart_mode: pattern=        - restart_period: min=1 max=3600 pattern=        - restart_on_topology_change: pattern=        - area: pattern=        - ospf6_interface: pattern=        - redistribute: pattern=        - passive_interface: pattern=        - summary_address: pattern=    """
+    Validation Rules:
+        - abr_type: pattern=
+        - auto_cost_ref_bandwidth: min=1 max=1000000 pattern=
+        - default_information_originate: pattern=
+        - log_neighbour_changes: pattern=
+        - default_information_metric: min=1 max=16777214 pattern=
+        - default_information_metric_type: pattern=
+        - default_information_route_map: max_length=35 pattern=
+        - default_metric: min=1 max=16777214 pattern=
+        - router_id: pattern=
+        - spf_timers: pattern=
+        - bfd: pattern=
+        - restart_mode: pattern=
+        - restart_period: min=1 max=3600 pattern=
+        - restart_on_topology_change: pattern=
+        - area: pattern=
+        - ospf6_interface: pattern=
+        - redistribute: pattern=
+        - passive_interface: pattern=
+        - summary_address: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -154,7 +175,26 @@ class Ospf6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    abr_type: Literal["cisco", "ibm", "standard"] | None = Field(default="standard", description="Area border router type.")    auto_cost_ref_bandwidth: int | None = Field(ge=1, le=1000000, default=1000, description="Reference bandwidth in terms of megabits per second.")    default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log OSPFv3 neighbor changes.")    default_information_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default information metric.")    default_information_metric_type: Literal["1", "2"] | None = Field(default="2", description="Default information metric type.")    default_information_route_map: str | None = Field(max_length=35, default="", description="Default information route map.")  # datasource: ['router.route-map.name']    default_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default metric of redistribute routes.")    router_id: str = Field(default="0.0.0.0", description="A.B.C.D, in IPv4 address format.")    spf_timers: str | None = Field(default="", description="SPF calculation frequency.")    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")    restart_mode: Literal["none", "graceful-restart"] | None = Field(default="none", description="OSPFv3 restart mode (graceful or none).")    restart_period: int | None = Field(ge=1, le=3600, default=120, description="Graceful restart period in seconds.")    restart_on_topology_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable continuing graceful restart upon topology change.")    area: list[Ospf6Area] = Field(default=None, description="OSPF6 area configuration.")    ospf6_interface: list[Ospf6Ospf6Interface] = Field(default=None, description="OSPF6 interface configuration.")    redistribute: list[Ospf6Redistribute] = Field(default=None, description="Redistribute configuration.")    passive_interface: list[Ospf6PassiveInterface] = Field(default=None, description="Passive interface configuration.")    summary_address: list[Ospf6SummaryAddress] = Field(default=None, description="IPv6 address summary configuration.")    # ========================================================================
+    abr_type: Literal["cisco", "ibm", "standard"] | None = Field(default="standard", description="Area border router type.")
+    auto_cost_ref_bandwidth: int | None = Field(ge=1, le=1000000, default=1000, description="Reference bandwidth in terms of megabits per second.")
+    default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")
+    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log OSPFv3 neighbor changes.")
+    default_information_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default information metric.")
+    default_information_metric_type: Literal["1", "2"] | None = Field(default="2", description="Default information metric type.")
+    default_information_route_map: str | None = Field(max_length=35, default="", description="Default information route map.")  # datasource: ['router.route-map.name']
+    default_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default metric of redistribute routes.")
+    router_id: str = Field(default="0.0.0.0", description="A.B.C.D, in IPv4 address format.")
+    spf_timers: str | None = Field(default="", description="SPF calculation frequency.")
+    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")
+    restart_mode: Literal["none", "graceful-restart"] | None = Field(default="none", description="OSPFv3 restart mode (graceful or none).")
+    restart_period: int | None = Field(ge=1, le=3600, default=120, description="Graceful restart period in seconds.")
+    restart_on_topology_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable continuing graceful restart upon topology change.")
+    area: list[Ospf6Area] | None = Field(default=None, description="OSPF6 area configuration.")
+    ospf6_interface: list[Ospf6Ospf6Interface] | None = Field(default=None, description="OSPF6 interface configuration.")
+    redistribute: list[Ospf6Redistribute] | None = Field(default=None, description="Redistribute configuration.")
+    passive_interface: list[Ospf6PassiveInterface] | None = Field(default=None, description="Passive interface configuration.")
+    summary_address: list[Ospf6SummaryAddress] | None = Field(default=None, description="IPv6 address summary configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -233,7 +273,7 @@ class Ospf6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "default_information_route_map", None)
@@ -282,7 +322,7 @@ class Ospf6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ospf6_interface", [])
@@ -340,7 +380,7 @@ class Ospf6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -398,7 +438,7 @@ class Ospf6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -444,11 +484,14 @@ class Ospf6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_default_information_route_map_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ospf6_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
-        all_errors.extend(errors)        errors = await self.validate_passive_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ospf6_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_passive_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -470,5 +513,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.752242Z
+# Generated: 2026-01-14T22:43:37.061411Z
 # ============================================================================

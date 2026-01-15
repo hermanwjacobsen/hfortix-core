@@ -106,6 +106,10 @@ class PerIpShaper:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -126,6 +130,7 @@ class PerIpShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PerIpShaperResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -143,6 +148,7 @@ class PerIpShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PerIpShaperResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -159,6 +165,7 @@ class PerIpShaper:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[PerIpShaperResponse]: ...
     
     # ================================================================
@@ -201,7 +208,7 @@ class PerIpShaper:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
     
@@ -220,7 +227,7 @@ class PerIpShaper:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[PerIpShaperObject]: ...
     
@@ -320,23 +327,6 @@ class PerIpShaper:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> PerIpShaperObject | list[PerIpShaperObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -360,6 +350,7 @@ class PerIpShaper:
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
@@ -420,25 +411,7 @@ class PerIpShaper:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: PerIpShaperPayload | None = ...,
-        name: str | None = ...,
-        max_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        max_concurrent_session: int | None = ...,
-        max_concurrent_tcp_session: int | None = ...,
-        max_concurrent_udp_session: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -459,6 +432,7 @@ class PerIpShaper:
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
@@ -519,25 +493,7 @@ class PerIpShaper:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: PerIpShaperPayload | None = ...,
-        name: str | None = ...,
-        max_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        max_concurrent_session: int | None = ...,
-        max_concurrent_tcp_session: int | None = ...,
-        max_concurrent_udp_session: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -548,6 +504,7 @@ class PerIpShaper:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
@@ -578,14 +535,7 @@ class PerIpShaper:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -624,8 +574,6 @@ class PerIpShaper:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -653,6 +601,10 @@ class PerIpShaperDictMode:
     By default returns PerIpShaperResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return PerIpShaperObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -809,10 +761,12 @@ class PerIpShaperDictMode:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: PerIpShaperPayload | None = ...,
@@ -888,10 +842,12 @@ class PerIpShaperDictMode:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: PerIpShaperPayload | None = ...,
@@ -937,10 +893,12 @@ class PerIpShaperDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -983,8 +941,6 @@ class PerIpShaperDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1008,6 +964,10 @@ class PerIpShaperObjectMode:
     By default returns PerIpShaperObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return PerIpShaperResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1185,10 +1145,12 @@ class PerIpShaperObjectMode:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: PerIpShaperPayload | None = ...,
@@ -1285,10 +1247,12 @@ class PerIpShaperObjectMode:
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: PerIpShaperPayload | None = ...,
@@ -1345,10 +1309,12 @@ class PerIpShaperObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PerIpShaperObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1391,8 +1357,6 @@ class PerIpShaperObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

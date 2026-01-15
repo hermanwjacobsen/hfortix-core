@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class SamlScim_user_attr_typeEnum(str, Enum):
+class SamlScimUserAttrTypeEnum(str, Enum):
     """Allowed values for scim_user_attr_type field."""
     USER_NAME = "user-name"
     DISPLAY_NAME = "display-name"
@@ -24,7 +24,7 @@ class SamlScim_user_attr_typeEnum(str, Enum):
     EMAIL = "email"
 
 
-class SamlUser_claim_typeEnum(str, Enum):
+class SamlUserClaimTypeEnum(str, Enum):
     """Allowed values for user_claim_type field."""
     EMAIL = "email"
     GIVEN_NAME = "given-name"
@@ -48,7 +48,7 @@ class SamlUser_claim_typeEnum(str, Enum):
     WINDOWS_ACCOUNT_NAME = "windows-account-name"
 
 
-class SamlGroup_claim_typeEnum(str, Enum):
+class SamlGroupClaimTypeEnum(str, Enum):
     """Allowed values for group_claim_type field."""
     EMAIL = "email"
     GIVEN_NAME = "given-name"
@@ -83,7 +83,30 @@ class SamlModel(BaseModel):
 
     SAML server entry configuration.
 
-    Validation Rules:        - name: max_length=35 pattern=        - cert: max_length=35 pattern=        - entity_id: max_length=255 pattern=        - single_sign_on_url: max_length=255 pattern=        - single_logout_url: max_length=255 pattern=        - idp_entity_id: max_length=255 pattern=        - idp_single_sign_on_url: max_length=255 pattern=        - idp_single_logout_url: max_length=255 pattern=        - idp_cert: max_length=35 pattern=        - scim_client: max_length=35 pattern=        - scim_user_attr_type: pattern=        - scim_group_attr_type: pattern=        - user_name: max_length=255 pattern=        - group_name: max_length=255 pattern=        - digest_method: pattern=        - require_signed_resp_and_asrt: pattern=        - limit_relaystate: pattern=        - clock_tolerance: min=0 max=300 pattern=        - adfs_claim: pattern=        - user_claim_type: pattern=        - group_claim_type: pattern=        - reauth: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - cert: max_length=35 pattern=
+        - entity_id: max_length=255 pattern=
+        - single_sign_on_url: max_length=255 pattern=
+        - single_logout_url: max_length=255 pattern=
+        - idp_entity_id: max_length=255 pattern=
+        - idp_single_sign_on_url: max_length=255 pattern=
+        - idp_single_logout_url: max_length=255 pattern=
+        - idp_cert: max_length=35 pattern=
+        - scim_client: max_length=35 pattern=
+        - scim_user_attr_type: pattern=
+        - scim_group_attr_type: pattern=
+        - user_name: max_length=255 pattern=
+        - group_name: max_length=255 pattern=
+        - digest_method: pattern=
+        - require_signed_resp_and_asrt: pattern=
+        - limit_relaystate: pattern=
+        - clock_tolerance: min=0 max=300 pattern=
+        - adfs_claim: pattern=
+        - user_claim_type: pattern=
+        - group_claim_type: pattern=
+        - reauth: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -95,7 +118,29 @@ class SamlModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="SAML server entry name.")    cert: str | None = Field(max_length=35, default="", description="Certificate to sign SAML messages.")  # datasource: ['vpn.certificate.local.name']    entity_id: str = Field(max_length=255, default="", description="SP entity ID.")    single_sign_on_url: str = Field(max_length=255, default="", description="SP single sign-on URL.")    single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")    idp_entity_id: str = Field(max_length=255, default="", description="IDP entity ID.")    idp_single_sign_on_url: str = Field(max_length=255, default="", description="IDP single sign-on URL.")    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout url.")    idp_cert: str = Field(max_length=35, default="", description="IDP Certificate name.")  # datasource: ['vpn.certificate.remote.name']    scim_client: str | None = Field(max_length=35, default="", description="SCIM client name.")  # datasource: ['user.scim.name']    scim_user_attr_type: SamlScimUserAttrTypeEnum | None = Field(default="user-name", description="User attribute type used to match SCIM users (default = user-name).")    scim_group_attr_type: Literal["display-name", "external-id"] | None = Field(default="display-name", description="Group attribute type used to match SCIM groups (default = display-name).")    user_name: str | None = Field(max_length=255, default="", description="User name in assertion statement.")    group_name: str | None = Field(max_length=255, default="", description="Group name in assertion statement.")    digest_method: Literal["sha1", "sha256"] | None = Field(default="sha1", description="Digest method algorithm.")    require_signed_resp_and_asrt: Literal["enable", "disable"] | None = Field(default="disable", description="Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).")    limit_relaystate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).")    clock_tolerance: int | None = Field(ge=0, le=300, default=15, description="Clock skew tolerance in seconds (0 - 300, default = 15, 0 = no tolerance).")    adfs_claim: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ADFS Claim for user/group attribute in assertion statement (default = disable).")    user_claim_type: SamlUserClaimTypeEnum | None = Field(default="upn", description="User name claim in assertion statement.")    group_claim_type: SamlGroupClaimTypeEnum | None = Field(default="group", description="Group claim in assertion statement.")    reauth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable signalling of IDP to force user re-authentication (default = disable).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="SAML server entry name.")
+    cert: str | None = Field(max_length=35, default="", description="Certificate to sign SAML messages.")  # datasource: ['vpn.certificate.local.name']
+    entity_id: str = Field(max_length=255, default="", description="SP entity ID.")
+    single_sign_on_url: str = Field(max_length=255, default="", description="SP single sign-on URL.")
+    single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")
+    idp_entity_id: str = Field(max_length=255, default="", description="IDP entity ID.")
+    idp_single_sign_on_url: str = Field(max_length=255, default="", description="IDP single sign-on URL.")
+    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout url.")
+    idp_cert: str = Field(max_length=35, default="", description="IDP Certificate name.")  # datasource: ['vpn.certificate.remote.name']
+    scim_client: str | None = Field(max_length=35, default="", description="SCIM client name.")  # datasource: ['user.scim.name']
+    scim_user_attr_type: str | SamlScimUserAttrTypeEnum | None = Field(default="user-name", description="User attribute type used to match SCIM users (default = user-name).")
+    scim_group_attr_type: Literal["display-name", "external-id"] | None = Field(default="display-name", description="Group attribute type used to match SCIM groups (default = display-name).")
+    user_name: str | None = Field(max_length=255, default="", description="User name in assertion statement.")
+    group_name: str | None = Field(max_length=255, default="", description="Group name in assertion statement.")
+    digest_method: Literal["sha1", "sha256"] | None = Field(default="sha1", description="Digest method algorithm.")
+    require_signed_resp_and_asrt: Literal["enable", "disable"] | None = Field(default="disable", description="Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).")
+    limit_relaystate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).")
+    clock_tolerance: int | None = Field(ge=0, le=300, default=15, description="Clock skew tolerance in seconds (0 - 300, default = 15, 0 = no tolerance).")
+    adfs_claim: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ADFS Claim for user/group attribute in assertion statement (default = disable).")
+    user_claim_type: str | SamlUserClaimTypeEnum | None = Field(default="upn", description="User name claim in assertion statement.")
+    group_claim_type: str | SamlGroupClaimTypeEnum | None = Field(default="group", description="Group claim in assertion statement.")
+    reauth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable signalling of IDP to force user re-authentication (default = disable).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -204,7 +249,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "cert", None)
@@ -253,7 +298,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "idp_cert", None)
@@ -302,7 +347,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "scim_client", None)
@@ -339,10 +384,12 @@ class SamlModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_idp_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_scim_client_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_idp_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_scim_client_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -364,5 +411,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.367877Z
+# Generated: 2026-01-14T22:43:36.582337Z
 # ============================================================================

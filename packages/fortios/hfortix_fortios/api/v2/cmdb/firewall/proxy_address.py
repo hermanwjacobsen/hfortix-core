@@ -262,7 +262,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
         host: str | None = None,
         host_regex: str | None = None,
         path: str | None = None,
@@ -295,7 +295,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
-            type: Proxy address type.
+            type_: Proxy address type.
             host: Address object for the host.
             host_regex: Host name as a regular expression.
             path: URL path as a regular expression.
@@ -401,7 +401,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             host=host,
             host_regex=host_regex,
             path=path,
@@ -452,7 +452,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
         host: str | None = None,
         host_regex: str | None = None,
         path: str | None = None,
@@ -485,7 +485,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
-            type: Proxy address type.
+            type_: Proxy address type.
             host: Address object for the host.
             host_regex: Host name as a regular expression.
             path: URL path as a regular expression.
@@ -593,7 +593,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             host=host,
             host_regex=host_regex,
             path=path,
@@ -744,7 +744,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
+        type_: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
         host: str | None = None,
         host_regex: str | None = None,
         path: str | None = None,
@@ -778,7 +778,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             uuid: Field uuid
-            type: Field type
+            type_: Field type
             host: Field host
             host_regex: Field host-regex
             path: Field path
@@ -842,7 +842,7 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             host=host,
             host_regex=host_regex,
             path=path,

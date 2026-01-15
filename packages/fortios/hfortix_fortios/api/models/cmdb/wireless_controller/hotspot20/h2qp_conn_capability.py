@@ -26,7 +26,20 @@ class H2qpConnCapabilityModel(BaseModel):
 
     Configure connection capability.
 
-    Validation Rules:        - name: max_length=35 pattern=        - icmp_port: pattern=        - ftp_port: pattern=        - ssh_port: pattern=        - http_port: pattern=        - tls_port: pattern=        - pptp_vpn_port: pattern=        - voip_tcp_port: pattern=        - voip_udp_port: pattern=        - ikev2_port: pattern=        - ikev2_xx_port: pattern=        - esp_port: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - icmp_port: pattern=
+        - ftp_port: pattern=
+        - ssh_port: pattern=
+        - http_port: pattern=
+        - tls_port: pattern=
+        - pptp_vpn_port: pattern=
+        - voip_tcp_port: pattern=
+        - voip_udp_port: pattern=
+        - ikev2_port: pattern=
+        - ikev2_xx_port: pattern=
+        - esp_port: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +51,19 @@ class H2qpConnCapabilityModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Connection capability name.")    icmp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set ICMP port service status.")    ftp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set FTP port service status.")    ssh_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set SSH port service status.")    http_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set HTTP port service status.")    tls_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set TLS VPN (HTTPS) port service status.")    pptp_vpn_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set Point to Point Tunneling Protocol (PPTP) VPN port service status.")    voip_tcp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set VoIP TCP port service status.")    voip_udp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set VoIP UDP port service status.")    ikev2_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set IKEv2 port service for IPsec VPN status.")    ikev2_xx_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set UDP port 4500 (which may be used by IKEv2 for IPsec VPN) service status.")    esp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set ESP port service (used by IPsec VPNs) status.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Connection capability name.")
+    icmp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set ICMP port service status.")
+    ftp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set FTP port service status.")
+    ssh_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set SSH port service status.")
+    http_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set HTTP port service status.")
+    tls_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set TLS VPN (HTTPS) port service status.")
+    pptp_vpn_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set Point to Point Tunneling Protocol (PPTP) VPN port service status.")
+    voip_tcp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set VoIP TCP port service status.")
+    voip_udp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set VoIP UDP port service status.")
+    ikev2_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set IKEv2 port service for IPsec VPN status.")
+    ikev2_xx_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set UDP port 4500 (which may be used by IKEv2 for IPsec VPN) service status.")
+    esp_port: Literal["closed", "open", "unknown"] | None = Field(default="unknown", description="Set ESP port service (used by IPsec VPNs) status.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -87,5 +112,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.392277Z
+# Generated: 2026-01-14T22:43:35.460168Z
 # ============================================================================

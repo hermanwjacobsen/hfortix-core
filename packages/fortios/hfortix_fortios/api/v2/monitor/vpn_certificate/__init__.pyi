@@ -7,11 +7,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .cert_name_available import CertNameAvailable, CertNameAvailableDictMode, CertNameAvailableObjectMode
-    from .ca import CaDictMode, CaObjectMode
-    from .crl import CrlDictMode, CrlObjectMode
-    from .csr import CsrDictMode, CsrObjectMode
-    from .local import LocalDictMode, LocalObjectMode
-    from .remote import RemoteDictMode, RemoteObjectMode
+    from .ca import Ca, CaDictMode, CaObjectMode
+    from .crl import Crl, CrlDictMode, CrlObjectMode
+    from .csr import Csr, CsrDictMode, CsrObjectMode
+    from .local import Local, LocalDictMode, LocalObjectMode
+    from .remote import Remote, RemoteDictMode, RemoteObjectMode
 
 __all__ = [
     "CertNameAvailable",

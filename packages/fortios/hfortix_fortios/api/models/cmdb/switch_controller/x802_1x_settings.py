@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class X8021xSettingsMac_username_delimiterEnum(str, Enum):
+class X8021xSettingsMacUsernameDelimiterEnum(str, Enum):
     """Allowed values for mac_username_delimiter field."""
     COLON = "colon"
     HYPHEN = "hyphen"
@@ -24,7 +24,7 @@ class X8021xSettingsMac_username_delimiterEnum(str, Enum):
     SINGLE_HYPHEN = "single-hyphen"
 
 
-class X8021xSettingsMac_password_delimiterEnum(str, Enum):
+class X8021xSettingsMacPasswordDelimiterEnum(str, Enum):
     """Allowed values for mac_password_delimiter field."""
     COLON = "colon"
     HYPHEN = "hyphen"
@@ -32,7 +32,7 @@ class X8021xSettingsMac_password_delimiterEnum(str, Enum):
     SINGLE_HYPHEN = "single-hyphen"
 
 
-class X8021xSettingsMac_calling_station_delimiterEnum(str, Enum):
+class X8021xSettingsMacCallingStationDelimiterEnum(str, Enum):
     """Allowed values for mac_calling_station_delimiter field."""
     COLON = "colon"
     HYPHEN = "hyphen"
@@ -40,7 +40,7 @@ class X8021xSettingsMac_calling_station_delimiterEnum(str, Enum):
     SINGLE_HYPHEN = "single-hyphen"
 
 
-class X8021xSettingsMac_called_station_delimiterEnum(str, Enum):
+class X8021xSettingsMacCalledStationDelimiterEnum(str, Enum):
     """Allowed values for mac_called_station_delimiter field."""
     COLON = "colon"
     HYPHEN = "hyphen"
@@ -59,7 +59,18 @@ class X8021xSettingsModel(BaseModel):
 
     Configure global 802.1X settings.
 
-    Validation Rules:        - link_down_auth: pattern=        - reauth_period: min=0 max=1440 pattern=        - max_reauth_attempt: min=0 max=15 pattern=        - tx_period: min=12 max=60 pattern=        - mab_reauth: pattern=        - mac_username_delimiter: pattern=        - mac_password_delimiter: pattern=        - mac_calling_station_delimiter: pattern=        - mac_called_station_delimiter: pattern=        - mac_case: pattern=    """
+    Validation Rules:
+        - link_down_auth: pattern=
+        - reauth_period: min=0 max=1440 pattern=
+        - max_reauth_attempt: min=0 max=15 pattern=
+        - tx_period: min=12 max=60 pattern=
+        - mab_reauth: pattern=
+        - mac_username_delimiter: pattern=
+        - mac_password_delimiter: pattern=
+        - mac_calling_station_delimiter: pattern=
+        - mac_called_station_delimiter: pattern=
+        - mac_case: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -71,7 +82,17 @@ class X8021xSettingsModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    link_down_auth: Literal["set-unauth", "no-action"] | None = Field(default="set-unauth", description="Interface-reauthentication state to set if a link is down.")    reauth_period: int | None = Field(ge=0, le=1440, default=60, description="Period of time to allow for reauthentication (1 - 1440 sec, default = 60, 0 = disable reauthentication).")    max_reauth_attempt: int | None = Field(ge=0, le=15, default=3, description="Maximum number of authentication attempts (0 - 15, default = 3).")    tx_period: int | None = Field(ge=12, le=60, default=30, description="802.1X Tx period (seconds, default=30).")    mab_reauth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MAB re-authentication.")    mac_username_delimiter: X8021xSettingsMacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")    mac_password_delimiter: X8021xSettingsMacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")    mac_calling_station_delimiter: X8021xSettingsMacCallingStationDelimiterEnum | None = Field(default="hyphen", description="MAC calling station delimiter (default = hyphen).")    mac_called_station_delimiter: X8021xSettingsMacCalledStationDelimiterEnum | None = Field(default="hyphen", description="MAC called station delimiter (default = hyphen).")    mac_case: Literal["lowercase", "uppercase"] | None = Field(default="lowercase", description="MAC case (default = lowercase).")    # ========================================================================
+    link_down_auth: Literal["set-unauth", "no-action"] | None = Field(default="set-unauth", description="Interface-reauthentication state to set if a link is down.")
+    reauth_period: int | None = Field(ge=0, le=1440, default=60, description="Period of time to allow for reauthentication (1 - 1440 sec, default = 60, 0 = disable reauthentication).")
+    max_reauth_attempt: int | None = Field(ge=0, le=15, default=3, description="Maximum number of authentication attempts (0 - 15, default = 3).")
+    tx_period: int | None = Field(ge=12, le=60, default=30, description="802.1X Tx period (seconds, default=30).")
+    mab_reauth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MAB re-authentication.")
+    mac_username_delimiter: str | X8021xSettingsMacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")
+    mac_password_delimiter: str | X8021xSettingsMacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")
+    mac_calling_station_delimiter: str | X8021xSettingsMacCallingStationDelimiterEnum | None = Field(default="hyphen", description="MAC calling station delimiter (default = hyphen).")
+    mac_called_station_delimiter: str | X8021xSettingsMacCalledStationDelimiterEnum | None = Field(default="hyphen", description="MAC called station delimiter (default = hyphen).")
+    mac_case: Literal["lowercase", "uppercase"] | None = Field(default="lowercase", description="MAC case (default = lowercase).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -120,5 +141,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.566655Z
+# Generated: 2026-01-14T22:43:39.376774Z
 # ============================================================================

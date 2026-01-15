@@ -87,6 +87,10 @@ class Ipv6NeighborCache:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -107,6 +111,7 @@ class Ipv6NeighborCache:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ipv6NeighborCacheResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -124,6 +129,7 @@ class Ipv6NeighborCache:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> Ipv6NeighborCacheResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -140,6 +146,7 @@ class Ipv6NeighborCache:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[Ipv6NeighborCacheResponse]: ...
     
     # ================================================================
@@ -182,7 +189,7 @@ class Ipv6NeighborCache:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
     
@@ -201,7 +208,7 @@ class Ipv6NeighborCache:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[Ipv6NeighborCacheObject]: ...
     
@@ -301,23 +308,6 @@ class Ipv6NeighborCache:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> Ipv6NeighborCacheObject | list[Ipv6NeighborCacheObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -335,6 +325,7 @@ class Ipv6NeighborCache:
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
@@ -377,19 +368,7 @@ class Ipv6NeighborCache:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: Ipv6NeighborCachePayload | None = ...,
-        id: int | None = ...,
-        interface: str | None = ...,
-        ipv6: str | None = ...,
-        mac: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -404,6 +383,7 @@ class Ipv6NeighborCache:
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
@@ -446,19 +426,7 @@ class Ipv6NeighborCache:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: Ipv6NeighborCachePayload | None = ...,
-        id: int | None = ...,
-        interface: str | None = ...,
-        ipv6: str | None = ...,
-        mac: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -469,6 +437,7 @@ class Ipv6NeighborCache:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
@@ -499,14 +468,7 @@ class Ipv6NeighborCache:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -539,8 +501,6 @@ class Ipv6NeighborCache:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -568,6 +528,10 @@ class Ipv6NeighborCacheDictMode:
     By default returns Ipv6NeighborCacheResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return Ipv6NeighborCacheObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -706,10 +670,12 @@ class Ipv6NeighborCacheDictMode:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: Ipv6NeighborCachePayload | None = ...,
@@ -761,10 +727,12 @@ class Ipv6NeighborCacheDictMode:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: Ipv6NeighborCachePayload | None = ...,
@@ -804,10 +772,12 @@ class Ipv6NeighborCacheDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -844,8 +814,6 @@ class Ipv6NeighborCacheDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -869,6 +837,10 @@ class Ipv6NeighborCacheObjectMode:
     By default returns Ipv6NeighborCacheObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return Ipv6NeighborCacheResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1022,10 +994,12 @@ class Ipv6NeighborCacheObjectMode:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: Ipv6NeighborCachePayload | None = ...,
@@ -1092,10 +1066,12 @@ class Ipv6NeighborCacheObjectMode:
         ipv6: str | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: Ipv6NeighborCachePayload | None = ...,
@@ -1146,10 +1122,12 @@ class Ipv6NeighborCacheObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> Ipv6NeighborCacheObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1186,8 +1164,6 @@ class Ipv6NeighborCacheObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

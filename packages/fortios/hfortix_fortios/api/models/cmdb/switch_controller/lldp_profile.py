@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from enum import Enum
 
@@ -73,7 +73,7 @@ class LldpProfileCustomTlvs(BaseModel):
 # ============================================================================
 
 
-class LldpProfileMed_tlvsEnum(str, Enum):
+class LldpProfileMedTlvsEnum(str, Enum):
     """Allowed values for med_tlvs field."""
     INVENTORY_MANAGEMENT = "inventory-management"
     NETWORK_POLICY = "network-policy"
@@ -92,7 +92,26 @@ class LldpProfileModel(BaseModel):
 
     Configure FortiSwitch LLDP profiles.
 
-    Validation Rules:        - name: max_length=63 pattern=        - med_tlvs: pattern=        - x802_1_tlvs: pattern=        - x802_3_tlvs: pattern=        - auto_isl: pattern=        - auto_isl_hello_timer: min=1 max=30 pattern=        - auto_isl_receive_timeout: min=0 max=90 pattern=        - auto_isl_port_group: min=0 max=9 pattern=        - auto_mclag_icl: pattern=        - auto_isl_auth: pattern=        - auto_isl_auth_user: max_length=63 pattern=        - auto_isl_auth_identity: max_length=63 pattern=        - auto_isl_auth_reauth: min=180 max=3600 pattern=        - auto_isl_auth_encrypt: pattern=        - auto_isl_auth_macsec_profile: max_length=63 pattern=        - med_network_policy: pattern=        - med_location_service: pattern=        - custom_tlvs: pattern=    """
+    Validation Rules:
+        - name: max_length=63 pattern=
+        - med_tlvs: pattern=
+        - x802_1_tlvs: pattern=
+        - x802_3_tlvs: pattern=
+        - auto_isl: pattern=
+        - auto_isl_hello_timer: min=1 max=30 pattern=
+        - auto_isl_receive_timeout: min=0 max=90 pattern=
+        - auto_isl_port_group: min=0 max=9 pattern=
+        - auto_mclag_icl: pattern=
+        - auto_isl_auth: pattern=
+        - auto_isl_auth_user: max_length=63 pattern=
+        - auto_isl_auth_identity: max_length=63 pattern=
+        - auto_isl_auth_reauth: min=180 max=3600 pattern=
+        - auto_isl_auth_encrypt: pattern=
+        - auto_isl_auth_macsec_profile: max_length=63 pattern=
+        - med_network_policy: pattern=
+        - med_location_service: pattern=
+        - custom_tlvs: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -104,7 +123,25 @@ class LldpProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=63, default="", description="Profile name.")    med_tlvs: LldpProfileMedTlvsEnum | None = Field(default="", description="Transmitted LLDP-MED TLVs (type-length-value descriptions).")    x802_1_tlvs: Literal["port-vlan-id"] | None = Field(default="", description="Transmitted IEEE 802.1 TLVs.")    x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | None = Field(default="", description="Transmitted IEEE 802.3 TLVs.")    auto_isl: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable auto inter-switch LAG.")    auto_isl_hello_timer: int | None = Field(ge=1, le=30, default=3, description="Auto inter-switch LAG hello timer duration (1 - 30 sec, default = 3).")    auto_isl_receive_timeout: int | None = Field(ge=0, le=90, default=60, description="Auto inter-switch LAG timeout if no response is received (3 - 90 sec, default = 9).")    auto_isl_port_group: int | None = Field(ge=0, le=9, default=0, description="Auto inter-switch LAG port group ID (0 - 9).")    auto_mclag_icl: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MCLAG inter chassis link.")    auto_isl_auth: Literal["legacy", "strict", "relax"] | None = Field(default="legacy", description="Auto inter-switch LAG authentication mode.")    auto_isl_auth_user: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG authentication user certificate.")    auto_isl_auth_identity: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG authentication identity.")    auto_isl_auth_reauth: int | None = Field(ge=180, le=3600, default=3600, description="Auto inter-switch LAG authentication reauth period in seconds(10 - 3600, default = 3600).")    auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = Field(default="none", description="Auto inter-switch LAG encryption mode.")    auto_isl_auth_macsec_profile: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG macsec profile for encryption.")    med_network_policy: list[LldpProfileMedNetworkPolicy] = Field(default=None, description="Configuration method to edit Media Endpoint Discovery (MED) network policy type-length-value (TLV) categories.")    med_location_service: list[LldpProfileMedLocationService] = Field(default=None, description="Configuration method to edit Media Endpoint Discovery (MED) location service type-length-value (TLV) categories.")    custom_tlvs: list[LldpProfileCustomTlvs] = Field(default=None, description="Configuration method to edit custom TLV entries.")    # ========================================================================
+    name: str | None = Field(max_length=63, default="", description="Profile name.")
+    med_tlvs: str | LldpProfileMedTlvsEnum | None = Field(default=None, description="Transmitted LLDP-MED TLVs (type-length-value descriptions).")
+    x802_1_tlvs: Literal["port-vlan-id"] | None = Field(default=None, description="Transmitted IEEE 802.1 TLVs.")
+    x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | None = Field(default=None, description="Transmitted IEEE 802.3 TLVs.")
+    auto_isl: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable auto inter-switch LAG.")
+    auto_isl_hello_timer: int | None = Field(ge=1, le=30, default=3, description="Auto inter-switch LAG hello timer duration (1 - 30 sec, default = 3).")
+    auto_isl_receive_timeout: int | None = Field(ge=0, le=90, default=60, description="Auto inter-switch LAG timeout if no response is received (3 - 90 sec, default = 9).")
+    auto_isl_port_group: int | None = Field(ge=0, le=9, default=0, description="Auto inter-switch LAG port group ID (0 - 9).")
+    auto_mclag_icl: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable MCLAG inter chassis link.")
+    auto_isl_auth: Literal["legacy", "strict", "relax"] | None = Field(default="legacy", description="Auto inter-switch LAG authentication mode.")
+    auto_isl_auth_user: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG authentication user certificate.")
+    auto_isl_auth_identity: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG authentication identity.")
+    auto_isl_auth_reauth: int | None = Field(ge=180, le=3600, default=3600, description="Auto inter-switch LAG authentication reauth period in seconds(10 - 3600, default = 3600).")
+    auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = Field(default="none", description="Auto inter-switch LAG encryption mode.")
+    auto_isl_auth_macsec_profile: str | None = Field(max_length=63, default="", description="Auto inter-switch LAG macsec profile for encryption.")
+    med_network_policy: list[LldpProfileMedNetworkPolicy] | None = Field(default=None, description="Configuration method to edit Media Endpoint Discovery (MED) network policy type-length-value (TLV) categories.")
+    med_location_service: list[LldpProfileMedLocationService] | None = Field(default=None, description="Configuration method to edit Media Endpoint Discovery (MED) location service type-length-value (TLV) categories.")
+    custom_tlvs: list[LldpProfileCustomTlvs] | None = Field(default=None, description="Configuration method to edit custom TLV entries.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -168,7 +205,7 @@ class LldpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.lldp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "med_network_policy", [])
@@ -226,7 +263,7 @@ class LldpProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.lldp_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "med_location_service", [])
@@ -272,9 +309,10 @@ class LldpProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_med_network_policy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_med_location_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_med_location_service_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -296,5 +334,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.300413Z
+# Generated: 2026-01-14T22:43:37.739259Z
 # ============================================================================

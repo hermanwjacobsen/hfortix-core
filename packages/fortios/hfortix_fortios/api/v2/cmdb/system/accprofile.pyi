@@ -182,6 +182,10 @@ class Accprofile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -202,6 +206,7 @@ class Accprofile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccprofileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -219,6 +224,7 @@ class Accprofile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccprofileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -235,6 +241,7 @@ class Accprofile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AccprofileResponse]: ...
     
     # ================================================================
@@ -277,7 +284,7 @@ class Accprofile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AccprofileObject: ...
     
@@ -296,7 +303,7 @@ class Accprofile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AccprofileObject]: ...
     
@@ -396,23 +403,6 @@ class Accprofile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AccprofileObject | list[AccprofileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -455,6 +445,7 @@ class Accprofile:
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccprofileObject: ...
@@ -572,44 +563,7 @@ class Accprofile:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -649,6 +603,7 @@ class Accprofile:
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccprofileObject: ...
@@ -766,44 +721,7 @@ class Accprofile:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -814,6 +732,7 @@ class Accprofile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccprofileObject: ...
@@ -844,14 +763,7 @@ class Accprofile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -909,8 +821,6 @@ class Accprofile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -938,6 +848,10 @@ class AccprofileDictMode:
     By default returns AccprofileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AccprofileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1151,10 +1065,12 @@ class AccprofileDictMode:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -1306,10 +1222,12 @@ class AccprofileDictMode:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -1374,10 +1292,12 @@ class AccprofileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1439,8 +1359,6 @@ class AccprofileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1464,6 +1382,10 @@ class AccprofileObjectMode:
     By default returns AccprofileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AccprofileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1717,10 +1639,12 @@ class AccprofileObjectMode:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccprofileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -1912,10 +1836,12 @@ class AccprofileObjectMode:
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccprofileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -1991,10 +1917,12 @@ class AccprofileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccprofileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2056,8 +1984,6 @@ class AccprofileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -283,7 +283,6 @@ class ExplicitObject:
     trace_auth_no_rsp: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -305,6 +304,10 @@ class Explicit:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -325,6 +328,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -342,6 +346,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -358,6 +363,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # ================================================================
@@ -400,7 +406,7 @@ class Explicit:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
@@ -419,7 +425,7 @@ class Explicit:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
@@ -519,23 +525,6 @@ class Explicit:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExplicitObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -587,6 +576,7 @@ class Explicit:
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExplicitObject: ...
@@ -731,53 +721,7 @@ class Explicit:
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExplicitPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        secure_web_proxy: Literal["disable", "enable", "secure"] | None = ...,
-        ftp_over_http: Literal["enable", "disable"] | None = ...,
-        socks: Literal["enable", "disable"] | None = ...,
-        http_incoming_port: str | None = ...,
-        http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
-        https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ftp_incoming_port: str | None = ...,
-        socks_incoming_port: str | None = ...,
-        incoming_ip: str | None = ...,
-        outgoing_ip: str | list[str] | None = ...,
-        interface_select_method: Literal["sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        ipv6_status: Literal["enable", "disable"] | None = ...,
-        incoming_ip6: str | None = ...,
-        outgoing_ip6: str | list[str] | None = ...,
-        strict_guest: Literal["enable", "disable"] | None = ...,
-        pref_dns_result: Literal["ipv4", "ipv6", "ipv4-strict", "ipv6-strict"] | None = ...,
-        unknown_http_version: Literal["reject", "best-effort"] | None = ...,
-        realm: str | None = ...,
-        sec_default_action: Literal["accept", "deny"] | None = ...,
-        https_replacement_message: Literal["enable", "disable"] | None = ...,
-        message_upon_server_error: Literal["enable", "disable"] | None = ...,
-        pac_file_server_status: Literal["enable", "disable"] | None = ...,
-        pac_file_url: str | None = ...,
-        pac_file_server_port: str | None = ...,
-        pac_file_through_https: Literal["enable", "disable"] | None = ...,
-        pac_file_name: str | None = ...,
-        pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
-        trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -844,8 +788,6 @@ class Explicit:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -873,6 +815,10 @@ class ExplicitDictMode:
     By default returns ExplicitResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExplicitObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1114,10 +1060,12 @@ class ExplicitDictMode:
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExplicitPayload | None = ...,
@@ -1227,8 +1175,6 @@ class ExplicitDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1252,6 +1198,10 @@ class ExplicitObjectMode:
     By default returns ExplicitObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExplicitResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1542,10 +1492,12 @@ class ExplicitObjectMode:
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExplicitPayload | None = ...,
@@ -1655,8 +1607,6 @@ class ExplicitObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

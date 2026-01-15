@@ -48,10 +48,10 @@ class FederatedUpgradeNodeList(BaseModel):
     time: str = Field(default="", description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")
     setup_time: str = Field(default="", description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")
     upgrade_path: str = Field(default="", description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")
-    device_type: DeviceTypeEnum = Field(default="fortigate", description="Fortinet device type.")
+    device_type: str = Field(default="fortigate", description="Fortinet device type.")
     allow_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download firmware images.")
     coordinating_fortigate: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that controls this device.")
-    failure_reason: FailureReasonEnum | None = Field(default="none", description="Upgrade failure reason.")
+    failure_reason: str | None = Field(default="none", description="Upgrade failure reason.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -75,7 +75,7 @@ class FederatedUpgradeStatusEnum(str, Enum):
     FAILED = "failed"
 
 
-class FederatedUpgradeFailure_reasonEnum(str, Enum):
+class FederatedUpgradeFailureReasonEnum(str, Enum):
     """Allowed values for failure_reason field."""
     NONE = "none"
     INTERNAL = "internal"
@@ -108,7 +108,20 @@ class FederatedUpgradeModel(BaseModel):
 
     Coordinate federated upgrades within the Security Fabric.
 
-    Validation Rules:        - status: pattern=        - source: pattern=        - failure_reason: pattern=        - failure_device: max_length=79 pattern=        - upgrade_id: min=0 max=4294967295 pattern=        - next_path_index: min=0 max=10 pattern=        - ignore_signing_errors: pattern=        - ha_reboot_controller: max_length=79 pattern=        - known_ha_members: pattern=        - initial_version: pattern=        - starter_admin: max_length=64 pattern=        - node_list: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - source: pattern=
+        - failure_reason: pattern=
+        - failure_device: max_length=79 pattern=
+        - upgrade_id: min=0 max=4294967295 pattern=
+        - next_path_index: min=0 max=10 pattern=
+        - ignore_signing_errors: pattern=
+        - ha_reboot_controller: max_length=79 pattern=
+        - known_ha_members: pattern=
+        - initial_version: pattern=
+        - starter_admin: max_length=64 pattern=
+        - node_list: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -120,7 +133,19 @@ class FederatedUpgradeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: FederatedUpgradeStatusEnum = Field(default="disabled", description="Current status of the upgrade.")    source: Literal["user", "auto-firmware-upgrade", "forced-upgrade"] | None = Field(default="user", description="Source that set up the federated upgrade config.")    failure_reason: FederatedUpgradeFailureReasonEnum | None = Field(default="none", description="Reason for upgrade failure.")    failure_device: str | None = Field(max_length=79, default="", description="Serial number of the node to include.")    upgrade_id: int | None = Field(ge=0, le=4294967295, default=0, description="Unique identifier for this upgrade.")    next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")    ignore_signing_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/reject use of FortiGate firmware images that are unsigned.")    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    known_ha_members: list[FederatedUpgradeKnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")    node_list: list[FederatedUpgradeNodeList] = Field(default=None, description="Nodes which will be included in the upgrade.")    # ========================================================================
+    status: str | FederatedUpgradeStatusEnum = Field(default="disabled", description="Current status of the upgrade.")
+    source: Literal["user", "auto-firmware-upgrade", "forced-upgrade"] | None = Field(default="user", description="Source that set up the federated upgrade config.")
+    failure_reason: str | FederatedUpgradeFailureReasonEnum | None = Field(default="none", description="Reason for upgrade failure.")
+    failure_device: str | None = Field(max_length=79, default="", description="Serial number of the node to include.")
+    upgrade_id: int | None = Field(ge=0, le=4294967295, default=0, description="Unique identifier for this upgrade.")
+    next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")
+    ignore_signing_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/reject use of FortiGate firmware images that are unsigned.")
+    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")
+    known_ha_members: list[FederatedUpgradeKnownHaMembers] | None = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")
+    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")
+    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")
+    node_list: list[FederatedUpgradeNodeList] | None = Field(default=None, description="Nodes which will be included in the upgrade.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -169,5 +194,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.705077Z
+# Generated: 2026-01-14T22:43:38.236672Z
 # ============================================================================

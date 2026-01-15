@@ -44,7 +44,7 @@ class SdnConnectorExternalAccountList(BaseModel):
         str_strip_whitespace = True
     role_arn: str = Field(max_length=2047, default="", description="AWS role ARN to assume.")
     external_id: str | None = Field(max_length=1399, default="", description="AWS external ID.")
-    region_list: list[RegionList] = Field(description="AWS region name list.")
+    region_list: list[dict[str, Any]] | None = Field(description="AWS region name list.")
 
 
 class SdnConnectorNic(BaseModel):
@@ -60,7 +60,7 @@ class SdnConnectorNic(BaseModel):
         str_strip_whitespace = True
     name: str = Field(max_length=63, default="", description="Network interface name.")
     peer_nic: str | None = Field(max_length=63, default="", description="Peer network interface name.")
-    ip: list[Ip] = Field(default=None, description="Configure IP configuration.")
+    ip: list[dict[str, Any]] | None = Field(default=None, description="Configure IP configuration.")
 
 
 class SdnConnectorRouteTable(BaseModel):
@@ -77,7 +77,7 @@ class SdnConnectorRouteTable(BaseModel):
     name: str = Field(max_length=63, default="", description="Route table name.")
     subscription_id: str | None = Field(max_length=63, default="", description="Subscription ID of Azure route table.")
     resource_group: str | None = Field(max_length=63, default="", description="Resource group of Azure route table.")
-    route: list[Route] = Field(default=None, description="Configure Azure route.")
+    route: list[dict[str, Any]] | None = Field(default=None, description="Configure Azure route.")
 
 
 class SdnConnectorCompartmentList(BaseModel):
@@ -148,7 +148,7 @@ class SdnConnectorGcpProjectList(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: str = Field(max_length=127, default="", description="GCP project ID.")
-    gcp_zone_list: list[GcpZoneList] = Field(default=None, description="Configure GCP zone list.")
+    gcp_zone_list: list[dict[str, Any]] | None = Field(default=None, description="Configure GCP zone list.")
 
 
 class SdnConnectorForwardingRule(BaseModel):
@@ -171,7 +171,7 @@ class SdnConnectorForwardingRule(BaseModel):
 
 
 class SdnConnectorTypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     ACI = "aci"
     ALICLOUD = "alicloud"
     AWS = "aws"
@@ -190,7 +190,7 @@ class SdnConnectorTypeEnum(str, Enum):
     SAP = "sap"
 
 
-class SdnConnectorAzure_regionEnum(str, Enum):
+class SdnConnectorAzureRegionEnum(str, Enum):
     """Allowed values for azure_region field."""
     GLOBAL = "global"
     CHINA = "china"
@@ -199,7 +199,7 @@ class SdnConnectorAzure_regionEnum(str, Enum):
     LOCAL = "local"
 
 
-class SdnConnectorIbm_regionEnum(str, Enum):
+class SdnConnectorIbmRegionEnum(str, Enum):
     """Allowed values for ibm_region field."""
     DALLAS = "dallas"
     WASHINGTON_DC = "washington-dc"
@@ -224,7 +224,63 @@ class SdnConnectorModel(BaseModel):
 
     Configure connection to SDN Connector.
 
-    Validation Rules:        - name: max_length=35 pattern=        - status: pattern=        - type: pattern=        - proxy: max_length=35 pattern=        - use_metadata_iam: pattern=        - microsoft_365: pattern=        - ha_status: pattern=        - verify_certificate: pattern=        - vdom: max_length=31 pattern=        - server: max_length=127 pattern=        - server_list: pattern=        - server_port: min=0 max=65535 pattern=        - message_server_port: min=0 max=65535 pattern=        - username: max_length=64 pattern=        - password: pattern=        - vcenter_server: max_length=127 pattern=        - vcenter_username: max_length=64 pattern=        - vcenter_password: pattern=        - access_key: max_length=31 pattern=        - secret_key: max_length=59 pattern=        - region: max_length=31 pattern=        - vpc_id: max_length=31 pattern=        - alt_resource_ip: pattern=        - external_account_list: pattern=        - tenant_id: max_length=127 pattern=        - client_id: max_length=63 pattern=        - client_secret: max_length=59 pattern=        - subscription_id: max_length=63 pattern=        - resource_group: max_length=63 pattern=        - login_endpoint: max_length=127 pattern=        - resource_url: max_length=127 pattern=        - azure_region: pattern=        - nic: pattern=        - route_table: pattern=        - user_id: max_length=127 pattern=        - compartment_list: pattern=        - oci_region_list: pattern=        - oci_region_type: pattern=        - oci_cert: max_length=63 pattern=        - oci_fingerprint: max_length=63 pattern=        - external_ip: pattern=        - route: pattern=        - gcp_project_list: pattern=        - forwarding_rule: pattern=        - service_account: max_length=127 pattern=        - private_key: pattern=        - secret_token: pattern=        - domain: max_length=127 pattern=        - group_name: max_length=127 pattern=        - server_cert: max_length=127 pattern=        - server_ca_cert: max_length=127 pattern=        - api_key: max_length=59 pattern=        - ibm_region: pattern=        - par_id: max_length=63 pattern=        - update_interval: min=0 max=3600 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - status: pattern=
+        - type_: pattern=
+        - proxy: max_length=35 pattern=
+        - use_metadata_iam: pattern=
+        - microsoft_365: pattern=
+        - ha_status: pattern=
+        - verify_certificate: pattern=
+        - vdom: max_length=31 pattern=
+        - server: max_length=127 pattern=
+        - server_list: pattern=
+        - server_port: min=0 max=65535 pattern=
+        - message_server_port: min=0 max=65535 pattern=
+        - username: max_length=64 pattern=
+        - password: pattern=
+        - vcenter_server: max_length=127 pattern=
+        - vcenter_username: max_length=64 pattern=
+        - vcenter_password: pattern=
+        - access_key: max_length=31 pattern=
+        - secret_key: max_length=59 pattern=
+        - region: max_length=31 pattern=
+        - vpc_id: max_length=31 pattern=
+        - alt_resource_ip: pattern=
+        - external_account_list: pattern=
+        - tenant_id: max_length=127 pattern=
+        - client_id: max_length=63 pattern=
+        - client_secret: max_length=59 pattern=
+        - subscription_id: max_length=63 pattern=
+        - resource_group: max_length=63 pattern=
+        - login_endpoint: max_length=127 pattern=
+        - resource_url: max_length=127 pattern=
+        - azure_region: pattern=
+        - nic: pattern=
+        - route_table: pattern=
+        - user_id: max_length=127 pattern=
+        - compartment_list: pattern=
+        - oci_region_list: pattern=
+        - oci_region_type: pattern=
+        - oci_cert: max_length=63 pattern=
+        - oci_fingerprint: max_length=63 pattern=
+        - external_ip: pattern=
+        - route: pattern=
+        - gcp_project_list: pattern=
+        - forwarding_rule: pattern=
+        - service_account: max_length=127 pattern=
+        - private_key: pattern=
+        - secret_token: pattern=
+        - domain: max_length=127 pattern=
+        - group_name: max_length=127 pattern=
+        - server_cert: max_length=127 pattern=
+        - server_ca_cert: max_length=127 pattern=
+        - api_key: max_length=59 pattern=
+        - ibm_region: pattern=
+        - par_id: max_length=63 pattern=
+        - update_interval: min=0 max=3600 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -236,7 +292,62 @@ class SdnConnectorModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="SDN connector name.")    status: Literal["disable", "enable"] = Field(default="enable", description="Enable/disable connection to the remote SDN connector.")    type: SdnConnectorTypeEnum = Field(default="aws", description="Type of SDN connector.")    proxy: str | None = Field(max_length=35, default="", description="SDN proxy.")  # datasource: ['system.sdn-proxy.name']    use_metadata_iam: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable use of IAM role from metadata to call API.")    microsoft_365: Literal["disable", "enable"] = Field(default="disable", description="Enable to use as Microsoft 365 connector.")    ha_status: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable use for FortiGate HA service.")    verify_certificate: Literal["disable", "enable"] = Field(default="enable", description="Enable/disable server certificate verification.")    vdom: str | None = Field(max_length=31, default="", description="Virtual domain name of the remote SDN connector.")  # datasource: ['system.vdom.name']    server: str = Field(max_length=127, default="", description="Server address of the remote SDN connector.")    server_list: list[SdnConnectorServerList] = Field(description="Server address list of the remote SDN connector.")    server_port: int | None = Field(ge=0, le=65535, default=0, description="Port number of the remote SDN connector.")    message_server_port: int | None = Field(ge=0, le=65535, default=0, description="HTTP port number of the SAP message server.")    username: str = Field(max_length=64, default="", description="Username of the remote SDN connector as login credentials.")    password: Any = Field(description="Password of the remote SDN connector as login credentials.")    vcenter_server: str | None = Field(max_length=127, default="", description="vCenter server address for NSX quarantine.")    vcenter_username: str | None = Field(max_length=64, default="", description="vCenter server username for NSX quarantine.")    vcenter_password: Any = Field(default=None, description="vCenter server password for NSX quarantine.")    access_key: str = Field(max_length=31, default="", description="AWS / ACS access key ID.")    secret_key: Any = Field(max_length=59, description="AWS / ACS secret access key.")    region: str = Field(max_length=31, default="", description="AWS / ACS region name.")    vpc_id: str | None = Field(max_length=31, default="", description="AWS VPC ID.")    alt_resource_ip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable AWS alternative resource IP.")    external_account_list: list[SdnConnectorExternalAccountList] = Field(default=None, description="Configure AWS external account list.")    tenant_id: str | None = Field(max_length=127, default="", description="Tenant ID (directory ID).")    client_id: str | None = Field(max_length=63, default="", description="Azure client ID (application ID).")    client_secret: Any = Field(max_length=59, default=None, description="Azure client secret (application key).")    subscription_id: str | None = Field(max_length=63, default="", description="Azure subscription ID.")    resource_group: str | None = Field(max_length=63, default="", description="Azure resource group.")    login_endpoint: str | None = Field(max_length=127, default="", description="Azure Stack login endpoint.")    resource_url: str | None = Field(max_length=127, default="", description="Azure Stack resource URL.")    azure_region: SdnConnectorAzureRegionEnum | None = Field(default="global", description="Azure server region.")    nic: list[SdnConnectorNic] = Field(default=None, description="Configure Azure network interface.")    route_table: list[SdnConnectorRouteTable] = Field(default=None, description="Configure Azure route table.")    user_id: str | None = Field(max_length=127, default="", description="User ID.")    compartment_list: list[SdnConnectorCompartmentList] = Field(default=None, description="Configure OCI compartment list.")    oci_region_list: list[SdnConnectorOciRegionList] = Field(default=None, description="Configure OCI region list.")    oci_region_type: Literal["commercial", "government"] = Field(default="commercial", description="OCI region type.")    oci_cert: str | None = Field(max_length=63, default="", description="OCI certificate.")  # datasource: ['certificate.local.name']    oci_fingerprint: str | None = Field(max_length=63, default="", description="OCI pubkey fingerprint.")    external_ip: list[SdnConnectorExternalIp] = Field(default=None, description="Configure GCP external IP.")    route: list[SdnConnectorRoute] = Field(default=None, description="Configure GCP route.")    gcp_project_list: list[SdnConnectorGcpProjectList] = Field(default=None, description="Configure GCP project list.")    forwarding_rule: list[SdnConnectorForwardingRule] = Field(default=None, description="Configure GCP forwarding rule.")    service_account: str = Field(max_length=127, default="", description="GCP service account email.")    private_key: str = Field(default="", description="Private key of GCP service account.")    secret_token: str = Field(default="", description="Secret token of Kubernetes service account.")    domain: str | None = Field(max_length=127, default="", description="Domain name.")    group_name: str | None = Field(max_length=127, default="", description="Full path group name of computers.")    server_cert: str | None = Field(max_length=127, default="", description="Trust servers that contain this certificate only.")  # datasource: ['certificate.remote.name']    server_ca_cert: str | None = Field(max_length=127, default="", description="Trust only those servers whose certificate is directly/indirectly signed by this certificate.")  # datasource: ['certificate.remote.name', 'certificate.ca.name']    api_key: Any = Field(max_length=59, description="IBM cloud API key or service ID API key.")    ibm_region: SdnConnectorIbmRegionEnum = Field(default="dallas", description="IBM cloud region name.")    par_id: str | None = Field(max_length=63, default="", description="Public address range ID.")    update_interval: int | None = Field(ge=0, le=3600, default=60, description="Dynamic object update interval (30 - 3600 sec, default = 60, 0 = disabled).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="SDN connector name.")
+    status: Literal["disable", "enable"] = Field(default="enable", description="Enable/disable connection to the remote SDN connector.")
+    type_: str | SdnConnectorTypeEnum = Field(default="aws", description="Type of SDN connector.")
+    proxy: str | None = Field(max_length=35, default="", description="SDN proxy.")  # datasource: ['system.sdn-proxy.name']
+    use_metadata_iam: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable use of IAM role from metadata to call API.")
+    microsoft_365: Literal["disable", "enable"] = Field(default="disable", description="Enable to use as Microsoft 365 connector.")
+    ha_status: Literal["disable", "enable"] = Field(default="disable", description="Enable/disable use for FortiGate HA service.")
+    verify_certificate: Literal["disable", "enable"] = Field(default="enable", description="Enable/disable server certificate verification.")
+    vdom: str | None = Field(max_length=31, default="", description="Virtual domain name of the remote SDN connector.")  # datasource: ['system.vdom.name']
+    server: str = Field(max_length=127, default="", description="Server address of the remote SDN connector.")
+    server_list: list[SdnConnectorServerList] | None = Field(description="Server address list of the remote SDN connector.")
+    server_port: int | None = Field(ge=0, le=65535, default=0, description="Port number of the remote SDN connector.")
+    message_server_port: int | None = Field(ge=0, le=65535, default=0, description="HTTP port number of the SAP message server.")
+    username: str = Field(max_length=64, default="", description="Username of the remote SDN connector as login credentials.")
+    password: Any = Field(description="Password of the remote SDN connector as login credentials.")
+    vcenter_server: str | None = Field(max_length=127, default="", description="vCenter server address for NSX quarantine.")
+    vcenter_username: str | None = Field(max_length=64, default="", description="vCenter server username for NSX quarantine.")
+    vcenter_password: Any = Field(default=None, description="vCenter server password for NSX quarantine.")
+    access_key: str = Field(max_length=31, default="", description="AWS / ACS access key ID.")
+    secret_key: Any = Field(max_length=59, description="AWS / ACS secret access key.")
+    region: str = Field(max_length=31, default="", description="AWS / ACS region name.")
+    vpc_id: str | None = Field(max_length=31, default="", description="AWS VPC ID.")
+    alt_resource_ip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable AWS alternative resource IP.")
+    external_account_list: list[SdnConnectorExternalAccountList] | None = Field(default=None, description="Configure AWS external account list.")
+    tenant_id: str | None = Field(max_length=127, default="", description="Tenant ID (directory ID).")
+    client_id: str | None = Field(max_length=63, default="", description="Azure client ID (application ID).")
+    client_secret: Any = Field(max_length=59, default=None, description="Azure client secret (application key).")
+    subscription_id: str | None = Field(max_length=63, default="", description="Azure subscription ID.")
+    resource_group: str | None = Field(max_length=63, default="", description="Azure resource group.")
+    login_endpoint: str | None = Field(max_length=127, default="", description="Azure Stack login endpoint.")
+    resource_url: str | None = Field(max_length=127, default="", description="Azure Stack resource URL.")
+    azure_region: str | SdnConnectorAzureRegionEnum | None = Field(default="global", description="Azure server region.")
+    nic: list[SdnConnectorNic] | None = Field(default=None, description="Configure Azure network interface.")
+    route_table: list[SdnConnectorRouteTable] | None = Field(default=None, description="Configure Azure route table.")
+    user_id: str | None = Field(max_length=127, default="", description="User ID.")
+    compartment_list: list[SdnConnectorCompartmentList] | None = Field(default=None, description="Configure OCI compartment list.")
+    oci_region_list: list[SdnConnectorOciRegionList] | None = Field(default=None, description="Configure OCI region list.")
+    oci_region_type: Literal["commercial", "government"] = Field(default="commercial", description="OCI region type.")
+    oci_cert: str | None = Field(max_length=63, default="", description="OCI certificate.")  # datasource: ['certificate.local.name']
+    oci_fingerprint: str | None = Field(max_length=63, default="", description="OCI pubkey fingerprint.")
+    external_ip: list[SdnConnectorExternalIp] | None = Field(default=None, description="Configure GCP external IP.")
+    route: list[SdnConnectorRoute] | None = Field(default=None, description="Configure GCP route.")
+    gcp_project_list: list[SdnConnectorGcpProjectList] | None = Field(default=None, description="Configure GCP project list.")
+    forwarding_rule: list[SdnConnectorForwardingRule] | None = Field(default=None, description="Configure GCP forwarding rule.")
+    service_account: str = Field(max_length=127, default="", description="GCP service account email.")
+    private_key: str = Field(default="", description="Private key of GCP service account.")
+    secret_token: str = Field(default="", description="Secret token of Kubernetes service account.")
+    domain: str | None = Field(max_length=127, default="", description="Domain name.")
+    group_name: str | None = Field(max_length=127, default="", description="Full path group name of computers.")
+    server_cert: str | None = Field(max_length=127, default="", description="Trust servers that contain this certificate only.")  # datasource: ['certificate.remote.name']
+    server_ca_cert: str | None = Field(max_length=127, default="", description="Trust only those servers whose certificate is directly/indirectly signed by this certificate.")  # datasource: ['certificate.remote.name', 'certificate.ca.name']
+    api_key: Any = Field(max_length=59, description="IBM cloud API key or service ID API key.")
+    ibm_region: str | SdnConnectorIbmRegionEnum = Field(default="dallas", description="IBM cloud region name.")
+    par_id: str | None = Field(max_length=63, default="", description="Public address range ID.")
+    update_interval: int | None = Field(ge=0, le=3600, default=60, description="Dynamic object update interval (30 - 3600 sec, default = 60, 0 = disabled).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -375,7 +486,7 @@ class SdnConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "proxy", None)
@@ -424,7 +535,7 @@ class SdnConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -473,7 +584,7 @@ class SdnConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "oci_cert", None)
@@ -522,7 +633,7 @@ class SdnConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "server_cert", None)
@@ -571,7 +682,7 @@ class SdnConnectorModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_connector.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "server_ca_cert", None)
@@ -610,12 +721,16 @@ class SdnConnectorModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_proxy_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vdom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_oci_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_server_cert_references(client)
-        all_errors.extend(errors)        errors = await self.validate_server_ca_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vdom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_oci_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_server_cert_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_server_ca_cert_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -637,5 +752,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.868161Z
+# Generated: 2026-01-14T22:43:34.777424Z
 # ============================================================================

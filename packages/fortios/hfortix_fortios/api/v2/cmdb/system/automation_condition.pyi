@@ -82,7 +82,6 @@ class AutomationConditionObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -102,6 +101,10 @@ class AutomationCondition:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -123,6 +126,7 @@ class AutomationCondition:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationConditionResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -140,6 +144,7 @@ class AutomationCondition:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationConditionResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -156,6 +161,7 @@ class AutomationCondition:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AutomationConditionResponse]: ...
     
     # ================================================================
@@ -198,7 +204,7 @@ class AutomationCondition:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
     
@@ -217,7 +223,7 @@ class AutomationCondition:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AutomationConditionObject]: ...
     
@@ -317,23 +323,6 @@ class AutomationCondition:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AutomationConditionObject | list[AutomationConditionObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -354,6 +343,7 @@ class AutomationCondition:
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
@@ -405,22 +395,7 @@ class AutomationCondition:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AutomationConditionPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        condition_type: Literal["cpu", "memory", "vpn"] | None = ...,
-        cpu_usage_percent: int | None = ...,
-        mem_usage_percent: int | None = ...,
-        vpn_tunnel_name: str | None = ...,
-        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -438,6 +413,7 @@ class AutomationCondition:
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
@@ -489,22 +465,7 @@ class AutomationCondition:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AutomationConditionPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        condition_type: Literal["cpu", "memory", "vpn"] | None = ...,
-        cpu_usage_percent: int | None = ...,
-        mem_usage_percent: int | None = ...,
-        vpn_tunnel_name: str | None = ...,
-        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -515,6 +476,7 @@ class AutomationCondition:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
@@ -545,14 +507,7 @@ class AutomationCondition:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -588,8 +543,6 @@ class AutomationCondition:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -617,6 +570,10 @@ class AutomationConditionDictMode:
     By default returns AutomationConditionResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AutomationConditionObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -764,10 +721,12 @@ class AutomationConditionDictMode:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AutomationConditionPayload | None = ...,
@@ -831,10 +790,12 @@ class AutomationConditionDictMode:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AutomationConditionPayload | None = ...,
@@ -877,10 +838,12 @@ class AutomationConditionDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -920,8 +883,6 @@ class AutomationConditionDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -945,6 +906,10 @@ class AutomationConditionObjectMode:
     By default returns AutomationConditionObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AutomationConditionResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1110,10 +1075,12 @@ class AutomationConditionObjectMode:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AutomationConditionPayload | None = ...,
@@ -1195,10 +1162,12 @@ class AutomationConditionObjectMode:
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AutomationConditionPayload | None = ...,
@@ -1252,10 +1221,12 @@ class AutomationConditionObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationConditionObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1295,8 +1266,6 @@ class AutomationConditionObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

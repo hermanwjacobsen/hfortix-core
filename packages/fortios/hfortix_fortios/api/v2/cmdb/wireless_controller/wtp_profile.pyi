@@ -33,7 +33,7 @@ class WtpProfilePayload(TypedDict, total=False):
     name: str  # WTP (or FortiAP or AP) profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     platform: str  # WTP, FortiAP, or AP platform.
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-lis
     bonjour_profile: str  # Bonjour profile name. | MaxLen: 35
     apcfg_profile: str  # AP local configuration profile name. | MaxLen: 35
     apcfg_mesh: Literal["enable", "disable"]  # Enable/disable AP local mesh configuration | Default: disable
@@ -223,7 +223,7 @@ class WtpProfileResponse(TypedDict):
     name: str  # WTP (or FortiAP or AP) profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     platform: str  # WTP, FortiAP, or AP platform.
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-lis
     bonjour_profile: str  # Bonjour profile name. | MaxLen: 35
     apcfg_profile: str  # AP local configuration profile name. | MaxLen: 35
     apcfg_mesh: Literal["enable", "disable"]  # Enable/disable AP local mesh configuration | Default: disable
@@ -314,7 +314,7 @@ class WtpProfileObject:
     comment: str
     # WTP, FortiAP, or AP platform.
     platform: str
-    # Enable/disable CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    # Enable/disable CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-lis
     control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]
     # Bonjour profile name. | MaxLen: 35
     bonjour_profile: str
@@ -489,6 +489,10 @@ class WtpProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -509,6 +513,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WtpProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -526,6 +531,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> WtpProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -542,6 +548,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[WtpProfileResponse]: ...
     
     # ================================================================
@@ -584,7 +591,7 @@ class WtpProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> WtpProfileObject: ...
     
@@ -603,7 +610,7 @@ class WtpProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[WtpProfileObject]: ...
     
@@ -703,23 +710,6 @@ class WtpProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> WtpProfileObject | list[WtpProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -811,6 +801,7 @@ class WtpProfile:
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WtpProfileObject: ...
@@ -1075,93 +1066,7 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1250,6 +1155,7 @@ class WtpProfile:
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WtpProfileObject: ...
@@ -1514,93 +1420,7 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1611,6 +1431,7 @@ class WtpProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> WtpProfileObject: ...
@@ -1641,14 +1462,7 @@ class WtpProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1755,8 +1569,6 @@ class WtpProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1784,6 +1596,10 @@ class WtpProfileDictMode:
     By default returns WtpProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return WtpProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2144,10 +1960,12 @@ class WtpProfileDictMode:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -2495,10 +2313,12 @@ class WtpProfileDictMode:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -2612,10 +2432,12 @@ class WtpProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -2726,8 +2548,6 @@ class WtpProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2751,6 +2571,10 @@ class WtpProfileObjectMode:
     By default returns WtpProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return WtpProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -3200,10 +3024,12 @@ class WtpProfileObjectMode:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -3640,10 +3466,12 @@ class WtpProfileObjectMode:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -3768,10 +3596,12 @@ class WtpProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -3882,8 +3712,6 @@ class WtpProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

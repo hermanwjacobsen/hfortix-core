@@ -19,7 +19,7 @@ class CommunityListPayload(TypedDict, total=False):
         }
     """
     name: str  # Community list name. | MaxLen: 35
-    type: Literal["standard", "expanded"]  # Community list type (standard or expanded). | Default: standard
+    type_: Literal["standard", "expanded"]  # Community list type (standard or expanded). | Default: standard
     rule: list[dict[str, Any]]  # Community list rule.
 
 # Nested TypedDicts for table field children (dict mode)
@@ -75,7 +75,7 @@ class CommunityListResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Community list name. | MaxLen: 35
-    type: Literal["standard", "expanded"]  # Community list type (standard or expanded). | Default: standard
+    type_: Literal["standard", "expanded"]  # Community list type (standard or expanded). | Default: standard
     rule: list[CommunityListRuleItem]  # Community list rule.
 
 
@@ -90,7 +90,7 @@ class CommunityListObject:
     # Community list name. | MaxLen: 35
     name: str
     # Community list type (standard or expanded). | Default: standard
-    type: Literal["standard", "expanded"]
+    type_: Literal["standard", "expanded"]
     # Community list rule.
     rule: list[CommunityListRuleObject]
     
@@ -118,6 +118,10 @@ class CommunityList:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -138,6 +142,7 @@ class CommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CommunityListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -155,6 +160,7 @@ class CommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CommunityListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -171,6 +177,7 @@ class CommunityList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CommunityListResponse]: ...
     
     # ================================================================
@@ -213,7 +220,7 @@ class CommunityList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CommunityListObject: ...
     
@@ -232,7 +239,7 @@ class CommunityList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CommunityListObject]: ...
     
@@ -332,23 +339,6 @@ class CommunityList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CommunityListObject | list[CommunityListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -361,10 +351,11 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CommunityListObject: ...
@@ -374,7 +365,7 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -388,7 +379,7 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -401,21 +392,10 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CommunityListPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -425,10 +405,11 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CommunityListObject: ...
@@ -438,7 +419,7 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -452,7 +433,7 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -465,21 +446,10 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CommunityListPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -490,6 +460,7 @@ class CommunityList:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CommunityListObject: ...
@@ -520,14 +491,7 @@ class CommunityList:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -541,7 +505,7 @@ class CommunityList:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -559,8 +523,6 @@ class CommunityList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -588,6 +550,10 @@ class CommunityListDictMode:
     By default returns CommunityListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CommunityListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -692,7 +658,7 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -706,7 +672,7 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -720,18 +686,20 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -743,7 +711,7 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -757,7 +725,7 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -771,18 +739,20 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -816,10 +786,12 @@ class CommunityListDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -838,7 +810,7 @@ class CommunityListDictMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -855,8 +827,6 @@ class CommunityListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -880,6 +850,10 @@ class CommunityListObjectMode:
     By default returns CommunityListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CommunityListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -984,7 +958,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -998,7 +972,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1012,7 +986,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1026,18 +1000,20 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CommunityListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1049,7 +1025,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1063,7 +1039,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1077,7 +1053,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1091,18 +1067,20 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CommunityListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1147,10 +1125,12 @@ class CommunityListObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CommunityListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1169,7 +1149,7 @@ class CommunityListObjectMode:
         self,
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type_: Literal["standard", "expanded"] | None = ...,
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -1186,8 +1166,6 @@ class CommunityListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

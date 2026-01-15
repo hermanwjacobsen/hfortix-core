@@ -61,7 +61,26 @@ class SchemeModel(BaseModel):
 
     Configure Authentication Schemes.
 
-    Validation Rules:        - name: max_length=35 pattern=        - method: pattern=        - negotiate_ntlm: pattern=        - kerberos_keytab: max_length=35 pattern=        - domain_controller: max_length=35 pattern=        - saml_server: max_length=35 pattern=        - saml_timeout: min=30 max=1200 pattern=        - fsso_agent_for_ntlm: max_length=35 pattern=        - require_tfa: pattern=        - fsso_guest: pattern=        - user_cert: pattern=        - cert_http_header: pattern=        - user_database: pattern=        - ssh_ca: max_length=35 pattern=        - external_idp: max_length=35 pattern=        - group_attr_type: pattern=        - digest_algo: pattern=        - digest_rfc2069: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - method: pattern=
+        - negotiate_ntlm: pattern=
+        - kerberos_keytab: max_length=35 pattern=
+        - domain_controller: max_length=35 pattern=
+        - saml_server: max_length=35 pattern=
+        - saml_timeout: min=30 max=1200 pattern=
+        - fsso_agent_for_ntlm: max_length=35 pattern=
+        - require_tfa: pattern=
+        - fsso_guest: pattern=
+        - user_cert: pattern=
+        - cert_http_header: pattern=
+        - user_database: pattern=
+        - ssh_ca: max_length=35 pattern=
+        - external_idp: max_length=35 pattern=
+        - group_attr_type: pattern=
+        - digest_algo: pattern=
+        - digest_rfc2069: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -73,7 +92,25 @@ class SchemeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Authentication scheme name.")    method: SchemeMethodEnum = Field(default="", description="Authentication methods (default = basic).")    negotiate_ntlm: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable negotiate authentication for NTLM (default = disable).")    kerberos_keytab: str | None = Field(max_length=35, default="", description="Kerberos keytab setting.")  # datasource: ['user.krb-keytab.name']    domain_controller: str | None = Field(max_length=35, default="", description="Domain controller setting.")  # datasource: ['user.domain-controller.name']    saml_server: str | None = Field(max_length=35, default="", description="SAML configuration.")  # datasource: ['user.saml.name']    saml_timeout: int | None = Field(ge=30, le=1200, default=120, description="SAML authentication timeout in seconds.")    fsso_agent_for_ntlm: str | None = Field(max_length=35, default="", description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']    require_tfa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable two-factor authentication (default = disable).")    fsso_guest: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable user fsso-guest authentication (default = disable).")    user_cert: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate (default = disable).")    cert_http_header: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).")    user_database: list[SchemeUserDatabase] = Field(default=None, description="Authentication server to contain user information; \"local-user-db\" (default) or \"123\" (for LDAP).")    ssh_ca: str | None = Field(max_length=35, default="", description="SSH CA name.")  # datasource: ['firewall.ssh.local-ca.name']    external_idp: str | None = Field(max_length=35, default="", description="External identity provider configuration.")  # datasource: ['user.external-identity-provider.name']    group_attr_type: Literal["display-name", "external-id"] | None = Field(default="display-name", description="Group attribute type used to match SCIM groups (default = display-name).")    digest_algo: Literal["md5", "sha-256"] | None = Field(default="md5 sha-256", description="Digest Authentication Algorithms.")    digest_rfc2069: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support for the deprecated RFC2069 Digest Client (no cnonce field, default = disable).")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Authentication scheme name.")
+    method: str | SchemeMethodEnum | None = Field(default=None, description="Authentication methods (default = basic).")
+    negotiate_ntlm: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable negotiate authentication for NTLM (default = disable).")
+    kerberos_keytab: str | None = Field(max_length=35, default="", description="Kerberos keytab setting.")  # datasource: ['user.krb-keytab.name']
+    domain_controller: str | None = Field(max_length=35, default="", description="Domain controller setting.")  # datasource: ['user.domain-controller.name']
+    saml_server: str | None = Field(max_length=35, default="", description="SAML configuration.")  # datasource: ['user.saml.name']
+    saml_timeout: int | None = Field(ge=30, le=1200, default=120, description="SAML authentication timeout in seconds.")
+    fsso_agent_for_ntlm: str | None = Field(max_length=35, default="", description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']
+    require_tfa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable two-factor authentication (default = disable).")
+    fsso_guest: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable user fsso-guest authentication (default = disable).")
+    user_cert: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate (default = disable).")
+    cert_http_header: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).")
+    user_database: list[SchemeUserDatabase] | None = Field(default=None, description="Authentication server to contain user information; \"local-user-db\" (default) or \"123\" (for LDAP).")
+    ssh_ca: str | None = Field(max_length=35, default="", description="SSH CA name.")  # datasource: ['firewall.ssh.local-ca.name']
+    external_idp: str | None = Field(max_length=35, default="", description="External identity provider configuration.")  # datasource: ['user.external-identity-provider.name']
+    group_attr_type: Literal["display-name", "external-id"] | None = Field(default="display-name", description="Group attribute type used to match SCIM groups (default = display-name).")
+    digest_algo: Literal["md5", "sha-256"] | None = Field(default=None, description="Digest Authentication Algorithms.")
+    digest_rfc2069: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support for the deprecated RFC2069 Digest Client (no cnonce field, default = disable).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -227,7 +264,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "kerberos_keytab", None)
@@ -276,7 +313,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "domain_controller", None)
@@ -325,7 +362,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "saml_server", None)
@@ -374,7 +411,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "fsso_agent_for_ntlm", None)
@@ -423,7 +460,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "user_database", [])
@@ -491,7 +528,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssh_ca", None)
@@ -540,7 +577,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "external_idp", None)
@@ -577,14 +614,20 @@ class SchemeModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_kerberos_keytab_references(client)
-        all_errors.extend(errors)        errors = await self.validate_domain_controller_references(client)
-        all_errors.extend(errors)        errors = await self.validate_saml_server_references(client)
-        all_errors.extend(errors)        errors = await self.validate_fsso_agent_for_ntlm_references(client)
-        all_errors.extend(errors)        errors = await self.validate_user_database_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssh_ca_references(client)
-        all_errors.extend(errors)        errors = await self.validate_external_idp_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_domain_controller_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_saml_server_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_fsso_agent_for_ntlm_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_user_database_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssh_ca_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_external_idp_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -606,5 +649,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.153500Z
+# Generated: 2026-01-14T22:43:38.830044Z
 # ============================================================================

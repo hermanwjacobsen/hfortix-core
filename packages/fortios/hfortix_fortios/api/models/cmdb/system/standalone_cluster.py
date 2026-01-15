@@ -30,13 +30,13 @@ class StandaloneClusterClusterPeer(BaseModel):
     sync_id: int | None = Field(ge=0, le=4294967295, default=0, description="Sync ID.")
     peervd: str | None = Field(max_length=31, default="root", description="VDOM that contains the session synchronization link interface on the peer unit. Usually both peers would have the same peervd.")  # datasource: ['system.vdom.name']
     peerip: str | None = Field(default="0.0.0.0", description="IP address of the interface on the peer unit that is used for the session synchronization link.")
-    syncvd: list[Syncvd] = Field(default=None, description="Sessions from these VDOMs are synchronized using this session synchronization configuration.")
-    down_intfs_before_sess_sync: list[DownIntfsBeforeSessSync] = Field(default=None, description="List of interfaces to be turned down before session synchronization is complete.")
+    syncvd: list[dict[str, Any]] | None = Field(default=None, description="Sessions from these VDOMs are synchronized using this session synchronization configuration.")
+    down_intfs_before_sess_sync: list[dict[str, Any]] | None = Field(default=None, description="List of interfaces to be turned down before session synchronization is complete.")
     hb_interval: int | None = Field(ge=1, le=20, default=2, description="Heartbeat interval (1 - 20 (100*ms). Increase to reduce false positives.")
     hb_lost_threshold: int | None = Field(ge=1, le=60, default=10, description="Lost heartbeat threshold (1 - 60). Increase to reduce false positives.")
     ipsec_tunnel_sync: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPsec tunnel synchronization.")
     secondary_add_ipsec_routes: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IKE route announcement on the backup unit.")
-    session_sync_filter: list[SessionSyncFilter] = Field(default=None, description="Add one or more filters if you only want to synchronize some sessions. Use the filter to configure the types of sessions to synchronize.")
+    session_sync_filter: list[dict[str, Any]] | None = Field(default=None, description="Add one or more filters if you only want to synchronize some sessions. Use the filter to configure the types of sessions to synchronize.")
 
 
 class StandaloneClusterMonitorInterface(BaseModel):
@@ -99,7 +99,21 @@ class StandaloneClusterModel(BaseModel):
 
     Configure FortiGate Session Life Support Protocol (FGSP) cluster attributes.
 
-    Validation Rules:        - standalone_group_id: min=0 max=255 pattern=        - group_member_id: min=0 max=15 pattern=        - layer2_connection: pattern=        - session_sync_dev: pattern=        - encryption: pattern=        - psksecret: pattern=        - asymmetric_traffic_control: pattern=        - cluster_peer: pattern=        - monitor_interface: pattern=        - pingsvr_monitor_interface: pattern=        - monitor_prefix: pattern=        - helper_traffic_bounce: pattern=        - utm_traffic_bounce: pattern=    """
+    Validation Rules:
+        - standalone_group_id: min=0 max=255 pattern=
+        - group_member_id: min=0 max=15 pattern=
+        - layer2_connection: pattern=
+        - session_sync_dev: pattern=
+        - encryption: pattern=
+        - psksecret: pattern=
+        - asymmetric_traffic_control: pattern=
+        - cluster_peer: pattern=
+        - monitor_interface: pattern=
+        - pingsvr_monitor_interface: pattern=
+        - monitor_prefix: pattern=
+        - helper_traffic_bounce: pattern=
+        - utm_traffic_bounce: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -111,7 +125,20 @@ class StandaloneClusterModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    standalone_group_id: int | None = Field(ge=0, le=255, default=0, description="Cluster group ID (0 - 255). Must be the same for all members.")    group_member_id: int | None = Field(ge=0, le=15, default=0, description="Cluster member ID (0 - 15).")    layer2_connection: Literal["available", "unavailable"] | None = Field(default="unavailable", description="Indicate whether layer 2 connections are present among FGSP members.")    session_sync_dev: str | None = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    encryption: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable encryption when synchronizing sessions.")    psksecret: Any = Field(description="Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).")    asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = Field(default="cps-preferred", description="Asymmetric traffic control mode.")    cluster_peer: list[StandaloneClusterClusterPeer] = Field(default=None, description="Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.")    monitor_interface: list[StandaloneClusterMonitorInterface] = Field(default=None, description="Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.")    pingsvr_monitor_interface: list[StandaloneClusterPingsvrMonitorInterface] = Field(default=None, description="List of pingsvr monitor interface to check for remote IP monitoring.")    monitor_prefix: list[StandaloneClusterMonitorPrefix] = Field(default=None, description="Configure a list of routing prefixes to monitor.")    helper_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable helper related traffic bounce.")    utm_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UTM related traffic bounce.")    # ========================================================================
+    standalone_group_id: int | None = Field(ge=0, le=255, default=0, description="Cluster group ID (0 - 255). Must be the same for all members.")
+    group_member_id: int | None = Field(ge=0, le=15, default=0, description="Cluster member ID (0 - 15).")
+    layer2_connection: Literal["available", "unavailable"] | None = Field(default="unavailable", description="Indicate whether layer 2 connections are present among FGSP members.")
+    session_sync_dev: str | None = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']
+    encryption: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable encryption when synchronizing sessions.")
+    psksecret: Any = Field(description="Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).")
+    asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = Field(default="cps-preferred", description="Asymmetric traffic control mode.")
+    cluster_peer: list[StandaloneClusterClusterPeer] | None = Field(default=None, description="Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.")
+    monitor_interface: list[StandaloneClusterMonitorInterface] | None = Field(default=None, description="Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.")
+    pingsvr_monitor_interface: list[StandaloneClusterPingsvrMonitorInterface] | None = Field(default=None, description="List of pingsvr monitor interface to check for remote IP monitoring.")
+    monitor_prefix: list[StandaloneClusterMonitorPrefix] | None = Field(default=None, description="Configure a list of routing prefixes to monitor.")
+    helper_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable helper related traffic bounce.")
+    utm_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UTM related traffic bounce.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -190,7 +217,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "session_sync_dev", None)
@@ -239,7 +266,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "cluster_peer", [])
@@ -297,7 +324,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "monitor_interface", [])
@@ -355,7 +382,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "pingsvr_monitor_interface", [])
@@ -413,7 +440,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "monitor_prefix", [])
@@ -459,12 +486,16 @@ class StandaloneClusterModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_session_sync_dev_references(client)
-        all_errors.extend(errors)        errors = await self.validate_cluster_peer_references(client)
-        all_errors.extend(errors)        errors = await self.validate_monitor_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_pingsvr_monitor_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_monitor_prefix_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_cluster_peer_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_monitor_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_pingsvr_monitor_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_monitor_prefix_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -486,5 +517,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.197060Z
+# Generated: 2026-01-14T22:43:38.881056Z
 # ============================================================================

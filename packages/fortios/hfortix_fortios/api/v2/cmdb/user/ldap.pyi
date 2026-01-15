@@ -37,7 +37,7 @@ class LdapPayload(TypedDict, total=False):
     source_port: int  # Source port to be used for communication with the | Default: 0 | Min: 0 | Max: 65535
     cnid: str  # Common name identifier for the LDAP server. The co | Default: cn | MaxLen: 20
     dn: str  # Distinguished name used to look up entries on the | MaxLen: 511
-    type: Literal["simple", "anonymous", "regular"]  # Authentication type for LDAP searches. | Default: simple
+    type_: Literal["simple", "anonymous", "regular"]  # Authentication type for LDAP searches. | Default: simple
     two_factor: Literal["disable", "fortitoken-cloud"]  # Enable/disable two-factor authentication. | Default: disable
     two_factor_authentication: Literal["fortitoken", "email", "sms"]  # Authentication method by FortiToken Cloud.
     two_factor_notification: Literal["email", "sms"]  # Notification method for user activation by FortiTo
@@ -46,7 +46,7 @@ class LdapPayload(TypedDict, total=False):
     password: str  # Password for initial binding. | MaxLen: 128
     group_member_check: Literal["user-attr", "group-object", "posix-group-object"]  # Group member checking methods. | Default: user-attr
     group_search_base: str  # Search base used for group searching. | MaxLen: 511
-    group_object_filter: str  # Filter used for group searching. | Default: (&(objectcategory=group)(member=*)) | MaxLen: 2047
+    group_object_filter: str  # Filter used for group searching. | Default: (&(objectcategory=group) | MaxLen: 2047
     group_filter: str  # Filter used for group matching. | MaxLen: 2047
     secure: Literal["disable", "starttls", "ldaps"]  # Port to be used for authentication. | Default: disable
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
@@ -57,7 +57,7 @@ class LdapPayload(TypedDict, total=False):
     member_attr: str  # Name of attribute from which to get group membersh | Default: memberOf | MaxLen: 63
     account_key_processing: Literal["same", "strip"]  # Account key processing operation. The FortiGate wi | Default: same
     account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]  # Define subject identity field in certificate for u | Default: othername
-    account_key_filter: str  # Account key filter, using the UPN as the search fi | Default: (&(userPrincipalName=%s)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))) | MaxLen: 2047
+    account_key_filter: str  # Account key filter, using the UPN as the search fi | Default: (&(userPrincipalName=%s)(! | MaxLen: 2047
     search_type: Literal["recursive"]  # Search type.
     client_cert_auth: Literal["enable", "disable"]  # Enable/disable using client certificate for TLS au | Default: disable
     client_cert: str  # Client certificate name. | MaxLen: 79
@@ -92,7 +92,7 @@ class LdapResponse(TypedDict):
     source_port: int  # Source port to be used for communication with the | Default: 0 | Min: 0 | Max: 65535
     cnid: str  # Common name identifier for the LDAP server. The co | Default: cn | MaxLen: 20
     dn: str  # Distinguished name used to look up entries on the | MaxLen: 511
-    type: Literal["simple", "anonymous", "regular"]  # Authentication type for LDAP searches. | Default: simple
+    type_: Literal["simple", "anonymous", "regular"]  # Authentication type for LDAP searches. | Default: simple
     two_factor: Literal["disable", "fortitoken-cloud"]  # Enable/disable two-factor authentication. | Default: disable
     two_factor_authentication: Literal["fortitoken", "email", "sms"]  # Authentication method by FortiToken Cloud.
     two_factor_notification: Literal["email", "sms"]  # Notification method for user activation by FortiTo
@@ -101,7 +101,7 @@ class LdapResponse(TypedDict):
     password: str  # Password for initial binding. | MaxLen: 128
     group_member_check: Literal["user-attr", "group-object", "posix-group-object"]  # Group member checking methods. | Default: user-attr
     group_search_base: str  # Search base used for group searching. | MaxLen: 511
-    group_object_filter: str  # Filter used for group searching. | Default: (&(objectcategory=group)(member=*)) | MaxLen: 2047
+    group_object_filter: str  # Filter used for group searching. | Default: (&(objectcategory=group) | MaxLen: 2047
     group_filter: str  # Filter used for group matching. | MaxLen: 2047
     secure: Literal["disable", "starttls", "ldaps"]  # Port to be used for authentication. | Default: disable
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
@@ -112,7 +112,7 @@ class LdapResponse(TypedDict):
     member_attr: str  # Name of attribute from which to get group membersh | Default: memberOf | MaxLen: 63
     account_key_processing: Literal["same", "strip"]  # Account key processing operation. The FortiGate wi | Default: same
     account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]  # Define subject identity field in certificate for u | Default: othername
-    account_key_filter: str  # Account key filter, using the UPN as the search fi | Default: (&(userPrincipalName=%s)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))) | MaxLen: 2047
+    account_key_filter: str  # Account key filter, using the UPN as the search fi | Default: (&(userPrincipalName=%s)(! | MaxLen: 2047
     search_type: Literal["recursive"]  # Search type.
     client_cert_auth: Literal["enable", "disable"]  # Enable/disable using client certificate for TLS au | Default: disable
     client_cert: str  # Client certificate name. | MaxLen: 79
@@ -156,7 +156,7 @@ class LdapObject:
     # Distinguished name used to look up entries on the LDAP serve | MaxLen: 511
     dn: str
     # Authentication type for LDAP searches. | Default: simple
-    type: Literal["simple", "anonymous", "regular"]
+    type_: Literal["simple", "anonymous", "regular"]
     # Enable/disable two-factor authentication. | Default: disable
     two_factor: Literal["disable", "fortitoken-cloud"]
     # Authentication method by FortiToken Cloud.
@@ -173,7 +173,7 @@ class LdapObject:
     group_member_check: Literal["user-attr", "group-object", "posix-group-object"]
     # Search base used for group searching. | MaxLen: 511
     group_search_base: str
-    # Filter used for group searching. | Default: (&(objectcategory=group)(member=*)) | MaxLen: 2047
+    # Filter used for group searching. | Default: (&(objectcategory=group) | MaxLen: 2047
     group_object_filter: str
     # Filter used for group matching. | MaxLen: 2047
     group_filter: str
@@ -195,7 +195,7 @@ class LdapObject:
     account_key_processing: Literal["same", "strip"]
     # Define subject identity field in certificate for user access | Default: othername
     account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]
-    # Account key filter, using the UPN as the search filter. | Default: (&(userPrincipalName=%s)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))) | MaxLen: 2047
+    # Account key filter, using the UPN as the search filter. | Default: (&(userPrincipalName=%s)(! | MaxLen: 2047
     account_key_filter: str
     # Search type.
     search_type: Literal["recursive"]
@@ -242,6 +242,10 @@ class Ldap:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -262,6 +266,7 @@ class Ldap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LdapResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -279,6 +284,7 @@ class Ldap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> LdapResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -295,6 +301,7 @@ class Ldap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[LdapResponse]: ...
     
     # ================================================================
@@ -337,7 +344,7 @@ class Ldap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> LdapObject: ...
     
@@ -356,7 +363,7 @@ class Ldap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[LdapObject]: ...
     
@@ -456,23 +463,6 @@ class Ldap:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> LdapObject | list[LdapObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -495,7 +485,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -528,6 +518,7 @@ class Ldap:
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdapObject: ...
@@ -547,7 +538,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -600,7 +591,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -652,7 +643,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -684,57 +675,7 @@ class Ldap:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: LdapPayload | None = ...,
-        name: str | None = ...,
-        server: str | None = ...,
-        secondary_server: str | None = ...,
-        tertiary_server: str | None = ...,
-        status_ttl: int | None = ...,
-        server_identity_check: Literal["enable", "disable"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        source_port: int | None = ...,
-        cnid: str | None = ...,
-        dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
-        two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        two_factor_filter: str | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        group_member_check: Literal["user-attr", "group-object", "posix-group-object"] | None = ...,
-        group_search_base: str | None = ...,
-        group_object_filter: str | None = ...,
-        group_filter: str | None = ...,
-        secure: Literal["disable", "starttls", "ldaps"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        ca_cert: str | None = ...,
-        port: int | None = ...,
-        password_expiry_warning: Literal["enable", "disable"] | None = ...,
-        password_renewal: Literal["enable", "disable"] | None = ...,
-        member_attr: str | None = ...,
-        account_key_processing: Literal["same", "strip"] | None = ...,
-        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
-        account_key_filter: str | None = ...,
-        search_type: Literal["recursive"] | list[str] | None = ...,
-        client_cert_auth: Literal["enable", "disable"] | None = ...,
-        client_cert: str | None = ...,
-        obtain_user_info: Literal["enable", "disable"] | None = ...,
-        user_info_exchange_server: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        antiphish: Literal["enable", "disable"] | None = ...,
-        password_attr: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -754,7 +695,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -787,6 +728,7 @@ class Ldap:
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdapObject: ...
@@ -806,7 +748,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -859,7 +801,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -911,7 +853,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -943,57 +885,7 @@ class Ldap:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: LdapPayload | None = ...,
-        name: str | None = ...,
-        server: str | None = ...,
-        secondary_server: str | None = ...,
-        tertiary_server: str | None = ...,
-        status_ttl: int | None = ...,
-        server_identity_check: Literal["enable", "disable"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        source_port: int | None = ...,
-        cnid: str | None = ...,
-        dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
-        two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        two_factor_filter: str | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        group_member_check: Literal["user-attr", "group-object", "posix-group-object"] | None = ...,
-        group_search_base: str | None = ...,
-        group_object_filter: str | None = ...,
-        group_filter: str | None = ...,
-        secure: Literal["disable", "starttls", "ldaps"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        ca_cert: str | None = ...,
-        port: int | None = ...,
-        password_expiry_warning: Literal["enable", "disable"] | None = ...,
-        password_renewal: Literal["enable", "disable"] | None = ...,
-        member_attr: str | None = ...,
-        account_key_processing: Literal["same", "strip"] | None = ...,
-        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
-        account_key_filter: str | None = ...,
-        search_type: Literal["recursive"] | list[str] | None = ...,
-        client_cert_auth: Literal["enable", "disable"] | None = ...,
-        client_cert: str | None = ...,
-        obtain_user_info: Literal["enable", "disable"] | None = ...,
-        user_info_exchange_server: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        antiphish: Literal["enable", "disable"] | None = ...,
-        password_attr: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1004,6 +896,7 @@ class Ldap:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LdapObject: ...
@@ -1034,14 +927,7 @@ class Ldap:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1065,7 +951,7 @@ class Ldap:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1112,8 +998,6 @@ class Ldap:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1141,6 +1025,10 @@ class LdapDictMode:
     By default returns LdapResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return LdapObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1255,7 +1143,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1308,7 +1196,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1361,7 +1249,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1393,10 +1281,12 @@ class LdapDictMode:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: LdapPayload | None = ...,
@@ -1411,7 +1301,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1462,7 +1352,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1515,7 +1405,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1568,7 +1458,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1600,10 +1490,12 @@ class LdapDictMode:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: LdapPayload | None = ...,
@@ -1618,7 +1510,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1681,10 +1573,12 @@ class LdapDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1713,7 +1607,7 @@ class LdapDictMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1759,8 +1653,6 @@ class LdapDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1784,6 +1676,10 @@ class LdapObjectMode:
     By default returns LdapObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return LdapResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1898,7 +1794,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -1951,7 +1847,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2004,7 +1900,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2057,7 +1953,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2089,10 +1985,12 @@ class LdapObjectMode:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdapObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: LdapPayload | None = ...,
@@ -2107,7 +2005,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2158,7 +2056,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2211,7 +2109,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2264,7 +2162,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2317,7 +2215,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2349,10 +2247,12 @@ class LdapObjectMode:
         antiphish: Literal["enable", "disable"] | None = ...,
         password_attr: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdapObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: LdapPayload | None = ...,
@@ -2367,7 +2267,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2441,10 +2341,12 @@ class LdapObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> LdapObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2473,7 +2375,7 @@ class LdapObjectMode:
         source_port: int | None = ...,
         cnid: str | None = ...,
         dn: str | None = ...,
-        type: Literal["simple", "anonymous", "regular"] | None = ...,
+        type_: Literal["simple", "anonymous", "regular"] | None = ...,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = ...,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
         two_factor_notification: Literal["email", "sms"] | None = ...,
@@ -2519,8 +2421,6 @@ class LdapObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

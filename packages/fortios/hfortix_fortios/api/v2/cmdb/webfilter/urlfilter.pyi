@@ -38,11 +38,11 @@ class UrlfilterEntriesItem(TypedDict):
     
     id: int  # Id. | Default: 0 | Min: 0 | Max: 4294967295
     url: str  # URL to be filtered. | MaxLen: 511
-    type: Literal["simple", "regex", "wildcard"]  # Filter type (simple, regex, or wildcard). | Default: simple
+    type_: Literal["simple", "regex", "wildcard"]  # Filter type (simple, regex, or wildcard). | Default: simple
     action: Literal["exempt", "block", "allow", "monitor"]  # Action to take for URL filter matches. | Default: exempt
     antiphish_action: Literal["block", "log"]  # Action to take for AntiPhishing matches. | Default: block
     status: Literal["enable", "disable"]  # Enable/disable this URL filter. | Default: enable
-    exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]  # If action is set to exempt, select the security pr | Default: av web-content activex-java-cookie dlp fortiguard range-block antiphish all
+    exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]  # If action is set to exempt, select the security pr | Default: av web-content activex-java-co
     web_proxy_profile: str  # Web proxy profile. | MaxLen: 63
     referrer_host: str  # Referrer host name. | MaxLen: 255
     dns_address_family: Literal["ipv4", "ipv6", "both"]  # Resolve IPv4 address, IPv6 address, or both from D | Default: ipv4
@@ -64,14 +64,14 @@ class UrlfilterEntriesObject:
     # URL to be filtered. | MaxLen: 511
     url: str
     # Filter type (simple, regex, or wildcard). | Default: simple
-    type: Literal["simple", "regex", "wildcard"]
+    type_: Literal["simple", "regex", "wildcard"]
     # Action to take for URL filter matches. | Default: exempt
     action: Literal["exempt", "block", "allow", "monitor"]
     # Action to take for AntiPhishing matches. | Default: block
     antiphish_action: Literal["block", "log"]
     # Enable/disable this URL filter. | Default: enable
     status: Literal["enable", "disable"]
-    # If action is set to exempt, select the security profile oper | Default: av web-content activex-java-cookie dlp fortiguard range-block antiphish all
+    # If action is set to exempt, select the security profile oper | Default: av web-content activex-java-co
     exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]
     # Web proxy profile. | MaxLen: 63
     web_proxy_profile: str
@@ -159,6 +159,10 @@ class Urlfilter:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -179,6 +183,7 @@ class Urlfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UrlfilterResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -196,6 +201,7 @@ class Urlfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> UrlfilterResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -212,6 +218,7 @@ class Urlfilter:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[UrlfilterResponse]: ...
     
     # ================================================================
@@ -254,7 +261,7 @@ class Urlfilter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> UrlfilterObject: ...
     
@@ -273,7 +280,7 @@ class Urlfilter:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[UrlfilterObject]: ...
     
@@ -373,23 +380,6 @@ class Urlfilter:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> UrlfilterObject | list[UrlfilterObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -411,6 +401,7 @@ class Urlfilter:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UrlfilterObject: ...
@@ -465,23 +456,7 @@ class Urlfilter:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: UrlfilterPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = ...,
-        ip_addr_block: Literal["enable", "disable"] | None = ...,
-        ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
-        include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -500,6 +475,7 @@ class Urlfilter:
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UrlfilterObject: ...
@@ -554,23 +530,7 @@ class Urlfilter:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: UrlfilterPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = ...,
-        ip_addr_block: Literal["enable", "disable"] | None = ...,
-        ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
-        include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -581,6 +541,7 @@ class Urlfilter:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> UrlfilterObject: ...
@@ -611,14 +572,7 @@ class Urlfilter:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -655,8 +609,6 @@ class Urlfilter:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -684,6 +636,10 @@ class UrlfilterDictMode:
     By default returns UrlfilterResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return UrlfilterObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -834,10 +790,12 @@ class UrlfilterDictMode:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: UrlfilterPayload | None = ...,
@@ -905,10 +863,12 @@ class UrlfilterDictMode:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: UrlfilterPayload | None = ...,
@@ -952,10 +912,12 @@ class UrlfilterDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -996,8 +958,6 @@ class UrlfilterDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1021,6 +981,10 @@ class UrlfilterObjectMode:
     By default returns UrlfilterObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return UrlfilterResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1190,10 +1154,12 @@ class UrlfilterObjectMode:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UrlfilterObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: UrlfilterPayload | None = ...,
@@ -1280,10 +1246,12 @@ class UrlfilterObjectMode:
         include_subdomains: Literal["enable", "disable"] | None = ...,
         entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UrlfilterObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: UrlfilterPayload | None = ...,
@@ -1338,10 +1306,12 @@ class UrlfilterObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> UrlfilterObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1382,8 +1352,6 @@ class UrlfilterObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

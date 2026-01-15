@@ -21,7 +21,7 @@ class BleProfilePayload(TypedDict, total=False):
     name: str  # Bluetooth Low Energy profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 63
     advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"]  # Advertising type.
-    ibeacon_uuid: str  # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662870761 | MaxLen: 63
+    ibeacon_uuid: str  # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662 | MaxLen: 63
     major_id: int  # Major ID. | Default: 1000 | Min: 0 | Max: 65535
     minor_id: int  # Minor ID. | Default: 2000 | Min: 0 | Max: 65535
     eddystone_namespace: str  # Eddystone namespace ID. | Default: 0102030405 | MaxLen: 20
@@ -52,7 +52,7 @@ class BleProfileResponse(TypedDict):
     name: str  # Bluetooth Low Energy profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 63
     advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"]  # Advertising type.
-    ibeacon_uuid: str  # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662870761 | MaxLen: 63
+    ibeacon_uuid: str  # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662 | MaxLen: 63
     major_id: int  # Major ID. | Default: 1000 | Min: 0 | Max: 65535
     minor_id: int  # Minor ID. | Default: 2000 | Min: 0 | Max: 65535
     eddystone_namespace: str  # Eddystone namespace ID. | Default: 0102030405 | MaxLen: 20
@@ -83,7 +83,7 @@ class BleProfileObject:
     comment: str
     # Advertising type.
     advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"]
-    # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662870761 | MaxLen: 63
+    # Universally Unique Identifier | Default: 005ea414-cbd1-11e5-9956-625662 | MaxLen: 63
     ibeacon_uuid: str
     # Major ID. | Default: 1000 | Min: 0 | Max: 65535
     major_id: int
@@ -138,6 +138,10 @@ class BleProfile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -158,6 +162,7 @@ class BleProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> BleProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -175,6 +180,7 @@ class BleProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> BleProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -191,6 +197,7 @@ class BleProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[BleProfileResponse]: ...
     
     # ================================================================
@@ -233,7 +240,7 @@ class BleProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> BleProfileObject: ...
     
@@ -252,7 +259,7 @@ class BleProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[BleProfileObject]: ...
     
@@ -352,23 +359,6 @@ class BleProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> BleProfileObject | list[BleProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -400,6 +390,7 @@ class BleProfile:
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BleProfileObject: ...
@@ -484,33 +475,7 @@ class BleProfile:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: BleProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list[str] | None = ...,
-        ibeacon_uuid: str | None = ...,
-        major_id: int | None = ...,
-        minor_id: int | None = ...,
-        eddystone_namespace: str | None = ...,
-        eddystone_instance: str | None = ...,
-        eddystone_url: str | None = ...,
-        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"] | None = ...,
-        beacon_interval: int | None = ...,
-        ble_scanning: Literal["enable", "disable"] | None = ...,
-        scan_type: Literal["active", "passive"] | None = ...,
-        scan_threshold: str | None = ...,
-        scan_period: int | None = ...,
-        scan_time: int | None = ...,
-        scan_interval: int | None = ...,
-        scan_window: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -539,6 +504,7 @@ class BleProfile:
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BleProfileObject: ...
@@ -623,33 +589,7 @@ class BleProfile:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: BleProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list[str] | None = ...,
-        ibeacon_uuid: str | None = ...,
-        major_id: int | None = ...,
-        minor_id: int | None = ...,
-        eddystone_namespace: str | None = ...,
-        eddystone_instance: str | None = ...,
-        eddystone_url: str | None = ...,
-        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"] | None = ...,
-        beacon_interval: int | None = ...,
-        ble_scanning: Literal["enable", "disable"] | None = ...,
-        scan_type: Literal["active", "passive"] | None = ...,
-        scan_threshold: str | None = ...,
-        scan_period: int | None = ...,
-        scan_time: int | None = ...,
-        scan_interval: int | None = ...,
-        scan_window: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -660,6 +600,7 @@ class BleProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> BleProfileObject: ...
@@ -690,14 +631,7 @@ class BleProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -744,8 +678,6 @@ class BleProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -773,6 +705,10 @@ class BleProfileDictMode:
     By default returns BleProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return BleProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -953,10 +889,12 @@ class BleProfileDictMode:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: BleProfilePayload | None = ...,
@@ -1064,10 +1002,12 @@ class BleProfileDictMode:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: BleProfilePayload | None = ...,
@@ -1121,10 +1061,12 @@ class BleProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1175,8 +1117,6 @@ class BleProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1200,6 +1140,10 @@ class BleProfileObjectMode:
     By default returns BleProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return BleProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1409,10 +1353,12 @@ class BleProfileObjectMode:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BleProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: BleProfilePayload | None = ...,
@@ -1549,10 +1495,12 @@ class BleProfileObjectMode:
         scan_interval: int | None = ...,
         scan_window: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BleProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: BleProfilePayload | None = ...,
@@ -1617,10 +1565,12 @@ class BleProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> BleProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1671,8 +1621,6 @@ class BleProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

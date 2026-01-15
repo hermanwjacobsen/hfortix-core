@@ -10,11 +10,11 @@ if TYPE_CHECKING:
     from .known_nac_device_criteria_list import KnownNacDeviceCriteriaList, KnownNacDeviceCriteriaListDictMode, KnownNacDeviceCriteriaListObjectMode
     from .matched_devices import MatchedDevices, MatchedDevicesDictMode, MatchedDevicesObjectMode
     from .fsw_firmware import FswFirmware
-    from .isl_lockdown import IslLockdownDictMode, IslLockdownObjectMode
-    from .managed_switch import ManagedSwitchDictMode, ManagedSwitchObjectMode
-    from .mclag_icl import MclagIclDictMode, MclagIclObjectMode
-    from .nac_device import NacDeviceDictMode, NacDeviceObjectMode
-    from .recommendation import RecommendationDictMode, RecommendationObjectMode
+    from .isl_lockdown import IslLockdown, IslLockdownDictMode, IslLockdownObjectMode
+    from .managed_switch import ManagedSwitch, ManagedSwitchDictMode, ManagedSwitchObjectMode
+    from .mclag_icl import MclagIcl, MclagIclDictMode, MclagIclObjectMode
+    from .nac_device import NacDevice, NacDeviceDictMode, NacDeviceObjectMode
+    from .recommendation import Recommendation, RecommendationDictMode, RecommendationObjectMode
 
 __all__ = [
     "DetectedDevice",

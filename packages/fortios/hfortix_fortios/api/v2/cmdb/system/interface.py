@@ -369,7 +369,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         status: Literal["up", "down"] | None = None,
         netbios_forward: Literal["disable", "enable"] | None = None,
         wins_ip: str | None = None,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
         dedicated_to: Literal["none", "management"] | None = None,
         trust_ip_1: Any | None = None,
         trust_ip_2: Any | None = None,
@@ -611,7 +611,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status: Bring the interface up or shut the interface down.
             netbios_forward: Enable/disable NETBIOS forwarding.
             wins_ip: WINS server IP.
-            type: Interface type.
+            type_: Interface type.
             dedicated_to: Configure interface for single purpose.
             trust_ip_1: Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
             trust_ip_2: Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
@@ -960,7 +960,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status=status,
             netbios_forward=netbios_forward,
             wins_ip=wins_ip,
-            type=type,
+            type_=type_,
             dedicated_to=dedicated_to,
             trust_ip_1=trust_ip_1,
             trust_ip_2=trust_ip_2,
@@ -1211,7 +1211,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         status: Literal["up", "down"] | None = None,
         netbios_forward: Literal["disable", "enable"] | None = None,
         wins_ip: str | None = None,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
         dedicated_to: Literal["none", "management"] | None = None,
         trust_ip_1: Any | None = None,
         trust_ip_2: Any | None = None,
@@ -1453,7 +1453,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status: Bring the interface up or shut the interface down.
             netbios_forward: Enable/disable NETBIOS forwarding.
             wins_ip: WINS server IP.
-            type: Interface type.
+            type_: Interface type.
             dedicated_to: Configure interface for single purpose.
             trust_ip_1: Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
             trust_ip_2: Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
@@ -1804,7 +1804,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status=status,
             netbios_forward=netbios_forward,
             wins_ip=wins_ip,
-            type=type,
+            type_=type_,
             dedicated_to=dedicated_to,
             trust_ip_1=trust_ip_1,
             trust_ip_2=trust_ip_2,
@@ -2155,7 +2155,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         status: Literal["up", "down"] | None = None,
         netbios_forward: Literal["disable", "enable"] | None = None,
         wins_ip: str | None = None,
-        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
+        type_: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = None,
         dedicated_to: Literal["none", "management"] | None = None,
         trust_ip_1: Any | None = None,
         trust_ip_2: Any | None = None,
@@ -2389,7 +2389,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status: Field status
             netbios_forward: Field netbios-forward
             wins_ip: Field wins-ip
-            type: Field type
+            type_: Field type
             dedicated_to: Field dedicated-to
             trust_ip_1: Field trust-ip-1
             trust_ip_2: Field trust-ip-2
@@ -2653,7 +2653,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             status=status,
             netbios_forward=netbios_forward,
             wins_ip=wins_ip,
-            type=type,
+            type_=type_,
             dedicated_to=dedicated_to,
             trust_ip_1=trust_ip_1,
             trust_ip_2=trust_ip_2,

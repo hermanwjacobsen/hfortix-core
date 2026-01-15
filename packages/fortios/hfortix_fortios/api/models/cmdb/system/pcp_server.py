@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -30,7 +30,7 @@ class PcpServerPools(BaseModel):
     name: str = Field(max_length=79, default="", description="PCP pool name.")
     description: str | None = Field(max_length=127, default="", description="Description.")
     id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
-    client_subnet: list[ClientSubnet] = Field(description="Subnets from which PCP requests are accepted.")
+    client_subnet: list[dict[str, Any]] | None = Field(description="Subnets from which PCP requests are accepted.")
     ext_intf: str = Field(max_length=35, default="", description="External interface name.")  # datasource: ['system.interface.name']
     arp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable to respond to ARP requests for external IP (default = enable).")
     extip: str = Field(default="", description="IP address or address range on the external interface that you want to map to an address on the internal network.")
@@ -39,12 +39,12 @@ class PcpServerPools(BaseModel):
     maximal_lifetime: int | None = Field(ge=3600, le=604800, default=86400, description="Maximal lifetime of a PCP mapping in seconds (3600 - 604800, default = 86400).")
     client_mapping_limit: int | None = Field(ge=0, le=65535, default=0, description="Mapping limit per client (0 - 65535, default = 0, 0 = unlimited).")
     mapping_filter_limit: int | None = Field(ge=0, le=5, default=1, description="Filter limit per mapping (0 - 5, default = 1).")
-    allow_opcode: Literal["map", "peer", "announce"] | None = Field(default="map peer announce", description="Allowed PCP opcode.")
+    allow_opcode: Literal["map", "peer", "announce"] | None = Field(default=None, description="Allowed PCP opcode.")
     third_party: Literal["allow", "disallow"] | None = Field(default="disallow", description="Allow/disallow third party option.")
-    third_party_subnet: list[ThirdPartySubnet] = Field(default=None, description="Subnets from which third party requests are accepted.")
+    third_party_subnet: list[dict[str, Any]] | None = Field(default=None, description="Subnets from which third party requests are accepted.")
     multicast_announcement: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast announcements.")
     announcement_count: int | None = Field(ge=3, le=10, default=3, description="Number of multicast announcements.")
-    intl_intf: list[IntlIntf] = Field(description="Internal interface name.")
+    intl_intf: list[dict[str, Any]] | None = Field(description="Internal interface name.")
     recycle_delay: int | None = Field(ge=0, le=3600, default=0, description="Minimum delay (in seconds) the PCP Server will wait before recycling mappings that have expired (0 - 3600, default = 0).")
 
 # ============================================================================
@@ -63,7 +63,10 @@ class PcpServerModel(BaseModel):
 
     Configure PCP server information.
 
-    Validation Rules:        - status: pattern=        - pools: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - pools: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -75,7 +78,9 @@ class PcpServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PCP server.")    pools: list[PcpServerPools] = Field(default=None, description="Configure PCP pools.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PCP server.")
+    pools: list[PcpServerPools] | None = Field(default=None, description="Configure PCP pools.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -139,7 +144,7 @@ class PcpServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.pcp_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "pools", [])
@@ -185,7 +190,7 @@ class PcpServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_pools_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -208,5 +213,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.771531Z
+# Generated: 2026-01-14T22:43:37.083242Z
 # ============================================================================

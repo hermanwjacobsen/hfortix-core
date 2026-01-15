@@ -134,6 +134,10 @@ class AccessProxyVirtualHost:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -154,6 +158,7 @@ class AccessProxyVirtualHost:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxyVirtualHostResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -171,6 +176,7 @@ class AccessProxyVirtualHost:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AccessProxyVirtualHostResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -187,6 +193,7 @@ class AccessProxyVirtualHost:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AccessProxyVirtualHostResponse]: ...
     
     # ================================================================
@@ -229,7 +236,7 @@ class AccessProxyVirtualHost:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
     
@@ -248,7 +255,7 @@ class AccessProxyVirtualHost:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AccessProxyVirtualHostObject]: ...
     
@@ -348,23 +355,6 @@ class AccessProxyVirtualHost:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AccessProxyVirtualHostObject | list[AccessProxyVirtualHostObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -386,6 +376,7 @@ class AccessProxyVirtualHost:
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
@@ -440,23 +431,7 @@ class AccessProxyVirtualHost:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AccessProxyVirtualHostPayload | None = ...,
-        name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        host: str | None = ...,
-        host_type: Literal["sub-string", "wildcard"] | None = ...,
-        replacemsg_group: str | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -475,6 +450,7 @@ class AccessProxyVirtualHost:
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
@@ -529,23 +505,7 @@ class AccessProxyVirtualHost:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AccessProxyVirtualHostPayload | None = ...,
-        name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        host: str | None = ...,
-        host_type: Literal["sub-string", "wildcard"] | None = ...,
-        replacemsg_group: str | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -556,6 +516,7 @@ class AccessProxyVirtualHost:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
@@ -586,14 +547,7 @@ class AccessProxyVirtualHost:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -630,8 +584,6 @@ class AccessProxyVirtualHost:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -659,6 +611,10 @@ class AccessProxyVirtualHostDictMode:
     By default returns AccessProxyVirtualHostResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AccessProxyVirtualHostObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -809,10 +765,12 @@ class AccessProxyVirtualHostDictMode:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
@@ -880,10 +838,12 @@ class AccessProxyVirtualHostDictMode:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
@@ -927,10 +887,12 @@ class AccessProxyVirtualHostDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -971,8 +933,6 @@ class AccessProxyVirtualHostDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -996,6 +956,10 @@ class AccessProxyVirtualHostObjectMode:
     By default returns AccessProxyVirtualHostObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AccessProxyVirtualHostResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1165,10 +1129,12 @@ class AccessProxyVirtualHostObjectMode:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
@@ -1255,10 +1221,12 @@ class AccessProxyVirtualHostObjectMode:
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
@@ -1313,10 +1281,12 @@ class AccessProxyVirtualHostObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AccessProxyVirtualHostObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1357,8 +1327,6 @@ class AccessProxyVirtualHostObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

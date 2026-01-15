@@ -33,7 +33,7 @@ class InterfacePolicy6Payload(TypedDict, total=False):
         }
     """
     policyid: int  # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
     comments: str  # Comments. | MaxLen: 1023
     logtraffic: Literal["all", "utm", "disable"]  # Logging type to be used in this policy | Default: utm
@@ -163,7 +163,7 @@ class InterfacePolicy6Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     policyid: int  # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
     comments: str  # Comments. | MaxLen: 1023
     logtraffic: Literal["all", "utm", "disable"]  # Logging type to be used in this policy | Default: utm
@@ -198,7 +198,7 @@ class InterfacePolicy6Object:
     
     # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable this policy. | Default: enable
     status: Literal["enable", "disable"]
@@ -246,7 +246,6 @@ class InterfacePolicy6Object:
     dlp_profile: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -269,6 +268,10 @@ class InterfacePolicy6:
     Primary Key: policyid
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -289,6 +292,7 @@ class InterfacePolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterfacePolicy6Response: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -306,6 +310,7 @@ class InterfacePolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> InterfacePolicy6Response: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -322,6 +327,7 @@ class InterfacePolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[InterfacePolicy6Response]: ...
     
     # ================================================================
@@ -364,7 +370,7 @@ class InterfacePolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
     
@@ -383,7 +389,7 @@ class InterfacePolicy6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[InterfacePolicy6Object]: ...
     
@@ -483,23 +489,6 @@ class InterfacePolicy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        policyid: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> InterfacePolicy6Object | list[InterfacePolicy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -537,6 +526,7 @@ class InterfacePolicy6:
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
@@ -639,39 +629,7 @@ class InterfacePolicy6:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: InterfacePolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        interface: str | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        service6: str | list[str] | list[dict[str, Any]] | None = ...,
-        application_list_status: Literal["enable", "disable"] | None = ...,
-        application_list: str | None = ...,
-        ips_sensor_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        dsri: Literal["enable", "disable"] | None = ...,
-        av_profile_status: Literal["enable", "disable"] | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        webfilter_profile: str | None = ...,
-        casb_profile_status: Literal["enable", "disable"] | None = ...,
-        casb_profile: str | None = ...,
-        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile_status: Literal["enable", "disable"] | None = ...,
-        dlp_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -706,6 +664,7 @@ class InterfacePolicy6:
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
@@ -808,39 +767,7 @@ class InterfacePolicy6:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: InterfacePolicy6Payload | None = ...,
-        policyid: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        interface: str | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        service6: str | list[str] | list[dict[str, Any]] | None = ...,
-        application_list_status: Literal["enable", "disable"] | None = ...,
-        application_list: str | None = ...,
-        ips_sensor_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        dsri: Literal["enable", "disable"] | None = ...,
-        av_profile_status: Literal["enable", "disable"] | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        webfilter_profile: str | None = ...,
-        casb_profile_status: Literal["enable", "disable"] | None = ...,
-        casb_profile: str | None = ...,
-        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile_status: Literal["enable", "disable"] | None = ...,
-        dlp_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -851,6 +778,7 @@ class InterfacePolicy6:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
@@ -881,14 +809,7 @@ class InterfacePolicy6:
         self,
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        policyid: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -941,8 +862,6 @@ class InterfacePolicy6:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -970,6 +889,10 @@ class InterfacePolicy6DictMode:
     By default returns InterfacePolicy6Response (TypedDict).
     Can be overridden per-call with response_mode="object" to return InterfacePolicy6Object.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1168,10 +1091,12 @@ class InterfacePolicy6DictMode:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: InterfacePolicy6Payload | None = ...,
@@ -1303,10 +1228,12 @@ class InterfacePolicy6DictMode:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: InterfacePolicy6Payload | None = ...,
@@ -1366,10 +1293,12 @@ class InterfacePolicy6DictMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1426,8 +1355,6 @@ class InterfacePolicy6DictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1451,6 +1378,10 @@ class InterfacePolicy6ObjectMode:
     By default returns InterfacePolicy6Object (FortiObject).
     Can be overridden per-call with response_mode="dict" to return InterfacePolicy6Response (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1684,10 +1615,12 @@ class InterfacePolicy6ObjectMode:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: InterfacePolicy6Payload | None = ...,
@@ -1854,10 +1787,12 @@ class InterfacePolicy6ObjectMode:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: InterfacePolicy6Payload | None = ...,
@@ -1928,10 +1863,12 @@ class InterfacePolicy6ObjectMode:
         self,
         policyid: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> InterfacePolicy6Object: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         policyid: int,
@@ -1988,8 +1925,6 @@ class InterfacePolicy6ObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

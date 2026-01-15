@@ -95,7 +95,17 @@ class DosPolicy6Model(BaseModel):
 
     Configure IPv6 DoS policies.
 
-    Validation Rules:        - policyid: min=0 max=9999 pattern=        - status: pattern=        - name: max_length=35 pattern=        - comments: max_length=1023 pattern=        - interface: max_length=35 pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - service: pattern=        - anomaly: pattern=    """
+    Validation Rules:
+        - policyid: min=0 max=9999 pattern=
+        - status: pattern=
+        - name: max_length=35 pattern=
+        - comments: max_length=1023 pattern=
+        - interface: max_length=35 pattern=
+        - srcaddr: pattern=
+        - dstaddr: pattern=
+        - service: pattern=
+        - anomaly: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -107,7 +117,16 @@ class DosPolicy6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    policyid: int | None = Field(ge=0, le=9999, default=0, description="Policy ID.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    name: str | None = Field(max_length=35, default="", description="Policy name.")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    interface: str = Field(max_length=35, default="", description="Incoming interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    srcaddr: list[DosPolicy6Srcaddr] = Field(description="Source address name from available addresses.")    dstaddr: list[DosPolicy6Dstaddr] = Field(description="Destination address name from available addresses.")    service: list[DosPolicy6Service] = Field(description="Service object from available options.")    anomaly: list[DosPolicy6Anomaly] = Field(default=None, description="Anomaly name.")    # ========================================================================
+    policyid: int | None = Field(ge=0, le=9999, default=0, description="Policy ID.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")
+    name: str | None = Field(max_length=35, default="", description="Policy name.")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    interface: str = Field(max_length=35, default="", description="Incoming interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']
+    srcaddr: list[DosPolicy6Srcaddr] | None = Field(description="Source address name from available addresses.")
+    dstaddr: list[DosPolicy6Dstaddr] | None = Field(description="Destination address name from available addresses.")
+    service: list[DosPolicy6Service] | None = Field(description="Service object from available options.")
+    anomaly: list[DosPolicy6Anomaly] | None = Field(default=None, description="Anomaly name.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -186,7 +205,7 @@ class DosPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -239,7 +258,7 @@ class DosPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -299,7 +318,7 @@ class DosPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -359,7 +378,7 @@ class DosPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -407,11 +426,14 @@ class DosPolicy6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -433,5 +455,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.760062Z
+# Generated: 2026-01-14T22:43:35.827048Z
 # ============================================================================

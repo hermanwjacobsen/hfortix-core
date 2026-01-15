@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .saas_application import SaasApplicationDictMode, SaasApplicationObjectMode
+    from .saas_application import SaasApplication, SaasApplicationDictMode, SaasApplicationObjectMode
 
 __all__ = [
     "CasbDictMode",

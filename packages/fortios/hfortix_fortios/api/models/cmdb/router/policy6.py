@@ -171,7 +171,34 @@ class Policy6Model(BaseModel):
 
     Configure IPv6 routing policies.
 
-    Validation Rules:        - seq_num: min=1 max=65535 pattern=        - input_device: pattern=        - input_device_negate: pattern=        - src: pattern=        - srcaddr: pattern=        - src_negate: pattern=        - dst: pattern=        - dstaddr: pattern=        - dst_negate: pattern=        - action: pattern=        - protocol: min=0 max=255 pattern=        - start_port: min=1 max=65535 pattern=        - end_port: min=1 max=65535 pattern=        - start_source_port: min=1 max=65535 pattern=        - end_source_port: min=1 max=65535 pattern=        - gateway: pattern=        - output_device: max_length=35 pattern=        - tos: pattern=        - tos_mask: pattern=        - status: pattern=        - comments: max_length=255 pattern=        - internet_service_id: pattern=        - internet_service_custom: pattern=        - internet_service_fortiguard: pattern=        - users: pattern=        - groups: pattern=    """
+    Validation Rules:
+        - seq_num: min=1 max=65535 pattern=
+        - input_device: pattern=
+        - input_device_negate: pattern=
+        - src: pattern=
+        - srcaddr: pattern=
+        - src_negate: pattern=
+        - dst: pattern=
+        - dstaddr: pattern=
+        - dst_negate: pattern=
+        - action: pattern=
+        - protocol: min=0 max=255 pattern=
+        - start_port: min=1 max=65535 pattern=
+        - end_port: min=1 max=65535 pattern=
+        - start_source_port: min=1 max=65535 pattern=
+        - end_source_port: min=1 max=65535 pattern=
+        - gateway: pattern=
+        - output_device: max_length=35 pattern=
+        - tos: pattern=
+        - tos_mask: pattern=
+        - status: pattern=
+        - comments: max_length=255 pattern=
+        - internet_service_id: pattern=
+        - internet_service_custom: pattern=
+        - internet_service_fortiguard: pattern=
+        - users: pattern=
+        - groups: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -183,7 +210,33 @@ class Policy6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    seq_num: int | None = Field(ge=1, le=65535, default=0, description="Sequence number(1-65535).")    input_device: list[Policy6InputDevice] = Field(default=None, description="Incoming interface name.")    input_device_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of input device match.")    src: list[Policy6Src] = Field(default=None, description="Source IPv6 prefix.")    srcaddr: list[Policy6Srcaddr] = Field(default=None, description="Source address name.")    src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating source address match.")    dst: list[Policy6Dst] = Field(default=None, description="Destination IPv6 prefix.")    dstaddr: list[Policy6Dstaddr] = Field(default=None, description="Destination address name.")    dst_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating destination address match.")    action: Literal["deny", "permit"] | None = Field(default="permit", description="Action of the policy route.")    protocol: int | None = Field(ge=0, le=255, default=0, description="Protocol number (0 - 255).")    start_port: int | None = Field(ge=1, le=65535, default=1, description="Start destination port number (1 - 65535).")    end_port: int | None = Field(ge=1, le=65535, default=65535, description="End destination port number (1 - 65535).")    start_source_port: int | None = Field(ge=1, le=65535, default=1, description="Start source port number (1 - 65535).")    end_source_port: int | None = Field(ge=1, le=65535, default=65535, description="End source port number (1 - 65535).")    gateway: str | None = Field(default="::", description="IPv6 address of the gateway.")    output_device: str | None = Field(max_length=35, default="", description="Outgoing interface name.")  # datasource: ['system.interface.name', 'system.interface.name']    tos: str | None = Field(default="", description="Type of service bit pattern.")    tos_mask: str | None = Field(default="", description="Type of service evaluated bits.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy route.")    comments: str | None = Field(max_length=255, default=None, description="Optional comments.")    internet_service_id: list[Policy6InternetServiceId] = Field(default=None, description="Destination Internet Service ID.")    internet_service_custom: list[Policy6InternetServiceCustom] = Field(default=None, description="Custom Destination Internet Service name.")    internet_service_fortiguard: list[Policy6InternetServiceFortiguard] = Field(default=None, description="FortiGuard Destination Internet Service name.")    users: list[Policy6Users] = Field(default=None, description="List of users.")    groups: list[Policy6Groups] = Field(default=None, description="List of user groups.")    # ========================================================================
+    seq_num: int | None = Field(ge=1, le=65535, default=0, description="Sequence number(1-65535).")
+    input_device: list[Policy6InputDevice] | None = Field(default=None, description="Incoming interface name.")
+    input_device_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of input device match.")
+    src: list[Policy6Src] | None = Field(default=None, description="Source IPv6 prefix.")
+    srcaddr: list[Policy6Srcaddr] | None = Field(default=None, description="Source address name.")
+    src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating source address match.")
+    dst: list[Policy6Dst] | None = Field(default=None, description="Destination IPv6 prefix.")
+    dstaddr: list[Policy6Dstaddr] | None = Field(default=None, description="Destination address name.")
+    dst_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating destination address match.")
+    action: Literal["deny", "permit"] | None = Field(default="permit", description="Action of the policy route.")
+    protocol: int | None = Field(ge=0, le=255, default=0, description="Protocol number (0 - 255).")
+    start_port: int | None = Field(ge=1, le=65535, default=1, description="Start destination port number (1 - 65535).")
+    end_port: int | None = Field(ge=1, le=65535, default=65535, description="End destination port number (1 - 65535).")
+    start_source_port: int | None = Field(ge=1, le=65535, default=1, description="Start source port number (1 - 65535).")
+    end_source_port: int | None = Field(ge=1, le=65535, default=65535, description="End source port number (1 - 65535).")
+    gateway: str | None = Field(default="::", description="IPv6 address of the gateway.")
+    output_device: str | None = Field(max_length=35, default="", description="Outgoing interface name.")  # datasource: ['system.interface.name', 'system.interface.name']
+    tos: str | None = Field(default="", description="Type of service bit pattern.")
+    tos_mask: str | None = Field(default="", description="Type of service evaluated bits.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy route.")
+    comments: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    internet_service_id: list[Policy6InternetServiceId] | None = Field(default=None, description="Destination Internet Service ID.")
+    internet_service_custom: list[Policy6InternetServiceCustom] | None = Field(default=None, description="Custom Destination Internet Service name.")
+    internet_service_fortiguard: list[Policy6InternetServiceFortiguard] | None = Field(default=None, description="FortiGuard Destination Internet Service name.")
+    users: list[Policy6Users] | None = Field(default=None, description="List of users.")
+    groups: list[Policy6Groups] | None = Field(default=None, description="List of user groups.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -262,7 +315,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "input_device", [])
@@ -320,7 +373,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -380,7 +433,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -440,7 +493,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "output_device", None)
@@ -491,7 +544,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_id", [])
@@ -549,7 +602,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_custom", [])
@@ -607,7 +660,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "internet_service_fortiguard", [])
@@ -665,7 +718,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "users", [])
@@ -723,7 +776,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -769,16 +822,24 @@ class Policy6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_input_device_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_output_device_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_id_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_fortiguard_references(client)
-        all_errors.extend(errors)        errors = await self.validate_users_references(client)
-        all_errors.extend(errors)        errors = await self.validate_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_output_device_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_id_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_users_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_groups_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -800,5 +861,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.681436Z
+# Generated: 2026-01-14T22:43:34.534411Z
 # ============================================================================

@@ -21,7 +21,7 @@ class ExemptListPayload(TypedDict, total=False):
     name: str  # Table entry name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     hash_type: Literal["md5", "sha1", "sha256"]  # Hash type. | Default: sha1
-    hash: str  # Hash value to be matched. | MaxLen: 64
+    hash_: str  # Hash value to be matched. | MaxLen: 64
     status: Literal["disable", "enable"]  # Enable/disable table entry. | Default: enable
 
 # Nested TypedDicts for table field children (dict mode)
@@ -39,7 +39,7 @@ class ExemptListResponse(TypedDict):
     name: str  # Table entry name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     hash_type: Literal["md5", "sha1", "sha256"]  # Hash type. | Default: sha1
-    hash: str  # Hash value to be matched. | MaxLen: 64
+    hash_: str  # Hash value to be matched. | MaxLen: 64
     status: Literal["disable", "enable"]  # Enable/disable table entry. | Default: enable
 
 
@@ -58,12 +58,11 @@ class ExemptListObject:
     # Hash type. | Default: sha1
     hash_type: Literal["md5", "sha1", "sha256"]
     # Hash value to be matched. | MaxLen: 64
-    hash: str
+    hash_: str
     # Enable/disable table entry. | Default: enable
     status: Literal["disable", "enable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -86,6 +85,10 @@ class ExemptList:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -106,6 +109,7 @@ class ExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExemptListResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -123,6 +127,7 @@ class ExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExemptListResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -139,6 +144,7 @@ class ExemptList:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExemptListResponse]: ...
     
     # ================================================================
@@ -181,7 +187,7 @@ class ExemptList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExemptListObject: ...
     
@@ -200,7 +206,7 @@ class ExemptList:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExemptListObject]: ...
     
@@ -300,23 +306,6 @@ class ExemptList:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExemptListObject | list[ExemptListObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -331,10 +320,11 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExemptListObject: ...
@@ -346,7 +336,7 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -362,7 +352,7 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -377,23 +367,10 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExemptListPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -405,10 +382,11 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExemptListObject: ...
@@ -420,7 +398,7 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
@@ -436,7 +414,7 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
@@ -451,23 +429,10 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExemptListPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -478,6 +443,7 @@ class ExemptList:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExemptListObject: ...
@@ -508,14 +474,7 @@ class ExemptList:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -531,7 +490,7 @@ class ExemptList:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -549,8 +508,6 @@ class ExemptList:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -578,6 +535,10 @@ class ExemptListDictMode:
     By default returns ExemptListResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExemptListObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -684,7 +645,7 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -700,7 +661,7 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -716,20 +677,22 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -743,7 +706,7 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -759,7 +722,7 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -775,20 +738,22 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -822,10 +787,12 @@ class ExemptListDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -846,7 +813,7 @@ class ExemptListDictMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -863,8 +830,6 @@ class ExemptListDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -888,6 +853,10 @@ class ExemptListObjectMode:
     By default returns ExemptListObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExemptListResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -994,7 +963,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1010,7 +979,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1026,7 +995,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1042,20 +1011,22 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExemptListObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1069,7 +1040,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1085,7 +1056,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1101,7 +1072,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         *,
@@ -1117,20 +1088,22 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExemptListObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
@@ -1175,10 +1148,12 @@ class ExemptListObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExemptListObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1199,7 +1174,7 @@ class ExemptListObjectMode:
         name: str | None = ...,
         comment: str | None = ...,
         hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
-        hash: str | None = ...,
+        hash_: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -1216,8 +1191,6 @@ class ExemptListObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

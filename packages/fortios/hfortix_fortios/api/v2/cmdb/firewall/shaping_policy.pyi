@@ -29,7 +29,7 @@ class ShapingPolicyPayload(TypedDict, total=False):
         }
     """
     id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     name: str  # Shaping policy name. | MaxLen: 35
     comment: str  # Comments. | MaxLen: 255
     status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
@@ -801,7 +801,7 @@ class ShapingPolicyResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     name: str  # Shaping policy name. | MaxLen: 35
     comment: str  # Comments. | MaxLen: 255
     status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
@@ -858,7 +858,7 @@ class ShapingPolicyObject:
     
     # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Shaping policy name. | MaxLen: 35
     name: str
@@ -950,7 +950,6 @@ class ShapingPolicyObject:
     cos: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -973,6 +972,10 @@ class ShapingPolicy:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -993,6 +996,7 @@ class ShapingPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ShapingPolicyResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -1010,6 +1014,7 @@ class ShapingPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ShapingPolicyResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -1026,6 +1031,7 @@ class ShapingPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ShapingPolicyResponse]: ...
     
     # ================================================================
@@ -1068,7 +1074,7 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
@@ -1087,7 +1093,7 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ShapingPolicyObject]: ...
     
@@ -1187,23 +1193,6 @@ class ShapingPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ShapingPolicyObject | list[ShapingPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -1263,6 +1252,7 @@ class ShapingPolicy:
         cos: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
@@ -1431,61 +1421,7 @@ class ShapingPolicy:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1542,6 +1478,7 @@ class ShapingPolicy:
         cos: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
@@ -1710,61 +1647,7 @@ class ShapingPolicy:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1775,6 +1658,7 @@ class ShapingPolicy:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
@@ -1805,14 +1689,7 @@ class ShapingPolicy:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1887,8 +1764,6 @@ class ShapingPolicy:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1916,6 +1791,10 @@ class ShapingPolicyDictMode:
     By default returns ShapingPolicyResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ShapingPolicyObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2180,10 +2059,12 @@ class ShapingPolicyDictMode:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -2403,10 +2284,12 @@ class ShapingPolicyDictMode:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -2488,10 +2371,12 @@ class ShapingPolicyDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -2570,8 +2455,6 @@ class ShapingPolicyDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2595,6 +2478,10 @@ class ShapingPolicyObjectMode:
     By default returns ShapingPolicyObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ShapingPolicyResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2916,10 +2803,12 @@ class ShapingPolicyObjectMode:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -3196,10 +3085,12 @@ class ShapingPolicyObjectMode:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -3292,10 +3183,12 @@ class ShapingPolicyObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -3374,8 +3267,6 @@ class ShapingPolicyObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

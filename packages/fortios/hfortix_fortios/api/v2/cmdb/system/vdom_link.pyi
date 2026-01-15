@@ -20,7 +20,7 @@ class VdomLinkPayload(TypedDict, total=False):
     """
     name: str  # VDOM link name (maximum = 11 characters). | MaxLen: 11
     vcluster: Literal["vcluster1", "vcluster2"]  # Virtual cluster. | Default: vcluster1
-    type: Literal["ppp", "ethernet"]  # VDOM link type: PPP or Ethernet. | Default: ppp
+    type_: Literal["ppp", "ethernet"]  # VDOM link type: PPP or Ethernet. | Default: ppp
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -36,7 +36,7 @@ class VdomLinkResponse(TypedDict):
     """
     name: str  # VDOM link name (maximum = 11 characters). | MaxLen: 11
     vcluster: Literal["vcluster1", "vcluster2"]  # Virtual cluster. | Default: vcluster1
-    type: Literal["ppp", "ethernet"]  # VDOM link type: PPP or Ethernet. | Default: ppp
+    type_: Literal["ppp", "ethernet"]  # VDOM link type: PPP or Ethernet. | Default: ppp
 
 
 @final
@@ -52,7 +52,7 @@ class VdomLinkObject:
     # Virtual cluster. | Default: vcluster1
     vcluster: Literal["vcluster1", "vcluster2"]
     # VDOM link type: PPP or Ethernet. | Default: ppp
-    type: Literal["ppp", "ethernet"]
+    type_: Literal["ppp", "ethernet"]
     
     # Common API response fields
     status: str
@@ -78,6 +78,10 @@ class VdomLink:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -98,6 +102,7 @@ class VdomLink:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VdomLinkResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -115,6 +120,7 @@ class VdomLink:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VdomLinkResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -131,6 +137,7 @@ class VdomLink:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VdomLinkResponse]: ...
     
     # ================================================================
@@ -173,7 +180,7 @@ class VdomLink:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VdomLinkObject: ...
     
@@ -192,7 +199,7 @@ class VdomLink:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VdomLinkObject]: ...
     
@@ -292,23 +299,6 @@ class VdomLink:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VdomLinkObject | list[VdomLinkObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -322,9 +312,10 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VdomLinkObject: ...
@@ -335,7 +326,7 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -349,7 +340,7 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -362,20 +353,9 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VdomLinkPayload | None = ...,
-        name: str | None = ...,
-        vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -386,9 +366,10 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VdomLinkObject: ...
@@ -399,7 +380,7 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
@@ -413,7 +394,7 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
@@ -426,20 +407,9 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VdomLinkPayload | None = ...,
-        name: str | None = ...,
-        vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -450,6 +420,7 @@ class VdomLink:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VdomLinkObject: ...
@@ -480,14 +451,7 @@ class VdomLink:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -502,7 +466,7 @@ class VdomLink:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -519,8 +483,6 @@ class VdomLink:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -548,6 +510,10 @@ class VdomLinkDictMode:
     By default returns VdomLinkResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VdomLinkObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -653,7 +619,7 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -667,7 +633,7 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -681,18 +647,20 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -704,7 +672,7 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -718,7 +686,7 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -732,18 +700,20 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -776,10 +746,12 @@ class VdomLinkDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -799,7 +771,7 @@ class VdomLinkDictMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -815,8 +787,6 @@ class VdomLinkDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -840,6 +810,10 @@ class VdomLinkObjectMode:
     By default returns VdomLinkObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VdomLinkResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -945,7 +919,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -959,7 +933,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -973,7 +947,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -987,18 +961,20 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VdomLinkObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1010,7 +986,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["dict"],
@@ -1024,7 +1000,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         raw_json: Literal[True],
@@ -1038,7 +1014,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         *,
         response_mode: Literal["object"],
@@ -1052,18 +1028,20 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VdomLinkObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
@@ -1107,10 +1085,12 @@ class VdomLinkObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VdomLinkObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1130,7 +1110,7 @@ class VdomLinkObjectMode:
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
         vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        type_: Literal["ppp", "ethernet"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
@@ -1146,8 +1126,6 @@ class VdomLinkObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

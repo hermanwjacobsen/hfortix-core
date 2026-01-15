@@ -237,7 +237,6 @@ class AutomationTriggerObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -257,6 +256,10 @@ class AutomationTrigger:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -278,6 +281,7 @@ class AutomationTrigger:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationTriggerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -295,6 +299,7 @@ class AutomationTrigger:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AutomationTriggerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -311,6 +316,7 @@ class AutomationTrigger:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AutomationTriggerResponse]: ...
     
     # ================================================================
@@ -353,7 +359,7 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
@@ -372,7 +378,7 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AutomationTriggerObject]: ...
     
@@ -472,23 +478,6 @@ class AutomationTrigger:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AutomationTriggerObject | list[AutomationTriggerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -523,6 +512,7 @@ class AutomationTrigger:
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
@@ -616,36 +606,7 @@ class AutomationTrigger:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AutomationTriggerPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        trigger_type: Literal["event-based", "scheduled"] | None = ...,
-        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
-        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
-        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
-        stitch_name: str | None = ...,
-        logid: str | list[str] | list[dict[str, Any]] | None = ...,
-        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
-        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
-        trigger_day: int | None = ...,
-        trigger_hour: int | None = ...,
-        trigger_minute: int | None = ...,
-        trigger_datetime: str | None = ...,
-        fields: str | list[str] | list[dict[str, Any]] | None = ...,
-        faz_event_name: str | None = ...,
-        faz_event_severity: str | None = ...,
-        faz_event_tags: str | None = ...,
-        serial: str | None = ...,
-        fabric_event_name: str | None = ...,
-        fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -677,6 +638,7 @@ class AutomationTrigger:
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
@@ -770,36 +732,7 @@ class AutomationTrigger:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AutomationTriggerPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        trigger_type: Literal["event-based", "scheduled"] | None = ...,
-        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
-        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
-        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
-        stitch_name: str | None = ...,
-        logid: str | list[str] | list[dict[str, Any]] | None = ...,
-        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
-        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
-        trigger_day: int | None = ...,
-        trigger_hour: int | None = ...,
-        trigger_minute: int | None = ...,
-        trigger_datetime: str | None = ...,
-        fields: str | list[str] | list[dict[str, Any]] | None = ...,
-        faz_event_name: str | None = ...,
-        faz_event_severity: str | None = ...,
-        faz_event_tags: str | None = ...,
-        serial: str | None = ...,
-        fabric_event_name: str | None = ...,
-        fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -810,6 +743,7 @@ class AutomationTrigger:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
@@ -840,14 +774,7 @@ class AutomationTrigger:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -897,8 +824,6 @@ class AutomationTrigger:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -926,6 +851,10 @@ class AutomationTriggerDictMode:
     By default returns AutomationTriggerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AutomationTriggerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1115,10 +1044,12 @@ class AutomationTriggerDictMode:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AutomationTriggerPayload | None = ...,
@@ -1238,10 +1169,12 @@ class AutomationTriggerDictMode:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AutomationTriggerPayload | None = ...,
@@ -1298,10 +1231,12 @@ class AutomationTriggerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1355,8 +1290,6 @@ class AutomationTriggerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1380,6 +1313,10 @@ class AutomationTriggerObjectMode:
     By default returns AutomationTriggerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AutomationTriggerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1601,10 +1538,12 @@ class AutomationTriggerObjectMode:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AutomationTriggerPayload | None = ...,
@@ -1756,10 +1695,12 @@ class AutomationTriggerObjectMode:
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AutomationTriggerPayload | None = ...,
@@ -1827,10 +1768,12 @@ class AutomationTriggerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1884,8 +1827,6 @@ class AutomationTriggerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

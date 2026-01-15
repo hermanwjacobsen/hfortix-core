@@ -93,7 +93,6 @@ class OverrideObject:
     initiator: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -116,6 +115,10 @@ class Override:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -136,6 +139,7 @@ class Override:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OverrideResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -153,6 +157,7 @@ class Override:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OverrideResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -169,6 +174,7 @@ class Override:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[OverrideResponse]: ...
     
     # ================================================================
@@ -211,7 +217,7 @@ class Override:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OverrideObject: ...
     
@@ -230,7 +236,7 @@ class Override:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[OverrideObject]: ...
     
@@ -330,23 +336,6 @@ class Override:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OverrideObject | list[OverrideObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -371,6 +360,7 @@ class Override:
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideObject: ...
@@ -434,26 +424,7 @@ class Override:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: OverridePayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        scope: Literal["user", "user-group", "ip", "ip6"] | None = ...,
-        ip: str | None = ...,
-        user: str | None = ...,
-        user_group: str | None = ...,
-        old_profile: str | None = ...,
-        new_profile: str | None = ...,
-        ip6: str | None = ...,
-        expires: str | None = ...,
-        initiator: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -475,6 +446,7 @@ class Override:
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideObject: ...
@@ -538,26 +510,7 @@ class Override:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OverridePayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        scope: Literal["user", "user-group", "ip", "ip6"] | None = ...,
-        ip: str | None = ...,
-        user: str | None = ...,
-        user_group: str | None = ...,
-        old_profile: str | None = ...,
-        new_profile: str | None = ...,
-        ip6: str | None = ...,
-        expires: str | None = ...,
-        initiator: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -568,6 +521,7 @@ class Override:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideObject: ...
@@ -598,14 +552,7 @@ class Override:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -645,8 +592,6 @@ class Override:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -674,6 +619,10 @@ class OverrideDictMode:
     By default returns OverrideResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OverrideObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -833,10 +782,12 @@ class OverrideDictMode:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: OverridePayload | None = ...,
@@ -916,10 +867,12 @@ class OverrideDictMode:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OverridePayload | None = ...,
@@ -966,10 +919,12 @@ class OverrideDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1013,8 +968,6 @@ class OverrideDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1038,6 +991,10 @@ class OverrideObjectMode:
     By default returns OverrideObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OverrideResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1219,10 +1176,12 @@ class OverrideObjectMode:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OverrideObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: OverridePayload | None = ...,
@@ -1324,10 +1283,12 @@ class OverrideObjectMode:
         expires: str | None = ...,
         initiator: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OverrideObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OverridePayload | None = ...,
@@ -1385,10 +1346,12 @@ class OverrideObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OverrideObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1432,8 +1395,6 @@ class OverrideObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

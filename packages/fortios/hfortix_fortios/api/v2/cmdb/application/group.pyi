@@ -20,7 +20,7 @@ class GroupPayload(TypedDict, total=False):
     """
     name: str  # Application group name. | MaxLen: 63
     comment: str  # Comments. | MaxLen: 255
-    type: Literal["application", "filter"]  # Application group type. | Default: application
+    type_: Literal["application", "filter"]  # Application group type. | Default: application
     application: list[dict[str, Any]]  # Application ID list.
     category: list[dict[str, Any]]  # Application category ID list.
     risk: list[dict[str, Any]]  # Risk, or impact, of allowing traffic from this app
@@ -137,7 +137,7 @@ class GroupResponse(TypedDict):
     """
     name: str  # Application group name. | MaxLen: 63
     comment: str  # Comments. | MaxLen: 255
-    type: Literal["application", "filter"]  # Application group type. | Default: application
+    type_: Literal["application", "filter"]  # Application group type. | Default: application
     application: list[GroupApplicationItem]  # Application ID list.
     category: list[GroupCategoryItem]  # Application category ID list.
     risk: list[GroupRiskItem]  # Risk, or impact, of allowing traffic from this app
@@ -161,7 +161,7 @@ class GroupObject:
     # Comments. | MaxLen: 255
     comment: str
     # Application group type. | Default: application
-    type: Literal["application", "filter"]
+    type_: Literal["application", "filter"]
     # Application ID list.
     application: list[GroupApplicationObject]
     # Application category ID list.
@@ -203,6 +203,10 @@ class Group:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -223,6 +227,7 @@ class Group:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GroupResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -240,6 +245,7 @@ class Group:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> GroupResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -256,6 +262,7 @@ class Group:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[GroupResponse]: ...
     
     # ================================================================
@@ -298,7 +305,7 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> GroupObject: ...
     
@@ -317,7 +324,7 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[GroupObject]: ...
     
@@ -417,23 +424,6 @@ class Group:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> GroupObject | list[GroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -447,7 +437,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -458,6 +448,7 @@ class Group:
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
@@ -468,7 +459,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -490,7 +481,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -511,7 +502,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -521,26 +512,7 @@ class Group:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: GroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | None = ...,
-        vendor: str | list[str] | None = ...,
-        technology: str | list[str] | None = ...,
-        behavior: str | list[str] | None = ...,
-        popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -551,7 +523,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -562,6 +534,7 @@ class Group:
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
@@ -572,7 +545,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -594,7 +567,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -615,7 +588,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -625,26 +598,7 @@ class Group:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: GroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | None = ...,
-        vendor: str | list[str] | None = ...,
-        technology: str | list[str] | None = ...,
-        behavior: str | list[str] | None = ...,
-        popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -655,6 +609,7 @@ class Group:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
@@ -685,14 +640,7 @@ class Group:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -707,7 +655,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -732,8 +680,6 @@ class Group:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -761,6 +707,10 @@ class GroupDictMode:
     By default returns GroupResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return GroupObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -866,7 +816,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -888,7 +838,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -910,7 +860,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -920,16 +870,18 @@ class GroupDictMode:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -949,7 +901,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -971,7 +923,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -993,7 +945,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1003,16 +955,18 @@ class GroupDictMode:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1053,10 +1007,12 @@ class GroupDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1076,7 +1032,7 @@ class GroupDictMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1100,8 +1056,6 @@ class GroupDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1125,6 +1079,10 @@ class GroupObjectMode:
     By default returns GroupObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return GroupResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1230,7 +1188,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1252,7 +1210,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1274,7 +1232,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1296,7 +1254,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1306,16 +1264,18 @@ class GroupObjectMode:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GroupObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1335,7 +1295,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1357,7 +1317,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1379,7 +1339,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1401,7 +1361,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1411,16 +1371,18 @@ class GroupObjectMode:
         behavior: str | list[str] | None = ...,
         popularity: Literal["1", "2", "3", "4", "5"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GroupObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1472,10 +1434,12 @@ class GroupObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> GroupObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1495,7 +1459,7 @@ class GroupObjectMode:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type_: Literal["application", "filter"] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         category: str | list[str] | list[dict[str, Any]] | None = ...,
         risk: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1519,8 +1483,6 @@ class GroupObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

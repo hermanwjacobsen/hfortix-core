@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .historical_statistics import HistoricalStatistics, HistoricalStatisticsDictMode, HistoricalStatisticsObjectMode
     from .realtime_proxy_statistics import RealtimeProxyStatistics, RealtimeProxyStatisticsDictMode, RealtimeProxyStatisticsObjectMode
     from .realtime_statistics import RealtimeStatistics, RealtimeStatisticsDictMode, RealtimeStatisticsObjectMode
-    from .session import SessionDictMode, SessionObjectMode
+    from .session import Session, SessionDictMode, SessionObjectMode
 
 __all__ = [
     "HistoricalStatistics",

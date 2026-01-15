@@ -93,7 +93,6 @@ class SsoFortigateCloudAdminObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -113,6 +112,10 @@ class SsoFortigateCloudAdmin:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -134,6 +137,7 @@ class SsoFortigateCloudAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SsoFortigateCloudAdminResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -151,6 +155,7 @@ class SsoFortigateCloudAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SsoFortigateCloudAdminResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -167,6 +172,7 @@ class SsoFortigateCloudAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SsoFortigateCloudAdminResponse]: ...
     
     # ================================================================
@@ -209,7 +215,7 @@ class SsoFortigateCloudAdmin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
     
@@ -228,7 +234,7 @@ class SsoFortigateCloudAdmin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SsoFortigateCloudAdminObject]: ...
     
@@ -328,23 +334,6 @@ class SsoFortigateCloudAdmin:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SsoFortigateCloudAdminObject | list[SsoFortigateCloudAdminObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -360,6 +349,7 @@ class SsoFortigateCloudAdmin:
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
@@ -396,17 +386,7 @@ class SsoFortigateCloudAdmin:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SsoFortigateCloudAdminPayload | None = ...,
-        name: str | None = ...,
-        accprofile: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -419,6 +399,7 @@ class SsoFortigateCloudAdmin:
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
@@ -455,17 +436,7 @@ class SsoFortigateCloudAdmin:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SsoFortigateCloudAdminPayload | None = ...,
-        name: str | None = ...,
-        accprofile: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -476,6 +447,7 @@ class SsoFortigateCloudAdmin:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
@@ -506,14 +478,7 @@ class SsoFortigateCloudAdmin:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -544,8 +509,6 @@ class SsoFortigateCloudAdmin:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -573,6 +536,10 @@ class SsoFortigateCloudAdminDictMode:
     By default returns SsoFortigateCloudAdminResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SsoFortigateCloudAdminObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -705,10 +672,12 @@ class SsoFortigateCloudAdminDictMode:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SsoFortigateCloudAdminPayload | None = ...,
@@ -752,10 +721,12 @@ class SsoFortigateCloudAdminDictMode:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SsoFortigateCloudAdminPayload | None = ...,
@@ -793,10 +764,12 @@ class SsoFortigateCloudAdminDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -831,8 +804,6 @@ class SsoFortigateCloudAdminDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -856,6 +827,10 @@ class SsoFortigateCloudAdminObjectMode:
     By default returns SsoFortigateCloudAdminObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SsoFortigateCloudAdminResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1001,10 +976,12 @@ class SsoFortigateCloudAdminObjectMode:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SsoFortigateCloudAdminPayload | None = ...,
@@ -1061,10 +1038,12 @@ class SsoFortigateCloudAdminObjectMode:
         name: str | None = ...,
         accprofile: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SsoFortigateCloudAdminPayload | None = ...,
@@ -1113,10 +1092,12 @@ class SsoFortigateCloudAdminObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SsoFortigateCloudAdminObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1151,8 +1132,6 @@ class SsoFortigateCloudAdminObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

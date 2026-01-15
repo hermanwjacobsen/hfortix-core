@@ -96,7 +96,36 @@ class CustomModel(BaseModel):
 
     Configure custom services.
 
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - proxy: pattern=        - category: max_length=63 pattern=        - protocol: pattern=        - helper: pattern=        - iprange: pattern=        - fqdn: max_length=255 pattern=        - protocol_number: min=0 max=254 pattern=        - icmptype: min=0 max=4294967295 pattern=        - icmpcode: min=0 max=255 pattern=        - tcp_portrange: pattern=        - udp_portrange: pattern=        - udplite_portrange: pattern=        - sctp_portrange: pattern=        - tcp_halfclose_timer: min=0 max=86400 pattern=        - tcp_halfopen_timer: min=0 max=86400 pattern=        - tcp_timewait_timer: min=0 max=300 pattern=        - tcp_rst_timer: min=5 max=300 pattern=        - udp_idle_timer: min=0 max=86400 pattern=        - session_ttl: pattern=        - check_reset_range: pattern=        - comment: max_length=255 pattern=        - color: min=0 max=32 pattern=        - app_service_type: pattern=        - app_category: pattern=        - application: pattern=        - fabric_object: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - uuid: pattern=
+        - proxy: pattern=
+        - category: max_length=63 pattern=
+        - protocol: pattern=
+        - helper: pattern=
+        - iprange: pattern=
+        - fqdn: max_length=255 pattern=
+        - protocol_number: min=0 max=254 pattern=
+        - icmptype: min=0 max=4294967295 pattern=
+        - icmpcode: min=0 max=255 pattern=
+        - tcp_portrange: pattern=
+        - udp_portrange: pattern=
+        - udplite_portrange: pattern=
+        - sctp_portrange: pattern=
+        - tcp_halfclose_timer: min=0 max=86400 pattern=
+        - tcp_halfopen_timer: min=0 max=86400 pattern=
+        - tcp_timewait_timer: min=0 max=300 pattern=
+        - tcp_rst_timer: min=5 max=300 pattern=
+        - udp_idle_timer: min=0 max=86400 pattern=
+        - session_ttl: pattern=
+        - check_reset_range: pattern=
+        - comment: max_length=255 pattern=
+        - color: min=0 max=32 pattern=
+        - app_service_type: pattern=
+        - app_category: pattern=
+        - application: pattern=
+        - fabric_object: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -108,7 +137,35 @@ class CustomModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="Custom service name.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy service.")    category: str | None = Field(max_length=63, default="", description="Service category.")  # datasource: ['firewall.service.category.name']    protocol: CustomProtocolEnum | None = Field(default="TCP/UDP/UDP-Lite/SCTP", description="Protocol type based on IANA numbers.")    helper: CustomHelperEnum | None = Field(default="auto", description="Helper name.")    iprange: str | None = Field(default="", description="Start and end of the IP range associated with service.")    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")    protocol_number: int | None = Field(ge=0, le=254, default=0, description="IP protocol number.")    icmptype: int | None = Field(ge=0, le=4294967295, default="", description="ICMP type.")    icmpcode: int | None = Field(ge=0, le=255, default="", description="ICMP code.")    tcp_portrange: str | None = Field(default="", description="Multiple TCP port ranges.")    udp_portrange: str | None = Field(default="", description="Multiple UDP port ranges.")    udplite_portrange: str | None = Field(default="", description="Multiple UDP-Lite port ranges.")    sctp_portrange: str | None = Field(default="", description="Multiple SCTP port ranges.")    tcp_halfclose_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered FIN packet (1 - 86400 sec, 0 = default).")    tcp_halfopen_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered open session packet (1 - 86400 sec, 0 = default).")    tcp_timewait_timer: int | None = Field(ge=0, le=300, default=0, description="Set the length of the TCP TIME-WAIT state in seconds (1 - 300 sec, 0 = default).")    tcp_rst_timer: int | None = Field(ge=5, le=300, default=0, description="Set the length of the TCP CLOSE state in seconds (5 - 300 sec, 0 = default).")    udp_idle_timer: int | None = Field(ge=0, le=86400, default=0, description="Number of seconds before an idle UDP/UDP-Lite connection times out (0 - 86400 sec, 0 = default).")    session_ttl: str | None = Field(default="", description="Session TTL (300 - 2764800, 0 = default).")    check_reset_range: Literal["disable", "strict", "default"] | None = Field(default="default", description="Configure the type of ICMP error message verification.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    app_service_type: Literal["disable", "app-id", "app-category"] | None = Field(default="disable", description="Application service type.")    app_category: list[CustomAppCategory] = Field(default=None, description="Application category ID.")    application: list[CustomApplication] = Field(default=None, description="Application ID.")    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="Custom service name.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy service.")
+    category: str | None = Field(max_length=63, default="", description="Service category.")  # datasource: ['firewall.service.category.name']
+    protocol: str | CustomProtocolEnum | None = Field(default="TCP/UDP/UDP-Lite/SCTP", description="Protocol type based on IANA numbers.")
+    helper: str | CustomHelperEnum | None = Field(default="auto", description="Helper name.")
+    iprange: str | None = Field(default="", description="Start and end of the IP range associated with service.")
+    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")
+    protocol_number: int | None = Field(ge=0, le=254, default=0, description="IP protocol number.")
+    icmptype: int | None = Field(ge=0, le=4294967295, default=None, description="ICMP type.")
+    icmpcode: int | None = Field(ge=0, le=255, default=None, description="ICMP code.")
+    tcp_portrange: str | None = Field(default="", description="Multiple TCP port ranges.")
+    udp_portrange: str | None = Field(default="", description="Multiple UDP port ranges.")
+    udplite_portrange: str | None = Field(default="", description="Multiple UDP-Lite port ranges.")
+    sctp_portrange: str | None = Field(default="", description="Multiple SCTP port ranges.")
+    tcp_halfclose_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered FIN packet (1 - 86400 sec, 0 = default).")
+    tcp_halfopen_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered open session packet (1 - 86400 sec, 0 = default).")
+    tcp_timewait_timer: int | None = Field(ge=0, le=300, default=0, description="Set the length of the TCP TIME-WAIT state in seconds (1 - 300 sec, 0 = default).")
+    tcp_rst_timer: int | None = Field(ge=5, le=300, default=0, description="Set the length of the TCP CLOSE state in seconds (5 - 300 sec, 0 = default).")
+    udp_idle_timer: int | None = Field(ge=0, le=86400, default=0, description="Number of seconds before an idle UDP/UDP-Lite connection times out (0 - 86400 sec, 0 = default).")
+    session_ttl: str | None = Field(default="", description="Session TTL (300 - 2764800, 0 = default).")
+    check_reset_range: Literal["disable", "strict", "default"] | None = Field(default="default", description="Configure the type of ICMP error message verification.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")
+    app_service_type: Literal["disable", "app-id", "app-category"] | None = Field(default="disable", description="Application service type.")
+    app_category: list[CustomAppCategory] | None = Field(default=None, description="Application category ID.")
+    application: list[CustomApplication] | None = Field(default=None, description="Application ID.")
+    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -187,7 +244,7 @@ class CustomModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.service.custom.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "category", None)
@@ -224,7 +281,7 @@ class CustomModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_category_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -247,5 +304,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.180027Z
+# Generated: 2026-01-14T22:43:36.342370Z
 # ============================================================================

@@ -353,7 +353,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         route_offload_mclag: Literal["disable", "enable"] | None = None,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = None,
         vlan: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["virtual", "physical"] | None = None,
+        type_: Literal["virtual", "physical"] | None = None,
         owner_vdom: str | None = None,
         flow_identity: str | None = None,
         staged_image_version: str | None = None,
@@ -443,7 +443,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
                   - Single string: "value" → [{'vlan-name': 'value'}]
                   - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
                   - List of dicts: [{'assignment-priority': 1}] (recommended)
-            type: Indication of switch type, physical or virtual.
+            type_: Indication of switch type, physical or virtual.
             owner_vdom: VDOM which owner of port belongs to.
             flow_identity: Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).
             staged_image_version: Staged image version for FortiSwitch.
@@ -728,7 +728,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload_mclag=route_offload_mclag,
             route_offload_router=route_offload_router,
             vlan=vlan,
-            type=type,
+            type_=type_,
             owner_vdom=owner_vdom,
             flow_identity=flow_identity,
             staged_image_version=staged_image_version,
@@ -826,7 +826,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         route_offload_mclag: Literal["disable", "enable"] | None = None,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = None,
         vlan: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["virtual", "physical"] | None = None,
+        type_: Literal["virtual", "physical"] | None = None,
         owner_vdom: str | None = None,
         flow_identity: str | None = None,
         staged_image_version: str | None = None,
@@ -916,7 +916,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
                   - Single string: "value" → [{'vlan-name': 'value'}]
                   - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
                   - List of dicts: [{'assignment-priority': 1}] (recommended)
-            type: Indication of switch type, physical or virtual.
+            type_: Indication of switch type, physical or virtual.
             owner_vdom: VDOM which owner of port belongs to.
             flow_identity: Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).
             staged_image_version: Staged image version for FortiSwitch.
@@ -1203,7 +1203,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload_mclag=route_offload_mclag,
             route_offload_router=route_offload_router,
             vlan=vlan,
-            type=type,
+            type_=type_,
             owner_vdom=owner_vdom,
             flow_identity=flow_identity,
             staged_image_version=staged_image_version,
@@ -1401,7 +1401,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         route_offload_mclag: Literal["disable", "enable"] | None = None,
         route_offload_router: str | list[str] | list[dict[str, Any]] | None = None,
         vlan: str | list[str] | list[dict[str, Any]] | None = None,
-        type: Literal["virtual", "physical"] | None = None,
+        type_: Literal["virtual", "physical"] | None = None,
         owner_vdom: str | None = None,
         flow_identity: str | None = None,
         staged_image_version: str | None = None,
@@ -1482,7 +1482,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload_mclag: Field route-offload-mclag
             route_offload_router: Field route-offload-router
             vlan: Field vlan
-            type: Field type
+            type_: Field type
             owner_vdom: Field owner-vdom
             flow_identity: Field flow-identity
             staged_image_version: Field staged-image-version
@@ -1593,7 +1593,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload_mclag=route_offload_mclag,
             route_offload_router=route_offload_router,
             vlan=vlan,
-            type=type,
+            type_=type_,
             owner_vdom=owner_vdom,
             flow_identity=flow_identity,
             staged_image_version=staged_image_version,

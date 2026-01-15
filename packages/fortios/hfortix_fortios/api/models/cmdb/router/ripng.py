@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -179,7 +179,23 @@ class RipngModel(BaseModel):
 
     Configure RIPng.
 
-    Validation Rules:        - default_information_originate: pattern=        - default_metric: min=1 max=16 pattern=        - max_out_metric: min=0 max=15 pattern=        - distance: pattern=        - distribute_list: pattern=        - neighbor: pattern=        - network: pattern=        - aggregate_address: pattern=        - offset_list: pattern=        - passive_interface: pattern=        - redistribute: pattern=        - update_timer: min=5 max=2147483647 pattern=        - timeout_timer: min=5 max=2147483647 pattern=        - garbage_timer: min=5 max=2147483647 pattern=        - interface: pattern=    """
+    Validation Rules:
+        - default_information_originate: pattern=
+        - default_metric: min=1 max=16 pattern=
+        - max_out_metric: min=0 max=15 pattern=
+        - distance: pattern=
+        - distribute_list: pattern=
+        - neighbor: pattern=
+        - network: pattern=
+        - aggregate_address: pattern=
+        - offset_list: pattern=
+        - passive_interface: pattern=
+        - redistribute: pattern=
+        - update_timer: min=5 max=2147483647 pattern=
+        - timeout_timer: min=5 max=2147483647 pattern=
+        - garbage_timer: min=5 max=2147483647 pattern=
+        - interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -191,7 +207,22 @@ class RipngModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    default_metric: int | None = Field(ge=1, le=16, default=1, description="Default metric.")    max_out_metric: int | None = Field(ge=0, le=15, default=0, description="Maximum metric allowed to output(0 means 'not set').")    distance: list[RipngDistance] = Field(default=None, description="Distance.")    distribute_list: list[RipngDistributeList] = Field(default=None, description="Distribute list.")    neighbor: list[RipngNeighbor] = Field(default=None, description="Neighbor.")    network: list[RipngNetwork] = Field(default=None, description="Network.")    aggregate_address: list[RipngAggregateAddress] = Field(default=None, description="Aggregate address.")    offset_list: list[RipngOffsetList] = Field(default=None, description="Offset list.")    passive_interface: list[RipngPassiveInterface] = Field(default=None, description="Passive interface configuration.")    redistribute: list[RipngRedistribute] = Field(default=None, description="Redistribute configuration.")    update_timer: int | None = Field(ge=5, le=2147483647, default=30, description="Update timer in seconds.")    timeout_timer: int | None = Field(ge=5, le=2147483647, default=180, description="Timeout timer in seconds.")    garbage_timer: int | None = Field(ge=5, le=2147483647, default=120, description="Garbage timer in seconds.")    interface: list[RipngInterface] = Field(default=None, description="RIPng interface configuration.")    # ========================================================================
+    default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")
+    default_metric: int | None = Field(ge=1, le=16, default=1, description="Default metric.")
+    max_out_metric: int | None = Field(ge=0, le=15, default=0, description="Maximum metric allowed to output(0 means 'not set').")
+    distance: list[RipngDistance] | None = Field(default=None, description="Distance.")
+    distribute_list: list[RipngDistributeList] | None = Field(default=None, description="Distribute list.")
+    neighbor: list[RipngNeighbor] | None = Field(default=None, description="Neighbor.")
+    network: list[RipngNetwork] | None = Field(default=None, description="Network.")
+    aggregate_address: list[RipngAggregateAddress] | None = Field(default=None, description="Aggregate address.")
+    offset_list: list[RipngOffsetList] | None = Field(default=None, description="Offset list.")
+    passive_interface: list[RipngPassiveInterface] | None = Field(default=None, description="Passive interface configuration.")
+    redistribute: list[RipngRedistribute] | None = Field(default=None, description="Redistribute configuration.")
+    update_timer: int | None = Field(ge=5, le=2147483647, default=30, description="Update timer in seconds.")
+    timeout_timer: int | None = Field(ge=5, le=2147483647, default=180, description="Timeout timer in seconds.")
+    garbage_timer: int | None = Field(ge=5, le=2147483647, default=120, description="Garbage timer in seconds.")
+    interface: list[RipngInterface] | None = Field(default=None, description="RIPng interface configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -255,7 +286,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "distance", [])
@@ -313,7 +344,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "distribute_list", [])
@@ -371,7 +402,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "neighbor", [])
@@ -429,7 +460,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "offset_list", [])
@@ -487,7 +518,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -545,7 +576,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -603,7 +634,7 @@ class RipngModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ripng.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -649,14 +680,20 @@ class RipngModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_distance_references(client)
-        all_errors.extend(errors)        errors = await self.validate_distribute_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_neighbor_references(client)
-        all_errors.extend(errors)        errors = await self.validate_offset_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_passive_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_distribute_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_neighbor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_offset_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_passive_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -678,5 +715,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.967173Z
+# Generated: 2026-01-14T22:43:39.863233Z
 # ============================================================================

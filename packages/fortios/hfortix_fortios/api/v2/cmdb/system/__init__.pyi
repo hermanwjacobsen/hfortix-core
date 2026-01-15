@@ -127,14 +127,14 @@ if TYPE_CHECKING:
     from .vxlan import Vxlan, VxlanDictMode, VxlanObjectMode
     from .wccp import Wccp, WccpDictMode, WccpObjectMode
     from .zone import Zone, ZoneDictMode, ZoneObjectMode
-    from .autoupdate import AutoupdateDictMode, AutoupdateObjectMode
-    from .dhcp import DhcpDictMode, DhcpObjectMode
-    from .dhcp6 import Dhcp6DictMode, Dhcp6ObjectMode
-    from .lldp import LldpDictMode, LldpObjectMode
-    from .modem3g import Modem3gDictMode, Modem3gObjectMode
-    from .replacemsg import ReplacemsgDictMode, ReplacemsgObjectMode
-    from .security_rating import SecurityRatingDictMode, SecurityRatingObjectMode
-    from .snmp import SnmpDictMode, SnmpObjectMode
+    from .autoupdate import Autoupdate, AutoupdateDictMode, AutoupdateObjectMode
+    from .dhcp import Dhcp, DhcpDictMode, DhcpObjectMode
+    from .dhcp6 import Dhcp6, Dhcp6DictMode, Dhcp6ObjectMode
+    from .lldp import Lldp, LldpDictMode, LldpObjectMode
+    from .modem3g import Modem3g, Modem3gDictMode, Modem3gObjectMode
+    from .replacemsg import Replacemsg, ReplacemsgDictMode, ReplacemsgObjectMode
+    from .security_rating import SecurityRating, SecurityRatingDictMode, SecurityRatingObjectMode
+    from .snmp import Snmp, SnmpDictMode, SnmpObjectMode
 
 __all__ = [
     "Accprofile",

@@ -125,6 +125,10 @@ class ObjectTagging:
     Primary Key: category
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -145,6 +149,7 @@ class ObjectTagging:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ObjectTaggingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -162,6 +167,7 @@ class ObjectTagging:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ObjectTaggingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -178,6 +184,7 @@ class ObjectTagging:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ObjectTaggingResponse]: ...
     
     # ================================================================
@@ -220,7 +227,7 @@ class ObjectTagging:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
     
@@ -239,7 +246,7 @@ class ObjectTagging:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ObjectTaggingObject]: ...
     
@@ -339,23 +346,6 @@ class ObjectTagging:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        category: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ObjectTaggingObject | list[ObjectTaggingObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -376,6 +366,7 @@ class ObjectTagging:
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
@@ -427,22 +418,7 @@ class ObjectTagging:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ObjectTaggingPayload | None = ...,
-        category: str | None = ...,
-        address: Literal["disable", "mandatory", "optional"] | None = ...,
-        device: Literal["disable", "mandatory", "optional"] | None = ...,
-        interface: Literal["disable", "mandatory", "optional"] | None = ...,
-        multiple: Literal["enable", "disable"] | None = ...,
-        color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -460,6 +436,7 @@ class ObjectTagging:
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
@@ -511,22 +488,7 @@ class ObjectTagging:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ObjectTaggingPayload | None = ...,
-        category: str | None = ...,
-        address: Literal["disable", "mandatory", "optional"] | None = ...,
-        device: Literal["disable", "mandatory", "optional"] | None = ...,
-        interface: Literal["disable", "mandatory", "optional"] | None = ...,
-        multiple: Literal["enable", "disable"] | None = ...,
-        color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -537,6 +499,7 @@ class ObjectTagging:
         category: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
@@ -567,14 +530,7 @@ class ObjectTagging:
         self,
         category: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        category: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -610,8 +566,6 @@ class ObjectTagging:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -639,6 +593,10 @@ class ObjectTaggingDictMode:
     By default returns ObjectTaggingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ObjectTaggingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -786,10 +744,12 @@ class ObjectTaggingDictMode:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
@@ -853,10 +813,12 @@ class ObjectTaggingDictMode:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
@@ -899,10 +861,12 @@ class ObjectTaggingDictMode:
         self,
         category: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         category: str,
@@ -942,8 +906,6 @@ class ObjectTaggingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -967,6 +929,10 @@ class ObjectTaggingObjectMode:
     By default returns ObjectTaggingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ObjectTaggingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1132,10 +1098,12 @@ class ObjectTaggingObjectMode:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
@@ -1217,10 +1185,12 @@ class ObjectTaggingObjectMode:
         color: int | None = ...,
         tags: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
@@ -1274,10 +1244,12 @@ class ObjectTaggingObjectMode:
         self,
         category: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ObjectTaggingObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         category: str,
@@ -1317,8 +1289,6 @@ class ObjectTaggingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

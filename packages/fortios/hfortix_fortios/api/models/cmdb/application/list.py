@@ -29,23 +29,23 @@ class ListEntries(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")
-    risk: list[Risk] = Field(default=None, description="Risk, or impact, of allowing traffic from this application to occur (1 - 5; Low, Elevated, Medium, High, and Critical).")
-    category: list[Category] = Field(default=None, description="Category ID list.")
-    application: list[Application] = Field(default=None, description="ID of allowed applications.")
+    risk: list[dict[str, Any]] | None = Field(default=None, description="Risk, or impact, of allowing traffic from this application to occur (1 - 5; Low, Elevated, Medium, High, and Critical).")
+    category: list[dict[str, Any]] | None = Field(default=None, description="Category ID list.")
+    application: list[dict[str, Any]] | None = Field(default=None, description="ID of allowed applications.")
     protocols: str | None = Field(default="all", description="Application protocol filter.")
     vendor: str | None = Field(default="all", description="Application vendor filter.")
     technology: str | None = Field(default="all", description="Application technology filter.")
     behavior: str | None = Field(default="all", description="Application behavior filter.")
-    popularity: PopularityEnum | None = Field(default="1 2 3 4 5", description="Application popularity filter (1 - 5, from least to most popular).")
-    exclusion: list[Exclusion] = Field(default=None, description="ID of excluded applications.")
-    parameters: list[Parameters] = Field(default=None, description="Application parameters.")
+    popularity: str | None = Field(default=None, description="Application popularity filter (1 - 5, from least to most popular).")
+    exclusion: list[dict[str, Any]] | None = Field(default=None, description="ID of excluded applications.")
+    parameters: list[dict[str, Any]] | None = Field(default=None, description="Application parameters.")
     action: Literal["pass", "block", "reset"] | None = Field(default="block", description="Pass or block traffic, or reset connection for traffic from this application.")
     log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging for this application list.")
     log_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet logging.")
     rate_count: int | None = Field(ge=0, le=65535, default=0, description="Count of the rate.")
     rate_duration: int | None = Field(ge=1, le=65535, default=60, description="Duration (sec) of the rate.")
     rate_mode: Literal["periodical", "continuous"] | None = Field(default="continuous", description="Rate limit mode.")
-    rate_track: RateTrackEnum | None = Field(default="none", description="Track the packet protocol field.")
+    rate_track: str | None = Field(default="none", description="Track the packet protocol field.")
     session_ttl: int | None = Field(ge=0, le=4294967295, default=0, description="Session TTL (0 = default).")
     shaper: str | None = Field(max_length=35, default="", description="Traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']
     shaper_reverse: str | None = Field(max_length=35, default="", description="Reverse traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']
@@ -68,7 +68,7 @@ class ListDefaultNetworkServices(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="Entry ID.")
     port: int = Field(ge=0, le=65535, default=0, description="Port number.")
-    services: ServicesEnum | None = Field(default="", description="Network protocols.")
+    services: str | None = Field(default=None, description="Network protocols.")
     violation_action: Literal["pass", "monitor", "block"] | None = Field(default="block", description="Action for protocols not in the allowlist for selected port.")
 
 # ============================================================================
@@ -95,7 +95,25 @@ class ListModel(BaseModel):
 
     Configure application control lists.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - replacemsg_group: max_length=35 pattern=        - extended_log: pattern=        - other_application_action: pattern=        - app_replacemsg: pattern=        - other_application_log: pattern=        - enforce_default_app_port: pattern=        - force_inclusion_ssl_di_sigs: pattern=        - unknown_application_action: pattern=        - unknown_application_log: pattern=        - p2p_block_list: pattern=        - deep_app_inspection: pattern=        - options: pattern=        - entries: pattern=        - control_default_network_services: pattern=        - default_network_services: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - replacemsg_group: max_length=35 pattern=
+        - extended_log: pattern=
+        - other_application_action: pattern=
+        - app_replacemsg: pattern=
+        - other_application_log: pattern=
+        - enforce_default_app_port: pattern=
+        - force_inclusion_ssl_di_sigs: pattern=
+        - unknown_application_action: pattern=
+        - unknown_application_log: pattern=
+        - p2p_block_list: pattern=
+        - deep_app_inspection: pattern=
+        - options: pattern=
+        - entries: pattern=
+        - control_default_network_services: pattern=
+        - default_network_services: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -107,7 +125,24 @@ class ListModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="List name.")    comment: str | None = Field(max_length=255, default=None, description="Comments.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")    other_application_action: Literal["pass", "block"] | None = Field(default="pass", description="Action for other applications.")    app_replacemsg: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable replacement messages for blocked applications.")    other_application_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for other applications.")    enforce_default_app_port: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable default application port enforcement for allowed applications.")    force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable forced inclusion of SSL deep inspection signatures.")    unknown_application_action: Literal["pass", "block"] | None = Field(default="pass", description="Pass or block traffic from unknown applications.")    unknown_application_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for unknown applications.")    p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | None = Field(default="", description="P2P applications to be block listed.")    deep_app_inspection: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable deep application inspection.")    options: ListOptionsEnum | None = Field(default="allow-dns", description="Basic application protocol signatures allowed by default.")    entries: list[ListEntries] = Field(default=None, description="Application list entries.")    control_default_network_services: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable enforcement of protocols over selected ports.")    default_network_services: list[ListDefaultNetworkServices] = Field(default=None, description="Default network service entries.")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="List name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comments.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']
+    extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")
+    other_application_action: Literal["pass", "block"] | None = Field(default="pass", description="Action for other applications.")
+    app_replacemsg: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable replacement messages for blocked applications.")
+    other_application_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for other applications.")
+    enforce_default_app_port: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable default application port enforcement for allowed applications.")
+    force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable forced inclusion of SSL deep inspection signatures.")
+    unknown_application_action: Literal["pass", "block"] | None = Field(default="pass", description="Pass or block traffic from unknown applications.")
+    unknown_application_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for unknown applications.")
+    p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | None = Field(default=None, description="P2P applications to be block listed.")
+    deep_app_inspection: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable deep application inspection.")
+    options: str | ListOptionsEnum | None = Field(default="allow-dns", description="Basic application protocol signatures allowed by default.")
+    entries: list[ListEntries] | None = Field(default=None, description="Application list entries.")
+    control_default_network_services: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable enforcement of protocols over selected ports.")
+    default_network_services: list[ListDefaultNetworkServices] | None = Field(default=None, description="Default network service entries.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -186,7 +221,7 @@ class ListModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.application.list.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -235,7 +270,7 @@ class ListModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.application.list.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "entries", [])
@@ -281,9 +316,10 @@ class ListModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_replacemsg_group_references(client)
-        all_errors.extend(errors)        errors = await self.validate_entries_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_entries_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -305,5 +341,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.217375Z
+# Generated: 2026-01-14T22:43:38.907935Z
 # ============================================================================

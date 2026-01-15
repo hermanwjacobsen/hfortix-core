@@ -233,7 +233,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
+        type_: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         startport: int | None = None,
@@ -272,7 +272,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: IP pool name.
-            type: IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)
+            type_: IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)
             startip: First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             startport: First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).
@@ -332,7 +332,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             startport=startport,
@@ -389,7 +389,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
+        type_: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         startport: int | None = None,
@@ -428,7 +428,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: IP pool name.
-            type: IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)
+            type_: IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)
             startip: First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             startport: First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).
@@ -490,7 +490,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             startport=startport,
@@ -647,7 +647,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
+        type_: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         startport: int | None = None,
@@ -687,7 +687,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             startip: Field startip
             endip: Field endip
             startport: Field startport
@@ -757,7 +757,7 @@ class Ippool(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             startport=startport,

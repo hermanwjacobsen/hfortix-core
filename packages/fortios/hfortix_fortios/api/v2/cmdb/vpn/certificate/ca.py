@@ -234,7 +234,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         ca: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = None,
         scep_url: str | None = None,
@@ -260,7 +260,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name.
             ca: CA certificate as a PEM file.
-            range: Either global or VDOM IP address range for the CA certificate.
+            range_: Either global or VDOM IP address range for the CA certificate.
             source: CA certificate source type.
             ssl_inspection_trusted: Enable/disable this CA as a trusted CA for SSL inspection.
             scep_url: URL of the SCEP server.
@@ -307,7 +307,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             ca=ca,
-            range=range,
+            range_=range_,
             source=source,
             ssl_inspection_trusted=ssl_inspection_trusted,
             scep_url=scep_url,
@@ -351,7 +351,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         ca: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = None,
         scep_url: str | None = None,
@@ -377,7 +377,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name.
             ca: CA certificate as a PEM file.
-            range: Either global or VDOM IP address range for the CA certificate.
+            range_: Either global or VDOM IP address range for the CA certificate.
             source: CA certificate source type.
             ssl_inspection_trusted: Enable/disable this CA as a trusted CA for SSL inspection.
             scep_url: URL of the SCEP server.
@@ -426,7 +426,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             ca=ca,
-            range=range,
+            range_=range_,
             source=source,
             ssl_inspection_trusted=ssl_inspection_trusted,
             scep_url=scep_url,
@@ -570,7 +570,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         ca: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         ssl_inspection_trusted: Literal["enable", "disable"] | None = None,
         scep_url: str | None = None,
@@ -597,7 +597,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             ca: Field ca
-            range: Field range
+            range_: Field range
             source: Field source
             ssl_inspection_trusted: Field ssl-inspection-trusted
             scep_url: Field scep-url
@@ -654,7 +654,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             ca=ca,
-            range=range,
+            range_=range_,
             source=source,
             ssl_inspection_trusted=ssl_inspection_trusted,
             scep_url=scep_url,

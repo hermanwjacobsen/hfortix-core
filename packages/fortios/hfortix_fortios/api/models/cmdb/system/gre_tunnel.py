@@ -26,7 +26,26 @@ class GreTunnelModel(BaseModel):
 
     Configure GRE tunnel.
 
-    Validation Rules:        - name: max_length=15 pattern=        - interface: max_length=15 pattern=        - ip_version: pattern=        - remote_gw6: pattern=        - local_gw6: pattern=        - remote_gw: pattern=        - local_gw: pattern=        - use_sdwan: pattern=        - sequence_number_transmission: pattern=        - sequence_number_reception: pattern=        - checksum_transmission: pattern=        - checksum_reception: pattern=        - key_outbound: min=0 max=4294967295 pattern=        - key_inbound: min=0 max=4294967295 pattern=        - dscp_copying: pattern=        - diffservcode: pattern=        - keepalive_interval: min=0 max=32767 pattern=        - keepalive_failtimes: min=1 max=255 pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - interface: max_length=15 pattern=
+        - ip_version: pattern=
+        - remote_gw6: pattern=
+        - local_gw6: pattern=
+        - remote_gw: pattern=
+        - local_gw: pattern=
+        - use_sdwan: pattern=
+        - sequence_number_transmission: pattern=
+        - sequence_number_reception: pattern=
+        - checksum_transmission: pattern=
+        - checksum_reception: pattern=
+        - key_outbound: min=0 max=4294967295 pattern=
+        - key_inbound: min=0 max=4294967295 pattern=
+        - dscp_copying: pattern=
+        - diffservcode: pattern=
+        - keepalive_interval: min=0 max=32767 pattern=
+        - keepalive_failtimes: min=1 max=255 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +57,25 @@ class GreTunnelModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="Tunnel name.")    interface: str | None = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']    ip_version: Literal["4", "6"] | None = Field(default="4", description="IP version to use for VPN interface.")    remote_gw6: str = Field(default="::", description="IPv6 address of the remote gateway.")    local_gw6: str = Field(default="::", description="IPv6 address of the local gateway.")    remote_gw: str = Field(default="0.0.0.0", description="IP address of the remote gateway.")    local_gw: str = Field(default="0.0.0.0", description="IP address of the local gateway.")    use_sdwan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of SD-WAN to reach remote gateway.")    sequence_number_transmission: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including of sequence numbers in transmitted GRE packets.")    sequence_number_reception: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable validating sequence numbers in received GRE packets.")    checksum_transmission: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including checksums in transmitted GRE packets.")    checksum_reception: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable validating checksums in received GRE packets.")    key_outbound: int | None = Field(ge=0, le=4294967295, default=0, description="Include this key in transmitted GRE packets (0 - 4294967295).")    key_inbound: int | None = Field(ge=0, le=4294967295, default=0, description="Require received GRE packets contain this key (0 - 4294967295).")    dscp_copying: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DSCP copying.")    diffservcode: str | None = Field(default="", description="DiffServ setting to be applied to GRE tunnel outer IP header.")    keepalive_interval: int | None = Field(ge=0, le=32767, default=0, description="Keepalive message interval (0 - 32767, 0 = disabled).")    keepalive_failtimes: int | None = Field(ge=1, le=255, default=10, description="Number of consecutive unreturned keepalive messages before a GRE connection is considered down (1 - 255).")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="Tunnel name.")
+    interface: str | None = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    ip_version: Literal["4", "6"] | None = Field(default="4", description="IP version to use for VPN interface.")
+    remote_gw6: str = Field(default="::", description="IPv6 address of the remote gateway.")
+    local_gw6: str = Field(default="::", description="IPv6 address of the local gateway.")
+    remote_gw: str = Field(default="0.0.0.0", description="IP address of the remote gateway.")
+    local_gw: str = Field(default="0.0.0.0", description="IP address of the local gateway.")
+    use_sdwan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of SD-WAN to reach remote gateway.")
+    sequence_number_transmission: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including of sequence numbers in transmitted GRE packets.")
+    sequence_number_reception: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable validating sequence numbers in received GRE packets.")
+    checksum_transmission: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable including checksums in transmitted GRE packets.")
+    checksum_reception: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable validating checksums in received GRE packets.")
+    key_outbound: int | None = Field(ge=0, le=4294967295, default=0, description="Include this key in transmitted GRE packets (0 - 4294967295).")
+    key_inbound: int | None = Field(ge=0, le=4294967295, default=0, description="Require received GRE packets contain this key (0 - 4294967295).")
+    dscp_copying: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DSCP copying.")
+    diffservcode: str | None = Field(default="", description="DiffServ setting to be applied to GRE tunnel outer IP header.")
+    keepalive_interval: int | None = Field(ge=0, le=32767, default=0, description="Keepalive message interval (0 - 32767, 0 = disabled).")
+    keepalive_failtimes: int | None = Field(ge=1, le=255, default=10, description="Number of consecutive unreturned keepalive messages before a GRE connection is considered down (1 - 255).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +154,7 @@ class GreTunnelModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.gre_tunnel.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -154,7 +191,7 @@ class GreTunnelModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +214,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.259946Z
+# Generated: 2026-01-14T22:43:38.956703Z
 # ============================================================================

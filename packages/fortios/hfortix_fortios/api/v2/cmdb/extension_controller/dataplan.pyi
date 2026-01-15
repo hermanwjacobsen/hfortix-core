@@ -20,7 +20,7 @@ class DataplanPayload(TypedDict, total=False):
     """
     name: str  # FortiExtender data plan name. | MaxLen: 31
     modem_id: Literal["modem1", "modem2", "all"]  # Dataplan's modem specifics, if any. | Default: all
-    type: Literal["carrier", "slot", "iccid", "generic"]  # Type preferences configuration. | Default: generic
+    type_: Literal["carrier", "slot", "iccid", "generic"]  # Type preferences configuration. | Default: generic
     slot: Literal["sim1", "sim2"]  # SIM slot configuration.
     iccid: str  # ICCID configuration. | MaxLen: 31
     carrier: str  # Carrier configuration. | MaxLen: 31
@@ -52,7 +52,7 @@ class DataplanResponse(TypedDict):
     """
     name: str  # FortiExtender data plan name. | MaxLen: 31
     modem_id: Literal["modem1", "modem2", "all"]  # Dataplan's modem specifics, if any. | Default: all
-    type: Literal["carrier", "slot", "iccid", "generic"]  # Type preferences configuration. | Default: generic
+    type_: Literal["carrier", "slot", "iccid", "generic"]  # Type preferences configuration. | Default: generic
     slot: Literal["sim1", "sim2"]  # SIM slot configuration.
     iccid: str  # ICCID configuration. | MaxLen: 31
     carrier: str  # Carrier configuration. | MaxLen: 31
@@ -84,7 +84,7 @@ class DataplanObject:
     # Dataplan's modem specifics, if any. | Default: all
     modem_id: Literal["modem1", "modem2", "all"]
     # Type preferences configuration. | Default: generic
-    type: Literal["carrier", "slot", "iccid", "generic"]
+    type_: Literal["carrier", "slot", "iccid", "generic"]
     # SIM slot configuration.
     slot: Literal["sim1", "sim2"]
     # ICCID configuration. | MaxLen: 31
@@ -142,6 +142,10 @@ class Dataplan:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -162,6 +166,7 @@ class Dataplan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DataplanResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -179,6 +184,7 @@ class Dataplan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DataplanResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -195,6 +201,7 @@ class Dataplan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DataplanResponse]: ...
     
     # ================================================================
@@ -237,7 +244,7 @@ class Dataplan:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DataplanObject: ...
     
@@ -256,7 +263,7 @@ class Dataplan:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DataplanObject]: ...
     
@@ -356,23 +363,6 @@ class Dataplan:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DataplanObject | list[DataplanObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -386,7 +376,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -405,6 +395,7 @@ class Dataplan:
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DataplanObject: ...
@@ -415,7 +406,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -445,7 +436,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -474,7 +465,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -492,34 +483,7 @@ class Dataplan:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DataplanPayload | None = ...,
-        name: str | None = ...,
-        modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
-        slot: Literal["sim1", "sim2"] | None = ...,
-        iccid: str | None = ...,
-        carrier: str | None = ...,
-        apn: str | None = ...,
-        auth_type: Literal["none", "pap", "chap"] | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        pdn: Literal["ipv4-only", "ipv6-only", "ipv4-ipv6"] | None = ...,
-        signal_threshold: int | None = ...,
-        signal_period: int | None = ...,
-        capacity: int | None = ...,
-        monthly_fee: int | None = ...,
-        billing_date: int | None = ...,
-        overage: Literal["disable", "enable"] | None = ...,
-        preferred_subnet: int | None = ...,
-        private_network: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -530,7 +494,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -549,6 +513,7 @@ class Dataplan:
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DataplanObject: ...
@@ -559,7 +524,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -589,7 +554,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -618,7 +583,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -636,34 +601,7 @@ class Dataplan:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DataplanPayload | None = ...,
-        name: str | None = ...,
-        modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
-        slot: Literal["sim1", "sim2"] | None = ...,
-        iccid: str | None = ...,
-        carrier: str | None = ...,
-        apn: str | None = ...,
-        auth_type: Literal["none", "pap", "chap"] | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        pdn: Literal["ipv4-only", "ipv6-only", "ipv4-ipv6"] | None = ...,
-        signal_threshold: int | None = ...,
-        signal_period: int | None = ...,
-        capacity: int | None = ...,
-        monthly_fee: int | None = ...,
-        billing_date: int | None = ...,
-        overage: Literal["disable", "enable"] | None = ...,
-        preferred_subnet: int | None = ...,
-        private_network: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -674,6 +612,7 @@ class Dataplan:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DataplanObject: ...
@@ -704,14 +643,7 @@ class Dataplan:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -726,7 +658,7 @@ class Dataplan:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -759,8 +691,6 @@ class Dataplan:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -788,6 +718,10 @@ class DataplanDictMode:
     By default returns DataplanResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DataplanObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -893,7 +827,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -923,7 +857,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -953,7 +887,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -971,16 +905,18 @@ class DataplanDictMode:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1008,7 +944,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1038,7 +974,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1068,7 +1004,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1086,16 +1022,18 @@ class DataplanDictMode:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1144,10 +1082,12 @@ class DataplanDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1167,7 +1107,7 @@ class DataplanDictMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1199,8 +1139,6 @@ class DataplanDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1224,6 +1162,10 @@ class DataplanObjectMode:
     By default returns DataplanObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DataplanResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1329,7 +1271,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1359,7 +1301,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1389,7 +1331,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1419,7 +1361,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1437,16 +1379,18 @@ class DataplanObjectMode:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DataplanObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1474,7 +1418,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1504,7 +1448,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1534,7 +1478,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1564,7 +1508,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1582,16 +1526,18 @@ class DataplanObjectMode:
         preferred_subnet: int | None = ...,
         private_network: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DataplanObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1651,10 +1597,12 @@ class DataplanObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DataplanObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1674,7 +1622,7 @@ class DataplanObjectMode:
         payload_dict: DataplanPayload | None = ...,
         name: str | None = ...,
         modem_id: Literal["modem1", "modem2", "all"] | None = ...,
-        type: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
+        type_: Literal["carrier", "slot", "iccid", "generic"] | None = ...,
         slot: Literal["sim1", "sim2"] | None = ...,
         iccid: str | None = ...,
         carrier: str | None = ...,
@@ -1706,8 +1654,6 @@ class DataplanObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

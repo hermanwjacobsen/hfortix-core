@@ -245,6 +245,10 @@ class Dns:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -265,6 +269,7 @@ class Dns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DnsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -282,6 +287,7 @@ class Dns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DnsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -298,6 +304,7 @@ class Dns:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DnsResponse: ...
     
     # ================================================================
@@ -340,7 +347,7 @@ class Dns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DnsObject: ...
     
@@ -359,7 +366,7 @@ class Dns:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DnsObject: ...
     
@@ -459,23 +466,6 @@ class Dns:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DnsObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -517,6 +507,7 @@ class Dns:
         hostname_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DnsObject: ...
@@ -631,43 +622,7 @@ class Dns:
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DnsPayload | None = ...,
-        primary: str | None = ...,
-        secondary: str | None = ...,
-        protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
-        ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_primary: str | None = ...,
-        ip6_secondary: str | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        dns_cache_limit: int | None = ...,
-        dns_cache_ttl: int | None = ...,
-        cache_notfound_responses: Literal["disable", "enable"] | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        root_servers: str | list[str] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        server_select_method: Literal["least-rtt", "failover"] | None = ...,
-        alt_primary: str | None = ...,
-        alt_secondary: str | None = ...,
-        log: Literal["disable", "error", "all"] | None = ...,
-        fqdn_cache_ttl: int | None = ...,
-        fqdn_max_refresh: int | None = ...,
-        fqdn_min_refresh: int | None = ...,
-        hostname_ttl: int | None = ...,
-        hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -724,8 +679,6 @@ class Dns:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -753,6 +706,10 @@ class DnsDictMode:
     By default returns DnsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DnsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -964,10 +921,12 @@ class DnsDictMode:
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DnsPayload | None = ...,
@@ -1057,8 +1016,6 @@ class DnsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1082,6 +1039,10 @@ class DnsObjectMode:
     By default returns DnsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DnsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1332,10 +1293,12 @@ class DnsObjectMode:
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DnsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DnsPayload | None = ...,
@@ -1425,8 +1388,6 @@ class DnsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

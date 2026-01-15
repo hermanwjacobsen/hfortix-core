@@ -80,7 +80,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             "required_fields": ['name', 'type', 'value'],
             "example": "[{'name': 'value', 'type': 'any', 'value': 'value'}]",
         },
-        "list": {
+        "list_": {
             "mkey": "ip",
             "required_fields": ['ip'],
             "example": "[{'ip': '192.168.1.10'}]",
@@ -262,7 +262,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
         route_tag: int | None = None,
         macaddr: str | list[str] | list[dict[str, Any]] | None = None,
         sdn: str | None = None,
@@ -284,8 +284,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
         tenant: str | None = None,
         epg_name: str | None = None,
         sdn_tag: str | None = None,
-        filter: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        filter_: str | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
@@ -303,7 +303,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
-            type: Type of IPv6 address object (default = ipprefix).
+            type_: Type of IPv6 address object (default = ipprefix).
             route_tag: route-tag address.
             macaddr: Multiple MAC address ranges.
                 Default format: [{'macaddr': 'value'}]
@@ -338,13 +338,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant: Tenant.
             epg_name: Endpoint group name.
             sdn_tag: SDN Tag.
-            filter: Match criteria filter.
-            list: IP address list.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            filter_: Match criteria filter.
+            list_: IP address list.
             sdn_addr_type: Type of addresses to collect.
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
@@ -402,12 +397,12 @@ class Address6(CRUDEndpoint, MetadataMixin):
                 field_name="subnet_segment",
                 example="[{'name': 'value', 'type': 'any', 'value': 'value'}]",
             )
-        if list is not None:
-            list = normalize_table_field(
-                list,
+        if list_ is not None:
+            list_ = normalize_table_field(
+                list_,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list",
+                field_name="list_",
                 example="[{'ip': '192.168.1.10'}]",
             )
         
@@ -417,7 +412,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             macaddr=macaddr,
             sdn=sdn,
@@ -439,8 +434,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant=tenant,
             epg_name=epg_name,
             sdn_tag=sdn_tag,
-            filter=filter,
-            list=list,
+            filter_=filter_,
+            list_=list_,
             sdn_addr_type=sdn_addr_type,
             passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
@@ -476,7 +471,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
         route_tag: int | None = None,
         macaddr: str | list[str] | list[dict[str, Any]] | None = None,
         sdn: str | None = None,
@@ -498,8 +493,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
         tenant: str | None = None,
         epg_name: str | None = None,
         sdn_tag: str | None = None,
-        filter: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        filter_: str | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
@@ -517,7 +512,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
-            type: Type of IPv6 address object (default = ipprefix).
+            type_: Type of IPv6 address object (default = ipprefix).
             route_tag: route-tag address.
             macaddr: Multiple MAC address ranges.
                 Default format: [{'macaddr': 'value'}]
@@ -552,13 +547,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant: Tenant.
             epg_name: Endpoint group name.
             sdn_tag: SDN Tag.
-            filter: Match criteria filter.
-            list: IP address list.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            filter_: Match criteria filter.
+            list_: IP address list.
             sdn_addr_type: Type of addresses to collect.
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
@@ -618,12 +608,12 @@ class Address6(CRUDEndpoint, MetadataMixin):
                 field_name="subnet_segment",
                 example="[{'name': 'value', 'type': 'any', 'value': 'value'}]",
             )
-        if list is not None:
-            list = normalize_table_field(
-                list,
+        if list_ is not None:
+            list_ = normalize_table_field(
+                list_,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list",
+                field_name="list_",
                 example="[{'ip': '192.168.1.10'}]",
             )
         
@@ -633,7 +623,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             macaddr=macaddr,
             sdn=sdn,
@@ -655,8 +645,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant=tenant,
             epg_name=epg_name,
             sdn_tag=sdn_tag,
-            filter=filter,
-            list=list,
+            filter_=filter_,
+            list_=list_,
             sdn_addr_type=sdn_addr_type,
             passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
@@ -792,7 +782,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
+        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
         route_tag: int | None = None,
         macaddr: str | list[str] | list[dict[str, Any]] | None = None,
         sdn: str | None = None,
@@ -814,8 +804,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
         tenant: str | None = None,
         epg_name: str | None = None,
         sdn_tag: str | None = None,
-        filter: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        filter_: str | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
@@ -834,7 +824,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             uuid: Field uuid
-            type: Field type
+            type_: Field type
             route_tag: Field route-tag
             macaddr: Field macaddr
             sdn: Field sdn
@@ -856,8 +846,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant: Field tenant
             epg_name: Field epg-name
             sdn_tag: Field sdn-tag
-            filter: Field filter
-            list: Field list
+            filter_: Field filter
+            list_: Field list
             sdn_addr_type: Field sdn-addr-type
             passive_fqdn_learning: Field passive-fqdn-learning
             fabric_object: Field fabric-object
@@ -906,7 +896,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             macaddr=macaddr,
             sdn=sdn,
@@ -928,8 +918,8 @@ class Address6(CRUDEndpoint, MetadataMixin):
             tenant=tenant,
             epg_name=epg_name,
             sdn_tag=sdn_tag,
-            filter=filter,
-            list=list,
+            filter_=filter_,
+            list_=list_,
             sdn_addr_type=sdn_addr_type,
             passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,

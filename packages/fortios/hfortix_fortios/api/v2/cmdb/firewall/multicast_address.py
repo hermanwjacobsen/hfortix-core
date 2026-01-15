@@ -246,7 +246,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["multicastrange", "broadcastmask"] | None = None,
+        type_: Literal["multicastrange", "broadcastmask"] | None = None,
         subnet: Any | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
@@ -267,7 +267,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Multicast address name.
-            type: Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.
+            type_: Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.
             subnet: Broadcast address and subnet.
             start_ip: First IPv4 address (inclusive) in the range for the address.
             end_ip: Final IPv4 address (inclusive) in the range for the address.
@@ -324,7 +324,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             subnet=subnet,
             start_ip=start_ip,
             end_ip=end_ip,
@@ -363,7 +363,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["multicastrange", "broadcastmask"] | None = None,
+        type_: Literal["multicastrange", "broadcastmask"] | None = None,
         subnet: Any | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
@@ -384,7 +384,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Multicast address name.
-            type: Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.
+            type_: Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.
             subnet: Broadcast address and subnet.
             start_ip: First IPv4 address (inclusive) in the range for the address.
             end_ip: Final IPv4 address (inclusive) in the range for the address.
@@ -443,7 +443,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             subnet=subnet,
             start_ip=start_ip,
             end_ip=end_ip,
@@ -582,7 +582,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["multicastrange", "broadcastmask"] | None = None,
+        type_: Literal["multicastrange", "broadcastmask"] | None = None,
         subnet: Any | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
@@ -604,7 +604,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             subnet: Field subnet
             start_ip: Field start-ip
             end_ip: Field end-ip
@@ -656,7 +656,7 @@ class MulticastAddress(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             subnet=subnet,
             start_ip=start_ip,
             end_ip=end_ip,

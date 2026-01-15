@@ -24,7 +24,7 @@ class ExternalIdentityProviderPayload(TypedDict, total=False):
         }
     """
     name: str  # External identity provider name. | MaxLen: 35
-    type: Literal["ms-graph"]  # External identity provider type.
+    type_: Literal["ms-graph"]  # External identity provider type.
     version: Literal["v1.0", "beta"]  # External identity API version.
     url: str  # External identity provider URL | MaxLen: 127
     user_attr_name: str  # User attribute name in authentication query. | Default: userPrincipalName | MaxLen: 63
@@ -50,7 +50,7 @@ class ExternalIdentityProviderResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # External identity provider name. | MaxLen: 35
-    type: Literal["ms-graph"]  # External identity provider type.
+    type_: Literal["ms-graph"]  # External identity provider type.
     version: Literal["v1.0", "beta"]  # External identity API version.
     url: str  # External identity provider URL | MaxLen: 127
     user_attr_name: str  # User attribute name in authentication query. | Default: userPrincipalName | MaxLen: 63
@@ -75,7 +75,7 @@ class ExternalIdentityProviderObject:
     # External identity provider name. | MaxLen: 35
     name: str
     # External identity provider type.
-    type: Literal["ms-graph"]
+    type_: Literal["ms-graph"]
     # External identity API version.
     version: Literal["v1.0", "beta"]
     # External identity provider URL | MaxLen: 127
@@ -123,6 +123,10 @@ class ExternalIdentityProvider:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -143,6 +147,7 @@ class ExternalIdentityProvider:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExternalIdentityProviderResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -160,6 +165,7 @@ class ExternalIdentityProvider:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExternalIdentityProviderResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -176,6 +182,7 @@ class ExternalIdentityProvider:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExternalIdentityProviderResponse]: ...
     
     # ================================================================
@@ -218,7 +225,7 @@ class ExternalIdentityProvider:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
     
@@ -237,7 +244,7 @@ class ExternalIdentityProvider:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExternalIdentityProviderObject]: ...
     
@@ -337,23 +344,6 @@ class ExternalIdentityProvider:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExternalIdentityProviderObject | list[ExternalIdentityProviderObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -366,7 +356,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -380,6 +370,7 @@ class ExternalIdentityProvider:
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
@@ -389,7 +380,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -413,7 +404,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -436,7 +427,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -449,28 +440,7 @@ class ExternalIdentityProvider:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExternalIdentityProviderPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
-        version: Literal["v1.0", "beta"] | None = ...,
-        url: str | None = ...,
-        user_attr_name: str | None = ...,
-        group_attr_name: str | None = ...,
-        port: int | None = ...,
-        source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        server_identity_check: Literal["disable", "enable"] | None = ...,
-        timeout: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -480,7 +450,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -494,6 +464,7 @@ class ExternalIdentityProvider:
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
@@ -503,7 +474,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -527,7 +498,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -550,7 +521,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -563,28 +534,7 @@ class ExternalIdentityProvider:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExternalIdentityProviderPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
-        version: Literal["v1.0", "beta"] | None = ...,
-        url: str | None = ...,
-        user_attr_name: str | None = ...,
-        group_attr_name: str | None = ...,
-        port: int | None = ...,
-        source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        server_identity_check: Literal["disable", "enable"] | None = ...,
-        timeout: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -595,6 +545,7 @@ class ExternalIdentityProvider:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
@@ -625,14 +576,7 @@ class ExternalIdentityProvider:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -646,7 +590,7 @@ class ExternalIdentityProvider:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -674,8 +618,6 @@ class ExternalIdentityProvider:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -703,6 +645,10 @@ class ExternalIdentityProviderDictMode:
     By default returns ExternalIdentityProviderResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExternalIdentityProviderObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -807,7 +753,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -831,7 +777,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -855,7 +801,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -868,15 +814,17 @@ class ExternalIdentityProviderDictMode:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -898,7 +846,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -922,7 +870,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -946,7 +894,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -959,15 +907,17 @@ class ExternalIdentityProviderDictMode:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1011,10 +961,12 @@ class ExternalIdentityProviderDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1033,7 +985,7 @@ class ExternalIdentityProviderDictMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1060,8 +1012,6 @@ class ExternalIdentityProviderDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1085,6 +1035,10 @@ class ExternalIdentityProviderObjectMode:
     By default returns ExternalIdentityProviderObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExternalIdentityProviderResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1189,7 +1143,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1213,7 +1167,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1237,7 +1191,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1261,7 +1215,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1274,15 +1228,17 @@ class ExternalIdentityProviderObjectMode:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1304,7 +1260,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1328,7 +1284,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1352,7 +1308,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1376,7 +1332,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1389,15 +1345,17 @@ class ExternalIdentityProviderObjectMode:
         server_identity_check: Literal["disable", "enable"] | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1452,10 +1410,12 @@ class ExternalIdentityProviderObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalIdentityProviderObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1474,7 +1434,7 @@ class ExternalIdentityProviderObjectMode:
         self,
         payload_dict: ExternalIdentityProviderPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ms-graph"] | None = ...,
+        type_: Literal["ms-graph"] | None = ...,
         version: Literal["v1.0", "beta"] | None = ...,
         url: str | None = ...,
         user_attr_name: str | None = ...,
@@ -1501,8 +1461,6 @@ class ExternalIdentityProviderObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 from uuid import UUID
 
@@ -58,7 +58,7 @@ class AddrgrpTagging(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=63, default="", description="Tagging entry name.")
     category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    tags: list[dict[str, Any]] | None = Field(default=None, description="Tags.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -76,7 +76,20 @@ class AddrgrpModel(BaseModel):
 
     Configure IPv4 address groups.
 
-    Validation Rules:        - name: max_length=79 pattern=        - type: pattern=        - category: pattern=        - allow_routing: pattern=        - member: pattern=        - comment: max_length=255 pattern=        - uuid: pattern=        - exclude: pattern=        - exclude_member: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - fabric_object: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - type_: pattern=
+        - category: pattern=
+        - allow_routing: pattern=
+        - member: pattern=
+        - comment: max_length=255 pattern=
+        - uuid: pattern=
+        - exclude: pattern=
+        - exclude_member: pattern=
+        - color: min=0 max=32 pattern=
+        - tagging: pattern=
+        - fabric_object: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -88,7 +101,19 @@ class AddrgrpModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=79, default="", description="Address group name.")    type: Literal["default", "folder"] | None = Field(default="default", description="Address group type.")    category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = Field(default="default", description="Address group category.")    allow_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of this group in routing configurations.")    member: list[AddrgrpMember] = Field(default=None, description="Address objects contained within the group.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    exclude: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address exclusion.")    exclude_member: list[AddrgrpExcludeMember] = Field(description="Address exclusion member.")    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    tagging: list[AddrgrpTagging] = Field(default=None, description="Config object tagging.")    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    # ========================================================================
+    name: str = Field(max_length=79, default="", description="Address group name.")
+    type_: Literal["default", "folder"] | None = Field(default="default", description="Address group type.")
+    category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = Field(default="default", description="Address group category.")
+    allow_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of this group in routing configurations.")
+    member: list[AddrgrpMember] | None = Field(default=None, description="Address objects contained within the group.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    exclude: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address exclusion.")
+    exclude_member: list[AddrgrpExcludeMember] | None = Field(description="Address exclusion member.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")
+    tagging: list[AddrgrpTagging] | None = Field(default=None, description="Config object tagging.")
+    fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -152,7 +177,7 @@ class AddrgrpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "member", [])
@@ -212,7 +237,7 @@ class AddrgrpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "exclude_member", [])
@@ -272,7 +297,7 @@ class AddrgrpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -318,10 +343,12 @@ class AddrgrpModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_exclude_member_references(client)
-        all_errors.extend(errors)        errors = await self.validate_tagging_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_exclude_member_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_tagging_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -343,5 +370,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.008249Z
+# Generated: 2026-01-14T22:43:34.956520Z
 # ============================================================================

@@ -39,7 +39,7 @@ class KmipServerServerList(BaseModel):
 # ============================================================================
 
 
-class KmipServerSsl_min_proto_versionEnum(str, Enum):
+class KmipServerSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -60,7 +60,18 @@ class KmipServerModel(BaseModel):
 
     KMIP server entry configuration.
 
-    Validation Rules:        - name: max_length=35 pattern=        - server_list: pattern=        - username: max_length=63 pattern=        - password: max_length=128 pattern=        - ssl_min_proto_version: pattern=        - server_identity_check: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=        - source_ip: max_length=63 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - server_list: pattern=
+        - username: max_length=63 pattern=
+        - password: max_length=128 pattern=
+        - ssl_min_proto_version: pattern=
+        - server_identity_check: pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+        - source_ip: max_length=63 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -72,7 +83,17 @@ class KmipServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="KMIP server entry name.")    server_list: list[KmipServerServerList] = Field(description="KMIP server list.")    username: str = Field(max_length=63, default="", description="User name to use for connectivity to the KMIP server.")    password: Any = Field(max_length=128, description="Password to use for connectivity to the KMIP server.")    ssl_min_proto_version: KmipServerSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    server_identity_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable KMIP server identity check (verify server FQDN/IP address against the server certificate).")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    source_ip: str | None = Field(max_length=63, default="", description="FortiGate IP address to be used for communication with the KMIP server.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="KMIP server entry name.")
+    server_list: list[KmipServerServerList] | None = Field(description="KMIP server list.")
+    username: str = Field(max_length=63, default="", description="User name to use for connectivity to the KMIP server.")
+    password: Any = Field(max_length=128, description="Password to use for connectivity to the KMIP server.")
+    ssl_min_proto_version: str | KmipServerSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    server_identity_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable KMIP server identity check (verify server FQDN/IP address against the server certificate).")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    source_ip: str | None = Field(max_length=63, default="", description="FortiGate IP address to be used for communication with the KMIP server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -151,7 +172,7 @@ class KmipServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.kmip_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "server_list", [])
@@ -209,7 +230,7 @@ class KmipServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.kmip_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -246,9 +267,10 @@ class KmipServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_server_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -270,5 +292,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.598031Z
+# Generated: 2026-01-14T22:43:38.095278Z
 # ============================================================================

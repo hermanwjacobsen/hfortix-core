@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from . import security_rating
+    from . import service
     from . import sniffer
     from . import system
 
@@ -24,6 +25,7 @@ class ServiceDictMode:
     """
     
     security_rating: security_rating.SecurityRatingDictMode
+    service: service.ServiceDictMode
     sniffer: sniffer.SnifferDictMode
     system: system.SystemDictMode
 
@@ -40,6 +42,7 @@ class ServiceObjectMode:
     """
     
     security_rating: security_rating.SecurityRatingObjectMode
+    service: service.ServiceObjectMode
     sniffer: sniffer.SnifferObjectMode
     system: system.SystemObjectMode
 
@@ -53,6 +56,7 @@ class Service:
     """SERVICE API category."""
     
     security_rating: security_rating.SecurityRating
+    service: service.Service
     sniffer: sniffer.Sniffer
     system: system.System
 

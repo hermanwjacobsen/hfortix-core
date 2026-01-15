@@ -78,6 +78,10 @@ class DeviceUpgradeExemptions:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -98,6 +102,7 @@ class DeviceUpgradeExemptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DeviceUpgradeExemptionsResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -115,6 +120,7 @@ class DeviceUpgradeExemptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DeviceUpgradeExemptionsResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -131,6 +137,7 @@ class DeviceUpgradeExemptions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DeviceUpgradeExemptionsResponse]: ...
     
     # ================================================================
@@ -173,7 +180,7 @@ class DeviceUpgradeExemptions:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
     
@@ -192,7 +199,7 @@ class DeviceUpgradeExemptions:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DeviceUpgradeExemptionsObject]: ...
     
@@ -292,23 +299,6 @@ class DeviceUpgradeExemptions:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DeviceUpgradeExemptionsObject | list[DeviceUpgradeExemptionsObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -325,6 +315,7 @@ class DeviceUpgradeExemptions:
         version: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
@@ -364,18 +355,7 @@ class DeviceUpgradeExemptions:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
-        id: int | None = ...,
-        fortinet_device: str | None = ...,
-        version: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -389,6 +369,7 @@ class DeviceUpgradeExemptions:
         version: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
@@ -428,18 +409,7 @@ class DeviceUpgradeExemptions:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
-        id: int | None = ...,
-        fortinet_device: str | None = ...,
-        version: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -450,6 +420,7 @@ class DeviceUpgradeExemptions:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
@@ -480,14 +451,7 @@ class DeviceUpgradeExemptions:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -519,8 +483,6 @@ class DeviceUpgradeExemptions:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -548,6 +510,10 @@ class DeviceUpgradeExemptionsDictMode:
     By default returns DeviceUpgradeExemptionsResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DeviceUpgradeExemptionsObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -683,10 +649,12 @@ class DeviceUpgradeExemptionsDictMode:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
@@ -734,10 +702,12 @@ class DeviceUpgradeExemptionsDictMode:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
@@ -776,10 +746,12 @@ class DeviceUpgradeExemptionsDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -815,8 +787,6 @@ class DeviceUpgradeExemptionsDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -840,6 +810,10 @@ class DeviceUpgradeExemptionsObjectMode:
     By default returns DeviceUpgradeExemptionsObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DeviceUpgradeExemptionsResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -989,10 +963,12 @@ class DeviceUpgradeExemptionsObjectMode:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
@@ -1054,10 +1030,12 @@ class DeviceUpgradeExemptionsObjectMode:
         fortinet_device: str | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DeviceUpgradeExemptionsPayload | None = ...,
@@ -1107,10 +1085,12 @@ class DeviceUpgradeExemptionsObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DeviceUpgradeExemptionsObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1146,8 +1126,6 @@ class DeviceUpgradeExemptionsObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

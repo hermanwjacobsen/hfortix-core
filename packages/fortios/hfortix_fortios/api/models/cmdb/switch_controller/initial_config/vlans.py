@@ -26,7 +26,16 @@ class VlansModel(BaseModel):
 
     Configure initial template for auto-generated VLAN interfaces.
 
-    Validation Rules:        - optional_vlans: pattern=        - default_vlan: max_length=63 pattern=        - quarantine: max_length=63 pattern=        - rspan: max_length=63 pattern=        - voice: max_length=63 pattern=        - video: max_length=63 pattern=        - nac: max_length=63 pattern=        - nac_segment: max_length=63 pattern=    """
+    Validation Rules:
+        - optional_vlans: pattern=
+        - default_vlan: max_length=63 pattern=
+        - quarantine: max_length=63 pattern=
+        - rspan: max_length=63 pattern=
+        - voice: max_length=63 pattern=
+        - video: max_length=63 pattern=
+        - nac: max_length=63 pattern=
+        - nac_segment: max_length=63 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +47,15 @@ class VlansModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    optional_vlans: Literal["enable", "disable"] | None = Field(default="enable", description="Auto-generate pre-configured VLANs upon switch discovery.")    default_vlan: str | None = Field(max_length=63, default="_default", description="Default VLAN (native) assigned to all switch ports upon discovery.")  # datasource: ['switch-controller.initial-config.template.name']    quarantine: str | None = Field(max_length=63, default="quarantine", description="VLAN for quarantined traffic.")  # datasource: ['switch-controller.initial-config.template.name']    rspan: str | None = Field(max_length=63, default="rspan", description="VLAN for RSPAN/ERSPAN mirrored traffic.")  # datasource: ['switch-controller.initial-config.template.name']    voice: str | None = Field(max_length=63, default="voice", description="VLAN dedicated for voice devices.")  # datasource: ['switch-controller.initial-config.template.name']    video: str | None = Field(max_length=63, default="video", description="VLAN dedicated for video devices.")  # datasource: ['switch-controller.initial-config.template.name']    nac: str | None = Field(max_length=63, default="onboarding", description="VLAN for NAC onboarding devices.")  # datasource: ['switch-controller.initial-config.template.name']    nac_segment: str | None = Field(max_length=63, default="nac_segment", description="VLAN for NAC segment primary interface.")  # datasource: ['switch-controller.initial-config.template.name']    # ========================================================================
+    optional_vlans: Literal["enable", "disable"] | None = Field(default="enable", description="Auto-generate pre-configured VLANs upon switch discovery.")
+    default_vlan: str | None = Field(max_length=63, default="_default", description="Default VLAN (native) assigned to all switch ports upon discovery.")  # datasource: ['switch-controller.initial-config.template.name']
+    quarantine: str | None = Field(max_length=63, default="quarantine", description="VLAN for quarantined traffic.")  # datasource: ['switch-controller.initial-config.template.name']
+    rspan: str | None = Field(max_length=63, default="rspan", description="VLAN for RSPAN/ERSPAN mirrored traffic.")  # datasource: ['switch-controller.initial-config.template.name']
+    voice: str | None = Field(max_length=63, default="voice", description="VLAN dedicated for voice devices.")  # datasource: ['switch-controller.initial-config.template.name']
+    video: str | None = Field(max_length=63, default="video", description="VLAN dedicated for video devices.")  # datasource: ['switch-controller.initial-config.template.name']
+    nac: str | None = Field(max_length=63, default="onboarding", description="VLAN for NAC onboarding devices.")  # datasource: ['switch-controller.initial-config.template.name']
+    nac_segment: str | None = Field(max_length=63, default="nac_segment", description="VLAN for NAC segment primary interface.")  # datasource: ['switch-controller.initial-config.template.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -207,7 +224,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "default_vlan", None)
@@ -256,7 +273,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "quarantine", None)
@@ -305,7 +322,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "rspan", None)
@@ -354,7 +371,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "voice", None)
@@ -403,7 +420,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "video", None)
@@ -452,7 +469,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "nac", None)
@@ -501,7 +518,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "nac_segment", None)
@@ -538,14 +555,20 @@ class VlansModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_default_vlan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_quarantine_references(client)
-        all_errors.extend(errors)        errors = await self.validate_rspan_references(client)
-        all_errors.extend(errors)        errors = await self.validate_voice_references(client)
-        all_errors.extend(errors)        errors = await self.validate_video_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nac_references(client)
-        all_errors.extend(errors)        errors = await self.validate_nac_segment_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_quarantine_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_rspan_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_voice_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_video_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nac_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_nac_segment_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -567,5 +590,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.528345Z
+# Generated: 2026-01-14T22:43:38.022108Z
 # ============================================================================

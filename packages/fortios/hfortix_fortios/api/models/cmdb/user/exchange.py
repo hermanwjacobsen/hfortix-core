@@ -35,7 +35,7 @@ class ExchangeKdcIp(BaseModel):
 # ============================================================================
 
 
-class ExchangeAuth_levelEnum(str, Enum):
+class ExchangeAuthLevelEnum(str, Enum):
     """Allowed values for auth_level field."""
     CONNECT = "connect"
     CALL = "call"
@@ -44,7 +44,7 @@ class ExchangeAuth_levelEnum(str, Enum):
     PRIVACY = "privacy"
 
 
-class ExchangeSsl_min_proto_versionEnum(str, Enum):
+class ExchangeSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
     DEFAULT = "default"
     SSLV3 = "SSLv3"
@@ -65,7 +65,22 @@ class ExchangeModel(BaseModel):
 
     Configure MS Exchange server entries.
 
-    Validation Rules:        - name: max_length=35 pattern=        - server_name: max_length=63 pattern=        - domain_name: max_length=79 pattern=        - username: max_length=64 pattern=        - password: max_length=128 pattern=        - ip: pattern=        - connect_protocol: pattern=        - validate_server_certificate: pattern=        - auth_type: pattern=        - auth_level: pattern=        - http_auth_type: pattern=        - ssl_min_proto_version: pattern=        - auto_discover_kdc: pattern=        - kdc_ip: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - server_name: max_length=63 pattern=
+        - domain_name: max_length=79 pattern=
+        - username: max_length=64 pattern=
+        - password: max_length=128 pattern=
+        - ip: pattern=
+        - connect_protocol: pattern=
+        - validate_server_certificate: pattern=
+        - auth_type: pattern=
+        - auth_level: pattern=
+        - http_auth_type: pattern=
+        - ssl_min_proto_version: pattern=
+        - auto_discover_kdc: pattern=
+        - kdc_ip: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -77,7 +92,21 @@ class ExchangeModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="MS Exchange server entry name.")    server_name: str = Field(max_length=63, default="", description="MS Exchange server hostname.")    domain_name: str = Field(max_length=79, default="", description="MS Exchange server fully qualified domain name.")    username: str = Field(max_length=64, default="", description="User name used to sign in to the server. Must have proper permissions for service.")    password: Any = Field(max_length=128, description="Password for the specified username.")    ip: str | None = Field(default="0.0.0.0", description="Server IPv4 address.")    connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = Field(default="rpc-over-https", description="Connection protocol used to connect to MS Exchange service.")    validate_server_certificate: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable exchange server certificate validation.")    auth_type: Literal["spnego", "ntlm", "kerberos"] | None = Field(default="kerberos", description="Authentication security type used for the RPC protocol layer.")    auth_level: ExchangeAuthLevelEnum | None = Field(default="privacy", description="Authentication security level used for the RPC protocol layer.")    http_auth_type: Literal["basic", "ntlm"] | None = Field(default="ntlm", description="Authentication security type used for the HTTP transport.")    ssl_min_proto_version: ExchangeSslMinProtoVersionEnum | None = Field(default="default", description="Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).")    auto_discover_kdc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic discovery of KDC IP addresses.")    kdc_ip: list[ExchangeKdcIp] = Field(default=None, description="KDC IPv4 addresses for Kerberos authentication.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="MS Exchange server entry name.")
+    server_name: str = Field(max_length=63, default="", description="MS Exchange server hostname.")
+    domain_name: str = Field(max_length=79, default="", description="MS Exchange server fully qualified domain name.")
+    username: str = Field(max_length=64, default="", description="User name used to sign in to the server. Must have proper permissions for service.")
+    password: Any = Field(max_length=128, description="Password for the specified username.")
+    ip: str | None = Field(default="0.0.0.0", description="Server IPv4 address.")
+    connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = Field(default="rpc-over-https", description="Connection protocol used to connect to MS Exchange service.")
+    validate_server_certificate: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable exchange server certificate validation.")
+    auth_type: Literal["spnego", "ntlm", "kerberos"] | None = Field(default="kerberos", description="Authentication security type used for the RPC protocol layer.")
+    auth_level: str | ExchangeAuthLevelEnum | None = Field(default="privacy", description="Authentication security level used for the RPC protocol layer.")
+    http_auth_type: Literal["basic", "ntlm"] | None = Field(default="ntlm", description="Authentication security type used for the HTTP transport.")
+    ssl_min_proto_version: str | ExchangeSslMinProtoVersionEnum | None = Field(default="default", description="Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).")
+    auto_discover_kdc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic discovery of KDC IP addresses.")
+    kdc_ip: list[ExchangeKdcIp] | None = Field(default=None, description="KDC IPv4 addresses for Kerberos authentication.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -126,5 +155,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.072120Z
+# Generated: 2026-01-14T22:43:38.705891Z
 # ============================================================================

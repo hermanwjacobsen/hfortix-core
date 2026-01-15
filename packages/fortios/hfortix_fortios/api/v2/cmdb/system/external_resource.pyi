@@ -25,9 +25,9 @@ class ExternalResourcePayload(TypedDict, total=False):
         }
     """
     name: str  # External resource name. | MaxLen: 35
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable user resource. | Default: enable
-    type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]  # User resource type. | Default: category
+    type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]  # User resource type. | Default: category
     namespace: str  # Generic external connector address namespace. | MaxLen: 15
     object_array_path: str  # JSON Path to array of generic addresses in resourc | Default: $.addresses | MaxLen: 511
     address_name_field: str  # JSON Path to address name in generic address entry | Default: $.name | MaxLen: 511
@@ -63,9 +63,9 @@ class ExternalResourceResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # External resource name. | MaxLen: 35
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable user resource. | Default: enable
-    type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]  # User resource type. | Default: category
+    type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]  # User resource type. | Default: category
     namespace: str  # Generic external connector address namespace. | MaxLen: 15
     object_array_path: str  # JSON Path to array of generic addresses in resourc | Default: $.addresses | MaxLen: 511
     address_name_field: str  # JSON Path to address name in generic address entry | Default: $.name | MaxLen: 511
@@ -99,12 +99,12 @@ class ExternalResourceObject:
     
     # External resource name. | MaxLen: 35
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable user resource. | Default: enable
     status: Literal["enable", "disable"]
     # User resource type. | Default: category
-    type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]
+    type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"]
     # Generic external connector address namespace. | MaxLen: 15
     namespace: str
     # JSON Path to array of generic addresses in resource. | Default: $.addresses | MaxLen: 511
@@ -149,7 +149,6 @@ class ExternalResourceObject:
     vrf_select: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -172,6 +171,10 @@ class ExternalResource:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -192,6 +195,7 @@ class ExternalResource:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExternalResourceResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -209,6 +213,7 @@ class ExternalResource:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExternalResourceResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -225,6 +230,7 @@ class ExternalResource:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExternalResourceResponse]: ...
     
     # ================================================================
@@ -267,7 +273,7 @@ class ExternalResource:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
     
@@ -286,7 +292,7 @@ class ExternalResource:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExternalResourceObject]: ...
     
@@ -386,23 +392,6 @@ class ExternalResource:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExternalResourceObject | list[ExternalResourceObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -417,7 +406,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -441,6 +430,7 @@ class ExternalResource:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
@@ -452,7 +442,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -488,7 +478,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -523,7 +513,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -546,40 +536,7 @@ class ExternalResource:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExternalResourcePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
-        namespace: str | None = ...,
-        object_array_path: str | None = ...,
-        address_name_field: str | None = ...,
-        address_data_field: str | None = ...,
-        address_comment_field: str | None = ...,
-        update_method: Literal["feed", "push"] | None = ...,
-        category: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        client_cert_auth: Literal["enable", "disable"] | None = ...,
-        client_cert: str | None = ...,
-        comments: str | None = ...,
-        resource: str | None = ...,
-        user_agent: str | None = ...,
-        server_identity_check: Literal["none", "basic", "full"] | None = ...,
-        refresh_rate: int | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -591,7 +548,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -615,6 +572,7 @@ class ExternalResource:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
@@ -626,7 +584,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -662,7 +620,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -697,7 +655,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -720,40 +678,7 @@ class ExternalResource:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExternalResourcePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
-        namespace: str | None = ...,
-        object_array_path: str | None = ...,
-        address_name_field: str | None = ...,
-        address_data_field: str | None = ...,
-        address_comment_field: str | None = ...,
-        update_method: Literal["feed", "push"] | None = ...,
-        category: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        client_cert_auth: Literal["enable", "disable"] | None = ...,
-        client_cert: str | None = ...,
-        comments: str | None = ...,
-        resource: str | None = ...,
-        user_agent: str | None = ...,
-        server_identity_check: Literal["none", "basic", "full"] | None = ...,
-        refresh_rate: int | None = ...,
-        source_ip: str | None = ...,
-        source_ip_interface: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -764,6 +689,7 @@ class ExternalResource:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
@@ -794,14 +720,7 @@ class ExternalResource:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -817,7 +736,7 @@ class ExternalResource:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -855,8 +774,6 @@ class ExternalResource:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -884,6 +801,10 @@ class ExternalResourceDictMode:
     By default returns ExternalResourceResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExternalResourceObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -990,7 +911,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1026,7 +947,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1062,7 +983,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1085,17 +1006,19 @@ class ExternalResourceDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExternalResourcePayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1129,7 +1052,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1165,7 +1088,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1201,7 +1124,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1224,17 +1147,19 @@ class ExternalResourceDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExternalResourcePayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1288,10 +1213,12 @@ class ExternalResourceDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1312,7 +1239,7 @@ class ExternalResourceDictMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1349,8 +1276,6 @@ class ExternalResourceDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1374,6 +1299,10 @@ class ExternalResourceObjectMode:
     By default returns ExternalResourceObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExternalResourceResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1480,7 +1409,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1516,7 +1445,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1552,7 +1481,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1588,7 +1517,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1611,17 +1540,19 @@ class ExternalResourceObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExternalResourcePayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1655,7 +1586,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1691,7 +1622,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1727,7 +1658,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1763,7 +1694,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1786,17 +1717,19 @@ class ExternalResourceObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExternalResourcePayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1861,10 +1794,12 @@ class ExternalResourceObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExternalResourceObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1885,7 +1820,7 @@ class ExternalResourceObjectMode:
         name: str | None = ...,
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = ...,
         namespace: str | None = ...,
         object_array_path: str | None = ...,
         address_name_field: str | None = ...,
@@ -1922,8 +1857,6 @@ class ExternalResourceObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

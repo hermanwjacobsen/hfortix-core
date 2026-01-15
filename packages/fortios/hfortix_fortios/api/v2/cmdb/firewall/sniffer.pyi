@@ -31,7 +31,7 @@ class SnifferPayload(TypedDict, total=False):
         }
     """
     id: int  # Sniffer ID (0 - 9999). | Default: 0 | Min: 0 | Max: 9999
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable the active status of the sniffer. | Default: enable
     logtraffic: Literal["all", "utm", "disable"]  # Either log all sessions, only sessions that have a | Default: utm
     ipv6: Literal["enable", "disable"]  # Enable/disable sniffing IPv6 packets. | Default: disable
@@ -88,7 +88,7 @@ class SnifferAnomalyItem(TypedDict):
     quarantine_expiry: str  # Duration of quarantine. | Default: 5m
     quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
     threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
-    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
+    threshold_default: int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
 
 
 # Nested classes for table field children (object mode)
@@ -139,7 +139,7 @@ class SnifferAnomalyObject:
     # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
     threshold: int
     # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
-    threshold(default): int
+    threshold_default: int
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -160,7 +160,7 @@ class SnifferResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     id: int  # Sniffer ID (0 - 9999). | Default: 0 | Min: 0 | Max: 9999
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     status: Literal["enable", "disable"]  # Enable/disable the active status of the sniffer. | Default: enable
     logtraffic: Literal["all", "utm", "disable"]  # Either log all sessions, only sessions that have a | Default: utm
     ipv6: Literal["enable", "disable"]  # Enable/disable sniffing IPv6 packets. | Default: disable
@@ -201,7 +201,7 @@ class SnifferObject:
     
     # Sniffer ID (0 - 9999). | Default: 0 | Min: 0 | Max: 9999
     id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable the active status of the sniffer. | Default: enable
     status: Literal["enable", "disable"]
@@ -261,7 +261,6 @@ class SnifferObject:
     anomaly: list[SnifferAnomalyObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -284,6 +283,10 @@ class Sniffer:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -304,6 +307,7 @@ class Sniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SnifferResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -321,6 +325,7 @@ class Sniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SnifferResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -337,6 +342,7 @@ class Sniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SnifferResponse]: ...
     
     # ================================================================
@@ -379,7 +385,7 @@ class Sniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SnifferObject: ...
     
@@ -398,7 +404,7 @@ class Sniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SnifferObject]: ...
     
@@ -498,23 +504,6 @@ class Sniffer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SnifferObject | list[SnifferObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -558,6 +547,7 @@ class Sniffer:
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnifferObject: ...
@@ -678,45 +668,7 @@ class Sniffer:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SnifferPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        ipv6: Literal["enable", "disable"] | None = ...,
-        non_ip: Literal["enable", "disable"] | None = ...,
-        interface: str | None = ...,
-        host: str | None = ...,
-        port: str | None = ...,
-        protocol: str | None = ...,
-        vlan: str | None = ...,
-        application_list_status: Literal["enable", "disable"] | None = ...,
-        application_list: str | None = ...,
-        ips_sensor_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        dsri: Literal["enable", "disable"] | None = ...,
-        av_profile_status: Literal["enable", "disable"] | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        webfilter_profile: str | None = ...,
-        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile_status: Literal["enable", "disable"] | None = ...,
-        dlp_profile: str | None = ...,
-        ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
-        file_filter_profile_status: Literal["enable", "disable"] | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -757,6 +709,7 @@ class Sniffer:
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnifferObject: ...
@@ -877,45 +830,7 @@ class Sniffer:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SnifferPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        ipv6: Literal["enable", "disable"] | None = ...,
-        non_ip: Literal["enable", "disable"] | None = ...,
-        interface: str | None = ...,
-        host: str | None = ...,
-        port: str | None = ...,
-        protocol: str | None = ...,
-        vlan: str | None = ...,
-        application_list_status: Literal["enable", "disable"] | None = ...,
-        application_list: str | None = ...,
-        ips_sensor_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        dsri: Literal["enable", "disable"] | None = ...,
-        av_profile_status: Literal["enable", "disable"] | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        webfilter_profile: str | None = ...,
-        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile_status: Literal["enable", "disable"] | None = ...,
-        dlp_profile: str | None = ...,
-        ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
-        file_filter_profile_status: Literal["enable", "disable"] | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -926,6 +841,7 @@ class Sniffer:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SnifferObject: ...
@@ -956,14 +872,7 @@ class Sniffer:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1022,8 +931,6 @@ class Sniffer:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1051,6 +958,10 @@ class SnifferDictMode:
     By default returns SnifferResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SnifferObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1267,10 +1178,12 @@ class SnifferDictMode:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SnifferPayload | None = ...,
@@ -1426,10 +1339,12 @@ class SnifferDictMode:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SnifferPayload | None = ...,
@@ -1495,10 +1410,12 @@ class SnifferDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1561,8 +1478,6 @@ class SnifferDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1586,6 +1501,10 @@ class SnifferObjectMode:
     By default returns SnifferObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SnifferResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1843,10 +1762,12 @@ class SnifferObjectMode:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnifferObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SnifferPayload | None = ...,
@@ -2043,10 +1964,12 @@ class SnifferObjectMode:
         ips_dos_status: Literal["enable", "disable"] | None = ...,
         anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnifferObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SnifferPayload | None = ...,
@@ -2123,10 +2046,12 @@ class SnifferObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SnifferObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -2189,8 +2114,6 @@ class SnifferObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

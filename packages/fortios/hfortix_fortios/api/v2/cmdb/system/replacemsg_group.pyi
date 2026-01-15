@@ -50,7 +50,7 @@ class ReplacemsgGroupMailItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupHttpItem(TypedDict):
@@ -63,7 +63,7 @@ class ReplacemsgGroupHttpItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupWebproxyItem(TypedDict):
@@ -76,7 +76,7 @@ class ReplacemsgGroupWebproxyItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupFtpItem(TypedDict):
@@ -89,7 +89,7 @@ class ReplacemsgGroupFtpItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupFortiguardwfItem(TypedDict):
@@ -102,7 +102,7 @@ class ReplacemsgGroupFortiguardwfItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupSpamItem(TypedDict):
@@ -115,7 +115,7 @@ class ReplacemsgGroupSpamItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupAlertmailItem(TypedDict):
@@ -128,7 +128,7 @@ class ReplacemsgGroupAlertmailItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupAdminItem(TypedDict):
@@ -141,7 +141,7 @@ class ReplacemsgGroupAdminItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupAuthItem(TypedDict):
@@ -154,7 +154,7 @@ class ReplacemsgGroupAuthItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupSslvpnItem(TypedDict):
@@ -167,7 +167,7 @@ class ReplacemsgGroupSslvpnItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupNacquarItem(TypedDict):
@@ -180,7 +180,7 @@ class ReplacemsgGroupNacquarItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupTrafficquotaItem(TypedDict):
@@ -193,7 +193,7 @@ class ReplacemsgGroupTrafficquotaItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupUtmItem(TypedDict):
@@ -206,7 +206,7 @@ class ReplacemsgGroupUtmItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupCustommessageItem(TypedDict):
@@ -219,7 +219,7 @@ class ReplacemsgGroupCustommessageItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupIcapItem(TypedDict):
@@ -232,7 +232,7 @@ class ReplacemsgGroupIcapItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 class ReplacemsgGroupAutomationItem(TypedDict):
@@ -245,7 +245,7 @@ class ReplacemsgGroupAutomationItem(TypedDict):
     msg_type: str  # Message type. | MaxLen: 28
     buffer: str  # Message string. | MaxLen: 32768
     header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
 
 
 # Nested classes for table field children (object mode)
@@ -265,7 +265,7 @@ class ReplacemsgGroupMailObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -292,7 +292,7 @@ class ReplacemsgGroupHttpObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -319,7 +319,7 @@ class ReplacemsgGroupWebproxyObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -346,7 +346,7 @@ class ReplacemsgGroupFtpObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -373,7 +373,7 @@ class ReplacemsgGroupFortiguardwfObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -400,7 +400,7 @@ class ReplacemsgGroupSpamObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -427,7 +427,7 @@ class ReplacemsgGroupAlertmailObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -454,7 +454,7 @@ class ReplacemsgGroupAdminObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -481,7 +481,7 @@ class ReplacemsgGroupAuthObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -508,7 +508,7 @@ class ReplacemsgGroupSslvpnObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -535,7 +535,7 @@ class ReplacemsgGroupNacquarObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -562,7 +562,7 @@ class ReplacemsgGroupTrafficquotaObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -589,7 +589,7 @@ class ReplacemsgGroupUtmObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -616,7 +616,7 @@ class ReplacemsgGroupCustommessageObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -643,7 +643,7 @@ class ReplacemsgGroupIcapObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -670,7 +670,7 @@ class ReplacemsgGroupAutomationObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format: Literal["none", "text", "html"]
+    format_: Literal["none", "text", "html"]
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -782,6 +782,10 @@ class ReplacemsgGroup:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -802,6 +806,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ReplacemsgGroupResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -819,6 +824,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ReplacemsgGroupResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -835,6 +841,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ReplacemsgGroupResponse]: ...
     
     # ================================================================
@@ -877,7 +884,7 @@ class ReplacemsgGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
@@ -896,7 +903,7 @@ class ReplacemsgGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ReplacemsgGroupObject]: ...
     
@@ -996,23 +1003,6 @@ class ReplacemsgGroup:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject | list[ReplacemsgGroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -1045,6 +1035,7 @@ class ReplacemsgGroup:
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
@@ -1132,34 +1123,7 @@ class ReplacemsgGroup:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1189,6 +1153,7 @@ class ReplacemsgGroup:
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
@@ -1276,34 +1241,7 @@ class ReplacemsgGroup:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1314,6 +1252,7 @@ class ReplacemsgGroup:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
@@ -1344,14 +1283,7 @@ class ReplacemsgGroup:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1399,8 +1331,6 @@ class ReplacemsgGroup:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1428,6 +1358,10 @@ class ReplacemsgGroupDictMode:
     By default returns ReplacemsgGroupResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ReplacemsgGroupObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1611,10 +1545,12 @@ class ReplacemsgGroupDictMode:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
@@ -1726,10 +1662,12 @@ class ReplacemsgGroupDictMode:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
@@ -1784,10 +1722,12 @@ class ReplacemsgGroupDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1839,8 +1779,6 @@ class ReplacemsgGroupDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1864,6 +1802,10 @@ class ReplacemsgGroupObjectMode:
     By default returns ReplacemsgGroupObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ReplacemsgGroupResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -2077,10 +2019,12 @@ class ReplacemsgGroupObjectMode:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
@@ -2222,10 +2166,12 @@ class ReplacemsgGroupObjectMode:
         icap: str | list[str] | list[dict[str, Any]] | None = ...,
         automation: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
@@ -2291,10 +2237,12 @@ class ReplacemsgGroupObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2346,8 +2294,6 @@ class ReplacemsgGroupObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -80,7 +80,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             "required_fields": ['name'],
             "example": "[{'name': 'value'}]",
         },
-        "list": {
+        "list_": {
             "mkey": "ip",
             "required_fields": ['ip'],
             "example": "[{'ip': '192.168.1.10'}]",
@@ -268,7 +268,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -301,11 +301,11 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
@@ -325,7 +325,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             subnet: IP address and subnet mask of address.
-            type: Type of address.
+            type_: Type of address.
             route_tag: route-tag address.
             sub_type: Sub-type of address.
             clearpass_spt: SPT (System Posture Token) value.
@@ -373,16 +373,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             associated_interface: Network interface associated with address.
             color: Color of icon on the GUI.
-            filter: Match criteria filter.
+            filter_: Match criteria filter.
             sdn_addr_type: Type of addresses to collect.
             node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
             obj_id: Object ID for NSX.
-            list: IP address list.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            list_: IP address list.
             tagging: Config object tagging.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -446,12 +441,12 @@ class Address(CRUDEndpoint, MetadataMixin):
                 field_name="sso_attribute_value",
                 example="[{'name': 'value'}]",
             )
-        if list is not None:
-            list = normalize_table_field(
-                list,
+        if list_ is not None:
+            list_ = normalize_table_field(
+                list_,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list",
+                field_name="list_",
                 example="[{'ip': '192.168.1.10'}]",
             )
         if tagging is not None:
@@ -470,7 +465,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -503,11 +498,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter=filter,
+            filter_=filter_,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list=list,
+            list_=list_,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,
@@ -545,7 +540,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -578,11 +573,11 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
@@ -602,7 +597,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             subnet: IP address and subnet mask of address.
-            type: Type of address.
+            type_: Type of address.
             route_tag: route-tag address.
             sub_type: Sub-type of address.
             clearpass_spt: SPT (System Posture Token) value.
@@ -650,16 +645,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             associated_interface: Network interface associated with address.
             color: Color of icon on the GUI.
-            filter: Match criteria filter.
+            filter_: Match criteria filter.
             sdn_addr_type: Type of addresses to collect.
             node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
             obj_id: Object ID for NSX.
-            list: IP address list.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            list_: IP address list.
             tagging: Config object tagging.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -725,12 +715,12 @@ class Address(CRUDEndpoint, MetadataMixin):
                 field_name="sso_attribute_value",
                 example="[{'name': 'value'}]",
             )
-        if list is not None:
-            list = normalize_table_field(
-                list,
+        if list_ is not None:
+            list_ = normalize_table_field(
+                list_,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list",
+                field_name="list_",
                 example="[{'ip': '192.168.1.10'}]",
             )
         if tagging is not None:
@@ -749,7 +739,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -782,11 +772,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter=filter,
+            filter_=filter_,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list=list,
+            list_=list_,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,
@@ -924,7 +914,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -957,11 +947,11 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter: str | None = None,
+        filter_: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list: str | list[str] | list[dict[str, Any]] | None = None,
+        list_: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
@@ -982,7 +972,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Field name
             uuid: Field uuid
             subnet: Field subnet
-            type: Field type
+            type_: Field type
             route_tag: Field route-tag
             sub_type: Field sub-type
             clearpass_spt: Field clearpass-spt
@@ -1015,11 +1005,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Field comment
             associated_interface: Field associated-interface
             color: Field color
-            filter: Field filter
+            filter_: Field filter
             sdn_addr_type: Field sdn-addr-type
             node_ip_only: Field node-ip-only
             obj_id: Field obj-id
-            list: Field list
+            list_: Field list
             tagging: Field tagging
             allow_routing: Field allow-routing
             passive_fqdn_learning: Field passive-fqdn-learning
@@ -1070,7 +1060,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type=type,
+            type_=type_,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -1103,11 +1093,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter=filter,
+            filter_=filter_,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list=list,
+            list_=list_,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,

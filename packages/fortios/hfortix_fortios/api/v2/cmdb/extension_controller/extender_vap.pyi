@@ -19,7 +19,7 @@ class ExtenderVapPayload(TypedDict, total=False):
         }
     """
     name: str  # Wi-Fi VAP name. | MaxLen: 15
-    type: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
+    type_: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
     ssid: str  # Wi-Fi SSID. | MaxLen: 32
     max_clients: int  # Wi-Fi max clients (0 - 512), default = 0 | Default: 0 | Min: 0 | Max: 512
     broadcast_ssid: Literal["disable", "enable"]  # Wi-Fi broadcast SSID enable / disable. | Default: enable
@@ -53,7 +53,7 @@ class ExtenderVapResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Wi-Fi VAP name. | MaxLen: 15
-    type: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
+    type_: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
     ssid: str  # Wi-Fi SSID. | MaxLen: 32
     max_clients: int  # Wi-Fi max clients (0 - 512), default = 0 | Default: 0 | Min: 0 | Max: 512
     broadcast_ssid: Literal["disable", "enable"]  # Wi-Fi broadcast SSID enable / disable. | Default: enable
@@ -86,7 +86,7 @@ class ExtenderVapObject:
     # Wi-Fi VAP name. | MaxLen: 15
     name: str
     # Wi-Fi VAP type local-vap / lan-extension-vap.
-    type: Literal["local-vap", "lan-ext-vap"]
+    type_: Literal["local-vap", "lan-ext-vap"]
     # Wi-Fi SSID. | MaxLen: 32
     ssid: str
     # Wi-Fi max clients (0 - 512), default = 0 (no limit) | Default: 0 | Min: 0 | Max: 512
@@ -150,6 +150,10 @@ class ExtenderVap:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -170,6 +174,7 @@ class ExtenderVap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtenderVapResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -187,6 +192,7 @@ class ExtenderVap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtenderVapResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -203,6 +209,7 @@ class ExtenderVap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExtenderVapResponse]: ...
     
     # ================================================================
@@ -245,7 +252,7 @@ class ExtenderVap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
     
@@ -264,7 +271,7 @@ class ExtenderVap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExtenderVapObject]: ...
     
@@ -364,23 +371,6 @@ class ExtenderVap:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExtenderVapObject | list[ExtenderVapObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -393,7 +383,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -415,6 +405,7 @@ class ExtenderVap:
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
@@ -424,7 +415,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -456,7 +447,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -487,7 +478,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -508,36 +499,7 @@ class ExtenderVap:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -547,7 +509,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -569,6 +531,7 @@ class ExtenderVap:
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
@@ -578,7 +541,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -610,7 +573,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -641,7 +604,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -662,36 +625,7 @@ class ExtenderVap:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -702,6 +636,7 @@ class ExtenderVap:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
@@ -732,14 +667,7 @@ class ExtenderVap:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -753,7 +681,7 @@ class ExtenderVap:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -789,8 +717,6 @@ class ExtenderVap:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -818,6 +744,10 @@ class ExtenderVapDictMode:
     By default returns ExtenderVapResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExtenderVapObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -922,7 +852,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -954,7 +884,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -986,7 +916,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1007,15 +937,17 @@ class ExtenderVapDictMode:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1045,7 +977,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1077,7 +1009,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1109,7 +1041,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1130,15 +1062,17 @@ class ExtenderVapDictMode:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1190,10 +1124,12 @@ class ExtenderVapDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1212,7 +1148,7 @@ class ExtenderVapDictMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1247,8 +1183,6 @@ class ExtenderVapDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1272,6 +1206,10 @@ class ExtenderVapObjectMode:
     By default returns ExtenderVapObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExtenderVapResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1376,7 +1314,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1408,7 +1346,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1440,7 +1378,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1472,7 +1410,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1493,15 +1431,17 @@ class ExtenderVapObjectMode:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1531,7 +1471,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1563,7 +1503,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1595,7 +1535,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1627,7 +1567,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1648,15 +1588,17 @@ class ExtenderVapObjectMode:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1719,10 +1661,12 @@ class ExtenderVapObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderVapObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1741,7 +1685,7 @@ class ExtenderVapObjectMode:
         self,
         payload_dict: ExtenderVapPayload | None = ...,
         name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
+        type_: Literal["local-vap", "lan-ext-vap"] | None = ...,
         ssid: str | None = ...,
         max_clients: int | None = ...,
         broadcast_ssid: Literal["disable", "enable"] | None = ...,
@@ -1776,8 +1720,6 @@ class ExtenderVapObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

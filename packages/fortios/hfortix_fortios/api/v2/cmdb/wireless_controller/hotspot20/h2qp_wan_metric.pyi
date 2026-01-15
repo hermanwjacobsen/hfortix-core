@@ -102,6 +102,10 @@ class H2qpWanMetric:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -122,6 +126,7 @@ class H2qpWanMetric:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> H2qpWanMetricResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -139,6 +144,7 @@ class H2qpWanMetric:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> H2qpWanMetricResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -155,6 +161,7 @@ class H2qpWanMetric:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[H2qpWanMetricResponse]: ...
     
     # ================================================================
@@ -197,7 +204,7 @@ class H2qpWanMetric:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
     
@@ -216,7 +223,7 @@ class H2qpWanMetric:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[H2qpWanMetricObject]: ...
     
@@ -316,23 +323,6 @@ class H2qpWanMetric:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> H2qpWanMetricObject | list[H2qpWanMetricObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -355,6 +345,7 @@ class H2qpWanMetric:
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
@@ -412,24 +403,7 @@ class H2qpWanMetric:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -449,6 +423,7 @@ class H2qpWanMetric:
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
@@ -506,24 +481,7 @@ class H2qpWanMetric:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -534,6 +492,7 @@ class H2qpWanMetric:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
@@ -564,14 +523,7 @@ class H2qpWanMetric:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -609,8 +561,6 @@ class H2qpWanMetric:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -638,6 +588,10 @@ class H2qpWanMetricDictMode:
     By default returns H2qpWanMetricResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return H2qpWanMetricObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -791,10 +745,12 @@ class H2qpWanMetricDictMode:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -866,10 +822,12 @@ class H2qpWanMetricDictMode:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -914,10 +872,12 @@ class H2qpWanMetricDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -959,8 +919,6 @@ class H2qpWanMetricDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -984,6 +942,10 @@ class H2qpWanMetricObjectMode:
     By default returns H2qpWanMetricObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return H2qpWanMetricResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1157,10 +1119,12 @@ class H2qpWanMetricObjectMode:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -1252,10 +1216,12 @@ class H2qpWanMetricObjectMode:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -1311,10 +1277,12 @@ class H2qpWanMetricObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> H2qpWanMetricObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1356,8 +1324,6 @@ class H2qpWanMetricObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

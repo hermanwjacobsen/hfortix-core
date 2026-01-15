@@ -59,7 +59,16 @@ class TtlPolicyModel(BaseModel):
 
     Configure TTL policies.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - action: pattern=        - srcintf: max_length=35 pattern=        - srcaddr: pattern=        - service: pattern=        - schedule: max_length=35 pattern=        - ttl: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - action: pattern=
+        - srcintf: max_length=35 pattern=
+        - srcaddr: pattern=
+        - service: pattern=
+        - schedule: max_length=35 pattern=
+        - ttl: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -71,7 +80,15 @@ class TtlPolicyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this TTL policy.")    action: Literal["accept", "deny"] | None = Field(default="deny", description="Action to be performed on traffic matching this policy (default = deny).")    srcintf: str = Field(max_length=35, default="", description="Source interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    srcaddr: list[TtlPolicySrcaddr] = Field(description="Source address object(s) from available options. Separate multiple names with a space.")    service: list[TtlPolicyService] = Field(description="Service object(s) from available options. Separate multiple names with a space.")    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    ttl: str = Field(default="", description="Value/range to match against the packet's Time to Live value (format: ttl[ - ttl_high], 1 - 255).")    # ========================================================================
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this TTL policy.")
+    action: Literal["accept", "deny"] | None = Field(default="deny", description="Action to be performed on traffic matching this policy (default = deny).")
+    srcintf: str = Field(max_length=35, default="", description="Source interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']
+    srcaddr: list[TtlPolicySrcaddr] | None = Field(description="Source address object(s) from available options. Separate multiple names with a space.")
+    service: list[TtlPolicyService] | None = Field(description="Service object(s) from available options. Separate multiple names with a space.")
+    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']
+    ttl: str = Field(default="", description="Value/range to match against the packet's Time to Live value (format: ttl[ - ttl_high], 1 - 255).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -165,7 +182,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "srcintf", None)
@@ -218,7 +235,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -278,7 +295,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "service", [])
@@ -338,7 +355,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -379,11 +396,14 @@ class TtlPolicyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_schedule_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -405,5 +425,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.251146Z
+# Generated: 2026-01-14T22:43:37.674217Z
 # ============================================================================

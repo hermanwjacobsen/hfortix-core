@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -43,7 +44,7 @@ class SaasApplicationOutputAttributes(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=79, default="", description="CASB attribute name.")
     description: str | None = Field(max_length=63, default="", description="CASB attribute description.")
-    type: TypeEnum | None = Field(default="string", description="CASB attribute format type.")
+    type_: str | None = Field(default="string", description="CASB attribute format type.")
     optional: Literal["enable", "disable"] | None = Field(default="disable", description="CASB output attribute optional.")
 
 
@@ -60,7 +61,7 @@ class SaasApplicationInputAttributes(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=79, default="", description="CASB attribute name.")
     description: str | None = Field(max_length=63, default="", description="CASB attribute description.")
-    type: Literal["string"] | None = Field(default="string", description="CASB attribute format type.")
+    type_: Literal["string"] | None = Field(default="string", description="CASB attribute format type.")
     required: Literal["enable", "disable"] | None = Field(default="enable", description="CASB input attribute required.")
     default: Literal["string", "string-list"] | None = Field(default="string", description="CASB attribute default value.")
     fallback_input: Literal["enable", "disable"] | None = Field(default="disable", description="CASB attribute legacy input.")
@@ -81,7 +82,17 @@ class SaasApplicationModel(BaseModel):
 
     Configure CASB SaaS application.
 
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: max_length=36 pattern=        - status: pattern=        - type: pattern=        - casb_name: max_length=79 pattern=        - description: max_length=63 pattern=        - domains: pattern=        - output_attributes: pattern=        - input_attributes: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - uuid: max_length=36 pattern=
+        - status: pattern=
+        - type_: pattern=
+        - casb_name: max_length=79 pattern=
+        - description: max_length=63 pattern=
+        - domains: pattern=
+        - output_attributes: pattern=
+        - input_attributes: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -93,7 +104,16 @@ class SaasApplicationModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="SaaS application name.")    uuid: str | None = Field(max_length=36, default="", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable setting.")    type: Literal["built-in", "customized"] | None = Field(default="customized", description="SaaS application type.")    casb_name: str | None = Field(max_length=79, default="", description="SaaS application signature name.")    description: str | None = Field(max_length=63, default="", description="SaaS application description.")    domains: list[SaasApplicationDomains] = Field(default=None, description="SaaS application domain list.")    output_attributes: list[SaasApplicationOutputAttributes] = Field(default=None, description="SaaS application output attributes.")    input_attributes: list[SaasApplicationInputAttributes] = Field(default=None, description="SaaS application input attributes.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="SaaS application name.")
+    uuid: str | None = Field(max_length=36, default="", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable setting.")
+    type_: Literal["built-in", "customized"] | None = Field(default="customized", description="SaaS application type.")
+    casb_name: str | None = Field(max_length=79, default="", description="SaaS application signature name.")
+    description: str | None = Field(max_length=63, default="", description="SaaS application description.")
+    domains: list[SaasApplicationDomains] | None = Field(default=None, description="SaaS application domain list.")
+    output_attributes: list[SaasApplicationOutputAttributes] | None = Field(default=None, description="SaaS application output attributes.")
+    input_attributes: list[SaasApplicationInputAttributes] | None = Field(default=None, description="SaaS application input attributes.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -142,5 +162,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.457155Z
+# Generated: 2026-01-14T22:43:36.689080Z
 # ============================================================================

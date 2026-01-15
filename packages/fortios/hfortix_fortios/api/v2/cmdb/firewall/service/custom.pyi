@@ -24,7 +24,7 @@ class CustomPayload(TypedDict, total=False):
         }
     """
     name: str  # Custom service name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     proxy: Literal["enable", "disable"]  # Enable/disable web proxy service. | Default: disable
     category: str  # Service category. | MaxLen: 63
     protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"]  # Protocol type based on IANA numbers. | Default: TCP/UDP/UDP-Lite/SCTP
@@ -127,7 +127,7 @@ class CustomResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Custom service name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     proxy: Literal["enable", "disable"]  # Enable/disable web proxy service. | Default: disable
     category: str  # Service category. | MaxLen: 63
     protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"]  # Protocol type based on IANA numbers. | Default: TCP/UDP/UDP-Lite/SCTP
@@ -166,7 +166,7 @@ class CustomObject:
     
     # Custom service name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Enable/disable web proxy service. | Default: disable
     proxy: Literal["enable", "disable"]
@@ -245,6 +245,10 @@ class Custom:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -265,6 +269,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CustomResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -282,6 +287,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CustomResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -298,6 +304,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CustomResponse]: ...
     
     # ================================================================
@@ -340,7 +347,7 @@ class Custom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
@@ -359,7 +366,7 @@ class Custom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CustomObject]: ...
     
@@ -459,23 +466,6 @@ class Custom:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CustomObject | list[CustomObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -517,6 +507,7 @@ class Custom:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -631,43 +622,7 @@ class Custom:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CustomPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
-        category: str | None = ...,
-        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = ...,
-        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = ...,
-        iprange: str | None = ...,
-        fqdn: str | None = ...,
-        protocol_number: int | None = ...,
-        icmptype: int | None = ...,
-        icmpcode: int | None = ...,
-        tcp_portrange: str | None = ...,
-        udp_portrange: str | None = ...,
-        udplite_portrange: str | None = ...,
-        sctp_portrange: str | None = ...,
-        tcp_halfclose_timer: int | None = ...,
-        tcp_halfopen_timer: int | None = ...,
-        tcp_timewait_timer: int | None = ...,
-        tcp_rst_timer: int | None = ...,
-        udp_idle_timer: int | None = ...,
-        session_ttl: str | None = ...,
-        check_reset_range: Literal["disable", "strict", "default"] | None = ...,
-        comment: str | None = ...,
-        color: int | None = ...,
-        app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -706,6 +661,7 @@ class Custom:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -820,43 +776,7 @@ class Custom:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CustomPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
-        category: str | None = ...,
-        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = ...,
-        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = ...,
-        iprange: str | None = ...,
-        fqdn: str | None = ...,
-        protocol_number: int | None = ...,
-        icmptype: int | None = ...,
-        icmpcode: int | None = ...,
-        tcp_portrange: str | None = ...,
-        udp_portrange: str | None = ...,
-        udplite_portrange: str | None = ...,
-        sctp_portrange: str | None = ...,
-        tcp_halfclose_timer: int | None = ...,
-        tcp_halfopen_timer: int | None = ...,
-        tcp_timewait_timer: int | None = ...,
-        tcp_rst_timer: int | None = ...,
-        udp_idle_timer: int | None = ...,
-        session_ttl: str | None = ...,
-        check_reset_range: Literal["disable", "strict", "default"] | None = ...,
-        comment: str | None = ...,
-        color: int | None = ...,
-        app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -867,6 +787,7 @@ class Custom:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -897,14 +818,7 @@ class Custom:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -961,8 +875,6 @@ class Custom:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -990,6 +902,10 @@ class CustomDictMode:
     By default returns CustomResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CustomObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1200,10 +1116,12 @@ class CustomDictMode:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1351,10 +1269,12 @@ class CustomDictMode:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1418,10 +1338,12 @@ class CustomDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1482,8 +1404,6 @@ class CustomDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1507,6 +1427,10 @@ class CustomObjectMode:
     By default returns CustomObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CustomResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1756,10 +1680,12 @@ class CustomObjectMode:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1946,10 +1872,12 @@ class CustomObjectMode:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -2024,10 +1952,12 @@ class CustomObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2088,8 +2018,6 @@ class CustomObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

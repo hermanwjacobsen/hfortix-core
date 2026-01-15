@@ -78,6 +78,10 @@ class AnqpIpAddressType:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -98,6 +102,7 @@ class AnqpIpAddressType:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AnqpIpAddressTypeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -115,6 +120,7 @@ class AnqpIpAddressType:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AnqpIpAddressTypeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -131,6 +137,7 @@ class AnqpIpAddressType:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AnqpIpAddressTypeResponse]: ...
     
     # ================================================================
@@ -173,7 +180,7 @@ class AnqpIpAddressType:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
     
@@ -192,7 +199,7 @@ class AnqpIpAddressType:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AnqpIpAddressTypeObject]: ...
     
@@ -292,23 +299,6 @@ class AnqpIpAddressType:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AnqpIpAddressTypeObject | list[AnqpIpAddressTypeObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -325,6 +315,7 @@ class AnqpIpAddressType:
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
@@ -364,18 +355,7 @@ class AnqpIpAddressType:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AnqpIpAddressTypePayload | None = ...,
-        name: str | None = ...,
-        ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
-        ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -389,6 +369,7 @@ class AnqpIpAddressType:
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
@@ -428,18 +409,7 @@ class AnqpIpAddressType:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AnqpIpAddressTypePayload | None = ...,
-        name: str | None = ...,
-        ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
-        ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -450,6 +420,7 @@ class AnqpIpAddressType:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
@@ -480,14 +451,7 @@ class AnqpIpAddressType:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -519,8 +483,6 @@ class AnqpIpAddressType:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -548,6 +510,10 @@ class AnqpIpAddressTypeDictMode:
     By default returns AnqpIpAddressTypeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AnqpIpAddressTypeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -683,10 +649,12 @@ class AnqpIpAddressTypeDictMode:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AnqpIpAddressTypePayload | None = ...,
@@ -734,10 +702,12 @@ class AnqpIpAddressTypeDictMode:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AnqpIpAddressTypePayload | None = ...,
@@ -776,10 +746,12 @@ class AnqpIpAddressTypeDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -815,8 +787,6 @@ class AnqpIpAddressTypeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -840,6 +810,10 @@ class AnqpIpAddressTypeObjectMode:
     By default returns AnqpIpAddressTypeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AnqpIpAddressTypeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -989,10 +963,12 @@ class AnqpIpAddressTypeObjectMode:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AnqpIpAddressTypePayload | None = ...,
@@ -1054,10 +1030,12 @@ class AnqpIpAddressTypeObjectMode:
         ipv6_address_type: Literal["not-available", "available", "not-known"] | None = ...,
         ipv4_address_type: Literal["not-available", "public", "port-restricted", "single-NATed-private", "double-NATed-private", "port-restricted-and-single-NATed", "port-restricted-and-double-NATed", "not-known"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AnqpIpAddressTypePayload | None = ...,
@@ -1107,10 +1085,12 @@ class AnqpIpAddressTypeObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpIpAddressTypeObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1146,8 +1126,6 @@ class AnqpIpAddressTypeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

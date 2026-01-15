@@ -62,7 +62,7 @@ class ProxyAddressTagging(BaseModel):
         str_strip_whitespace = True
     name: str | None = Field(max_length=63, default="", description="Tagging entry name.")
     category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    tags: list[dict[str, Any]] | None = Field(default=None, description="Tags.")
 
 
 class ProxyAddressApplication(BaseModel):
@@ -84,7 +84,7 @@ class ProxyAddressApplication(BaseModel):
 
 
 class ProxyAddressTypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     HOST_REGEX = "host-regex"
     URL = "url"
     CATEGORY = "category"
@@ -133,7 +133,29 @@ class ProxyAddressModel(BaseModel):
 
     Configure web proxy address.
 
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type: pattern=        - host: max_length=79 pattern=        - host_regex: max_length=255 pattern=        - path: max_length=255 pattern=        - query: max_length=255 pattern=        - referrer: pattern=        - category: pattern=        - method: pattern=        - ua: pattern=        - ua_min_ver: max_length=63 pattern=        - ua_max_ver: max_length=63 pattern=        - header_name: max_length=79 pattern=        - header: max_length=255 pattern=        - case_sensitivity: pattern=        - header_group: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - application: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - uuid: pattern=
+        - type_: pattern=
+        - host: max_length=79 pattern=
+        - host_regex: max_length=255 pattern=
+        - path: max_length=255 pattern=
+        - query: max_length=255 pattern=
+        - referrer: pattern=
+        - category: pattern=
+        - method: pattern=
+        - ua: pattern=
+        - ua_min_ver: max_length=63 pattern=
+        - ua_max_ver: max_length=63 pattern=
+        - header_name: max_length=79 pattern=
+        - header: max_length=255 pattern=
+        - case_sensitivity: pattern=
+        - header_group: pattern=
+        - color: min=0 max=32 pattern=
+        - tagging: pattern=
+        - comment: max_length=255 pattern=
+        - application: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -145,7 +167,28 @@ class ProxyAddressModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="Address name.")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    type: ProxyAddressTypeEnum | None = Field(default="url", description="Proxy address type.")    host: str = Field(max_length=79, default="", description="Address object for the host.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.vipgrp.name', 'firewall.vip.name']    host_regex: str | None = Field(max_length=255, default="", description="Host name as a regular expression.")    path: str | None = Field(max_length=255, default="", description="URL path as a regular expression.")    query: str | None = Field(max_length=255, default="", description="Match the query part of the URL as a regular expression.")    referrer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of referrer field in the HTTP header to match the address.")    category: list[ProxyAddressCategory] = Field(default=None, description="FortiGuard category ID.")    method: ProxyAddressMethodEnum | None = Field(default="", description="HTTP request methods to be used.")    ua: ProxyAddressUaEnum | None = Field(default="", description="Names of browsers to be used as user agent.")    ua_min_ver: str | None = Field(max_length=63, default="", description="Minimum version of the user agent specified in dotted notation. For example, use 90.0.1 with the ua field set to \"chrome\" to require Google Chrome's minimum version must be 90.0.1.")    ua_max_ver: str | None = Field(max_length=63, default="", description="Maximum version of the user agent specified in dotted notation. For example, use 120 with the ua field set to \"chrome\" to require Google Chrome's maximum version must be 120.")    header_name: str | None = Field(max_length=79, default="", description="Name of HTTP header.")    header: str | None = Field(max_length=255, default="", description="HTTP header name as a regular expression.")    case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to make the pattern case sensitive.")    header_group: list[ProxyAddressHeaderGroup] = Field(default=None, description="HTTP header group.")    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets value to 1).")    tagging: list[ProxyAddressTagging] = Field(default=None, description="Config object tagging.")    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    application: list[ProxyAddressApplication] = Field(description="SaaS application.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="Address name.")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    type_: str | ProxyAddressTypeEnum | None = Field(default="url", description="Proxy address type.")
+    host: str = Field(max_length=79, default="", description="Address object for the host.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.vipgrp.name', 'firewall.vip.name']
+    host_regex: str | None = Field(max_length=255, default="", description="Host name as a regular expression.")
+    path: str | None = Field(max_length=255, default="", description="URL path as a regular expression.")
+    query: str | None = Field(max_length=255, default="", description="Match the query part of the URL as a regular expression.")
+    referrer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of referrer field in the HTTP header to match the address.")
+    category: list[ProxyAddressCategory] | None = Field(default=None, description="FortiGuard category ID.")
+    method: str | ProxyAddressMethodEnum | None = Field(default=None, description="HTTP request methods to be used.")
+    ua: str | ProxyAddressUaEnum | None = Field(default=None, description="Names of browsers to be used as user agent.")
+    ua_min_ver: str | None = Field(max_length=63, default="", description="Minimum version of the user agent specified in dotted notation. For example, use 90.0.1 with the ua field set to \"chrome\" to require Google Chrome's minimum version must be 90.0.1.")
+    ua_max_ver: str | None = Field(max_length=63, default="", description="Maximum version of the user agent specified in dotted notation. For example, use 120 with the ua field set to \"chrome\" to require Google Chrome's maximum version must be 120.")
+    header_name: str | None = Field(max_length=79, default="", description="Name of HTTP header.")
+    header: str | None = Field(max_length=255, default="", description="HTTP header name as a regular expression.")
+    case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to make the pattern case sensitive.")
+    header_group: list[ProxyAddressHeaderGroup] | None = Field(default=None, description="HTTP header group.")
+    color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets value to 1).")
+    tagging: list[ProxyAddressTagging] | None = Field(default=None, description="Config object tagging.")
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    application: list[ProxyAddressApplication] | None = Field(description="SaaS application.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -224,7 +267,7 @@ class ProxyAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -281,7 +324,7 @@ class ProxyAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -327,9 +370,10 @@ class ProxyAddressModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_tagging_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_tagging_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -351,5 +395,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.309087Z
+# Generated: 2026-01-14T22:43:34.061715Z
 # ============================================================================

@@ -26,7 +26,16 @@ class TrafficForwardProxyModel(BaseModel):
 
     Configure ZTNA traffic forward proxy.
 
-    Validation Rules:        - name: max_length=79 pattern=        - vip: max_length=79 pattern=        - host: max_length=79 pattern=        - decrypted_traffic_mirror: max_length=35 pattern=        - log_blocked_traffic: pattern=        - auth_portal: pattern=        - auth_virtual_host: max_length=79 pattern=        - vip6: max_length=79 pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - vip: max_length=79 pattern=
+        - host: max_length=79 pattern=
+        - decrypted_traffic_mirror: max_length=35 pattern=
+        - log_blocked_traffic: pattern=
+        - auth_portal: pattern=
+        - auth_virtual_host: max_length=79 pattern=
+        - vip6: max_length=79 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +47,15 @@ class TrafficForwardProxyModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")
+    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']
+    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']
+    log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")
+    auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")
+    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']
+    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -177,7 +194,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vip", None)
@@ -226,7 +243,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -275,7 +292,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -324,7 +341,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "auth_virtual_host", None)
@@ -373,7 +390,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "vip6", None)
@@ -410,12 +427,16 @@ class TrafficForwardProxyModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_vip_references(client)
-        all_errors.extend(errors)        errors = await self.validate_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_decrypted_traffic_mirror_references(client)
-        all_errors.extend(errors)        errors = await self.validate_auth_virtual_host_references(client)
-        all_errors.extend(errors)        errors = await self.validate_vip6_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_host_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_decrypted_traffic_mirror_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_auth_virtual_host_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_vip6_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -437,5 +458,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.083108Z
+# Generated: 2026-01-14T22:43:35.059482Z
 # ============================================================================

@@ -65,7 +65,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
     # Auto-generated from schema - supports flexible input formats
     # ========================================================================
     _TABLE_FIELDS = {
-        "map": {
+        "map_": {
             "mkey": "name",
             "required_fields": ['name', 'cos-queue'],
             "example": "[{'name': 'value', 'cos-queue': 1}]",
@@ -247,7 +247,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        map: str | list[str] | list[dict[str, Any]] | None = None,
+        map_: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -262,10 +262,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Dscp map name.
             description: Description of the ip-dscp map name.
-            map: Maps between IP-DSCP value to COS queue.
-                Default format: [{'name': 'value', 'cos-queue': 1}]
-                Required format: List of dicts with keys: name, cos-queue
-                  (String format not allowed due to multiple required fields)
+            map_: Maps between IP-DSCP value to COS queue.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -296,12 +293,12 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Apply normalization for table fields (supports flexible input formats)
-        if map is not None:
-            map = normalize_table_field(
-                map,
+        if map_ is not None:
+            map_ = normalize_table_field(
+                map_,
                 mkey="name",
                 required_fields=['name', 'cos-queue'],
-                field_name="map",
+                field_name="map_",
                 example="[{'name': 'value', 'cos-queue': 1}]",
             )
         
@@ -311,7 +308,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             description=description,
-            map=map,
+            map_=map_,
             data=payload_dict,
         )
         
@@ -344,7 +341,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        map: str | list[str] | list[dict[str, Any]] | None = None,
+        map_: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -359,10 +356,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Dscp map name.
             description: Description of the ip-dscp map name.
-            map: Maps between IP-DSCP value to COS queue.
-                Default format: [{'name': 'value', 'cos-queue': 1}]
-                Required format: List of dicts with keys: name, cos-queue
-                  (String format not allowed due to multiple required fields)
+            map_: Maps between IP-DSCP value to COS queue.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -395,12 +389,12 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Apply normalization for table fields (supports flexible input formats)
-        if map is not None:
-            map = normalize_table_field(
-                map,
+        if map_ is not None:
+            map_ = normalize_table_field(
+                map_,
                 mkey="name",
                 required_fields=['name', 'cos-queue'],
-                field_name="map",
+                field_name="map_",
                 example="[{'name': 'value', 'cos-queue': 1}]",
             )
         
@@ -410,7 +404,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             description=description,
-            map=map,
+            map_=map_,
             data=payload_dict,
         )
 
@@ -543,7 +537,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        map: str | list[str] | list[dict[str, Any]] | None = None,
+        map_: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -559,7 +553,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             description: Field description
-            map: Field map
+            map_: Field map
             vdom: Virtual domain name
             raw_json: If True, return raw API response
             response_mode: Override client-level response_mode
@@ -605,7 +599,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             description=description,
-            map=map,
+            map_=map_,
             data=payload_dict,
         )
         

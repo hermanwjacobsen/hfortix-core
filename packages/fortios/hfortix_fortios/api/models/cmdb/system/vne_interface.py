@@ -26,7 +26,19 @@ class VneInterfaceModel(BaseModel):
 
     Configure virtual network enabler tunnels.
 
-    Validation Rules:        - name: max_length=15 pattern=        - interface: max_length=15 pattern=        - ssl_certificate: max_length=35 pattern=        - bmr_hostname: max_length=128 pattern=        - auto_asic_offload: pattern=        - ipv4_address: pattern=        - br: max_length=255 pattern=        - update_url: max_length=511 pattern=        - mode: pattern=        - http_username: max_length=64 pattern=        - http_password: max_length=128 pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - interface: max_length=15 pattern=
+        - ssl_certificate: max_length=35 pattern=
+        - bmr_hostname: max_length=128 pattern=
+        - auto_asic_offload: pattern=
+        - ipv4_address: pattern=
+        - br: max_length=255 pattern=
+        - update_url: max_length=511 pattern=
+        - mode: pattern=
+        - http_username: max_length=64 pattern=
+        - http_password: max_length=128 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +50,18 @@ class VneInterfaceModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="VNE tunnel name.")    interface: str = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']    ssl_certificate: str = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']    bmr_hostname: Any = Field(max_length=128, description="BMR hostname.")    auto_asic_offload: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable tunnel ASIC offloading.")    ipv4_address: Any = Field(default="0.0.0.0 0.0.0.0", description="Tunnel IPv4 address and netmask.")    br: str = Field(max_length=255, default="", description="IPv6 address or FQDN of the border relay.")    update_url: str = Field(max_length=511, default="", description="URL of provisioning server.")    mode: Literal["map-e", "fixed-ip", "ds-lite"] = Field(default="map-e", description="VNE tunnel mode.")    http_username: str | None = Field(max_length=64, default="", description="HTTP authentication user name.")    http_password: Any = Field(max_length=128, default=None, description="HTTP authentication password.")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="VNE tunnel name.")
+    interface: str = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    ssl_certificate: str = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']
+    bmr_hostname: Any = Field(max_length=128, description="BMR hostname.")
+    auto_asic_offload: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable tunnel ASIC offloading.")
+    ipv4_address: Any = Field(default="0.0.0.0 0.0.0.0", description="Tunnel IPv4 address and netmask.")
+    br: str = Field(max_length=255, default="", description="IPv6 address or FQDN of the border relay.")
+    update_url: str = Field(max_length=511, default="", description="URL of provisioning server.")
+    mode: Literal["map-e", "fixed-ip", "ds-lite"] = Field(default="map-e", description="VNE tunnel mode.")
+    http_username: str | None = Field(max_length=64, default="", description="HTTP authentication user name.")
+    http_password: Any = Field(max_length=128, default=None, description="HTTP authentication password.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -132,7 +155,7 @@ class VneInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vne_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -181,7 +204,7 @@ class VneInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vne_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ssl_certificate", None)
@@ -218,9 +241,10 @@ class VneInterfaceModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ssl_certificate_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ssl_certificate_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -242,5 +266,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.579461Z
+# Generated: 2026-01-14T22:43:34.401276Z
 # ============================================================================

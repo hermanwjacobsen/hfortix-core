@@ -92,7 +92,6 @@ class ScimObject:
     cascade: Literal["disable", "enable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -115,6 +114,10 @@ class Scim:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -135,6 +138,7 @@ class Scim:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ScimResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -152,6 +156,7 @@ class Scim:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ScimResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -168,6 +173,7 @@ class Scim:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ScimResponse]: ...
     
     # ================================================================
@@ -210,7 +216,7 @@ class Scim:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ScimObject: ...
     
@@ -229,7 +235,7 @@ class Scim:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ScimObject]: ...
     
@@ -329,23 +335,6 @@ class Scim:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ScimObject | list[ScimObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -369,6 +358,7 @@ class Scim:
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ScimObject: ...
@@ -429,25 +419,7 @@ class Scim:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ScimPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        base_url: str | None = ...,
-        auth_method: Literal["token", "base"] | None = ...,
-        token_certificate: str | None = ...,
-        secret: str | None = ...,
-        certificate: str | None = ...,
-        client_identity_check: Literal["enable", "disable"] | None = ...,
-        cascade: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -468,6 +440,7 @@ class Scim:
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ScimObject: ...
@@ -528,25 +501,7 @@ class Scim:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ScimPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        base_url: str | None = ...,
-        auth_method: Literal["token", "base"] | None = ...,
-        token_certificate: str | None = ...,
-        secret: str | None = ...,
-        certificate: str | None = ...,
-        client_identity_check: Literal["enable", "disable"] | None = ...,
-        cascade: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -557,6 +512,7 @@ class Scim:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ScimObject: ...
@@ -587,14 +543,7 @@ class Scim:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -633,8 +582,6 @@ class Scim:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -662,6 +609,10 @@ class ScimDictMode:
     By default returns ScimResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ScimObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -818,10 +769,12 @@ class ScimDictMode:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ScimPayload | None = ...,
@@ -897,10 +850,12 @@ class ScimDictMode:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ScimPayload | None = ...,
@@ -946,10 +901,12 @@ class ScimDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -992,8 +949,6 @@ class ScimDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1017,6 +972,10 @@ class ScimObjectMode:
     By default returns ScimObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ScimResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1194,10 +1153,12 @@ class ScimObjectMode:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ScimObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ScimPayload | None = ...,
@@ -1294,10 +1255,12 @@ class ScimObjectMode:
         client_identity_check: Literal["enable", "disable"] | None = ...,
         cascade: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ScimObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ScimPayload | None = ...,
@@ -1354,10 +1317,12 @@ class ScimObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ScimObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1400,8 +1365,6 @@ class ScimObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

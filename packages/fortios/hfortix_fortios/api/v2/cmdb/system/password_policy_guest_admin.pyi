@@ -87,7 +87,6 @@ class PasswordPolicyGuestAdminObject:
     reuse_password_limit: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -109,6 +108,10 @@ class PasswordPolicyGuestAdmin:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -129,6 +132,7 @@ class PasswordPolicyGuestAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyGuestAdminResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -146,6 +150,7 @@ class PasswordPolicyGuestAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyGuestAdminResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -162,6 +167,7 @@ class PasswordPolicyGuestAdmin:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> PasswordPolicyGuestAdminResponse: ...
     
     # ================================================================
@@ -204,7 +210,7 @@ class PasswordPolicyGuestAdmin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyGuestAdminObject: ...
     
@@ -223,7 +229,7 @@ class PasswordPolicyGuestAdmin:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyGuestAdminObject: ...
     
@@ -323,23 +329,6 @@ class PasswordPolicyGuestAdmin:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> PasswordPolicyGuestAdminObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -364,6 +353,7 @@ class PasswordPolicyGuestAdmin:
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyGuestAdminObject: ...
@@ -427,26 +417,7 @@ class PasswordPolicyGuestAdmin:
         reuse_password: Literal["enable", "disable"] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | list[str] | None = ...,
-        minimum_length: int | None = ...,
-        min_lower_case_letter: int | None = ...,
-        min_upper_case_letter: int | None = ...,
-        min_non_alphanumeric: int | None = ...,
-        min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
-        expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
-        reuse_password_limit: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -486,8 +457,6 @@ class PasswordPolicyGuestAdmin:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -515,6 +484,10 @@ class PasswordPolicyGuestAdminDictMode:
     By default returns PasswordPolicyGuestAdminResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return PasswordPolicyGuestAdminObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -675,10 +648,12 @@ class PasswordPolicyGuestAdminDictMode:
         reuse_password: Literal["enable", "disable"] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
@@ -734,8 +709,6 @@ class PasswordPolicyGuestAdminDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -759,6 +732,10 @@ class PasswordPolicyGuestAdminObjectMode:
     By default returns PasswordPolicyGuestAdminObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return PasswordPolicyGuestAdminResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -941,10 +918,12 @@ class PasswordPolicyGuestAdminObjectMode:
         reuse_password: Literal["enable", "disable"] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> PasswordPolicyGuestAdminObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
@@ -1000,8 +979,6 @@ class PasswordPolicyGuestAdminObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

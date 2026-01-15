@@ -25,7 +25,7 @@ class ShapingProfilePayload(TypedDict, total=False):
     """
     profile_name: str  # Shaping profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 1023
-    type: Literal["policing", "queuing"]  # Select shaping profile type: policing / queuing. | Default: policing
+    type_: Literal["policing", "queuing"]  # Select shaping profile type: policing / queuing. | Default: policing
     npu_offloading: Literal["disable", "enable"]  # Enable/disable NPU offloading. | Default: enable
     default_class_id: int  # Default class ID to handle unclassified packets | Default: 0 | Min: 0 | Max: 4294967295
     shaping_entries: list[dict[str, Any]]  # Define shaping entries of this shaping profile.
@@ -48,8 +48,8 @@ class ShapingProfileShapingentriesItem(TypedDict):
     burst_in_msec: int  # Number of bytes that can be burst at maximum-bandw | Default: 0 | Min: 0 | Max: 2000
     cburst_in_msec: int  # Number of bytes that can be burst as fast as the i | Default: 0 | Min: 0 | Max: 2000
     red_probability: int  # Maximum probability (in percentage) for RED markin | Default: 0 | Min: 0 | Max: 20
-    min: int  # Average queue size in packets at which RED drop be | Default: 83 | Min: 3 | Max: 3000
-    max: int  # Average queue size in packets at which RED drop pr | Default: 250 | Min: 3 | Max: 3000
+    min_: int  # Average queue size in packets at which RED drop be | Default: 83 | Min: 3 | Max: 3000
+    max_: int  # Average queue size in packets at which RED drop pr | Default: 250 | Min: 3 | Max: 3000
 
 
 # Nested classes for table field children (object mode)
@@ -81,9 +81,9 @@ class ShapingProfileShapingentriesObject:
     # Maximum probability (in percentage) for RED marking. | Default: 0 | Min: 0 | Max: 20
     red_probability: int
     # Average queue size in packets at which RED drop becomes a po | Default: 83 | Min: 3 | Max: 3000
-    min: int
+    min_: int
     # Average queue size in packets at which RED drop probability | Default: 250 | Min: 3 | Max: 3000
-    max: int
+    max_: int
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -105,7 +105,7 @@ class ShapingProfileResponse(TypedDict):
     """
     profile_name: str  # Shaping profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 1023
-    type: Literal["policing", "queuing"]  # Select shaping profile type: policing / queuing. | Default: policing
+    type_: Literal["policing", "queuing"]  # Select shaping profile type: policing / queuing. | Default: policing
     npu_offloading: Literal["disable", "enable"]  # Enable/disable NPU offloading. | Default: enable
     default_class_id: int  # Default class ID to handle unclassified packets | Default: 0 | Min: 0 | Max: 4294967295
     shaping_entries: list[ShapingProfileShapingentriesItem]  # Define shaping entries of this shaping profile.
@@ -124,7 +124,7 @@ class ShapingProfileObject:
     # Comment. | MaxLen: 1023
     comment: str
     # Select shaping profile type: policing / queuing. | Default: policing
-    type: Literal["policing", "queuing"]
+    type_: Literal["policing", "queuing"]
     # Enable/disable NPU offloading. | Default: enable
     npu_offloading: Literal["disable", "enable"]
     # Default class ID to handle unclassified packets | Default: 0 | Min: 0 | Max: 4294967295
@@ -156,6 +156,10 @@ class ShapingProfile:
     Primary Key: profile-name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -176,6 +180,7 @@ class ShapingProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ShapingProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -193,6 +198,7 @@ class ShapingProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ShapingProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -209,6 +215,7 @@ class ShapingProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ShapingProfileResponse]: ...
     
     # ================================================================
@@ -251,7 +258,7 @@ class ShapingProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
     
@@ -270,7 +277,7 @@ class ShapingProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ShapingProfileObject]: ...
     
@@ -370,23 +377,6 @@ class ShapingProfile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        profile_name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ShapingProfileObject | list[ShapingProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -400,12 +390,13 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
@@ -416,7 +407,7 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -433,7 +424,7 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -449,26 +440,12 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ShapingProfilePayload | None = ...,
-        profile_name: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
-        npu_offloading: Literal["disable", "enable"] | None = ...,
-        default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -479,12 +456,13 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
@@ -495,7 +473,7 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -512,7 +490,7 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -528,26 +506,12 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ShapingProfilePayload | None = ...,
-        profile_name: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
-        npu_offloading: Literal["disable", "enable"] | None = ...,
-        default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -558,6 +522,7 @@ class ShapingProfile:
         profile_name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
@@ -588,14 +553,7 @@ class ShapingProfile:
         self,
         profile_name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        profile_name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -610,7 +568,7 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -630,8 +588,6 @@ class ShapingProfile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -659,6 +615,10 @@ class ShapingProfileDictMode:
     By default returns ShapingProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ShapingProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -764,7 +724,7 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -781,7 +741,7 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -798,21 +758,23 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -827,7 +789,7 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -844,7 +806,7 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -861,21 +823,23 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -911,10 +875,12 @@ class ShapingProfileDictMode:
         self,
         profile_name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         profile_name: str,
@@ -934,7 +900,7 @@ class ShapingProfileDictMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -953,8 +919,6 @@ class ShapingProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -978,6 +942,10 @@ class ShapingProfileObjectMode:
     By default returns ShapingProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ShapingProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1083,7 +1051,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1100,7 +1068,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1117,7 +1085,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1134,21 +1102,23 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1163,7 +1133,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1180,7 +1150,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1197,7 +1167,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1214,21 +1184,23 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1275,10 +1247,12 @@ class ShapingProfileObjectMode:
         self,
         profile_name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ShapingProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         profile_name: str,
@@ -1298,7 +1272,7 @@ class ShapingProfileObjectMode:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
+        type_: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
@@ -1317,8 +1291,6 @@ class ShapingProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

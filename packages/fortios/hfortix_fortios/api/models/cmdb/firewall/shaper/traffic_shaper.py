@@ -26,7 +26,27 @@ class TrafficShaperModel(BaseModel):
 
     Configure shared traffic shaper.
 
-    Validation Rules:        - name: max_length=35 pattern=        - guaranteed_bandwidth: min=0 max=80000000 pattern=        - maximum_bandwidth: min=0 max=80000000 pattern=        - bandwidth_unit: pattern=        - priority: pattern=        - per_policy: pattern=        - diffserv: pattern=        - diffservcode: pattern=        - dscp_marking_method: pattern=        - exceed_bandwidth: min=0 max=80000000 pattern=        - exceed_dscp: pattern=        - maximum_dscp: pattern=        - cos_marking: pattern=        - cos_marking_method: pattern=        - cos: pattern=        - exceed_cos: pattern=        - maximum_cos: pattern=        - overhead: min=0 max=100 pattern=        - exceed_class_id: min=0 max=4294967295 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - guaranteed_bandwidth: min=0 max=80000000 pattern=
+        - maximum_bandwidth: min=0 max=80000000 pattern=
+        - bandwidth_unit: pattern=
+        - priority: pattern=
+        - per_policy: pattern=
+        - diffserv: pattern=
+        - diffservcode: pattern=
+        - dscp_marking_method: pattern=
+        - exceed_bandwidth: min=0 max=80000000 pattern=
+        - exceed_dscp: pattern=
+        - maximum_dscp: pattern=
+        - cos_marking: pattern=
+        - cos_marking_method: pattern=
+        - cos: pattern=
+        - exceed_cos: pattern=
+        - maximum_cos: pattern=
+        - overhead: min=0 max=100 pattern=
+        - exceed_class_id: min=0 max=4294967295 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -38,7 +58,26 @@ class TrafficShaperModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Traffic shaper name.")    guaranteed_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Amount of bandwidth guaranteed for this shaper (0 - 80000000). Units depend on the bandwidth-unit setting.")    maximum_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Upper bandwidth limit enforced by this shaper (0 - 80000000). 0 means no limit. Units depend on the bandwidth-unit setting.")    bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = Field(default="kbps", description="Unit of measurement for guaranteed and maximum bandwidth for this shaper (Kbps, Mbps or Gbps).")    priority: Literal["low", "medium", "high"] | None = Field(default="high", description="Higher priority traffic is more likely to be forwarded without delays and without compromising the guaranteed bandwidth.")    per_policy: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable applying a separate shaper for each policy. For example, if enabled the guaranteed bandwidth is applied separately for each policy.")    diffserv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable changing the DiffServ setting applied to traffic accepted by this shaper.")    diffservcode: str | None = Field(default="", description="DiffServ setting to be applied to traffic accepted by this shaper.")    dscp_marking_method: Literal["multi-stage", "static"] | None = Field(default="static", description="Select DSCP marking method.")    exceed_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Exceed bandwidth used for DSCP/VLAN CoS multi-stage marking. Units depend on the bandwidth-unit setting.")    exceed_dscp: str | None = Field(default="", description="DSCP mark for traffic in guaranteed-bandwidth and exceed-bandwidth.")    maximum_dscp: str | None = Field(default="", description="DSCP mark for traffic in exceed-bandwidth and maximum-bandwidth.")    cos_marking: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable VLAN CoS marking.")    cos_marking_method: Literal["multi-stage", "static"] | None = Field(default="static", description="Select VLAN CoS marking method.")    cos: str | None = Field(default="", description="VLAN CoS mark.")    exceed_cos: str | None = Field(default="", description="VLAN CoS mark for traffic in [guaranteed-bandwidth, exceed-bandwidth].")    maximum_cos: str | None = Field(default="", description="VLAN CoS mark for traffic in [exceed-bandwidth, maximum-bandwidth].")    overhead: int | None = Field(ge=0, le=100, default=0, description="Per-packet size overhead used in rate computations.")    exceed_class_id: int | None = Field(ge=0, le=4294967295, default=0, description="Class ID for traffic in guaranteed-bandwidth and maximum-bandwidth.")  # datasource: ['firewall.traffic-class.class-id']    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Traffic shaper name.")
+    guaranteed_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Amount of bandwidth guaranteed for this shaper (0 - 80000000). Units depend on the bandwidth-unit setting.")
+    maximum_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Upper bandwidth limit enforced by this shaper (0 - 80000000). 0 means no limit. Units depend on the bandwidth-unit setting.")
+    bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = Field(default="kbps", description="Unit of measurement for guaranteed and maximum bandwidth for this shaper (Kbps, Mbps or Gbps).")
+    priority: Literal["low", "medium", "high"] | None = Field(default="high", description="Higher priority traffic is more likely to be forwarded without delays and without compromising the guaranteed bandwidth.")
+    per_policy: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable applying a separate shaper for each policy. For example, if enabled the guaranteed bandwidth is applied separately for each policy.")
+    diffserv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable changing the DiffServ setting applied to traffic accepted by this shaper.")
+    diffservcode: str | None = Field(default="", description="DiffServ setting to be applied to traffic accepted by this shaper.")
+    dscp_marking_method: Literal["multi-stage", "static"] | None = Field(default="static", description="Select DSCP marking method.")
+    exceed_bandwidth: int | None = Field(ge=0, le=80000000, default=0, description="Exceed bandwidth used for DSCP/VLAN CoS multi-stage marking. Units depend on the bandwidth-unit setting.")
+    exceed_dscp: str | None = Field(default="", description="DSCP mark for traffic in guaranteed-bandwidth and exceed-bandwidth.")
+    maximum_dscp: str | None = Field(default="", description="DSCP mark for traffic in exceed-bandwidth and maximum-bandwidth.")
+    cos_marking: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable VLAN CoS marking.")
+    cos_marking_method: Literal["multi-stage", "static"] | None = Field(default="static", description="Select VLAN CoS marking method.")
+    cos: str | None = Field(default="", description="VLAN CoS mark.")
+    exceed_cos: str | None = Field(default="", description="VLAN CoS mark for traffic in [guaranteed-bandwidth, exceed-bandwidth].")
+    maximum_cos: str | None = Field(default="", description="VLAN CoS mark for traffic in [exceed-bandwidth, maximum-bandwidth].")
+    overhead: int | None = Field(ge=0, le=100, default=0, description="Per-packet size overhead used in rate computations.")
+    exceed_class_id: int | None = Field(ge=0, le=4294967295, default=0, description="Class ID for traffic in guaranteed-bandwidth and maximum-bandwidth.")  # datasource: ['firewall.traffic-class.class-id']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -117,7 +156,7 @@ class TrafficShaperModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.shaper.traffic_shaper.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "exceed_class_id", None)
@@ -154,7 +193,7 @@ class TrafficShaperModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_exceed_class_id_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -177,5 +216,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.015256Z
+# Generated: 2026-01-14T22:43:39.922274Z
 # ============================================================================

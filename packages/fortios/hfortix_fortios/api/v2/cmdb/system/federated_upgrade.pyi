@@ -180,7 +180,6 @@ class FederatedUpgradeObject:
     node_list: list[FederatedUpgradeNodelistObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -202,6 +201,10 @@ class FederatedUpgrade:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -222,6 +225,7 @@ class FederatedUpgrade:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FederatedUpgradeResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -239,6 +243,7 @@ class FederatedUpgrade:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FederatedUpgradeResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -255,6 +260,7 @@ class FederatedUpgrade:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FederatedUpgradeResponse: ...
     
     # ================================================================
@@ -297,7 +303,7 @@ class FederatedUpgrade:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FederatedUpgradeObject: ...
     
@@ -316,7 +322,7 @@ class FederatedUpgrade:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FederatedUpgradeObject: ...
     
@@ -416,23 +422,6 @@ class FederatedUpgrade:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FederatedUpgradeObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -458,6 +447,7 @@ class FederatedUpgrade:
         node_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FederatedUpgradeObject: ...
@@ -524,27 +514,7 @@ class FederatedUpgrade:
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FederatedUpgradePayload | None = ...,
-        status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
-        source: Literal["user", "auto-firmware-upgrade", "forced-upgrade"] | None = ...,
-        failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"] | None = ...,
-        failure_device: str | None = ...,
-        upgrade_id: int | None = ...,
-        next_path_index: int | None = ...,
-        ignore_signing_errors: Literal["enable", "disable"] | None = ...,
-        ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
-        initial_version: str | None = ...,
-        starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -585,8 +555,6 @@ class FederatedUpgrade:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -614,6 +582,10 @@ class FederatedUpgradeDictMode:
     By default returns FederatedUpgradeResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FederatedUpgradeObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -777,10 +749,12 @@ class FederatedUpgradeDictMode:
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FederatedUpgradePayload | None = ...,
@@ -838,8 +812,6 @@ class FederatedUpgradeDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -863,6 +835,10 @@ class FederatedUpgradeObjectMode:
     By default returns FederatedUpgradeObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FederatedUpgradeResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1049,10 +1025,12 @@ class FederatedUpgradeObjectMode:
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FederatedUpgradeObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FederatedUpgradePayload | None = ...,
@@ -1110,8 +1088,6 @@ class FederatedUpgradeObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

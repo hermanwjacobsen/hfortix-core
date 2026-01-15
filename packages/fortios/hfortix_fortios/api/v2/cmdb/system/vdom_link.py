@@ -234,7 +234,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vcluster: Literal["vcluster1", "vcluster2"] | None = None,
-        type: Literal["ppp", "ethernet"] | None = None,
+        type_: Literal["ppp", "ethernet"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -249,7 +249,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: VDOM link name (maximum = 11 characters).
             vcluster: Virtual cluster.
-            type: VDOM link type: PPP or Ethernet.
+            type_: VDOM link type: PPP or Ethernet.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -285,7 +285,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             vcluster=vcluster,
-            type=type,
+            type_=type_,
             data=payload_dict,
         )
         
@@ -318,7 +318,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vcluster: Literal["vcluster1", "vcluster2"] | None = None,
-        type: Literal["ppp", "ethernet"] | None = None,
+        type_: Literal["ppp", "ethernet"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -333,7 +333,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: VDOM link name (maximum = 11 characters).
             vcluster: Virtual cluster.
-            type: VDOM link type: PPP or Ethernet.
+            type_: VDOM link type: PPP or Ethernet.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
@@ -371,7 +371,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             vcluster=vcluster,
-            type=type,
+            type_=type_,
             data=payload_dict,
         )
 
@@ -504,7 +504,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vcluster: Literal["vcluster1", "vcluster2"] | None = None,
-        type: Literal["ppp", "ethernet"] | None = None,
+        type_: Literal["ppp", "ethernet"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         response_mode: Literal["dict", "object"] | None = None,
@@ -520,7 +520,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             vcluster: Field vcluster
-            type: Field type
+            type_: Field type
             vdom: Virtual domain name
             raw_json: If True, return raw API response
             response_mode: Override client-level response_mode
@@ -566,7 +566,7 @@ class VdomLink(CRUDEndpoint, MetadataMixin):
         payload_data = build_api_payload(
             name=name,
             vcluster=vcluster,
-            type=type,
+            type_=type_,
             data=payload_dict,
         )
         

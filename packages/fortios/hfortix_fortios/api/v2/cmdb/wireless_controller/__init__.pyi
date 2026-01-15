@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from .wtp import Wtp, WtpDictMode, WtpObjectMode
     from .wtp_group import WtpGroup, WtpGroupDictMode, WtpGroupObjectMode
     from .wtp_profile import WtpProfile, WtpProfileDictMode, WtpProfileObjectMode
-    from .hotspot20 import Hotspot20DictMode, Hotspot20ObjectMode
+    from .hotspot20 import Hotspot20, Hotspot20DictMode, Hotspot20ObjectMode
 
 __all__ = [
     "AccessControlList",

@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .forticare_org_list import ForticareOrgList, ForticareOrgListDictMode, ForticareOrgListObjectMode
     from .forticare_resellers import ForticareResellers, ForticareResellersDictMode, ForticareResellersObjectMode
     from .status import Status, StatusDictMode, StatusObjectMode
-    from .database import DatabaseDictMode, DatabaseObjectMode
+    from .database import Database, DatabaseDictMode, DatabaseObjectMode
 
 __all__ = [
     "FortianalyzerStatus",

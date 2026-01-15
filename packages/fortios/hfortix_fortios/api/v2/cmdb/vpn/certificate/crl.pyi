@@ -26,7 +26,7 @@ class CrlPayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     crl: str  # Certificate Revocation List as a PEM file.
-    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
+    range_: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
     source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
     update_vdom: str  # VDOM for CRL update. | Default: root | MaxLen: 31
     ldap_server: str  # LDAP server name for CRL auto-update. | MaxLen: 35
@@ -52,7 +52,7 @@ class CrlResponse(TypedDict):
     """
     name: str  # Name. | MaxLen: 35
     crl: str  # Certificate Revocation List as a PEM file.
-    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
+    range_: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
     source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
     update_vdom: str  # VDOM for CRL update. | Default: root | MaxLen: 31
     ldap_server: str  # LDAP server name for CRL auto-update. | MaxLen: 35
@@ -78,7 +78,7 @@ class CrlObject:
     # Certificate Revocation List as a PEM file.
     crl: str
     # Either global or VDOM IP address range for the certificate. | Default: vdom
-    range: Literal["global", "vdom"]
+    range_: Literal["global", "vdom"]
     # Certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
     # VDOM for CRL update. | Default: root | MaxLen: 31
@@ -124,6 +124,10 @@ class Crl:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -144,6 +148,7 @@ class Crl:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CrlResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -161,6 +166,7 @@ class Crl:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CrlResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -177,6 +183,7 @@ class Crl:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CrlResponse]: ...
     
     # ================================================================
@@ -219,7 +226,7 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CrlObject: ...
     
@@ -238,7 +245,7 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CrlObject]: ...
     
@@ -338,23 +345,6 @@ class Crl:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CrlObject | list[CrlObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -368,7 +358,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -381,6 +371,7 @@ class Crl:
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
@@ -391,7 +382,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -415,7 +406,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -438,7 +429,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -450,28 +441,7 @@ class Crl:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CrlPayload | None = ...,
-        name: str | None = ...,
-        crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        update_vdom: str | None = ...,
-        ldap_server: str | None = ...,
-        ldap_username: str | None = ...,
-        ldap_password: str | None = ...,
-        http_url: str | None = ...,
-        scep_url: str | None = ...,
-        scep_cert: str | None = ...,
-        update_interval: int | None = ...,
-        source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -482,7 +452,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -495,6 +465,7 @@ class Crl:
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
@@ -505,7 +476,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -529,7 +500,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -552,7 +523,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -564,28 +535,7 @@ class Crl:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CrlPayload | None = ...,
-        name: str | None = ...,
-        crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
-        update_vdom: str | None = ...,
-        ldap_server: str | None = ...,
-        ldap_username: str | None = ...,
-        ldap_password: str | None = ...,
-        http_url: str | None = ...,
-        scep_url: str | None = ...,
-        scep_cert: str | None = ...,
-        update_interval: int | None = ...,
-        source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -600,7 +550,7 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -627,8 +577,6 @@ class Crl:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -656,6 +604,10 @@ class CrlDictMode:
     By default returns CrlResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CrlObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -761,7 +713,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -785,7 +737,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -809,7 +761,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -821,16 +773,18 @@ class CrlDictMode:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -852,7 +806,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -876,7 +830,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -900,7 +854,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -912,16 +866,18 @@ class CrlDictMode:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -949,7 +905,7 @@ class CrlDictMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -975,8 +931,6 @@ class CrlDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1000,6 +954,10 @@ class CrlObjectMode:
     By default returns CrlObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CrlResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1105,7 +1063,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1129,7 +1087,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1153,7 +1111,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1177,7 +1135,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1189,16 +1147,18 @@ class CrlObjectMode:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CrlObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1220,7 +1180,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1244,7 +1204,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1268,7 +1228,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1292,7 +1252,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1304,16 +1264,18 @@ class CrlObjectMode:
         update_interval: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CrlObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1341,7 +1303,7 @@ class CrlObjectMode:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
+        range_: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
@@ -1367,8 +1329,6 @@ class CrlObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

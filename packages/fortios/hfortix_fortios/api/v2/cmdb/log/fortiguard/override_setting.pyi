@@ -79,7 +79,6 @@ class OverrideSettingObject:
     access_config: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -101,6 +100,10 @@ class OverrideSetting:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -121,6 +124,7 @@ class OverrideSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OverrideSettingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -138,6 +142,7 @@ class OverrideSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OverrideSettingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -154,6 +159,7 @@ class OverrideSetting:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> OverrideSettingResponse: ...
     
     # ================================================================
@@ -196,7 +202,7 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
@@ -215,7 +221,7 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
@@ -315,23 +321,6 @@ class OverrideSetting:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> OverrideSettingObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -354,6 +343,7 @@ class OverrideSetting:
         access_config: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
@@ -411,24 +401,7 @@ class OverrideSetting:
         max_log_rate: int | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: OverrideSettingPayload | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
-        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
-        upload_day: str | None = ...,
-        upload_time: str | None = ...,
-        priority: Literal["default", "low"] | None = ...,
-        max_log_rate: int | None = ...,
-        access_config: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -466,8 +439,6 @@ class OverrideSetting:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -495,6 +466,10 @@ class OverrideSettingDictMode:
     By default returns OverrideSettingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return OverrideSettingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -649,10 +624,12 @@ class OverrideSettingDictMode:
         max_log_rate: int | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: OverrideSettingPayload | None = ...,
@@ -704,8 +681,6 @@ class OverrideSettingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -729,6 +704,10 @@ class OverrideSettingObjectMode:
     By default returns OverrideSettingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return OverrideSettingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -903,10 +882,12 @@ class OverrideSettingObjectMode:
         max_log_rate: int | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: OverrideSettingPayload | None = ...,
@@ -958,8 +939,6 @@ class OverrideSettingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

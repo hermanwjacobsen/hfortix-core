@@ -39,12 +39,12 @@ if TYPE_CHECKING:
     from .virtual_port_pool import VirtualPortPool, VirtualPortPoolDictMode, VirtualPortPoolObjectMode
     from .vlan_policy import VlanPolicy, VlanPolicyDictMode, VlanPolicyObjectMode
     from .x802_1x_settings import X8021xSettings, X8021xSettingsDictMode, X8021xSettingsObjectMode
-    from .acl import AclDictMode, AclObjectMode
-    from .auto_config import AutoConfigDictMode, AutoConfigObjectMode
-    from .initial_config import InitialConfigDictMode, InitialConfigObjectMode
-    from .ptp import PtpDictMode, PtpObjectMode
-    from .qos import QosDictMode, QosObjectMode
-    from .security_policy import SecurityPolicyDictMode, SecurityPolicyObjectMode
+    from .acl import Acl, AclDictMode, AclObjectMode
+    from .auto_config import AutoConfig, AutoConfigDictMode, AutoConfigObjectMode
+    from .initial_config import InitialConfig, InitialConfigDictMode, InitialConfigObjectMode
+    from .ptp import Ptp, PtpDictMode, PtpObjectMode
+    from .qos import Qos, QosDictMode, QosObjectMode
+    from .security_policy import SecurityPolicy, SecurityPolicyDictMode, SecurityPolicyObjectMode
 
 __all__ = [
     "CustomCommand",

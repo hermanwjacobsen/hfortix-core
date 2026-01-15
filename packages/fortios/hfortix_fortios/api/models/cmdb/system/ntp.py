@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
 
 
@@ -69,7 +69,20 @@ class NtpModel(BaseModel):
 
     Configure system NTP information.
 
-    Validation Rules:        - ntpsync: pattern=        - type: pattern=        - syncinterval: min=1 max=1440 pattern=        - ntpserver: pattern=        - source_ip: pattern=        - source_ip6: pattern=        - server_mode: pattern=        - authentication: pattern=        - key_type: pattern=        - key: max_length=64 pattern=        - key_id: min=0 max=4294967295 pattern=        - interface: pattern=    """
+    Validation Rules:
+        - ntpsync: pattern=
+        - type_: pattern=
+        - syncinterval: min=1 max=1440 pattern=
+        - ntpserver: pattern=
+        - source_ip: pattern=
+        - source_ip6: pattern=
+        - server_mode: pattern=
+        - authentication: pattern=
+        - key_type: pattern=
+        - key: max_length=64 pattern=
+        - key_id: min=0 max=4294967295 pattern=
+        - interface: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -81,7 +94,19 @@ class NtpModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    ntpsync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable setting the FortiGate system time by synchronizing with an NTP Server.")    type: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Use the FortiGuard NTP server or any other available NTP Server.")    syncinterval: int | None = Field(ge=1, le=1440, default=60, description="NTP synchronization interval (1 - 1440 min).")    ntpserver: list[NtpNtpserver] = Field(default=None, description="Configure the FortiGate to connect to any available third-party NTP server.")    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communication to the NTP server.")    source_ip6: str | None = Field(default="::", description="Source IPv6 address for communication to the NTP server.")    server_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiGate NTP Server Mode. Your FortiGate becomes an NTP server for other devices on your network. The FortiGate relays NTP requests to its configured NTP server.")    authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication.")    key_type: Literal["MD5", "SHA1", "SHA256"] | None = Field(default="MD5", description="Key type for authentication (MD5, SHA1, SHA256).")    key: Any = Field(max_length=64, description="Key for authentication.")    key_id: int = Field(ge=0, le=4294967295, default=0, description="Key ID for authentication.")    interface: list[NtpInterface] = Field(default=None, description="FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.")    # ========================================================================
+    ntpsync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable setting the FortiGate system time by synchronizing with an NTP Server.")
+    type_: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Use the FortiGuard NTP server or any other available NTP Server.")
+    syncinterval: int | None = Field(ge=1, le=1440, default=60, description="NTP synchronization interval (1 - 1440 min).")
+    ntpserver: list[NtpNtpserver] | None = Field(default=None, description="Configure the FortiGate to connect to any available third-party NTP server.")
+    source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communication to the NTP server.")
+    source_ip6: str | None = Field(default="::", description="Source IPv6 address for communication to the NTP server.")
+    server_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiGate NTP Server Mode. Your FortiGate becomes an NTP server for other devices on your network. The FortiGate relays NTP requests to its configured NTP server.")
+    authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication.")
+    key_type: Literal["MD5", "SHA1", "SHA256"] | None = Field(default="MD5", description="Key type for authentication (MD5, SHA1, SHA256).")
+    key: Any = Field(max_length=64, description="Key for authentication.")
+    key_id: int = Field(ge=0, le=4294967295, default=0, description="Key ID for authentication.")
+    interface: list[NtpInterface] | None = Field(default=None, description="FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -145,7 +170,7 @@ class NtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ntp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ntpserver", [])
@@ -203,7 +228,7 @@ class NtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ntp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -249,9 +274,10 @@ class NtpModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_ntpserver_references(client)
-        all_errors.extend(errors)        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -273,5 +299,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.889186Z
+# Generated: 2026-01-14T22:43:38.474574Z
 # ============================================================================

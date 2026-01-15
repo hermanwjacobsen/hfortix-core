@@ -111,6 +111,10 @@ class AnqpRoamingConsortium:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -131,6 +135,7 @@ class AnqpRoamingConsortium:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AnqpRoamingConsortiumResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -148,6 +153,7 @@ class AnqpRoamingConsortium:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> AnqpRoamingConsortiumResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -164,6 +170,7 @@ class AnqpRoamingConsortium:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[AnqpRoamingConsortiumResponse]: ...
     
     # ================================================================
@@ -206,7 +213,7 @@ class AnqpRoamingConsortium:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
     
@@ -225,7 +232,7 @@ class AnqpRoamingConsortium:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[AnqpRoamingConsortiumObject]: ...
     
@@ -325,23 +332,6 @@ class AnqpRoamingConsortium:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> AnqpRoamingConsortiumObject | list[AnqpRoamingConsortiumObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -357,6 +347,7 @@ class AnqpRoamingConsortium:
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
@@ -393,17 +384,7 @@ class AnqpRoamingConsortium:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: AnqpRoamingConsortiumPayload | None = ...,
-        name: str | None = ...,
-        oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -416,6 +397,7 @@ class AnqpRoamingConsortium:
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
@@ -452,17 +434,7 @@ class AnqpRoamingConsortium:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: AnqpRoamingConsortiumPayload | None = ...,
-        name: str | None = ...,
-        oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -473,6 +445,7 @@ class AnqpRoamingConsortium:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
@@ -503,14 +476,7 @@ class AnqpRoamingConsortium:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -541,8 +507,6 @@ class AnqpRoamingConsortium:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -570,6 +534,10 @@ class AnqpRoamingConsortiumDictMode:
     By default returns AnqpRoamingConsortiumResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return AnqpRoamingConsortiumObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -702,10 +670,12 @@ class AnqpRoamingConsortiumDictMode:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
@@ -749,10 +719,12 @@ class AnqpRoamingConsortiumDictMode:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
@@ -790,10 +762,12 @@ class AnqpRoamingConsortiumDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -828,8 +802,6 @@ class AnqpRoamingConsortiumDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -853,6 +825,10 @@ class AnqpRoamingConsortiumObjectMode:
     By default returns AnqpRoamingConsortiumObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return AnqpRoamingConsortiumResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -998,10 +974,12 @@ class AnqpRoamingConsortiumObjectMode:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
@@ -1058,10 +1036,12 @@ class AnqpRoamingConsortiumObjectMode:
         name: str | None = ...,
         oi_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
@@ -1110,10 +1090,12 @@ class AnqpRoamingConsortiumObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> AnqpRoamingConsortiumObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1148,8 +1130,6 @@ class AnqpRoamingConsortiumObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

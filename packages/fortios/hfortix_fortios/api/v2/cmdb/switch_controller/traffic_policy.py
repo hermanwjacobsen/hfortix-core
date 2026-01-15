@@ -238,7 +238,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         guaranteed_bandwidth: int | None = None,
         guaranteed_burst: int | None = None,
         maximum_burst: int | None = None,
-        type: Literal["ingress", "egress"] | None = None,
+        type_: Literal["ingress", "egress"] | None = None,
         cos_queue: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -258,7 +258,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth: Guaranteed bandwidth in kbps (max value = 524287000).
             guaranteed_burst: Guaranteed burst size in bytes (max value = 4294967295).
             maximum_burst: Maximum burst size in bytes (max value = 4294967295).
-            type: Configure type of policy(ingress/egress).
+            type_: Configure type of policy(ingress/egress).
             cos_queue: COS queue(0 - 7), or unset to disable.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
@@ -299,7 +299,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth=guaranteed_bandwidth,
             guaranteed_burst=guaranteed_burst,
             maximum_burst=maximum_burst,
-            type=type,
+            type_=type_,
             cos_queue=cos_queue,
             data=payload_dict,
         )
@@ -337,7 +337,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         guaranteed_bandwidth: int | None = None,
         guaranteed_burst: int | None = None,
         maximum_burst: int | None = None,
-        type: Literal["ingress", "egress"] | None = None,
+        type_: Literal["ingress", "egress"] | None = None,
         cos_queue: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -357,7 +357,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth: Guaranteed bandwidth in kbps (max value = 524287000).
             guaranteed_burst: Guaranteed burst size in bytes (max value = 4294967295).
             maximum_burst: Maximum burst size in bytes (max value = 4294967295).
-            type: Configure type of policy(ingress/egress).
+            type_: Configure type of policy(ingress/egress).
             cos_queue: COS queue(0 - 7), or unset to disable.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
@@ -400,7 +400,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth=guaranteed_bandwidth,
             guaranteed_burst=guaranteed_burst,
             maximum_burst=maximum_burst,
-            type=type,
+            type_=type_,
             cos_queue=cos_queue,
             data=payload_dict,
         )
@@ -538,7 +538,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         guaranteed_bandwidth: int | None = None,
         guaranteed_burst: int | None = None,
         maximum_burst: int | None = None,
-        type: Literal["ingress", "egress"] | None = None,
+        type_: Literal["ingress", "egress"] | None = None,
         cos_queue: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -559,7 +559,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth: Field guaranteed-bandwidth
             guaranteed_burst: Field guaranteed-burst
             maximum_burst: Field maximum-burst
-            type: Field type
+            type_: Field type
             cos_queue: Field cos-queue
             vdom: Virtual domain name
             raw_json: If True, return raw API response
@@ -610,7 +610,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
             guaranteed_bandwidth=guaranteed_bandwidth,
             guaranteed_burst=guaranteed_burst,
             maximum_burst=maximum_burst,
-            type=type,
+            type_=type_,
             cos_queue=cos_queue,
             data=payload_dict,
         )

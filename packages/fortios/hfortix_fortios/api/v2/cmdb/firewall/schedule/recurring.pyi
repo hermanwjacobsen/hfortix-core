@@ -19,7 +19,7 @@ class RecurringPayload(TypedDict, total=False):
         }
     """
     name: str  # Recurring schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     start: str  # Time of day to start the schedule, format hh:mm.
     end: str  # Time of day to end the schedule, format hh:mm.
     day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"]  # One or more days of the week on which the schedule | Default: none
@@ -40,7 +40,7 @@ class RecurringResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Recurring schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     start: str  # Time of day to start the schedule, format hh:mm.
     end: str  # Time of day to end the schedule, format hh:mm.
     day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"]  # One or more days of the week on which the schedule | Default: none
@@ -59,7 +59,7 @@ class RecurringObject:
     
     # Recurring schedule name. | MaxLen: 31
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Time of day to start the schedule, format hh:mm.
     start: str
@@ -98,6 +98,10 @@ class Recurring:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -118,6 +122,7 @@ class Recurring:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RecurringResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -135,6 +140,7 @@ class Recurring:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> RecurringResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -151,6 +157,7 @@ class Recurring:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[RecurringResponse]: ...
     
     # ================================================================
@@ -193,7 +200,7 @@ class Recurring:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> RecurringObject: ...
     
@@ -212,7 +219,7 @@ class Recurring:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[RecurringObject]: ...
     
@@ -312,23 +319,6 @@ class Recurring:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> RecurringObject | list[RecurringObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -350,6 +340,7 @@ class Recurring:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RecurringObject: ...
@@ -404,23 +395,7 @@ class Recurring:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: RecurringPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        end: str | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | list[str] | None = ...,
-        label_day: Literal["none", "over-night", "early-morning", "morning", "midday", "afternoon", "evening", "night", "late-night"] | None = ...,
-        color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -439,6 +414,7 @@ class Recurring:
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RecurringObject: ...
@@ -493,23 +469,7 @@ class Recurring:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: RecurringPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        end: str | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | list[str] | None = ...,
-        label_day: Literal["none", "over-night", "early-morning", "morning", "midday", "afternoon", "evening", "night", "late-night"] | None = ...,
-        color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -520,6 +480,7 @@ class Recurring:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RecurringObject: ...
@@ -550,14 +511,7 @@ class Recurring:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -594,8 +548,6 @@ class Recurring:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -623,6 +575,10 @@ class RecurringDictMode:
     By default returns RecurringResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return RecurringObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -773,10 +729,12 @@ class RecurringDictMode:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: RecurringPayload | None = ...,
@@ -844,10 +802,12 @@ class RecurringDictMode:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: RecurringPayload | None = ...,
@@ -891,10 +851,12 @@ class RecurringDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -935,8 +897,6 @@ class RecurringDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -960,6 +920,10 @@ class RecurringObjectMode:
     By default returns RecurringObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return RecurringResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1129,10 +1093,12 @@ class RecurringObjectMode:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RecurringObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: RecurringPayload | None = ...,
@@ -1219,10 +1185,12 @@ class RecurringObjectMode:
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RecurringObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: RecurringPayload | None = ...,
@@ -1277,10 +1245,12 @@ class RecurringObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> RecurringObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1321,8 +1291,6 @@ class RecurringObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .geoip_query import GeoipQueryDictMode, GeoipQueryObjectMode
+    from .geoip_query import GeoipQuery, GeoipQueryDictMode, GeoipQueryObjectMode
 
 __all__ = [
     "GeoipDictMode",

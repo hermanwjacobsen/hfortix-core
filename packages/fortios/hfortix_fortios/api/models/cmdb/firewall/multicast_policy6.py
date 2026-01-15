@@ -60,7 +60,25 @@ class MulticastPolicy6Model(BaseModel):
 
     Configure IPv6 multicast NAT policies.
 
-    Validation Rules:        - id: min=0 max=4294967294 pattern=        - uuid: pattern=        - status: pattern=        - name: max_length=35 pattern=        - srcintf: max_length=35 pattern=        - dstintf: max_length=35 pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - action: pattern=        - protocol: min=0 max=255 pattern=        - start_port: min=0 max=65535 pattern=        - end_port: min=0 max=65535 pattern=        - utm_status: pattern=        - ips_sensor: max_length=47 pattern=        - logtraffic: pattern=        - auto_asic_offload: pattern=        - comments: max_length=1023 pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967294 pattern=
+        - uuid: pattern=
+        - status: pattern=
+        - name: max_length=35 pattern=
+        - srcintf: max_length=35 pattern=
+        - dstintf: max_length=35 pattern=
+        - srcaddr: pattern=
+        - dstaddr: pattern=
+        - action: pattern=
+        - protocol: min=0 max=255 pattern=
+        - start_port: min=0 max=65535 pattern=
+        - end_port: min=0 max=65535 pattern=
+        - utm_status: pattern=
+        - ips_sensor: max_length=47 pattern=
+        - logtraffic: pattern=
+        - auto_asic_offload: pattern=
+        - comments: max_length=1023 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -72,7 +90,24 @@ class MulticastPolicy6Model(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID (0 - 4294967294).")    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    name: str | None = Field(max_length=35, default="", description="Policy name.")    srcintf: str = Field(max_length=35, default="", description="IPv6 source interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    dstintf: str = Field(max_length=35, default="", description="IPv6 destination interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    srcaddr: list[MulticastPolicy6Srcaddr] = Field(description="IPv6 source address name.")    dstaddr: list[MulticastPolicy6Dstaddr] = Field(description="IPv6 destination address name.")    action: Literal["accept", "deny"] | None = Field(default="accept", description="Accept or deny traffic matching the policy.")    protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255, default = 0).")    start_port: int | None = Field(ge=0, le=65535, default=1, description="Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).")    end_port: int | None = Field(ge=0, le=65535, default=65535, description="Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 65535).")    utm_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to add an IPS security profile to the policy.")    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")    auto_asic_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading policy traffic for hardware acceleration.")    comments: str | None = Field(max_length=1023, default=None, description="Comment.")    # ========================================================================
+    id: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID (0 - 4294967294).")
+    uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")
+    name: str | None = Field(max_length=35, default="", description="Policy name.")
+    srcintf: str = Field(max_length=35, default="", description="IPv6 source interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
+    dstintf: str = Field(max_length=35, default="", description="IPv6 destination interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
+    srcaddr: list[MulticastPolicy6Srcaddr] | None = Field(description="IPv6 source address name.")
+    dstaddr: list[MulticastPolicy6Dstaddr] | None = Field(description="IPv6 destination address name.")
+    action: Literal["accept", "deny"] | None = Field(default="accept", description="Accept or deny traffic matching the policy.")
+    protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255, default = 0).")
+    start_port: int | None = Field(ge=0, le=65535, default=1, description="Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).")
+    end_port: int | None = Field(ge=0, le=65535, default=65535, description="Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 65535).")
+    utm_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to add an IPS security profile to the policy.")
+    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']
+    logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")
+    auto_asic_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading policy traffic for hardware acceleration.")
+    comments: str | None = Field(max_length=1023, default=None, description="Comment.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -181,7 +216,7 @@ class MulticastPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "srcintf", None)
@@ -234,7 +269,7 @@ class MulticastPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dstintf", None)
@@ -287,7 +322,7 @@ class MulticastPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -347,7 +382,7 @@ class MulticastPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -405,7 +440,7 @@ class MulticastPolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -442,12 +477,16 @@ class MulticastPolicy6Model(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_srcintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstintf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_srcaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstintf_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ips_sensor_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -469,5 +508,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.469569Z
+# Generated: 2026-01-14T22:43:39.204062Z
 # ============================================================================

@@ -117,6 +117,10 @@ class DecryptedTrafficMirror:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -137,6 +141,7 @@ class DecryptedTrafficMirror:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DecryptedTrafficMirrorResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -154,6 +159,7 @@ class DecryptedTrafficMirror:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> DecryptedTrafficMirrorResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -170,6 +176,7 @@ class DecryptedTrafficMirror:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[DecryptedTrafficMirrorResponse]: ...
     
     # ================================================================
@@ -212,7 +219,7 @@ class DecryptedTrafficMirror:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
     
@@ -231,7 +238,7 @@ class DecryptedTrafficMirror:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[DecryptedTrafficMirrorObject]: ...
     
@@ -331,23 +338,6 @@ class DecryptedTrafficMirror:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> DecryptedTrafficMirrorObject | list[DecryptedTrafficMirrorObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -366,6 +356,7 @@ class DecryptedTrafficMirror:
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
@@ -411,20 +402,7 @@ class DecryptedTrafficMirror:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: DecryptedTrafficMirrorPayload | None = ...,
-        name: str | None = ...,
-        dstmac: str | None = ...,
-        traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
-        traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -440,6 +418,7 @@ class DecryptedTrafficMirror:
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
@@ -485,20 +464,7 @@ class DecryptedTrafficMirror:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: DecryptedTrafficMirrorPayload | None = ...,
-        name: str | None = ...,
-        dstmac: str | None = ...,
-        traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
-        traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -509,6 +475,7 @@ class DecryptedTrafficMirror:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
@@ -539,14 +506,7 @@ class DecryptedTrafficMirror:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -580,8 +540,6 @@ class DecryptedTrafficMirror:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -609,6 +567,10 @@ class DecryptedTrafficMirrorDictMode:
     By default returns DecryptedTrafficMirrorResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return DecryptedTrafficMirrorObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -750,10 +712,12 @@ class DecryptedTrafficMirrorDictMode:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
@@ -809,10 +773,12 @@ class DecryptedTrafficMirrorDictMode:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
@@ -853,10 +819,12 @@ class DecryptedTrafficMirrorDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -894,8 +862,6 @@ class DecryptedTrafficMirrorDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -919,6 +885,10 @@ class DecryptedTrafficMirrorObjectMode:
     By default returns DecryptedTrafficMirrorObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return DecryptedTrafficMirrorResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1076,10 +1046,12 @@ class DecryptedTrafficMirrorObjectMode:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
@@ -1151,10 +1123,12 @@ class DecryptedTrafficMirrorObjectMode:
         traffic_source: Literal["client", "server", "both"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
@@ -1206,10 +1180,12 @@ class DecryptedTrafficMirrorObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> DecryptedTrafficMirrorObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1247,8 +1223,6 @@ class DecryptedTrafficMirrorObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

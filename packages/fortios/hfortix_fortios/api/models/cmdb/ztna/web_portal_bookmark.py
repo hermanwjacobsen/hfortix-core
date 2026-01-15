@@ -7,8 +7,9 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -56,14 +57,14 @@ class WebPortalBookmarkBookmarks(BaseModel):
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
     name: str | None = Field(max_length=35, default="", description="Bookmark name.")
-    apptype: ApptypeEnum = Field(default="web", description="Application type.")
+    apptype: str = Field(default="web", description="Application type.")
     url: str = Field(max_length=128, description="URL parameter.")
     host: str = Field(max_length=128, description="Host name/IP parameter.")
     folder: str = Field(max_length=128, description="Network shared file folder parameter.")
     domain: str | None = Field(max_length=128, default=None, description="Login domain.")
     description: str | None = Field(max_length=128, default=None, description="Description.")
-    keyboard_layout: KeyboardLayoutEnum | None = Field(default="en-us", description="Keyboard layout.")
-    security: SecurityEnum | None = Field(default="any", description="Security mode for RDP connection (default = any).")
+    keyboard_layout: str | None = Field(default="en-us", description="Keyboard layout.")
+    security: str | None = Field(default="any", description="Security mode for RDP connection (default = any).")
     send_preconnection_id: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of preconnection ID.")
     preconnection_id: int | None = Field(ge=0, le=4294967295, default=0, description="The numeric ID of the RDP source (0-4294967295).")
     preconnection_blob: str | None = Field(max_length=511, default=None, description="An arbitrary string which identifies the RDP source.")
@@ -76,7 +77,7 @@ class WebPortalBookmarkBookmarks(BaseModel):
     sso: Literal["disable", "enable"] | None = Field(default="disable", description="Single sign-on.")
     width: int | None = Field(ge=0, le=65535, default=0, description="Screen width (range from 0 - 65535, default = 0).")
     height: int | None = Field(ge=0, le=65535, default=0, description="Screen height (range from 0 - 65535, default = 0).")
-    vnc_keyboard_layout: VncKeyboardLayoutEnum | None = Field(default="default", description="Keyboard layout.")
+    vnc_keyboard_layout: str | None = Field(default="default", description="Keyboard layout.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -94,7 +95,12 @@ class WebPortalBookmarkModel(BaseModel):
 
     Configure ztna web-portal bookmark.
 
-    Validation Rules:        - name: max_length=35 pattern=        - users: pattern=        - groups: pattern=        - bookmarks: pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - users: pattern=
+        - groups: pattern=
+        - bookmarks: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -106,7 +112,11 @@ class WebPortalBookmarkModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Bookmark name.")    users: list[WebPortalBookmarkUsers] = Field(default=None, description="User name.")    groups: list[WebPortalBookmarkGroups] = Field(default=None, description="User groups.")    bookmarks: list[WebPortalBookmarkBookmarks] = Field(default=None, description="Bookmark table.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Bookmark name.")
+    users: list[WebPortalBookmarkUsers] | None = Field(default=None, description="User name.")
+    groups: list[WebPortalBookmarkGroups] | None = Field(default=None, description="User groups.")
+    bookmarks: list[WebPortalBookmarkBookmarks] | None = Field(default=None, description="Bookmark table.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -170,7 +180,7 @@ class WebPortalBookmarkModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal_bookmark.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "users", [])
@@ -230,7 +240,7 @@ class WebPortalBookmarkModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal_bookmark.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -276,9 +286,10 @@ class WebPortalBookmarkModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_users_references(client)
-        all_errors.extend(errors)        errors = await self.validate_groups_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_groups_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -300,5 +311,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:36.959727Z
+# Generated: 2026-01-14T22:43:39.854202Z
 # ============================================================================

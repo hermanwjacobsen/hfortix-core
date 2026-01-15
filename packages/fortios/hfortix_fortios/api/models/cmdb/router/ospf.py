@@ -34,15 +34,15 @@ class OspfArea(BaseModel):
     default_cost: int | None = Field(ge=0, le=4294967295, default=10, description="Summary default cost of stub or NSSA area.")
     nssa_translator_role: Literal["candidate", "never", "always"] | None = Field(default="candidate", description="NSSA translator role type.")
     stub_type: Literal["no-summary", "summary"] | None = Field(default="summary", description="Stub summary setting.")
-    type: Literal["regular", "nssa", "stub"] | None = Field(default="regular", description="Area type setting.")
+    type_: Literal["regular", "nssa", "stub"] | None = Field(default="regular", description="Area type setting.")
     nssa_default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Redistribute, advertise, or do not originate Type-7 default route into NSSA area.")
     nssa_default_information_originate_metric: int | None = Field(ge=0, le=16777214, default=10, description="OSPF default metric.")
     nssa_default_information_originate_metric_type: Literal["1", "2"] | None = Field(default="2", description="OSPF metric type for default routes.")
     nssa_redistribution: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redistribute into NSSA area.")
     comments: str | None = Field(max_length=255, default=None, description="Comment.")
-    range: list[Range] = Field(default=None, description="OSPF area range configuration.")
-    virtual_link: list[VirtualLink] = Field(default=None, description="OSPF virtual link configuration.")
-    filter_list: list[FilterList] = Field(default=None, description="OSPF area filter-list configuration.")
+    range_: list[dict[str, Any]] | None = Field(default=None, description="OSPF area range configuration.")
+    virtual_link: list[dict[str, Any]] | None = Field(default=None, description="OSPF virtual link configuration.")
+    filter_list: list[dict[str, Any]] | None = Field(default=None, description="OSPF area filter-list configuration.")
 
 
 class OspfOspfInterface(BaseModel):
@@ -75,11 +75,11 @@ class OspfOspfInterface(BaseModel):
     database_filter_out: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable control of flooding out LSAs.")
     mtu: int | None = Field(ge=576, le=65535, default=0, description="MTU for database description packets.")
     mtu_ignore: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignore MTU.")
-    network_type: NetworkTypeEnum | None = Field(default="broadcast", description="Network type.")
+    network_type: str | None = Field(default="broadcast", description="Network type.")
     bfd: Literal["global", "enable", "disable"] | None = Field(default="global", description="Bidirectional Forwarding Detection (BFD).")
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable status.")
     resync_timeout: int | None = Field(ge=1, le=3600, default=40, description="Graceful restart neighbor resynchronization timeout.")
-    md5_keys: list[Md5Keys] = Field(default=None, description="MD5 key.")
+    md5_keys: list[dict[str, Any]] | None = Field(default=None, description="MD5 key.")
 
 
 class OspfNetwork(BaseModel):
@@ -187,7 +187,7 @@ class OspfRedistribute(BaseModel):
 # ============================================================================
 
 
-class OspfAbr_typeEnum(str, Enum):
+class OspfAbrTypeEnum(str, Enum):
     """Allowed values for abr_type field."""
     CISCO = "cisco"
     IBM = "ibm"
@@ -206,7 +206,41 @@ class OspfModel(BaseModel):
 
     Configure OSPF.
 
-    Validation Rules:        - abr_type: pattern=        - auto_cost_ref_bandwidth: min=1 max=1000000 pattern=        - distance_external: min=1 max=255 pattern=        - distance_inter_area: min=1 max=255 pattern=        - distance_intra_area: min=1 max=255 pattern=        - database_overflow: pattern=        - database_overflow_max_lsas: min=0 max=4294967295 pattern=        - database_overflow_time_to_recover: min=0 max=65535 pattern=        - default_information_originate: pattern=        - default_information_metric: min=1 max=16777214 pattern=        - default_information_metric_type: pattern=        - default_information_route_map: max_length=35 pattern=        - default_metric: min=1 max=16777214 pattern=        - distance: min=1 max=255 pattern=        - lsa_refresh_interval: min=0 max=5 pattern=        - rfc1583_compatible: pattern=        - router_id: pattern=        - spf_timers: pattern=        - bfd: pattern=        - log_neighbour_changes: pattern=        - distribute_list_in: max_length=35 pattern=        - distribute_route_map_in: max_length=35 pattern=        - restart_mode: pattern=        - restart_period: min=1 max=3600 pattern=        - restart_on_topology_change: pattern=        - area: pattern=        - ospf_interface: pattern=        - network: pattern=        - neighbor: pattern=        - passive_interface: pattern=        - summary_address: pattern=        - distribute_list: pattern=        - redistribute: pattern=    """
+    Validation Rules:
+        - abr_type: pattern=
+        - auto_cost_ref_bandwidth: min=1 max=1000000 pattern=
+        - distance_external: min=1 max=255 pattern=
+        - distance_inter_area: min=1 max=255 pattern=
+        - distance_intra_area: min=1 max=255 pattern=
+        - database_overflow: pattern=
+        - database_overflow_max_lsas: min=0 max=4294967295 pattern=
+        - database_overflow_time_to_recover: min=0 max=65535 pattern=
+        - default_information_originate: pattern=
+        - default_information_metric: min=1 max=16777214 pattern=
+        - default_information_metric_type: pattern=
+        - default_information_route_map: max_length=35 pattern=
+        - default_metric: min=1 max=16777214 pattern=
+        - distance: min=1 max=255 pattern=
+        - lsa_refresh_interval: min=0 max=5 pattern=
+        - rfc1583_compatible: pattern=
+        - router_id: pattern=
+        - spf_timers: pattern=
+        - bfd: pattern=
+        - log_neighbour_changes: pattern=
+        - distribute_list_in: max_length=35 pattern=
+        - distribute_route_map_in: max_length=35 pattern=
+        - restart_mode: pattern=
+        - restart_period: min=1 max=3600 pattern=
+        - restart_on_topology_change: pattern=
+        - area: pattern=
+        - ospf_interface: pattern=
+        - network: pattern=
+        - neighbor: pattern=
+        - passive_interface: pattern=
+        - summary_address: pattern=
+        - distribute_list: pattern=
+        - redistribute: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -218,7 +252,40 @@ class OspfModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    abr_type: OspfAbrTypeEnum | None = Field(default="standard", description="Area border router type.")    auto_cost_ref_bandwidth: int | None = Field(ge=1, le=1000000, default=1000, description="Reference bandwidth in terms of megabits per second.")    distance_external: int | None = Field(ge=1, le=255, default=110, description="Administrative external distance.")    distance_inter_area: int | None = Field(ge=1, le=255, default=110, description="Administrative inter-area distance.")    distance_intra_area: int | None = Field(ge=1, le=255, default=110, description="Administrative intra-area distance.")    database_overflow: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable database overflow.")    database_overflow_max_lsas: int | None = Field(ge=0, le=4294967295, default=10000, description="Database overflow maximum LSAs.")    database_overflow_time_to_recover: int | None = Field(ge=0, le=65535, default=300, description="Database overflow time to recover (sec).")    default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    default_information_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default information metric.")    default_information_metric_type: Literal["1", "2"] | None = Field(default="2", description="Default information metric type.")    default_information_route_map: str | None = Field(max_length=35, default="", description="Default information route map.")  # datasource: ['router.route-map.name']    default_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default metric of redistribute routes.")    distance: int | None = Field(ge=1, le=255, default=110, description="Distance of the route.")    lsa_refresh_interval: int | None = Field(ge=0, le=5, default=5, description="The minimal OSPF LSA update time interval")    rfc1583_compatible: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable RFC1583 compatibility.")    router_id: str = Field(default="0.0.0.0", description="Router ID.")    spf_timers: str | None = Field(default="", description="SPF calculation frequency.")    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Bidirectional Forwarding Detection (BFD).")    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log of OSPF neighbor changes.")    distribute_list_in: str | None = Field(max_length=35, default="", description="Filter incoming routes.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    distribute_route_map_in: str | None = Field(max_length=35, default="", description="Filter incoming external routes by route-map.")  # datasource: ['router.route-map.name']    restart_mode: Literal["none", "lls", "graceful-restart"] | None = Field(default="none", description="OSPF restart mode (graceful or LLS).")    restart_period: int | None = Field(ge=1, le=3600, default=120, description="Graceful restart period.")    restart_on_topology_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable continuing graceful restart upon topology change.")    area: list[OspfArea] = Field(default=None, description="OSPF area configuration.")    ospf_interface: list[OspfOspfInterface] = Field(default=None, description="OSPF interface configuration.")    network: list[OspfNetwork] = Field(default=None, description="OSPF network configuration.")    neighbor: list[OspfNeighbor] = Field(default=None, description="OSPF neighbor configuration are used when OSPF runs on non-broadcast media.")    passive_interface: list[OspfPassiveInterface] = Field(default=None, description="Passive interface configuration.")    summary_address: list[OspfSummaryAddress] = Field(default=None, description="IP address summary configuration.")    distribute_list: list[OspfDistributeList] = Field(default=None, description="Distribute list configuration.")    redistribute: list[OspfRedistribute] = Field(default=None, description="Redistribute configuration.")    # ========================================================================
+    abr_type: str | OspfAbrTypeEnum | None = Field(default="standard", description="Area border router type.")
+    auto_cost_ref_bandwidth: int | None = Field(ge=1, le=1000000, default=1000, description="Reference bandwidth in terms of megabits per second.")
+    distance_external: int | None = Field(ge=1, le=255, default=110, description="Administrative external distance.")
+    distance_inter_area: int | None = Field(ge=1, le=255, default=110, description="Administrative inter-area distance.")
+    distance_intra_area: int | None = Field(ge=1, le=255, default=110, description="Administrative intra-area distance.")
+    database_overflow: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable database overflow.")
+    database_overflow_max_lsas: int | None = Field(ge=0, le=4294967295, default=10000, description="Database overflow maximum LSAs.")
+    database_overflow_time_to_recover: int | None = Field(ge=0, le=65535, default=300, description="Database overflow time to recover (sec).")
+    default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")
+    default_information_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default information metric.")
+    default_information_metric_type: Literal["1", "2"] | None = Field(default="2", description="Default information metric type.")
+    default_information_route_map: str | None = Field(max_length=35, default="", description="Default information route map.")  # datasource: ['router.route-map.name']
+    default_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default metric of redistribute routes.")
+    distance: int | None = Field(ge=1, le=255, default=110, description="Distance of the route.")
+    lsa_refresh_interval: int | None = Field(ge=0, le=5, default=5, description="The minimal OSPF LSA update time interval")
+    rfc1583_compatible: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable RFC1583 compatibility.")
+    router_id: str = Field(default="0.0.0.0", description="Router ID.")
+    spf_timers: str | None = Field(default="", description="SPF calculation frequency.")
+    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Bidirectional Forwarding Detection (BFD).")
+    log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log of OSPF neighbor changes.")
+    distribute_list_in: str | None = Field(max_length=35, default="", description="Filter incoming routes.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']
+    distribute_route_map_in: str | None = Field(max_length=35, default="", description="Filter incoming external routes by route-map.")  # datasource: ['router.route-map.name']
+    restart_mode: Literal["none", "lls", "graceful-restart"] | None = Field(default="none", description="OSPF restart mode (graceful or LLS).")
+    restart_period: int | None = Field(ge=1, le=3600, default=120, description="Graceful restart period.")
+    restart_on_topology_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable continuing graceful restart upon topology change.")
+    area: list[OspfArea] | None = Field(default=None, description="OSPF area configuration.")
+    ospf_interface: list[OspfOspfInterface] | None = Field(default=None, description="OSPF interface configuration.")
+    network: list[OspfNetwork] | None = Field(default=None, description="OSPF network configuration.")
+    neighbor: list[OspfNeighbor] | None = Field(default=None, description="OSPF neighbor configuration are used when OSPF runs on non-broadcast media.")
+    passive_interface: list[OspfPassiveInterface] | None = Field(default=None, description="Passive interface configuration.")
+    summary_address: list[OspfSummaryAddress] | None = Field(default=None, description="IP address summary configuration.")
+    distribute_list: list[OspfDistributeList] | None = Field(default=None, description="Distribute list configuration.")
+    redistribute: list[OspfRedistribute] | None = Field(default=None, description="Redistribute configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -327,7 +394,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "default_information_route_map", None)
@@ -376,7 +443,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "distribute_list_in", None)
@@ -427,7 +494,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "distribute_route_map_in", None)
@@ -476,7 +543,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "ospf_interface", [])
@@ -534,7 +601,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -592,7 +659,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "distribute_list", [])
@@ -650,7 +717,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -696,14 +763,20 @@ class OspfModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_default_information_route_map_references(client)
-        all_errors.extend(errors)        errors = await self.validate_distribute_list_in_references(client)
-        all_errors.extend(errors)        errors = await self.validate_distribute_route_map_in_references(client)
-        all_errors.extend(errors)        errors = await self.validate_ospf_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_passive_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_distribute_list_references(client)
-        all_errors.extend(errors)        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_distribute_list_in_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_distribute_route_map_in_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_ospf_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_passive_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_distribute_list_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_redistribute_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -725,5 +798,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.494830Z
+# Generated: 2026-01-14T22:43:36.731253Z
 # ============================================================================

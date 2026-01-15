@@ -233,7 +233,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         transid: int | None = None,
-        type: Literal["SCTP"] | None = None,
+        type_: Literal["SCTP"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         map_startip: str | None = None,
@@ -250,7 +250,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include transid (primary key).
             transid: IP translation ID.
-            type: IP translation type (option: SCTP).
+            type_: IP translation type (option: SCTP).
             startip: First IPv4 address (inclusive) in the range of the addresses to be translated (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range of the addresses to be translated (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
             map_startip: Address to be used as the starting point for translation in the range (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
@@ -288,7 +288,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             transid=transid,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             map_startip=map_startip,
@@ -323,7 +323,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         transid: int | None = None,
-        type: Literal["SCTP"] | None = None,
+        type_: Literal["SCTP"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         map_startip: str | None = None,
@@ -340,7 +340,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             transid: IP translation ID.
-            type: IP translation type (option: SCTP).
+            type_: IP translation type (option: SCTP).
             startip: First IPv4 address (inclusive) in the range of the addresses to be translated (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range of the addresses to be translated (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
             map_startip: Address to be used as the starting point for translation in the range (format xxx.xxx.xxx.xxx, default: 0.0.0.0).
@@ -380,7 +380,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             transid=transid,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             map_startip=map_startip,
@@ -515,7 +515,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         transid: int | None = None,
-        type: Literal["SCTP"] | None = None,
+        type_: Literal["SCTP"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         map_startip: str | None = None,
@@ -533,7 +533,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including transid (primary key)
             transid: Field transid
-            type: Field type
+            type_: Field type
             startip: Field startip
             endip: Field endip
             map_startip: Field map-startip
@@ -581,7 +581,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             transid=transid,
-            type=type,
+            type_=type_,
             startip=startip,
             endip=endip,
             map_startip=map_startip,

@@ -17,7 +17,7 @@ from enum import Enum
 
 
 class IppoolTypeEnum(str, Enum):
-    """Allowed values for type field."""
+    """Allowed values for type_ field."""
     OVERLOAD = "overload"
     ONE_TO_ONE = "one-to-one"
     FIXED_PORT_RANGE = "fixed-port-range"
@@ -35,7 +35,35 @@ class IppoolModel(BaseModel):
 
     Configure IPv4 IP pools.
 
-    Validation Rules:        - name: max_length=79 pattern=        - type: pattern=        - startip: pattern=        - endip: pattern=        - startport: min=1024 max=65535 pattern=        - endport: min=1024 max=65535 pattern=        - source_startip: pattern=        - source_endip: pattern=        - block_size: min=64 max=4096 pattern=        - port_per_user: min=32 max=60417 pattern=        - num_blocks_per_user: min=1 max=128 pattern=        - pba_timeout: min=3 max=86400 pattern=        - pba_interim_log: min=600 max=86400 pattern=        - permit_any_host: pattern=        - arp_reply: pattern=        - arp_intf: max_length=15 pattern=        - associated_interface: max_length=15 pattern=        - comments: max_length=255 pattern=        - nat64: pattern=        - add_nat64_route: pattern=        - source_prefix6: pattern=        - client_prefix_length: min=1 max=128 pattern=        - tcp_session_quota: min=0 max=2097000 pattern=        - udp_session_quota: min=0 max=2097000 pattern=        - icmp_session_quota: min=0 max=2097000 pattern=        - privileged_port_use_pba: pattern=        - subnet_broadcast_in_ippool: pattern=    """
+    Validation Rules:
+        - name: max_length=79 pattern=
+        - type_: pattern=
+        - startip: pattern=
+        - endip: pattern=
+        - startport: min=1024 max=65535 pattern=
+        - endport: min=1024 max=65535 pattern=
+        - source_startip: pattern=
+        - source_endip: pattern=
+        - block_size: min=64 max=4096 pattern=
+        - port_per_user: min=32 max=60417 pattern=
+        - num_blocks_per_user: min=1 max=128 pattern=
+        - pba_timeout: min=3 max=86400 pattern=
+        - pba_interim_log: min=600 max=86400 pattern=
+        - permit_any_host: pattern=
+        - arp_reply: pattern=
+        - arp_intf: max_length=15 pattern=
+        - associated_interface: max_length=15 pattern=
+        - comments: max_length=255 pattern=
+        - nat64: pattern=
+        - add_nat64_route: pattern=
+        - source_prefix6: pattern=
+        - client_prefix_length: min=1 max=128 pattern=
+        - tcp_session_quota: min=0 max=2097000 pattern=
+        - udp_session_quota: min=0 max=2097000 pattern=
+        - icmp_session_quota: min=0 max=2097000 pattern=
+        - privileged_port_use_pba: pattern=
+        - subnet_broadcast_in_ippool: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -47,7 +75,34 @@ class IppoolModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=79, default="", description="IP pool name.")    type: IppoolTypeEnum | None = Field(default="overload", description="IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)")    startip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")    endip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")    startport: int = Field(ge=1024, le=65535, default=5117, description="First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).")    endport: int = Field(ge=1024, le=65535, default=65533, description="Final port number (inclusive) in the range for the address pool (1024 - 65535, Default: 65533).")    source_startip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range of the source addresses to be translated (format = xxx.xxx.xxx.xxx, default = 0.0.0.0).")    source_endip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range of the source addresses to be translated (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")    block_size: int = Field(ge=64, le=4096, default=128, description="Number of addresses in a block (64 - 4096, default = 128).")    port_per_user: int = Field(ge=32, le=60417, default=0, description="Number of port for each user (32 - 60416, default = 0, which is auto).")    num_blocks_per_user: int = Field(ge=1, le=128, default=8, description="Number of addresses blocks that can be used by a user (1 to 128, default = 8).")    pba_timeout: int | None = Field(ge=3, le=86400, default=30, description="Port block allocation timeout (seconds).")    pba_interim_log: int | None = Field(ge=600, le=86400, default=0, description="Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).")    permit_any_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable fullcone NAT. Accept UDP packets from any host.")    arp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).")    arp_intf: str | None = Field(max_length=15, default="", description="Select an interface from available options that will reply to ARP requests. (If blank, any is selected).")  # datasource: ['system.interface.name']    associated_interface: str | None = Field(max_length=15, default="", description="Associated interface name.")  # datasource: ['system.interface.name']    comments: str | None = Field(max_length=255, default=None, description="Comment.")    nat64: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable NAT64.")    add_nat64_route: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable adding NAT64 route.")    source_prefix6: str = Field(default="::/0", description="Source IPv6 network to be translated (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx, default = ::/0).")    client_prefix_length: int = Field(ge=1, le=128, default=64, description="Subnet length of a single deterministic NAT64 client (1 - 128, default = 64).")    tcp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent TCP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")    udp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent UDP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")    icmp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent ICMP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")    privileged_port_use_pba: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable selection of the external port from the port block allocation for NAT'ing privileged ports (deafult = disable).")    subnet_broadcast_in_ippool: Literal["disable"] | None = Field(default="", description="Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.")    # ========================================================================
+    name: str | None = Field(max_length=79, default="", description="IP pool name.")
+    type_: str | IppoolTypeEnum | None = Field(default="overload", description="IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)")
+    startip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")
+    endip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")
+    startport: int = Field(ge=1024, le=65535, default=5117, description="First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).")
+    endport: int = Field(ge=1024, le=65535, default=65533, description="Final port number (inclusive) in the range for the address pool (1024 - 65535, Default: 65533).")
+    source_startip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range of the source addresses to be translated (format = xxx.xxx.xxx.xxx, default = 0.0.0.0).")
+    source_endip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range of the source addresses to be translated (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")
+    block_size: int = Field(ge=64, le=4096, default=128, description="Number of addresses in a block (64 - 4096, default = 128).")
+    port_per_user: int = Field(ge=32, le=60417, default=0, description="Number of port for each user (32 - 60416, default = 0, which is auto).")
+    num_blocks_per_user: int = Field(ge=1, le=128, default=8, description="Number of addresses blocks that can be used by a user (1 to 128, default = 8).")
+    pba_timeout: int | None = Field(ge=3, le=86400, default=30, description="Port block allocation timeout (seconds).")
+    pba_interim_log: int | None = Field(ge=600, le=86400, default=0, description="Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).")
+    permit_any_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable fullcone NAT. Accept UDP packets from any host.")
+    arp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).")
+    arp_intf: str | None = Field(max_length=15, default="", description="Select an interface from available options that will reply to ARP requests. (If blank, any is selected).")  # datasource: ['system.interface.name']
+    associated_interface: str | None = Field(max_length=15, default="", description="Associated interface name.")  # datasource: ['system.interface.name']
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")
+    nat64: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable NAT64.")
+    add_nat64_route: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable adding NAT64 route.")
+    source_prefix6: str = Field(default="::/0", description="Source IPv6 network to be translated (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx, default = ::/0).")
+    client_prefix_length: int = Field(ge=1, le=128, default=64, description="Subnet length of a single deterministic NAT64 client (1 - 128, default = 64).")
+    tcp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent TCP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")
+    udp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent UDP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")
+    icmp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent ICMP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")
+    privileged_port_use_pba: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable selection of the external port from the port block allocation for NAT'ing privileged ports (deafult = disable).")
+    subnet_broadcast_in_ippool: Literal["disable"] | None = Field(default=None, description="Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -141,7 +196,7 @@ class IppoolModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ippool.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "arp_intf", None)
@@ -190,7 +245,7 @@ class IppoolModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ippool.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "associated_interface", None)
@@ -227,9 +282,10 @@ class IppoolModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_arp_intf_references(client)
-        all_errors.extend(errors)        errors = await self.validate_associated_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_associated_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -251,5 +307,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.560280Z
+# Generated: 2026-01-14T22:43:38.065694Z
 # ============================================================================

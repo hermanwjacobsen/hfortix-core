@@ -241,7 +241,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         mode: Literal["normal", "backup"] | None = None,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = None,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = None,
         fortigate_cloud_sso_default_profile: str | None = None,
         schedule_config_restore: Literal["enable", "disable"] | None = None,
         schedule_script_restore: Literal["enable", "disable"] | None = None,
@@ -276,7 +276,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             mode: Central management mode.
-            type: Central management type.
+            type_: Central management type.
             fortigate_cloud_sso_default_profile: Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.
             schedule_config_restore: Enable/disable allowing the central management server to restore the configuration of this FortiGate.
             schedule_script_restore: Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.
@@ -346,7 +346,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             mode=mode,
-            type=type,
+            type_=type_,
             fortigate_cloud_sso_default_profile=fortigate_cloud_sso_default_profile,
             schedule_config_restore=schedule_config_restore,
             schedule_script_restore=schedule_script_restore,

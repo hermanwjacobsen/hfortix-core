@@ -28,9 +28,9 @@ class VipPayload(TypedDict, total=False):
     """
     name: str  # Virtual IP name. | MaxLen: 79
     id: int  # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     comment: str  # Comment. | MaxLen: 255
-    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
+    type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]  # Protocol to be load balanced by the virtual server
     dns_mapping_ttl: int  # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
     ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
@@ -134,7 +134,7 @@ class VipSrcfilterItem(TypedDict):
     All fields are present in API responses.
     """
     
-    range: str  # Source-filter range. | MaxLen: 79
+    range_: str  # Source-filter range. | MaxLen: 79
 
 
 class VipServiceItem(TypedDict):
@@ -164,7 +164,7 @@ class VipMappedipItem(TypedDict):
     All fields are present in API responses.
     """
     
-    range: str  # Mapped IP range. | MaxLen: 79
+    range_: str  # Mapped IP range. | MaxLen: 79
 
 
 class VipSrcintffilterItem(TypedDict):
@@ -185,7 +185,7 @@ class VipRealserversItem(TypedDict):
     """
     
     id: int  # Real server ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["ip", "address"]  # Type of address. | Default: ip
+    type_: Literal["ip", "address"]  # Type of address. | Default: ip
     address: str  # Dynamic address of the real server. | MaxLen: 79
     ip: str  # IP address of the real server.
     port: int  # Port for communicating with the real server. Requi | Default: 0 | Min: 1 | Max: 65535
@@ -220,7 +220,7 @@ class VipSslciphersuitesItem(TypedDict):
     
     priority: int  # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]  # Cipher suite name.
-    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.
 
 
 class VipSslserverciphersuitesItem(TypedDict):
@@ -232,7 +232,7 @@ class VipSslserverciphersuitesItem(TypedDict):
     
     priority: int  # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]  # Cipher suite name.
-    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.
 
 
 class VipMonitorItem(TypedDict):
@@ -267,7 +267,7 @@ class VipSrcfilterObject:
     """
     
     # Source-filter range. | MaxLen: 79
-    range: str
+    range_: str
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -330,7 +330,7 @@ class VipMappedipObject:
     """
     
     # Mapped IP range. | MaxLen: 79
-    range: str
+    range_: str
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -374,7 +374,7 @@ class VipRealserversObject:
     # Real server ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     # Type of address. | Default: ip
-    type: Literal["ip", "address"]
+    type_: Literal["ip", "address"]
     # Dynamic address of the real server. | MaxLen: 79
     address: str
     # IP address of the real server.
@@ -445,7 +445,7 @@ class VipSslciphersuitesObject:
     priority: int
     # Cipher suite name.
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
-    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
     # Methods from FortiObject
@@ -470,7 +470,7 @@ class VipSslserverciphersuitesObject:
     priority: int
     # Cipher suite name.
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
-    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
     # Methods from FortiObject
@@ -537,9 +537,9 @@ class VipResponse(TypedDict):
     """
     name: str  # Virtual IP name. | MaxLen: 79
     id: int  # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     comment: str  # Comment. | MaxLen: 255
-    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
+    type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]  # Protocol to be load balanced by the virtual server
     dns_mapping_ttl: int  # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
     ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
@@ -647,12 +647,12 @@ class VipObject:
     name: str
     # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
     id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Comment. | MaxLen: 255
     comment: str
     # Configure a static NAT, load balance, server load balance, a | Default: static-nat
-    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]
+    type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]
     # Protocol to be load balanced by the virtual server
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]
     # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
@@ -841,7 +841,6 @@ class VipObject:
     gslb_public_ips: list[VipGslbpublicipsObject]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -864,6 +863,10 @@ class Vip:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -884,6 +887,7 @@ class Vip:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VipResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -901,6 +905,7 @@ class Vip:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> VipResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -917,6 +922,7 @@ class Vip:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[VipResponse]: ...
     
     # ================================================================
@@ -959,7 +965,7 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> VipObject: ...
     
@@ -978,7 +984,7 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[VipObject]: ...
     
@@ -1078,23 +1084,6 @@ class Vip:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> VipObject | list[VipObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -1110,7 +1099,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1206,6 +1195,7 @@ class Vip:
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
@@ -1218,7 +1208,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1327,7 +1317,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1435,7 +1425,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1530,113 +1520,7 @@ class Vip:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: VipPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
-        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
-        dns_mapping_ttl: int | None = ...,
-        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
-        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_vip_filter: Literal["disable", "enable"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        extip: str | None = ...,
-        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        h2_support: Literal["enable", "disable"] | None = ...,
-        h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
-        nat44: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
-        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
-        mapped_addr: str | None = ...,
-        extintf: str | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        http_redirect: Literal["enable", "disable"] | None = ...,
-        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
-        nat_source_vip: Literal["disable", "enable"] | None = ...,
-        portforward: Literal["disable", "enable"] | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
-        extport: str | None = ...,
-        mappedport: str | None = ...,
-        gratuitous_arp_interval: int | None = ...,
-        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
-        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
-        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
-        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
-        http_cookie_domain: str | None = ...,
-        http_cookie_path: str | None = ...,
-        http_cookie_generation: int | None = ...,
-        http_cookie_age: int | None = ...,
-        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
-        https_cookie_secure: Literal["disable", "enable"] | None = ...,
-        http_multiplex: Literal["enable", "disable"] | None = ...,
-        http_multiplex_ttl: int | None = ...,
-        http_multiplex_max_request: int | None = ...,
-        http_multiplex_max_concurrent_request: int | None = ...,
-        http_ip_header: Literal["enable", "disable"] | None = ...,
-        http_ip_header_name: str | None = ...,
-        outlook_web_access: Literal["disable", "enable"] | None = ...,
-        weblogic_server: Literal["disable", "enable"] | None = ...,
-        websphere_server: Literal["disable", "enable"] | None = ...,
-        ssl_mode: Literal["half", "full"] | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
-        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
-        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
-        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
-        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
-        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
-        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
-        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
-        ssl_client_session_state_timeout: int | None = ...,
-        ssl_client_session_state_max: int | None = ...,
-        ssl_client_rekey_count: int | None = ...,
-        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
-        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
-        ssl_server_session_state_timeout: int | None = ...,
-        ssl_server_session_state_max: int | None = ...,
-        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
-        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
-        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
-        ssl_hpkp_primary: str | None = ...,
-        ssl_hpkp_backup: str | None = ...,
-        ssl_hpkp_age: int | None = ...,
-        ssl_hpkp_report_uri: str | None = ...,
-        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
-        ssl_hsts: Literal["disable", "enable"] | None = ...,
-        ssl_hsts_age: int | None = ...,
-        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
-        max_embryonic_connections: int | None = ...,
-        color: int | None = ...,
-        ipv6_mappedip: str | None = ...,
-        ipv6_mappedport: str | None = ...,
-        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
-        gslb_hostname: str | None = ...,
-        gslb_domain_name: str | None = ...,
-        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1649,7 +1533,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1745,6 +1629,7 @@ class Vip:
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
@@ -1757,7 +1642,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1866,7 +1751,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -1974,7 +1859,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2069,113 +1954,7 @@ class Vip:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: VipPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
-        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
-        dns_mapping_ttl: int | None = ...,
-        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
-        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_vip_filter: Literal["disable", "enable"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        extip: str | None = ...,
-        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        h2_support: Literal["enable", "disable"] | None = ...,
-        h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
-        nat44: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
-        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
-        mapped_addr: str | None = ...,
-        extintf: str | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        http_redirect: Literal["enable", "disable"] | None = ...,
-        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
-        nat_source_vip: Literal["disable", "enable"] | None = ...,
-        portforward: Literal["disable", "enable"] | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
-        extport: str | None = ...,
-        mappedport: str | None = ...,
-        gratuitous_arp_interval: int | None = ...,
-        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
-        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
-        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
-        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
-        http_cookie_domain: str | None = ...,
-        http_cookie_path: str | None = ...,
-        http_cookie_generation: int | None = ...,
-        http_cookie_age: int | None = ...,
-        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
-        https_cookie_secure: Literal["disable", "enable"] | None = ...,
-        http_multiplex: Literal["enable", "disable"] | None = ...,
-        http_multiplex_ttl: int | None = ...,
-        http_multiplex_max_request: int | None = ...,
-        http_multiplex_max_concurrent_request: int | None = ...,
-        http_ip_header: Literal["enable", "disable"] | None = ...,
-        http_ip_header_name: str | None = ...,
-        outlook_web_access: Literal["disable", "enable"] | None = ...,
-        weblogic_server: Literal["disable", "enable"] | None = ...,
-        websphere_server: Literal["disable", "enable"] | None = ...,
-        ssl_mode: Literal["half", "full"] | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
-        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
-        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
-        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
-        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
-        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
-        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
-        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
-        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
-        ssl_client_session_state_timeout: int | None = ...,
-        ssl_client_session_state_max: int | None = ...,
-        ssl_client_rekey_count: int | None = ...,
-        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
-        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
-        ssl_server_session_state_timeout: int | None = ...,
-        ssl_server_session_state_max: int | None = ...,
-        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
-        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
-        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
-        ssl_hpkp_primary: str | None = ...,
-        ssl_hpkp_backup: str | None = ...,
-        ssl_hpkp_age: int | None = ...,
-        ssl_hpkp_report_uri: str | None = ...,
-        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
-        ssl_hsts: Literal["disable", "enable"] | None = ...,
-        ssl_hsts_age: int | None = ...,
-        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
-        max_embryonic_connections: int | None = ...,
-        color: int | None = ...,
-        ipv6_mappedip: str | None = ...,
-        ipv6_mappedport: str | None = ...,
-        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
-        gslb_hostname: str | None = ...,
-        gslb_domain_name: str | None = ...,
-        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2186,6 +1965,7 @@ class Vip:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
@@ -2216,14 +1996,7 @@ class Vip:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -2240,7 +2013,7 @@ class Vip:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2350,8 +2123,6 @@ class Vip:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -2379,6 +2150,10 @@ class VipDictMode:
     By default returns VipResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return VipObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -2486,7 +2261,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2595,7 +2370,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2704,7 +2479,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2799,10 +2574,12 @@ class VipDictMode:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: VipPayload | None = ...,
@@ -2810,7 +2587,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -2917,7 +2694,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3026,7 +2803,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3135,7 +2912,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3230,10 +3007,12 @@ class VipDictMode:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: VipPayload | None = ...,
@@ -3241,7 +3020,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3367,10 +3146,12 @@ class VipDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -3392,7 +3173,7 @@ class VipDictMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3501,8 +3282,6 @@ class VipDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -3526,6 +3305,10 @@ class VipObjectMode:
     By default returns VipObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return VipResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -3633,7 +3416,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3742,7 +3525,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3851,7 +3634,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -3960,7 +3743,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4055,10 +3838,12 @@ class VipObjectMode:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VipObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: VipPayload | None = ...,
@@ -4066,7 +3851,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4173,7 +3958,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4282,7 +4067,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4391,7 +4176,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4500,7 +4285,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4595,10 +4380,12 @@ class VipObjectMode:
         gslb_domain_name: str | None = ...,
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VipObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: VipPayload | None = ...,
@@ -4606,7 +4393,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4743,10 +4530,12 @@ class VipObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> VipObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -4768,7 +4557,7 @@ class VipObjectMode:
         id: int | None = ...,
         uuid: str | None = ...,
         comment: str | None = ...,
-        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        type_: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
@@ -4877,8 +4666,6 @@ class VipObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

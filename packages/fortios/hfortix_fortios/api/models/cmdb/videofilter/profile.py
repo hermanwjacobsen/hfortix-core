@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -29,7 +30,7 @@ class ProfileFilters(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
     comment: str | None = Field(max_length=255, default=None, description="Comment.")
-    type: TypeEnum = Field(default="category", description="Filter type.")
+    type_: str = Field(default="category", description="Filter type.")
     keyword: int = Field(ge=0, le=4294967295, default=0, description="Video filter keyword ID.")  # datasource: ['videofilter.keyword.id']
     category: str = Field(max_length=7, default="", description="FortiGuard category ID.")
     channel: str = Field(max_length=255, default="", description="Channel ID.")
@@ -52,7 +53,15 @@ class ProfileModel(BaseModel):
 
     Configure VideoFilter profile.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - filters: pattern=        - youtube: pattern=        - vimeo: pattern=        - dailymotion: pattern=        - replacemsg_group: max_length=35 pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - filters: pattern=
+        - youtube: pattern=
+        - vimeo: pattern=
+        - dailymotion: pattern=
+        - replacemsg_group: max_length=35 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -64,7 +73,14 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    filters: list[ProfileFilters] = Field(description="YouTube filter entries.")    youtube: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable YouTube video source.")    vimeo: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Vimeo video source.")    dailymotion: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Dailymotion video source.")    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    filters: list[ProfileFilters] | None = Field(description="YouTube filter entries.")
+    youtube: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable YouTube video source.")
+    vimeo: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Vimeo video source.")
+    dailymotion: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Dailymotion video source.")
+    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -143,7 +159,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.videofilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "filters", [])
@@ -201,7 +217,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.videofilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -238,9 +254,10 @@ class ProfileModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_filters_references(client)
-        all_errors.extend(errors)        errors = await self.validate_replacemsg_group_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_replacemsg_group_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -262,5 +279,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.455842Z
+# Generated: 2026-01-14T22:43:37.932781Z
 # ============================================================================

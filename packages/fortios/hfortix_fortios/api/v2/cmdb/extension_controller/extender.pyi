@@ -126,7 +126,6 @@ class ExtenderObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -146,6 +145,10 @@ class Extender:
     Category: cmdb
     Primary Key: name
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -167,6 +170,7 @@ class Extender:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtenderResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -184,6 +188,7 @@ class Extender:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExtenderResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -200,6 +205,7 @@ class Extender:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ExtenderResponse]: ...
     
     # ================================================================
@@ -242,7 +248,7 @@ class Extender:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExtenderObject: ...
     
@@ -261,7 +267,7 @@ class Extender:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ExtenderObject]: ...
     
@@ -361,23 +367,6 @@ class Extender:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExtenderObject | list[ExtenderObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -409,6 +398,7 @@ class Extender:
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderObject: ...
@@ -493,33 +483,7 @@ class Extender:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ExtenderPayload | None = ...,
-        name: str | None = ...,
-        id: str | None = ...,
-        authorized: Literal["discovered", "disable", "enable"] | None = ...,
-        ext_name: str | None = ...,
-        description: str | None = ...,
-        device_id: int | None = ...,
-        extension_type: Literal["wan-extension", "lan-extension"] | None = ...,
-        profile: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_password_change: Literal["enable", "disable"] | None = ...,
-        login_password_change: Literal["yes", "default", "no"] | None = ...,
-        login_password: str | None = ...,
-        override_enforce_bandwidth: Literal["enable", "disable"] | None = ...,
-        enforce_bandwidth: Literal["enable", "disable"] | None = ...,
-        bandwidth_limit: int | None = ...,
-        wan_extension: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -548,6 +512,7 @@ class Extender:
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderObject: ...
@@ -632,33 +597,7 @@ class Extender:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExtenderPayload | None = ...,
-        name: str | None = ...,
-        id: str | None = ...,
-        authorized: Literal["discovered", "disable", "enable"] | None = ...,
-        ext_name: str | None = ...,
-        description: str | None = ...,
-        device_id: int | None = ...,
-        extension_type: Literal["wan-extension", "lan-extension"] | None = ...,
-        profile: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_password_change: Literal["enable", "disable"] | None = ...,
-        login_password_change: Literal["yes", "default", "no"] | None = ...,
-        login_password: str | None = ...,
-        override_enforce_bandwidth: Literal["enable", "disable"] | None = ...,
-        enforce_bandwidth: Literal["enable", "disable"] | None = ...,
-        bandwidth_limit: int | None = ...,
-        wan_extension: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -669,6 +608,7 @@ class Extender:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExtenderObject: ...
@@ -699,14 +639,7 @@ class Extender:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -753,8 +686,6 @@ class Extender:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -782,6 +713,10 @@ class ExtenderDictMode:
     By default returns ExtenderResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExtenderObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -962,10 +897,12 @@ class ExtenderDictMode:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ExtenderPayload | None = ...,
@@ -1073,10 +1010,12 @@ class ExtenderDictMode:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExtenderPayload | None = ...,
@@ -1130,10 +1069,12 @@ class ExtenderDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1184,8 +1125,6 @@ class ExtenderDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1209,6 +1148,10 @@ class ExtenderObjectMode:
     By default returns ExtenderObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExtenderResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1418,10 +1361,12 @@ class ExtenderObjectMode:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ExtenderPayload | None = ...,
@@ -1558,10 +1503,12 @@ class ExtenderObjectMode:
         wan_extension: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExtenderPayload | None = ...,
@@ -1626,10 +1573,12 @@ class ExtenderObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExtenderObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1680,8 +1629,6 @@ class ExtenderObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

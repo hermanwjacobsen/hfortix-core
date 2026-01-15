@@ -240,7 +240,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         csr: str | None = None,
         state: str | None = None,
         scep_url: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         auto_regenerate_days: int | None = None,
         auto_regenerate_days_warning: int | None = None,
@@ -293,7 +293,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr: Certificate Signing Request.
             state: Certificate Signing Request State.
             scep_url: SCEP server URL.
-            range: Either a global or VDOM IP address range for the certificate.
+            range_: Either a global or VDOM IP address range for the certificate.
             source: Certificate source type.
             auto_regenerate_days: Number of days to wait before expiry of an updated local certificate is requested (0 = disabled).
             auto_regenerate_days_warning: Number of days to wait before an expiry warning message is generated (0 = disabled).
@@ -367,7 +367,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr=csr,
             state=state,
             scep_url=scep_url,
-            range=range,
+            range_=range_,
             source=source,
             auto_regenerate_days=auto_regenerate_days,
             auto_regenerate_days_warning=auto_regenerate_days_warning,
@@ -438,7 +438,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         csr: str | None = None,
         state: str | None = None,
         scep_url: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         auto_regenerate_days: int | None = None,
         auto_regenerate_days_warning: int | None = None,
@@ -491,7 +491,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr: Certificate Signing Request.
             state: Certificate Signing Request State.
             scep_url: SCEP server URL.
-            range: Either a global or VDOM IP address range for the certificate.
+            range_: Either a global or VDOM IP address range for the certificate.
             source: Certificate source type.
             auto_regenerate_days: Number of days to wait before expiry of an updated local certificate is requested (0 = disabled).
             auto_regenerate_days_warning: Number of days to wait before an expiry warning message is generated (0 = disabled).
@@ -567,7 +567,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr=csr,
             state=state,
             scep_url=scep_url,
-            range=range,
+            range_=range_,
             source=source,
             auto_regenerate_days=auto_regenerate_days,
             auto_regenerate_days_warning=auto_regenerate_days_warning,
@@ -738,7 +738,7 @@ class Local(CRUDEndpoint, MetadataMixin):
         csr: str | None = None,
         state: str | None = None,
         scep_url: str | None = None,
-        range: Literal["global", "vdom"] | None = None,
+        range_: Literal["global", "vdom"] | None = None,
         source: Literal["factory", "user", "bundle"] | None = None,
         auto_regenerate_days: int | None = None,
         auto_regenerate_days_warning: int | None = None,
@@ -792,7 +792,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr: Field csr
             state: Field state
             scep_url: Field scep-url
-            range: Field range
+            range_: Field range
             source: Field source
             auto_regenerate_days: Field auto-regenerate-days
             auto_regenerate_days_warning: Field auto-regenerate-days-warning
@@ -876,7 +876,7 @@ class Local(CRUDEndpoint, MetadataMixin):
             csr=csr,
             state=state,
             scep_url=scep_url,
-            range=range,
+            range_=range_,
             source=source,
             auto_regenerate_days=auto_regenerate_days,
             auto_regenerate_days_warning=auto_regenerate_days_warning,

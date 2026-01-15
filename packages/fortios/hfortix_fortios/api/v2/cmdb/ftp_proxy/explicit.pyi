@@ -114,7 +114,6 @@ class ExplicitObject:
     ssl_algorithm: Literal["high", "medium", "low"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -136,6 +135,10 @@ class Explicit:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -156,6 +159,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -173,6 +177,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -189,6 +194,7 @@ class Explicit:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ExplicitResponse: ...
     
     # ================================================================
@@ -231,7 +237,7 @@ class Explicit:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
@@ -250,7 +256,7 @@ class Explicit:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
@@ -350,23 +356,6 @@ class Explicit:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ExplicitObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -390,6 +379,7 @@ class Explicit:
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ExplicitObject: ...
@@ -450,25 +440,7 @@ class Explicit:
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ExplicitPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        incoming_port: str | None = ...,
-        incoming_ip: str | None = ...,
-        outgoing_ip: str | list[str] | None = ...,
-        sec_default_action: Literal["accept", "deny"] | None = ...,
-        server_data_mode: Literal["client", "passive"] | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -507,8 +479,6 @@ class Explicit:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -536,6 +506,10 @@ class ExplicitDictMode:
     By default returns ExplicitResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ExplicitObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -693,10 +667,12 @@ class ExplicitDictMode:
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ExplicitPayload | None = ...,
@@ -750,8 +726,6 @@ class ExplicitDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -775,6 +749,10 @@ class ExplicitObjectMode:
     By default returns ExplicitObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ExplicitResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -953,10 +931,12 @@ class ExplicitObjectMode:
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ExplicitObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ExplicitPayload | None = ...,
@@ -1010,8 +990,6 @@ class ExplicitObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

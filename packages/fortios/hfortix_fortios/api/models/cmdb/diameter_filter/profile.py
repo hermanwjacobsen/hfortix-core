@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class ProfileMissing_request_actionEnum(str, Enum):
+class ProfileMissingRequestActionEnum(str, Enum):
     """Allowed values for missing_request_action field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -24,7 +24,7 @@ class ProfileMissing_request_actionEnum(str, Enum):
     MONITOR = "monitor"
 
 
-class ProfileProtocol_version_invalidEnum(str, Enum):
+class ProfileProtocolVersionInvalidEnum(str, Enum):
     """Allowed values for protocol_version_invalid field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -32,7 +32,7 @@ class ProfileProtocol_version_invalidEnum(str, Enum):
     MONITOR = "monitor"
 
 
-class ProfileMessage_length_invalidEnum(str, Enum):
+class ProfileMessageLengthInvalidEnum(str, Enum):
     """Allowed values for message_length_invalid field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -40,7 +40,7 @@ class ProfileMessage_length_invalidEnum(str, Enum):
     MONITOR = "monitor"
 
 
-class ProfileRequest_error_flag_setEnum(str, Enum):
+class ProfileRequestErrorFlagSetEnum(str, Enum):
     """Allowed values for request_error_flag_set field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -48,7 +48,7 @@ class ProfileRequest_error_flag_setEnum(str, Enum):
     MONITOR = "monitor"
 
 
-class ProfileCmd_flags_reserve_setEnum(str, Enum):
+class ProfileCmdFlagsReserveSetEnum(str, Enum):
     """Allowed values for cmd_flags_reserve_set field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -56,7 +56,7 @@ class ProfileCmd_flags_reserve_setEnum(str, Enum):
     MONITOR = "monitor"
 
 
-class ProfileCommand_code_invalidEnum(str, Enum):
+class ProfileCommandCodeInvalidEnum(str, Enum):
     """Allowed values for command_code_invalid field."""
     ALLOW = "allow"
     BLOCK = "block"
@@ -75,7 +75,20 @@ class ProfileModel(BaseModel):
 
     Configure Diameter filter profiles.
 
-    Validation Rules:        - name: max_length=47 pattern=        - comment: max_length=255 pattern=        - monitor_all_messages: pattern=        - log_packet: pattern=        - track_requests_answers: pattern=        - missing_request_action: pattern=        - protocol_version_invalid: pattern=        - message_length_invalid: pattern=        - request_error_flag_set: pattern=        - cmd_flags_reserve_set: pattern=        - command_code_invalid: pattern=        - command_code_range: pattern=    """
+    Validation Rules:
+        - name: max_length=47 pattern=
+        - comment: max_length=255 pattern=
+        - monitor_all_messages: pattern=
+        - log_packet: pattern=
+        - track_requests_answers: pattern=
+        - missing_request_action: pattern=
+        - protocol_version_invalid: pattern=
+        - message_length_invalid: pattern=
+        - request_error_flag_set: pattern=
+        - cmd_flags_reserve_set: pattern=
+        - command_code_invalid: pattern=
+        - command_code_range: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -87,7 +100,19 @@ class ProfileModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=47, default="", description="Profile name.")    comment: str | None = Field(max_length=255, default=None, description="Comment.")    monitor_all_messages: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for all User Name and Result Code AVP messages.")    log_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet log for triggered diameter settings.")    track_requests_answers: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable validation that each answer has a corresponding request.")    missing_request_action: ProfileMissingRequestActionEnum | None = Field(default="block", description="Action to be taken for answers without corresponding request.")    protocol_version_invalid: ProfileProtocolVersionInvalidEnum | None = Field(default="block", description="Action to be taken for invalid protocol version.")    message_length_invalid: ProfileMessageLengthInvalidEnum | None = Field(default="block", description="Action to be taken for invalid message length.")    request_error_flag_set: ProfileRequestErrorFlagSetEnum | None = Field(default="block", description="Action to be taken for request messages with error flag set.")    cmd_flags_reserve_set: ProfileCmdFlagsReserveSetEnum | None = Field(default="block", description="Action to be taken for messages with cmd flag reserve bits set.")    command_code_invalid: ProfileCommandCodeInvalidEnum | None = Field(default="block", description="Action to be taken for messages with invalid command code.")    command_code_range: str | None = Field(default="", description="Valid range for command codes (0-16777215).")    # ========================================================================
+    name: str = Field(max_length=47, default="", description="Profile name.")
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")
+    monitor_all_messages: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging for all User Name and Result Code AVP messages.")
+    log_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet log for triggered diameter settings.")
+    track_requests_answers: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable validation that each answer has a corresponding request.")
+    missing_request_action: str | ProfileMissingRequestActionEnum | None = Field(default="block", description="Action to be taken for answers without corresponding request.")
+    protocol_version_invalid: str | ProfileProtocolVersionInvalidEnum | None = Field(default="block", description="Action to be taken for invalid protocol version.")
+    message_length_invalid: str | ProfileMessageLengthInvalidEnum | None = Field(default="block", description="Action to be taken for invalid message length.")
+    request_error_flag_set: str | ProfileRequestErrorFlagSetEnum | None = Field(default="block", description="Action to be taken for request messages with error flag set.")
+    cmd_flags_reserve_set: str | ProfileCmdFlagsReserveSetEnum | None = Field(default="block", description="Action to be taken for messages with cmd flag reserve bits set.")
+    command_code_invalid: str | ProfileCommandCodeInvalidEnum | None = Field(default="block", description="Action to be taken for messages with invalid command code.")
+    command_code_range: str | None = Field(default="", description="Valid range for command codes (0-16777215).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -136,5 +161,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:37.277803Z
+# Generated: 2026-01-14T22:43:40.254846Z
 # ============================================================================

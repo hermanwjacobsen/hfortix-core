@@ -235,7 +235,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["single-certificate", "trusted-issuer"] | None = None,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = None,
         common_name: str | None = None,
         issuer: str | None = None,
         vdom: str | bool | None = None,
@@ -253,7 +253,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name: User name.
             id: User ID.
             status: Enable/disable allowing the certificate user to authenticate with the FortiGate unit.
-            type: Type of certificate authentication method.
+            type_: Type of certificate authentication method.
             common_name: Certificate common name.
             issuer: CA certificate used for client certificate verification.
             vdom: Virtual domain name.
@@ -292,7 +292,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             common_name=common_name,
             issuer=issuer,
             data=payload_dict,
@@ -328,7 +328,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["single-certificate", "trusted-issuer"] | None = None,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = None,
         common_name: str | None = None,
         issuer: str | None = None,
         vdom: str | bool | None = None,
@@ -346,7 +346,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name: User name.
             id: User ID.
             status: Enable/disable allowing the certificate user to authenticate with the FortiGate unit.
-            type: Type of certificate authentication method.
+            type_: Type of certificate authentication method.
             common_name: Certificate common name.
             issuer: CA certificate used for client certificate verification.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -387,7 +387,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             common_name=common_name,
             issuer=issuer,
             data=payload_dict,
@@ -523,7 +523,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         id: int | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["single-certificate", "trusted-issuer"] | None = None,
+        type_: Literal["single-certificate", "trusted-issuer"] | None = None,
         common_name: str | None = None,
         issuer: str | None = None,
         vdom: str | bool | None = None,
@@ -542,7 +542,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name: Field name
             id: Field id
             status: Field status
-            type: Field type
+            type_: Field type
             common_name: Field common-name
             issuer: Field issuer
             vdom: Virtual domain name
@@ -591,7 +591,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
             name=name,
             id=id,
             status=status,
-            type=type,
+            type_=type_,
             common_name=common_name,
             issuer=issuer,
             data=payload_dict,

@@ -28,7 +28,7 @@ class CentralManagementPayload(TypedDict, total=False):
         }
     """
     mode: Literal["normal", "backup"]  # Central management mode. | Default: normal
-    type: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
+    type_: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
     fortigate_cloud_sso_default_profile: str  # Override access profile. Permission is set to read | MaxLen: 35
     schedule_config_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
     schedule_script_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
@@ -111,7 +111,7 @@ class CentralManagementResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mode: Literal["normal", "backup"]  # Central management mode. | Default: normal
-    type: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
+    type_: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
     fortigate_cloud_sso_default_profile: str  # Override access profile. Permission is set to read | MaxLen: 35
     schedule_config_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
     schedule_script_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
@@ -147,7 +147,7 @@ class CentralManagementObject:
     # Central management mode. | Default: normal
     mode: Literal["normal", "backup"]
     # Central management type. | Default: fortiguard
-    type: Literal["fortimanager", "fortiguard", "none"]
+    type_: Literal["fortimanager", "fortiguard", "none"]
     # Override access profile. Permission is set to read-only with | MaxLen: 35
     fortigate_cloud_sso_default_profile: str
     # Enable/disable allowing the central management server to res | Default: enable
@@ -196,7 +196,6 @@ class CentralManagementObject:
     # Common API response fields
     status: str
     http_status: int | None
-    vdom: str | None
     
     # Methods from FortiObject
     def get_full(self, name: str) -> Any: ...
@@ -215,6 +214,10 @@ class CentralManagement:
     Path: system/central_management
     Category: cmdb
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
@@ -236,6 +239,7 @@ class CentralManagement:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CentralManagementResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -253,6 +257,7 @@ class CentralManagement:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CentralManagementResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -269,6 +274,7 @@ class CentralManagement:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CentralManagementResponse: ...
     
     # ================================================================
@@ -311,7 +317,7 @@ class CentralManagement:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CentralManagementObject: ...
     
@@ -330,7 +336,7 @@ class CentralManagement:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CentralManagementObject: ...
     
@@ -430,23 +436,6 @@ class CentralManagement:
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CentralManagementObject | dict[str, Any]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -459,7 +448,7 @@ class CentralManagement:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -483,6 +472,7 @@ class CentralManagement:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CentralManagementObject: ...
@@ -492,7 +482,7 @@ class CentralManagement:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -526,7 +516,7 @@ class CentralManagement:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -559,7 +549,7 @@ class CentralManagement:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -582,38 +572,7 @@ class CentralManagement:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CentralManagementPayload | None = ...,
-        mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
-        fortigate_cloud_sso_default_profile: str | None = ...,
-        schedule_config_restore: Literal["enable", "disable"] | None = ...,
-        schedule_script_restore: Literal["enable", "disable"] | None = ...,
-        allow_push_configuration: Literal["enable", "disable"] | None = ...,
-        allow_push_firmware: Literal["enable", "disable"] | None = ...,
-        allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = ...,
-        allow_monitor: Literal["enable", "disable"] | None = ...,
-        serial_number: str | None = ...,
-        fmg: str | None = ...,
-        fmg_source_ip: str | None = ...,
-        fmg_source_ip6: str | None = ...,
-        local_cert: str | None = ...,
-        ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        fmg_update_port: Literal["8890", "443"] | None = ...,
-        fmg_update_http_header: Literal["enable", "disable"] | None = ...,
-        include_default_servers: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -627,7 +586,7 @@ class CentralManagement:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -665,8 +624,6 @@ class CentralManagement:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -694,6 +651,10 @@ class CentralManagementDictMode:
     By default returns CentralManagementResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CentralManagementObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -799,7 +760,7 @@ class CentralManagementDictMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -833,7 +794,7 @@ class CentralManagementDictMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -867,7 +828,7 @@ class CentralManagementDictMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -890,15 +851,17 @@ class CentralManagementDictMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -936,7 +899,7 @@ class CentralManagementDictMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -973,8 +936,6 @@ class CentralManagementDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -998,6 +959,10 @@ class CentralManagementObjectMode:
     By default returns CentralManagementObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CentralManagementResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1103,7 +1068,7 @@ class CentralManagementObjectMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1137,7 +1102,7 @@ class CentralManagementObjectMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1171,7 +1136,7 @@ class CentralManagementObjectMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1205,7 +1170,7 @@ class CentralManagementObjectMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1228,15 +1193,17 @@ class CentralManagementObjectMode:
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CentralManagementObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1274,7 +1241,7 @@ class CentralManagementObjectMode:
         self,
         payload_dict: CentralManagementPayload | None = ...,
         mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
+        type_: Literal["fortimanager", "fortiguard", "none"] | None = ...,
         fortigate_cloud_sso_default_profile: str | None = ...,
         schedule_config_restore: Literal["enable", "disable"] | None = ...,
         schedule_script_restore: Literal["enable", "disable"] | None = ...,
@@ -1311,8 +1278,6 @@ class CentralManagementObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

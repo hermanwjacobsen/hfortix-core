@@ -246,7 +246,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["fortigate", "ha-cluster"] | None = None,
+        type_: Literal["fortigate", "ha-cluster"] | None = None,
         destination: str | list[str] | list[dict[str, Any]] | None = None,
         ha_group_id: int | None = None,
         vdom: str | bool | None = None,
@@ -262,7 +262,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: Name.
-            type: Destination type.
+            type_: Destination type.
             destination: Destinations.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -314,7 +314,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             destination=destination,
             ha_group_id=ha_group_id,
             data=payload_dict,
@@ -348,7 +348,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["fortigate", "ha-cluster"] | None = None,
+        type_: Literal["fortigate", "ha-cluster"] | None = None,
         destination: str | list[str] | list[dict[str, Any]] | None = None,
         ha_group_id: int | None = None,
         vdom: str | bool | None = None,
@@ -364,7 +364,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Name.
-            type: Destination type.
+            type_: Destination type.
             destination: Destinations.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -418,7 +418,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             destination=destination,
             ha_group_id=ha_group_id,
             data=payload_dict,
@@ -552,7 +552,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: Literal["fortigate", "ha-cluster"] | None = None,
+        type_: Literal["fortigate", "ha-cluster"] | None = None,
         destination: str | list[str] | list[dict[str, Any]] | None = None,
         ha_group_id: int | None = None,
         vdom: str | bool | None = None,
@@ -569,7 +569,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Resource data including name (primary key)
             name: Field name
-            type: Field type
+            type_: Field type
             destination: Field destination
             ha_group_id: Field ha-group-id
             vdom: Virtual domain name
@@ -616,7 +616,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
-            type=type,
+            type_=type_,
             destination=destination,
             ha_group_id=ha_group_id,
             data=payload_dict,

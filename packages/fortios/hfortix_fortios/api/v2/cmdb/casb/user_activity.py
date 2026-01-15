@@ -254,7 +254,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         description: str | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         application: str | None = None,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = None,
@@ -277,7 +277,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: CASB user activity status.
             description: CASB user activity description.
-            type: CASB user activity type.
+            type_: CASB user activity type.
             casb_name: CASB user activity signature name.
             application: CASB SaaS application name.
             category: CASB user activity category.
@@ -349,7 +349,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid=uuid,
             status=status,
             description=description,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             application=application,
             category=category,
@@ -390,7 +390,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         description: str | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         application: str | None = None,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = None,
@@ -413,7 +413,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: CASB user activity status.
             description: CASB user activity description.
-            type: CASB user activity type.
+            type_: CASB user activity type.
             casb_name: CASB user activity signature name.
             application: CASB SaaS application name.
             category: CASB user activity category.
@@ -487,7 +487,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid=uuid,
             status=status,
             description=description,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             application=application,
             category=category,
@@ -628,7 +628,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         description: str | None = None,
-        type: Literal["built-in", "customized"] | None = None,
+        type_: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         application: str | None = None,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = None,
@@ -652,7 +652,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid: Field uuid
             status: Field status
             description: Field description
-            type: Field type
+            type_: Field type
             casb_name: Field casb-name
             application: Field application
             category: Field category
@@ -706,7 +706,7 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             uuid=uuid,
             status=status,
             description=description,
-            type=type,
+            type_=type_,
             casb_name=casb_name,
             application=application,
             category=category,

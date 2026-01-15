@@ -45,7 +45,30 @@ class StaticModel(BaseModel):
 
     Configure IPv4 static routing tables.
 
-    Validation Rules:        - seq_num: min=0 max=4294967295 pattern=        - status: pattern=        - dst: pattern=        - src: pattern=        - gateway: pattern=        - preferred_source: pattern=        - distance: min=1 max=255 pattern=        - weight: min=0 max=255 pattern=        - priority: min=1 max=65535 pattern=        - device: max_length=35 pattern=        - comment: max_length=255 pattern=        - blackhole: pattern=        - dynamic_gateway: pattern=        - sdwan_zone: pattern=        - dstaddr: max_length=79 pattern=        - internet_service: min=0 max=4294967295 pattern=        - internet_service_custom: max_length=64 pattern=        - internet_service_fortiguard: max_length=64 pattern=        - link_monitor_exempt: pattern=        - tag: min=0 max=4294967295 pattern=        - vrf: min=0 max=511 pattern=        - bfd: pattern=    """
+    Validation Rules:
+        - seq_num: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - dst: pattern=
+        - src: pattern=
+        - gateway: pattern=
+        - preferred_source: pattern=
+        - distance: min=1 max=255 pattern=
+        - weight: min=0 max=255 pattern=
+        - priority: min=1 max=65535 pattern=
+        - device: max_length=35 pattern=
+        - comment: max_length=255 pattern=
+        - blackhole: pattern=
+        - dynamic_gateway: pattern=
+        - sdwan_zone: pattern=
+        - dstaddr: max_length=79 pattern=
+        - internet_service: min=0 max=4294967295 pattern=
+        - internet_service_custom: max_length=64 pattern=
+        - internet_service_fortiguard: max_length=64 pattern=
+        - link_monitor_exempt: pattern=
+        - tag: min=0 max=4294967295 pattern=
+        - vrf: min=0 max=511 pattern=
+        - bfd: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -57,7 +80,29 @@ class StaticModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    seq_num: int | None = Field(ge=0, le=4294967295, default=0, description="Sequence number.")    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this static route.")    dst: str = Field(default="0.0.0.0 0.0.0.0", description="Destination IP and mask for this route.")    src: str | None = Field(default="0.0.0.0 0.0.0.0", description="Source prefix for this route.")    gateway: str | None = Field(default="0.0.0.0", description="Gateway IP for this route.")    preferred_source: str | None = Field(default="0.0.0.0", description="Preferred source IP for this route.")    distance: int | None = Field(ge=1, le=255, default=10, description="Administrative distance (1 - 255).")    weight: int | None = Field(ge=0, le=255, default=0, description="Administrative weight (0 - 255).")    priority: int | None = Field(ge=1, le=65535, default=1, description="Administrative priority (1 - 65535).")    device: str = Field(max_length=35, default="", description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    blackhole: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable black hole.")    dynamic_gateway: Literal["enable", "disable"] | None = Field(default="disable", description="Enable use of dynamic gateway retrieved from a DHCP or PPP server.")    sdwan_zone: list[StaticSdwanZone] = Field(default=None, description="Choose SD-WAN Zone.")    dstaddr: str | None = Field(max_length=79, default="", description="Name of firewall address or address group.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    internet_service: int | None = Field(ge=0, le=4294967295, default=0, description="Application ID in the Internet service database.")  # datasource: ['firewall.internet-service.id']    internet_service_custom: str | None = Field(max_length=64, default="", description="Application name in the Internet service custom database.")  # datasource: ['firewall.internet-service-custom.name']    internet_service_fortiguard: str | None = Field(max_length=64, default="", description="Application name in the Internet service fortiguard database.")  # datasource: ['firewall.internet-service-fortiguard.name']    link_monitor_exempt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable withdrawal of this static route when link monitor or health check is down.")    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Route tag.")    vrf: int | None = Field(ge=0, le=511, default="unspecified", description="Virtual Routing Forwarding ID.")    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")    # ========================================================================
+    seq_num: int | None = Field(ge=0, le=4294967295, default=0, description="Sequence number.")
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this static route.")
+    dst: str = Field(default="0.0.0.0 0.0.0.0", description="Destination IP and mask for this route.")
+    src: str | None = Field(default="0.0.0.0 0.0.0.0", description="Source prefix for this route.")
+    gateway: str | None = Field(default="0.0.0.0", description="Gateway IP for this route.")
+    preferred_source: str | None = Field(default="0.0.0.0", description="Preferred source IP for this route.")
+    distance: int | None = Field(ge=1, le=255, default=10, description="Administrative distance (1 - 255).")
+    weight: int | None = Field(ge=0, le=255, default=0, description="Administrative weight (0 - 255).")
+    priority: int | None = Field(ge=1, le=65535, default=1, description="Administrative priority (1 - 65535).")
+    device: str = Field(max_length=35, default="", description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
+    blackhole: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable black hole.")
+    dynamic_gateway: Literal["enable", "disable"] | None = Field(default="disable", description="Enable use of dynamic gateway retrieved from a DHCP or PPP server.")
+    sdwan_zone: list[StaticSdwanZone] | None = Field(default=None, description="Choose SD-WAN Zone.")
+    dstaddr: str | None = Field(max_length=79, default="", description="Name of firewall address or address group.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    internet_service: int | None = Field(ge=0, le=4294967295, default=0, description="Application ID in the Internet service database.")  # datasource: ['firewall.internet-service.id']
+    internet_service_custom: str | None = Field(max_length=64, default="", description="Application name in the Internet service custom database.")  # datasource: ['firewall.internet-service-custom.name']
+    internet_service_fortiguard: str | None = Field(max_length=64, default="", description="Application name in the Internet service fortiguard database.")  # datasource: ['firewall.internet-service-fortiguard.name']
+    link_monitor_exempt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable withdrawal of this static route when link monitor or health check is down.")
+    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Route tag.")
+    vrf: int | None = Field(ge=0, le=511, default=None, description="Virtual Routing Forwarding ID.")
+    bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -196,7 +241,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "device", None)
@@ -245,7 +290,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate child table items
         values = getattr(self, "sdwan_zone", [])
@@ -303,7 +348,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "dstaddr", None)
@@ -354,7 +399,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "internet_service", None)
@@ -403,7 +448,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "internet_service_custom", None)
@@ -452,7 +497,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "internet_service_fortiguard", None)
@@ -489,13 +534,18 @@ class StaticModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_device_references(client)
-        all_errors.extend(errors)        errors = await self.validate_sdwan_zone_references(client)
-        all_errors.extend(errors)        errors = await self.validate_dstaddr_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_custom_references(client)
-        all_errors.extend(errors)        errors = await self.validate_internet_service_fortiguard_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_sdwan_zone_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_custom_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_internet_service_fortiguard_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -517,5 +567,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:32.617584Z
+# Generated: 2026-01-14T22:43:34.452258Z
 # ============================================================================

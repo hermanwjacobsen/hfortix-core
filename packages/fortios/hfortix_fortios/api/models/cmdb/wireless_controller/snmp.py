@@ -8,7 +8,8 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any
+from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -34,8 +35,8 @@ class SnmpCommunity(BaseModel):
     query_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")
     trap_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 traps.")
     trap_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")
-    hosts: list[Hosts] = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")
-    hosts6: list[Hosts6] = Field(default=None, description="Configure IPv6 SNMP managers (hosts).")
+    hosts: list[dict[str, Any]] | None = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")
+    hosts6: list[dict[str, Any]] | None = Field(default=None, description="Configure IPv6 SNMP managers (hosts).")
 
 
 class SnmpUser(BaseModel):
@@ -54,9 +55,9 @@ class SnmpUser(BaseModel):
     queries: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP queries for this user.")
     trap_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traps for this SNMP user.")
     security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = Field(default="no-auth-no-priv", description="Security level for message authentication and encryption.")
-    auth_proto: AuthProtoEnum | None = Field(default="sha", description="Authentication protocol.")
+    auth_proto: str | None = Field(default="sha", description="Authentication protocol.")
     auth_pwd: Any = Field(max_length=128, description="Password for authentication protocol.")
-    priv_proto: PrivProtoEnum | None = Field(default="aes", description="Privacy (encryption) protocol.")
+    priv_proto: str | None = Field(default="aes", description="Privacy (encryption) protocol.")
     priv_pwd: Any = Field(max_length=128, description="Password for privacy (encryption) protocol.")
     notify_hosts: str | None = Field(default="", description="Configure SNMP User Notify Hosts.")
     notify_hosts6: str | None = Field(default="", description="Configure IPv6 SNMP User Notify Hosts.")
@@ -77,7 +78,14 @@ class SnmpModel(BaseModel):
 
     Configure SNMP.
 
-    Validation Rules:        - engine_id: max_length=23 pattern=        - contact_info: max_length=31 pattern=        - trap_high_cpu_threshold: min=10 max=100 pattern=        - trap_high_mem_threshold: min=10 max=100 pattern=        - community: pattern=        - user: pattern=    """
+    Validation Rules:
+        - engine_id: max_length=23 pattern=
+        - contact_info: max_length=31 pattern=
+        - trap_high_cpu_threshold: min=10 max=100 pattern=
+        - trap_high_mem_threshold: min=10 max=100 pattern=
+        - community: pattern=
+        - user: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -89,7 +97,13 @@ class SnmpModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    engine_id: str | None = Field(max_length=23, default="", description="AC SNMP engineID string (maximum 24 characters).")    contact_info: str | None = Field(max_length=31, default="", description="Contact Information.")    trap_high_cpu_threshold: int | None = Field(ge=10, le=100, default=80, description="CPU usage when trap is sent.")    trap_high_mem_threshold: int | None = Field(ge=10, le=100, default=80, description="Memory usage when trap is sent.")    community: list[SnmpCommunity] = Field(default=None, description="SNMP Community Configuration.")    user: list[SnmpUser] = Field(default=None, description="SNMP User Configuration.")    # ========================================================================
+    engine_id: str | None = Field(max_length=23, default="", description="AC SNMP engineID string (maximum 24 characters).")
+    contact_info: str | None = Field(max_length=31, default="", description="Contact Information.")
+    trap_high_cpu_threshold: int | None = Field(ge=10, le=100, default=80, description="CPU usage when trap is sent.")
+    trap_high_mem_threshold: int | None = Field(ge=10, le=100, default=80, description="Memory usage when trap is sent.")
+    community: list[SnmpCommunity] | None = Field(default=None, description="SNMP Community Configuration.")
+    user: list[SnmpUser] | None = Field(default=None, description="SNMP User Configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -138,5 +152,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.373225Z
+# Generated: 2026-01-14T22:43:35.438134Z
 # ============================================================================

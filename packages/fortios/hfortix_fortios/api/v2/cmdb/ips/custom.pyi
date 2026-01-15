@@ -95,7 +95,6 @@ class CustomObject:
     comment: str
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -118,6 +117,10 @@ class Custom:
     Primary Key: tag
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -138,6 +141,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CustomResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -155,6 +159,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> CustomResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -171,6 +176,7 @@ class Custom:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[CustomResponse]: ...
     
     # ================================================================
@@ -213,7 +219,7 @@ class Custom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
@@ -232,7 +238,7 @@ class Custom:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[CustomObject]: ...
     
@@ -332,23 +338,6 @@ class Custom:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        tag: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> CustomObject | list[CustomObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -375,6 +364,7 @@ class Custom:
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -444,28 +434,7 @@ class Custom:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: CustomPayload | None = ...,
-        tag: str | None = ...,
-        signature: str | None = ...,
-        rule_id: int | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | list[str] | None = ...,
-        application: str | list[str] | None = ...,
-        protocol: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -489,6 +458,7 @@ class Custom:
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -558,28 +528,7 @@ class Custom:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: CustomPayload | None = ...,
-        tag: str | None = ...,
-        signature: str | None = ...,
-        rule_id: int | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | list[str] | None = ...,
-        application: str | list[str] | None = ...,
-        protocol: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -590,6 +539,7 @@ class Custom:
         tag: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CustomObject: ...
@@ -620,14 +570,7 @@ class Custom:
         self,
         tag: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        tag: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -669,8 +612,6 @@ class Custom:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -698,6 +639,10 @@ class CustomDictMode:
     By default returns CustomResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return CustomObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -863,10 +808,12 @@ class CustomDictMode:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -954,10 +901,12 @@ class CustomDictMode:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1006,10 +955,12 @@ class CustomDictMode:
         self,
         tag: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         tag: str,
@@ -1055,8 +1006,6 @@ class CustomDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1080,6 +1029,10 @@ class CustomObjectMode:
     By default returns CustomObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return CustomResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1269,10 +1222,12 @@ class CustomObjectMode:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1384,10 +1339,12 @@ class CustomObjectMode:
         action: Literal["pass", "block"] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: CustomPayload | None = ...,
@@ -1447,10 +1404,12 @@ class CustomObjectMode:
         self,
         tag: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> CustomObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         tag: str,
@@ -1496,8 +1455,6 @@ class CustomObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

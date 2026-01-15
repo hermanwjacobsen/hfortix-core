@@ -16,7 +16,7 @@ from enum import Enum
 # ============================================================================
 
 
-class TacacsPlusAuthen_typeEnum(str, Enum):
+class TacacsPlusAuthenTypeEnum(str, Enum):
     """Allowed values for authen_type field."""
     MSCHAP = "mschap"
     CHAP = "chap"
@@ -36,7 +36,23 @@ class TacacsPlusModel(BaseModel):
 
     Configure TACACS+ server entries.
 
-    Validation Rules:        - name: max_length=35 pattern=        - server: max_length=63 pattern=        - secondary_server: max_length=63 pattern=        - tertiary_server: max_length=63 pattern=        - port: min=1 max=65535 pattern=        - key: max_length=128 pattern=        - secondary_key: max_length=128 pattern=        - tertiary_key: max_length=128 pattern=        - status_ttl: min=0 max=600 pattern=        - authen_type: pattern=        - authorization: pattern=        - source_ip: max_length=63 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:
+        - name: max_length=35 pattern=
+        - server: max_length=63 pattern=
+        - secondary_server: max_length=63 pattern=
+        - tertiary_server: max_length=63 pattern=
+        - port: min=1 max=65535 pattern=
+        - key: max_length=128 pattern=
+        - secondary_key: max_length=128 pattern=
+        - tertiary_key: max_length=128 pattern=
+        - status_ttl: min=0 max=600 pattern=
+        - authen_type: pattern=
+        - authorization: pattern=
+        - source_ip: max_length=63 pattern=
+        - interface_select_method: pattern=
+        - interface: max_length=15 pattern=
+        - vrf_select: min=0 max=511 pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -48,7 +64,22 @@ class TacacsPlusModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="TACACS+ server entry name.")    server: str = Field(max_length=63, default="", description="Primary TACACS+ server CN domain name or IP address.")    secondary_server: str | None = Field(max_length=63, default="", description="Secondary TACACS+ server CN domain name or IP address.")    tertiary_server: str | None = Field(max_length=63, default="", description="Tertiary TACACS+ server CN domain name or IP address.")    port: int | None = Field(ge=1, le=65535, default=49, description="Port number of the TACACS+ server.")    key: Any = Field(max_length=128, default=None, description="Key to access the primary server.")    secondary_key: Any = Field(max_length=128, default=None, description="Key to access the secondary server.")    tertiary_key: Any = Field(max_length=128, default=None, description="Key to access the tertiary server.")    status_ttl: int | None = Field(ge=0, le=600, default=300, description="Time for which server reachability is cached so that when a server is unreachable, it will not be retried for at least this period of time (0 = cache disabled, default = 300).")    authen_type: TacacsPlusAuthenTypeEnum | None = Field(default="auto", description="Allowed authentication protocols/methods.")    authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable TACACS+ authorization.")    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to TACACS+ server.")    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="TACACS+ server entry name.")
+    server: str = Field(max_length=63, default="", description="Primary TACACS+ server CN domain name or IP address.")
+    secondary_server: str | None = Field(max_length=63, default="", description="Secondary TACACS+ server CN domain name or IP address.")
+    tertiary_server: str | None = Field(max_length=63, default="", description="Tertiary TACACS+ server CN domain name or IP address.")
+    port: int | None = Field(ge=1, le=65535, default=49, description="Port number of the TACACS+ server.")
+    key: Any = Field(max_length=128, default=None, description="Key to access the primary server.")
+    secondary_key: Any = Field(max_length=128, default=None, description="Key to access the secondary server.")
+    tertiary_key: Any = Field(max_length=128, default=None, description="Key to access the tertiary server.")
+    status_ttl: int | None = Field(ge=0, le=600, default=300, description="Time for which server reachability is cached so that when a server is unreachable, it will not be retried for at least this period of time (0 = cache disabled, default = 300).")
+    authen_type: str | TacacsPlusAuthenTypeEnum | None = Field(default="auto", description="Allowed authentication protocols/methods.")
+    authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable TACACS+ authorization.")
+    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to TACACS+ server.")
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -127,7 +158,7 @@ class TacacsPlusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.tacacs_plus.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -164,7 +195,7 @@ class TacacsPlusModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
         all_errors.extend(errors)
         return all_errors
@@ -187,5 +218,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:34.247388Z
+# Generated: 2026-01-14T22:43:36.426703Z
 # ============================================================================

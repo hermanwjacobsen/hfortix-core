@@ -50,7 +50,29 @@ class ExtenderVapModel(BaseModel):
 
     FortiExtender wifi vap configuration.
 
-    Validation Rules:        - name: max_length=15 pattern=        - type: pattern=        - ssid: max_length=32 pattern=        - max_clients: min=0 max=512 pattern=        - broadcast_ssid: pattern=        - security: pattern=        - dtim: min=1 max=255 pattern=        - rts_threshold: min=256 max=2347 pattern=        - pmf: pattern=        - target_wake_time: pattern=        - bss_color_partial: pattern=        - mu_mimo: pattern=        - passphrase: max_length=59 pattern=        - sae_password: max_length=124 pattern=        - auth_server_address: max_length=63 pattern=        - auth_server_port: min=1 max=65535 pattern=        - auth_server_secret: max_length=63 pattern=        - ip_address: pattern=        - start_ip: pattern=        - end_ip: pattern=        - allowaccess: pattern=    """
+    Validation Rules:
+        - name: max_length=15 pattern=
+        - type_: pattern=
+        - ssid: max_length=32 pattern=
+        - max_clients: min=0 max=512 pattern=
+        - broadcast_ssid: pattern=
+        - security: pattern=
+        - dtim: min=1 max=255 pattern=
+        - rts_threshold: min=256 max=2347 pattern=
+        - pmf: pattern=
+        - target_wake_time: pattern=
+        - bss_color_partial: pattern=
+        - mu_mimo: pattern=
+        - passphrase: max_length=59 pattern=
+        - sae_password: max_length=124 pattern=
+        - auth_server_address: max_length=63 pattern=
+        - auth_server_port: min=1 max=65535 pattern=
+        - auth_server_secret: max_length=63 pattern=
+        - ip_address: pattern=
+        - start_ip: pattern=
+        - end_ip: pattern=
+        - allowaccess: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -62,7 +84,28 @@ class ExtenderVapModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=15, default="", description="Wi-Fi VAP name.")    type: Literal["local-vap", "lan-ext-vap"] = Field(default="", description="Wi-Fi VAP type local-vap / lan-extension-vap.")    ssid: str = Field(max_length=32, default="", description="Wi-Fi SSID.")    max_clients: int | None = Field(ge=0, le=512, default=0, description="Wi-Fi max clients (0 - 512), default = 0 (no limit) ")    broadcast_ssid: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi broadcast SSID enable / disable.")    security: ExtenderVapSecurityEnum = Field(default="WPA2-Personal", description="Wi-Fi security.")    dtim: int | None = Field(ge=1, le=255, default=1, description="Wi-Fi DTIM (1 - 255) default = 1.")    rts_threshold: int | None = Field(ge=256, le=2347, default=2347, description="Wi-Fi RTS Threshold (256 - 2347), default = 2347 (RTS/CTS disabled).")    pmf: Literal["disabled", "optional", "required"] | None = Field(default="disabled", description="Wi-Fi pmf enable/disable, default = disable.")    target_wake_time: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi 802.11AX target wake time enable / disable, default = enable.")    bss_color_partial: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi 802.11AX bss color partial enable / disable, default = enable.")    mu_mimo: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi multi-user MIMO enable / disable, default = enable.")    passphrase: Any = Field(max_length=59, description="Wi-Fi passphrase.")    sae_password: Any = Field(max_length=124, description="Wi-Fi SAE Password.")    auth_server_address: str = Field(max_length=63, default="", description="Wi-Fi Authentication Server Address (IPv4 format).")    auth_server_port: int = Field(ge=1, le=65535, default=0, description="Wi-Fi Authentication Server Port.")    auth_server_secret: str = Field(max_length=63, default="", description="Wi-Fi Authentication Server Secret.")    ip_address: Any = Field(default="0.0.0.0 0.0.0.0", description="Extender ip address.")    start_ip: str | None = Field(default="0.0.0.0", description="Start ip address.")    end_ip: str | None = Field(default="0.0.0.0", description="End ip address.")    allowaccess: ExtenderVapAllowaccessEnum | None = Field(default="", description="Control management access to the managed extender. Separate entries with a space.")    # ========================================================================
+    name: str | None = Field(max_length=15, default="", description="Wi-Fi VAP name.")
+    type_: Literal["local-vap", "lan-ext-vap"] | None = Field(default=None, description="Wi-Fi VAP type local-vap / lan-extension-vap.")
+    ssid: str = Field(max_length=32, default="", description="Wi-Fi SSID.")
+    max_clients: int | None = Field(ge=0, le=512, default=0, description="Wi-Fi max clients (0 - 512), default = 0 (no limit) ")
+    broadcast_ssid: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi broadcast SSID enable / disable.")
+    security: str | ExtenderVapSecurityEnum = Field(default="WPA2-Personal", description="Wi-Fi security.")
+    dtim: int | None = Field(ge=1, le=255, default=1, description="Wi-Fi DTIM (1 - 255) default = 1.")
+    rts_threshold: int | None = Field(ge=256, le=2347, default=2347, description="Wi-Fi RTS Threshold (256 - 2347), default = 2347 (RTS/CTS disabled).")
+    pmf: Literal["disabled", "optional", "required"] | None = Field(default="disabled", description="Wi-Fi pmf enable/disable, default = disable.")
+    target_wake_time: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi 802.11AX target wake time enable / disable, default = enable.")
+    bss_color_partial: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi 802.11AX bss color partial enable / disable, default = enable.")
+    mu_mimo: Literal["disable", "enable"] | None = Field(default="enable", description="Wi-Fi multi-user MIMO enable / disable, default = enable.")
+    passphrase: Any = Field(max_length=59, description="Wi-Fi passphrase.")
+    sae_password: Any = Field(max_length=124, description="Wi-Fi SAE Password.")
+    auth_server_address: str = Field(max_length=63, default="", description="Wi-Fi Authentication Server Address (IPv4 format).")
+    auth_server_port: int = Field(ge=1, le=65535, default=0, description="Wi-Fi Authentication Server Port.")
+    auth_server_secret: str = Field(max_length=63, default="", description="Wi-Fi Authentication Server Secret.")
+    ip_address: Any = Field(default="0.0.0.0 0.0.0.0", description="Extender ip address.")
+    start_ip: str | None = Field(default="0.0.0.0", description="Start ip address.")
+    end_ip: str | None = Field(default="0.0.0.0", description="End ip address.")
+    allowaccess: str | ExtenderVapAllowaccessEnum | None = Field(default=None, description="Control management access to the managed extender. Separate entries with a space.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -111,5 +154,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.193328Z
+# Generated: 2026-01-14T22:43:35.173982Z
 # ============================================================================

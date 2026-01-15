@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -29,11 +30,11 @@ class ServerOptions(BaseModel):
         str_strip_whitespace = True
     id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
     code: int = Field(ge=0, le=255, default=0, description="DHCPv6 option code.")
-    type: TypeEnum | None = Field(default="hex", description="DHCPv6 option type.")
+    type_: str | None = Field(default="hex", description="DHCPv6 option type.")
     value: str | None = Field(max_length=312, default="", description="DHCPv6 option value (hexadecimal value must be even).")
     ip6: str | None = Field(default="", description="DHCP option IP6s.")
     vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class option matching. When enabled only DHCP requests with a matching VCI are served with this option.")
-    vci_string: list[VciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    vci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
 
 
 class ServerPrefixRange(BaseModel):
@@ -68,7 +69,7 @@ class ServerIpRange(BaseModel):
     start_ip: str = Field(default="::", description="Start of IP range.")
     end_ip: str = Field(default="::", description="End of IP range.")
     vci_match: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable vendor class option matching. When enabled only DHCP requests with a matching VC are served with this range.")
-    vci_string: list[VciString] = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
+    vci_string: list[dict[str, Any]] | None = Field(default=None, description="One or more VCI strings in quotes separated by spaces.")
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -86,7 +87,29 @@ class ServerModel(BaseModel):
 
     Configure DHCPv6 servers.
 
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - rapid_commit: pattern=        - lease_time: min=300 max=8640000 pattern=        - dns_service: pattern=        - dns_search_list: pattern=        - dns_server1: pattern=        - dns_server2: pattern=        - dns_server3: pattern=        - dns_server4: pattern=        - domain: max_length=35 pattern=        - subnet: pattern=        - interface: max_length=15 pattern=        - delegated_prefix_route: pattern=        - options: pattern=        - upstream_interface: max_length=15 pattern=        - delegated_prefix_iaid: min=0 max=4294967295 pattern=        - ip_mode: pattern=        - prefix_mode: pattern=        - prefix_range: pattern=        - ip_range: pattern=    """
+    Validation Rules:
+        - id: min=0 max=4294967295 pattern=
+        - status: pattern=
+        - rapid_commit: pattern=
+        - lease_time: min=300 max=8640000 pattern=
+        - dns_service: pattern=
+        - dns_search_list: pattern=
+        - dns_server1: pattern=
+        - dns_server2: pattern=
+        - dns_server3: pattern=
+        - dns_server4: pattern=
+        - domain: max_length=35 pattern=
+        - subnet: pattern=
+        - interface: max_length=15 pattern=
+        - delegated_prefix_route: pattern=
+        - options: pattern=
+        - upstream_interface: max_length=15 pattern=
+        - delegated_prefix_iaid: min=0 max=4294967295 pattern=
+        - ip_mode: pattern=
+        - prefix_mode: pattern=
+        - prefix_range: pattern=
+        - ip_range: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -98,7 +121,28 @@ class ServerModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this DHCPv6 configuration.")    rapid_commit: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allow/disallow rapid commit.")    lease_time: int | None = Field(ge=300, le=8640000, default=604800, description="Lease time in seconds, 0 means unlimited.")    dns_service: Literal["delegated", "default", "specify"] | None = Field(default="specify", description="Options for assigning DNS servers to DHCPv6 clients.")    dns_search_list: Literal["delegated", "specify"] | None = Field(default="specify", description="DNS search list options.")    dns_server1: str | None = Field(default="::", description="DNS server 1.")    dns_server2: str | None = Field(default="::", description="DNS server 2.")    dns_server3: str | None = Field(default="::", description="DNS server 3.")    dns_server4: str | None = Field(default="::", description="DNS server 4.")    domain: str | None = Field(max_length=35, default="", description="Domain name suffix for the IP addresses that the DHCP server assigns to clients.")    subnet: str = Field(default="::/0", description="Subnet or subnet-id if the IP mode is delegated.")    interface: str = Field(max_length=15, default="", description="DHCP server can assign IP configurations to clients connected to this interface.")  # datasource: ['system.interface.name']    delegated_prefix_route: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatically adding of routing for delegated prefix.")    options: list[ServerOptions] = Field(default=None, description="DHCPv6 options.")    upstream_interface: str = Field(max_length=15, default="", description="Interface name from where delegated information is provided.")  # datasource: ['system.interface.name']    delegated_prefix_iaid: int = Field(ge=0, le=4294967295, default=0, description="IAID of obtained delegated-prefix from the upstream interface.")    ip_mode: Literal["range", "delegated"] | None = Field(default="range", description="Method used to assign client IP.")    prefix_mode: Literal["dhcp6", "ra"] | None = Field(default="dhcp6", description="Assigning a prefix from a DHCPv6 client or RA.")    prefix_range: list[ServerPrefixRange] = Field(default=None, description="DHCP prefix configuration.")    ip_range: list[ServerIpRange] = Field(default=None, description="DHCP IP range configuration.")    # ========================================================================
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
+    status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable this DHCPv6 configuration.")
+    rapid_commit: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allow/disallow rapid commit.")
+    lease_time: int | None = Field(ge=300, le=8640000, default=604800, description="Lease time in seconds, 0 means unlimited.")
+    dns_service: Literal["delegated", "default", "specify"] | None = Field(default="specify", description="Options for assigning DNS servers to DHCPv6 clients.")
+    dns_search_list: Literal["delegated", "specify"] | None = Field(default="specify", description="DNS search list options.")
+    dns_server1: str | None = Field(default="::", description="DNS server 1.")
+    dns_server2: str | None = Field(default="::", description="DNS server 2.")
+    dns_server3: str | None = Field(default="::", description="DNS server 3.")
+    dns_server4: str | None = Field(default="::", description="DNS server 4.")
+    domain: str | None = Field(max_length=35, default="", description="Domain name suffix for the IP addresses that the DHCP server assigns to clients.")
+    subnet: str = Field(default="::/0", description="Subnet or subnet-id if the IP mode is delegated.")
+    interface: str = Field(max_length=15, default="", description="DHCP server can assign IP configurations to clients connected to this interface.")  # datasource: ['system.interface.name']
+    delegated_prefix_route: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatically adding of routing for delegated prefix.")
+    options: list[ServerOptions] | None = Field(default=None, description="DHCPv6 options.")
+    upstream_interface: str = Field(max_length=15, default="", description="Interface name from where delegated information is provided.")  # datasource: ['system.interface.name']
+    delegated_prefix_iaid: int = Field(ge=0, le=4294967295, default=0, description="IAID of obtained delegated-prefix from the upstream interface.")
+    ip_mode: Literal["range", "delegated"] | None = Field(default="range", description="Method used to assign client IP.")
+    prefix_mode: Literal["dhcp6", "ra"] | None = Field(default="dhcp6", description="Assigning a prefix from a DHCPv6 client or RA.")
+    prefix_range: list[ServerPrefixRange] | None = Field(default=None, description="DHCP prefix configuration.")
+    ip_range: list[ServerIpRange] | None = Field(default=None, description="DHCP IP range configuration.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -192,7 +236,7 @@ class ServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dhcp6.server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -241,7 +285,7 @@ class ServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dhcp6.server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
 
         # Validate scalar field
         value = getattr(self, "upstream_interface", None)
@@ -278,9 +322,10 @@ class ServerModel(BaseModel):
             ...     for error in errors:
             ...         print(f"  - {error}")
         """
-        all_errors = []
+        all_errors: list[str] = []
         errors = await self.validate_interface_references(client)
-        all_errors.extend(errors)        errors = await self.validate_upstream_interface_references(client)
+        all_errors.extend(errors)
+        errors = await self.validate_upstream_interface_references(client)
         all_errors.extend(errors)
         return all_errors
 
@@ -302,5 +347,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:35.375257Z
+# Generated: 2026-01-14T22:43:37.833219Z
 # ============================================================================

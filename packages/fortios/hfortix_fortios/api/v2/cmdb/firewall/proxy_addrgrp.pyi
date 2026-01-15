@@ -19,8 +19,8 @@ class ProxyAddrgrpPayload(TypedDict, total=False):
         }
     """
     name: str  # Address group name. | MaxLen: 79
-    type: Literal["src", "dst"]  # Source or destination address group type. | Default: src
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type_: Literal["src", "dst"]  # Source or destination address group type. | Default: src
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     member: list[dict[str, Any]]  # Members of address group.
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
     tagging: list[dict[str, Any]]  # Config object tagging.
@@ -107,8 +107,8 @@ class ProxyAddrgrpResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # Address group name. | MaxLen: 79
-    type: Literal["src", "dst"]  # Source or destination address group type. | Default: src
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type_: Literal["src", "dst"]  # Source or destination address group type. | Default: src
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     member: list[ProxyAddrgrpMemberItem]  # Members of address group.
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
     tagging: list[ProxyAddrgrpTaggingItem]  # Config object tagging.
@@ -126,8 +126,8 @@ class ProxyAddrgrpObject:
     # Address group name. | MaxLen: 79
     name: str
     # Source or destination address group type. | Default: src
-    type: Literal["src", "dst"]
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type_: Literal["src", "dst"]
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
     uuid: str
     # Members of address group.
     member: list[ProxyAddrgrpMemberObject]
@@ -162,6 +162,10 @@ class ProxyAddrgrp:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -182,6 +186,7 @@ class ProxyAddrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProxyAddrgrpResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -199,6 +204,7 @@ class ProxyAddrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProxyAddrgrpResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -215,6 +221,7 @@ class ProxyAddrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ProxyAddrgrpResponse]: ...
     
     # ================================================================
@@ -257,7 +264,7 @@ class ProxyAddrgrp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
     
@@ -276,7 +283,7 @@ class ProxyAddrgrp:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ProxyAddrgrpObject]: ...
     
@@ -376,23 +383,6 @@ class ProxyAddrgrp:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProxyAddrgrpObject | list[ProxyAddrgrpObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -405,7 +395,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -413,6 +403,7 @@ class ProxyAddrgrp:
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
@@ -422,7 +413,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -440,7 +431,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -457,29 +448,14 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -489,7 +465,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -497,6 +473,7 @@ class ProxyAddrgrp:
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
@@ -506,7 +483,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -524,7 +501,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -541,29 +518,14 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -574,6 +536,7 @@ class ProxyAddrgrp:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
@@ -604,14 +567,7 @@ class ProxyAddrgrp:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -625,7 +581,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -647,8 +603,6 @@ class ProxyAddrgrp:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -676,6 +630,10 @@ class ProxyAddrgrpDictMode:
     By default returns ProxyAddrgrpResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProxyAddrgrpObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -780,7 +738,7 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -798,7 +756,7 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -816,22 +774,24 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -847,7 +807,7 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -865,7 +825,7 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -883,22 +843,24 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -936,10 +898,12 @@ class ProxyAddrgrpDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -958,7 +922,7 @@ class ProxyAddrgrpDictMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -979,8 +943,6 @@ class ProxyAddrgrpDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1004,6 +966,10 @@ class ProxyAddrgrpObjectMode:
     By default returns ProxyAddrgrpObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProxyAddrgrpResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1108,7 +1074,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1126,7 +1092,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1144,7 +1110,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1162,22 +1128,24 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1193,7 +1161,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1211,7 +1179,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1229,7 +1197,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1247,22 +1215,24 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: str | list[str] | list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1311,10 +1281,12 @@ class ProxyAddrgrpObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProxyAddrgrpObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1333,7 +1305,7 @@ class ProxyAddrgrpObjectMode:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type_: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
         member: str | list[str] | list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -1354,8 +1326,6 @@ class ProxyAddrgrpObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

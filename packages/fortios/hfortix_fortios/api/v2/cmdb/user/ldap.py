@@ -243,7 +243,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
         source_port: int | None = None,
         cnid: str | None = None,
         dn: str | None = None,
-        type: Literal["simple", "anonymous", "regular"] | None = None,
+        type_: Literal["simple", "anonymous", "regular"] | None = None,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = None,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = None,
         two_factor_notification: Literal["email", "sms"] | None = None,
@@ -297,7 +297,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port: Source port to be used for communication with the LDAP server.
             cnid: Common name identifier for the LDAP server. The common name identifier for most LDAP servers is "cn".
             dn: Distinguished name used to look up entries on the LDAP server.
-            type: Authentication type for LDAP searches.
+            type_: Authentication type for LDAP searches.
             two_factor: Enable/disable two-factor authentication.
             two_factor_authentication: Authentication method by FortiToken Cloud.
             two_factor_notification: Notification method for user activation by FortiToken Cloud.
@@ -372,7 +372,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port=source_port,
             cnid=cnid,
             dn=dn,
-            type=type,
+            type_=type_,
             two_factor=two_factor,
             two_factor_authentication=two_factor_authentication,
             two_factor_notification=two_factor_notification,
@@ -444,7 +444,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
         source_port: int | None = None,
         cnid: str | None = None,
         dn: str | None = None,
-        type: Literal["simple", "anonymous", "regular"] | None = None,
+        type_: Literal["simple", "anonymous", "regular"] | None = None,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = None,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = None,
         two_factor_notification: Literal["email", "sms"] | None = None,
@@ -498,7 +498,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port: Source port to be used for communication with the LDAP server.
             cnid: Common name identifier for the LDAP server. The common name identifier for most LDAP servers is "cn".
             dn: Distinguished name used to look up entries on the LDAP server.
-            type: Authentication type for LDAP searches.
+            type_: Authentication type for LDAP searches.
             two_factor: Enable/disable two-factor authentication.
             two_factor_authentication: Authentication method by FortiToken Cloud.
             two_factor_notification: Notification method for user activation by FortiToken Cloud.
@@ -575,7 +575,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port=source_port,
             cnid=cnid,
             dn=dn,
-            type=type,
+            type_=type_,
             two_factor=two_factor,
             two_factor_authentication=two_factor_authentication,
             two_factor_notification=two_factor_notification,
@@ -747,7 +747,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
         source_port: int | None = None,
         cnid: str | None = None,
         dn: str | None = None,
-        type: Literal["simple", "anonymous", "regular"] | None = None,
+        type_: Literal["simple", "anonymous", "regular"] | None = None,
         two_factor: Literal["disable", "fortitoken-cloud"] | None = None,
         two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = None,
         two_factor_notification: Literal["email", "sms"] | None = None,
@@ -802,7 +802,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port: Field source-port
             cnid: Field cnid
             dn: Field dn
-            type: Field type
+            type_: Field type
             two_factor: Field two-factor
             two_factor_authentication: Field two-factor-authentication
             two_factor_notification: Field two-factor-notification
@@ -887,7 +887,7 @@ class Ldap(CRUDEndpoint, MetadataMixin):
             source_port=source_port,
             cnid=cnid,
             dn=dn,
-            type=type,
+            type_=type_,
             two_factor=two_factor,
             two_factor_authentication=two_factor_authentication,
             two_factor_notification=two_factor_notification,

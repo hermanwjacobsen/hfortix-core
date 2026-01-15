@@ -172,7 +172,6 @@ class SpeedTestScheduleObject:
     retry_pause: int
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -195,6 +194,10 @@ class SpeedTestSchedule:
     Primary Key: interface
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -215,6 +218,7 @@ class SpeedTestSchedule:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SpeedTestScheduleResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -232,6 +236,7 @@ class SpeedTestSchedule:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> SpeedTestScheduleResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -248,6 +253,7 @@ class SpeedTestSchedule:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[SpeedTestScheduleResponse]: ...
     
     # ================================================================
@@ -290,7 +296,7 @@ class SpeedTestSchedule:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
     
@@ -309,7 +315,7 @@ class SpeedTestSchedule:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[SpeedTestScheduleObject]: ...
     
@@ -409,23 +415,6 @@ class SpeedTestSchedule:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        interface: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> SpeedTestScheduleObject | list[SpeedTestScheduleObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -462,6 +451,7 @@ class SpeedTestSchedule:
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
@@ -561,38 +551,7 @@ class SpeedTestSchedule:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: SpeedTestSchedulePayload | None = ...,
-        interface: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        diffserv: str | None = ...,
-        server_name: str | None = ...,
-        mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dynamic_server: Literal["disable", "enable"] | None = ...,
-        ctrl_port: int | None = ...,
-        server_port: int | None = ...,
-        update_shaper: Literal["disable", "local", "remote", "both"] | None = ...,
-        update_inbandwidth: Literal["disable", "enable"] | None = ...,
-        update_outbandwidth: Literal["disable", "enable"] | None = ...,
-        update_interface_shaping: Literal["disable", "enable"] | None = ...,
-        update_inbandwidth_maximum: int | None = ...,
-        update_inbandwidth_minimum: int | None = ...,
-        update_outbandwidth_maximum: int | None = ...,
-        update_outbandwidth_minimum: int | None = ...,
-        expected_inbandwidth_minimum: int | None = ...,
-        expected_inbandwidth_maximum: int | None = ...,
-        expected_outbandwidth_minimum: int | None = ...,
-        expected_outbandwidth_maximum: int | None = ...,
-        retries: int | None = ...,
-        retry_pause: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -626,6 +585,7 @@ class SpeedTestSchedule:
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
@@ -725,38 +685,7 @@ class SpeedTestSchedule:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: SpeedTestSchedulePayload | None = ...,
-        interface: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        diffserv: str | None = ...,
-        server_name: str | None = ...,
-        mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dynamic_server: Literal["disable", "enable"] | None = ...,
-        ctrl_port: int | None = ...,
-        server_port: int | None = ...,
-        update_shaper: Literal["disable", "local", "remote", "both"] | None = ...,
-        update_inbandwidth: Literal["disable", "enable"] | None = ...,
-        update_outbandwidth: Literal["disable", "enable"] | None = ...,
-        update_interface_shaping: Literal["disable", "enable"] | None = ...,
-        update_inbandwidth_maximum: int | None = ...,
-        update_inbandwidth_minimum: int | None = ...,
-        update_outbandwidth_maximum: int | None = ...,
-        update_outbandwidth_minimum: int | None = ...,
-        expected_inbandwidth_minimum: int | None = ...,
-        expected_inbandwidth_maximum: int | None = ...,
-        expected_outbandwidth_minimum: int | None = ...,
-        expected_outbandwidth_maximum: int | None = ...,
-        retries: int | None = ...,
-        retry_pause: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -767,6 +696,7 @@ class SpeedTestSchedule:
         interface: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
@@ -797,14 +727,7 @@ class SpeedTestSchedule:
         self,
         interface: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        interface: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -856,8 +779,6 @@ class SpeedTestSchedule:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -885,6 +806,10 @@ class SpeedTestScheduleDictMode:
     By default returns SpeedTestScheduleResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return SpeedTestScheduleObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1080,10 +1005,12 @@ class SpeedTestScheduleDictMode:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: SpeedTestSchedulePayload | None = ...,
@@ -1211,10 +1138,12 @@ class SpeedTestScheduleDictMode:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: SpeedTestSchedulePayload | None = ...,
@@ -1273,10 +1202,12 @@ class SpeedTestScheduleDictMode:
         self,
         interface: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         interface: str,
@@ -1332,8 +1263,6 @@ class SpeedTestScheduleDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1357,6 +1286,10 @@ class SpeedTestScheduleObjectMode:
     By default returns SpeedTestScheduleObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return SpeedTestScheduleResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1586,10 +1519,12 @@ class SpeedTestScheduleObjectMode:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: SpeedTestSchedulePayload | None = ...,
@@ -1751,10 +1686,12 @@ class SpeedTestScheduleObjectMode:
         retries: int | None = ...,
         retry_pause: int | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: SpeedTestSchedulePayload | None = ...,
@@ -1824,10 +1761,12 @@ class SpeedTestScheduleObjectMode:
         self,
         interface: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> SpeedTestScheduleObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         interface: str,
@@ -1883,8 +1822,6 @@ class SpeedTestScheduleObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

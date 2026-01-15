@@ -115,6 +115,10 @@ class Server:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -135,6 +139,7 @@ class Server:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ServerResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -152,6 +157,7 @@ class Server:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ServerResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -168,6 +174,7 @@ class Server:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ServerResponse]: ...
     
     # ================================================================
@@ -210,7 +217,7 @@ class Server:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ServerObject: ...
     
@@ -229,7 +236,7 @@ class Server:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ServerObject]: ...
     
@@ -329,23 +336,6 @@ class Server:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ServerObject | list[ServerObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -370,6 +360,7 @@ class Server:
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ServerObject: ...
@@ -433,26 +424,7 @@ class Server:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -474,6 +446,7 @@ class Server:
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ServerObject: ...
@@ -537,26 +510,7 @@ class Server:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -567,6 +521,7 @@ class Server:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ServerObject: ...
@@ -597,14 +552,7 @@ class Server:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -644,8 +592,6 @@ class Server:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -673,6 +619,10 @@ class ServerDictMode:
     By default returns ServerResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ServerObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -832,10 +782,12 @@ class ServerDictMode:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -915,10 +867,12 @@ class ServerDictMode:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -965,10 +919,12 @@ class ServerDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1012,8 +968,6 @@ class ServerDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1037,6 +991,10 @@ class ServerObjectMode:
     By default returns ServerObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ServerResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1218,10 +1176,12 @@ class ServerObjectMode:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ServerObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -1323,10 +1283,12 @@ class ServerObjectMode:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ServerObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -1384,10 +1346,12 @@ class ServerObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ServerObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -1431,8 +1395,6 @@ class ServerObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 from typing import Any, Literal
+from enum import Enum
 
 
 # ============================================================================
@@ -30,7 +31,7 @@ class IpamPools(BaseModel):
     name: str = Field(max_length=79, default="", description="IPAM pool name.")
     description: str | None = Field(max_length=127, default="", description="Description.")
     subnet: str = Field(default="0.0.0.0 0.0.0.0", description="Configure IPAM pool subnet, Class A - Class B subnet.")
-    exclude: list[Exclude] = Field(default=None, description="Configure pool exclude subnets.")
+    exclude: list[dict[str, Any]] | None = Field(default=None, description="Configure pool exclude subnets.")
 
 
 class IpamRules(BaseModel):
@@ -46,10 +47,10 @@ class IpamRules(BaseModel):
         str_strip_whitespace = True
     name: str = Field(max_length=79, default="", description="IPAM rule name.")
     description: str | None = Field(max_length=127, default="", description="Description.")
-    device: list[Device] = Field(description="Configure serial number or wildcard of FortiGate to match.")
-    interface: list[Interface] = Field(description="Configure name or wildcard of interface to match.")
-    role: RoleEnum | None = Field(default="any", description="Configure role of interface to match.")
-    pool: list[Pool] = Field(description="Configure name of IPAM pool to use.")
+    device: list[dict[str, Any]] | None = Field(description="Configure serial number or wildcard of FortiGate to match.")
+    interface: list[dict[str, Any]] | None = Field(description="Configure name or wildcard of interface to match.")
+    role: str | None = Field(default="any", description="Configure role of interface to match.")
+    pool: list[dict[str, Any]] | None = Field(description="Configure name of IPAM pool to use.")
     dhcp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP server for matching IPAM interfaces.")
 
 # ============================================================================
@@ -68,7 +69,17 @@ class IpamModel(BaseModel):
 
     Configure IP address management services.
 
-    Validation Rules:        - status: pattern=        - server_type: pattern=        - automatic_conflict_resolution: pattern=        - require_subnet_size_match: pattern=        - manage_lan_addresses: pattern=        - manage_lan_extension_addresses: pattern=        - manage_ssid_addresses: pattern=        - pools: pattern=        - rules: pattern=    """
+    Validation Rules:
+        - status: pattern=
+        - server_type: pattern=
+        - automatic_conflict_resolution: pattern=
+        - require_subnet_size_match: pattern=
+        - manage_lan_addresses: pattern=
+        - manage_lan_extension_addresses: pattern=
+        - manage_ssid_addresses: pattern=
+        - pools: pattern=
+        - rules: pattern=
+    """
 
     class Config:
         """Pydantic model configuration."""
@@ -80,7 +91,16 @@ class IpamModel(BaseModel):
     # ========================================================================
     # Model Fields
     # ========================================================================
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP address management services.")    server_type: Literal["fabric-root"] | None = Field(default="fabric-root", description="Configure the type of IPAM server to use.")    automatic_conflict_resolution: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatic conflict resolution.")    require_subnet_size_match: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable reassignment of subnets to make requested and actual sizes match.")    manage_lan_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of LAN interface addresses.")    manage_lan_extension_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiExtender LAN extension interface addresses.")    manage_ssid_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiAP SSID addresses.")    pools: list[IpamPools] = Field(default=None, description="Configure IPAM pools.")    rules: list[IpamRules] = Field(default=None, description="Configure IPAM allocation rules.")    # ========================================================================
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP address management services.")
+    server_type: Literal["fabric-root"] | None = Field(default="fabric-root", description="Configure the type of IPAM server to use.")
+    automatic_conflict_resolution: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable automatic conflict resolution.")
+    require_subnet_size_match: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable reassignment of subnets to make requested and actual sizes match.")
+    manage_lan_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of LAN interface addresses.")
+    manage_lan_extension_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiExtender LAN extension interface addresses.")
+    manage_ssid_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiAP SSID addresses.")
+    pools: list[IpamPools] | None = Field(default=None, description="Configure IPAM pools.")
+    rules: list[IpamRules] | None = Field(default=None, description="Configure IPAM allocation rules.")
+    # ========================================================================
     # Custom Validators
     # ========================================================================
 
@@ -129,5 +149,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T15:56:33.914984Z
+# Generated: 2026-01-14T22:43:36.011165Z
 # ============================================================================

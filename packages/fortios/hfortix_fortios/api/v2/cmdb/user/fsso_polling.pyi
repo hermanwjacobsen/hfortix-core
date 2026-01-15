@@ -131,7 +131,6 @@ class FssoPollingObject:
     smb_ntlmv1_auth: Literal["enable", "disable"]
     
     # Common API response fields
-    status: str
     http_status: int | None
     vdom: str | None
     
@@ -154,6 +153,10 @@ class FssoPolling:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -174,6 +177,7 @@ class FssoPolling:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FssoPollingResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -191,6 +195,7 @@ class FssoPolling:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> FssoPollingResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -207,6 +212,7 @@ class FssoPolling:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[FssoPollingResponse]: ...
     
     # ================================================================
@@ -249,7 +255,7 @@ class FssoPolling:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FssoPollingObject: ...
     
@@ -268,7 +274,7 @@ class FssoPolling:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FssoPollingObject]: ...
     
@@ -368,23 +374,6 @@ class FssoPolling:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> FssoPollingObject | list[FssoPollingObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -411,6 +400,7 @@ class FssoPolling:
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoPollingObject: ...
@@ -480,28 +470,7 @@ class FssoPolling:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: FssoPollingPayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        default_domain: str | None = ...,
-        port: int | None = ...,
-        user: str | None = ...,
-        password: str | None = ...,
-        ldap_server: str | None = ...,
-        logon_history: int | None = ...,
-        polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
-        smbv1: Literal["enable", "disable"] | None = ...,
-        smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -525,6 +494,7 @@ class FssoPolling:
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoPollingObject: ...
@@ -594,28 +564,7 @@ class FssoPolling:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: FssoPollingPayload | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        default_domain: str | None = ...,
-        port: int | None = ...,
-        user: str | None = ...,
-        password: str | None = ...,
-        ldap_server: str | None = ...,
-        logon_history: int | None = ...,
-        polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
-        smbv1: Literal["enable", "disable"] | None = ...,
-        smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -626,6 +575,7 @@ class FssoPolling:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoPollingObject: ...
@@ -656,14 +606,7 @@ class FssoPolling:
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -705,8 +648,6 @@ class FssoPolling:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -734,6 +675,10 @@ class FssoPollingDictMode:
     By default returns FssoPollingResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return FssoPollingObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -899,10 +844,12 @@ class FssoPollingDictMode:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: FssoPollingPayload | None = ...,
@@ -990,10 +937,12 @@ class FssoPollingDictMode:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: FssoPollingPayload | None = ...,
@@ -1042,10 +991,12 @@ class FssoPollingDictMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         id: int,
@@ -1091,8 +1042,6 @@ class FssoPollingDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1116,6 +1065,10 @@ class FssoPollingObjectMode:
     By default returns FssoPollingObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return FssoPollingResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1305,10 +1258,12 @@ class FssoPollingObjectMode:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoPollingObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: FssoPollingPayload | None = ...,
@@ -1420,10 +1375,12 @@ class FssoPollingObjectMode:
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoPollingObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: FssoPollingPayload | None = ...,
@@ -1483,10 +1440,12 @@ class FssoPollingObjectMode:
         self,
         id: int,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> FssoPollingObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         id: int,
@@ -1532,8 +1491,6 @@ class FssoPollingObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...

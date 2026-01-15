@@ -235,7 +235,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
         namespace: str | None = None,
         object_array_path: str | None = None,
         address_name_field: str | None = None,
@@ -272,7 +272,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name: External resource name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable user resource.
-            type: User resource type.
+            type_: User resource type.
             namespace: Generic external connector address namespace.
             object_array_path: JSON Path to array of generic addresses in resource.
             address_name_field: JSON Path to address name in generic address entry.
@@ -330,7 +330,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             namespace=namespace,
             object_array_path=object_array_path,
             address_name_field=address_name_field,
@@ -385,7 +385,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
         namespace: str | None = None,
         object_array_path: str | None = None,
         address_name_field: str | None = None,
@@ -422,7 +422,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name: External resource name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             status: Enable/disable user resource.
-            type: User resource type.
+            type_: User resource type.
             namespace: Generic external connector address namespace.
             object_array_path: JSON Path to array of generic addresses in resource.
             address_name_field: JSON Path to address name in generic address entry.
@@ -482,7 +482,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             namespace=namespace,
             object_array_path=object_array_path,
             address_name_field=address_name_field,
@@ -637,7 +637,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
-        type: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
+        type_: Literal["category", "domain", "malware", "address", "mac-address", "data", "generic-address"] | None = None,
         namespace: str | None = None,
         object_array_path: str | None = None,
         address_name_field: str | None = None,
@@ -675,7 +675,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name: Field name
             uuid: Field uuid
             status: Field status
-            type: Field type
+            type_: Field type
             namespace: Field namespace
             object_array_path: Field object-array-path
             address_name_field: Field address-name-field
@@ -743,7 +743,7 @@ class ExternalResource(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             status=status,
-            type=type,
+            type_=type_,
             namespace=namespace,
             object_array_path=object_array_path,
             address_name_field=address_name_field,

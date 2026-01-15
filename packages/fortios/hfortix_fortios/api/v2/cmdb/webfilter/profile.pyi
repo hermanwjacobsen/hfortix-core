@@ -242,6 +242,10 @@ class Profile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
+    
     # ================================================================
     # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
     # These match when response_mode is NOT passed (client default is "dict")
@@ -262,6 +266,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileResponse: ...
     
     # Default mode: mkey as keyword arg -> returns typed dict
@@ -279,6 +284,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> ProfileResponse: ...
     
     # Default mode: no mkey -> returns list of typed dicts
@@ -295,6 +301,7 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
     ) -> list[ProfileResponse]: ...
     
     # ================================================================
@@ -337,7 +344,7 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -356,7 +363,7 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"],
+        response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[ProfileObject]: ...
     
@@ -456,23 +463,6 @@ class Profile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: str | None = ...,
-        **kwargs: Any,
-    ) -> ProfileObject | list[ProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
-    
     def get_schema(
         self,
         vdom: str | None = ...,
@@ -521,6 +511,7 @@ class Profile:
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -656,50 +647,7 @@ class Profile:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
-        https_replacemsg: Literal["enable", "disable"] | None = ...,
-        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
-        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
-        post_action: Literal["normal", "block"] | None = ...,
-        override: str | None = ...,
-        web: str | None = ...,
-        ftgd_wf: str | None = ...,
-        antiphish: str | None = ...,
-        wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
-        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
-        log_all_url: Literal["enable", "disable"] | None = ...,
-        web_content_log: Literal["enable", "disable"] | None = ...,
-        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
-        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
-        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
-        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
-        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
-        web_filter_js_log: Literal["enable", "disable"] | None = ...,
-        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
-        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
-        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
-        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
-        web_url_log: Literal["enable", "disable"] | None = ...,
-        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
-        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
-        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
-        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -745,6 +693,7 @@ class Profile:
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -880,50 +829,7 @@ class Profile:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
-        https_replacemsg: Literal["enable", "disable"] | None = ...,
-        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
-        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
-        post_action: Literal["normal", "block"] | None = ...,
-        override: str | None = ...,
-        web: str | None = ...,
-        ftgd_wf: str | None = ...,
-        antiphish: str | None = ...,
-        wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
-        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
-        log_all_url: Literal["enable", "disable"] | None = ...,
-        web_content_log: Literal["enable", "disable"] | None = ...,
-        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
-        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
-        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
-        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
-        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
-        web_filter_js_log: Literal["enable", "disable"] | None = ...,
-        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
-        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
-        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
-        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
-        web_url_log: Literal["enable", "disable"] | None = ...,
-        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
-        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
-        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
-        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -934,6 +840,7 @@ class Profile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
+        *,
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
@@ -964,14 +871,7 @@ class Profile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
@@ -1035,8 +935,6 @@ class Profile:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1064,6 +962,10 @@ class ProfileDictMode:
     By default returns ProfileResponse (TypedDict).
     Can be overridden per-call with response_mode="object" to return ProfileObject.
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse regardless of response_mode
     @overload
@@ -1295,10 +1197,12 @@ class ProfileDictMode:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # POST - Dict mode (default for DictMode class)
+    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -1474,10 +1378,12 @@ class ProfileDictMode:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # PUT - Dict mode (default for DictMode class)
+    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -1548,10 +1454,12 @@ class ProfileDictMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> MutationResponse: ...
     
     # DELETE - Dict mode (default for DictMode class)
+    @overload
     def delete(
         self,
         name: str,
@@ -1619,8 +1527,6 @@ class ProfileDictMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
@@ -1644,6 +1550,10 @@ class ProfileObjectMode:
     By default returns ProfileObject (FortiObject).
     Can be overridden per-call with response_mode="dict" to return ProfileResponse (TypedDict).
     """
+    
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client."""
+        ...
     
     # raw_json=True returns RawAPIResponse for GET
     @overload
@@ -1921,10 +1831,12 @@ class ProfileObjectMode:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -2146,10 +2058,12 @@ class ProfileObjectMode:
         web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -2231,10 +2145,12 @@ class ProfileObjectMode:
         self,
         name: str,
         vdom: str | bool | None = ...,
+        response_mode: Literal[None] = ...,
         **kwargs: Any,
     ) -> ProfileObject: ...
     
     # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    @overload
     def delete(
         self,
         name: str,
@@ -2302,8 +2218,6 @@ class ProfileObjectMode:
     @overload
     @staticmethod
     def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    @staticmethod
-    def fields(detailed: bool = ...) -> list[str] | dict[str, Any]: ...
     
     @staticmethod
     def field_info(field_name: str) -> dict[str, Any] | None: ...
