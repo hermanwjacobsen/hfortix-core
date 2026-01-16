@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +59,6 @@ class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "multicast_policy6"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "srcaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "dstaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -288,17 +270,7 @@ class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
             srcintf: IPv6 source interface name.
             dstintf: IPv6 destination interface name.
             srcaddr: IPv6 source address name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: IPv6 destination address name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             action: Accept or deny traffic matching the policy.
             protocol: Integer value for the protocol type as defined by IANA (0 - 255, default = 0).
             start_port: Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).
@@ -336,24 +308,6 @@ class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -454,17 +408,7 @@ class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
             srcintf: IPv6 source interface name.
             dstintf: IPv6 destination interface name.
             srcaddr: IPv6 source address name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: IPv6 destination address name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             action: Accept or deny traffic matching the policy.
             protocol: Integer value for the protocol type as defined by IANA (0 - 255, default = 0).
             start_port: Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).
@@ -504,24 +448,6 @@ class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

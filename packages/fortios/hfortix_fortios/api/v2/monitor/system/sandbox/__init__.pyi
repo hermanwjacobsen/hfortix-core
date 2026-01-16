@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .stats import Stats
     from .status import Status
 
-__all__ = [
-    "CloudRegions",
-    "Connection",
-    "Detect",
-    "Stats",
-    "Status",
-    "Sandbox",
-]
-
 
 class Sandbox:
-    """SANDBOX API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Sandbox."""
+
     cloud_regions: CloudRegions
     connection: Connection
     detect: Detect
     stats: Stats
     status: Status
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize sandbox category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

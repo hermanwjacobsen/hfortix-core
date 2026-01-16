@@ -10,24 +10,12 @@ if TYPE_CHECKING:
     from .forticloud import Forticloud
     from .vdom import Vdom
 
-__all__ = [
-    "Registration",
-]
-
 
 class Registration:
-    """REGISTRATION API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Registration."""
+
     forticare: Forticare
     forticloud: Forticloud
     vdom: Vdom
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize registration category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

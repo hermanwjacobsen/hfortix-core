@@ -15,28 +15,10 @@ if TYPE_CHECKING:
     from .phase2 import Phase2
     from .phase2_interface import Phase2Interface
 
-__all__ = [
-    "Concentrator",
-    "Fec",
-    "Manualkey",
-    "ManualkeyInterface",
-    "Phase1",
-    "Phase1Interface",
-    "Phase2",
-    "Phase2Interface",
-    "Ipsec",
-]
-
 
 class Ipsec:
-    """IPSEC API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ipsec."""
+
     concentrator: Concentrator
     fec: Fec
     manualkey: Manualkey
@@ -46,6 +28,4 @@ class Ipsec:
     phase2: Phase2
     phase2_interface: Phase2Interface
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ipsec category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

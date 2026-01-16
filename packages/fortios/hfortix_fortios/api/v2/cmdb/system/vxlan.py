@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +59,6 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vxlan"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "remote_ip": {
-            "mkey": "ip",
-            "required_fields": ['ip'],
-            "example": "[{'ip': '192.168.1.10'}]",
-        },
-        "remote_ip6": {
-            "mkey": "ip6",
-            "required_fields": ['ip6'],
-            "example": "[{'ip6': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -281,18 +263,8 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             local_ip: IPv4 address to use as the source address for egress VXLAN packets.
             remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip6': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip6': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
-                  - List of dicts: [{'ip6': 'value'}] (recommended)
             local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
             dstport: VXLAN destination port (1 - 65535, default = 4789).
             multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
@@ -326,24 +298,6 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if remote_ip is not None:
-            remote_ip = normalize_table_field(
-                remote_ip,
-                mkey="ip",
-                required_fields=['ip'],
-                field_name="remote_ip",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if remote_ip6 is not None:
-            remote_ip6 = normalize_table_field(
-                remote_ip6,
-                mkey="ip6",
-                required_fields=['ip6'],
-                field_name="remote_ip6",
-                example="[{'ip6': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -432,18 +386,8 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             local_ip: IPv4 address to use as the source address for egress VXLAN packets.
             remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip6': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip6': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
-                  - List of dicts: [{'ip6': 'value'}] (recommended)
             local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
             dstport: VXLAN destination port (1 - 65535, default = 4789).
             multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
@@ -479,24 +423,6 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if remote_ip is not None:
-            remote_ip = normalize_table_field(
-                remote_ip,
-                mkey="ip",
-                required_fields=['ip'],
-                field_name="remote_ip",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if remote_ip6 is not None:
-            remote_ip6 = normalize_table_field(
-                remote_ip6,
-                mkey="ip6",
-                required_fields=['ip6'],
-                field_name="remote_ip6",
-                example="[{'ip6': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

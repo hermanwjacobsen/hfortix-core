@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class SessionTtl(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "session_ttl"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "port": {
-            "mkey": "id",
-            "required_fields": ['id', 'protocol', 'start-port', 'end-port'],
-            "example": "[{'id': 1, 'protocol': 1, 'start-port': 1, 'end-port': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -258,9 +245,6 @@ class SessionTtl(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             default: Default timeout.
             port: Session TTL port.
-                Default format: [{'id': 1, 'protocol': 1, 'start-port': 1, 'end-port': 1}]
-                Required format: List of dicts with keys: id, protocol, start-port, end-port
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -289,16 +273,6 @@ class SessionTtl(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if port is not None:
-            port = normalize_table_field(
-                port,
-                mkey="id",
-                required_fields=['id', 'protocol', 'start-port', 'end-port'],
-                field_name="port",
-                example="[{'id': 1, 'protocol': 1, 'start-port': 1, 'end-port': 1}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

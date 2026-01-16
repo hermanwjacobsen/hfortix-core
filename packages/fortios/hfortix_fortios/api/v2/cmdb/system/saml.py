@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class Saml(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "saml"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "service_providers": {
-            "mkey": "name",
-            "required_fields": ['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
-            "example": "[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -292,9 +279,6 @@ class Saml(CRUDEndpoint, MetadataMixin):
             tolerance: Tolerance to the range of time when the assertion is valid (in minutes).
             life: Length of the range of time when the assertion is valid (in minutes).
             service_providers: Authorized service providers.
-                Default format: [{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]
-                Required format: List of dicts with keys: name, prefix, sp-entity-id, sp-single-sign-on-url
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -323,16 +307,6 @@ class Saml(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if service_providers is not None:
-            service_providers = normalize_table_field(
-                service_providers,
-                mkey="name",
-                required_fields=['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
-                field_name="service_providers",
-                example="[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

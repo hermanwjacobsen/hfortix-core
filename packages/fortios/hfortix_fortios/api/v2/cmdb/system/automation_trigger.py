@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +59,6 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "automation_trigger"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "vdom": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "logid": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "fields": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -295,20 +272,10 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             trigger_type: Trigger type.
             event_type: Event type.
             vdom: Virtual domain(s) that this trigger is valid for.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             license_type: License type.
             report_type: Security Rating report.
             stitch_name: Triggering stitch name.
             logid: Log IDs to trigger event.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             trigger_frequency: Scheduled trigger frequency (default = daily).
             trigger_weekday: Day of week for trigger.
             trigger_day: Day within a month to trigger.
@@ -316,11 +283,6 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             trigger_minute: Minute of the hour on which to trigger (0 - 59, default = 0).
             trigger_datetime: Trigger date and time (YYYY-MM-DD HH:MM:SS).
             fields: Customized trigger field settings.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             faz_event_name: FortiAnalyzer event handler name.
             faz_event_severity: FortiAnalyzer event severity.
             faz_event_tags: FortiAnalyzer event tags.
@@ -355,32 +317,6 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vdom is not None:
-            vdom = normalize_table_field(
-                vdom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="vdom",
-                example="[{'name': 'value'}]",
-            )
-        if logid is not None:
-            logid = normalize_table_field(
-                logid,
-                mkey="id",
-                required_fields=['id'],
-                field_name="logid",
-                example="[{'id': 1}]",
-            )
-        if fields is not None:
-            fields = normalize_table_field(
-                fields,
-                mkey="id",
-                required_fields=['id'],
-                field_name="fields",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -487,20 +423,10 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             trigger_type: Trigger type.
             event_type: Event type.
             vdom: Virtual domain(s) that this trigger is valid for.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             license_type: License type.
             report_type: Security Rating report.
             stitch_name: Triggering stitch name.
             logid: Log IDs to trigger event.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             trigger_frequency: Scheduled trigger frequency (default = daily).
             trigger_weekday: Day of week for trigger.
             trigger_day: Day within a month to trigger.
@@ -508,11 +434,6 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             trigger_minute: Minute of the hour on which to trigger (0 - 59, default = 0).
             trigger_datetime: Trigger date and time (YYYY-MM-DD HH:MM:SS).
             fields: Customized trigger field settings.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             faz_event_name: FortiAnalyzer event handler name.
             faz_event_severity: FortiAnalyzer event severity.
             faz_event_tags: FortiAnalyzer event tags.
@@ -549,32 +470,6 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vdom is not None:
-            vdom = normalize_table_field(
-                vdom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="vdom",
-                example="[{'name': 'value'}]",
-            )
-        if logid is not None:
-            logid = normalize_table_field(
-                logid,
-                mkey="id",
-                required_fields=['id'],
-                field_name="logid",
-                example="[{'id': 1}]",
-            )
-        if fields is not None:
-            fields = normalize_table_field(
-                fields,
-                mkey="id",
-                required_fields=['id'],
-                field_name="fields",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +59,6 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "h2qp_osu_provider"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "friendly_name": {
-            "mkey": "index",
-            "required_fields": ['lang', 'friendly-name'],
-            "example": "[{'lang': 'value', 'friendly-name': 'value'}]",
-        },
-        "service_description": {
-            "mkey": "service-id",
-            "required_fields": ['lang', 'service-description'],
-            "example": "[{'lang': 'value', 'service-description': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -273,16 +255,10 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: OSU provider ID.
             friendly_name: OSU provider friendly name.
-                Default format: [{'lang': 'value', 'friendly-name': 'value'}]
-                Required format: List of dicts with keys: lang, friendly-name
-                  (String format not allowed due to multiple required fields)
             server_uri: Server URI.
             osu_method: OSU method list.
             osu_nai: OSU NAI.
             service_description: OSU service name.
-                Default format: [{'lang': 'value', 'service-description': 'value'}]
-                Required format: List of dicts with keys: lang, service-description
-                  (String format not allowed due to multiple required fields)
             icon: OSU provider icon.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -312,24 +288,6 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if friendly_name is not None:
-            friendly_name = normalize_table_field(
-                friendly_name,
-                mkey="index",
-                required_fields=['lang', 'friendly-name'],
-                field_name="friendly_name",
-                example="[{'lang': 'value', 'friendly-name': 'value'}]",
-            )
-        if service_description is not None:
-            service_description = normalize_table_field(
-                service_description,
-                mkey="service-id",
-                required_fields=['lang', 'service-description'],
-                field_name="service_description",
-                example="[{'lang': 'value', 'service-description': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -405,16 +363,10 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: OSU provider ID.
             friendly_name: OSU provider friendly name.
-                Default format: [{'lang': 'value', 'friendly-name': 'value'}]
-                Required format: List of dicts with keys: lang, friendly-name
-                  (String format not allowed due to multiple required fields)
             server_uri: Server URI.
             osu_method: OSU method list.
             osu_nai: OSU NAI.
             service_description: OSU service name.
-                Default format: [{'lang': 'value', 'service-description': 'value'}]
-                Required format: List of dicts with keys: lang, service-description
-                  (String format not allowed due to multiple required fields)
             icon: OSU provider icon.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -446,24 +398,6 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if friendly_name is not None:
-            friendly_name = normalize_table_field(
-                friendly_name,
-                mkey="index",
-                required_fields=['lang', 'friendly-name'],
-                field_name="friendly_name",
-                example="[{'lang': 'value', 'friendly-name': 'value'}]",
-            )
-        if service_description is not None:
-            service_description = normalize_table_field(
-                service_description,
-                mkey="service-id",
-                required_fields=['lang', 'service-description'],
-                field_name="service_description",
-                example="[{'lang': 'value', 'service-description': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

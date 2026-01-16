@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class FssoPolling(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "fsso_polling"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "adgrp": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -283,11 +270,6 @@ class FssoPolling(CRUDEndpoint, MetadataMixin):
             logon_history: Number of hours of logon history to keep, 0 means keep all history.
             polling_frequency: Polling frequency (every 1 to 30 seconds).
             adgrp: LDAP Group Info.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             smbv1: Enable/disable support of SMBv1 for Samba.
             smb_ntlmv1_auth: Enable/disable support of NTLMv1 for Samba authentication.
             vdom: Virtual domain name.
@@ -318,16 +300,6 @@ class FssoPolling(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if adgrp is not None:
-            adgrp = normalize_table_field(
-                adgrp,
-                mkey="name",
-                required_fields=['name'],
-                field_name="adgrp",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -424,11 +396,6 @@ class FssoPolling(CRUDEndpoint, MetadataMixin):
             logon_history: Number of hours of logon history to keep, 0 means keep all history.
             polling_frequency: Polling frequency (every 1 to 30 seconds).
             adgrp: LDAP Group Info.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             smbv1: Enable/disable support of SMBv1 for Samba.
             smb_ntlmv1_auth: Enable/disable support of NTLMv1 for Samba authentication.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -461,16 +428,6 @@ class FssoPolling(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if adgrp is not None:
-            adgrp = normalize_table_field(
-                adgrp,
-                mkey="name",
-                required_fields=['name'],
-                field_name="adgrp",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

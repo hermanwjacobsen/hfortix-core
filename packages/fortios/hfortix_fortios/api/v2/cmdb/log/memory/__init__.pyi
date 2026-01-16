@@ -10,27 +10,12 @@ if TYPE_CHECKING:
     from .global_setting import GlobalSetting
     from .setting import Setting
 
-__all__ = [
-    "Filter",
-    "GlobalSetting",
-    "Setting",
-    "Memory",
-]
-
 
 class Memory:
-    """MEMORY API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Memory."""
+
     filter: Filter
     global_setting: GlobalSetting
     setting: Setting
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize memory category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

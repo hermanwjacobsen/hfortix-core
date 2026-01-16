@@ -88,49 +88,10 @@ if TYPE_CHECKING:
     from .usb_log import UsbLog
     from .vmlicense import Vmlicense
 
-__all__ = [
-    "AcmeCertificateStatus",
-    "AcquiredDns",
-    "AvailableCertificates",
-    "CheckPortAvailability",
-    "CurrentAdmins",
-    "GlobalResources",
-    "GlobalSearch",
-    "HaBackupHbUsed",
-    "HaChecksums",
-    "HaHistory",
-    "HaHwInterface",
-    "HaNonsyncChecksums",
-    "HaStatistics",
-    "HaTableChecksums",
-    "InterfaceConnectedAdminsInfo",
-    "Ipconf",
-    "LinkMonitor",
-    "Modem3g",
-    "MonitorSensor",
-    "ResolveFqdn",
-    "RunningProcesses",
-    "SensorInfo",
-    "Status",
-    "Storage",
-    "Timezone",
-    "TrustedCertAuthorities",
-    "VdomLink",
-    "VdomResource",
-    "VmInformation",
-    "System",
-]
-
 
 class System:
-    """SYSTEM API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for System."""
+
     admin: Admin
     api_user: ApiUser
     automation_action: AutomationAction
@@ -213,6 +174,4 @@ class System:
     vdom_resource: VdomResource
     vm_information: VmInformation
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize system category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

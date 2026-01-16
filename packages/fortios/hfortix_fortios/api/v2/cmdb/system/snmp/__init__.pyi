@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .sysinfo import Sysinfo
     from .user import User
 
-__all__ = [
-    "Community",
-    "MibView",
-    "RmonStat",
-    "Sysinfo",
-    "User",
-    "Snmp",
-]
-
 
 class Snmp:
-    """SNMP API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Snmp."""
+
     community: Community
     mib_view: MibView
     rmon_stat: RmonStat
     sysinfo: Sysinfo
     user: User
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize snmp category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

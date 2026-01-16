@@ -31,44 +31,10 @@ if TYPE_CHECKING:
     from .setting import Setting
     from .tacacs_plus import TacacsPlus
 
-__all__ = [
-    "Adgrp",
-    "Certificate",
-    "DomainController",
-    "Exchange",
-    "ExternalIdentityProvider",
-    "Fortitoken",
-    "Fsso",
-    "FssoPolling",
-    "Group",
-    "KrbKeytab",
-    "Ldap",
-    "Local",
-    "NacPolicy",
-    "PasswordPolicy",
-    "Peer",
-    "Peergrp",
-    "Pop3",
-    "Quarantine",
-    "Radius",
-    "Saml",
-    "Scim",
-    "SecurityExemptList",
-    "Setting",
-    "TacacsPlus",
-    "User",
-]
-
 
 class User:
-    """USER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for User."""
+
     adgrp: Adgrp
     certificate: Certificate
     domain_controller: DomainController
@@ -94,6 +60,4 @@ class User:
     setting: Setting
     tacacs_plus: TacacsPlus
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize user category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

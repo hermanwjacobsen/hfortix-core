@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +59,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "radius"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "class": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "accounting_server": {
-            "mkey": "id",
-            "required_fields": ['server', 'secret', 'interface'],
-            "example": "[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -351,11 +333,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             username_case_sensitive: Enable/disable case sensitive user names.
             group_override_attr_type: RADIUS attribute type to override user group information.
             class: Class attribute name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             password_renewal: Enable/disable password renewal.
             require_message_authenticator: Require message authenticator in authentication response.
             password_encoding: Password encoding.
@@ -392,9 +369,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             rsso_ep_one_ip_only: Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.
             delimiter: Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character "+").
             accounting_server: Additional accounting servers.
-                Default format: [{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]
-                Required format: List of dicts with keys: server, secret, interface
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -423,16 +397,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if accounting_server is not None:
-            accounting_server = normalize_table_field(
-                accounting_server,
-                mkey="id",
-                required_fields=['server', 'secret', 'interface'],
-                field_name="accounting_server",
-                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -640,11 +604,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             username_case_sensitive: Enable/disable case sensitive user names.
             group_override_attr_type: RADIUS attribute type to override user group information.
             class: Class attribute name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             password_renewal: Enable/disable password renewal.
             require_message_authenticator: Require message authenticator in authentication response.
             password_encoding: Password encoding.
@@ -681,9 +640,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             rsso_ep_one_ip_only: Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.
             delimiter: Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character "+").
             accounting_server: Additional accounting servers.
-                Default format: [{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]
-                Required format: List of dicts with keys: server, secret, interface
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -714,16 +670,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if accounting_server is not None:
-            accounting_server = normalize_table_field(
-                accounting_server,
-                mkey="id",
-                required_fields=['server', 'secret', 'interface'],
-                field_name="accounting_server",
-                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

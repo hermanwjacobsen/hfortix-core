@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class AspathList(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "aspath_list"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "rule": {
-            "mkey": "id",
-            "required_fields": ['id', 'action', 'regexp'],
-            "example": "[{'id': 1, 'action': 'deny', 'regexp': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -263,9 +250,6 @@ class AspathList(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: AS path list name.
             rule: AS path list rule.
-                Default format: [{'id': 1, 'action': 'deny', 'regexp': 'value'}]
-                Required format: List of dicts with keys: id, action, regexp
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -294,16 +278,6 @@ class AspathList(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if rule is not None:
-            rule = normalize_table_field(
-                rule,
-                mkey="id",
-                required_fields=['id', 'action', 'regexp'],
-                field_name="rule",
-                example="[{'id': 1, 'action': 'deny', 'regexp': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -369,9 +343,6 @@ class AspathList(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: AS path list name.
             rule: AS path list rule.
-                Default format: [{'id': 1, 'action': 'deny', 'regexp': 'value'}]
-                Required format: List of dicts with keys: id, action, regexp
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -402,16 +373,6 @@ class AspathList(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if rule is not None:
-            rule = normalize_table_field(
-                rule,
-                mkey="id",
-                required_fields=['id', 'action', 'regexp'],
-                field_name="rule",
-                example="[{'id': 1, 'action': 'deny', 'regexp': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
