@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ExchangeKdcipItem(TypedDict, total=False):
+    """Type hints for kdc-ip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ExchangeKdcipItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    ipv4: str  # KDC IPv4 addresses for Kerberos authentication. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -30,21 +52,11 @@ class ExchangePayload(TypedDict, total=False):
     http_auth_type: Literal["basic", "ntlm"]  # Authentication security type used for the HTTP tra | Default: ntlm
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum SSL/TLS protocol version for HTTPS transpo | Default: default
     auto_discover_kdc: Literal["enable", "disable"]  # Enable/disable automatic discovery of KDC IP addre | Default: enable
-    kdc_ip: list[dict[str, Any]]  # KDC IPv4 addresses for Kerberos authentication.
+    kdc_ip: list[ExchangeKdcipItem]  # KDC IPv4 addresses for Kerberos authentication.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ExchangeKdcipItem(TypedDict):
-    """Type hints for kdc-ip table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    ipv4: str  # KDC IPv4 addresses for Kerberos authentication. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ExchangeKdcipObject:
@@ -143,6 +155,9 @@ class ExchangeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -385,7 +400,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExchangeObject: ...
     
@@ -406,7 +421,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +443,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,7 +463,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -470,7 +485,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExchangeObject: ...
     
@@ -491,7 +506,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +528,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -533,7 +548,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -588,7 +603,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

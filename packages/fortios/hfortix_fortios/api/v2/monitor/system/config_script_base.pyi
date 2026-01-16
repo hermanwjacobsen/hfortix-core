@@ -3,6 +3,61 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class ConfigScriptResponse(TypedDict):
+    """
+    Type hints for system/config_script API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    conf_scripts: str
+    backup_service_available: bool
+
+
+@final
+class ConfigScriptObject:
+    """Typed FortiObject for system/config_script with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # conf_scripts
+    conf_scripts: str
+    # backup_service_available
+    backup_service_available: bool
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> ConfigScriptPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class ConfigScript:
     """
     Retrieve the information about config scripts.

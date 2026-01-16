@@ -2,7 +2,37 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class QueuePolicyCosqueueItem(TypedDict, total=False):
+    """Type hints for cos-queue table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QueuePolicyCosqueueItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Cos queue ID. | MaxLen: 63
+    description: str  # Description of the COS queue. | MaxLen: 63
+    min_rate: int  # Minimum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
+    max_rate: int  # Maximum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
+    min_rate_percent: int  # Minimum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
+    max_rate_percent: int  # Maximum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
+    drop_policy: Literal["taildrop", "weighted-random-early-detection"]  # COS queue drop policy. | Default: taildrop
+    ecn: Literal["disable", "enable"]  # Enable/disable ECN packet marking to drop eligible | Default: disable
+    weight: int  # Weight of weighted round robin scheduling. | Default: 1 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,29 +50,11 @@ class QueuePolicyPayload(TypedDict, total=False):
     name: str  # QoS policy name. | MaxLen: 63
     schedule: Literal["strict", "round-robin", "weighted"]  # COS queue scheduling. | Default: round-robin
     rate_by: Literal["kbps", "percent"]  # COS queue rate by kbps or percent. | Default: kbps
-    cos_queue: list[dict[str, Any]]  # COS queue configuration.
+    cos_queue: list[QueuePolicyCosqueueItem]  # COS queue configuration.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class QueuePolicyCosqueueItem(TypedDict):
-    """Type hints for cos-queue table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Cos queue ID. | MaxLen: 63
-    description: str  # Description of the COS queue. | MaxLen: 63
-    min_rate: int  # Minimum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
-    max_rate: int  # Maximum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
-    min_rate_percent: int  # Minimum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
-    max_rate_percent: int  # Maximum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
-    drop_policy: Literal["taildrop", "weighted-random-early-detection"]  # COS queue drop policy. | Default: taildrop
-    ecn: Literal["disable", "enable"]  # Enable/disable ECN packet marking to drop eligible | Default: disable
-    weight: int  # Weight of weighted round robin scheduling. | Default: 1 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class QueuePolicyCosqueueObject:
@@ -127,6 +139,9 @@ class QueuePolicyObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -359,7 +374,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QueuePolicyObject: ...
     
@@ -370,7 +385,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,7 +397,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QueuePolicyObject: ...
     
@@ -415,7 +430,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +442,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -437,7 +452,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -482,7 +497,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

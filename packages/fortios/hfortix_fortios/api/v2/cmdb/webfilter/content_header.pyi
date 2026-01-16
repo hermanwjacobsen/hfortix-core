@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ContentHeaderEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ContentHeaderEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    pattern: str  # Content type (regular expression). | MaxLen: 31
+    action: Literal["block", "allow", "exempt"]  # Action to take for this content type. | Default: allow
+    category: str  # Categories that this content type applies to. | Default: all
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,23 +44,11 @@ class ContentHeaderPayload(TypedDict, total=False):
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
     name: str  # Name of table. | MaxLen: 63
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # Configure content types used by web filter.
+    entries: list[ContentHeaderEntriesItem]  # Configure content types used by web filter.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ContentHeaderEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    pattern: str  # Content type (regular expression). | MaxLen: 31
-    action: Literal["block", "allow", "exempt"]  # Action to take for this content type. | Default: allow
-    category: str  # Categories that this content type applies to. | Default: all
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ContentHeaderEntriesObject:
@@ -109,6 +121,9 @@ class ContentHeaderObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -341,7 +356,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ContentHeaderObject: ...
     
@@ -352,7 +367,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,7 +379,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +401,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ContentHeaderObject: ...
     
@@ -397,7 +412,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +424,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +434,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -464,7 +479,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

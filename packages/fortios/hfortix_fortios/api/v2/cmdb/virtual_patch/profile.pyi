@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileExemptionItem(TypedDict, total=False):
+    """Type hints for exemption table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileExemptionItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # IDs. | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Enable/disable exemption. | Default: enable
+    rule: str  # Patch signature rule IDs.
+    device: str  # Device MAC addresses.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -22,24 +47,11 @@ class ProfilePayload(TypedDict, total=False):
     severity: Literal["info", "low", "medium", "high", "critical"]  # Relative severity of the signature | Default: info low medium high critical
     action: Literal["pass", "block"]  # Action (pass/block). | Default: block
     log: Literal["enable", "disable"]  # Enable/disable logging of detection. | Default: enable
-    exemption: list[dict[str, Any]]  # Exempt devices or rules.
+    exemption: list[ProfileExemptionItem]  # Exempt devices or rules.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileExemptionItem(TypedDict):
-    """Type hints for exemption table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # IDs. | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Enable/disable exemption. | Default: enable
-    rule: str  # Patch signature rule IDs.
-    device: str  # Device MAC addresses.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileExemptionObject:
@@ -120,6 +132,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -354,7 +369,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -367,7 +382,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +396,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +408,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +422,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -420,7 +435,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +449,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -446,7 +461,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -493,7 +508,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | None = ...,
+        exemption: str | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

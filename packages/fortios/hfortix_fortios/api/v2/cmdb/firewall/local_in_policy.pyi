@@ -2,7 +2,149 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class LocalInPolicyIntfItem(TypedDict, total=False):
+    """Type hints for intf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyIntfItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicySrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicySrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicyDstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyDstaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcnameItem(TypedDict, total=False):
+    """Type hints for internet-service-src-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyInternetservicesrcnameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcgroupItem(TypedDict, total=False):
+    """Type hints for internet-service-src-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyInternetservicesrcgroupItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Internet Service group name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrccustomItem(TypedDict, total=False):
+    """Type hints for internet-service-src-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyInternetservicesrccustomItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Custom Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrccustomgroupItem(TypedDict, total=False):
+    """Type hints for internet-service-src-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyInternetservicesrccustomgroupItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Custom Internet Service group name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcfortiguardItem(TypedDict, total=False):
+    """Type hints for internet-service-src-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyInternetservicesrcfortiguardItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyServiceItem(TypedDict, total=False):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LocalInPolicyServiceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,19 +169,19 @@ class LocalInPolicyPayload(TypedDict, total=False):
     policyid: int  # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
     uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     ha_mgmt_intf_only: Literal["enable", "disable"]  # Enable/disable dedicating the HA management interf | Default: disable
-    intf: list[dict[str, Any]]  # Incoming interface name from available options.
-    srcaddr: list[dict[str, Any]]  # Source address object from available options.
+    intf: list[LocalInPolicyIntfItem]  # Incoming interface name from available options.
+    srcaddr: list[LocalInPolicySrcaddrItem]  # Source address object from available options.
     srcaddr_negate: Literal["enable", "disable"]  # When enabled srcaddr specifies what the source add | Default: disable
-    dstaddr: list[dict[str, Any]]  # Destination address object from available options.
+    dstaddr: list[LocalInPolicyDstaddrItem]  # Destination address object from available options.
     internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
-    internet_service_src_name: list[dict[str, Any]]  # Internet Service source name.
-    internet_service_src_group: list[dict[str, Any]]  # Internet Service source group name.
-    internet_service_src_custom: list[dict[str, Any]]  # Custom Internet Service source name.
-    internet_service_src_custom_group: list[dict[str, Any]]  # Custom Internet Service source group name.
-    internet_service_src_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service source name.
+    internet_service_src_name: list[LocalInPolicyInternetservicesrcnameItem]  # Internet Service source name.
+    internet_service_src_group: list[LocalInPolicyInternetservicesrcgroupItem]  # Internet Service source group name.
+    internet_service_src_custom: list[LocalInPolicyInternetservicesrccustomItem]  # Custom Internet Service source name.
+    internet_service_src_custom_group: list[LocalInPolicyInternetservicesrccustomgroupItem]  # Custom Internet Service source group name.
+    internet_service_src_fortiguard: list[LocalInPolicyInternetservicesrcfortiguardItem]  # FortiGuard Internet Service source name.
     dstaddr_negate: Literal["enable", "disable"]  # When enabled dstaddr specifies what the destinatio | Default: disable
     action: Literal["accept", "deny"]  # Action performed on traffic matching the policy | Default: deny
-    service: list[dict[str, Any]]  # Service object from available options.
+    service: list[LocalInPolicyServiceItem]  # Service object from available options.
     service_negate: Literal["enable", "disable"]  # When enabled service specifies what the service mu | Default: disable
     internet_service_src_negate: Literal["enable", "disable"]  # When enabled internet-service-src specifies what t | Default: disable
     schedule: str  # Schedule object from available options. | MaxLen: 35
@@ -48,99 +190,9 @@ class LocalInPolicyPayload(TypedDict, total=False):
     logtraffic: Literal["enable", "disable"]  # Enable/disable local-in traffic logging. | Default: disable
     comments: str  # Comment. | MaxLen: 1023
 
-# Nested TypedDicts for table field children (dict mode)
-
-class LocalInPolicyIntfItem(TypedDict):
-    """Type hints for intf table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class LocalInPolicySrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class LocalInPolicyDstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class LocalInPolicyInternetservicesrcnameItem(TypedDict):
-    """Type hints for internet-service-src-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Internet Service name. | MaxLen: 79
-
-
-class LocalInPolicyInternetservicesrcgroupItem(TypedDict):
-    """Type hints for internet-service-src-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Internet Service group name. | MaxLen: 79
-
-
-class LocalInPolicyInternetservicesrccustomItem(TypedDict):
-    """Type hints for internet-service-src-custom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Custom Internet Service name. | MaxLen: 79
-
-
-class LocalInPolicyInternetservicesrccustomgroupItem(TypedDict):
-    """Type hints for internet-service-src-custom-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Custom Internet Service group name. | MaxLen: 79
-
-
-class LocalInPolicyInternetservicesrcfortiguardItem(TypedDict):
-    """Type hints for internet-service-src-fortiguard table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # FortiGuard Internet Service name. | MaxLen: 79
-
-
-class LocalInPolicyServiceItem(TypedDict):
-    """Type hints for service table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Service name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class LocalInPolicyIntfObject:
@@ -522,6 +574,9 @@ class LocalInPolicyObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -754,19 +809,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -784,19 +839,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -815,19 +870,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -844,19 +899,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -875,19 +930,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -905,19 +960,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -936,19 +991,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -965,19 +1020,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,
@@ -1029,19 +1084,19 @@ class LocalInPolicy:
         policyid: int | None = ...,
         uuid: str | None = ...,
         ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
-        intf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        intf: str | list[LocalInPolicyIntfItem] | None = ...,
+        srcaddr: str | list[LocalInPolicySrcaddrItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[LocalInPolicyDstaddrItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_name: str | list[LocalInPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[LocalInPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[LocalInPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[LocalInPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[LocalInPolicyInternetservicesrcfortiguardItem] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[LocalInPolicyServiceItem] | None = ...,
         service_negate: Literal["enable", "disable"] | None = ...,
         internet_service_src_negate: Literal["enable", "disable"] | None = ...,
         schedule: str | None = ...,

@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ServerGroupServerlistItem(TypedDict, total=False):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerGroupServerlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # ICAP server name. | MaxLen: 63
+    weight: int  # Optionally assign a weight of the forwarding serve | Default: 10 | Min: 1 | Max: 100
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,22 +42,11 @@ class ServerGroupPayload(TypedDict, total=False):
     """
     name: str  # Configure an ICAP server group consisting one or m | MaxLen: 63
     ldb_method: Literal["weighted", "least-session", "active-passive"]  # Load balance method. | Default: weighted
-    server_list: list[dict[str, Any]]  # Add ICAP servers to a list to form a server group.
+    server_list: list[ServerGroupServerlistItem]  # Add ICAP servers to a list to form a server group.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ServerGroupServerlistItem(TypedDict):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # ICAP server name. | MaxLen: 63
-    weight: int  # Optionally assign a weight of the forwarding serve | Default: 10 | Min: 1 | Max: 100
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ServerGroupServerlistObject:
@@ -102,6 +114,9 @@ class ServerGroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -333,7 +348,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerGroupObject: ...
     
@@ -343,7 +358,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +369,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerGroupObject: ...
     
@@ -384,7 +399,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,7 +463,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

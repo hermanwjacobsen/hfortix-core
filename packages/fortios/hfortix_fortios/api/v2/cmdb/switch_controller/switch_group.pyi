@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SwitchGroupMembersItem(TypedDict, total=False):
+    """Type hints for members table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SwitchGroupMembersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    switch_id: str  # Managed device ID. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,21 +47,11 @@ class SwitchGroupPayload(TypedDict, total=False):
     name: str  # Switch group name. | MaxLen: 35
     description: str  # Optional switch group description. | MaxLen: 63
     fortilink: str  # FortiLink interface to which switch group members | MaxLen: 15
-    members: list[dict[str, Any]]  # FortiSwitch members belonging to this switch group
+    members: list[SwitchGroupMembersItem]  # FortiSwitch members belonging to this switch group
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SwitchGroupMembersItem(TypedDict):
-    """Type hints for members table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    switch_id: str  # Managed device ID. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SwitchGroupMembersObject:
@@ -108,6 +120,9 @@ class SwitchGroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -340,7 +355,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SwitchGroupObject: ...
     
@@ -351,7 +366,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -373,7 +388,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -385,7 +400,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SwitchGroupObject: ...
     
@@ -396,7 +411,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -408,7 +423,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +433,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,7 +478,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
+        members: str | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

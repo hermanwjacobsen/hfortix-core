@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfilePpidfiltersItem(TypedDict, total=False):
+    """Type hints for ppid-filters table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfilePpidfiltersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ppid: int  # Payload protocol identifier. | Min: 0 | Max: 4294967295
+    action: Literal["pass", "reset", "replace"]  # Action taken when PPID is matched. | Default: reset
+    comment: str  # Comment. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,24 +44,11 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Profile name. | MaxLen: 47
     comment: str  # Comment. | MaxLen: 255
-    ppid_filters: list[dict[str, Any]]  # PPID filters list.
+    ppid_filters: list[ProfilePpidfiltersItem]  # PPID filters list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfilePpidfiltersItem(TypedDict):
-    """Type hints for ppid-filters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ppid: int  # Payload protocol identifier. | Min: 0 | Max: 4294967295
-    action: Literal["pass", "reset", "replace"]  # Action taken when PPID is matched. | Default: reset
-    comment: str  # Comment. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfilePpidfiltersObject:
@@ -108,6 +120,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -349,7 +364,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -360,7 +375,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +384,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -390,7 +405,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +425,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,7 +469,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

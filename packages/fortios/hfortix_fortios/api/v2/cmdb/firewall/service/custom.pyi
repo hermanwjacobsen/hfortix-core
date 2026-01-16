@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class CustomAppcategoryItem(TypedDict, total=False):
+    """Type hints for app-category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: CustomAppcategoryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Application category id. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class CustomApplicationItem(TypedDict, total=False):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: CustomApplicationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Application id. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -47,33 +84,13 @@ class CustomPayload(TypedDict, total=False):
     comment: str  # Comment. | MaxLen: 255
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
     app_service_type: Literal["disable", "app-id", "app-category"]  # Application service type. | Default: disable
-    app_category: list[dict[str, Any]]  # Application category ID.
-    application: list[dict[str, Any]]  # Application ID.
+    app_category: list[CustomAppcategoryItem]  # Application category ID.
+    application: list[CustomApplicationItem]  # Application ID.
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class CustomAppcategoryItem(TypedDict):
-    """Type hints for app-category table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Application category id. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class CustomApplicationItem(TypedDict):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Application id. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class CustomAppcategoryObject:
@@ -246,6 +263,9 @@ class CustomObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -500,8 +520,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
@@ -535,8 +555,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -571,8 +591,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -605,8 +625,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -641,8 +661,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
@@ -676,8 +696,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -712,8 +732,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -746,8 +766,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -815,8 +835,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

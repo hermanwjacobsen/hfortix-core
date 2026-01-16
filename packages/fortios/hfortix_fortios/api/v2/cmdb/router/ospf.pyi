@@ -2,7 +2,188 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class OspfAreaItem(TypedDict, total=False):
+    """Type hints for area table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfAreaItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: str  # Area entry IP address. | Default: 0.0.0.0
+    shortcut: Literal["disable", "enable", "default"]  # Enable/disable shortcut option. | Default: disable
+    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
+    default_cost: int  # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 4294967295
+    nssa_translator_role: Literal["candidate", "never", "always"]  # NSSA translator role type. | Default: candidate
+    stub_type: Literal["no-summary", "summary"]  # Stub summary setting. | Default: summary
+    type: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
+    nssa_default_information_originate: Literal["enable", "always", "disable"]  # Redistribute, advertise, or do not originate Type- | Default: disable
+    nssa_default_information_originate_metric: int  # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
+    nssa_default_information_originate_metric_type: Literal["1", "2"]  # OSPF metric type for default routes. | Default: 2
+    nssa_redistribution: Literal["enable", "disable"]  # Enable/disable redistribute into NSSA area. | Default: enable
+    comments: str  # Comment. | MaxLen: 255
+    range: str  # OSPF area range configuration.
+    virtual_link: str  # OSPF virtual link configuration.
+    filter_list: str  # OSPF area filter-list configuration.
+
+
+class OspfOspfinterfaceItem(TypedDict, total=False):
+    """Type hints for ospf-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfOspfinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface entry name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 255
+    interface: str  # Configuration interface name. | MaxLen: 15
+    ip: str  # IP address. | Default: 0.0.0.0
+    linkdown_fast_failover: Literal["enable", "disable"]  # Enable/disable fast link failover. | Default: disable
+    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
+    authentication_key: str  # Authentication key. | MaxLen: 8
+    keychain: str  # Message-digest key-chain name. | MaxLen: 35
+    prefix_length: int  # Prefix length. | Default: 0 | Min: 0 | Max: 32
+    retransmit_interval: int  # Retransmit interval. | Default: 5 | Min: 1 | Max: 65535
+    transmit_delay: int  # Transmit delay. | Default: 1 | Min: 1 | Max: 65535
+    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
+    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
+    dead_interval: int  # Dead interval. | Default: 0 | Min: 0 | Max: 65535
+    hello_interval: int  # Hello interval. | Default: 0 | Min: 0 | Max: 65535
+    hello_multiplier: int  # Number of hello packets within dead interval. | Default: 0 | Min: 3 | Max: 10
+    database_filter_out: Literal["enable", "disable"]  # Enable/disable control of flooding out LSAs. | Default: disable
+    mtu: int  # MTU for database description packets. | Default: 0 | Min: 576 | Max: 65535
+    mtu_ignore: Literal["enable", "disable"]  # Enable/disable ignore MTU. | Default: disable
+    network_type: Literal["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"]  # Network type. | Default: broadcast
+    bfd: Literal["global", "enable", "disable"]  # Bidirectional Forwarding Detection (BFD). | Default: global
+    status: Literal["disable", "enable"]  # Enable/disable status. | Default: enable
+    resync_timeout: int  # Graceful restart neighbor resynchronization timeou | Default: 40 | Min: 1 | Max: 3600
+    md5_keys: str  # MD5 key.
+
+
+class OspfNetworkItem(TypedDict, total=False):
+    """Type hints for network table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfNetworkItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+    area: str  # Attach the network to area. | Default: 0.0.0.0
+    comments: str  # Comment. | MaxLen: 255
+
+
+class OspfNeighborItem(TypedDict, total=False):
+    """Type hints for neighbor table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfNeighborItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # Interface IP address of the neighbor. | Default: 0.0.0.0
+    poll_interval: int  # Poll interval time in seconds. | Default: 10 | Min: 1 | Max: 65535
+    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
+    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
+
+
+class OspfPassiveinterfaceItem(TypedDict, total=False):
+    """Type hints for passive-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfPassiveinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Passive interface name. | MaxLen: 79
+
+
+class OspfSummaryaddressItem(TypedDict, total=False):
+    """Type hints for summary-address table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfSummaryaddressItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
+    advertise: Literal["disable", "enable"]  # Enable/disable advertise status. | Default: enable
+
+
+class OspfDistributelistItem(TypedDict, total=False):
+    """Type hints for distribute-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfDistributelistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Distribute list entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    access_list: str  # Access list name. | MaxLen: 35
+    protocol: Literal["connected", "static", "rip"]  # Protocol type. | Default: connected
+
+
+class OspfRedistributeItem(TypedDict, total=False):
+    """Type hints for redistribute table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OspfRedistributeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Redistribute name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    metric: int  # Redistribute metric setting. | Default: 0 | Min: 0 | Max: 16777214
+    routemap: str  # Route map name. | MaxLen: 35
+    metric_type: Literal["1", "2"]  # Metric type. | Default: 2
+    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -49,152 +230,18 @@ class OspfPayload(TypedDict, total=False):
     restart_mode: Literal["none", "lls", "graceful-restart"]  # OSPF restart mode (graceful or LLS). | Default: none
     restart_period: int  # Graceful restart period. | Default: 120 | Min: 1 | Max: 3600
     restart_on_topology_change: Literal["enable", "disable"]  # Enable/disable continuing graceful restart upon to | Default: disable
-    area: list[dict[str, Any]]  # OSPF area configuration.
-    ospf_interface: list[dict[str, Any]]  # OSPF interface configuration.
-    network: list[dict[str, Any]]  # OSPF network configuration.
-    neighbor: list[dict[str, Any]]  # OSPF neighbor configuration are used when OSPF run
-    passive_interface: list[dict[str, Any]]  # Passive interface configuration.
-    summary_address: list[dict[str, Any]]  # IP address summary configuration.
-    distribute_list: list[dict[str, Any]]  # Distribute list configuration.
-    redistribute: list[dict[str, Any]]  # Redistribute configuration.
+    area: list[OspfAreaItem]  # OSPF area configuration.
+    ospf_interface: list[OspfOspfinterfaceItem]  # OSPF interface configuration.
+    network: list[OspfNetworkItem]  # OSPF network configuration.
+    neighbor: list[OspfNeighborItem]  # OSPF neighbor configuration are used when OSPF run
+    passive_interface: list[OspfPassiveinterfaceItem]  # Passive interface configuration.
+    summary_address: list[OspfSummaryaddressItem]  # IP address summary configuration.
+    distribute_list: list[OspfDistributelistItem]  # Distribute list configuration.
+    redistribute: list[OspfRedistributeItem]  # Redistribute configuration.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class OspfAreaItem(TypedDict):
-    """Type hints for area table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: str  # Area entry IP address. | Default: 0.0.0.0
-    shortcut: Literal["disable", "enable", "default"]  # Enable/disable shortcut option. | Default: disable
-    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
-    default_cost: int  # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 4294967295
-    nssa_translator_role: Literal["candidate", "never", "always"]  # NSSA translator role type. | Default: candidate
-    stub_type: Literal["no-summary", "summary"]  # Stub summary setting. | Default: summary
-    type: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
-    nssa_default_information_originate: Literal["enable", "always", "disable"]  # Redistribute, advertise, or do not originate Type- | Default: disable
-    nssa_default_information_originate_metric: int  # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
-    nssa_default_information_originate_metric_type: Literal["1", "2"]  # OSPF metric type for default routes. | Default: 2
-    nssa_redistribution: Literal["enable", "disable"]  # Enable/disable redistribute into NSSA area. | Default: enable
-    comments: str  # Comment. | MaxLen: 255
-    range: str  # OSPF area range configuration.
-    virtual_link: str  # OSPF virtual link configuration.
-    filter_list: str  # OSPF area filter-list configuration.
-
-
-class OspfOspfinterfaceItem(TypedDict):
-    """Type hints for ospf-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface entry name. | MaxLen: 35
-    comments: str  # Comment. | MaxLen: 255
-    interface: str  # Configuration interface name. | MaxLen: 15
-    ip: str  # IP address. | Default: 0.0.0.0
-    linkdown_fast_failover: Literal["enable", "disable"]  # Enable/disable fast link failover. | Default: disable
-    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
-    authentication_key: str  # Authentication key. | MaxLen: 8
-    keychain: str  # Message-digest key-chain name. | MaxLen: 35
-    prefix_length: int  # Prefix length. | Default: 0 | Min: 0 | Max: 32
-    retransmit_interval: int  # Retransmit interval. | Default: 5 | Min: 1 | Max: 65535
-    transmit_delay: int  # Transmit delay. | Default: 1 | Min: 1 | Max: 65535
-    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
-    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
-    dead_interval: int  # Dead interval. | Default: 0 | Min: 0 | Max: 65535
-    hello_interval: int  # Hello interval. | Default: 0 | Min: 0 | Max: 65535
-    hello_multiplier: int  # Number of hello packets within dead interval. | Default: 0 | Min: 3 | Max: 10
-    database_filter_out: Literal["enable", "disable"]  # Enable/disable control of flooding out LSAs. | Default: disable
-    mtu: int  # MTU for database description packets. | Default: 0 | Min: 576 | Max: 65535
-    mtu_ignore: Literal["enable", "disable"]  # Enable/disable ignore MTU. | Default: disable
-    network_type: Literal["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"]  # Network type. | Default: broadcast
-    bfd: Literal["global", "enable", "disable"]  # Bidirectional Forwarding Detection (BFD). | Default: global
-    status: Literal["disable", "enable"]  # Enable/disable status. | Default: enable
-    resync_timeout: int  # Graceful restart neighbor resynchronization timeou | Default: 40 | Min: 1 | Max: 3600
-    md5_keys: str  # MD5 key.
-
-
-class OspfNetworkItem(TypedDict):
-    """Type hints for network table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
-    area: str  # Attach the network to area. | Default: 0.0.0.0
-    comments: str  # Comment. | MaxLen: 255
-
-
-class OspfNeighborItem(TypedDict):
-    """Type hints for neighbor table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # Interface IP address of the neighbor. | Default: 0.0.0.0
-    poll_interval: int  # Poll interval time in seconds. | Default: 10 | Min: 1 | Max: 65535
-    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
-    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
-
-
-class OspfPassiveinterfaceItem(TypedDict):
-    """Type hints for passive-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Passive interface name. | MaxLen: 79
-
-
-class OspfSummaryaddressItem(TypedDict):
-    """Type hints for summary-address table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
-    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
-    advertise: Literal["disable", "enable"]  # Enable/disable advertise status. | Default: enable
-
-
-class OspfDistributelistItem(TypedDict):
-    """Type hints for distribute-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Distribute list entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    access_list: str  # Access list name. | MaxLen: 35
-    protocol: Literal["connected", "static", "rip"]  # Protocol type. | Default: connected
-
-
-class OspfRedistributeItem(TypedDict):
-    """Type hints for redistribute table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Redistribute name. | MaxLen: 35
-    status: Literal["enable", "disable"]  # Status. | Default: disable
-    metric: int  # Redistribute metric setting. | Default: 0 | Min: 0 | Max: 16777214
-    routemap: str  # Route map name. | MaxLen: 35
-    metric_type: Literal["1", "2"]  # Metric type. | Default: 2
-    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class OspfAreaObject:
@@ -682,6 +729,9 @@ class OspfObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -935,14 +985,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        area: str | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> OspfObject: ...
     
@@ -975,14 +1025,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        area: str | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1016,14 +1066,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        area: str | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1055,14 +1105,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        area: str | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1100,14 +1150,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        area: str | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

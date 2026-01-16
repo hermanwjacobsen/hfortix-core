@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class H2qpOsuProviderNaiNailistItem(TypedDict, total=False):
+    """Type hints for nai-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: H2qpOsuProviderNaiNailistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # OSU NAI ID. | MaxLen: 35
+    osu_nai: str  # OSU NAI. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,22 +41,11 @@ class H2qpOsuProviderNaiPayload(TypedDict, total=False):
         }
     """
     name: str  # OSU provider NAI ID. | MaxLen: 35
-    nai_list: list[dict[str, Any]]  # OSU NAI list.
+    nai_list: list[H2qpOsuProviderNaiNailistItem]  # OSU NAI list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class H2qpOsuProviderNaiNailistItem(TypedDict):
-    """Type hints for nai-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # OSU NAI ID. | MaxLen: 35
-    osu_nai: str  # OSU NAI. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class H2qpOsuProviderNaiNailistObject:
@@ -98,6 +110,9 @@ class H2qpOsuProviderNaiObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -328,7 +343,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderNaiObject: ...
     
@@ -337,7 +352,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -347,7 +362,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -355,7 +370,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -365,7 +380,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderNaiObject: ...
     
@@ -374,7 +389,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -384,7 +399,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +450,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

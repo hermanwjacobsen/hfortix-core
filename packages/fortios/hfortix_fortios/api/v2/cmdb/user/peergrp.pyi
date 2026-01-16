@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class PeergrpMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: PeergrpMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Peer group member name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,21 +40,11 @@ class PeergrpPayload(TypedDict, total=False):
         }
     """
     name: str  # Peer group name. | MaxLen: 35
-    member: list[dict[str, Any]]  # Peer group members.
+    member: list[PeergrpMemberItem]  # Peer group members.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class PeergrpMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Peer group member name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class PeergrpMemberObject:
@@ -95,6 +107,9 @@ class PeergrpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -325,7 +340,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PeergrpObject: ...
     
@@ -334,7 +349,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -344,7 +359,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,7 +367,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -362,7 +377,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PeergrpObject: ...
     
@@ -371,7 +386,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +396,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -432,7 +447,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

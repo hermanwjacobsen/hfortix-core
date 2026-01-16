@@ -2,41 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class SensorPayload(TypedDict, total=False):
-    """
-    Type hints for ips/sensor payload fields.
-    
-    Configure IPS sensor.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.replacemsg-group.ReplacemsgGroupEndpoint` (via: replacemsg-group)
-
-    **Usage:**
-        payload: SensorPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Sensor name. | MaxLen: 47
-    comment: str  # Comment. | MaxLen: 255
-    replacemsg_group: str  # Replacement message group. | MaxLen: 35
-    block_malicious_url: Literal["disable", "enable"]  # Enable/disable malicious URL blocking. | Default: disable
-    scan_botnet_connections: Literal["disable", "block", "monitor"]  # Block or monitor connections to Botnet servers, or | Default: disable
-    extended_log: Literal["enable", "disable"]  # Enable/disable extended logging. | Default: disable
-    entries: list[dict[str, Any]]  # IPS sensor filter.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class SensorEntriesItem(TypedDict):
+class SensorEntriesItem(TypedDict, total=False):
     """Type hints for entries table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SensorEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # Rule ID in IPS database (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
@@ -66,7 +46,39 @@ class SensorEntriesItem(TypedDict):
     quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SensorPayload(TypedDict, total=False):
+    """
+    Type hints for ips/sensor payload fields.
+    
+    Configure IPS sensor.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.system.replacemsg-group.ReplacemsgGroupEndpoint` (via: replacemsg-group)
+
+    **Usage:**
+        payload: SensorPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Sensor name. | MaxLen: 47
+    comment: str  # Comment. | MaxLen: 255
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    block_malicious_url: Literal["disable", "enable"]  # Enable/disable malicious URL blocking. | Default: disable
+    scan_botnet_connections: Literal["disable", "block", "monitor"]  # Block or monitor connections to Botnet servers, or | Default: disable
+    extended_log: Literal["enable", "disable"]  # Enable/disable extended logging. | Default: disable
+    entries: list[SensorEntriesItem]  # IPS sensor filter.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SensorEntriesObject:
@@ -192,6 +204,9 @@ class SensorObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -427,7 +442,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -441,7 +456,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -456,7 +471,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +484,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -484,7 +499,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -498,7 +513,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +528,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -526,7 +541,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -574,7 +589,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

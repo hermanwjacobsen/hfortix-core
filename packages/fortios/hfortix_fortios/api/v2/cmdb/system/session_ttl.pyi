@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SessionTtlPortItem(TypedDict, total=False):
+    """Type hints for port table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SessionTtlPortItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Table entry ID. | Default: 0 | Min: 0 | Max: 65535
+    protocol: int  # Protocol (0 - 255). | Default: 0 | Min: 0 | Max: 255
+    start_port: int  # Start port number. | Default: 0 | Min: 0 | Max: 65535
+    end_port: int  # End port number. | Default: 0 | Min: 0 | Max: 65535
+    timeout: str  # Session timeout (TTL).
+    refresh_direction: Literal["both", "outgoing", "incoming"]  # Configure refresh direction. | Default: both
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,26 +45,11 @@ class SessionTtlPayload(TypedDict, total=False):
         }
     """
     default: str  # Default timeout.
-    port: list[dict[str, Any]]  # Session TTL port.
+    port: list[SessionTtlPortItem]  # Session TTL port.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SessionTtlPortItem(TypedDict):
-    """Type hints for port table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Table entry ID. | Default: 0 | Min: 0 | Max: 65535
-    protocol: int  # Protocol (0 - 255). | Default: 0 | Min: 0 | Max: 255
-    start_port: int  # Start port number. | Default: 0 | Min: 0 | Max: 65535
-    end_port: int  # End port number. | Default: 0 | Min: 0 | Max: 65535
-    timeout: str  # Session timeout (TTL).
-    refresh_direction: Literal["both", "outgoing", "incoming"]  # Configure refresh direction. | Default: both
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SessionTtlPortObject:
@@ -110,6 +122,9 @@ class SessionTtlObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | None = ...,
+        port: str | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SessionTtlObject: ...
     
@@ -348,7 +363,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | None = ...,
+        port: str | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | None = ...,
+        port: str | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -366,7 +381,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | None = ...,
+        port: str | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | None = ...,
+        port: str | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

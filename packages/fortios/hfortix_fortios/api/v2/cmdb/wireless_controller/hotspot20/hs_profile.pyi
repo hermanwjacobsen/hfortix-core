@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class HsProfileOsuproviderItem(TypedDict, total=False):
+    """Type hints for osu-provider table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HsProfileOsuproviderItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # OSU provider name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -63,7 +85,7 @@ class HsProfilePayload(TypedDict, total=False):
     advice_of_charge: str  # Advice of charge. | MaxLen: 35
     osu_provider_nai: str  # OSU Provider NAI. | MaxLen: 35
     terms_and_conditions: str  # Terms and conditions. | MaxLen: 35
-    osu_provider: list[dict[str, Any]]  # Manually selected list of OSU provider(s).
+    osu_provider: list[HsProfileOsuproviderItem]  # Manually selected list of OSU provider(s).
     wan_metrics: str  # WAN metric name. | MaxLen: 35
     network_auth: str  # Network authentication name. | MaxLen: 35
     x3gpp_plmn: str  # 3GPP PLMN name. | MaxLen: 35
@@ -76,19 +98,9 @@ class HsProfilePayload(TypedDict, total=False):
     wba_charging_currency: str  # Three letter currency code. | MaxLen: 3
     wba_charging_rate: int  # Number of currency units per kilobyte. | Default: 0 | Min: 0 | Max: 4294967295
 
-# Nested TypedDicts for table field children (dict mode)
-
-class HsProfileOsuproviderItem(TypedDict):
-    """Type hints for osu-provider table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # OSU provider name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class HsProfileOsuproviderObject:
@@ -274,6 +286,9 @@ class HsProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -534,7 +549,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -584,7 +599,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -635,7 +650,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -684,7 +699,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -735,7 +750,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -785,7 +800,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -836,7 +851,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -885,7 +900,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -969,7 +984,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | None = ...,
+        osu_provider: str | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,

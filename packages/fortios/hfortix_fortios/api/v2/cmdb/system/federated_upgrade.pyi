@@ -2,7 +2,53 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FederatedUpgradeKnownhamembersItem(TypedDict, total=False):
+    """Type hints for known-ha-members table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FederatedUpgradeKnownhamembersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    serial: str  # Serial number of HA member | MaxLen: 79
+
+
+class FederatedUpgradeNodelistItem(TypedDict, total=False):
+    """Type hints for node-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FederatedUpgradeNodelistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    serial: str  # Serial number of the node to include. | MaxLen: 79
+    timing: Literal["immediate", "scheduled"]  # Run immediately or at a scheduled time. | Default: immediate
+    maximum_minutes: int  # Maximum number of minutes to allow for immediate u | Default: 15 | Min: 5 | Max: 10080
+    time: str  # Scheduled upgrade execution time in UTC
+    setup_time: str  # Upgrade preparation start time in UTC
+    upgrade_path: str  # Fortinet OS image versions to upgrade through in m
+    device_type: Literal["fortigate", "fortiswitch", "fortiap", "fortiextender"]  # Fortinet device type. | Default: fortigate
+    allow_download: Literal["enable", "disable"]  # Enable/disable download firmware images. | Default: enable
+    coordinating_fortigate: str  # Serial number of the FortiGate unit that controls | MaxLen: 79
+    failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"]  # Upgrade failure reason. | Default: none
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,43 +71,14 @@ class FederatedUpgradePayload(TypedDict, total=False):
     next_path_index: int  # The index of the next image to upgrade to. | Default: 0 | Min: 0 | Max: 10
     ignore_signing_errors: Literal["enable", "disable"]  # Allow/reject use of FortiGate firmware images that | Default: disable
     ha_reboot_controller: str  # Serial number of the FortiGate unit that will cont | MaxLen: 79
-    known_ha_members: list[dict[str, Any]]  # Known members of the HA cluster. If a member is mi
+    known_ha_members: list[FederatedUpgradeKnownhamembersItem]  # Known members of the HA cluster. If a member is mi
     initial_version: str  # Firmware version when the upgrade was set up.
     starter_admin: str  # Admin that started the upgrade. | MaxLen: 64
-    node_list: list[dict[str, Any]]  # Nodes which will be included in the upgrade.
+    node_list: list[FederatedUpgradeNodelistItem]  # Nodes which will be included in the upgrade.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FederatedUpgradeKnownhamembersItem(TypedDict):
-    """Type hints for known-ha-members table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    serial: str  # Serial number of HA member | MaxLen: 79
-
-
-class FederatedUpgradeNodelistItem(TypedDict):
-    """Type hints for node-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    serial: str  # Serial number of the node to include. | MaxLen: 79
-    timing: Literal["immediate", "scheduled"]  # Run immediately or at a scheduled time. | Default: immediate
-    maximum_minutes: int  # Maximum number of minutes to allow for immediate u | Default: 15 | Min: 5 | Max: 10080
-    time: str  # Scheduled upgrade execution time in UTC
-    setup_time: str  # Upgrade preparation start time in UTC
-    upgrade_path: str  # Fortinet OS image versions to upgrade through in m
-    device_type: Literal["fortigate", "fortiswitch", "fortiap", "fortiextender"]  # Fortinet device type. | Default: fortigate
-    allow_download: Literal["enable", "disable"]  # Enable/disable download firmware images. | Default: enable
-    coordinating_fortigate: str  # Serial number of the FortiGate unit that controls | MaxLen: 79
-    failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"]  # Upgrade failure reason. | Default: none
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FederatedUpgradeKnownhamembersObject:
@@ -204,6 +221,9 @@ class FederatedUpgradeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -440,10 +460,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
@@ -459,10 +479,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -479,10 +499,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,10 +517,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -521,10 +541,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

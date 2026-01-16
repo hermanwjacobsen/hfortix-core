@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class KrbKeytabLdapserverItem(TypedDict, total=False):
+    """Type hints for ldap-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: KrbKeytabLdapserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # LDAP server name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,22 +42,12 @@ class KrbKeytabPayload(TypedDict, total=False):
     name: str  # Kerberos keytab entry name. | MaxLen: 35
     pac_data: Literal["enable", "disable"]  # Enable/disable parsing PAC data in the ticket. | Default: enable
     principal: str  # Kerberos service principal. For example, HTTP/myfg | MaxLen: 511
-    ldap_server: list[dict[str, Any]]  # LDAP server name(s).
+    ldap_server: list[KrbKeytabLdapserverItem]  # LDAP server name(s).
     keytab: str  # Base64 coded keytab file containing a pre-shared k | MaxLen: 8191
 
-# Nested TypedDicts for table field children (dict mode)
-
-class KrbKeytabLdapserverItem(TypedDict):
-    """Type hints for ldap-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # LDAP server name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class KrbKeytabLdapserverObject:
@@ -107,6 +119,9 @@ class KrbKeytabObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> KrbKeytabObject: ...
@@ -351,7 +366,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -364,7 +379,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -375,7 +390,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -388,7 +403,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> KrbKeytabObject: ...
@@ -400,7 +415,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -413,7 +428,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -424,7 +439,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -470,7 +485,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -2,7 +2,37 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DnsDatabaseDnsentryItem(TypedDict, total=False):
+    """Type hints for dns-entry table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DnsDatabaseDnsentryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # DNS entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Enable/disable resource record status. | Default: enable
+    type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]  # Resource record type. | Default: A
+    ttl: int  # Time-to-live for this entry | Default: 0 | Min: 0 | Max: 2147483647
+    preference: int  # DNS entry preference | Default: 10 | Min: 0 | Max: 65535
+    ip: str  # IPv4 address of the host. | Default: 0.0.0.0
+    ipv6: str  # IPv6 address of the host. | Default: ::
+    hostname: str  # Name of the host. | MaxLen: 255
+    canonical_name: str  # Canonical name of the host. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -39,32 +69,14 @@ class DnsDatabasePayload(TypedDict, total=False):
     source_ip6: str  # IPv6 source IP address for forwarding to DNS serve | Default: ::
     source_ip_interface: str  # IP address of the specified interface as the sourc | MaxLen: 15
     rr_max: int  # Maximum number of resource records | Default: 16384 | Min: 10 | Max: 65536
-    dns_entry: list[dict[str, Any]]  # DNS entry.
+    dns_entry: list[DnsDatabaseDnsentryItem]  # DNS entry.
     interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
     interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DnsDatabaseDnsentryItem(TypedDict):
-    """Type hints for dns-entry table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # DNS entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Enable/disable resource record status. | Default: enable
-    type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]  # Resource record type. | Default: A
-    ttl: int  # Time-to-live for this entry | Default: 0 | Min: 0 | Max: 2147483647
-    preference: int  # DNS entry preference | Default: 10 | Min: 0 | Max: 65535
-    ip: str  # IPv4 address of the host. | Default: 0.0.0.0
-    ipv6: str  # IPv6 address of the host. | Default: ::
-    hostname: str  # Name of the host. | MaxLen: 255
-    canonical_name: str  # Canonical name of the host. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DnsDatabaseDnsentryObject:
@@ -200,6 +212,9 @@ class DnsDatabaseObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -446,7 +461,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -474,7 +489,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -503,7 +518,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -530,7 +545,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -559,7 +574,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -587,7 +602,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -616,7 +631,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -643,7 +658,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -705,7 +720,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        dns_entry: str | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,

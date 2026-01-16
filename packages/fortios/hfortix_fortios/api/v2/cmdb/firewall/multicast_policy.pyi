@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class MulticastPolicySrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastPolicySrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Source address objects. | MaxLen: 79
+
+
+class MulticastPolicyDstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastPolicyDstaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Destination address objects. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -33,8 +70,8 @@ class MulticastPolicyPayload(TypedDict, total=False):
     status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
     srcintf: str  # Source interface name. | MaxLen: 35
     dstintf: str  # Destination interface name. | MaxLen: 35
-    srcaddr: list[dict[str, Any]]  # Source address objects.
-    dstaddr: list[dict[str, Any]]  # Destination address objects.
+    srcaddr: list[MulticastPolicySrcaddrItem]  # Source address objects.
+    dstaddr: list[MulticastPolicyDstaddrItem]  # Destination address objects.
     snat: Literal["enable", "disable"]  # Enable/disable substitution of the outgoing interf | Default: disable
     snat_ip: str  # IPv4 address to be used as the source address for | Default: 0.0.0.0
     dnat: str  # IPv4 DNAT address used for multicast destination a | Default: 0.0.0.0
@@ -48,29 +85,9 @@ class MulticastPolicyPayload(TypedDict, total=False):
     auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
     traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class MulticastPolicySrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Source address objects. | MaxLen: 79
-
-
-class MulticastPolicyDstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Destination address objects. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MulticastPolicySrcaddrObject:
@@ -222,6 +239,9 @@ class MulticastPolicyObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -458,8 +478,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -486,8 +506,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -515,8 +535,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -542,8 +562,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -571,8 +591,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -599,8 +619,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -628,8 +648,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -655,8 +675,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -717,8 +737,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,

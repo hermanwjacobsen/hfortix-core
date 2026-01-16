@@ -3,6 +3,55 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class VirtualSwitchResponse(TypedDict):
+    """
+    Type hints for system/virtual_switch API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+
+
+@final
+class VirtualSwitchObject:
+    """Typed FortiObject for system/virtual_switch with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> VirtualSwitchPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class VirtualSwitch:
     """
     Configuration for system/virtual_switch

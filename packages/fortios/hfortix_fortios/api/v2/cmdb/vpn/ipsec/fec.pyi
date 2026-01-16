@@ -2,7 +2,36 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FecMappingsItem(TypedDict, total=False):
+    """Type hints for mappings table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FecMappingsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    seqno: int  # Sequence number (1 - 64). | Default: 0 | Min: 0 | Max: 64
+    base: int  # Number of base FEC packets (1 - 20). | Default: 0 | Min: 1 | Max: 20
+    redundant: int  # Number of redundant FEC packets (1 - 5). | Default: 0 | Min: 1 | Max: 5
+    packet_loss_threshold: int  # Apply FEC parameters when packet loss is >= thresh | Default: 0 | Min: 0 | Max: 100
+    latency_threshold: int  # Apply FEC parameters when latency is <= threshold | Default: 0 | Min: 0 | Max: 4294967295
+    bandwidth_up_threshold: int  # Apply FEC parameters when available up bandwidth i | Default: 0 | Min: 0 | Max: 4294967295
+    bandwidth_down_threshold: int  # Apply FEC parameters when available down bandwidth | Default: 0 | Min: 0 | Max: 4294967295
+    bandwidth_bi_threshold: int  # Apply FEC parameters when available bi-bandwidth i | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,28 +47,11 @@ class FecPayload(TypedDict, total=False):
         }
     """
     name: str  # Profile name. | MaxLen: 35
-    mappings: list[dict[str, Any]]  # FEC redundancy mapping table.
+    mappings: list[FecMappingsItem]  # FEC redundancy mapping table.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FecMappingsItem(TypedDict):
-    """Type hints for mappings table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    seqno: int  # Sequence number (1 - 64). | Default: 0 | Min: 0 | Max: 64
-    base: int  # Number of base FEC packets (1 - 20). | Default: 0 | Min: 1 | Max: 20
-    redundant: int  # Number of redundant FEC packets (1 - 5). | Default: 0 | Min: 1 | Max: 5
-    packet_loss_threshold: int  # Apply FEC parameters when packet loss is >= thresh | Default: 0 | Min: 0 | Max: 100
-    latency_threshold: int  # Apply FEC parameters when latency is <= threshold | Default: 0 | Min: 0 | Max: 4294967295
-    bandwidth_up_threshold: int  # Apply FEC parameters when available up bandwidth i | Default: 0 | Min: 0 | Max: 4294967295
-    bandwidth_down_threshold: int  # Apply FEC parameters when available down bandwidth | Default: 0 | Min: 0 | Max: 4294967295
-    bandwidth_bi_threshold: int  # Apply FEC parameters when available bi-bandwidth i | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FecMappingsObject:
@@ -116,6 +128,9 @@ class FecObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -346,7 +361,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FecObject: ...
     
@@ -355,7 +370,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -365,7 +380,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -373,7 +388,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FecObject: ...
     
@@ -392,7 +407,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +417,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +425,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -453,7 +468,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[str] | list[dict[str, Any]] | None = ...,
+        mappings: str | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

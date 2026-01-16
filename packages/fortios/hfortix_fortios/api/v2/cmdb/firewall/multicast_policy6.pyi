@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class MulticastPolicy6SrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastPolicy6SrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class MulticastPolicy6DstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastPolicy6DstaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -31,8 +68,8 @@ class MulticastPolicy6Payload(TypedDict, total=False):
     name: str  # Policy name. | MaxLen: 35
     srcintf: str  # IPv6 source interface name. | MaxLen: 35
     dstintf: str  # IPv6 destination interface name. | MaxLen: 35
-    srcaddr: list[dict[str, Any]]  # IPv6 source address name.
-    dstaddr: list[dict[str, Any]]  # IPv6 destination address name.
+    srcaddr: list[MulticastPolicy6SrcaddrItem]  # IPv6 source address name.
+    dstaddr: list[MulticastPolicy6DstaddrItem]  # IPv6 destination address name.
     action: Literal["accept", "deny"]  # Accept or deny traffic matching the policy. | Default: accept
     protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
     start_port: int  # Integer value for starting TCP/UDP/SCTP destinatio | Default: 1 | Min: 0 | Max: 65535
@@ -43,29 +80,9 @@ class MulticastPolicy6Payload(TypedDict, total=False):
     auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
     comments: str  # Comment. | MaxLen: 1023
 
-# Nested TypedDicts for table field children (dict mode)
-
-class MulticastPolicy6SrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class MulticastPolicy6DstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MulticastPolicy6SrcaddrObject:
@@ -205,6 +222,9 @@ class MulticastPolicy6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -440,8 +460,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -464,8 +484,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -489,8 +509,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -512,8 +532,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -537,8 +557,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -561,8 +581,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -586,8 +606,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -609,8 +629,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -667,8 +687,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,

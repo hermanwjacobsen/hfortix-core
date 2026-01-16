@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SslServerSslcertItem(TypedDict, total=False):
+    """Type hints for ssl-cert table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SslServerSslcertItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,7 +45,7 @@ class SslServerPayload(TypedDict, total=False):
     ssl_mode: Literal["half", "full"]  # SSL/TLS mode for encryption and decryption of traf | Default: full
     add_header_x_forwarded_proto: Literal["enable", "disable"]  # Enable/disable adding an X-Forwarded-Proto header | Default: enable
     mapped_port: int  # Mapped server service port | Default: 80 | Min: 1 | Max: 65535
-    ssl_cert: list[dict[str, Any]]  # List of certificate names to use for SSL connectio
+    ssl_cert: list[SslServerSslcertItem]  # List of certificate names to use for SSL connectio
     ssl_dh_bits: Literal["768", "1024", "1536", "2048"]  # Bit-size of Diffie-Hellman (DH) prime used in DHE- | Default: 2048
     ssl_algorithm: Literal["high", "medium", "low"]  # Relative strength of encryption algorithms accepte | Default: high
     ssl_client_renegotiation: Literal["allow", "deny", "secure"]  # Allow or block client renegotiation by server. | Default: allow
@@ -32,19 +54,9 @@ class SslServerPayload(TypedDict, total=False):
     ssl_send_empty_frags: Literal["enable", "disable"]  # Enable/disable sending empty fragments to avoid at | Default: enable
     url_rewrite: Literal["enable", "disable"]  # Enable/disable rewriting the URL. | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SslServerSslcertItem(TypedDict):
-    """Type hints for ssl-cert table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SslServerSslcertObject:
@@ -143,6 +155,9 @@ class SslServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -378,7 +393,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -399,7 +414,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -421,7 +436,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -441,7 +456,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -463,7 +478,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -484,7 +499,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -506,7 +521,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -526,7 +541,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -581,7 +596,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_cert: str | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,

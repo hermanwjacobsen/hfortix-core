@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GlobalInternetservicedownloadlistItem(TypedDict, total=False):
+    """Type hints for internet-service-download-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GlobalInternetservicedownloadlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -262,7 +284,7 @@ class GlobalPayload(TypedDict, total=False):
     forticonverter_integration: Literal["enable", "disable"]  # Enable/disable FortiConverter integration service. | Default: disable
     forticonverter_config_upload: Literal["once", "disable"]  # Enable/disable config upload to FortiConverter. | Default: disable
     internet_service_database: Literal["mini", "standard", "full", "on-demand"]  # Configure which Internet Service database size to | Default: full
-    internet_service_download_list: list[dict[str, Any]]  # Configure which on-demand Internet Service IDs are
+    internet_service_download_list: list[GlobalInternetservicedownloadlistItem]  # Configure which on-demand Internet Service IDs are
     geoip_full_db: Literal["enable", "disable"]  # When enabled, the full geographic database will be | Default: enable
     early_tcp_npu_session: Literal["enable", "disable"]  # Enable/disable early TCP NPU session. | Default: disable
     npu_neighbor_update: Literal["enable", "disable"]  # Enable/disable sending of ARP/ICMP6 probing packet | Default: disable
@@ -279,19 +301,9 @@ class GlobalPayload(TypedDict, total=False):
     application_bandwidth_tracking: Literal["disable", "enable"]  # Enable/disable application bandwidth tracking. | Default: disable
     tls_session_cache: Literal["enable", "disable"]  # Enable/disable TLS session cache. | Default: enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GlobalInternetservicedownloadlistItem(TypedDict):
-    """Type hints for internet-service-download-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GlobalInternetservicedownloadlistObject:
@@ -1104,6 +1116,9 @@ class GlobalObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -1568,7 +1583,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_download_list: str | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,
@@ -1827,7 +1842,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_download_list: str | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,
@@ -2087,7 +2102,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_download_list: str | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,
@@ -2345,7 +2360,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_download_list: str | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,
@@ -2609,7 +2624,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_download_list: str | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,

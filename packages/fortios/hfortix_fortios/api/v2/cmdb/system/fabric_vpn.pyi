@@ -2,7 +2,61 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FabricVpnOverlaysItem(TypedDict, total=False):
+    """Type hints for overlays table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FabricVpnOverlaysItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Overlay name. | MaxLen: 79
+    ipsec_network_id: int  # VPN gateway network ID. | Default: 0 | Min: 0 | Max: 255
+    overlay_tunnel_block: str  # IPv4 address and subnet mask for the overlay tunne | Default: 0.0.0.0 0.0.0.0
+    remote_gw: str  # IP address of the hub gateway (Set by hub). | Default: 0.0.0.0
+    interface: str  # Underlying interface name. | MaxLen: 15
+    bgp_neighbor: str  # Underlying BGP neighbor entry. | MaxLen: 45
+    overlay_policy: int  # The overlay policy to allow ADVPN thru traffic. | Default: 0 | Min: 0 | Max: 4294967295
+    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
+    route_policy: int  # Underlying router policy. | Default: 0 | Min: 0 | Max: 4294967295
+    bgp_neighbor_group: str  # Underlying BGP neighbor group entry. | MaxLen: 45
+    bgp_neighbor_range: int  # Underlying BGP neighbor range entry. | Default: 0 | Min: 0 | Max: 4294967295
+    ipsec_phase1: str  # IPsec interface. | MaxLen: 35
+    sdwan_member: int  # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class FabricVpnAdvertisedsubnetsItem(TypedDict, total=False):
+    """Type hints for advertised-subnets table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FabricVpnAdvertisedsubnetsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967294
+    prefix: str  # Network prefix. | Default: 0.0.0.0 0.0.0.0
+    access: Literal["inbound", "bidirectional"]  # Access policy direction. | Default: inbound
+    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
+    firewall_address: str  # Underlying firewall address. | MaxLen: 79
+    policies: int  # Underlying policies. | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -30,8 +84,8 @@ class FabricVpnPayload(TypedDict, total=False):
     branch_name: str  # Branch name. | MaxLen: 35
     policy_rule: Literal["health-check", "manual", "auto"]  # Policy creation rule. | Default: health-check
     vpn_role: Literal["hub", "spoke"]  # Fabric VPN role. | Default: hub
-    overlays: list[dict[str, Any]]  # Local overlay interfaces table.
-    advertised_subnets: list[dict[str, Any]]  # Local advertised subnets.
+    overlays: list[FabricVpnOverlaysItem]  # Local overlay interfaces table.
+    advertised_subnets: list[FabricVpnAdvertisedsubnetsItem]  # Local advertised subnets.
     loopback_address_block: str  # IPv4 address and subnet mask for hub's loopback ad | Default: 0.0.0.0 0.0.0.0
     loopback_interface: str  # Loopback interface. | MaxLen: 15
     loopback_advertised_subnet: int  # Loopback advertised subnet reference. | Default: 0 | Min: 0 | Max: 4294967295
@@ -40,46 +94,9 @@ class FabricVpnPayload(TypedDict, total=False):
     sdwan_zone: str  # Reference to created SD-WAN zone. | MaxLen: 35
     health_checks: list[dict[str, Any]]  # Underlying health checks. | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FabricVpnOverlaysItem(TypedDict):
-    """Type hints for overlays table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Overlay name. | MaxLen: 79
-    ipsec_network_id: int  # VPN gateway network ID. | Default: 0 | Min: 0 | Max: 255
-    overlay_tunnel_block: str  # IPv4 address and subnet mask for the overlay tunne | Default: 0.0.0.0 0.0.0.0
-    remote_gw: str  # IP address of the hub gateway (Set by hub). | Default: 0.0.0.0
-    interface: str  # Underlying interface name. | MaxLen: 15
-    bgp_neighbor: str  # Underlying BGP neighbor entry. | MaxLen: 45
-    overlay_policy: int  # The overlay policy to allow ADVPN thru traffic. | Default: 0 | Min: 0 | Max: 4294967295
-    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
-    route_policy: int  # Underlying router policy. | Default: 0 | Min: 0 | Max: 4294967295
-    bgp_neighbor_group: str  # Underlying BGP neighbor group entry. | MaxLen: 45
-    bgp_neighbor_range: int  # Underlying BGP neighbor range entry. | Default: 0 | Min: 0 | Max: 4294967295
-    ipsec_phase1: str  # IPsec interface. | MaxLen: 35
-    sdwan_member: int  # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class FabricVpnAdvertisedsubnetsItem(TypedDict):
-    """Type hints for advertised-subnets table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967294
-    prefix: str  # Network prefix. | Default: 0.0.0.0 0.0.0.0
-    access: Literal["inbound", "bidirectional"]  # Access policy direction. | Default: inbound
-    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
-    firewall_address: str  # Underlying firewall address. | MaxLen: 79
-    policies: int  # Underlying policies. | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FabricVpnOverlaysObject:
@@ -244,6 +261,9 @@ class FabricVpnObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -477,8 +497,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -498,8 +518,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -520,8 +540,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -540,8 +560,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -566,8 +586,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,

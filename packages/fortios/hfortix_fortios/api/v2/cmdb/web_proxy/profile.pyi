@@ -2,7 +2,37 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileHeadersItem(TypedDict, total=False):
+    """Type hints for headers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileHeadersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # HTTP forwarded header id. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # HTTP forwarded header name. | MaxLen: 79
+    dstaddr: str  # Destination address and address group names.
+    dstaddr6: str  # Destination address and address group names (IPv6)
+    action: Literal["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"]  # Configure adding, removing, or logging of the HTTP | Default: add-to-request
+    content: str  # HTTP header content (max length: 3999 characters). | MaxLen: 3999
+    base64_encoding: Literal["disable", "enable"]  # Enable/disable use of base64 encoding of HTTP cont | Default: disable
+    add_option: Literal["append", "new-on-not-found", "new", "replace", "replace-when-match"]  # Configure options to append content to existing HT | Default: new
+    protocol: Literal["https", "http"]  # Configure protocol(s) to take add-option action on | Default: https http
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,29 +59,11 @@ class ProfilePayload(TypedDict, total=False):
     header_x_authenticated_groups: Literal["pass", "add", "remove"]  # Action to take on the HTTP x-authenticated-groups | Default: pass
     strip_encoding: Literal["enable", "disable"]  # Enable/disable stripping unsupported encoding from | Default: disable
     log_header_change: Literal["enable", "disable"]  # Enable/disable logging HTTP header changes. | Default: disable
-    headers: list[dict[str, Any]]  # Configure HTTP forwarded requests headers.
+    headers: list[ProfileHeadersItem]  # Configure HTTP forwarded requests headers.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileHeadersItem(TypedDict):
-    """Type hints for headers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # HTTP forwarded header id. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # HTTP forwarded header name. | MaxLen: 79
-    dstaddr: str  # Destination address and address group names.
-    dstaddr6: str  # Destination address and address group names (IPv6)
-    action: Literal["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"]  # Configure adding, removing, or logging of the HTTP | Default: add-to-request
-    content: str  # HTTP header content (max length: 3999 characters). | MaxLen: 3999
-    base64_encoding: Literal["disable", "enable"]  # Enable/disable use of base64 encoding of HTTP cont | Default: disable
-    add_option: Literal["append", "new-on-not-found", "new", "replace", "replace-when-match"]  # Configure options to append content to existing HT | Default: new
-    protocol: Literal["https", "http"]  # Configure protocol(s) to take add-option action on | Default: https http
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileHeadersObject:
@@ -163,6 +175,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -404,7 +419,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -424,7 +439,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -445,7 +460,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -464,7 +479,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -485,7 +500,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -505,7 +520,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -526,7 +541,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -545,7 +560,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -599,7 +614,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        headers: str | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class CustomSwitchbindingItem(TypedDict, total=False):
+    """Type hints for switch-binding table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: CustomSwitchbindingItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    switch_id: str  # Switch name. | MaxLen: 35
+    policy: str  # Custom auto-config policy. | Default: default | MaxLen: 63
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,22 +41,11 @@ class CustomPayload(TypedDict, total=False):
         }
     """
     name: str  # Auto-Config FortiLink or ISL/ICL interface name. | MaxLen: 15
-    switch_binding: list[dict[str, Any]]  # Switch binding list.
+    switch_binding: list[CustomSwitchbindingItem]  # Switch binding list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class CustomSwitchbindingItem(TypedDict):
-    """Type hints for switch-binding table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    switch_id: str  # Switch name. | MaxLen: 35
-    policy: str  # Custom auto-config policy. | Default: default | MaxLen: 63
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class CustomSwitchbindingObject:
@@ -98,6 +110,9 @@ class CustomObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -328,7 +343,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
     
@@ -337,7 +352,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -347,7 +362,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -355,7 +370,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -365,7 +380,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
     
@@ -374,7 +389,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -384,7 +399,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +450,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

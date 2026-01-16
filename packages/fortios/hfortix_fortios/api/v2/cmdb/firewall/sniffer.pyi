@@ -2,7 +2,52 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SnifferIpthreatfeedItem(TypedDict, total=False):
+    """Type hints for ip-threatfeed table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SnifferIpthreatfeedItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Threat feed name. | MaxLen: 79
+
+
+class SnifferAnomalyItem(TypedDict, total=False):
+    """Type hints for anomaly table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SnifferAnomalyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Anomaly name. | MaxLen: 63
+    status: Literal["disable", "enable"]  # Enable/disable this anomaly. | Default: disable
+    log: Literal["enable", "disable"]  # Enable/disable anomaly logging. | Default: disable
+    action: Literal["pass", "block"]  # Action taken when the threshold is reached. | Default: pass
+    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
+    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
+    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
+    threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
+    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -54,43 +99,15 @@ class SnifferPayload(TypedDict, total=False):
     dlp_profile_status: Literal["enable", "disable"]  # Enable/disable DLP profile. | Default: disable
     dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
     ip_threatfeed_status: Literal["enable", "disable"]  # Enable/disable IP threat feed. | Default: disable
-    ip_threatfeed: list[dict[str, Any]]  # Name of an existing IP threat feed.
+    ip_threatfeed: list[SnifferIpthreatfeedItem]  # Name of an existing IP threat feed.
     file_filter_profile_status: Literal["enable", "disable"]  # Enable/disable file filter. | Default: disable
     file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
     ips_dos_status: Literal["enable", "disable"]  # Enable/disable IPS DoS anomaly detection. | Default: disable
-    anomaly: list[dict[str, Any]]  # Configuration method to edit Denial of Service
+    anomaly: list[SnifferAnomalyItem]  # Configuration method to edit Denial of Service
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SnifferIpthreatfeedItem(TypedDict):
-    """Type hints for ip-threatfeed table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Threat feed name. | MaxLen: 79
-
-
-class SnifferAnomalyItem(TypedDict):
-    """Type hints for anomaly table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Anomaly name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Enable/disable this anomaly. | Default: disable
-    log: Literal["enable", "disable"]  # Enable/disable anomaly logging. | Default: disable
-    action: Literal["pass", "block"]  # Action taken when the threshold is reached. | Default: pass
-    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
-    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
-    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
-    threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
-    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SnifferIpthreatfeedObject:
@@ -285,6 +302,9 @@ class SnifferObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -539,11 +559,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnifferObject: ...
     
@@ -576,11 +596,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -614,11 +634,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -650,11 +670,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -688,11 +708,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnifferObject: ...
     
@@ -725,11 +745,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -763,11 +783,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -799,11 +819,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -870,11 +890,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        anomaly: str | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

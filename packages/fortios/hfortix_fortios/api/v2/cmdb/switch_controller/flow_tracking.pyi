@@ -2,7 +2,48 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FlowTrackingCollectorsItem(TypedDict, total=False):
+    """Type hints for collectors table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FlowTrackingCollectorsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Collector name. | MaxLen: 63
+    ip: str  # Collector IP address. | Default: 0.0.0.0
+    port: int  # Collector port number | Default: 0 | Min: 0 | Max: 65535
+    transport: Literal["udp", "tcp", "sctp"]  # Collector L4 transport protocol for exporting pack | Default: udp
+
+
+class FlowTrackingAggregatesItem(TypedDict, total=False):
+    """Type hints for aggregates table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FlowTrackingAggregatesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Aggregate id. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # IP address to group all matching traffic sessions | Default: 0.0.0.0 0.0.0.0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,7 +61,7 @@ class FlowTrackingPayload(TypedDict, total=False):
     sample_mode: Literal["local", "perimeter", "device-ingress"]  # Configure sample mode for the flow tracking. | Default: perimeter
     sample_rate: int  # Configure sample rate for the perimeter and device | Default: 512 | Min: 0 | Max: 99999
     format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]  # Configure flow tracking protocol. | Default: netflow9
-    collectors: list[dict[str, Any]]  # Configure collectors for the flow.
+    collectors: list[FlowTrackingCollectorsItem]  # Configure collectors for the flow.
     level: Literal["vlan", "ip", "port", "proto", "mac"]  # Configure flow tracking level. | Default: ip
     max_export_pkt_size: int  # Configure flow max export packet size | Default: 512 | Min: 512 | Max: 9216
     template_export_period: int  # Configure template export period | Default: 5 | Min: 1 | Max: 60
@@ -31,35 +72,11 @@ class FlowTrackingPayload(TypedDict, total=False):
     timeout_tcp_fin: int  # Configure flow session TCP FIN timeout | Default: 300 | Min: 60 | Max: 604800
     timeout_tcp_rst: int  # Configure flow session TCP RST timeout | Default: 120 | Min: 60 | Max: 604800
     timeout_udp: int  # Configure flow session UDP timeout | Default: 300 | Min: 60 | Max: 604800
-    aggregates: list[dict[str, Any]]  # Configure aggregates in which all traffic sessions
+    aggregates: list[FlowTrackingAggregatesItem]  # Configure aggregates in which all traffic sessions
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FlowTrackingCollectorsItem(TypedDict):
-    """Type hints for collectors table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Collector name. | MaxLen: 63
-    ip: str  # Collector IP address. | Default: 0.0.0.0
-    port: int  # Collector port number | Default: 0 | Min: 0 | Max: 65535
-    transport: Literal["udp", "tcp", "sctp"]  # Collector L4 transport protocol for exporting pack | Default: udp
-
-
-class FlowTrackingAggregatesItem(TypedDict):
-    """Type hints for aggregates table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Aggregate id. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # IP address to group all matching traffic sessions | Default: 0.0.0.0 0.0.0.0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FlowTrackingCollectorsObject:
@@ -201,6 +218,9 @@ class FlowTrackingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -432,7 +452,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -443,7 +463,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FlowTrackingObject: ...
     
@@ -454,7 +474,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -465,7 +485,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -477,7 +497,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -488,7 +508,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -498,7 +518,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -509,7 +529,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -525,7 +545,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -536,7 +556,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

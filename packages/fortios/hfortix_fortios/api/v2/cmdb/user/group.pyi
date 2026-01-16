@@ -2,7 +2,70 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GroupMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Group member name. | MaxLen: 511
+
+
+class GroupMatchItem(TypedDict, total=False):
+    """Type hints for match table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupMatchItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    server_name: str  # Name of remote auth server. | MaxLen: 35
+    group_name: str  # Name of matching user or group on remote authentic | MaxLen: 511
+
+
+class GroupGuestItem(TypedDict, total=False):
+    """Type hints for guest table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupGuestItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Guest ID. | Default: 0 | Min: 0 | Max: 4294967295
+    user_id: str  # Guest ID. | MaxLen: 64
+    name: str  # Guest name. | MaxLen: 64
+    password: str  # Guest password. | MaxLen: 128
+    mobile_phone: str  # Mobile phone. | MaxLen: 35
+    sponsor: str  # Set the action for the sponsor guest user field. | MaxLen: 35
+    company: str  # Set the action for the company guest user field. | MaxLen: 35
+    email: str  # Email. | MaxLen: 64
+    expiration: str  # Expire time.
+    comment: str  # Comment. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -30,8 +93,8 @@ class GroupPayload(TypedDict, total=False):
     auth_concurrent_value: int  # Maximum number of concurrent authenticated connect | Default: 0 | Min: 0 | Max: 100
     http_digest_realm: str  # Realm attribute for MD5-digest authentication. | MaxLen: 35
     sso_attribute_value: str  # RADIUS attribute value. | MaxLen: 511
-    member: list[dict[str, Any]]  # Names of users, peers, LDAP severs, RADIUS servers
-    match: list[dict[str, Any]]  # Group matches.
+    member: list[GroupMemberItem]  # Names of users, peers, LDAP severs, RADIUS servers
+    match: list[GroupMatchItem]  # Group matches.
     user_id: Literal["email", "auto-generate", "specify"]  # Guest user ID type. | Default: email
     password: Literal["auto-generate", "specify", "disable"]  # Guest user password type. | Default: auto-generate
     user_name: Literal["disable", "enable"]  # Enable/disable the guest user name entry. | Default: disable
@@ -45,52 +108,11 @@ class GroupPayload(TypedDict, total=False):
     expire: int  # Time in seconds before guest user accounts expire | Default: 14400 | Min: 1 | Max: 31536000
     max_accounts: int  # Maximum number of guest accounts that can be creat | Default: 0 | Min: 0 | Max: 500
     multiple_guest_add: Literal["disable", "enable"]  # Enable/disable addition of multiple guests. | Default: disable
-    guest: list[dict[str, Any]]  # Guest User.
+    guest: list[GroupGuestItem]  # Guest User.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GroupMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Group member name. | MaxLen: 511
-
-
-class GroupMatchItem(TypedDict):
-    """Type hints for match table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    server_name: str  # Name of remote auth server. | MaxLen: 35
-    group_name: str  # Name of matching user or group on remote authentic | MaxLen: 511
-
-
-class GroupGuestItem(TypedDict):
-    """Type hints for guest table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Guest ID. | Default: 0 | Min: 0 | Max: 4294967295
-    user_id: str  # Guest ID. | MaxLen: 64
-    name: str  # Guest name. | MaxLen: 64
-    password: str  # Guest password. | MaxLen: 128
-    mobile_phone: str  # Mobile phone. | MaxLen: 35
-    sponsor: str  # Set the action for the sponsor guest user field. | MaxLen: 35
-    company: str  # Set the action for the company guest user field. | MaxLen: 35
-    email: str  # Email. | MaxLen: 64
-    expiration: str  # Expire time.
-    comment: str  # Comment. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GroupMemberObject:
@@ -305,6 +327,9 @@ class GroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -542,8 +567,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -557,7 +582,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -573,8 +598,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -588,7 +613,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -605,8 +630,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -620,7 +645,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -635,8 +660,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -650,7 +675,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -667,8 +692,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -682,7 +707,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -698,8 +723,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -713,7 +738,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -730,8 +755,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -745,7 +770,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -760,8 +785,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -775,7 +800,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -825,8 +850,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
+        match: str | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -840,7 +865,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest: str | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

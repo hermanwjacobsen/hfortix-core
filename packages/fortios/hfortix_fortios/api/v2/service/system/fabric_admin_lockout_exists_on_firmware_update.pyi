@@ -3,6 +3,58 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class FabricAdminLockoutExistsOnFirmwareUpdateResponse(TypedDict):
+    """
+    Type hints for system/fabric_admin_lockout_exists_on_firmware_update API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    exists: bool
+
+
+@final
+class FabricAdminLockoutExistsOnFirmwareUpdateObject:
+    """Typed FortiObject for system/fabric_admin_lockout_exists_on_firmware_update with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # exists
+    exists: bool
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FabricAdminLockoutExistsOnFirmwareUpdatePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class FabricAdminLockoutExistsOnFirmwareUpdate:
     """
     Check if there exists a FortiGate in the Fabric that has an administrative user that will get locked out if firmware is updated to a version that does not support safer passwords.

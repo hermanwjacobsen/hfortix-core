@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingSerialItem(TypedDict, total=False):
+    """Type hints for serial table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingSerialItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Serial Number. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,7 +48,7 @@ class SettingPayload(TypedDict, total=False):
     status: Literal["enable", "disable"]  # Enable/disable logging to FortiAnalyzer. | Default: disable
     ips_archive: Literal["enable", "disable"]  # Enable/disable IPS packet archive logging. | Default: disable
     certificate_verification: Literal["enable", "disable"]  # Enable/disable identity verification of FortiAnaly | Default: enable
-    serial: list[dict[str, Any]]  # Serial numbers of the FortiAnalyzer.
+    serial: list[SettingSerialItem]  # Serial numbers of the FortiAnalyzer.
     preshared_key: str  # Preshared-key used for auto-authorization on Forti | MaxLen: 63
     access_config: Literal["enable", "disable"]  # Enable/disable FortiAnalyzer access to configurati | Default: enable
     hmac_algorithm: Literal["sha256"]  # OFTP login hash algorithm. | Default: sha256
@@ -47,19 +69,9 @@ class SettingPayload(TypedDict, total=False):
     interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingSerialItem(TypedDict):
-    """Type hints for serial table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Serial Number. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingSerialObject:
@@ -185,6 +197,9 @@ class SettingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -416,7 +431,7 @@ class Setting:
         status: Literal["enable", "disable"] | None = ...,
         ips_archive: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        serial: str | list[SettingSerialItem] | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         hmac_algorithm: Literal["sha256"] | None = ...,
@@ -446,7 +461,7 @@ class Setting:
         status: Literal["enable", "disable"] | None = ...,
         ips_archive: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        serial: str | list[SettingSerialItem] | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         hmac_algorithm: Literal["sha256"] | None = ...,
@@ -477,7 +492,7 @@ class Setting:
         status: Literal["enable", "disable"] | None = ...,
         ips_archive: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        serial: str | list[SettingSerialItem] | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         hmac_algorithm: Literal["sha256"] | None = ...,
@@ -506,7 +521,7 @@ class Setting:
         status: Literal["enable", "disable"] | None = ...,
         ips_archive: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        serial: str | list[SettingSerialItem] | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         hmac_algorithm: Literal["sha256"] | None = ...,
@@ -541,7 +556,7 @@ class Setting:
         status: Literal["enable", "disable"] | None = ...,
         ips_archive: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        serial: str | list[SettingSerialItem] | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
         hmac_algorithm: Literal["sha256"] | None = ...,

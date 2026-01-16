@@ -2,38 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class DynamicPortPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/dynamic_port_policy payload fields.
-    
-    Configure Dynamic port policy to be applied on the managed FortiSwitch ports through DPP device.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: fortilink)
-
-    **Usage:**
-        payload: DynamicPortPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Dynamic port policy name. | MaxLen: 63
-    description: str  # Description for the Dynamic port policy. | MaxLen: 63
-    fortilink: str  # FortiLink interface for which this Dynamic port po | MaxLen: 15
-    policy: list[dict[str, Any]]  # Port policies with matching criteria and actions.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class DynamicPortPolicyPolicyItem(TypedDict):
+class DynamicPortPolicyPolicyItem(TypedDict, total=False):
     """Type hints for policy table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DynamicPortPolicyPolicyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Policy name. | MaxLen: 63
@@ -58,7 +41,36 @@ class DynamicPortPolicyPolicyItem(TypedDict):
     poe_reset: Literal["disable", "enable"]  # Enable/disable POE reset of a switch port where th | Default: disable
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class DynamicPortPolicyPayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/dynamic_port_policy payload fields.
+    
+    Configure Dynamic port policy to be applied on the managed FortiSwitch ports through DPP device.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.system.interface.InterfaceEndpoint` (via: fortilink)
+
+    **Usage:**
+        payload: DynamicPortPolicyPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Dynamic port policy name. | MaxLen: 63
+    description: str  # Description for the Dynamic port policy. | MaxLen: 63
+    fortilink: str  # FortiLink interface for which this Dynamic port po | MaxLen: 15
+    policy: list[DynamicPortPolicyPolicyItem]  # Port policies with matching criteria and actions.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DynamicPortPolicyPolicyObject:
@@ -165,6 +177,9 @@ class DynamicPortPolicyObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -397,7 +412,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DynamicPortPolicyObject: ...
     
@@ -408,7 +423,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -420,7 +435,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +445,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -442,7 +457,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DynamicPortPolicyObject: ...
     
@@ -453,7 +468,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -465,7 +480,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +490,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -520,7 +535,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

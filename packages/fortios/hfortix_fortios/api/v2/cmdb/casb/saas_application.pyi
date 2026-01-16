@@ -2,7 +2,67 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SaasApplicationDomainsItem(TypedDict, total=False):
+    """Type hints for domains table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SaasApplicationDomainsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    domain: str  # Domain list separated by space. | MaxLen: 127
+
+
+class SaasApplicationOutputattributesItem(TypedDict, total=False):
+    """Type hints for output-attributes table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SaasApplicationOutputattributesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # CASB attribute name. | MaxLen: 79
+    description: str  # CASB attribute description. | MaxLen: 63
+    type: Literal["string", "string-list", "integer", "integer-list", "boolean"]  # CASB attribute format type. | Default: string
+    optional: Literal["enable", "disable"]  # CASB output attribute optional. | Default: disable
+
+
+class SaasApplicationInputattributesItem(TypedDict, total=False):
+    """Type hints for input-attributes table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SaasApplicationInputattributesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # CASB attribute name. | MaxLen: 79
+    description: str  # CASB attribute description. | MaxLen: 63
+    type: Literal["string"]  # CASB attribute format type. | Default: string
+    required: Literal["enable", "disable"]  # CASB input attribute required. | Default: enable
+    default: Literal["string", "string-list"]  # CASB attribute default value. | Default: string
+    fallback_input: Literal["enable", "disable"]  # CASB attribute legacy input. | Default: disable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,51 +83,13 @@ class SaasApplicationPayload(TypedDict, total=False):
     type: Literal["built-in", "customized"]  # SaaS application type. | Default: customized
     casb_name: str  # SaaS application signature name. | MaxLen: 79
     description: str  # SaaS application description. | MaxLen: 63
-    domains: list[dict[str, Any]]  # SaaS application domain list.
-    output_attributes: list[dict[str, Any]]  # SaaS application output attributes.
-    input_attributes: list[dict[str, Any]]  # SaaS application input attributes.
+    domains: list[SaasApplicationDomainsItem]  # SaaS application domain list.
+    output_attributes: list[SaasApplicationOutputattributesItem]  # SaaS application output attributes.
+    input_attributes: list[SaasApplicationInputattributesItem]  # SaaS application input attributes.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SaasApplicationDomainsItem(TypedDict):
-    """Type hints for domains table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    domain: str  # Domain list separated by space. | MaxLen: 127
-
-
-class SaasApplicationOutputattributesItem(TypedDict):
-    """Type hints for output-attributes table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # CASB attribute name. | MaxLen: 79
-    description: str  # CASB attribute description. | MaxLen: 63
-    type: Literal["string", "string-list", "integer", "integer-list", "boolean"]  # CASB attribute format type. | Default: string
-    optional: Literal["enable", "disable"]  # CASB output attribute optional. | Default: disable
-
-
-class SaasApplicationInputattributesItem(TypedDict):
-    """Type hints for input-attributes table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # CASB attribute name. | MaxLen: 79
-    description: str  # CASB attribute description. | MaxLen: 63
-    type: Literal["string"]  # CASB attribute format type. | Default: string
-    required: Literal["enable", "disable"]  # CASB input attribute required. | Default: enable
-    default: Literal["string", "string-list"]  # CASB attribute default value. | Default: string
-    fallback_input: Literal["enable", "disable"]  # CASB attribute legacy input. | Default: disable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SaasApplicationDomainsObject:
@@ -231,6 +253,9 @@ class SaasApplicationObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -466,9 +491,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SaasApplicationObject: ...
     
@@ -482,9 +507,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -499,9 +524,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -514,9 +539,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -531,9 +556,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SaasApplicationObject: ...
     
@@ -547,9 +572,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -564,9 +589,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -579,9 +604,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -629,9 +654,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | None = ...,
+        domains: str | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

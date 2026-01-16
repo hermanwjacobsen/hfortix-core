@@ -2,7 +2,47 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class NameParametersItem(TypedDict, total=False):
+    """Type hints for parameters table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NameParametersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Parameter name. | MaxLen: 31
+    default value: str  # Parameter default value. | MaxLen: 199
+
+
+class NameMetadataItem(TypedDict, total=False):
+    """Type hints for metadata table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NameMetadataItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
+    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,36 +67,13 @@ class NamePayload(TypedDict, total=False):
     technology: str  # Application technology.
     behavior: str  # Application behavior.
     vendor: str  # Application vendor.
-    parameters: list[dict[str, Any]]  # Application parameters.
-    metadata: list[dict[str, Any]]  # Meta data.
+    parameters: list[NameParametersItem]  # Application parameters.
+    metadata: list[NameMetadataItem]  # Meta data.
     status: str  # print all application information
 
-# Nested TypedDicts for table field children (dict mode)
-
-class NameParametersItem(TypedDict):
-    """Type hints for parameters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Parameter name. | MaxLen: 31
-    default value: str  # Parameter default value. | MaxLen: 199
-
-
-class NameMetadataItem(TypedDict):
-    """Type hints for metadata table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
-    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class NameParametersObject:
@@ -190,6 +207,9 @@ class NameObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -429,8 +449,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> NameObject: ...
@@ -449,8 +469,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -470,8 +490,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -489,8 +509,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -510,8 +530,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> NameObject: ...
@@ -530,8 +550,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -551,8 +571,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -570,8 +590,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -624,8 +644,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameters: str | list[NameParametersItem] | None = ...,
+        metadata: str | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

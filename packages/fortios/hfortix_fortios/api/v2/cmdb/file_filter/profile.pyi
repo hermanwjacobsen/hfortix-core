@@ -2,7 +2,35 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileRulesItem(TypedDict, total=False):
+    """Type hints for rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileRulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # File-filter rule name. | MaxLen: 35
+    comment: str  # Comment. | MaxLen: 255
+    protocol: Literal["http", "ftp", "smtp", "imap", "pop3", "mapi", "cifs", "ssh"]  # Protocols to apply rule to. | Default: http ftp smtp imap pop3 mapi cifs ssh
+    action: Literal["log-only", "block"]  # Action taken for matched file. | Default: log-only
+    direction: Literal["incoming", "outgoing", "any"]  # Traffic direction | Default: any
+    password_protected: Literal["yes", "any"]  # Match password-protected files. | Default: any
+    file_type: str  # Select file type.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,27 +57,11 @@ class ProfilePayload(TypedDict, total=False):
     log: Literal["disable", "enable"]  # Enable/disable file-filter logging. | Default: enable
     extended_log: Literal["disable", "enable"]  # Enable/disable file-filter extended logging. | Default: disable
     scan_archive_contents: Literal["disable", "enable"]  # Enable/disable archive contents scan. | Default: enable
-    rules: list[dict[str, Any]]  # File filter rules.
+    rules: list[ProfileRulesItem]  # File filter rules.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileRulesItem(TypedDict):
-    """Type hints for rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # File-filter rule name. | MaxLen: 35
-    comment: str  # Comment. | MaxLen: 255
-    protocol: Literal["http", "ftp", "smtp", "imap", "pop3", "mapi", "cifs", "ssh"]  # Protocols to apply rule to. | Default: http ftp smtp imap pop3 mapi cifs ssh
-    action: Literal["log-only", "block"]  # Action taken for matched file. | Default: log-only
-    direction: Literal["incoming", "outgoing", "any"]  # Traffic direction | Default: any
-    password_protected: Literal["yes", "any"]  # Match password-protected files. | Default: any
-    file_type: str  # Select file type.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileRulesObject:
@@ -142,6 +154,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -378,7 +393,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -393,7 +408,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +424,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +438,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +454,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -454,7 +469,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -470,7 +485,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -484,7 +499,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -533,7 +548,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

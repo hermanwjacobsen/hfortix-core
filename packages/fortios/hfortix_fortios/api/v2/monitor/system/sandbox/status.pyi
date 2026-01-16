@@ -3,6 +3,76 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StatusResponse(TypedDict):
+    """
+    Type hints for system/sandbox/status API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    configured: bool
+    type: str
+    cloud_region: str
+    server: str
+    malware_package_version: str
+    signatures_loaded: bool
+    signatures_count: int
+
+
+@final
+class StatusObject:
+    """Typed FortiObject for system/sandbox/status with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # configured
+    configured: bool
+    # type
+    type: str
+    # cloud_region
+    cloud_region: str
+    # server
+    server: str
+    # malware_package_version
+    malware_package_version: str
+    # signatures_loaded
+    signatures_loaded: bool
+    # signatures_count
+    signatures_count: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StatusPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Status:
     """
     Retrieve sandbox status.

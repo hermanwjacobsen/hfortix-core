@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GlobalLearnclientipsrcaddrItem(TypedDict, total=False):
+    """Type hints for learn-client-ip-srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GlobalLearnclientipsrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class GlobalLearnclientipsrcaddr6Item(TypedDict, total=False):
+    """Type hints for learn-client-ip-srcaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GlobalLearnclientipsrcaddr6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -42,8 +79,8 @@ class GlobalPayload(TypedDict, total=False):
     learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
     always_learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
     learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]  # Learn client IP address from the specified headers
-    learn_client_ip_srcaddr: list[dict[str, Any]]  # Source address name
-    learn_client_ip_srcaddr6: list[dict[str, Any]]  # IPv6 Source address name
+    learn_client_ip_srcaddr: list[GlobalLearnclientipsrcaddrItem]  # Source address name
+    learn_client_ip_srcaddr6: list[GlobalLearnclientipsrcaddr6Item]  # IPv6 Source address name
     src_affinity_exempt_addr: list[dict[str, Any]]  # IPv4 source addresses to exempt proxy affinity.
     src_affinity_exempt_addr6: list[dict[str, Any]]  # IPv6 source addresses to exempt proxy affinity.
     policy_partial_match: Literal["enable", "disable"]  # Enable/disable policy partial matching. | Default: enable
@@ -53,29 +90,9 @@ class GlobalPayload(TypedDict, total=False):
     proxy_transparent_cert_inspection: Literal["enable", "disable"]  # Enable/disable transparent proxy certificate inspe | Default: disable
     request_obs_fold: Literal["replace-with-sp", "block", "keep"]  # Action when HTTP/1.x request header contains obs-f | Default: keep
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GlobalLearnclientipsrcaddrItem(TypedDict):
-    """Type hints for learn-client-ip-srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class GlobalLearnclientipsrcaddr6Item(TypedDict):
-    """Type hints for learn-client-ip-srcaddr6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GlobalLearnclientipsrcaddrObject:
@@ -248,6 +265,9 @@ class GlobalObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -494,8 +514,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr: str | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,
@@ -529,8 +549,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr: str | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,
@@ -565,8 +585,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr: str | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,
@@ -599,8 +619,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr: str | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,
@@ -639,8 +659,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr: str | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,

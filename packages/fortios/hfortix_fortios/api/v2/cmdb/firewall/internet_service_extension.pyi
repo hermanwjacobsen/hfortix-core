@@ -2,7 +2,54 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InternetServiceExtensionEntryItem(TypedDict, total=False):
+    """Type hints for entry table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceExtensionEntryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID(1-255). | Default: 0 | Min: 0 | Max: 255
+    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    port_range: str  # Port ranges in the custom entry.
+    dst: str  # Destination address or address group name.
+    dst6: str  # Destination address6 or address6 group name.
+
+
+class InternetServiceExtensionDisableentryItem(TypedDict, total=False):
+    """Type hints for disable-entry table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceExtensionDisableentryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Disable entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    port_range: str  # Port ranges in the disable entry.
+    ip_range: str  # IPv4 ranges in the disable entry.
+    ip6_range: str  # IPv6 ranges in the disable entry.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,42 +71,12 @@ class InternetServiceExtensionPayload(TypedDict, total=False):
     """
     id: int  # Internet Service ID in the Internet Service databa | Default: 0 | Min: 0 | Max: 4294967295
     comment: str  # Comment. | MaxLen: 255
-    entry: list[dict[str, Any]]  # Entries added to the Internet Service extension da
-    disable_entry: list[dict[str, Any]]  # Disable entries in the Internet Service database.
+    entry: list[InternetServiceExtensionEntryItem]  # Entries added to the Internet Service extension da
+    disable_entry: list[InternetServiceExtensionDisableentryItem]  # Disable entries in the Internet Service database.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InternetServiceExtensionEntryItem(TypedDict):
-    """Type hints for entry table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID(1-255). | Default: 0 | Min: 0 | Max: 255
-    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    port_range: str  # Port ranges in the custom entry.
-    dst: str  # Destination address or address group name.
-    dst6: str  # Destination address6 or address6 group name.
-
-
-class InternetServiceExtensionDisableentryItem(TypedDict):
-    """Type hints for disable-entry table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Disable entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    port_range: str  # Port ranges in the disable entry.
-    ip_range: str  # IPv4 ranges in the disable entry.
-    ip6_range: str  # IPv6 ranges in the disable entry.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InternetServiceExtensionEntryObject:
@@ -180,6 +197,9 @@ class InternetServiceExtensionObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -411,8 +431,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceExtensionObject: ...
     
@@ -422,8 +442,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,8 +454,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,8 +464,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -456,8 +476,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceExtensionObject: ...
     
@@ -467,8 +487,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -479,8 +499,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -489,8 +509,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -534,8 +554,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,78 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Address6MacaddrItem(TypedDict, total=False):
+    """Type hints for macaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Address6MacaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    macaddr: str  # MAC address ranges <start>[-<end>] separated by sp | MaxLen: 127
+
+
+class Address6TaggingItem(TypedDict, total=False):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Address6TaggingItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+class Address6SubnetsegmentItem(TypedDict, total=False):
+    """Type hints for subnet-segment table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Address6SubnetsegmentItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name. | MaxLen: 63
+    type: Literal["any", "specific"]  # Subnet segment type. | Default: any
+    value: str  # Subnet segment value. | MaxLen: 35
+
+
+class Address6ListItem(TypedDict, total=False):
+    """Type hints for list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Address6ListItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    ip: str  # IP. | MaxLen: 89
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,7 +98,7 @@ class Address6Payload(TypedDict, total=False):
     uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
     route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
-    macaddr: list[dict[str, Any]]  # Multiple MAC address ranges.
+    macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
     sdn: str  # SDN. | MaxLen: 35
     ip6: str  # IPv6 address prefix | Default: ::/0
     wildcard: str  # IPv6 address and wildcard netmask. | Default: :: ::
@@ -38,68 +109,24 @@ class Address6Payload(TypedDict, total=False):
     cache_ttl: int  # Minimal TTL of individual IPv6 addresses in FQDN c | Default: 0 | Min: 0 | Max: 86400
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
     obj_id: str  # Object ID for NSX. | MaxLen: 255
-    tagging: list[dict[str, Any]]  # Config object tagging.
+    tagging: list[Address6TaggingItem]  # Config object tagging.
     comment: str  # Comment. | MaxLen: 255
     template: str  # IPv6 address template. | MaxLen: 63
-    subnet_segment: list[dict[str, Any]]  # IPv6 subnet segments.
+    subnet_segment: list[Address6SubnetsegmentItem]  # IPv6 subnet segments.
     host_type: Literal["any", "specific"]  # Host type. | Default: any
     host: str  # Host Address. | Default: ::
     tenant: str  # Tenant. | MaxLen: 35
     epg_name: str  # Endpoint group name. | MaxLen: 255
     sdn_tag: str  # SDN Tag. | MaxLen: 15
     filter: str  # Match criteria filter. | MaxLen: 2047
-    list: list[dict[str, Any]]  # IP address list.
+    list: list[Address6ListItem]  # IP address list.
     sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
     passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Address6MacaddrItem(TypedDict):
-    """Type hints for macaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    macaddr: str  # MAC address ranges <start>[-<end>] separated by sp | MaxLen: 127
-
-
-class Address6TaggingItem(TypedDict):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
-
-
-class Address6SubnetsegmentItem(TypedDict):
-    """Type hints for subnet-segment table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name. | MaxLen: 63
-    type: Literal["any", "specific"]  # Subnet segment type. | Default: any
-    value: str  # Subnet segment value. | MaxLen: 35
-
-
-class Address6ListItem(TypedDict):
-    """Type hints for list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    ip: str  # IP. | MaxLen: 89
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Address6MacaddrObject:
@@ -347,6 +374,9 @@ class Address6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -580,7 +610,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -591,17 +621,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -616,7 +646,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -627,17 +657,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -653,7 +683,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -664,17 +694,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -688,7 +718,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -699,17 +729,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -725,7 +755,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -736,17 +766,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -761,7 +791,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -772,17 +802,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -798,7 +828,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -809,17 +839,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -833,7 +863,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -844,17 +874,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -903,7 +933,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -914,17 +944,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | None = ...,
+        list: str | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,

@@ -2,7 +2,98 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AccessProxy6ApigatewayItem(TypedDict, total=False):
+    """Type hints for api-gateway table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessProxy6ApigatewayItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
+    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
+    service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]  # Service. | Default: https
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
+    virtual_host: str  # Virtual host. | MaxLen: 79
+    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
+    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
+    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
+    quic: str  # QUIC setting.
+    realservers: str  # Select the real servers that this Access Proxy wil
+    application: str  # SaaS application controlled by this Access Proxy.
+    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
+    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
+    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
+    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
+    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
+    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
+    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
+    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
+    saml_server: str  # SAML service provider configuration for VIP authen | MaxLen: 35
+    saml_redirect: Literal["disable", "enable"]  # Enable/disable SAML redirection after successful a | Default: enable
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
+    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
+    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
+    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+    ssl_vpn_web_portal: str  # Agentless VPN web portal. | MaxLen: 35
+
+
+class AccessProxy6Apigateway6Item(TypedDict, total=False):
+    """Type hints for api-gateway6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessProxy6Apigateway6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
+    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
+    service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]  # Service. | Default: https
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
+    virtual_host: str  # Virtual host. | MaxLen: 79
+    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
+    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
+    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
+    quic: str  # QUIC setting.
+    realservers: str  # Select the real servers that this Access Proxy wil
+    application: str  # SaaS application controlled by this Access Proxy.
+    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
+    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
+    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
+    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
+    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
+    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
+    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
+    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
+    saml_server: str  # SAML service provider configuration for VIP authen | MaxLen: 35
+    saml_redirect: Literal["disable", "enable"]  # Enable/disable SAML redirection after successful a | Default: enable
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
+    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
+    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
+    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+    ssl_vpn_web_portal: str  # Agentless VPN web portal. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -35,86 +126,12 @@ class AccessProxy6Payload(TypedDict, total=False):
     svr_pool_server_max_request: int  # Maximum number of requests that servers in server | Default: 0 | Min: 0 | Max: 2147483647
     svr_pool_server_max_concurrent_request: int  # Maximum number of concurrent requests that servers | Default: 0 | Min: 0 | Max: 2147483647
     decrypted_traffic_mirror: str  # Decrypted traffic mirror. | MaxLen: 35
-    api_gateway: list[dict[str, Any]]  # Set IPv4 API Gateway.
-    api_gateway6: list[dict[str, Any]]  # Set IPv6 API Gateway.
+    api_gateway: list[AccessProxy6ApigatewayItem]  # Set IPv4 API Gateway.
+    api_gateway6: list[AccessProxy6Apigateway6Item]  # Set IPv6 API Gateway.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AccessProxy6ApigatewayItem(TypedDict):
-    """Type hints for api-gateway table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
-    service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]  # Service. | Default: https
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
-    virtual_host: str  # Virtual host. | MaxLen: 79
-    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
-    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
-    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
-    quic: str  # QUIC setting.
-    realservers: str  # Select the real servers that this Access Proxy wil
-    application: str  # SaaS application controlled by this Access Proxy.
-    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
-    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
-    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
-    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
-    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
-    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
-    saml_server: str  # SAML service provider configuration for VIP authen | MaxLen: 35
-    saml_redirect: Literal["disable", "enable"]  # Enable/disable SAML redirection after successful a | Default: enable
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
-    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
-    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
-    ssl_vpn_web_portal: str  # Agentless VPN web portal. | MaxLen: 35
-
-
-class AccessProxy6Apigateway6Item(TypedDict):
-    """Type hints for api-gateway6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
-    service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]  # Service. | Default: https
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
-    virtual_host: str  # Virtual host. | MaxLen: 79
-    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
-    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
-    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
-    quic: str  # QUIC setting.
-    realservers: str  # Select the real servers that this Access Proxy wil
-    application: str  # SaaS application controlled by this Access Proxy.
-    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
-    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
-    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
-    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
-    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
-    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
-    saml_server: str  # SAML service provider configuration for VIP authen | MaxLen: 35
-    saml_redirect: Literal["disable", "enable"]  # Enable/disable SAML redirection after successful a | Default: enable
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
-    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
-    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
-    ssl_vpn_web_portal: str  # Agentless VPN web portal. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AccessProxy6ApigatewayObject:
@@ -350,6 +367,9 @@ class AccessProxy6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -590,8 +610,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxy6Object: ...
     
@@ -610,8 +630,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -631,8 +651,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -650,8 +670,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -671,8 +691,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxy6Object: ...
     
@@ -691,8 +711,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -712,8 +732,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -731,8 +751,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -785,8 +805,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | None = ...,
+        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

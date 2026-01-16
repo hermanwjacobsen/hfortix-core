@@ -2,7 +2,162 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InterfaceClientoptionsItem(TypedDict, total=False):
+    """Type hints for client-options table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceClientoptionsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    code: int  # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
+    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP client option type. | Default: hex
+    value: str  # DHCP client option value. | MaxLen: 312
+    ip: str  # DHCP option IPs.
+
+
+class InterfaceFailalertinterfacesItem(TypedDict, total=False):
+    """Type hints for fail-alert-interfaces table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceFailalertinterfacesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Names of the non-virtual interface. | MaxLen: 15
+
+
+class InterfaceMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Physical interface name. | MaxLen: 79
+
+
+class InterfaceSecuritygroupsItem(TypedDict, total=False):
+    """Type hints for security-groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceSecuritygroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Names of user groups that can authenticate with th | MaxLen: 79
+
+
+class InterfaceVrrpItem(TypedDict, total=False):
+    """Type hints for vrrp table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceVrrpItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    vrid: int  # Virtual router identifier (1 - 255). | Default: 0 | Min: 1 | Max: 255
+    version: Literal["2", "3"]  # VRRP version. | Default: 2
+    vrgrp: int  # VRRP group ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
+    vrip: str  # IP address of the virtual router. | Default: 0.0.0.0
+    priority: int  # Priority of the virtual router (1 - 255). | Default: 100 | Min: 1 | Max: 255
+    adv_interval: int  # Advertisement interval (250 - 255000 milliseconds) | Default: 1000 | Min: 250 | Max: 255000
+    start_time: int  # Startup time (1 - 255 seconds). | Default: 3 | Min: 1 | Max: 255
+    preempt: Literal["enable", "disable"]  # Enable/disable preempt mode. | Default: enable
+    accept_mode: Literal["enable", "disable"]  # Enable/disable accept mode. | Default: enable
+    vrdst: str  # Monitor the route to this destination.
+    vrdst_priority: int  # Priority of the virtual router when the virtual ro | Default: 0 | Min: 0 | Max: 254
+    ignore_default_route: Literal["enable", "disable"]  # Enable/disable ignoring of default route when chec | Default: disable
+    status: Literal["enable", "disable"]  # Enable/disable this VRRP configuration. | Default: enable
+    proxy_arp: str  # VRRP Proxy ARP configuration.
+
+
+class InterfaceSecondaryipItem(TypedDict, total=False):
+    """Type hints for secondaryip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceSecondaryipItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # Secondary IP address of the interface. | Default: 0.0.0.0 0.0.0.0
+    secip_relay_ip: str  # DHCP relay IP address.
+    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]  # Management access settings for the secondary IP ad
+    gwdetect: Literal["enable", "disable"]  # Enable/disable detect gateway alive for first. | Default: disable
+    ping_serv_status: int  # PING server status. | Default: 0 | Min: 0 | Max: 255
+    detectserver: str  # Gateway's ping server for this IP.
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]  # Protocols used to detect the server. | Default: ping
+    ha_priority: int  # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
+
+
+class InterfaceDhcpsnoopingserverlistItem(TypedDict, total=False):
+    """Type hints for dhcp-snooping-server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceDhcpsnoopingserverlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # DHCP server name. | Default: default | MaxLen: 35
+    server_ip: str  # IP address for DHCP server. | Default: 0.0.0.0
+
+
+class InterfaceTaggingItem(TypedDict, total=False):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterfaceTaggingItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -38,7 +193,7 @@ class InterfacePayload(TypedDict, total=False):
     fortilink: Literal["enable", "disable"]  # Enable FortiLink to dedicate this interface to man | Default: disable
     switch_controller_source_ip: Literal["outbound", "fixed"]  # Source IP address used in FortiLink over L3 connec | Default: outbound
     mode: Literal["static", "dhcp", "pppoe"]  # Addressing mode (static, DHCP, PPPoE). | Default: static
-    client_options: list[dict[str, Any]]  # DHCP client options.
+    client_options: list[InterfaceClientoptionsItem]  # DHCP client options.
     distance: int  # Distance for routes learned through PPPoE or DHCP, | Default: 5 | Min: 1 | Max: 255
     priority: int  # Priority of learned routes. | Default: 1 | Min: 1 | Max: 65535
     dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
@@ -68,7 +223,7 @@ class InterfacePayload(TypedDict, total=False):
     fail_detect_option: Literal["detectserver", "link-down"]  # Options for detecting that this interface has fail | Default: link-down
     fail_alert_method: Literal["link-failed-signal", "link-down"]  # Select link-failed-signal or link-down method to a | Default: link-down
     fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]  # Action on FortiExtender when interface fail. | Default: soft-restart
-    fail_alert_interfaces: list[dict[str, Any]]  # Names of the FortiGate interfaces to which the lin
+    fail_alert_interfaces: list[InterfaceFailalertinterfacesItem]  # Names of the FortiGate interfaces to which the lin
     dhcp_client_identifier: str  # DHCP client identifier. | MaxLen: 48
     dhcp_renew_time: int  # DHCP renew time in seconds (300-604800), 0 means u | Default: 0 | Min: 300 | Max: 604800
     ipunnumbered: str  # Unnumbered IP used for PPPoE interfaces for which | Default: 0.0.0.0
@@ -160,7 +315,7 @@ class InterfacePayload(TypedDict, total=False):
     vlanid: int  # VLAN ID (1 - 4094). | Default: 0 | Min: 1 | Max: 4094
     forward_domain: int  # Transparent mode forward domain. | Default: 0 | Min: 0 | Max: 2147483647
     remote_ip: str  # Remote IP address of tunnel. | Default: 0.0.0.0 0.0.0.0
-    member: list[dict[str, Any]]  # Physical interfaces that belong to the aggregate o
+    member: list[InterfaceMemberItem]  # Physical interfaces that belong to the aggregate o
     lacp_mode: Literal["static", "passive", "active"]  # LACP mode. | Default: active
     lacp_ha_secondary: Literal["enable", "disable"]  # LACP HA secondary member. | Default: enable
     system_id_type: Literal["auto", "user"]  # Method in which system ID is generated. | Default: auto
@@ -189,7 +344,7 @@ class InterfacePayload(TypedDict, total=False):
     auth_cert: str  # HTTPS server certificate. | MaxLen: 35
     auth_portal_addr: str  # Address of captive portal. | MaxLen: 63
     security_exempt_list: str  # Name of security-exempt-list. | MaxLen: 35
-    security_groups: list[dict[str, Any]]  # User groups that can authenticate with the captive
+    security_groups: list[InterfaceSecuritygroupsItem]  # User groups that can authenticate with the captive
     ike_saml_server: str  # Configure IKE authentication SAML server. | MaxLen: 35
     device_identification: Literal["enable", "disable"]  # Enable/disable passively gathering of device ident | Default: disable
     exclude_signatures: Literal["iot", "ot"]  # Exclude IOT or OT application signatures.
@@ -204,12 +359,12 @@ class InterfacePayload(TypedDict, total=False):
     bandwidth_measure_time: int  # Bandwidth measure time. | Default: 0 | Min: 0 | Max: 4294967295
     monitor_bandwidth: Literal["enable", "disable"]  # Enable monitoring bandwidth on this interface. | Default: disable
     vrrp_virtual_mac: Literal["enable", "disable"]  # Enable/disable use of virtual MAC for VRRP. | Default: disable
-    vrrp: list[dict[str, Any]]  # VRRP configuration.
+    vrrp: list[InterfaceVrrpItem]  # VRRP configuration.
     phy_setting: str  # PHY settings
     role: Literal["lan", "wan", "dmz", "undefined"]  # Interface role. | Default: undefined
     snmp_index: int  # Permanent SNMP Index of the interface. | Default: 0 | Min: 0 | Max: 2147483647
     secondary_IP: Literal["enable", "disable"]  # Enable/disable adding a secondary IP to this inter | Default: disable
-    secondaryip: list[dict[str, Any]]  # Second IP address of interface.
+    secondaryip: list[InterfaceSecondaryipItem]  # Second IP address of interface.
     preserve_session_route: Literal["enable", "disable"]  # Enable/disable preservation of session route when | Default: disable
     auto_auth_extension_device: Literal["enable", "disable"]  # Enable/disable automatic authorization of dedicate | Default: disable
     ap_discover: Literal["enable", "disable"]  # Enable/disable automatic registration of unknown F | Default: enable
@@ -230,7 +385,7 @@ class InterfacePayload(TypedDict, total=False):
     switch_controller_dhcp_snooping: Literal["enable", "disable"]  # Switch controller DHCP snooping. | Default: disable
     switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]  # Switch controller DHCP snooping verify MAC. | Default: disable
     switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]  # Switch controller DHCP snooping option82. | Default: disable
-    dhcp_snooping_server_list: list[dict[str, Any]]  # Configure DHCP server access list.
+    dhcp_snooping_server_list: list[InterfaceDhcpsnoopingserverlistItem]  # Configure DHCP server access list.
     switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]  # Enable/disable/Monitor FortiSwitch ARP inspection. | Default: disable
     switch_controller_learning_limit: int  # Limit the number of dynamic MAC addresses on this | Default: 0 | Min: 0 | Max: 128
     switch_controller_nac: str  # Integrated FortiLink settings for managed FortiSwi | MaxLen: 35
@@ -243,7 +398,7 @@ class InterfacePayload(TypedDict, total=False):
     swc_vlan: int  # Creation status for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
     swc_first_create: int  # Initial create for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
-    tagging: list[dict[str, Any]]  # Config object tagging.
+    tagging: list[InterfaceTaggingItem]  # Config object tagging.
     eap_supplicant: Literal["enable", "disable"]  # Enable/disable EAP-Supplicant. | Default: disable
     eap_method: Literal["tls", "peap"]  # EAP method.
     eap_identity: str  # EAP identity. | MaxLen: 35
@@ -254,117 +409,9 @@ class InterfacePayload(TypedDict, total=False):
     ipv6: str  # IPv6 of interface.
     physical: str  # Print physical interface information.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InterfaceClientoptionsItem(TypedDict):
-    """Type hints for client-options table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    code: int  # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
-    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP client option type. | Default: hex
-    value: str  # DHCP client option value. | MaxLen: 312
-    ip: str  # DHCP option IPs.
-
-
-class InterfaceFailalertinterfacesItem(TypedDict):
-    """Type hints for fail-alert-interfaces table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Names of the non-virtual interface. | MaxLen: 15
-
-
-class InterfaceMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Physical interface name. | MaxLen: 79
-
-
-class InterfaceSecuritygroupsItem(TypedDict):
-    """Type hints for security-groups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Names of user groups that can authenticate with th | MaxLen: 79
-
-
-class InterfaceVrrpItem(TypedDict):
-    """Type hints for vrrp table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    vrid: int  # Virtual router identifier (1 - 255). | Default: 0 | Min: 1 | Max: 255
-    version: Literal["2", "3"]  # VRRP version. | Default: 2
-    vrgrp: int  # VRRP group ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
-    vrip: str  # IP address of the virtual router. | Default: 0.0.0.0
-    priority: int  # Priority of the virtual router (1 - 255). | Default: 100 | Min: 1 | Max: 255
-    adv_interval: int  # Advertisement interval (250 - 255000 milliseconds) | Default: 1000 | Min: 250 | Max: 255000
-    start_time: int  # Startup time (1 - 255 seconds). | Default: 3 | Min: 1 | Max: 255
-    preempt: Literal["enable", "disable"]  # Enable/disable preempt mode. | Default: enable
-    accept_mode: Literal["enable", "disable"]  # Enable/disable accept mode. | Default: enable
-    vrdst: str  # Monitor the route to this destination.
-    vrdst_priority: int  # Priority of the virtual router when the virtual ro | Default: 0 | Min: 0 | Max: 254
-    ignore_default_route: Literal["enable", "disable"]  # Enable/disable ignoring of default route when chec | Default: disable
-    status: Literal["enable", "disable"]  # Enable/disable this VRRP configuration. | Default: enable
-    proxy_arp: str  # VRRP Proxy ARP configuration.
-
-
-class InterfaceSecondaryipItem(TypedDict):
-    """Type hints for secondaryip table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # Secondary IP address of the interface. | Default: 0.0.0.0 0.0.0.0
-    secip_relay_ip: str  # DHCP relay IP address.
-    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]  # Management access settings for the secondary IP ad
-    gwdetect: Literal["enable", "disable"]  # Enable/disable detect gateway alive for first. | Default: disable
-    ping_serv_status: int  # PING server status. | Default: 0 | Min: 0 | Max: 255
-    detectserver: str  # Gateway's ping server for this IP.
-    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]  # Protocols used to detect the server. | Default: ping
-    ha_priority: int  # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
-
-
-class InterfaceDhcpsnoopingserverlistItem(TypedDict):
-    """Type hints for dhcp-snooping-server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # DHCP server name. | Default: default | MaxLen: 35
-    server_ip: str  # IP address for DHCP server. | Default: 0.0.0.0
-
-
-class InterfaceTaggingItem(TypedDict):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InterfaceClientoptionsObject:
@@ -1367,6 +1414,9 @@ class InterfaceObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -1602,7 +1652,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -1632,7 +1682,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -1724,7 +1774,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -1753,7 +1803,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -1768,12 +1818,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -1794,7 +1844,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -1807,7 +1857,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -1830,7 +1880,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -1860,7 +1910,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -1952,7 +2002,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -1981,7 +2031,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -1996,12 +2046,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -2022,7 +2072,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -2035,7 +2085,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -2059,7 +2109,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -2089,7 +2139,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -2181,7 +2231,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -2210,7 +2260,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -2225,12 +2275,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -2251,7 +2301,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -2264,7 +2314,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -2286,7 +2336,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -2316,7 +2366,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -2408,7 +2458,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -2437,7 +2487,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -2452,12 +2502,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -2478,7 +2528,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -2491,7 +2541,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -2515,7 +2565,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -2545,7 +2595,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -2637,7 +2687,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -2666,7 +2716,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -2681,12 +2731,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -2707,7 +2757,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -2720,7 +2770,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -2743,7 +2793,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -2773,7 +2823,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -2865,7 +2915,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -2894,7 +2944,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -2909,12 +2959,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -2935,7 +2985,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -2948,7 +2998,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -2972,7 +3022,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -3002,7 +3052,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -3094,7 +3144,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -3123,7 +3173,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -3138,12 +3188,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -3164,7 +3214,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -3177,7 +3227,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -3199,7 +3249,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -3229,7 +3279,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -3321,7 +3371,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -3350,7 +3400,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -3365,12 +3415,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -3391,7 +3441,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -3404,7 +3454,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,
@@ -3461,7 +3511,7 @@ class Interface:
         fortilink: Literal["enable", "disable"] | None = ...,
         switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
         mode: Literal["static", "dhcp", "pppoe"] | None = ...,
-        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        client_options: str | list[InterfaceClientoptionsItem] | None = ...,
         distance: int | None = ...,
         priority: int | None = ...,
         dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
@@ -3491,7 +3541,7 @@ class Interface:
         fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
         fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
         fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[InterfaceFailalertinterfacesItem] | None = ...,
         dhcp_client_identifier: str | None = ...,
         dhcp_renew_time: int | None = ...,
         ipunnumbered: str | None = ...,
@@ -3583,7 +3633,7 @@ class Interface:
         vlanid: int | None = ...,
         forward_domain: int | None = ...,
         remote_ip: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InterfaceMemberItem] | None = ...,
         lacp_mode: Literal["static", "passive", "active"] | None = ...,
         lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
         system_id_type: Literal["auto", "user"] | None = ...,
@@ -3612,7 +3662,7 @@ class Interface:
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         security_exempt_list: str | None = ...,
-        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        security_groups: str | list[InterfaceSecuritygroupsItem] | None = ...,
         ike_saml_server: str | None = ...,
         device_identification: Literal["enable", "disable"] | None = ...,
         exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
@@ -3627,12 +3677,12 @@ class Interface:
         bandwidth_measure_time: int | None = ...,
         monitor_bandwidth: Literal["enable", "disable"] | None = ...,
         vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
-        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        vrrp: str | list[InterfaceVrrpItem] | None = ...,
         phy_setting: str | None = ...,
         role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
         snmp_index: int | None = ...,
         secondary_IP: Literal["enable", "disable"] | None = ...,
-        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        secondaryip: str | list[InterfaceSecondaryipItem] | None = ...,
         preserve_session_route: Literal["enable", "disable"] | None = ...,
         auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
         ap_discover: Literal["enable", "disable"] | None = ...,
@@ -3653,7 +3703,7 @@ class Interface:
         switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
         switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
-        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_snooping_server_list: str | list[InterfaceDhcpsnoopingserverlistItem] | None = ...,
         switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
         switch_controller_learning_limit: int | None = ...,
         switch_controller_nac: str | None = ...,
@@ -3666,7 +3716,7 @@ class Interface:
         swc_vlan: int | None = ...,
         swc_first_create: int | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[InterfaceTaggingItem] | None = ...,
         eap_supplicant: Literal["enable", "disable"] | None = ...,
         eap_method: Literal["tls", "peap"] | None = ...,
         eap_identity: str | None = ...,

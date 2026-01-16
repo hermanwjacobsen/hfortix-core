@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class IpDscpMapMapItem(TypedDict, total=False):
+    """Type hints for map table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IpDscpMapMapItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Dscp mapping entry name. | MaxLen: 63
+    cos_queue: int  # COS queue number. | Default: 0 | Min: 0 | Max: 7
+    diffserv: Literal["CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "EF", "CS6", "CS7"]  # Differentiated service.
+    ip_precedence: Literal["network-control", "internetwork-control", "critic-ecp", "flashoverride", "flash", "immediate", "priority", "routine"]  # IP Precedence.
+    value: str  # Raw values of DSCP (0 - 63).
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,25 +45,11 @@ class IpDscpMapPayload(TypedDict, total=False):
     """
     name: str  # Dscp map name. | MaxLen: 63
     description: str  # Description of the ip-dscp map name. | MaxLen: 63
-    map: list[dict[str, Any]]  # Maps between IP-DSCP value to COS queue.
+    map: list[IpDscpMapMapItem]  # Maps between IP-DSCP value to COS queue.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class IpDscpMapMapItem(TypedDict):
-    """Type hints for map table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Dscp mapping entry name. | MaxLen: 63
-    cos_queue: int  # COS queue number. | Default: 0 | Min: 0 | Max: 7
-    diffserv: Literal["CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "EF", "CS6", "CS7"]  # Differentiated service.
-    ip_precedence: Literal["network-control", "internetwork-control", "critic-ecp", "flashoverride", "flash", "immediate", "priority", "routine"]  # IP Precedence.
-    value: str  # Raw values of DSCP (0 - 63).
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class IpDscpMapMapObject:
@@ -111,6 +123,9 @@ class IpDscpMapObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -342,7 +357,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpDscpMapObject: ...
     
@@ -352,7 +367,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -372,7 +387,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpDscpMapObject: ...
     
@@ -393,7 +408,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,7 +472,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | None = ...,
+        map: str | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

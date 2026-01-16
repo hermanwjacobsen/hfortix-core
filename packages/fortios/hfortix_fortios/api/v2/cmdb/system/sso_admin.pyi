@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SsoAdminVdomItem(TypedDict, total=False):
+    """Type hints for vdom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SsoAdminVdomItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Virtual domain name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,21 +46,11 @@ class SsoAdminPayload(TypedDict, total=False):
     """
     name: str  # SSO admin name. | MaxLen: 64
     accprofile: str  # SSO admin user access profile. | MaxLen: 35
-    vdom: list[dict[str, Any]]  # Virtual domain(s) that the administrator can acces
+    vdom: list[SsoAdminVdomItem]  # Virtual domain(s) that the administrator can acces
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SsoAdminVdomItem(TypedDict):
-    """Type hints for vdom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Virtual domain name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SsoAdminVdomObject:
@@ -104,6 +116,9 @@ class SsoAdminObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject

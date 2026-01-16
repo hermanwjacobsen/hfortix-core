@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InternetServiceFortiguardEntryItem(TypedDict, total=False):
+    """Type hints for entry table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceFortiguardEntryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID(1-255). | Default: 0 | Min: 0 | Max: 255
+    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    port_range: str  # Port ranges in the custom entry.
+    dst: str  # Destination address or address group name.
+    dst6: str  # Destination address6 or address6 group name.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,26 +46,11 @@ class InternetServiceFortiguardPayload(TypedDict, total=False):
     """
     name: str  # Internet Service name. | MaxLen: 63
     comment: str  # Comment. | MaxLen: 255
-    entry: list[dict[str, Any]]  # Entries added to the Internet Service FortiGuard d
+    entry: list[InternetServiceFortiguardEntryItem]  # Entries added to the Internet Service FortiGuard d
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InternetServiceFortiguardEntryItem(TypedDict):
-    """Type hints for entry table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID(1-255). | Default: 0 | Min: 0 | Max: 255
-    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    port_range: str  # Port ranges in the custom entry.
-    dst: str  # Destination address or address group name.
-    dst6: str  # Destination address6 or address6 group name.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InternetServiceFortiguardEntryObject:
@@ -114,6 +126,9 @@ class InternetServiceFortiguardObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -345,7 +360,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceFortiguardObject: ...
     
@@ -355,7 +370,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -366,7 +381,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -375,7 +390,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +401,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceFortiguardObject: ...
     
@@ -396,7 +411,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +422,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +431,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -460,7 +475,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

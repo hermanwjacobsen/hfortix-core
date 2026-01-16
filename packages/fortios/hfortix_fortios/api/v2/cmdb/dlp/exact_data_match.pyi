@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ExactDataMatchColumnsItem(TypedDict, total=False):
+    """Type hints for columns table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ExactDataMatchColumnsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # Column index. | Default: 0 | Min: 1 | Max: 32
+    type: str  # Data-type for this column. | MaxLen: 35
+    optional: Literal["enable", "disable"]  # Enable/disable optional match. | Default: disable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,23 +49,11 @@ class ExactDataMatchPayload(TypedDict, total=False):
     name: str  # Name of table containing the exact-data-match temp | MaxLen: 35
     optional: int  # Number of optional columns need to match. | Default: 0 | Min: 0 | Max: 32
     data: str  # External resource for exact data match. | MaxLen: 35
-    columns: list[dict[str, Any]]  # DLP exact-data-match column types.
+    columns: list[ExactDataMatchColumnsItem]  # DLP exact-data-match column types.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ExactDataMatchColumnsItem(TypedDict):
-    """Type hints for columns table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # Column index. | Default: 0 | Min: 1 | Max: 32
-    type: str  # Data-type for this column. | MaxLen: 35
-    optional: Literal["enable", "disable"]  # Enable/disable optional match. | Default: disable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ExactDataMatchColumnsObject:
@@ -114,6 +126,9 @@ class ExactDataMatchObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -346,7 +361,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExactDataMatchObject: ...
     
@@ -357,7 +372,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +384,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -379,7 +394,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -391,7 +406,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExactDataMatchObject: ...
     
@@ -402,7 +417,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +429,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -424,7 +439,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +484,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

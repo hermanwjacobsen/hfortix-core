@@ -2,7 +2,51 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ExplicitSecurewebproxycertItem(TypedDict, total=False):
+    """Type hints for secure-web-proxy-cert table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ExplicitSecurewebproxycertItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
+
+
+class ExplicitPacpolicyItem(TypedDict, total=False):
+    """Type hints for pac-policy table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ExplicitPacpolicyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    policyid: int  # Policy ID. | Default: 0 | Min: 1 | Max: 100
+    status: Literal["enable", "disable"]  # Enable/disable policy. | Default: enable
+    srcaddr: str  # Source address objects.
+    srcaddr6: str  # Source address6 objects.
+    dstaddr: str  # Destination address objects.
+    pac_file_name: str  # Pac file name. | Default: proxy.pac | MaxLen: 63
+    pac_file_data: str  # PAC file contents enclosed in quotes
+    comments: str  # Optional comments. | MaxLen: 1023
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,7 +73,7 @@ class ExplicitPayload(TypedDict, total=False):
     http_incoming_port: str  # Accept incoming HTTP requests on one or more ports
     http_connection_mode: Literal["static", "multiplex", "serverpool"]  # HTTP connection mode (default = static). | Default: static
     https_incoming_port: str  # Accept incoming HTTPS requests on one or more port
-    secure_web_proxy_cert: list[dict[str, Any]]  # Name of certificates for secure web proxy.
+    secure_web_proxy_cert: list[ExplicitSecurewebproxycertItem]  # Name of certificates for secure web proxy.
     client_cert: Literal["disable", "enable"]  # Enable/disable to request client certificate. | Default: disable
     user_agent_detect: Literal["disable", "enable"]  # Enable/disable to detect device type by HTTP user- | Default: enable
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]  # Action of an empty client certificate. | Default: block
@@ -57,40 +101,13 @@ class ExplicitPayload(TypedDict, total=False):
     pac_file_through_https: Literal["enable", "disable"]  # Enable/disable to get Proxy Auto-Configuration | Default: disable
     pac_file_name: str  # Pac file name. | Default: proxy.pac | MaxLen: 63
     pac_file_data: str  # PAC file contents enclosed in quotes
-    pac_policy: list[dict[str, Any]]  # PAC policies.
+    pac_policy: list[ExplicitPacpolicyItem]  # PAC policies.
     ssl_algorithm: Literal["high", "medium", "low"]  # Relative strength of encryption algorithms accepte | Default: low
     trace_auth_no_rsp: Literal["enable", "disable"]  # Enable/disable logging timed-out authentication re | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ExplicitSecurewebproxycertItem(TypedDict):
-    """Type hints for secure-web-proxy-cert table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
-
-
-class ExplicitPacpolicyItem(TypedDict):
-    """Type hints for pac-policy table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    policyid: int  # Policy ID. | Default: 0 | Min: 1 | Max: 100
-    status: Literal["enable", "disable"]  # Enable/disable policy. | Default: enable
-    srcaddr: str  # Source address objects.
-    srcaddr6: str  # Source address6 objects.
-    dstaddr: str  # Destination address objects.
-    pac_file_name: str  # Pac file name. | Default: proxy.pac | MaxLen: 63
-    pac_file_data: str  # PAC file contents enclosed in quotes
-    comments: str  # Optional comments. | MaxLen: 1023
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ExplicitSecurewebproxycertObject:
@@ -307,6 +324,9 @@ class ExplicitObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -542,7 +562,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        secure_web_proxy_cert: str | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -570,7 +590,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        pac_policy: str | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -587,7 +607,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        secure_web_proxy_cert: str | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -615,7 +635,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        pac_policy: str | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -633,7 +653,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        secure_web_proxy_cert: str | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -661,7 +681,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        pac_policy: str | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -677,7 +697,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        secure_web_proxy_cert: str | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -705,7 +725,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        pac_policy: str | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -727,7 +747,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        secure_web_proxy_cert: str | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -755,7 +775,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | None = ...,
+        pac_policy: str | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

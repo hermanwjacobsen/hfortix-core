@@ -2,7 +2,148 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class IsisIsisnetItem(TypedDict, total=False):
+    """Type hints for isis-net table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisIsisnetItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ISIS network ID. | Default: 0 | Min: 0 | Max: 4294967295
+    net: str  # IS-IS networks (format = xx.xxxx.  .xxxx.xx.).
+
+
+class IsisIsisinterfaceItem(TypedDict, total=False):
+    """Type hints for isis-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisIsisinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # IS-IS interface name. | MaxLen: 15
+    status: Literal["enable", "disable"]  # Enable/disable interface for IS-IS. | Default: disable
+    status6: Literal["enable", "disable"]  # Enable/disable IPv6 interface for IS-IS. | Default: disable
+    network_type: Literal["broadcast", "point-to-point", "loopback"]  # IS-IS interface's network type.
+    circuit_type: Literal["level-1-2", "level-1", "level-2"]  # IS-IS interface's circuit type. | Default: level-1-2
+    csnp_interval_l1: int  # Level 1 CSNP interval. | Default: 10 | Min: 1 | Max: 65535
+    csnp_interval_l2: int  # Level 2 CSNP interval. | Default: 10 | Min: 1 | Max: 65535
+    hello_interval_l1: int  # Level 1 hello interval. | Default: 10 | Min: 0 | Max: 65535
+    hello_interval_l2: int  # Level 2 hello interval. | Default: 10 | Min: 0 | Max: 65535
+    hello_multiplier_l1: int  # Level 1 multiplier for Hello holding time. | Default: 3 | Min: 2 | Max: 100
+    hello_multiplier_l2: int  # Level 2 multiplier for Hello holding time. | Default: 3 | Min: 2 | Max: 100
+    hello_padding: Literal["enable", "disable"]  # Enable/disable padding to IS-IS hello packets. | Default: enable
+    lsp_interval: int  # LSP transmission interval (milliseconds). | Default: 33 | Min: 1 | Max: 4294967295
+    lsp_retransmit_interval: int  # LSP retransmission interval (sec). | Default: 5 | Min: 1 | Max: 65535
+    metric_l1: int  # Level 1 metric for interface. | Default: 10 | Min: 1 | Max: 63
+    metric_l2: int  # Level 2 metric for interface. | Default: 10 | Min: 1 | Max: 63
+    wide_metric_l1: int  # Level 1 wide metric for interface. | Default: 10 | Min: 1 | Max: 16777214
+    wide_metric_l2: int  # Level 2 wide metric for interface. | Default: 10 | Min: 1 | Max: 16777214
+    auth_password_l1: str  # Authentication password for level 1 PDUs. | MaxLen: 128
+    auth_password_l2: str  # Authentication password for level 2 PDUs. | MaxLen: 128
+    auth_keychain_l1: str  # Authentication key-chain for level 1 PDUs. | MaxLen: 35
+    auth_keychain_l2: str  # Authentication key-chain for level 2 PDUs. | MaxLen: 35
+    auth_send_only_l1: Literal["enable", "disable"]  # Enable/disable authentication send-only for level | Default: disable
+    auth_send_only_l2: Literal["enable", "disable"]  # Enable/disable authentication send-only for level | Default: disable
+    auth_mode_l1: Literal["md5", "password"]  # Level 1 authentication mode. | Default: password
+    auth_mode_l2: Literal["md5", "password"]  # Level 2 authentication mode. | Default: password
+    priority_l1: int  # Level 1 priority. | Default: 64 | Min: 0 | Max: 127
+    priority_l2: int  # Level 2 priority. | Default: 64 | Min: 0 | Max: 127
+    mesh_group: Literal["enable", "disable"]  # Enable/disable IS-IS mesh group. | Default: disable
+    mesh_group_id: int  # Mesh group ID <0-4294967295>, 0: mesh-group blocke | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class IsisSummaryaddressItem(TypedDict, total=False):
+    """Type hints for summary-address table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisSummaryaddressItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
+
+
+class IsisSummaryaddress6Item(TypedDict, total=False):
+    """Type hints for summary-address6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisSummaryaddress6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Prefix entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix6: str  # IPv6 prefix. | Default: ::/0
+    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
+
+
+class IsisRedistributeItem(TypedDict, total=False):
+    """Type hints for redistribute table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisRedistributeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    protocol: str  # Protocol name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    metric: int  # Metric. | Default: 0 | Min: 0 | Max: 4261412864
+    metric_type: Literal["external", "internal"]  # Metric type. | Default: internal
+    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
+    routemap: str  # Route map name. | MaxLen: 35
+
+
+class IsisRedistribute6Item(TypedDict, total=False):
+    """Type hints for redistribute6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IsisRedistribute6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    protocol: str  # Protocol name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Enable/disable redistribution. | Default: disable
+    metric: int  # Metric. | Default: 0 | Min: 0 | Max: 4261412864
+    metric_type: Literal["external", "internal"]  # Metric type. | Default: internal
+    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
+    routemap: str  # Route map name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -59,120 +200,16 @@ class IsisPayload(TypedDict, total=False):
     redistribute6_l1_list: str  # Access-list for IPv6 route redistribution from l1 | MaxLen: 35
     redistribute6_l2: Literal["enable", "disable"]  # Enable/disable redistribution of level 2 IPv6 rout | Default: disable
     redistribute6_l2_list: str  # Access-list for IPv6 route redistribution from l2 | MaxLen: 35
-    isis_net: list[dict[str, Any]]  # IS-IS net configuration.
-    isis_interface: list[dict[str, Any]]  # IS-IS interface configuration.
-    summary_address: list[dict[str, Any]]  # IS-IS summary addresses.
-    summary_address6: list[dict[str, Any]]  # IS-IS IPv6 summary address.
-    redistribute: list[dict[str, Any]]  # IS-IS redistribute protocols.
-    redistribute6: list[dict[str, Any]]  # IS-IS IPv6 redistribution for routing protocols.
+    isis_net: list[IsisIsisnetItem]  # IS-IS net configuration.
+    isis_interface: list[IsisIsisinterfaceItem]  # IS-IS interface configuration.
+    summary_address: list[IsisSummaryaddressItem]  # IS-IS summary addresses.
+    summary_address6: list[IsisSummaryaddress6Item]  # IS-IS IPv6 summary address.
+    redistribute: list[IsisRedistributeItem]  # IS-IS redistribute protocols.
+    redistribute6: list[IsisRedistribute6Item]  # IS-IS IPv6 redistribution for routing protocols.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class IsisIsisnetItem(TypedDict):
-    """Type hints for isis-net table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ISIS network ID. | Default: 0 | Min: 0 | Max: 4294967295
-    net: str  # IS-IS networks (format = xx.xxxx.  .xxxx.xx.).
-
-
-class IsisIsisinterfaceItem(TypedDict):
-    """Type hints for isis-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # IS-IS interface name. | MaxLen: 15
-    status: Literal["enable", "disable"]  # Enable/disable interface for IS-IS. | Default: disable
-    status6: Literal["enable", "disable"]  # Enable/disable IPv6 interface for IS-IS. | Default: disable
-    network_type: Literal["broadcast", "point-to-point", "loopback"]  # IS-IS interface's network type.
-    circuit_type: Literal["level-1-2", "level-1", "level-2"]  # IS-IS interface's circuit type. | Default: level-1-2
-    csnp_interval_l1: int  # Level 1 CSNP interval. | Default: 10 | Min: 1 | Max: 65535
-    csnp_interval_l2: int  # Level 2 CSNP interval. | Default: 10 | Min: 1 | Max: 65535
-    hello_interval_l1: int  # Level 1 hello interval. | Default: 10 | Min: 0 | Max: 65535
-    hello_interval_l2: int  # Level 2 hello interval. | Default: 10 | Min: 0 | Max: 65535
-    hello_multiplier_l1: int  # Level 1 multiplier for Hello holding time. | Default: 3 | Min: 2 | Max: 100
-    hello_multiplier_l2: int  # Level 2 multiplier for Hello holding time. | Default: 3 | Min: 2 | Max: 100
-    hello_padding: Literal["enable", "disable"]  # Enable/disable padding to IS-IS hello packets. | Default: enable
-    lsp_interval: int  # LSP transmission interval (milliseconds). | Default: 33 | Min: 1 | Max: 4294967295
-    lsp_retransmit_interval: int  # LSP retransmission interval (sec). | Default: 5 | Min: 1 | Max: 65535
-    metric_l1: int  # Level 1 metric for interface. | Default: 10 | Min: 1 | Max: 63
-    metric_l2: int  # Level 2 metric for interface. | Default: 10 | Min: 1 | Max: 63
-    wide_metric_l1: int  # Level 1 wide metric for interface. | Default: 10 | Min: 1 | Max: 16777214
-    wide_metric_l2: int  # Level 2 wide metric for interface. | Default: 10 | Min: 1 | Max: 16777214
-    auth_password_l1: str  # Authentication password for level 1 PDUs. | MaxLen: 128
-    auth_password_l2: str  # Authentication password for level 2 PDUs. | MaxLen: 128
-    auth_keychain_l1: str  # Authentication key-chain for level 1 PDUs. | MaxLen: 35
-    auth_keychain_l2: str  # Authentication key-chain for level 2 PDUs. | MaxLen: 35
-    auth_send_only_l1: Literal["enable", "disable"]  # Enable/disable authentication send-only for level | Default: disable
-    auth_send_only_l2: Literal["enable", "disable"]  # Enable/disable authentication send-only for level | Default: disable
-    auth_mode_l1: Literal["md5", "password"]  # Level 1 authentication mode. | Default: password
-    auth_mode_l2: Literal["md5", "password"]  # Level 2 authentication mode. | Default: password
-    priority_l1: int  # Level 1 priority. | Default: 64 | Min: 0 | Max: 127
-    priority_l2: int  # Level 2 priority. | Default: 64 | Min: 0 | Max: 127
-    mesh_group: Literal["enable", "disable"]  # Enable/disable IS-IS mesh group. | Default: disable
-    mesh_group_id: int  # Mesh group ID <0-4294967295>, 0: mesh-group blocke | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class IsisSummaryaddressItem(TypedDict):
-    """Type hints for summary-address table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
-    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
-
-
-class IsisSummaryaddress6Item(TypedDict):
-    """Type hints for summary-address6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Prefix entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix6: str  # IPv6 prefix. | Default: ::/0
-    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
-
-
-class IsisRedistributeItem(TypedDict):
-    """Type hints for redistribute table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    protocol: str  # Protocol name. | MaxLen: 35
-    status: Literal["enable", "disable"]  # Status. | Default: disable
-    metric: int  # Metric. | Default: 0 | Min: 0 | Max: 4261412864
-    metric_type: Literal["external", "internal"]  # Metric type. | Default: internal
-    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
-    routemap: str  # Route map name. | MaxLen: 35
-
-
-class IsisRedistribute6Item(TypedDict):
-    """Type hints for redistribute6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    protocol: str  # Protocol name. | MaxLen: 35
-    status: Literal["enable", "disable"]  # Enable/disable redistribution. | Default: disable
-    metric: int  # Metric. | Default: 0 | Min: 0 | Max: 4261412864
-    metric_type: Literal["external", "internal"]  # Metric type. | Default: internal
-    level: Literal["level-1-2", "level-1", "level-2"]  # Level. | Default: level-2
-    routemap: str  # Route map name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class IsisIsisnetObject:
@@ -600,6 +637,9 @@ class IsisObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -863,12 +903,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
+        isis_net: str | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IsisObject: ...
     
@@ -911,12 +951,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
+        isis_net: str | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -960,12 +1000,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
+        isis_net: str | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1007,12 +1047,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
+        isis_net: str | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1060,12 +1100,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
+        isis_net: str | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,71 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ListEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ListEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    risk: str  # Risk, or impact, of allowing traffic from this app
+    category: str  # Category ID list.
+    application: str  # ID of allowed applications.
+    protocols: str  # Application protocol filter. | Default: all
+    vendor: str  # Application vendor filter. | Default: all
+    technology: str  # Application technology filter. | Default: all
+    behavior: str  # Application behavior filter. | Default: all
+    popularity: Literal["1", "2", "3", "4", "5"]  # Application popularity filter | Default: 1 2 3 4 5
+    exclusion: str  # ID of excluded applications.
+    parameters: str  # Application parameters.
+    action: Literal["pass", "block", "reset"]  # Pass or block traffic, or reset connection for tra | Default: block
+    log: Literal["disable", "enable"]  # Enable/disable logging for this application list. | Default: enable
+    log_packet: Literal["disable", "enable"]  # Enable/disable packet logging. | Default: disable
+    rate_count: int  # Count of the rate. | Default: 0 | Min: 0 | Max: 65535
+    rate_duration: int  # Duration (sec) of the rate. | Default: 60 | Min: 1 | Max: 65535
+    rate_mode: Literal["periodical", "continuous"]  # Rate limit mode. | Default: continuous
+    rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]  # Track the packet protocol field. | Default: none
+    session_ttl: int  # Session TTL (0 = default). | Default: 0 | Min: 0 | Max: 4294967295
+    shaper: str  # Traffic shaper. | MaxLen: 35
+    shaper_reverse: str  # Reverse traffic shaper. | MaxLen: 35
+    per_ip_shaper: str  # Per-IP traffic shaper. | MaxLen: 35
+    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
+    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
+    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
+
+
+class ListDefaultnetworkservicesItem(TypedDict, total=False):
+    """Type hints for default-network-services table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ListDefaultnetworkservicesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    port: int  # Port number. | Default: 0 | Min: 0 | Max: 65535
+    services: Literal["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"]  # Network protocols.
+    violation_action: Literal["pass", "monitor", "block"]  # Action for protocols not in the allowlist for sele | Default: block
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -36,60 +100,13 @@ class ListPayload(TypedDict, total=False):
     p2p_block_list: Literal["skype", "edonkey", "bittorrent"]  # P2P applications to be block listed.
     deep_app_inspection: Literal["disable", "enable"]  # Enable/disable deep application inspection. | Default: enable
     options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"]  # Basic application protocol signatures allowed by d | Default: allow-dns
-    entries: list[dict[str, Any]]  # Application list entries.
+    entries: list[ListEntriesItem]  # Application list entries.
     control_default_network_services: Literal["disable", "enable"]  # Enable/disable enforcement of protocols over selec | Default: disable
-    default_network_services: list[dict[str, Any]]  # Default network service entries.
+    default_network_services: list[ListDefaultnetworkservicesItem]  # Default network service entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ListEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    risk: str  # Risk, or impact, of allowing traffic from this app
-    category: str  # Category ID list.
-    application: str  # ID of allowed applications.
-    protocols: str  # Application protocol filter. | Default: all
-    vendor: str  # Application vendor filter. | Default: all
-    technology: str  # Application technology filter. | Default: all
-    behavior: str  # Application behavior filter. | Default: all
-    popularity: Literal["1", "2", "3", "4", "5"]  # Application popularity filter | Default: 1 2 3 4 5
-    exclusion: str  # ID of excluded applications.
-    parameters: str  # Application parameters.
-    action: Literal["pass", "block", "reset"]  # Pass or block traffic, or reset connection for tra | Default: block
-    log: Literal["disable", "enable"]  # Enable/disable logging for this application list. | Default: enable
-    log_packet: Literal["disable", "enable"]  # Enable/disable packet logging. | Default: disable
-    rate_count: int  # Count of the rate. | Default: 0 | Min: 0 | Max: 65535
-    rate_duration: int  # Duration (sec) of the rate. | Default: 60 | Min: 1 | Max: 65535
-    rate_mode: Literal["periodical", "continuous"]  # Rate limit mode. | Default: continuous
-    rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]  # Track the packet protocol field. | Default: none
-    session_ttl: int  # Session TTL (0 = default). | Default: 0 | Min: 0 | Max: 4294967295
-    shaper: str  # Traffic shaper. | MaxLen: 35
-    shaper_reverse: str  # Reverse traffic shaper. | MaxLen: 35
-    per_ip_shaper: str  # Per-IP traffic shaper. | MaxLen: 35
-    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
-    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
-    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
-
-
-class ListDefaultnetworkservicesItem(TypedDict):
-    """Type hints for default-network-services table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    port: int  # Port number. | Default: 0 | Min: 0 | Max: 65535
-    services: Literal["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"]  # Network protocols.
-    violation_action: Literal["pass", "monitor", "block"]  # Action for protocols not in the allowlist for sele | Default: block
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ListEntriesObject:
@@ -283,6 +300,9 @@ class ListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -526,9 +546,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ListObject: ...
     
@@ -550,9 +570,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -575,9 +595,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -598,9 +618,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -623,9 +643,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ListObject: ...
     
@@ -647,9 +667,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -672,9 +692,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -695,9 +715,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -753,9 +773,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | None = ...,
+        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

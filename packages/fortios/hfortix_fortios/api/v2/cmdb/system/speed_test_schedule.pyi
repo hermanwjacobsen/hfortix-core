@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SpeedTestScheduleSchedulesItem(TypedDict, total=False):
+    """Type hints for schedules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SpeedTestScheduleSchedulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name of a firewall recurring schedule. | MaxLen: 31
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,7 +50,7 @@ class SpeedTestSchedulePayload(TypedDict, total=False):
     diffserv: str  # DSCP used for speed test.
     server_name: str  # Speed test server name in system.speed-test-server | MaxLen: 35
     mode: Literal["UDP", "TCP", "Auto"]  # Protocol Auto(default), TCP or UDP used for speed | Default: Auto
-    schedules: list[dict[str, Any]]  # Schedules for the interface.
+    schedules: list[SpeedTestScheduleSchedulesItem]  # Schedules for the interface.
     dynamic_server: Literal["disable", "enable"]  # Enable/disable dynamic server option. | Default: disable
     ctrl_port: int  # Port of the controller to get access token. | Default: 5200 | Min: 1 | Max: 65535
     server_port: int  # Port of the server to run speed test. | Default: 5201 | Min: 1 | Max: 65535
@@ -47,19 +69,9 @@ class SpeedTestSchedulePayload(TypedDict, total=False):
     retries: int  # Maximum number of times the FortiGate unit will at | Default: 5 | Min: 1 | Max: 10
     retry_pause: int  # Number of seconds the FortiGate pauses between suc | Default: 300 | Min: 60 | Max: 3600
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SpeedTestScheduleSchedulesItem(TypedDict):
-    """Type hints for schedules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name of a firewall recurring schedule. | MaxLen: 31
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SpeedTestScheduleSchedulesObject:
@@ -185,6 +197,9 @@ class SpeedTestScheduleObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -419,7 +434,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -449,7 +464,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -480,7 +495,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -509,7 +524,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -540,7 +555,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -570,7 +585,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -601,7 +616,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -630,7 +645,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -694,7 +709,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedules: str | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,

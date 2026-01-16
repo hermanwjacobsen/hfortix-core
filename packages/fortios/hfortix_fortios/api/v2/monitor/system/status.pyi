@@ -3,6 +3,70 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StatusResponse(TypedDict):
+    """
+    Type hints for system/status API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    model_name: str
+    model_number: str
+    model: str
+    hostname: str
+    log_disk_status: str
+
+
+@final
+class StatusObject:
+    """Typed FortiObject for system/status with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # model_name
+    model_name: str
+    # model_number
+    model_number: str
+    # model
+    model: str
+    # hostname
+    hostname: str
+    # log_disk_status
+    log_disk_status: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StatusPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Status:
     """
     Retrieve basic system status.

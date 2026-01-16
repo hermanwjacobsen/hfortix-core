@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AuthPortalGroupsItem(TypedDict, total=False):
+    """Type hints for groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AuthPortalGroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -22,25 +44,15 @@ class AuthPortalPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    groups: list[dict[str, Any]]  # Firewall user groups permitted to authenticate thr
+    groups: list[AuthPortalGroupsItem]  # Firewall user groups permitted to authenticate thr
     portal_addr: str  # Address (or FQDN) of the authentication portal. | MaxLen: 63
     portal_addr6: str  # IPv6 address (or FQDN) of authentication portal. | MaxLen: 63
     identity_based_route: str  # Name of the identity-based route that applies to t | MaxLen: 35
     proxy_auth: Literal["enable", "disable"]  # Enable/disable authentication by proxy daemon | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AuthPortalGroupsItem(TypedDict):
-    """Type hints for groups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Group name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AuthPortalGroupsObject:
@@ -112,6 +124,9 @@ class AuthPortalObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -340,7 +355,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -352,7 +367,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -365,7 +380,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -376,7 +391,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -393,7 +408,7 @@ class AuthPortal:
     def set(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,

@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class LabelEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LabelEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 1 | Max: 32
+    fortidata_label_name: str  # Name of FortiData label | MaxLen: 127
+    mpip_label_name: str  # Name of MPIP label. | MaxLen: 127
+    guid: str  # MPIP label guid. | MaxLen: 36
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,24 +52,11 @@ class LabelPayload(TypedDict, total=False):
     mpip_type: Literal["remote", "local"]  # MPIP label type. | Default: remote
     connector: str  # Name of SDN connector. | MaxLen: 35
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # DLP label entries.
+    entries: list[LabelEntriesItem]  # DLP label entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class LabelEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 32
-    fortidata_label_name: str  # Name of FortiData label | MaxLen: 127
-    mpip_label_name: str  # Name of MPIP label. | MaxLen: 127
-    guid: str  # MPIP label guid. | MaxLen: 36
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class LabelEntriesObject:
@@ -125,6 +137,9 @@ class LabelObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -359,7 +374,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LabelObject: ...
     
@@ -372,7 +387,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +401,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -412,7 +427,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LabelObject: ...
     
@@ -425,7 +440,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +454,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +466,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -498,7 +513,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

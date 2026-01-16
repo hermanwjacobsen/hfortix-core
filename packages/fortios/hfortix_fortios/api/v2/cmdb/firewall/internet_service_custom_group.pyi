@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InternetServiceCustomGroupMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceCustomGroupMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Group member name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,21 +41,11 @@ class InternetServiceCustomGroupPayload(TypedDict, total=False):
     """
     name: str  # Custom Internet Service group name. | MaxLen: 63
     comment: str  # Comment. | MaxLen: 255
-    member: list[dict[str, Any]]  # Custom Internet Service group members.
+    member: list[InternetServiceCustomGroupMemberItem]  # Custom Internet Service group members.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InternetServiceCustomGroupMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Group member name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InternetServiceCustomGroupMemberObject:
@@ -99,6 +111,9 @@ class InternetServiceCustomGroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -330,7 +345,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomGroupObject: ...
     
@@ -340,7 +355,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -351,7 +366,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -360,7 +375,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -371,7 +386,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomGroupObject: ...
     
@@ -381,7 +396,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -445,7 +460,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

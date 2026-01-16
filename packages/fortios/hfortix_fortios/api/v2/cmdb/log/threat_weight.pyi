@@ -2,7 +2,65 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ThreatWeightWebItem(TypedDict, total=False):
+    """Type hints for web table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ThreatWeightWebItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    category: int  # Threat weight score for web category filtering mat | Default: 0 | Min: 0 | Max: 255
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for web category filtering mat | Default: low
+
+
+class ThreatWeightGeolocationItem(TypedDict, total=False):
+    """Type hints for geolocation table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ThreatWeightGeolocationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    country: str  # Country code. | MaxLen: 2
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Geolocation-based events. | Default: low
+
+
+class ThreatWeightApplicationItem(TypedDict, total=False):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ThreatWeightApplicationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    category: int  # Application category. | Default: 0 | Min: 0 | Max: 65535
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Application events. | Default: low
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,49 +83,13 @@ class ThreatWeightPayload(TypedDict, total=False):
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for detected botnet connection | Default: critical
     malware: str  # Anti-virus malware threat weight settings.
     ips: str  # IPS threat weight settings.
-    web: list[dict[str, Any]]  # Web filtering threat weight settings.
-    geolocation: list[dict[str, Any]]  # Geolocation-based threat weight settings.
-    application: list[dict[str, Any]]  # Application-control threat weight settings.
+    web: list[ThreatWeightWebItem]  # Web filtering threat weight settings.
+    geolocation: list[ThreatWeightGeolocationItem]  # Geolocation-based threat weight settings.
+    application: list[ThreatWeightApplicationItem]  # Application-control threat weight settings.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ThreatWeightWebItem(TypedDict):
-    """Type hints for web table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    category: int  # Threat weight score for web category filtering mat | Default: 0 | Min: 0 | Max: 255
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for web category filtering mat | Default: low
-
-
-class ThreatWeightGeolocationItem(TypedDict):
-    """Type hints for geolocation table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    country: str  # Country code. | MaxLen: 2
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Geolocation-based events. | Default: low
-
-
-class ThreatWeightApplicationItem(TypedDict):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    category: int  # Application category. | Default: 0 | Min: 0 | Max: 65535
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Application events. | Default: low
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ThreatWeightWebObject:
@@ -233,6 +255,9 @@ class ThreatWeightObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -469,9 +494,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ThreatWeightObject: ...
     
@@ -487,9 +512,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -506,9 +531,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -523,9 +548,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -546,9 +571,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

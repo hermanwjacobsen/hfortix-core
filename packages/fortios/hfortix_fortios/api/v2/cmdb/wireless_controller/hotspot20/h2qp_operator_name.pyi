@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class H2qpOperatorNameValuelistItem(TypedDict, total=False):
+    """Type hints for value-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: H2qpOperatorNameValuelistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # Value index. | Default: 0 | Min: 1 | Max: 10
+    lang: str  # Language code. | Default: eng | MaxLen: 3
+    value: str  # Friendly name value. | MaxLen: 252
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,23 +42,11 @@ class H2qpOperatorNamePayload(TypedDict, total=False):
         }
     """
     name: str  # Friendly name ID. | MaxLen: 35
-    value_list: list[dict[str, Any]]  # Name list.
+    value_list: list[H2qpOperatorNameValuelistItem]  # Name list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class H2qpOperatorNameValuelistItem(TypedDict):
-    """Type hints for value-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # Value index. | Default: 0 | Min: 1 | Max: 10
-    lang: str  # Language code. | Default: eng | MaxLen: 3
-    value: str  # Friendly name value. | MaxLen: 252
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class H2qpOperatorNameValuelistObject:
@@ -101,6 +113,9 @@ class H2qpOperatorNameObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -331,7 +346,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOperatorNameObject: ...
     
@@ -340,7 +355,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -350,7 +365,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +383,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOperatorNameObject: ...
     
@@ -377,7 +392,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -387,7 +402,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +453,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

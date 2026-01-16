@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileExternalblocklistItem(TypedDict, total=False):
+    """Type hints for external-blocklist table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileExternalblocklistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # External blocklist. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -46,7 +68,7 @@ class ProfilePayload(TypedDict, total=False):
     content_disarm: str  # AV Content Disarm and Reconstruction settings.
     outbreak_prevention_archive_scan: Literal["disable", "enable"]  # Enable/disable outbreak-prevention archive scannin | Default: enable
     external_blocklist_enable_all: Literal["disable", "enable"]  # Enable/disable all external blocklists. | Default: disable
-    external_blocklist: list[dict[str, Any]]  # One or more external malware block lists.
+    external_blocklist: list[ProfileExternalblocklistItem]  # One or more external malware block lists.
     ems_threat_feed: Literal["disable", "enable"]  # Enable/disable use of EMS threat feed when perform | Default: disable
     fortindr_error_action: Literal["log-only", "block", "ignore"]  # Action to take if FortiNDR encounters an error. | Default: log-only
     fortindr_timeout_action: Literal["log-only", "block", "ignore"]  # Action to take if FortiNDR encounters a scan timeo | Default: log-only
@@ -57,19 +79,9 @@ class ProfilePayload(TypedDict, total=False):
     extended_log: Literal["enable", "disable"]  # Enable/disable extended logging for antivirus. | Default: disable
     scan_mode: Literal["default", "legacy"]  # Configure scan mode (default or legacy). | Default: default
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileExternalblocklistItem(TypedDict):
-    """Type hints for external-blocklist table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # External blocklist. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileExternalblocklistObject:
@@ -225,6 +237,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -477,7 +492,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -517,7 +532,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -558,7 +573,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -597,7 +612,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -638,7 +653,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -678,7 +693,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -719,7 +734,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -758,7 +773,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
@@ -832,7 +847,7 @@ class Profile:
         content_disarm: str | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
-        external_blocklist: str | list[str] | list[dict[str, Any]] | None = ...,
+        external_blocklist: str | list[ProfileExternalblocklistItem] | None = ...,
         ems_threat_feed: Literal["disable", "enable"] | None = ...,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,

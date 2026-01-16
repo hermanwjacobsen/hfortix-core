@@ -2,7 +2,14 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,9 +28,9 @@ class HaMonitorPayload(TypedDict, total=False):
     vlan_hb_interval: int  # Configure heartbeat interval (seconds). | Default: 5 | Min: 1 | Max: 30
     vlan_hb_lost_threshold: int  # VLAN lost heartbeat threshold (1 - 60). | Default: 3 | Min: 1 | Max: 60
 
-# Nested TypedDicts for table field children (dict mode)
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 
 
@@ -57,6 +64,9 @@ class HaMonitorObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject

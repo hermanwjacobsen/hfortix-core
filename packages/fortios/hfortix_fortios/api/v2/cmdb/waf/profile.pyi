@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileUrlaccessItem(TypedDict, total=False):
+    """Type hints for url-access table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileUrlaccessItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # URL access ID. | Default: 0 | Min: 0 | Max: 4294967295
+    address: str  # Host address. | MaxLen: 79
+    action: Literal["bypass", "permit", "block"]  # Action. | Default: permit
+    log: Literal["enable", "disable"]  # Enable/disable logging. | Default: disable
+    severity: Literal["high", "medium", "low"]  # Severity. | Default: medium
+    access_pattern: str  # URL access pattern.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,27 +51,12 @@ class ProfilePayload(TypedDict, total=False):
     constraint: str  # WAF HTTP protocol restrictions.
     method: str  # Method restriction.
     address_list: str  # Address block and allow lists.
-    url_access: list[dict[str, Any]]  # URL access list.
+    url_access: list[ProfileUrlaccessItem]  # URL access list.
     comment: str  # Comment. | MaxLen: 1023
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileUrlaccessItem(TypedDict):
-    """Type hints for url-access table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # URL access ID. | Default: 0 | Min: 0 | Max: 4294967295
-    address: str  # Host address. | MaxLen: 79
-    action: Literal["bypass", "permit", "block"]  # Action. | Default: permit
-    log: Literal["enable", "disable"]  # Enable/disable logging. | Default: disable
-    severity: Literal["high", "medium", "low"]  # Severity. | Default: medium
-    access_pattern: str  # URL access pattern.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileUrlaccessObject:
@@ -138,6 +150,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -374,7 +389,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
@@ -390,7 +405,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -407,7 +422,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -422,7 +437,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -439,7 +454,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
@@ -455,7 +470,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -472,7 +487,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -487,7 +502,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -537,7 +552,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_access: str | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

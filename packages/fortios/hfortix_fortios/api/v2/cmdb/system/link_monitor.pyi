@@ -2,7 +2,63 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class LinkMonitorServerItem(TypedDict, total=False):
+    """Type hints for server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LinkMonitorServerItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    address: str  # Server address. | MaxLen: 79
+
+
+class LinkMonitorRouteItem(TypedDict, total=False):
+    """Type hints for route table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LinkMonitorRouteItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    subnet: str  # IP and netmask (x.x.x.x/y). | MaxLen: 79
+
+
+class LinkMonitorServerlistItem(TypedDict, total=False):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LinkMonitorServerlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Server ID. | Default: 0 | Min: 1 | Max: 32
+    dst: str  # IP address of the server to be monitored. | MaxLen: 64
+    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
+    port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
+    weight: int  # Weight of the monitor to this dst (0 - 255). | Default: 0 | Min: 0 | Max: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,12 +84,12 @@ class LinkMonitorPayload(TypedDict, total=False):
     srcintf: str  # Interface that receives the traffic to be monitore | MaxLen: 15
     server_config: Literal["default", "individual"]  # Mode of server configuration. | Default: default
     server_type: Literal["static", "dynamic"]  # Server type (static or dynamic). | Default: static
-    server: list[dict[str, Any]]  # IP address of the server(s) to be monitored.
+    server: list[LinkMonitorServerItem]  # IP address of the server(s) to be monitored.
     protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
     port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
     gateway_ip: str  # Gateway IP address used to probe the server. | Default: 0.0.0.0
     gateway_ip6: str  # Gateway IPv6 address used to probe the server. | Default: ::
-    route: list[dict[str, Any]]  # Subnet to monitor.
+    route: list[LinkMonitorRouteItem]  # Subnet to monitor.
     source_ip: str  # Source IP address used in packet to the server. | Default: 0.0.0.0
     source_ip6: str  # Source IPv6 address used in packet to the server. | Default: ::
     http_get: str  # If you are monitoring an HTML server you can send | Default: / | MaxLen: 1024
@@ -56,45 +112,11 @@ class LinkMonitorPayload(TypedDict, total=False):
     diffservcode: str  # Differentiated services code point (DSCP) in the I
     class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
     service_detection: Literal["enable", "disable"]  # Only use monitor to read quality values. If enable | Default: disable
-    server_list: list[dict[str, Any]]  # Servers for link-monitor to monitor.
+    server_list: list[LinkMonitorServerlistItem]  # Servers for link-monitor to monitor.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class LinkMonitorServerItem(TypedDict):
-    """Type hints for server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    address: str  # Server address. | MaxLen: 79
-
-
-class LinkMonitorRouteItem(TypedDict):
-    """Type hints for route table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    subnet: str  # IP and netmask (x.x.x.x/y). | MaxLen: 79
-
-
-class LinkMonitorServerlistItem(TypedDict):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Server ID. | Default: 0 | Min: 1 | Max: 32
-    dst: str  # IP address of the server to be monitored. | MaxLen: 64
-    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
-    port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
-    weight: int  # Weight of the monitor to this dst (0 - 255). | Default: 0 | Min: 0 | Max: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class LinkMonitorServerObject:
@@ -325,6 +347,9 @@ class LinkMonitorObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -559,12 +584,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -587,7 +612,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LinkMonitorObject: ...
     
@@ -600,12 +625,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -628,7 +653,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -642,12 +667,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -670,7 +695,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -682,12 +707,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -710,7 +735,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -724,12 +749,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -752,7 +777,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LinkMonitorObject: ...
     
@@ -765,12 +790,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -793,7 +818,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -807,12 +832,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -835,7 +860,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -847,12 +872,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -875,7 +900,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -922,12 +947,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server: str | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        route: str | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -950,7 +975,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

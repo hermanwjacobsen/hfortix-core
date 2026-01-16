@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ApcfgProfileCommandlistItem(TypedDict, total=False):
+    """Type hints for command-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ApcfgProfileCommandlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Command ID. | Default: 0 | Min: 1 | Max: 255
+    type: Literal["non-password", "password"]  # The command type (default = non-password). | Default: non-password
+    name: str  # AP local configuration command name. | MaxLen: 63
+    value: str  # AP local configuration command value. | MaxLen: 127
+    passwd_value: str  # AP local configuration command password value. | MaxLen: 128
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,25 +50,11 @@ class ApcfgProfilePayload(TypedDict, total=False):
     ac_timer: int  # Maximum waiting time for the AP to join the valida | Default: 10 | Min: 3 | Max: 30
     ac_ip: str  # IP address of the validation controller that AP mu | Default: 0.0.0.0
     ac_port: int  # Port of the validation controller that AP must be | Default: 5246 | Min: 1024 | Max: 49150
-    command_list: list[dict[str, Any]]  # AP local configuration command list.
+    command_list: list[ApcfgProfileCommandlistItem]  # AP local configuration command list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ApcfgProfileCommandlistItem(TypedDict):
-    """Type hints for command-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Command ID. | Default: 0 | Min: 1 | Max: 255
-    type: Literal["non-password", "password"]  # The command type (default = non-password). | Default: non-password
-    name: str  # AP local configuration command name. | MaxLen: 63
-    value: str  # AP local configuration command value. | MaxLen: 127
-    passwd_value: str  # AP local configuration command password value. | MaxLen: 128
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ApcfgProfileCommandlistObject:
@@ -131,6 +143,9 @@ class ApcfgProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -367,7 +382,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApcfgProfileObject: ...
     
@@ -382,7 +397,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -412,7 +427,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +443,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApcfgProfileObject: ...
     
@@ -443,7 +458,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -459,7 +474,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -473,7 +488,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -522,7 +537,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

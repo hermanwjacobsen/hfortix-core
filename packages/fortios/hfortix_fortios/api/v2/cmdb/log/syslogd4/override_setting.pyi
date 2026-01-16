@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class OverrideSettingCustomfieldnameItem(TypedDict, total=False):
+    """Type hints for custom-field-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OverrideSettingCustomfieldnameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    name: str  # Field name [A-Za-z0-9_]. | MaxLen: 35
+    custom: str  # Field custom name [A-Za-z0-9_]. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -37,26 +61,14 @@ class OverrideSettingPayload(TypedDict, total=False):
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]  # Enable/disable reliable syslogging with TLS encryp | Default: disable
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
     certificate: str  # Certificate used to communicate with Syslog server | MaxLen: 35
-    custom_field_name: list[dict[str, Any]]  # Custom field name for CEF format logging.
+    custom_field_name: list[OverrideSettingCustomfieldnameItem]  # Custom field name for CEF format logging.
     interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
     interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested TypedDicts for table field children (dict mode)
-
-class OverrideSettingCustomfieldnameItem(TypedDict):
-    """Type hints for custom-field-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    name: str  # Field name [A-Za-z0-9_]. | MaxLen: 35
-    custom: str  # Field custom name [A-Za-z0-9_]. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class OverrideSettingCustomfieldnameObject:
@@ -171,6 +183,9 @@ class OverrideSettingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -413,7 +428,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_field_name: str | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -438,7 +453,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_field_name: str | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -464,7 +479,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_field_name: str | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -488,7 +503,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_field_name: str | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -518,7 +533,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_field_name: str | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,

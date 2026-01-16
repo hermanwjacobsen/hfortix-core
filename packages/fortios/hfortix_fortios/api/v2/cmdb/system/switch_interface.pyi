@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SwitchInterfaceSpansourceportItem(TypedDict, total=False):
+    """Type hints for span-source-port table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SwitchInterfaceSpansourceportItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Physical interface name. | MaxLen: 79
+
+
+class SwitchInterfaceMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SwitchInterfaceMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,37 +63,17 @@ class SwitchInterfacePayload(TypedDict, total=False):
     name: str  # Interface name | MaxLen: 15
     vdom: str  # VDOM that the software switch belongs to. | MaxLen: 31
     span_dest_port: str  # SPAN destination port name. All traffic on the SPA | MaxLen: 15
-    span_source_port: list[dict[str, Any]]  # Physical interface name. Port spanning echoes all
-    member: list[dict[str, Any]]  # Names of the interfaces that belong to the virtual
+    span_source_port: list[SwitchInterfaceSpansourceportItem]  # Physical interface name. Port spanning echoes all
+    member: list[SwitchInterfaceMemberItem]  # Names of the interfaces that belong to the virtual
     type: Literal["switch", "hub"]  # Type of switch based on functionality: switch for | Default: switch
     intra_switch_policy: Literal["implicit", "explicit"]  # Allow any traffic between switch interfaces or req | Default: implicit
     mac_ttl: int  # Duration for which MAC addresses are held in the A | Default: 300 | Min: 300 | Max: 8640000
     span: Literal["disable", "enable"]  # Enable/disable port spanning. Port spanning echoes | Default: disable
     span_direction: Literal["rx", "tx", "both"]  # The direction in which the SPAN port operates, eit | Default: both
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SwitchInterfaceSpansourceportItem(TypedDict):
-    """Type hints for span-source-port table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Physical interface name. | MaxLen: 79
-
-
-class SwitchInterfaceMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SwitchInterfaceSpansourceportObject:
@@ -175,6 +192,9 @@ class SwitchInterfaceObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -406,8 +426,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -422,8 +442,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -439,8 +459,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -454,8 +474,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -471,8 +491,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -487,8 +507,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -504,8 +524,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -519,8 +539,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -569,8 +589,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        span_source_port: str | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,

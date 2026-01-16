@@ -2,7 +2,52 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class RadiusClassItem(TypedDict, total=False):
+    """Type hints for class table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RadiusClassItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Class name. | MaxLen: 79
+
+
+class RadiusAccountingserverItem(TypedDict, total=False):
+    """Type hints for accounting-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RadiusAccountingserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    server: str  # Server CN domain name or IP address. | MaxLen: 63
+    secret: str  # Secret key. | MaxLen: 128
+    port: int  # RADIUS accounting port number. | Default: 0 | Min: 0 | Max: 65535
+    source_ip: str  # Source IP address for communications to the RADIUS | MaxLen: 63
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -84,39 +129,11 @@ class RadiusPayload(TypedDict, total=False):
     rsso_flush_ip_session: Literal["enable", "disable"]  # Enable/disable flushing user IP sessions on RADIUS | Default: disable
     rsso_ep_one_ip_only: Literal["enable", "disable"]  # Enable/disable the replacement of old IP addresses | Default: disable
     delimiter: Literal["plus", "comma"]  # Configure delimiter to be used for separating prof | Default: plus
-    accounting_server: list[dict[str, Any]]  # Additional accounting servers.
+    accounting_server: list[RadiusAccountingserverItem]  # Additional accounting servers.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class RadiusClassItem(TypedDict):
-    """Type hints for class table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Class name. | MaxLen: 79
-
-
-class RadiusAccountingserverItem(TypedDict):
-    """Type hints for accounting-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Status. | Default: disable
-    server: str  # Server CN domain name or IP address. | MaxLen: 63
-    secret: str  # Secret key. | MaxLen: 128
-    port: int  # RADIUS accounting port number. | Default: 0 | Min: 0 | Max: 65535
-    source_ip: str  # Source IP address for communications to the RADIUS | MaxLen: 63
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class RadiusClassObject:
@@ -404,6 +421,9 @@ class RadiusObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -693,7 +713,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RadiusObject: ...
     
@@ -761,7 +781,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -830,7 +850,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -897,7 +917,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -966,7 +986,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RadiusObject: ...
     
@@ -1034,7 +1054,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1103,7 +1123,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1170,7 +1190,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1272,7 +1292,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

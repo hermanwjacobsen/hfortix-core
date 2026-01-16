@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AutomationDestinationDestinationItem(TypedDict, total=False):
+    """Type hints for destination table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AutomationDestinationDestinationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Destination. | MaxLen: 31
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,22 +41,12 @@ class AutomationDestinationPayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     type: Literal["fortigate", "ha-cluster"]  # Destination type. | Default: fortigate
-    destination: list[dict[str, Any]]  # Destinations.
+    destination: list[AutomationDestinationDestinationItem]  # Destinations.
     ha_group_id: int  # Cluster group ID set for this destination | Default: 0 | Min: 0 | Max: 255
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AutomationDestinationDestinationItem(TypedDict):
-    """Type hints for destination table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Destination. | MaxLen: 31
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AutomationDestinationDestinationObject:
@@ -103,6 +115,9 @@ class AutomationDestinationObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -334,7 +349,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationDestinationObject: ...
@@ -345,7 +360,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -357,7 +372,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -367,7 +382,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -379,7 +394,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationDestinationObject: ...
@@ -390,7 +405,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -402,7 +417,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -412,7 +427,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -457,7 +472,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

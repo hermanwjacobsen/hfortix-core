@@ -2,53 +2,51 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class WebPortalBookmarkPayload(TypedDict, total=False):
-    """
-    Type hints for ztna/web_portal_bookmark payload fields.
-    
-    Configure ztna web-portal bookmark.
-    
-    **Usage:**
-        payload: WebPortalBookmarkPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Bookmark name. | MaxLen: 35
-    users: list[dict[str, Any]]  # User name.
-    groups: list[dict[str, Any]]  # User groups.
-    bookmarks: list[dict[str, Any]]  # Bookmark table.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class WebPortalBookmarkUsersItem(TypedDict):
+class WebPortalBookmarkUsersItem(TypedDict, total=False):
     """Type hints for users table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WebPortalBookmarkUsersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # User name. | MaxLen: 79
 
 
-class WebPortalBookmarkGroupsItem(TypedDict):
+class WebPortalBookmarkGroupsItem(TypedDict, total=False):
     """Type hints for groups table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WebPortalBookmarkGroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Group name. | MaxLen: 79
 
 
-class WebPortalBookmarkBookmarksItem(TypedDict):
+class WebPortalBookmarkBookmarksItem(TypedDict, total=False):
     """Type hints for bookmarks table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WebPortalBookmarkBookmarksItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Bookmark name. | MaxLen: 35
@@ -75,7 +73,31 @@ class WebPortalBookmarkBookmarksItem(TypedDict):
     vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]  # Keyboard layout. | Default: default
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class WebPortalBookmarkPayload(TypedDict, total=False):
+    """
+    Type hints for ztna/web_portal_bookmark payload fields.
+    
+    Configure ztna web-portal bookmark.
+    
+    **Usage:**
+        payload: WebPortalBookmarkPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Bookmark name. | MaxLen: 35
+    users: list[WebPortalBookmarkUsersItem]  # User name.
+    groups: list[WebPortalBookmarkGroupsItem]  # User groups.
+    bookmarks: list[WebPortalBookmarkBookmarksItem]  # Bookmark table.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WebPortalBookmarkUsersObject:
@@ -250,6 +272,9 @@ class WebPortalBookmarkObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -480,9 +505,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebPortalBookmarkObject: ...
     
@@ -491,9 +516,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -503,9 +528,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,9 +538,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -525,9 +550,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebPortalBookmarkObject: ...
     
@@ -536,9 +561,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -548,9 +573,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -558,9 +583,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -603,9 +628,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

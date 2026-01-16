@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AnqpVenueUrlValuelistItem(TypedDict, total=False):
+    """Type hints for value-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AnqpVenueUrlValuelistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # URL index. | Default: 0 | Min: 1 | Max: 10
+    number: int  # Venue number. | Default: 0 | Min: 0 | Max: 255
+    value: str  # Venue URL value. | MaxLen: 254
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,23 +42,11 @@ class AnqpVenueUrlPayload(TypedDict, total=False):
         }
     """
     name: str  # Name of venue url. | MaxLen: 35
-    value_list: list[dict[str, Any]]  # URL list.
+    value_list: list[AnqpVenueUrlValuelistItem]  # URL list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AnqpVenueUrlValuelistItem(TypedDict):
-    """Type hints for value-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # URL index. | Default: 0 | Min: 1 | Max: 10
-    number: int  # Venue number. | Default: 0 | Min: 0 | Max: 255
-    value: str  # Venue URL value. | MaxLen: 254
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AnqpVenueUrlValuelistObject:
@@ -101,6 +113,9 @@ class AnqpVenueUrlObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -331,7 +346,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpVenueUrlObject: ...
     
@@ -340,7 +355,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -350,7 +365,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +383,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpVenueUrlObject: ...
     
@@ -377,7 +392,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -387,7 +402,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +453,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

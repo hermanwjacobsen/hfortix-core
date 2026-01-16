@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AccessProxyVirtualHostSslcertificateItem(TypedDict, total=False):
+    """Type hints for ssl-certificate table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessProxyVirtualHostSslcertificateItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Certificate list. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,7 +45,7 @@ class AccessProxyVirtualHostPayload(TypedDict, total=False):
         }
     """
     name: str  # Virtual host name. | MaxLen: 79
-    ssl_certificate: list[dict[str, Any]]  # SSL certificates for this host.
+    ssl_certificate: list[AccessProxyVirtualHostSslcertificateItem]  # SSL certificates for this host.
     host: str  # The host name. | MaxLen: 79
     host_type: Literal["sub-string", "wildcard"]  # Type of host pattern. | Default: sub-string
     replacemsg_group: str  # Access-proxy-virtual-host replacement message over | MaxLen: 35
@@ -31,19 +53,9 @@ class AccessProxyVirtualHostPayload(TypedDict, total=False):
     user_agent_detect: Literal["disable", "enable"]  # Enable/disable detecting device type by HTTP user- | Default: enable
     client_cert: Literal["disable", "enable"]  # Enable/disable requesting client certificate. | Default: enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AccessProxyVirtualHostSslcertificateItem(TypedDict):
-    """Type hints for ssl-certificate table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Certificate list. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AccessProxyVirtualHostSslcertificateObject:
@@ -124,6 +136,9 @@ class AccessProxyVirtualHostObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -354,7 +369,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -369,7 +384,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -385,7 +400,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -399,7 +414,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -415,7 +430,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -430,7 +445,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -446,7 +461,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -460,7 +475,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -509,7 +524,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_certificate: str | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,

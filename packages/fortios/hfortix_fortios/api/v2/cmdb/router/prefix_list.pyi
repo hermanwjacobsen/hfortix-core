@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class PrefixListRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: PrefixListRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["permit", "deny"]  # Permit or deny this IP address and netmask prefix. | Default: permit
+    prefix: str  # IPv4 prefix to define regular filter criteria, suc | Default: 0.0.0.0 0.0.0.0
+    ge: int  # Minimum prefix length to be matched (0 - 32). | Min: 0 | Max: 32
+    le: int  # Maximum prefix length to be matched (0 - 32). | Min: 0 | Max: 32
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,25 +45,11 @@ class PrefixListPayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     comments: str  # Comment. | MaxLen: 127
-    rule: list[dict[str, Any]]  # IPv4 prefix list rule.
+    rule: list[PrefixListRuleItem]  # IPv4 prefix list rule.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class PrefixListRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: Literal["permit", "deny"]  # Permit or deny this IP address and netmask prefix. | Default: permit
-    prefix: str  # IPv4 prefix to define regular filter criteria, suc | Default: 0.0.0.0 0.0.0.0
-    ge: int  # Minimum prefix length to be matched (0 - 32). | Min: 0 | Max: 32
-    le: int  # Maximum prefix length to be matched (0 - 32). | Min: 0 | Max: 32
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class PrefixListRuleObject:
@@ -111,6 +123,9 @@ class PrefixListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -342,7 +357,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixListObject: ...
     
@@ -352,7 +367,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -372,7 +387,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixListObject: ...
     
@@ -393,7 +408,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,7 +472,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

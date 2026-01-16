@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ExtcommunityListRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ExtcommunityListRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["deny", "permit"]  # Permit or deny route-based operations, based on th
+    regexp: str  # Ordered list of EXTENDED COMMUNITY attributes as a | MaxLen: 255
+    type: Literal["rt", "soo"]  # Type of extended community. | Default: rt
+    match: str  # Extended community specifications for matching a r | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,25 +45,11 @@ class ExtcommunityListPayload(TypedDict, total=False):
     """
     name: str  # Extended community list name. | MaxLen: 35
     type: Literal["standard", "expanded"]  # Extended community list type | Default: standard
-    rule: list[dict[str, Any]]  # Extended community list rule.
+    rule: list[ExtcommunityListRuleItem]  # Extended community list rule.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ExtcommunityListRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: Literal["deny", "permit"]  # Permit or deny route-based operations, based on th
-    regexp: str  # Ordered list of EXTENDED COMMUNITY attributes as a | MaxLen: 255
-    type: Literal["rt", "soo"]  # Type of extended community. | Default: rt
-    match: str  # Extended community specifications for matching a r | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ExtcommunityListRuleObject:
@@ -111,6 +123,9 @@ class ExtcommunityListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -342,7 +357,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExtcommunityListObject: ...
     
@@ -352,7 +367,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -372,7 +387,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExtcommunityListObject: ...
     
@@ -393,7 +408,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,7 +472,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

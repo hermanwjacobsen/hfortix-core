@@ -2,7 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DosPolicySrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DosPolicySrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class DosPolicyDstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DosPolicyDstaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class DosPolicyServiceItem(TypedDict, total=False):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DosPolicyServiceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+class DosPolicyAnomalyItem(TypedDict, total=False):
+    """Type hints for anomaly table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DosPolicyAnomalyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Anomaly name. | MaxLen: 63
+    status: Literal["disable", "enable"]  # Enable/disable this anomaly. | Default: disable
+    log: Literal["enable", "disable"]  # Enable/disable anomaly logging. | Default: disable
+    action: Literal["pass", "block"]  # Action taken when the threshold is reached. | Default: pass
+    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
+    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
+    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
+    threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
+    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,62 +104,14 @@ class DosPolicyPayload(TypedDict, total=False):
     name: str  # Policy name. | MaxLen: 35
     comments: str  # Comment. | MaxLen: 1023
     interface: str  # Incoming interface name from available interfaces. | MaxLen: 35
-    srcaddr: list[dict[str, Any]]  # Source address name from available addresses.
-    dstaddr: list[dict[str, Any]]  # Destination address name from available addresses.
-    service: list[dict[str, Any]]  # Service object from available options.
-    anomaly: list[dict[str, Any]]  # Anomaly name.
+    srcaddr: list[DosPolicySrcaddrItem]  # Source address name from available addresses.
+    dstaddr: list[DosPolicyDstaddrItem]  # Destination address name from available addresses.
+    service: list[DosPolicyServiceItem]  # Service object from available options.
+    anomaly: list[DosPolicyAnomalyItem]  # Anomaly name.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DosPolicySrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class DosPolicyDstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class DosPolicyServiceItem(TypedDict):
-    """Type hints for service table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Service name. | MaxLen: 79
-
-
-class DosPolicyAnomalyItem(TypedDict):
-    """Type hints for anomaly table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Anomaly name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Enable/disable this anomaly. | Default: disable
-    log: Literal["enable", "disable"]  # Enable/disable anomaly logging. | Default: disable
-    action: Literal["pass", "block"]  # Action taken when the threshold is reached. | Default: pass
-    quarantine: Literal["none", "attacker"]  # Quarantine method. | Default: none
-    quarantine_expiry: str  # Duration of quarantine. | Default: 5m
-    quarantine_log: Literal["disable", "enable"]  # Enable/disable quarantine logging. | Default: enable
-    threshold: int  # Anomaly threshold. Number of detected instances | Default: 0 | Min: 1 | Max: 2147483647
-    threshold(default): int  # Number of detected instances | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DosPolicySrcaddrObject:
@@ -280,6 +307,9 @@ class DosPolicyObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -514,10 +544,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DosPolicyObject: ...
     
@@ -530,10 +560,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -547,10 +577,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -562,10 +592,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -579,10 +609,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DosPolicyObject: ...
     
@@ -595,10 +625,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -612,10 +642,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -627,10 +657,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -677,10 +707,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

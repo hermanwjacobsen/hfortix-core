@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InternetServiceSubappSubappItem(TypedDict, total=False):
+    """Type hints for sub-app table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceSubappSubappItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Subapp ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,21 +40,11 @@ class InternetServiceSubappPayload(TypedDict, total=False):
         }
     """
     id: int  # Internet Service main ID. | Default: 0 | Min: 0 | Max: 4294967295
-    sub_app: list[dict[str, Any]]  # Subapp number list.
+    sub_app: list[InternetServiceSubappSubappItem]  # Subapp number list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InternetServiceSubappSubappItem(TypedDict):
-    """Type hints for sub-app table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Subapp ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InternetServiceSubappSubappObject:
@@ -95,6 +107,9 @@ class InternetServiceSubappObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -325,7 +340,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceSubappObject: ...
     
@@ -334,7 +349,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -344,7 +359,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,7 +367,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -362,7 +377,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceSubappObject: ...
     
@@ -371,7 +386,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +396,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -432,7 +447,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | None = ...,
+        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

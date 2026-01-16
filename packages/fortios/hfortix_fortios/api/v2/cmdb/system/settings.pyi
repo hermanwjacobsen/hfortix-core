@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingsGuidefaultpolicycolumnsItem(TypedDict, total=False):
+    """Type hints for gui-default-policy-columns table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingsGuidefaultpolicycolumnsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Select column name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -58,7 +80,7 @@ class SettingsPayload(TypedDict, total=False):
     dhcp_server_ip: list[dict[str, Any]]  # DHCP Server IPv4 address.
     dhcp6_server_ip: list[dict[str, Any]]  # DHCPv6 server IPv6 address.
     central_nat: Literal["enable", "disable"]  # Enable/disable central NAT. | Default: disable
-    gui_default_policy_columns: list[dict[str, Any]]  # Default columns to display for policy lists on GUI
+    gui_default_policy_columns: list[SettingsGuidefaultpolicycolumnsItem]  # Default columns to display for policy lists on GUI
     lldp_reception: Literal["enable", "disable", "global"]  # Enable/disable Link Layer Discovery Protocol | Default: global
     lldp_transmission: Literal["enable", "disable", "global"]  # Enable/disable Link Layer Discovery Protocol | Default: global
     link_down_access: Literal["enable", "disable"]  # Enable/disable link down access traffic. | Default: enable
@@ -165,19 +187,9 @@ class SettingsPayload(TypedDict, total=False):
     internet_service_database_cache: Literal["disable", "enable"]  # Enable/disable Internet Service database caching. | Default: disable
     internet_service_app_ctrl_size: int  # Maximum number of tuple entries | Default: 32768 | Min: 0 | Max: 4294967295
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingsGuidefaultpolicycolumnsItem(TypedDict):
-    """Type hints for gui-default-policy-columns table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Select column name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingsGuidefaultpolicycolumnsObject:
@@ -660,6 +672,9 @@ class SettingsObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -924,7 +939,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1073,7 +1088,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1223,7 +1238,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1371,7 +1386,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1525,7 +1540,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,

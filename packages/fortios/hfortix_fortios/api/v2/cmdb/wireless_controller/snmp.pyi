@@ -2,7 +2,62 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SnmpCommunityItem(TypedDict, total=False):
+    """Type hints for community table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SnmpCommunityItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Community ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Community name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Enable/disable this SNMP community. | Default: enable
+    query_v1_status: Literal["enable", "disable"]  # Enable/disable SNMP v1 queries. | Default: enable
+    query_v2c_status: Literal["enable", "disable"]  # Enable/disable SNMP v2c queries. | Default: enable
+    trap_v1_status: Literal["enable", "disable"]  # Enable/disable SNMP v1 traps. | Default: enable
+    trap_v2c_status: Literal["enable", "disable"]  # Enable/disable SNMP v2c traps. | Default: enable
+    hosts: str  # Configure IPv4 SNMP managers (hosts).
+    hosts6: str  # Configure IPv6 SNMP managers (hosts).
+
+
+class SnmpUserItem(TypedDict, total=False):
+    """Type hints for user table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SnmpUserItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # SNMP user name. | MaxLen: 32
+    status: Literal["enable", "disable"]  # SNMP user enable. | Default: enable
+    queries: Literal["enable", "disable"]  # Enable/disable SNMP queries for this user. | Default: enable
+    trap_status: Literal["enable", "disable"]  # Enable/disable traps for this SNMP user. | Default: disable
+    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]  # Security level for message authentication and encr | Default: no-auth-no-priv
+    auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"]  # Authentication protocol. | Default: sha
+    auth_pwd: str  # Password for authentication protocol. | MaxLen: 128
+    priv_proto: Literal["aes", "des", "aes256", "aes256cisco"]  # Privacy (encryption) protocol. | Default: aes
+    priv_pwd: str  # Password for privacy (encryption) protocol. | MaxLen: 128
+    notify_hosts: str  # Configure SNMP User Notify Hosts.
+    notify_hosts6: str  # Configure IPv6 SNMP User Notify Hosts.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,50 +76,12 @@ class SnmpPayload(TypedDict, total=False):
     contact_info: str  # Contact Information. | MaxLen: 31
     trap_high_cpu_threshold: int  # CPU usage when trap is sent. | Default: 80 | Min: 10 | Max: 100
     trap_high_mem_threshold: int  # Memory usage when trap is sent. | Default: 80 | Min: 10 | Max: 100
-    community: list[dict[str, Any]]  # SNMP Community Configuration.
-    user: list[dict[str, Any]]  # SNMP User Configuration.
+    community: list[SnmpCommunityItem]  # SNMP Community Configuration.
+    user: list[SnmpUserItem]  # SNMP User Configuration.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SnmpCommunityItem(TypedDict):
-    """Type hints for community table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Community ID. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # Community name. | MaxLen: 35
-    status: Literal["enable", "disable"]  # Enable/disable this SNMP community. | Default: enable
-    query_v1_status: Literal["enable", "disable"]  # Enable/disable SNMP v1 queries. | Default: enable
-    query_v2c_status: Literal["enable", "disable"]  # Enable/disable SNMP v2c queries. | Default: enable
-    trap_v1_status: Literal["enable", "disable"]  # Enable/disable SNMP v1 traps. | Default: enable
-    trap_v2c_status: Literal["enable", "disable"]  # Enable/disable SNMP v2c traps. | Default: enable
-    hosts: str  # Configure IPv4 SNMP managers (hosts).
-    hosts6: str  # Configure IPv6 SNMP managers (hosts).
-
-
-class SnmpUserItem(TypedDict):
-    """Type hints for user table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # SNMP user name. | MaxLen: 32
-    status: Literal["enable", "disable"]  # SNMP user enable. | Default: enable
-    queries: Literal["enable", "disable"]  # Enable/disable SNMP queries for this user. | Default: enable
-    trap_status: Literal["enable", "disable"]  # Enable/disable traps for this SNMP user. | Default: disable
-    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]  # Security level for message authentication and encr | Default: no-auth-no-priv
-    auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"]  # Authentication protocol. | Default: sha
-    auth_pwd: str  # Password for authentication protocol. | MaxLen: 128
-    priv_proto: Literal["aes", "des", "aes256", "aes256cisco"]  # Privacy (encryption) protocol. | Default: aes
-    priv_pwd: str  # Password for privacy (encryption) protocol. | MaxLen: 128
-    notify_hosts: str  # Configure SNMP User Notify Hosts.
-    notify_hosts6: str  # Configure IPv6 SNMP User Notify Hosts.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SnmpCommunityObject:
@@ -207,6 +224,9 @@ class SnmpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -439,8 +459,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | None = ...,
+        community: str | list[SnmpCommunityItem] | None = ...,
+        user: str | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnmpObject: ...
     
@@ -452,8 +472,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | None = ...,
+        community: str | list[SnmpCommunityItem] | None = ...,
+        user: str | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,8 +486,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | None = ...,
+        community: str | list[SnmpCommunityItem] | None = ...,
+        user: str | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -478,8 +498,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | None = ...,
+        community: str | list[SnmpCommunityItem] | None = ...,
+        user: str | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,8 +516,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | None = ...,
+        community: str | list[SnmpCommunityItem] | None = ...,
+        user: str | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

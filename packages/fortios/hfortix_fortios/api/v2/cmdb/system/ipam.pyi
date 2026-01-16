@@ -2,7 +2,53 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class IpamPoolsItem(TypedDict, total=False):
+    """Type hints for pools table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IpamPoolsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # IPAM pool name. | MaxLen: 79
+    description: str  # Description. | MaxLen: 127
+    subnet: str  # Configure IPAM pool subnet, Class A - Class B subn | Default: 0.0.0.0 0.0.0.0
+    exclude: str  # Configure pool exclude subnets.
+
+
+class IpamRulesItem(TypedDict, total=False):
+    """Type hints for rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: IpamRulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # IPAM rule name. | MaxLen: 79
+    description: str  # Description. | MaxLen: 127
+    device: str  # Configure serial number or wildcard of FortiGate t
+    interface: str  # Configure name or wildcard of interface to match.
+    role: Literal["any", "lan", "wan", "dmz", "undefined"]  # Configure role of interface to match. | Default: any
+    pool: str  # Configure name of IPAM pool to use.
+    dhcp: Literal["enable", "disable"]  # Enable/disable DHCP server for matching IPAM inter | Default: disable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,41 +70,12 @@ class IpamPayload(TypedDict, total=False):
     manage_lan_addresses: Literal["disable", "enable"]  # Enable/disable default management of LAN interface | Default: enable
     manage_lan_extension_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiExtender | Default: enable
     manage_ssid_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiAP SSID | Default: enable
-    pools: list[dict[str, Any]]  # Configure IPAM pools.
-    rules: list[dict[str, Any]]  # Configure IPAM allocation rules.
+    pools: list[IpamPoolsItem]  # Configure IPAM pools.
+    rules: list[IpamRulesItem]  # Configure IPAM allocation rules.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class IpamPoolsItem(TypedDict):
-    """Type hints for pools table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # IPAM pool name. | MaxLen: 79
-    description: str  # Description. | MaxLen: 127
-    subnet: str  # Configure IPAM pool subnet, Class A - Class B subn | Default: 0.0.0.0 0.0.0.0
-    exclude: str  # Configure pool exclude subnets.
-
-
-class IpamRulesItem(TypedDict):
-    """Type hints for rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # IPAM rule name. | MaxLen: 79
-    description: str  # Description. | MaxLen: 127
-    device: str  # Configure serial number or wildcard of FortiGate t
-    interface: str  # Configure name or wildcard of interface to match.
-    role: Literal["any", "lan", "wan", "dmz", "undefined"]  # Configure role of interface to match. | Default: any
-    pool: str  # Configure name of IPAM pool to use.
-    dhcp: Literal["enable", "disable"]  # Enable/disable DHCP server for matching IPAM inter | Default: disable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class IpamPoolsObject:
@@ -192,6 +209,9 @@ class IpamObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -427,8 +447,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[IpamPoolsItem] | None = ...,
+        rules: str | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
@@ -443,8 +463,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[IpamPoolsItem] | None = ...,
+        rules: str | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -460,8 +480,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[IpamPoolsItem] | None = ...,
+        rules: str | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,8 +495,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[IpamPoolsItem] | None = ...,
+        rules: str | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,8 +516,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[IpamPoolsItem] | None = ...,
+        rules: str | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

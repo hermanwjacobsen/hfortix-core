@@ -2,7 +2,51 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileIcapheadersItem(TypedDict, total=False):
+    """Type hints for icap-headers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileIcapheadersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # HTTP forwarded header ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # HTTP forwarded header name. | MaxLen: 79
+    content: str  # HTTP header content. | MaxLen: 255
+    base64_encoding: Literal["disable", "enable"]  # Enable/disable use of base64 encoding of HTTP cont | Default: disable
+
+
+class ProfileRespmodforwardrulesItem(TypedDict, total=False):
+    """Type hints for respmod-forward-rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileRespmodforwardrulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 63
+    host: str  # Address object for the host. | MaxLen: 79
+    header_group: str  # HTTP header group.
+    action: Literal["forward", "bypass"]  # Action to be taken for ICAP server. | Default: forward
+    http_resp_status_code: str  # HTTP response status code.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -53,39 +97,12 @@ class ProfilePayload(TypedDict, total=False):
     extension_feature: Literal["scan-progress"]  # Enable/disable ICAP extension features.
     scan_progress_interval: int  # Scan progress interval value. | Default: 10 | Min: 5 | Max: 30
     timeout: int  # Time (in seconds) that ICAP client waits for the r | Default: 30 | Min: 30 | Max: 3600
-    icap_headers: list[dict[str, Any]]  # Configure ICAP forwarded request headers.
-    respmod_forward_rules: list[dict[str, Any]]  # ICAP response mode forward rules.
+    icap_headers: list[ProfileIcapheadersItem]  # Configure ICAP forwarded request headers.
+    respmod_forward_rules: list[ProfileRespmodforwardrulesItem]  # ICAP response mode forward rules.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileIcapheadersItem(TypedDict):
-    """Type hints for icap-headers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # HTTP forwarded header ID. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # HTTP forwarded header name. | MaxLen: 79
-    content: str  # HTTP header content. | MaxLen: 255
-    base64_encoding: Literal["disable", "enable"]  # Enable/disable use of base64 encoding of HTTP cont | Default: disable
-
-
-class ProfileRespmodforwardrulesItem(TypedDict):
-    """Type hints for respmod-forward-rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 63
-    host: str  # Address object for the host. | MaxLen: 79
-    header_group: str  # HTTP header group.
-    action: Literal["forward", "bypass"]  # Action to be taken for ICAP server. | Default: forward
-    http_resp_status_code: str  # HTTP response status code.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileIcapheadersObject:
@@ -281,6 +298,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -539,8 +559,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -577,8 +597,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -616,8 +636,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -653,8 +673,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -692,8 +712,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -730,8 +750,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -769,8 +789,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -806,8 +826,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -878,8 +898,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,49 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class QosMapDscpexceptItem(TypedDict, total=False):
+    """Type hints for dscp-except table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosMapDscpexceptItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # DSCP exception index. | Default: 0 | Min: 1 | Max: 21
+    dscp: int  # DSCP value. | Default: 0 | Min: 0 | Max: 63
+    up: int  # User priority. | Default: 0 | Min: 0 | Max: 7
+
+
+class QosMapDscprangeItem(TypedDict, total=False):
+    """Type hints for dscp-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosMapDscprangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # DSCP range index. | Default: 0 | Min: 1 | Max: 8
+    up: int  # User priority. | Default: 0 | Min: 0 | Max: 7
+    low: int  # DSCP low value. | Default: 255 | Min: 0 | Max: 63
+    high: int  # DSCP high value. | Default: 255 | Min: 0 | Max: 63
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,37 +60,12 @@ class QosMapPayload(TypedDict, total=False):
         }
     """
     name: str  # QOS-MAP name. | MaxLen: 35
-    dscp_except: list[dict[str, Any]]  # Differentiated Services Code Point (DSCP) exceptio
-    dscp_range: list[dict[str, Any]]  # Differentiated Services Code Point (DSCP) ranges.
+    dscp_except: list[QosMapDscpexceptItem]  # Differentiated Services Code Point (DSCP) exceptio
+    dscp_range: list[QosMapDscprangeItem]  # Differentiated Services Code Point (DSCP) ranges.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class QosMapDscpexceptItem(TypedDict):
-    """Type hints for dscp-except table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # DSCP exception index. | Default: 0 | Min: 1 | Max: 21
-    dscp: int  # DSCP value. | Default: 0 | Min: 0 | Max: 63
-    up: int  # User priority. | Default: 0 | Min: 0 | Max: 7
-
-
-class QosMapDscprangeItem(TypedDict):
-    """Type hints for dscp-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # DSCP range index. | Default: 0 | Min: 1 | Max: 8
-    up: int  # User priority. | Default: 0 | Min: 0 | Max: 7
-    low: int  # DSCP low value. | Default: 255 | Min: 0 | Max: 63
-    high: int  # DSCP high value. | Default: 255 | Min: 0 | Max: 63
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class QosMapDscpexceptObject:
@@ -156,6 +173,9 @@ class QosMapObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -386,8 +406,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QosMapObject: ...
     
@@ -396,8 +416,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,8 +427,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,8 +436,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,8 +447,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QosMapObject: ...
     
@@ -437,8 +457,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,8 +468,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,8 +477,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -501,8 +521,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

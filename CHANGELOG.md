@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.88] - 2026-01-16
+
+### Fixed - **Generator: Stub File Response Properties**
+
+- ✅ **Added missing response properties**: Endpoint object stubs now include `http_status_code`, `http_method`, and `http_response_time`
+- ✅ **Pylance support**: `result.http_status_code` now recognized on all endpoint objects
+
+### Added - **Generator: Nested Table Field Autocomplete**
+
+- ✅ **Typed table field items**: Table fields (like `entries`, `members`, etc.) now use typed TypedDicts
+- ✅ **IDE autocomplete for nested fields**: When writing `entries=[{"status": ...}]`, Pylance shows all valid nested fields
+- ✅ **TypedDicts moved to top of stub**: Nested TypedDicts now defined before Payload class for proper type resolution
+
+**Before:**
+```python
+entries: str | list[str] | list[dict[str, Any]] | None  # No autocomplete for nested fields
+```
+
+**After:**
+```python
+entries: str | list[IptrustEntriesItem] | None  # Full autocomplete with Literal types!
+```
+
+---
+
 ## [0.5.87] - 2026-01-16
 
 ### Fixed - **Generator: Stub Files and Pydantic Models**

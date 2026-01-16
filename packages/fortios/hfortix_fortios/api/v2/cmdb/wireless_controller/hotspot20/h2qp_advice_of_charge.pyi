@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class H2qpAdviceOfChargeAoclistItem(TypedDict, total=False):
+    """Type hints for aoc-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: H2qpAdviceOfChargeAoclistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Advice of charge ID. | MaxLen: 35
+    type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]  # Usage charge type. | Default: time-based
+    nai_realm_encoding: str  # NAI realm encoding. | MaxLen: 1
+    nai_realm: str  # NAI realm list name. | MaxLen: 255
+    plan_info: str  # Plan info.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,25 +44,11 @@ class H2qpAdviceOfChargePayload(TypedDict, total=False):
         }
     """
     name: str  # Plan name. | MaxLen: 35
-    aoc_list: list[dict[str, Any]]  # AOC list.
+    aoc_list: list[H2qpAdviceOfChargeAoclistItem]  # AOC list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class H2qpAdviceOfChargeAoclistItem(TypedDict):
-    """Type hints for aoc-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Advice of charge ID. | MaxLen: 35
-    type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]  # Usage charge type. | Default: time-based
-    nai_realm_encoding: str  # NAI realm encoding. | MaxLen: 1
-    nai_realm: str  # NAI realm list name. | MaxLen: 255
-    plan_info: str  # Plan info.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class H2qpAdviceOfChargeAoclistObject:
@@ -107,6 +119,9 @@ class H2qpAdviceOfChargeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -337,7 +352,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
     
@@ -346,7 +361,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -356,7 +371,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,7 +379,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
     
@@ -383,7 +398,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +408,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +459,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

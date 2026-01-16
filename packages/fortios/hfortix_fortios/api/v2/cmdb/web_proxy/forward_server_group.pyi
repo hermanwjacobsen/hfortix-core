@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ForwardServerGroupServerlistItem(TypedDict, total=False):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ForwardServerGroupServerlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Forward server name. | MaxLen: 63
+    weight: int  # Optionally assign a weight of the forwarding serve | Default: 10 | Min: 1 | Max: 100
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,22 +44,11 @@ class ForwardServerGroupPayload(TypedDict, total=False):
     affinity: Literal["enable", "disable"]  # Enable/disable affinity, attaching a source-ip's t | Default: enable
     ldb_method: Literal["weighted", "least-session", "active-passive"]  # Load balance method: weighted or least-session. | Default: weighted
     group_down_option: Literal["block", "pass"]  # Action to take when all of the servers in the forw | Default: block
-    server_list: list[dict[str, Any]]  # Add web forward servers to a list to form a server
+    server_list: list[ForwardServerGroupServerlistItem]  # Add web forward servers to a list to form a server
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ForwardServerGroupServerlistItem(TypedDict):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Forward server name. | MaxLen: 63
-    weight: int  # Optionally assign a weight of the forwarding serve | Default: 10 | Min: 1 | Max: 100
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ForwardServerGroupServerlistObject:
@@ -110,6 +122,9 @@ class ForwardServerGroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -343,7 +358,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ForwardServerGroupObject: ...
     
@@ -355,7 +370,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +383,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -379,7 +394,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ForwardServerGroupObject: ...
     
@@ -404,7 +419,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -417,7 +432,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +443,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,7 +489,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
