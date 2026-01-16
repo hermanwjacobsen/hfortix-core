@@ -504,7 +504,7 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
         """
         # Use direct request with silent error handling to avoid logging 404s
         # This is expected behavior for exists() - 404 just means "doesn't exist"
-        endpoint = "/switch_controller/traffic_sniffer"
+        endpoint = "/switch-controller/traffic-sniffer"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
         # Make request with silent=True to suppress 404 error logging

@@ -211,7 +211,7 @@ class HistoricDailyRemoteLogs(CRUDEndpoint, MetadataMixin):
         """
         # Use direct request with silent error handling to avoid logging 404s
         # This is expected behavior for exists() - 404 just means "doesn't exist"
-        endpoint = "/log/historic_daily_remote_logs"
+        endpoint = "/log/historic-daily-remote-logs"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
         # Make request with silent=True to suppress 404 error logging

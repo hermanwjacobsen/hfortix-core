@@ -508,7 +508,7 @@ class FtgdLocalRating(CRUDEndpoint, MetadataMixin):
         """
         # Use direct request with silent error handling to avoid logging 404s
         # This is expected behavior for exists() - 404 just means "doesn't exist"
-        endpoint = "/webfilter/ftgd_local_rating"
+        endpoint = "/webfilter/ftgd-local-rating"
         endpoint = f"{endpoint}/{quote_path_param(url)}"
         
         # Make request with silent=True to suppress 404 error logging

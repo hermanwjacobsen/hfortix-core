@@ -5,13 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.87] - 2026-01-16
 
 ### Fixed - **Generator: Stub Files and Pydantic Models**
 
 - ✅ **Helper stub exports**: Added `DEPRECATED_FIELDS` and `REQUIRED_FIELDS` to validator stub template
 - ✅ **Core stub signature**: Fixed `check_deprecated_fields()` signature in `hfortix_core/__init__.pyi` to match implementation
 - ✅ **Pydantic model return type**: Fixed `from_fortios_response()` return type from empty string to correct class name
+
+### Fixed - **Test Generator: HTTP Methods and Parameters**
+
+- ✅ **HTTP methods extraction**: Test generator now correctly reads `http_methods` from schema top-level (was looking in `_metadata`)
+- ✅ **POST-only endpoints**: Endpoints like `system/os/reboot` that only support POST no longer generate GET tests
+- ✅ **Removed unsupported `format` parameter**: Test template was using `format` parameter directly, but endpoint implementations only accept it via `payload_dict`
+- ✅ **Regenerated all 1066 tests**: Test files now use only supported parameters and correct HTTP methods
+
+### Fixed - **Generator: exists() Method API Path**
+
+- ✅ **API path fix**: `exists()` method now uses `schema.api_path` (with hyphens) instead of `schema.path` (with underscores)
+- ✅ **Example**: `/firewall/ssl-ssh-profile` instead of `/firewall/ssl_ssh_profile`
+- ✅ **Impact**: All `exists()` calls now correctly query the FortiOS API
 
 ---
 
