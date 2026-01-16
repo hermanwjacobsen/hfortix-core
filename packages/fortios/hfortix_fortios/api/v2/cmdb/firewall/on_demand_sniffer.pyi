@@ -13,9 +13,12 @@ class OnDemandSnifferHostsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - host: str
+    
     **Example:**
         entry: OnDemandSnifferHostsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class OnDemandSnifferPortsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - port: int
+    
     **Example:**
         entry: OnDemandSnifferPortsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +49,12 @@ class OnDemandSnifferProtocolsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - protocol: int
+    
     **Example:**
         entry: OnDemandSnifferProtocolsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -98,6 +107,14 @@ class OnDemandSnifferHostsObject:
     # IPv4 or IPv6 host. | MaxLen: 255
     host: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -130,6 +147,14 @@ class OnDemandSnifferPortsObject:
     # Port to filter in this traffic sniffer. | Default: 0 | Min: 1 | Max: 65536
     port: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -161,6 +186,14 @@ class OnDemandSnifferProtocolsObject:
     
     # Integer value for the protocol type as defined by IANA | Default: 0 | Min: 0 | Max: 255
     protocol: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

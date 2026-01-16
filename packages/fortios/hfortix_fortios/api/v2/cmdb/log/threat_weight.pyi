@@ -13,9 +13,14 @@ class ThreatWeightWebItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - category: int
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
     **Example:**
         entry: ThreatWeightWebItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -30,9 +35,14 @@ class ThreatWeightGeolocationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - country: str
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
     **Example:**
         entry: ThreatWeightGeolocationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -47,9 +57,14 @@ class ThreatWeightApplicationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - category: int
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
     **Example:**
         entry: ThreatWeightApplicationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -106,6 +121,14 @@ class ThreatWeightWebObject:
     # Threat weight score for web category filtering matches. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -142,6 +165,14 @@ class ThreatWeightGeolocationObject:
     # Threat weight score for Geolocation-based events. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -177,6 +208,14 @@ class ThreatWeightApplicationObject:
     category: int
     # Threat weight score for Application events. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

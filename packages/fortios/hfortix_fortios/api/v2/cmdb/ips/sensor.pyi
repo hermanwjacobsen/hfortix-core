@@ -13,9 +13,36 @@ class SensorEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - rule: str
+        - location: str
+        - severity: str
+        - protocol: str
+        - os: str
+        - application: str
+        - default_action: "all" | "pass" | "block"
+        - default_status: "all" | "enable" | "disable"
+        - cve: str
+        - vuln_type: str
+        - last_modified: str
+        - status: "disable" | "enable" | "default"
+        - log: "disable" | "enable"
+        - log_packet: "disable" | "enable"
+        - log_attack_context: "disable" | "enable"
+        - action: "pass" | "block" | "reset" | "default"
+        - rate_count: int
+        - rate_duration: int
+        - rate_mode: "periodical" | "continuous"
+        - rate_track: "none" | "src-ip" | "dest-ip" | "dhcp-client-mac" | "dns-domain"
+        - exempt_ip: str
+        - quarantine: "none" | "attacker"
+        - quarantine_expiry: str
+        - quarantine_log: "disable" | "enable"
+    
     **Example:**
         entry: SensorEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -138,6 +165,14 @@ class SensorEntriesObject:
     quarantine_expiry: str
     # Enable/disable quarantine logging. | Default: enable
     quarantine_log: Literal["disable", "enable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

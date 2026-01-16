@@ -13,9 +13,17 @@ class IconIconlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - lang: str
+        - file: str
+        - type: "bmp" | "gif" | "jpeg" | "png" | "tiff"
+        - width: int
+        - height: int
+    
     **Example:**
         entry: IconIconlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -71,6 +79,14 @@ class IconIconlistObject:
     width: int
     # Icon height. | Default: 0 | Min: 1 | Max: 65535
     height: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

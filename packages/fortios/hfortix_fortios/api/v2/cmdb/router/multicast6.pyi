@@ -13,9 +13,14 @@ class Multicast6InterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - hello_interval: int
+        - hello_holdtime: int
+    
     **Example:**
         entry: Multicast6InterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -64,6 +69,14 @@ class Multicast6InterfaceObject:
     hello_interval: int
     # Time before old neighbor information expires in seconds | Min: 1 | Max: 65535
     hello_holdtime: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

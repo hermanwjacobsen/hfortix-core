@@ -13,9 +13,15 @@ class IpamPoolsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - subnet: str
+        - exclude: str
+    
     **Example:**
         entry: IpamPoolsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,18 @@ class IpamRulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - device: str
+        - interface: str
+        - role: "any" | "lan" | "wan" | "dmz" | "undefined"
+        - pool: str
+        - dhcp: "enable" | "disable"
+    
     **Example:**
         entry: IpamRulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -94,6 +109,14 @@ class IpamPoolsObject:
     # Configure pool exclude subnets.
     exclude: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -137,6 +160,14 @@ class IpamRulesObject:
     pool: str
     # Enable/disable DHCP server for matching IPAM interfaces. | Default: disable
     dhcp: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

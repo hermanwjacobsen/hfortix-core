@@ -13,9 +13,12 @@ class ApiUserVdomItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: ApiUserVdomItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,15 @@ class ApiUserTrusthostItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - type: "ipv4-trusthost" | "ipv6-trusthost"
+        - ipv4_trusthost: str
+        - ipv6_trusthost: str
+    
     **Example:**
         entry: ApiUserTrusthostItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -88,6 +97,14 @@ class ApiUserVdomObject:
     # Virtual domain name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -125,6 +142,14 @@ class ApiUserTrusthostObject:
     ipv4_trusthost: str
     # IPv6 trusted host address. | Default: ::/0
     ipv6_trusthost: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

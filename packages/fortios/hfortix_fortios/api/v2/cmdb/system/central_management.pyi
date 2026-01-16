@@ -13,9 +13,17 @@ class CentralManagementServerlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - server_type: "update" | "rating" | "vpatch-query" | "iot-collect"
+        - addr_type: "ipv4" | "ipv6" | "fqdn"
+        - server_address: str
+        - server_address6: str
+        - fqdn: str
+    
     **Example:**
         entry: CentralManagementServerlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -102,6 +110,14 @@ class CentralManagementServerlistObject:
     server_address6: str
     # FQDN address of override server. | MaxLen: 255
     fqdn: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

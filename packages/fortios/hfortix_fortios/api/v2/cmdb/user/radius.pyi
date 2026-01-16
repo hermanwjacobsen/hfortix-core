@@ -13,9 +13,12 @@ class RadiusClassItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: RadiusClassItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,20 @@ class RadiusAccountingserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - server: str
+        - secret: str
+        - port: int
+        - source_ip: str
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+        - vrf_select: int
+    
     **Example:**
         entry: RadiusAccountingserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -146,6 +160,14 @@ class RadiusClassObject:
     # Class name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -193,6 +215,14 @@ class RadiusAccountingserverObject:
     interface: str
     # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

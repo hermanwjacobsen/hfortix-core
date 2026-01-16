@@ -13,9 +13,17 @@ class VdomSflowCollectorsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - collector_ip: str
+        - collector_port: int
+        - source_ip: str
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+    
     **Example:**
         entry: VdomSflowCollectorsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -71,6 +79,14 @@ class VdomSflowCollectorsObject:
     interface_select_method: Literal["auto", "sdwan", "specify"]
     # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,20 @@ class BlockAllowListEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - status: "enable" | "disable"
+        - id: int
+        - type: "ip" | "email-to" | "email-from" | "subject"
+        - action: "reject" | "spam" | "clear"
+        - addr_type: "ipv4" | "ipv6"
+        - ip4_subnet: str
+        - ip6_subnet: str
+        - pattern_type: "wildcard" | "regexp"
+        - pattern: str
+    
     **Example:**
         entry: BlockAllowListEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -82,6 +93,14 @@ class BlockAllowListEntriesObject:
     pattern_type: Literal["wildcard", "regexp"]
     # Pattern to match. | MaxLen: 127
     pattern: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

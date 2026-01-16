@@ -13,9 +13,12 @@ class BgpConfederationpeersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - peer: str
+    
     **Example:**
         entry: BgpConfederationpeersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,15 @@ class BgpAggregateaddressItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - as_set: "enable" | "disable"
+        - summary_only: "enable" | "disable"
+    
     **Example:**
         entry: BgpAggregateaddressItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -46,9 +55,15 @@ class BgpAggregateaddress6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - as_set: "enable" | "disable"
+        - summary_only: "enable" | "disable"
+    
     **Example:**
         entry: BgpAggregateaddress6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -64,9 +79,173 @@ class BgpNeighborItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - ip: str
+        - advertisement_interval: int
+        - allowas_in_enable: "enable" | "disable"
+        - allowas_in_enable6: "enable" | "disable"
+        - allowas_in_enable_vpnv4: "enable" | "disable"
+        - allowas_in_enable_vpnv6: "enable" | "disable"
+        - allowas_in_enable_evpn: "enable" | "disable"
+        - allowas_in: int
+        - allowas_in6: int
+        - allowas_in_vpnv4: int
+        - allowas_in_vpnv6: int
+        - allowas_in_evpn: int
+        - attribute_unchanged: "as-path" | "med" | "next-hop"
+        - attribute_unchanged6: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv4: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv6: "as-path" | "med" | "next-hop"
+        - activate: "enable" | "disable"
+        - activate6: "enable" | "disable"
+        - activate_vpnv4: "enable" | "disable"
+        - activate_vpnv6: "enable" | "disable"
+        - activate_evpn: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - capability_dynamic: "enable" | "disable"
+        - capability_orf: "none" | "receive" | "send" | "both"
+        - capability_orf6: "none" | "receive" | "send" | "both"
+        - capability_graceful_restart: "enable" | "disable"
+        - capability_graceful_restart6: "enable" | "disable"
+        - capability_graceful_restart_vpnv4: "enable" | "disable"
+        - capability_graceful_restart_vpnv6: "enable" | "disable"
+        - capability_graceful_restart_evpn: "enable" | "disable"
+        - capability_route_refresh: "enable" | "disable"
+        - capability_default_originate: "enable" | "disable"
+        - capability_default_originate6: "enable" | "disable"
+        - dont_capability_negotiate: "enable" | "disable"
+        - ebgp_enforce_multihop: "enable" | "disable"
+        - link_down_failover: "enable" | "disable"
+        - stale_route: "enable" | "disable"
+        - next_hop_self: "enable" | "disable"
+        - next_hop_self6: "enable" | "disable"
+        - next_hop_self_rr: "enable" | "disable"
+        - next_hop_self_rr6: "enable" | "disable"
+        - next_hop_self_vpnv4: "enable" | "disable"
+        - next_hop_self_vpnv6: "enable" | "disable"
+        - override_capability: "enable" | "disable"
+        - passive: "enable" | "disable"
+        - remove_private_as: "enable" | "disable"
+        - remove_private_as6: "enable" | "disable"
+        - remove_private_as_vpnv4: "enable" | "disable"
+        - remove_private_as_vpnv6: "enable" | "disable"
+        - remove_private_as_evpn: "enable" | "disable"
+        - route_reflector_client: "enable" | "disable"
+        - route_reflector_client6: "enable" | "disable"
+        - route_reflector_client_vpnv4: "enable" | "disable"
+        - route_reflector_client_vpnv6: "enable" | "disable"
+        - route_reflector_client_evpn: "enable" | "disable"
+        - route_server_client: "enable" | "disable"
+        - route_server_client6: "enable" | "disable"
+        - route_server_client_vpnv4: "enable" | "disable"
+        - route_server_client_vpnv6: "enable" | "disable"
+        - route_server_client_evpn: "enable" | "disable"
+        - rr_attr_allow_change: "enable" | "disable"
+        - rr_attr_allow_change6: "enable" | "disable"
+        - rr_attr_allow_change_vpnv4: "enable" | "disable"
+        - rr_attr_allow_change_vpnv6: "enable" | "disable"
+        - rr_attr_allow_change_evpn: "enable" | "disable"
+        - shutdown: "enable" | "disable"
+        - soft_reconfiguration: "enable" | "disable"
+        - soft_reconfiguration6: "enable" | "disable"
+        - soft_reconfiguration_vpnv4: "enable" | "disable"
+        - soft_reconfiguration_vpnv6: "enable" | "disable"
+        - soft_reconfiguration_evpn: "enable" | "disable"
+        - as_override: "enable" | "disable"
+        - as_override6: "enable" | "disable"
+        - strict_capability_match: "enable" | "disable"
+        - default_originate_routemap: str
+        - default_originate_routemap6: str
+        - description: str
+        - distribute_list_in: str
+        - distribute_list_in6: str
+        - distribute_list_in_vpnv4: str
+        - distribute_list_in_vpnv6: str
+        - distribute_list_out: str
+        - distribute_list_out6: str
+        - distribute_list_out_vpnv4: str
+        - distribute_list_out_vpnv6: str
+        - ebgp_multihop_ttl: int
+        - filter_list_in: str
+        - filter_list_in6: str
+        - filter_list_in_vpnv4: str
+        - filter_list_in_vpnv6: str
+        - filter_list_out: str
+        - filter_list_out6: str
+        - filter_list_out_vpnv4: str
+        - filter_list_out_vpnv6: str
+        - interface: str
+        - maximum_prefix: int
+        - maximum_prefix6: int
+        - maximum_prefix_vpnv4: int
+        - maximum_prefix_vpnv6: int
+        - maximum_prefix_evpn: int
+        - maximum_prefix_threshold: int
+        - maximum_prefix_threshold6: int
+        - maximum_prefix_threshold_vpnv4: int
+        - maximum_prefix_threshold_vpnv6: int
+        - maximum_prefix_threshold_evpn: int
+        - maximum_prefix_warning_only: "enable" | "disable"
+        - maximum_prefix_warning_only6: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv4: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv6: "enable" | "disable"
+        - maximum_prefix_warning_only_evpn: "enable" | "disable"
+        - prefix_list_in: str
+        - prefix_list_in6: str
+        - prefix_list_in_vpnv4: str
+        - prefix_list_in_vpnv6: str
+        - prefix_list_out: str
+        - prefix_list_out6: str
+        - prefix_list_out_vpnv4: str
+        - prefix_list_out_vpnv6: str
+        - remote_as: str
+        - local_as: str
+        - local_as_no_prepend: "enable" | "disable"
+        - local_as_replace_as: "enable" | "disable"
+        - retain_stale_time: int
+        - route_map_in: str
+        - route_map_in6: str
+        - route_map_in_vpnv4: str
+        - route_map_in_vpnv6: str
+        - route_map_in_evpn: str
+        - route_map_out: str
+        - route_map_out_preferable: str
+        - route_map_out6: str
+        - route_map_out6_preferable: str
+        - route_map_out_vpnv4: str
+        - route_map_out_vpnv6: str
+        - route_map_out_vpnv4_preferable: str
+        - route_map_out_vpnv6_preferable: str
+        - route_map_out_evpn: str
+        - send_community: "standard" | "extended" | "both" | "disable"
+        - send_community6: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv4: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv6: "standard" | "extended" | "both" | "disable"
+        - send_community_evpn: "standard" | "extended" | "both" | "disable"
+        - keep_alive_timer: int
+        - holdtime_timer: int
+        - connect_timer: int
+        - unsuppress_map: str
+        - unsuppress_map6: str
+        - update_source: str
+        - weight: int
+        - restart_time: int
+        - additional_path: "send" | "receive" | "both" | "disable"
+        - additional_path6: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv4: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv6: "send" | "receive" | "both" | "disable"
+        - adv_additional_path: int
+        - adv_additional_path6: int
+        - adv_additional_path_vpnv4: int
+        - adv_additional_path_vpnv6: int
+        - password: str
+        - auth_options: str
+        - conditional_advertise: str
+        - conditional_advertise6: str
+    
     **Example:**
         entry: BgpNeighborItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -240,9 +419,172 @@ class BgpNeighborgroupItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - advertisement_interval: int
+        - allowas_in_enable: "enable" | "disable"
+        - allowas_in_enable6: "enable" | "disable"
+        - allowas_in_enable_vpnv4: "enable" | "disable"
+        - allowas_in_enable_vpnv6: "enable" | "disable"
+        - allowas_in_enable_evpn: "enable" | "disable"
+        - allowas_in: int
+        - allowas_in6: int
+        - allowas_in_vpnv4: int
+        - allowas_in_vpnv6: int
+        - allowas_in_evpn: int
+        - attribute_unchanged: "as-path" | "med" | "next-hop"
+        - attribute_unchanged6: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv4: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv6: "as-path" | "med" | "next-hop"
+        - activate: "enable" | "disable"
+        - activate6: "enable" | "disable"
+        - activate_vpnv4: "enable" | "disable"
+        - activate_vpnv6: "enable" | "disable"
+        - activate_evpn: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - capability_dynamic: "enable" | "disable"
+        - capability_orf: "none" | "receive" | "send" | "both"
+        - capability_orf6: "none" | "receive" | "send" | "both"
+        - capability_graceful_restart: "enable" | "disable"
+        - capability_graceful_restart6: "enable" | "disable"
+        - capability_graceful_restart_vpnv4: "enable" | "disable"
+        - capability_graceful_restart_vpnv6: "enable" | "disable"
+        - capability_graceful_restart_evpn: "enable" | "disable"
+        - capability_route_refresh: "enable" | "disable"
+        - capability_default_originate: "enable" | "disable"
+        - capability_default_originate6: "enable" | "disable"
+        - dont_capability_negotiate: "enable" | "disable"
+        - ebgp_enforce_multihop: "enable" | "disable"
+        - link_down_failover: "enable" | "disable"
+        - stale_route: "enable" | "disable"
+        - next_hop_self: "enable" | "disable"
+        - next_hop_self6: "enable" | "disable"
+        - next_hop_self_rr: "enable" | "disable"
+        - next_hop_self_rr6: "enable" | "disable"
+        - next_hop_self_vpnv4: "enable" | "disable"
+        - next_hop_self_vpnv6: "enable" | "disable"
+        - override_capability: "enable" | "disable"
+        - passive: "enable" | "disable"
+        - remove_private_as: "enable" | "disable"
+        - remove_private_as6: "enable" | "disable"
+        - remove_private_as_vpnv4: "enable" | "disable"
+        - remove_private_as_vpnv6: "enable" | "disable"
+        - remove_private_as_evpn: "enable" | "disable"
+        - route_reflector_client: "enable" | "disable"
+        - route_reflector_client6: "enable" | "disable"
+        - route_reflector_client_vpnv4: "enable" | "disable"
+        - route_reflector_client_vpnv6: "enable" | "disable"
+        - route_reflector_client_evpn: "enable" | "disable"
+        - route_server_client: "enable" | "disable"
+        - route_server_client6: "enable" | "disable"
+        - route_server_client_vpnv4: "enable" | "disable"
+        - route_server_client_vpnv6: "enable" | "disable"
+        - route_server_client_evpn: "enable" | "disable"
+        - rr_attr_allow_change: "enable" | "disable"
+        - rr_attr_allow_change6: "enable" | "disable"
+        - rr_attr_allow_change_vpnv4: "enable" | "disable"
+        - rr_attr_allow_change_vpnv6: "enable" | "disable"
+        - rr_attr_allow_change_evpn: "enable" | "disable"
+        - shutdown: "enable" | "disable"
+        - soft_reconfiguration: "enable" | "disable"
+        - soft_reconfiguration6: "enable" | "disable"
+        - soft_reconfiguration_vpnv4: "enable" | "disable"
+        - soft_reconfiguration_vpnv6: "enable" | "disable"
+        - soft_reconfiguration_evpn: "enable" | "disable"
+        - as_override: "enable" | "disable"
+        - as_override6: "enable" | "disable"
+        - strict_capability_match: "enable" | "disable"
+        - default_originate_routemap: str
+        - default_originate_routemap6: str
+        - description: str
+        - distribute_list_in: str
+        - distribute_list_in6: str
+        - distribute_list_in_vpnv4: str
+        - distribute_list_in_vpnv6: str
+        - distribute_list_out: str
+        - distribute_list_out6: str
+        - distribute_list_out_vpnv4: str
+        - distribute_list_out_vpnv6: str
+        - ebgp_multihop_ttl: int
+        - filter_list_in: str
+        - filter_list_in6: str
+        - filter_list_in_vpnv4: str
+        - filter_list_in_vpnv6: str
+        - filter_list_out: str
+        - filter_list_out6: str
+        - filter_list_out_vpnv4: str
+        - filter_list_out_vpnv6: str
+        - interface: str
+        - maximum_prefix: int
+        - maximum_prefix6: int
+        - maximum_prefix_vpnv4: int
+        - maximum_prefix_vpnv6: int
+        - maximum_prefix_evpn: int
+        - maximum_prefix_threshold: int
+        - maximum_prefix_threshold6: int
+        - maximum_prefix_threshold_vpnv4: int
+        - maximum_prefix_threshold_vpnv6: int
+        - maximum_prefix_threshold_evpn: int
+        - maximum_prefix_warning_only: "enable" | "disable"
+        - maximum_prefix_warning_only6: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv4: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv6: "enable" | "disable"
+        - maximum_prefix_warning_only_evpn: "enable" | "disable"
+        - prefix_list_in: str
+        - prefix_list_in6: str
+        - prefix_list_in_vpnv4: str
+        - prefix_list_in_vpnv6: str
+        - prefix_list_out: str
+        - prefix_list_out6: str
+        - prefix_list_out_vpnv4: str
+        - prefix_list_out_vpnv6: str
+        - remote_as: str
+        - remote_as_filter: str
+        - local_as: str
+        - local_as_no_prepend: "enable" | "disable"
+        - local_as_replace_as: "enable" | "disable"
+        - retain_stale_time: int
+        - route_map_in: str
+        - route_map_in6: str
+        - route_map_in_vpnv4: str
+        - route_map_in_vpnv6: str
+        - route_map_in_evpn: str
+        - route_map_out: str
+        - route_map_out_preferable: str
+        - route_map_out6: str
+        - route_map_out6_preferable: str
+        - route_map_out_vpnv4: str
+        - route_map_out_vpnv6: str
+        - route_map_out_vpnv4_preferable: str
+        - route_map_out_vpnv6_preferable: str
+        - route_map_out_evpn: str
+        - send_community: "standard" | "extended" | "both" | "disable"
+        - send_community6: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv4: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv6: "standard" | "extended" | "both" | "disable"
+        - send_community_evpn: "standard" | "extended" | "both" | "disable"
+        - keep_alive_timer: int
+        - holdtime_timer: int
+        - connect_timer: int
+        - unsuppress_map: str
+        - unsuppress_map6: str
+        - update_source: str
+        - weight: int
+        - restart_time: int
+        - additional_path: "send" | "receive" | "both" | "disable"
+        - additional_path6: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv4: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv6: "send" | "receive" | "both" | "disable"
+        - adv_additional_path: int
+        - adv_additional_path6: int
+        - adv_additional_path_vpnv4: int
+        - adv_additional_path_vpnv6: int
+        - password: str
+        - auth_options: str
+    
     **Example:**
         entry: BgpNeighborgroupItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -415,9 +757,15 @@ class BgpNeighborrangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - max_neighbor_num: int
+        - neighbor_group: str
+    
     **Example:**
         entry: BgpNeighborrangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -433,9 +781,15 @@ class BgpNeighborrange6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - max_neighbor_num: int
+        - neighbor_group: str
+    
     **Example:**
         entry: BgpNeighborrange6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -451,9 +805,17 @@ class BgpNetworkItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - network_import_check: "global" | "enable" | "disable"
+        - backdoor: "enable" | "disable"
+        - route_map: str
+        - prefix_name: str
+    
     **Example:**
         entry: BgpNetworkItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -471,9 +833,16 @@ class BgpNetwork6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - network_import_check: "global" | "enable" | "disable"
+        - backdoor: "enable" | "disable"
+        - route_map: str
+    
     **Example:**
         entry: BgpNetwork6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -490,9 +859,14 @@ class BgpRedistributeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - route_map: str
+    
     **Example:**
         entry: BgpRedistributeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -507,9 +881,14 @@ class BgpRedistribute6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - route_map: str
+    
     **Example:**
         entry: BgpRedistribute6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -524,9 +903,15 @@ class BgpAdmindistanceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - neighbour_prefix: str
+        - route_list: str
+        - distance: int
+    
     **Example:**
         entry: BgpAdmindistanceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -542,9 +927,18 @@ class BgpVrfItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vrf: str
+        - role: "standalone" | "ce" | "pe"
+        - rd: str
+        - export_rt: str
+        - import_rt: str
+        - import_route_map: str
+        - leak_target: str
+    
     **Example:**
         entry: BgpVrfItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -563,9 +957,18 @@ class BgpVrf6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vrf: str
+        - role: "standalone" | "ce" | "pe"
+        - rd: str
+        - export_rt: str
+        - import_rt: str
+        - import_route_map: str
+        - leak_target: str
+    
     **Example:**
         entry: BgpVrf6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -682,6 +1085,14 @@ class BgpConfederationpeersObject:
     # Peer ID. | MaxLen: 79
     peer: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -720,6 +1131,14 @@ class BgpAggregateaddressObject:
     # Enable/disable filter more specific routes from updates. | Default: disable
     summary_only: Literal["enable", "disable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -757,6 +1176,14 @@ class BgpAggregateaddress6Object:
     as_set: Literal["enable", "disable"]
     # Enable/disable filter more specific routes from updates. | Default: disable
     summary_only: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1112,6 +1539,14 @@ class BgpNeighborObject:
     # IPv6 conditional advertisement.
     conditional_advertise6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1464,6 +1899,14 @@ class BgpNeighborgroupObject:
     # Key-chain name for TCP authentication options. | MaxLen: 35
     auth_options: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1502,6 +1945,14 @@ class BgpNeighborrangeObject:
     # Neighbor group name. | MaxLen: 63
     neighbor_group: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1539,6 +1990,14 @@ class BgpNeighborrange6Object:
     max_neighbor_num: int
     # Neighbor group name. | MaxLen: 63
     neighbor_group: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1582,6 +2041,14 @@ class BgpNetworkObject:
     # Name of firewall address or address group. | MaxLen: 79
     prefix_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1622,6 +2089,14 @@ class BgpNetwork6Object:
     # Route map to modify generated route. | MaxLen: 35
     route_map: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1658,6 +2133,14 @@ class BgpRedistributeObject:
     # Route map name. | MaxLen: 35
     route_map: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1693,6 +2176,14 @@ class BgpRedistribute6Object:
     status: Literal["enable", "disable"]
     # Route map name. | MaxLen: 35
     route_map: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1731,6 +2222,14 @@ class BgpAdmindistanceObject:
     route_list: str
     # Administrative distance to apply (1 - 255). | Default: 0 | Min: 1 | Max: 255
     distance: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1776,6 +2275,14 @@ class BgpVrfObject:
     # Target VRF table.
     leak_target: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1819,6 +2326,14 @@ class BgpVrf6Object:
     import_route_map: str
     # Target VRF table.
     leak_target: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

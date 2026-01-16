@@ -13,9 +13,15 @@ class UserActivityMatchItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - strategy: "and" | "or"
+        - rules: str
+        - tenant_extraction: str
+    
     **Example:**
         entry: UserActivityMatchItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,14 @@ class UserActivityControloptionsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - operations: str
+    
     **Example:**
         entry: UserActivityControloptionsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -97,6 +108,14 @@ class UserActivityMatchObject:
     # CASB user activity tenant extraction.
     tenant_extraction: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -132,6 +151,14 @@ class UserActivityControloptionsObject:
     status: Literal["enable", "disable"]
     # CASB control option operations.
     operations: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

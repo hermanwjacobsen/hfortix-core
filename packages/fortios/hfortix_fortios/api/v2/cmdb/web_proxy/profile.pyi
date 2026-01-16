@@ -13,9 +13,20 @@ class ProfileHeadersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - dstaddr: str
+        - dstaddr6: str
+        - action: "add-to-request" | "add-to-response" | "remove-from-request" | "remove-from-response" | "monitor-request" | "monitor-response"
+        - content: str
+        - base64_encoding: "disable" | "enable"
+        - add_option: "append" | "new-on-not-found" | "new" | "replace" | "replace-when-match"
+        - protocol: "https" | "http"
+    
     **Example:**
         entry: ProfileHeadersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -91,6 +102,14 @@ class ProfileHeadersObject:
     add_option: Literal["append", "new-on-not-found", "new", "replace", "replace-when-match"]
     # Configure protocol(s) to take add-option action on | Default: https http
     protocol: Literal["https", "http"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

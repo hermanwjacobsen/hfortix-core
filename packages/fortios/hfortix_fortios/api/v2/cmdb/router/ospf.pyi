@@ -13,9 +13,26 @@ class OspfAreaItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: str
+        - shortcut: "disable" | "enable" | "default"
+        - authentication: "none" | "text" | "message-digest"
+        - default_cost: int
+        - nssa_translator_role: "candidate" | "never" | "always"
+        - stub_type: "no-summary" | "summary"
+        - type: "regular" | "nssa" | "stub"
+        - nssa_default_information_originate: "enable" | "always" | "disable"
+        - nssa_default_information_originate_metric: int
+        - nssa_default_information_originate_metric_type: "1" | "2"
+        - nssa_redistribution: "enable" | "disable"
+        - comments: str
+        - range: str
+        - virtual_link: str
+        - filter_list: str
+    
     **Example:**
         entry: OspfAreaItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -42,9 +59,35 @@ class OspfOspfinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - comments: str
+        - interface: str
+        - ip: str
+        - linkdown_fast_failover: "enable" | "disable"
+        - authentication: "none" | "text" | "message-digest"
+        - authentication_key: str
+        - keychain: str
+        - prefix_length: int
+        - retransmit_interval: int
+        - transmit_delay: int
+        - cost: int
+        - priority: int
+        - dead_interval: int
+        - hello_interval: int
+        - hello_multiplier: int
+        - database_filter_out: "enable" | "disable"
+        - mtu: int
+        - mtu_ignore: "enable" | "disable"
+        - network_type: "broadcast" | "non-broadcast" | "point-to-point" | "point-to-multipoint" | "point-to-multipoint-non-broadcast"
+        - bfd: "global" | "enable" | "disable"
+        - status: "disable" | "enable"
+        - resync_timeout: int
+        - md5_keys: str
+    
     **Example:**
         entry: OspfOspfinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -80,9 +123,15 @@ class OspfNetworkItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - area: str
+        - comments: str
+    
     **Example:**
         entry: OspfNetworkItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -98,9 +147,16 @@ class OspfNeighborItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+        - poll_interval: int
+        - cost: int
+        - priority: int
+    
     **Example:**
         entry: OspfNeighborItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -117,9 +173,12 @@ class OspfPassiveinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: OspfPassiveinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -132,9 +191,15 @@ class OspfSummaryaddressItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - tag: int
+        - advertise: "disable" | "enable"
+    
     **Example:**
         entry: OspfSummaryaddressItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -150,9 +215,14 @@ class OspfDistributelistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - access_list: str
+        - protocol: "connected" | "static" | "rip"
+    
     **Example:**
         entry: OspfDistributelistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -167,9 +237,17 @@ class OspfRedistributeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - metric: int
+        - routemap: str
+        - metric_type: "1" | "2"
+        - tag: int
+    
     **Example:**
         entry: OspfRedistributeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -282,6 +360,14 @@ class OspfAreaObject:
     # OSPF area filter-list configuration.
     filter_list: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -360,6 +446,14 @@ class OspfOspfinterfaceObject:
     # MD5 key.
     md5_keys: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -397,6 +491,14 @@ class OspfNetworkObject:
     area: str
     # Comment. | MaxLen: 255
     comments: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -438,6 +540,14 @@ class OspfNeighborObject:
     # Priority. | Default: 1 | Min: 0 | Max: 255
     priority: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -469,6 +579,14 @@ class OspfPassiveinterfaceObject:
     
     # Passive interface name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -508,6 +626,14 @@ class OspfSummaryaddressObject:
     # Enable/disable advertise status. | Default: enable
     advertise: Literal["disable", "enable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -543,6 +669,14 @@ class OspfDistributelistObject:
     access_list: str
     # Protocol type. | Default: connected
     protocol: Literal["connected", "static", "rip"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -585,6 +719,14 @@ class OspfRedistributeObject:
     metric_type: Literal["1", "2"]
     # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
     tag: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

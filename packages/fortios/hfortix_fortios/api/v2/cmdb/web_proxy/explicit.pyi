@@ -13,9 +13,12 @@ class ExplicitSecurewebproxycertItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: ExplicitSecurewebproxycertItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,19 @@ class ExplicitPacpolicyItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - policyid: int
+        - status: "enable" | "disable"
+        - srcaddr: str
+        - srcaddr6: str
+        - dstaddr: str
+        - pac_file_name: str
+        - pac_file_data: str
+        - comments: str
+    
     **Example:**
         entry: ExplicitPacpolicyItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -120,6 +133,14 @@ class ExplicitSecurewebproxycertObject:
     # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -165,6 +186,14 @@ class ExplicitPacpolicyObject:
     pac_file_data: str
     # Optional comments. | MaxLen: 1023
     comments: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

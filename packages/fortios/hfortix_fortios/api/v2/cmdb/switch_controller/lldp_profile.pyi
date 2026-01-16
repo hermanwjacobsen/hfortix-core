@@ -13,9 +13,17 @@ class LldpProfileMednetworkpolicyItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "disable" | "enable"
+        - vlan_intf: str
+        - assign_vlan: "disable" | "enable"
+        - priority: int
+        - dscp: int
+    
     **Example:**
         entry: LldpProfileMednetworkpolicyItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -33,9 +41,14 @@ class LldpProfileMedlocationserviceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "disable" | "enable"
+        - sys_location_id: str
+    
     **Example:**
         entry: LldpProfileMedlocationserviceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -50,9 +63,15 @@ class LldpProfileCustomtlvsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - oui: str
+        - subtype: int
+        - information_string: str
+    
     **Example:**
         entry: LldpProfileCustomtlvsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -123,6 +142,14 @@ class LldpProfileMednetworkpolicyObject:
     # Advertised Differentiated Services Code Point (DSCP) value, | Default: 0 | Min: 0 | Max: 63
     dscp: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -158,6 +185,14 @@ class LldpProfileMedlocationserviceObject:
     status: Literal["disable", "enable"]
     # Location service ID. | MaxLen: 63
     sys_location_id: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -196,6 +231,14 @@ class LldpProfileCustomtlvsObject:
     subtype: int
     # Organizationally defined information string
     information_string: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

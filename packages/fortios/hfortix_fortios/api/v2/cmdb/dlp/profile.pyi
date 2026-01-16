@@ -13,9 +13,26 @@ class ProfileRuleItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - severity: "info" | "low" | "medium" | "high" | "critical"
+        - type: "file" | "message"
+        - proto: "smtp" | "pop3" | "imap" | "http-get" | "http-post" | "ftp" | "nntp" | "mapi" | "ssh" | "cifs"
+        - filter_by: "sensor" | "label" | "fingerprint" | "encrypted" | "none"
+        - file_size: int
+        - sensitivity: str
+        - match_percentage: int
+        - file_type: int
+        - sensor: str
+        - label: str
+        - archive: "disable" | "enable"
+        - action: "allow" | "log-only" | "block" | "quarantine-ip"
+        - expiry: str
+    
     **Example:**
         entry: ProfileRuleItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -112,6 +129,14 @@ class ProfileRuleObject:
     action: Literal["allow", "log-only", "block", "quarantine-ip"]
     # Quarantine duration in days, hours, minutes | Default: 5m
     expiry: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,13 @@ class IsisIsisnetItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - net: str
+    
     **Example:**
         entry: IsisIsisnetItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -29,9 +33,41 @@ class IsisIsisinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - status6: "enable" | "disable"
+        - network_type: "broadcast" | "point-to-point" | "loopback"
+        - circuit_type: "level-1-2" | "level-1" | "level-2"
+        - csnp_interval_l1: int
+        - csnp_interval_l2: int
+        - hello_interval_l1: int
+        - hello_interval_l2: int
+        - hello_multiplier_l1: int
+        - hello_multiplier_l2: int
+        - hello_padding: "enable" | "disable"
+        - lsp_interval: int
+        - lsp_retransmit_interval: int
+        - metric_l1: int
+        - metric_l2: int
+        - wide_metric_l1: int
+        - wide_metric_l2: int
+        - auth_password_l1: str
+        - auth_password_l2: str
+        - auth_keychain_l1: str
+        - auth_keychain_l2: str
+        - auth_send_only_l1: "enable" | "disable"
+        - auth_send_only_l2: "enable" | "disable"
+        - auth_mode_l1: "md5" | "password"
+        - auth_mode_l2: "md5" | "password"
+        - priority_l1: int
+        - priority_l2: int
+        - mesh_group: "enable" | "disable"
+        - mesh_group_id: int
+    
     **Example:**
         entry: IsisIsisinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -73,9 +109,14 @@ class IsisSummaryaddressItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - level: "level-1-2" | "level-1" | "level-2"
+    
     **Example:**
         entry: IsisSummaryaddressItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -90,9 +131,14 @@ class IsisSummaryaddress6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - level: "level-1-2" | "level-1" | "level-2"
+    
     **Example:**
         entry: IsisSummaryaddress6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -107,9 +153,17 @@ class IsisRedistributeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - protocol: str
+        - status: "enable" | "disable"
+        - metric: int
+        - metric_type: "external" | "internal"
+        - level: "level-1-2" | "level-1" | "level-2"
+        - routemap: str
+    
     **Example:**
         entry: IsisRedistributeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -127,9 +181,17 @@ class IsisRedistribute6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - protocol: str
+        - status: "enable" | "disable"
+        - metric: int
+        - metric_type: "external" | "internal"
+        - level: "level-1-2" | "level-1" | "level-2"
+        - routemap: str
+    
     **Example:**
         entry: IsisRedistribute6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -224,6 +286,14 @@ class IsisIsisnetObject:
     # IS-IS networks (format = xx.xxxx.  .xxxx.xx.).
     net: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -314,6 +384,14 @@ class IsisIsisinterfaceObject:
     # Mesh group ID <0-4294967295>, 0: mesh-group blocked. | Default: 0 | Min: 0 | Max: 4294967295
     mesh_group_id: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -350,6 +428,14 @@ class IsisSummaryaddressObject:
     # Level. | Default: level-2
     level: Literal["level-1-2", "level-1", "level-2"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -385,6 +471,14 @@ class IsisSummaryaddress6Object:
     prefix6: str
     # Level. | Default: level-2
     level: Literal["level-1-2", "level-1", "level-2"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -428,6 +522,14 @@ class IsisRedistributeObject:
     # Route map name. | MaxLen: 35
     routemap: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -469,6 +571,14 @@ class IsisRedistribute6Object:
     level: Literal["level-1-2", "level-1", "level-2"]
     # Route map name. | MaxLen: 35
     routemap: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

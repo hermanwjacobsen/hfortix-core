@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.89] - 2026-01-16
+
+### Fixed - **Generator: Response Properties on Nested Child Objects**
+
+- ✅ **Added missing response properties to nested child objects**: All nested table field object stubs now include `http_status_code`, `http_method`, and `http_response_time`
+- ✅ **Pylance support for nested objects**: Properties like `policy.srcintf[0].http_status_code` now recognized
+- ✅ **Template fix**: Updated `endpoint_class.pyi.j2` to add response properties to nested child object classes (e.g., `PolicySrcintfObject`, `AddressTaggingObject`)
+- ✅ **Consistency**: Both main endpoint objects and nested child objects now have identical response property signatures
+
+### Added - **New Fully Tested Endpoints**
+
+**Service API** (12 tests total):
+- ✅ **`service/security_rating.py`** - 4 tests for security rating recommendations and reports
+- ✅ **`service/system.py`** - 2 tests for fabric admin lockout and time sync checks
+
+**Monitor API** (4 tests total):
+- ✅ **`monitor/casb.py`** - 1 test for CASB SaaS application monitoring
+- ✅ **`monitor/firewall_policy.py`** - 3 tests for firewall policy monitoring and hit count
+
+**CMDB Email Filter** (36 tests total):
+- ✅ **`cmdb/emailfilter/block_allow_list.py`** - Block/allow list management
+- ✅ **`cmdb/emailfilter/bword.py`** - Banned word filtering
+- ✅ **`cmdb/emailfilter/dnsbl.py`** - DNS block list configuration
+- ✅ **`cmdb/emailfilter/fortishield.py`** - FortiGuard email filtering
+- ✅ **`cmdb/emailfilter/iptrust.py`** - IP trust list management
+- ✅ **`cmdb/emailfilter/mheader.py`** - Email header filtering
+- ✅ **`cmdb/emailfilter/options.py`** - Email filter options
+- ✅ **`cmdb/emailfilter/profile.py`** - Email filter profiles
+
+**Total new tests**: 52 comprehensive endpoint tests added
+
+---
+
 ## [0.5.88] - 2026-01-16
 
 ### Fixed - **Generator: Stub File Response Properties**
@@ -12,21 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ **Added missing response properties**: Endpoint object stubs now include `http_status_code`, `http_method`, and `http_response_time`
 - ✅ **Pylance support**: `result.http_status_code` now recognized on all endpoint objects
 
-### Added - **Generator: Nested Table Field Autocomplete**
-
-- ✅ **Typed table field items**: Table fields (like `entries`, `members`, etc.) now use typed TypedDicts
-- ✅ **IDE autocomplete for nested fields**: When writing `entries=[{"status": ...}]`, Pylance shows all valid nested fields
-- ✅ **TypedDicts moved to top of stub**: Nested TypedDicts now defined before Payload class for proper type resolution
-
-**Before:**
-```python
-entries: str | list[str] | list[dict[str, Any]] | None  # No autocomplete for nested fields
-```
-
-**After:**
-```python
-entries: str | list[IptrustEntriesItem] | None  # Full autocomplete with Literal types!
-```
 
 ---
 

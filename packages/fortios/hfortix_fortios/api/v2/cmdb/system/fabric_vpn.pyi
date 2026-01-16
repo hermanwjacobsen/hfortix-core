@@ -13,9 +13,24 @@ class FabricVpnOverlaysItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - ipsec_network_id: int
+        - overlay_tunnel_block: str
+        - remote_gw: str
+        - interface: str
+        - bgp_neighbor: str
+        - overlay_policy: int
+        - bgp_network: int
+        - route_policy: int
+        - bgp_neighbor_group: str
+        - bgp_neighbor_range: int
+        - ipsec_phase1: str
+        - sdwan_member: int
+    
     **Example:**
         entry: FabricVpnOverlaysItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -40,9 +55,17 @@ class FabricVpnAdvertisedsubnetsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - access: "inbound" | "bidirectional"
+        - bgp_network: int
+        - firewall_address: str
+        - policies: int
+    
     **Example:**
         entry: FabricVpnAdvertisedsubnetsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -133,6 +156,14 @@ class FabricVpnOverlaysObject:
     # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
     sdwan_member: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -174,6 +205,14 @@ class FabricVpnAdvertisedsubnetsObject:
     firewall_address: str
     # Underlying policies. | Min: 0 | Max: 4294967295
     policies: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

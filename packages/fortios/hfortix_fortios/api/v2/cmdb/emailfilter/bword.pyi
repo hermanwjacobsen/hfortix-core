@@ -13,9 +13,19 @@ class BwordEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - status: "enable" | "disable"
+        - id: int
+        - pattern: str
+        - pattern_type: "wildcard" | "regexp"
+        - action: "spam" | "clear"
+        - where: "subject" | "body" | "all"
+        - language: "western" | "simch" | "trach" | "japanese" | "korean" | "french" | "thai" | "spanish"
+        - score: int
+    
     **Example:**
         entry: BwordEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -79,6 +89,14 @@ class BwordEntriesObject:
     language: Literal["western", "simch", "trach", "japanese", "korean", "french", "thai", "spanish"]
     # Score value. | Default: 10 | Min: 1 | Max: 99999
     score: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

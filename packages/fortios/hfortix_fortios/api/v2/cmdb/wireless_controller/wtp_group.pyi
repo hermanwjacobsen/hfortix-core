@@ -13,9 +13,12 @@ class WtpGroupWtpsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - wtp_id: str
+    
     **Example:**
         entry: WtpGroupWtpsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -58,6 +61,14 @@ class WtpGroupWtpsObject:
     
     # WTP ID. | MaxLen: 35
     wtp_id: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

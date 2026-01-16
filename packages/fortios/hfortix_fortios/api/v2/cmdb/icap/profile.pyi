@@ -13,9 +13,15 @@ class ProfileIcapheadersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - content: str
+        - base64_encoding: "disable" | "enable"
+    
     **Example:**
         entry: ProfileIcapheadersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,16 @@ class ProfileRespmodforwardrulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - host: str
+        - header_group: str
+        - action: "forward" | "bypass"
+        - http_resp_status_code: str
+    
     **Example:**
         entry: ProfileRespmodforwardrulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -121,6 +134,14 @@ class ProfileIcapheadersObject:
     # Enable/disable use of base64 encoding of HTTP content. | Default: disable
     base64_encoding: Literal["disable", "enable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -160,6 +181,14 @@ class ProfileRespmodforwardrulesObject:
     action: Literal["forward", "bypass"]
     # HTTP response status code.
     http_resp_status_code: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

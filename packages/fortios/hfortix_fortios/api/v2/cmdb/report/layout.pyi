@@ -13,9 +13,24 @@ class LayoutBodyitemItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - description: str
+        - type: "text" | "image" | "chart" | "misc"
+        - style: str
+        - top_n: int
+        - parameters: str
+        - text_component: "text" | "heading1" | "heading2" | "heading3"
+        - content: str
+        - img_src: str
+        - chart: str
+        - chart_options: "include-no-data" | "hide-title" | "show-caption"
+        - misc_component: "hline" | "page-break" | "column-break" | "section-start"
+        - title: str
+    
     **Example:**
         entry: LayoutBodyitemItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -107,6 +122,14 @@ class LayoutBodyitemObject:
     misc_component: Literal["hline", "page-break", "column-break", "section-start"]
     # Report section title. | MaxLen: 511
     title: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,22 @@ class UrlfilterEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - url: str
+        - type: "simple" | "regex" | "wildcard"
+        - action: "exempt" | "block" | "allow" | "monitor"
+        - antiphish_action: "block" | "log"
+        - status: "enable" | "disable"
+        - exempt: "av" | "web-content" | "activex-java-cookie" | "dlp" | "fortiguard" | "range-block" | "pass" | "antiphish" | "all"
+        - web_proxy_profile: str
+        - referrer_host: str
+        - dns_address_family: "ipv4" | "ipv6" | "both"
+        - comment: str
+    
     **Example:**
         entry: UrlfilterEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -92,6 +105,14 @@ class UrlfilterEntriesObject:
     dns_address_family: Literal["ipv4", "ipv6", "both"]
     # Comment. | MaxLen: 255
     comment: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

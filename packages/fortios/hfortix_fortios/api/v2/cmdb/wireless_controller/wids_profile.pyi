@@ -13,9 +13,12 @@ class WidsProfileApscanchannellist2g5gItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - chan: str
+    
     **Example:**
         entry: WidsProfileApscanchannellist2g5gItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class WidsProfileApscanchannellist6gItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - chan: str
+    
     **Example:**
         entry: WidsProfileApscanchannellist6gItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +49,12 @@ class WidsProfileApbgscandisableschedulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: WidsProfileApbgscandisableschedulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -195,6 +204,14 @@ class WidsProfileApscanchannellist2g5gObject:
     # Channel number. | MaxLen: 3
     chan: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -227,6 +244,14 @@ class WidsProfileApscanchannellist6gObject:
     # Channel 6g number. | MaxLen: 3
     chan: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -258,6 +283,14 @@ class WidsProfileApbgscandisableschedulesObject:
     
     # Schedule name. | MaxLen: 35
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

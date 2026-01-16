@@ -13,9 +13,12 @@ class Vip6SrcfilterItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - range: str
+    
     **Example:**
         entry: Vip6SrcfilterItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,24 @@ class Vip6RealserversItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+        - port: int
+        - status: "active" | "standby" | "disable"
+        - weight: int
+        - holddown_interval: int
+        - healthcheck: "disable" | "enable" | "vip"
+        - http_host: str
+        - translate_host: "enable" | "disable"
+        - max_connections: int
+        - monitor: str
+        - client_ip: str
+        - verify_cert: "enable" | "disable"
+    
     **Example:**
         entry: Vip6RealserversItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -55,9 +73,12 @@ class Vip6SslcertificateItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: Vip6SslcertificateItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -70,9 +91,14 @@ class Vip6SslciphersuitesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - priority: int
+        - cipher: "TLS-AES-128-GCM-SHA256" | "TLS-AES-256-GCM-SHA384" | "TLS-CHACHA20-POLY1305-SHA256" | "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-DHE-RSA-WITH-AES-128-CBC-SHA" | "TLS-DHE-RSA-WITH-AES-256-CBC-SHA" | "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256" | "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384" | "TLS-DHE-DSS-WITH-AES-128-CBC-SHA" | "TLS-DHE-DSS-WITH-AES-256-CBC-SHA" | "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256" | "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256" | "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384" | "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA" | "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256" | "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256" | "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA" | "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384" | "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA" | "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256" | "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256" | "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA" | "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384" | "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384" | "TLS-RSA-WITH-AES-128-CBC-SHA" | "TLS-RSA-WITH-AES-256-CBC-SHA" | "TLS-RSA-WITH-AES-128-CBC-SHA256" | "TLS-RSA-WITH-AES-128-GCM-SHA256" | "TLS-RSA-WITH-AES-256-CBC-SHA256" | "TLS-RSA-WITH-AES-256-GCM-SHA384" | "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA" | "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA" | "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA" | "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA" | "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-SEED-CBC-SHA" | "TLS-DHE-DSS-WITH-SEED-CBC-SHA" | "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384" | "TLS-RSA-WITH-SEED-CBC-SHA" | "TLS-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256" | "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-RC4-128-SHA" | "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA" | "TLS-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-RSA-WITH-RC4-128-MD5" | "TLS-RSA-WITH-RC4-128-SHA" | "TLS-DHE-RSA-WITH-DES-CBC-SHA" | "TLS-DHE-DSS-WITH-DES-CBC-SHA" | "TLS-RSA-WITH-DES-CBC-SHA"
+        - versions: "ssl-3.0" | "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+    
     **Example:**
         entry: Vip6SslciphersuitesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -87,9 +113,14 @@ class Vip6SslserverciphersuitesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - priority: int
+        - cipher: "TLS-AES-128-GCM-SHA256" | "TLS-AES-256-GCM-SHA384" | "TLS-CHACHA20-POLY1305-SHA256" | "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256" | "TLS-DHE-RSA-WITH-AES-128-CBC-SHA" | "TLS-DHE-RSA-WITH-AES-256-CBC-SHA" | "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256" | "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384" | "TLS-DHE-DSS-WITH-AES-128-CBC-SHA" | "TLS-DHE-DSS-WITH-AES-256-CBC-SHA" | "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256" | "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256" | "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384" | "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA" | "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256" | "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256" | "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA" | "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384" | "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA" | "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256" | "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256" | "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA" | "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384" | "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384" | "TLS-RSA-WITH-AES-128-CBC-SHA" | "TLS-RSA-WITH-AES-256-CBC-SHA" | "TLS-RSA-WITH-AES-128-CBC-SHA256" | "TLS-RSA-WITH-AES-128-GCM-SHA256" | "TLS-RSA-WITH-AES-256-CBC-SHA256" | "TLS-RSA-WITH-AES-256-GCM-SHA384" | "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA" | "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA" | "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA" | "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA" | "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA" | "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256" | "TLS-DHE-RSA-WITH-SEED-CBC-SHA" | "TLS-DHE-DSS-WITH-SEED-CBC-SHA" | "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256" | "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384" | "TLS-RSA-WITH-SEED-CBC-SHA" | "TLS-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256" | "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256" | "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384" | "TLS-ECDHE-RSA-WITH-RC4-128-SHA" | "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA" | "TLS-RSA-WITH-3DES-EDE-CBC-SHA" | "TLS-RSA-WITH-RC4-128-MD5" | "TLS-RSA-WITH-RC4-128-SHA" | "TLS-DHE-RSA-WITH-DES-CBC-SHA" | "TLS-DHE-DSS-WITH-DES-CBC-SHA" | "TLS-RSA-WITH-DES-CBC-SHA"
+        - versions: "ssl-3.0" | "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+    
     **Example:**
         entry: Vip6SslserverciphersuitesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -104,9 +135,12 @@ class Vip6MonitorItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: Vip6MonitorItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -235,6 +269,14 @@ class Vip6SrcfilterObject:
     # Source-filter range. | MaxLen: 79
     range: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -291,6 +333,14 @@ class Vip6RealserversObject:
     # Enable/disable certificate verification of the real server. | Default: enable
     verify_cert: Literal["enable", "disable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -322,6 +372,14 @@ class Vip6SslcertificateObject:
     
     # Certificate list. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -359,6 +417,14 @@ class Vip6SslciphersuitesObject:
     # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -395,6 +461,14 @@ class Vip6SslserverciphersuitesObject:
     # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -426,6 +500,14 @@ class Vip6MonitorObject:
     
     # Health monitor name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

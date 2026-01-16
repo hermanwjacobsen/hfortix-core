@@ -13,9 +13,12 @@ class HaAutovirtualmacinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - interface_name: str
+    
     **Example:**
         entry: HaAutovirtualmacinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class HaBackuphbdevItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: HaBackuphbdevItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +49,17 @@ class HaHamgmtinterfacesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - interface: str
+        - dst: str
+        - gateway: str
+        - dst6: str
+        - gateway6: str
+    
     **Example:**
         entry: HaHamgmtinterfacesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -63,9 +77,13 @@ class HaUnicastpeersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - peer_ip: str
+    
     **Example:**
         entry: HaUnicastpeersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -79,9 +97,21 @@ class HaVclusterItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vcluster_id: int
+        - override: "enable" | "disable"
+        - priority: int
+        - override_wait_time: int
+        - monitor: str
+        - pingserver_monitor_interface: str
+        - pingserver_failover_threshold: int
+        - pingserver_secondary_force_reset: "enable" | "disable"
+        - pingserver_flip_timeout: int
+        - vdom: str
+    
     **Example:**
         entry: HaVclusterItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -216,6 +246,14 @@ class HaAutovirtualmacinterfaceObject:
     # Interface name. | MaxLen: 15
     interface_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -247,6 +285,14 @@ class HaBackuphbdevObject:
     
     # Interface name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -290,6 +336,14 @@ class HaHamgmtinterfacesObject:
     # Default IPv6 gateway for reserved HA management interface. | Default: ::
     gateway6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -323,6 +377,14 @@ class HaUnicastpeersObject:
     id: int
     # Unicast peer IP. | Default: 0.0.0.0
     peer_ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -373,6 +435,14 @@ class HaVclusterObject:
     pingserver_flip_timeout: int
     # Virtual domain(s) in the virtual cluster.
     vdom: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

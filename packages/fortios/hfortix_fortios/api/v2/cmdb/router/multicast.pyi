@@ -13,9 +13,19 @@ class MulticastPimsmglobalvrfItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vrf: int
+        - bsr_candidate: "enable" | "disable"
+        - bsr_interface: str
+        - bsr_priority: int
+        - bsr_hash: int
+        - bsr_allow_quick_refresh: "enable" | "disable"
+        - cisco_crp_prefix: "enable" | "disable"
+        - rp_address: str
+    
     **Example:**
         entry: MulticastPimsmglobalvrfItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -35,9 +45,33 @@ class MulticastInterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - ttl_threshold: int
+        - pim_mode: "sparse-mode" | "dense-mode"
+        - passive: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - neighbour_filter: str
+        - hello_interval: int
+        - hello_holdtime: int
+        - cisco_exclude_genid: "enable" | "disable"
+        - dr_priority: int
+        - propagation_delay: int
+        - state_refresh_interval: int
+        - rp_candidate: "enable" | "disable"
+        - rp_candidate_group: str
+        - rp_candidate_priority: int
+        - rp_candidate_interval: int
+        - multicast_flow: str
+        - static_group: str
+        - rpf_nbr_fail_back: "enable" | "disable"
+        - rpf_nbr_fail_back_filter: str
+        - join_group: str
+        - igmp: str
+    
     **Example:**
         entry: MulticastInterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -118,6 +152,14 @@ class MulticastPimsmglobalvrfObject:
     # Statically configure RP addresses.
     rp_address: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -191,6 +233,14 @@ class MulticastInterfaceObject:
     join_group: str
     # IGMP configuration options.
     igmp: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

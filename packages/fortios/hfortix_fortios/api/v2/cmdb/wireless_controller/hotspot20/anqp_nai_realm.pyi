@@ -13,9 +13,15 @@ class AnqpNaiRealmNailistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - encoding: "disable" | "enable"
+        - nai_realm: str
+        - eap_method: str
+    
     **Example:**
         entry: AnqpNaiRealmNailistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -65,6 +71,14 @@ class AnqpNaiRealmNailistObject:
     nai_realm: str
     # EAP Methods.
     eap_method: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

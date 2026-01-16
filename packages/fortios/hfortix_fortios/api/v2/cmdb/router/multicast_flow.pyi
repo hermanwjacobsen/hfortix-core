@@ -13,9 +13,14 @@ class MulticastFlowFlowsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - group_addr: str
+        - source_addr: str
+    
     **Example:**
         entry: MulticastFlowFlowsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -63,6 +68,14 @@ class MulticastFlowFlowsObject:
     group_addr: str
     # Multicast source IP address. | Default: 0.0.0.0
     source_addr: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

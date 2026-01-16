@@ -13,9 +13,15 @@ class MpskProfileMpskgroupItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - vlan_type: "no-vlan" | "fixed-vlan"
+        - vlan_id: int
+        - mpsk_key: str
+    
     **Example:**
         entry: MpskProfileMpskgroupItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -74,6 +80,14 @@ class MpskProfileMpskgroupObject:
     vlan_id: int
     # List of multiple PSK entries.
     mpsk_key: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

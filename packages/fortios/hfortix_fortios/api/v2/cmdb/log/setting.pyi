@@ -13,9 +13,12 @@ class SettingCustomlogfieldsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - field_id: str
+    
     **Example:**
         entry: SettingCustomlogfieldsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -83,6 +86,14 @@ class SettingCustomlogfieldsObject:
     
     # Custom log field. | MaxLen: 35
     field_id: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

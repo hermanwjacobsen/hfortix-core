@@ -13,9 +13,18 @@ class ServerOptionsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - code: int
+        - type: "hex" | "string" | "ip6" | "fqdn"
+        - value: str
+        - ip6: str
+        - vci_match: "disable" | "enable"
+        - vci_string: str
+    
     **Example:**
         entry: ServerOptionsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -34,9 +43,15 @@ class ServerPrefixrangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_prefix: str
+        - end_prefix: str
+        - prefix_length: int
+    
     **Example:**
         entry: ServerPrefixrangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -52,9 +67,16 @@ class ServerIprangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+        - vci_match: "disable" | "enable"
+        - vci_string: str
+    
     **Example:**
         entry: ServerIprangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -136,6 +158,14 @@ class ServerOptionsObject:
     # One or more VCI strings in quotes separated by spaces.
     vci_string: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -173,6 +203,14 @@ class ServerPrefixrangeObject:
     end_prefix: str
     # Prefix length. | Default: 0 | Min: 1 | Max: 128
     prefix_length: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -213,6 +251,14 @@ class ServerIprangeObject:
     vci_match: Literal["disable", "enable"]
     # One or more VCI strings in quotes separated by spaces.
     vci_string: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

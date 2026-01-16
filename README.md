@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.77**
+> **⚠️ BETA STATUS - Version 0.5.89**
 >
-> - **Current Version**: 0.5.77 (Released - January 15, 2026)
+> - **Current Version**: 0.5.89 (Released - January 16, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -51,12 +51,19 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.77 - FortiManager Proxy Support, Enhanced Response Properties
+**Latest Release:** v0.5.89 - Generator Fixes, New Endpoints, Enhanced Test Coverage
 
 **Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
 **🔥 Latest Improvements (January 2026):**
+
+**v0.5.89 - Generator Fixes & New Endpoints (52 New Tests):**
+- ✅ **Nested child object response properties**: All nested table field objects now include `http_status_code`, `http_method`, `http_response_time`
+- ✅ **Service API endpoints**: Security rating recommendations and reports (4 tests), system fabric/time checks (2 tests)
+- ✅ **Monitor API endpoints**: CASB SaaS monitoring (1 test), firewall policy hit count (3 tests)
+- ✅ **CMDB emailfilter**: Block/allow lists, banned words, DNS blocklists, FortiShield, IP trust, headers, options, profiles (36 tests)
+- ✅ **Test generator fixes**: HTTP methods extraction, POST-only endpoint handling, removed unsupported parameters
 
 **v0.5.77 - FortiManager Proxy Support & Response Enhancements:**
 - 🎯 **FortiManagerProxy**: Route FortiOS API calls through FortiManager!

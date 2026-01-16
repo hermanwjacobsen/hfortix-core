@@ -13,9 +13,13 @@ class TrafficSnifferTargetmacItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - mac: str
+        - description: str
+    
     **Example:**
         entry: TrafficSnifferTargetmacItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -29,9 +33,13 @@ class TrafficSnifferTargetipItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - ip: str
+        - description: str
+    
     **Example:**
         entry: TrafficSnifferTargetipItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -45,9 +53,15 @@ class TrafficSnifferTargetportItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - switch_id: str
+        - description: str
+        - in_ports: str
+        - out_ports: str
+    
     **Example:**
         entry: TrafficSnifferTargetportItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -97,6 +111,14 @@ class TrafficSnifferTargetmacObject:
     # Description for the sniffer MAC. | MaxLen: 63
     description: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -130,6 +152,14 @@ class TrafficSnifferTargetipObject:
     ip: str
     # Description for the sniffer IP. | MaxLen: 63
     description: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -168,6 +198,14 @@ class TrafficSnifferTargetportObject:
     in_ports: str
     # Configure source egress port interfaces.
     out_ports: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,12 @@ class SaasApplicationDomainsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - domain: str
+    
     **Example:**
         entry: SaasApplicationDomainsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,15 @@ class SaasApplicationOutputattributesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - type: "string" | "string-list" | "integer" | "integer-list" | "boolean"
+        - optional: "enable" | "disable"
+    
     **Example:**
         entry: SaasApplicationOutputattributesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -46,9 +55,17 @@ class SaasApplicationInputattributesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - type: "string"
+        - required: "enable" | "disable"
+        - default: "string" | "string-list"
+        - fallback_input: "enable" | "disable"
+    
     **Example:**
         entry: SaasApplicationInputattributesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -102,6 +119,14 @@ class SaasApplicationDomainsObject:
     # Domain list separated by space. | MaxLen: 127
     domain: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -139,6 +164,14 @@ class SaasApplicationOutputattributesObject:
     type: Literal["string", "string-list", "integer", "integer-list", "boolean"]
     # CASB output attribute optional. | Default: disable
     optional: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -181,6 +214,14 @@ class SaasApplicationInputattributesObject:
     default: Literal["string", "string-list"]
     # CASB attribute legacy input. | Default: disable
     fallback_input: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

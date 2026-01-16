@@ -13,9 +13,12 @@ class AcmeInterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - interface_name: str
+    
     **Example:**
         entry: AcmeInterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,19 @@ class AcmeAccountsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: str
+        - status: str
+        - url: str
+        - ca_url: str
+        - email: str
+        - eab_key_id: str
+        - eab_key_hmac: str
+        - privatekey: str
+    
     **Example:**
         entry: AcmeAccountsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -84,6 +97,14 @@ class AcmeInterfaceObject:
     # Interface name. | MaxLen: 79
     interface_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -129,6 +150,14 @@ class AcmeAccountsObject:
     eab_key_hmac: str
     # Account Private Key. | MaxLen: 8191
     privatekey: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

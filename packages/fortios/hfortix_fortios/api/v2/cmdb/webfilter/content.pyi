@@ -13,9 +13,16 @@ class ContentEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - pattern_type: "wildcard" | "regexp"
+        - status: "enable" | "disable"
+        - score: int
+        - action: "block" | "exempt"
+    
     **Example:**
         entry: ContentEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -70,6 +77,14 @@ class ContentEntriesObject:
     score: int
     # Block or exempt word when a match is found. | Default: block
     action: Literal["block", "exempt"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

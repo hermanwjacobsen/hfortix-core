@@ -13,9 +13,19 @@ class CsfTrustedlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - authorization_type: "serial" | "certificate"
+        - serial: str
+        - certificate: str
+        - action: "accept" | "deny"
+        - ha_members: str
+        - downstream_authorization: "enable" | "disable"
+        - index: int
+    
     **Example:**
         entry: CsfTrustedlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -35,9 +45,15 @@ class CsfFabricconnectorItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - serial: str
+        - accprofile: str
+        - configuration_write_access: "enable" | "disable"
+        - vdom: str
+    
     **Example:**
         entry: CsfFabricconnectorItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -127,6 +143,14 @@ class CsfTrustedlistObject:
     # Index of the downstream in tree. | Default: 0 | Min: 1 | Max: 1024
     index: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -164,6 +188,14 @@ class CsfFabricconnectorObject:
     configuration_write_access: Literal["enable", "disable"]
     # Virtual domains that the connector has access to. If none ar
     vdom: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,13 @@ class Bfd6NeighborItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - ip6_address: str
+        - interface: str
+    
     **Example:**
         entry: Bfd6NeighborItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -29,9 +33,19 @@ class Bfd6MultihoptemplateItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - src: str
+        - dst: str
+        - bfd_desired_min_tx: int
+        - bfd_required_min_rx: int
+        - bfd_detect_mult: int
+        - auth_mode: "none" | "md5"
+        - md5_key: str
+    
     **Example:**
         entry: Bfd6MultihoptemplateItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -82,6 +96,14 @@ class Bfd6NeighborObject:
     # Interface to the BFD neighbor. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -127,6 +149,14 @@ class Bfd6MultihoptemplateObject:
     auth_mode: Literal["none", "md5"]
     # MD5 key of key ID 1. | MaxLen: 16
     md5_key: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

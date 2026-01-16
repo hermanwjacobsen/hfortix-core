@@ -13,9 +13,14 @@ class H2qpOsuProviderFriendlynameItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - index: int
+        - lang: str
+        - friendly_name: str
+    
     **Example:**
         entry: H2qpOsuProviderFriendlynameItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -30,9 +35,14 @@ class H2qpOsuProviderServicedescriptionItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - service_id: int
+        - lang: str
+        - service_description: str
+    
     **Example:**
         entry: H2qpOsuProviderServicedescriptionItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -90,6 +100,14 @@ class H2qpOsuProviderFriendlynameObject:
     # OSU provider friendly name. | MaxLen: 252
     friendly_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -125,6 +143,14 @@ class H2qpOsuProviderServicedescriptionObject:
     lang: str
     # Service description. | MaxLen: 252
     service_description: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

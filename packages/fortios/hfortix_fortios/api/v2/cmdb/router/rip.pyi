@@ -13,9 +13,15 @@ class RipDistanceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - distance: int
+        - access_list: str
+    
     **Example:**
         entry: RipDistanceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,16 @@ class RipDistributelistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - direction: "in" | "out"
+        - listname: str
+        - interface: str
+    
     **Example:**
         entry: RipDistributelistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -50,9 +63,13 @@ class RipNeighborItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+    
     **Example:**
         entry: RipNeighborItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -66,9 +83,13 @@ class RipNetworkItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix: str
+    
     **Example:**
         entry: RipNetworkItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -82,9 +103,17 @@ class RipOffsetlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - direction: "in" | "out"
+        - access_list: str
+        - offset: int
+        - interface: str
+    
     **Example:**
         entry: RipOffsetlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -102,9 +131,12 @@ class RipPassiveinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: RipPassiveinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -117,9 +149,15 @@ class RipRedistributeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - metric: int
+        - routemap: str
+    
     **Example:**
         entry: RipRedistributeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -135,9 +173,21 @@ class RipInterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - auth_keychain: str
+        - auth_mode: "none" | "text" | "md5"
+        - auth_string: str
+        - receive_version: "1" | "2"
+        - send_version: "1" | "2"
+        - send_version2_broadcast: "disable" | "enable"
+        - split_horizon_status: "enable" | "disable"
+        - split_horizon: "poisoned" | "regular"
+        - flags: int
+    
     **Example:**
         entry: RipInterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -207,6 +257,14 @@ class RipDistanceObject:
     # Access list for route destination. | MaxLen: 35
     access_list: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -247,6 +305,14 @@ class RipDistributelistObject:
     # Distribute list interface name. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -281,6 +347,14 @@ class RipNeighborObject:
     # IP address. | Default: 0.0.0.0
     ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -314,6 +388,14 @@ class RipNetworkObject:
     id: int
     # Network prefix. | Default: 0.0.0.0 0.0.0.0
     prefix: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -357,6 +439,14 @@ class RipOffsetlistObject:
     # Interface name. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -388,6 +478,14 @@ class RipPassiveinterfaceObject:
     
     # Passive interface name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -426,6 +524,14 @@ class RipRedistributeObject:
     metric: int
     # Route map name. | MaxLen: 35
     routemap: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -476,6 +582,14 @@ class RipInterfaceObject:
     split_horizon: Literal["poisoned", "regular"]
     # Flags. | Default: 8 | Min: 0 | Max: 255
     flags: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

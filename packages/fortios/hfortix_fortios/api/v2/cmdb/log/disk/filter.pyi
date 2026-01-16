@@ -13,9 +13,15 @@ class FilterFreestyleItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - category: "traffic" | "event" | "virus" | "webfilter" | "attack" | "spam" | "anomaly" | "voip" | "dlp" | "app-ctrl" | "waf" | "gtp" | "dns" | "ssh" | "ssl" | "file-filter" | "icap" | "virtual-patch" | "debug"
+        - filter: str
+        - filter_type: "include" | "exclude"
+    
     **Example:**
         entry: FilterFreestyleItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -77,6 +83,14 @@ class FilterFreestyleObject:
     filter: str
     # Include/exclude logs that match the filter. | Default: include
     filter_type: Literal["include", "exclude"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

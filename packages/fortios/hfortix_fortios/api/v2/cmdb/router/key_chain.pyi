@@ -13,9 +13,16 @@ class KeyChainKeyItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: str
+        - accept_lifetime: str
+        - send_lifetime: str
+        - key_string: str
+        - algorithm: "md5" | "hmac-sha1" | "hmac-sha256" | "hmac-sha384" | "hmac-sha512" | "cmac-aes128"
+    
     **Example:**
         entry: KeyChainKeyItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -68,6 +75,14 @@ class KeyChainKeyObject:
     key_string: str
     # Cryptographic algorithm. | Default: md5
     algorithm: Literal["md5", "hmac-sha1", "hmac-sha256", "hmac-sha384", "hmac-sha512", "cmac-aes128"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

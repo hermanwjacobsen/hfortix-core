@@ -13,9 +13,16 @@ class InterfaceClientoptionsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - code: int
+        - type: "hex" | "string" | "ip" | "fqdn"
+        - value: str
+        - ip: str
+    
     **Example:**
         entry: InterfaceClientoptionsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -32,9 +39,12 @@ class InterfaceFailalertinterfacesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: InterfaceFailalertinterfacesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -47,9 +57,12 @@ class InterfaceMemberItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - interface_name: str
+    
     **Example:**
         entry: InterfaceMemberItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -62,9 +75,12 @@ class InterfaceSecuritygroupsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: InterfaceSecuritygroupsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -77,9 +93,25 @@ class InterfaceVrrpItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vrid: int
+        - version: "2" | "3"
+        - vrgrp: int
+        - vrip: str
+        - priority: int
+        - adv_interval: int
+        - start_time: int
+        - preempt: "enable" | "disable"
+        - accept_mode: "enable" | "disable"
+        - vrdst: str
+        - vrdst_priority: int
+        - ignore_default_route: "enable" | "disable"
+        - status: "enable" | "disable"
+        - proxy_arp: str
+    
     **Example:**
         entry: InterfaceVrrpItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -105,9 +137,20 @@ class InterfaceSecondaryipItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+        - secip_relay_ip: str
+        - allowaccess: "ping" | "https" | "ssh" | "snmp" | "http" | "telnet" | "fgfm" | "radius-acct" | "probe-response" | "fabric" | "ftm" | "speed-test" | "scim"
+        - gwdetect: "enable" | "disable"
+        - ping_serv_status: int
+        - detectserver: str
+        - detectprotocol: "ping" | "tcp-echo" | "udp-echo"
+        - ha_priority: int
+    
     **Example:**
         entry: InterfaceSecondaryipItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -128,9 +171,13 @@ class InterfaceDhcpsnoopingserverlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - server_ip: str
+    
     **Example:**
         entry: InterfaceDhcpsnoopingserverlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -144,9 +191,14 @@ class InterfaceTaggingItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - category: str
+        - tags: str
+    
     **Example:**
         entry: InterfaceTaggingItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -432,6 +484,14 @@ class InterfaceClientoptionsObject:
     # DHCP option IPs.
     ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -463,6 +523,14 @@ class InterfaceFailalertinterfacesObject:
     
     # Names of the non-virtual interface. | MaxLen: 15
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -496,6 +564,14 @@ class InterfaceMemberObject:
     # Physical interface name. | MaxLen: 79
     interface_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -527,6 +603,14 @@ class InterfaceSecuritygroupsObject:
     
     # Names of user groups that can authenticate with the captive | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -586,6 +670,14 @@ class InterfaceVrrpObject:
     # VRRP Proxy ARP configuration.
     proxy_arp: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -634,6 +726,14 @@ class InterfaceSecondaryipObject:
     # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
     ha_priority: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -667,6 +767,14 @@ class InterfaceDhcpsnoopingserverlistObject:
     name: str
     # IP address for DHCP server. | Default: 0.0.0.0
     server_ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -703,6 +811,14 @@ class InterfaceTaggingObject:
     category: str
     # Tags.
     tags: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

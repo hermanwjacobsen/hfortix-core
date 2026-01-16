@@ -13,9 +13,60 @@ class RouteMapRuleItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - action: "permit" | "deny"
+        - match_as_path: str
+        - match_community: str
+        - match_extcommunity: str
+        - match_community_exact: "enable" | "disable"
+        - match_extcommunity_exact: "enable" | "disable"
+        - match_origin: "none" | "egp" | "igp" | "incomplete"
+        - match_interface: str
+        - match_ip_address: str
+        - match_ip6_address: str
+        - match_ip_nexthop: str
+        - match_ip6_nexthop: str
+        - match_metric: int
+        - match_route_type: "external-type1" | "external-type2" | "none"
+        - match_tag: int
+        - match_vrf: int
+        - match_suppress: "enable" | "disable"
+        - set_aggregator_as: int
+        - set_aggregator_ip: str
+        - set_aspath_action: "prepend" | "replace"
+        - set_aspath: str
+        - set_atomic_aggregate: "enable" | "disable"
+        - set_community_delete: str
+        - set_community: str
+        - set_community_additive: "enable" | "disable"
+        - set_dampening_reachability_half_life: int
+        - set_dampening_reuse: int
+        - set_dampening_suppress: int
+        - set_dampening_max_suppress: int
+        - set_dampening_unreachability_half_life: int
+        - set_extcommunity_rt: str
+        - set_extcommunity_soo: str
+        - set_ip_nexthop: str
+        - set_ip_prefsrc: str
+        - set_vpnv4_nexthop: str
+        - set_ip6_nexthop: str
+        - set_ip6_nexthop_local: str
+        - set_vpnv6_nexthop: str
+        - set_vpnv6_nexthop_local: str
+        - set_local_preference: int
+        - set_metric: int
+        - set_metric_type: "external-type1" | "external-type2" | "none"
+        - set_originator_id: str
+        - set_origin: "none" | "egp" | "igp" | "incomplete"
+        - set_tag: int
+        - set_weight: int
+        - set_route_tag: int
+        - set_priority: int
+    
     **Example:**
         entry: RouteMapRuleItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -201,6 +252,14 @@ class RouteMapRuleObject:
     set_route_tag: int
     # Priority for routing table. | Min: 1 | Max: 65535
     set_priority: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

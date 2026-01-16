@@ -13,9 +13,31 @@ class DynamicPortPolicyPolicyItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - status: "enable" | "disable"
+        - category: "device" | "interface-tag"
+        - match_type: "dynamic" | "override"
+        - match_period: int
+        - match_remove: "default" | "link-down"
+        - interface_tags: str
+        - mac: str
+        - hw_vendor: str
+        - type: str
+        - family: str
+        - host: str
+        - lldp_profile: str
+        - qos_policy: str
+        - 1x_802: str
+        - vlan_policy: str
+        - bounce_port_link: "disable" | "enable"
+        - bounce_port_duration: int
+        - poe_reset: "disable" | "enable"
+    
     **Example:**
         entry: DynamicPortPolicyPolicyItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -120,6 +142,14 @@ class DynamicPortPolicyPolicyObject:
     bounce_port_duration: int
     # Enable/disable POE reset of a switch port where this policy | Default: disable
     poe_reset: Literal["disable", "enable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

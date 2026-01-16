@@ -13,9 +13,12 @@ class ExchangeKdcipItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - ipv4: str
+    
     **Example:**
         entry: ExchangeKdcipItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -68,6 +71,14 @@ class ExchangeKdcipObject:
     
     # KDC IPv4 addresses for Kerberos authentication. | MaxLen: 79
     ipv4: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

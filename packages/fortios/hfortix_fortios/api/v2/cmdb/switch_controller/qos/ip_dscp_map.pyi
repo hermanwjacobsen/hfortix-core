@@ -13,9 +13,16 @@ class IpDscpMapMapItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - cos_queue: int
+        - diffserv: "CS0" | "CS1" | "AF11" | "AF12" | "AF13" | "CS2" | "AF21" | "AF22" | "AF23" | "CS3" | "AF31" | "AF32" | "AF33" | "CS4" | "AF41" | "AF42" | "AF43" | "CS5" | "EF" | "CS6" | "CS7"
+        - ip_precedence: "network-control" | "internetwork-control" | "critic-ecp" | "flashoverride" | "flash" | "immediate" | "priority" | "routine"
+        - value: str
+    
     **Example:**
         entry: IpDscpMapMapItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -69,6 +76,14 @@ class IpDscpMapMapObject:
     ip_precedence: Literal["network-control", "internetwork-control", "critic-ecp", "flashoverride", "flash", "immediate", "priority", "routine"]
     # Raw values of DSCP (0 - 63).
     value: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

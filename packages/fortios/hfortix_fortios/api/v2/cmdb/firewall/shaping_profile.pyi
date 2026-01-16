@@ -13,9 +13,22 @@ class ShapingProfileShapingentriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - class_id: int
+        - priority: "top" | "critical" | "high" | "medium" | "low"
+        - guaranteed_bandwidth_percentage: int
+        - maximum_bandwidth_percentage: int
+        - limit: int
+        - burst_in_msec: int
+        - cburst_in_msec: int
+        - red_probability: int
+        - min: int
+        - max: int
+    
     **Example:**
         entry: ShapingProfileShapingentriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -95,6 +108,14 @@ class ShapingProfileShapingentriesObject:
     min: int
     # Average queue size in packets at which RED drop probability | Default: 250 | Min: 3 | Max: 3000
     max: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

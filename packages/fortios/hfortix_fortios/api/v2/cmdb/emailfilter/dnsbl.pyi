@@ -13,9 +13,15 @@ class DnsblEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - status: "enable" | "disable"
+        - id: int
+        - server: str
+        - action: "reject" | "spam"
+    
     **Example:**
         entry: DnsblEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -67,6 +73,14 @@ class DnsblEntriesObject:
     server: str
     # Reject connection or mark as spam email. | Default: spam
     action: Literal["reject", "spam"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
