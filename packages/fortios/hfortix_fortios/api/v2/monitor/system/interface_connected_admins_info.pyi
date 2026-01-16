@@ -32,7 +32,7 @@ class InterfaceConnectedAdminsInfoResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    current_admin_connected: str
+    current_admin_connected: bool
     num_admins_connected: int
     admin_methods: str
 
@@ -46,7 +46,7 @@ class InterfaceConnectedAdminsInfoObject:
     """
     
     # current_admin_connected
-    current_admin_connected: str
+    current_admin_connected: bool
     # num_admins_connected
     num_admins_connected: int
     # admin_methods

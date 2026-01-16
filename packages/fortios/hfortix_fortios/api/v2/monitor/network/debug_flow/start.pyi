@@ -17,22 +17,22 @@ class StartPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    num_packets: str  # num_packets
-    ipv6: str  # ipv6
-    negate: str  # negate
+    num_packets: int  # num_packets
+    ipv6: bool  # ipv6
+    negate: bool  # negate
     addr_from: str  # addr_from
     addr_to: str  # addr_to
     daddr_from: str  # daddr_from
     daddr_to: str  # daddr_to
     saddr_from: str  # saddr_from
     saddr_to: str  # saddr_to
-    port_from: str  # port_from
-    port_to: str  # port_to
-    dport_from: str  # dport_from
-    dport_to: str  # dport_to
-    sport_from: str  # sport_from
-    sport_to: str  # sport_to
-    proto: str  # proto
+    port_from: int  # port_from
+    port_to: int  # port_to
+    dport_from: int  # dport_from
+    dport_to: int  # dport_to
+    sport_from: int  # sport_from
+    sport_to: int  # sport_to
+    proto: int  # proto
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -47,22 +47,22 @@ class StartResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    num_packets: str
-    ipv6: str
-    negate: str
+    num_packets: int
+    ipv6: bool
+    negate: bool
     addr_from: str
     addr_to: str
     daddr_from: str
     daddr_to: str
     saddr_from: str
     saddr_to: str
-    port_from: str
-    port_to: str
-    dport_from: str
-    dport_to: str
-    sport_from: str
-    sport_to: str
-    proto: str
+    port_from: int
+    port_to: int
+    dport_from: int
+    dport_to: int
+    sport_from: int
+    sport_to: int
+    proto: int
 
 
 @final
@@ -74,11 +74,11 @@ class StartObject:
     """
     
     # num_packets
-    num_packets: str
+    num_packets: int
     # ipv6
-    ipv6: str
+    ipv6: bool
     # negate
-    negate: str
+    negate: bool
     # addr_from
     addr_from: str
     # addr_to
@@ -92,19 +92,19 @@ class StartObject:
     # saddr_to
     saddr_to: str
     # port_from
-    port_from: str
+    port_from: int
     # port_to
-    port_to: str
+    port_to: int
     # dport_from
-    dport_from: str
+    dport_from: int
     # dport_to
-    dport_to: str
+    dport_to: int
     # sport_from
-    sport_from: str
+    sport_from: int
     # sport_to
-    sport_to: str
+    sport_to: int
     # proto
-    proto: str
+    proto: int
     
     # Common API response fields
     status: str
@@ -331,7 +331,7 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -340,13 +340,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -354,7 +354,7 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -363,13 +363,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -387,20 +387,20 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -409,13 +409,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -424,7 +424,7 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -433,13 +433,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -447,7 +447,7 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -456,13 +456,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -480,20 +480,20 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -502,13 +502,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -521,7 +521,7 @@ class Start:
     def set(
         self,
         payload_dict: StartPayload | None = ...,
-        num_packets: str | None = ...,
+        num_packets: int | None = ...,
         ipv6: str | None = ...,
         negate: str | None = ...,
         addr_from: str | None = ...,
@@ -530,13 +530,13 @@ class Start:
         daddr_to: str | None = ...,
         saddr_from: str | None = ...,
         saddr_to: str | None = ...,
-        port_from: str | None = ...,
-        port_to: str | None = ...,
-        dport_from: str | None = ...,
-        dport_to: str | None = ...,
-        sport_from: str | None = ...,
-        sport_to: str | None = ...,
-        proto: str | None = ...,
+        port_from: int | None = ...,
+        port_to: int | None = ...,
+        dport_from: int | None = ...,
+        dport_to: int | None = ...,
+        sport_from: int | None = ...,
+        sport_to: int | None = ...,
+        proto: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

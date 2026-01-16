@@ -34,7 +34,7 @@ class DeregisterDeviceResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     error: str
-    success: str
+    success: bool
 
 
 @final
@@ -48,7 +48,7 @@ class DeregisterDeviceObject:
     # error
     error: str
     # success
-    success: str
+    success: bool
     
     # Common API response fields
     status: str

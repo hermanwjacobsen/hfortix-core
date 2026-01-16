@@ -21,7 +21,7 @@ class TestPayload(TypedDict, total=False):
     ordinal: str  # ordinal
     server: str  # server
     secret: str  # secret
-    port: str  # port
+    port: int  # port
     source_ip: str  # source_ip
 
 # Nested TypedDicts for table field children (dict mode)
@@ -283,7 +283,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> TestObject: ...
@@ -296,7 +296,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -310,7 +310,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -322,7 +322,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -336,7 +336,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> TestObject: ...
@@ -349,7 +349,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -363,7 +363,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -375,7 +375,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -393,7 +393,7 @@ class Test:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

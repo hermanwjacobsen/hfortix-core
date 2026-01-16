@@ -17,7 +17,7 @@ class VlanProbePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ap_interface: str  # ap_interface
+    ap_interface: int  # ap_interface
     wtp: str  # wtp
 
 # Nested TypedDicts for table field children (dict mode)
@@ -34,8 +34,8 @@ class VlanProbeResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     results: str
-    probe_results_exist: str
-    probe_in_progress: str
+    probe_results_exist: bool
+    probe_in_progress: bool
 
 
 @final
@@ -49,9 +49,9 @@ class VlanProbeObject:
     # results
     results: str
     # probe_results_exist
-    probe_results_exist: str
+    probe_results_exist: bool
     # probe_in_progress
-    probe_in_progress: str
+    probe_in_progress: bool
     
     # Common API response fields
     status: str
@@ -244,7 +244,7 @@ class VlanProbe:
     def put(
         self,
         payload_dict: VlanProbePayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> VlanProbeObject: ...
@@ -253,7 +253,7 @@ class VlanProbe:
     def put(
         self,
         payload_dict: VlanProbePayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -263,7 +263,7 @@ class VlanProbe:
     def put(
         self,
         payload_dict: VlanProbePayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -271,7 +271,7 @@ class VlanProbe:
     def put(
         self,
         payload_dict: VlanProbePayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -285,7 +285,7 @@ class VlanProbe:
     def set(
         self,
         payload_dict: VlanProbePayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

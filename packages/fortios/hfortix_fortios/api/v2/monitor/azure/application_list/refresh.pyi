@@ -17,7 +17,7 @@ class RefreshPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    last_update_time: str  # last_update_time
+    last_update_time: int  # last_update_time
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -274,7 +274,7 @@ class Refresh:
     def post(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> RefreshObject: ...
     
@@ -282,7 +282,7 @@ class Refresh:
     def post(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -291,14 +291,14 @@ class Refresh:
     def post(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -307,7 +307,7 @@ class Refresh:
     def put(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> RefreshObject: ...
     
@@ -315,7 +315,7 @@ class Refresh:
     def put(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -324,14 +324,14 @@ class Refresh:
     def put(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -344,7 +344,7 @@ class Refresh:
     def set(
         self,
         payload_dict: RefreshPayload | None = ...,
-        last_update_time: str | None = ...,
+        last_update_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

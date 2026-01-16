@@ -17,7 +17,7 @@ class UnverifyCertPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ems_id: str  # ems_id
+    ems_id: int  # ems_id
     scope: str  # scope
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class UnverifyCertResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ems_id: str
+    ems_id: int
     scope: str
 
 
@@ -46,7 +46,7 @@ class UnverifyCertObject:
     """
     
     # ems_id
-    ems_id: str
+    ems_id: int
     # scope
     scope: str
     
@@ -275,7 +275,7 @@ class UnverifyCert:
     def post(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UnverifyCertObject: ...
@@ -284,7 +284,7 @@ class UnverifyCert:
     def post(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -294,7 +294,7 @@ class UnverifyCert:
     def post(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -302,7 +302,7 @@ class UnverifyCert:
     def post(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -312,7 +312,7 @@ class UnverifyCert:
     def put(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UnverifyCertObject: ...
@@ -321,7 +321,7 @@ class UnverifyCert:
     def put(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -331,7 +331,7 @@ class UnverifyCert:
     def put(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -339,7 +339,7 @@ class UnverifyCert:
     def put(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +353,7 @@ class UnverifyCert:
     def set(
         self,
         payload_dict: UnverifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

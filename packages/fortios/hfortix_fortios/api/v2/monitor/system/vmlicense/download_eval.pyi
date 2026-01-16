@@ -19,7 +19,7 @@ class DownloadEvalPayload(TypedDict, total=False):
     """
     account_id: str  # account_id
     account_password: str  # account_password
-    is_government: str  # is_government
+    is_government: bool  # is_government
 
 # Nested TypedDicts for table field children (dict mode)
 

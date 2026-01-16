@@ -17,8 +17,8 @@ class KillPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    pid: str  # pid
-    signal: str  # signal
+    pid: int  # pid
+    signal: int  # signal
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -33,8 +33,8 @@ class KillResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    pid: str
-    signal: str
+    pid: int
+    signal: int
 
 
 @final
@@ -46,9 +46,9 @@ class KillObject:
     """
     
     # pid
-    pid: str
+    pid: int
     # signal
-    signal: str
+    signal: int
     
     # Common API response fields
     status: str
@@ -275,8 +275,8 @@ class Kill:
     def post(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> KillObject: ...
     
@@ -284,8 +284,8 @@ class Kill:
     def post(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -294,16 +294,16 @@ class Kill:
     def post(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -312,8 +312,8 @@ class Kill:
     def put(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> KillObject: ...
     
@@ -321,8 +321,8 @@ class Kill:
     def put(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -331,16 +331,16 @@ class Kill:
     def put(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -353,8 +353,8 @@ class Kill:
     def set(
         self,
         payload_dict: KillPayload | None = ...,
-        pid: str | None = ...,
-        signal: str | None = ...,
+        pid: int | None = ...,
+        signal: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

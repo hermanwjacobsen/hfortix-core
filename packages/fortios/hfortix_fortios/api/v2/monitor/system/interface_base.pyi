@@ -18,8 +18,8 @@ class InterfacePayload(TypedDict, total=False):
         }
     """
     interface_name: str  # interface_name
-    include_vlan: str  # include_vlan
-    include_aggregate: str  # include_aggregate
+    include_vlan: bool  # include_vlan
+    include_aggregate: bool  # include_aggregate
     scope: str  # scope
 
 # Nested TypedDicts for table field children (dict mode)
@@ -36,8 +36,8 @@ class InterfaceResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     interface_name: str
-    include_vlan: str
-    include_aggregate: str
+    include_vlan: bool
+    include_aggregate: bool
     scope: str
 
 
@@ -52,9 +52,9 @@ class InterfaceObject:
     # interface_name
     interface_name: str
     # include_vlan
-    include_vlan: str
+    include_vlan: bool
     # include_aggregate
-    include_aggregate: str
+    include_aggregate: bool
     # scope
     scope: str
     

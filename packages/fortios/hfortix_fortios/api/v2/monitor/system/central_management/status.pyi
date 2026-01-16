@@ -17,7 +17,7 @@ class StatusPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    skip_detect: str  # skip_detect
+    skip_detect: bool  # skip_detect
 
 # Nested TypedDicts for table field children (dict mode)
 

@@ -18,9 +18,9 @@ class InternetServiceMatchPayload(TypedDict, total=False):
         }
     """
     ip: str  # ip
-    is_ipv6: str  # is_ipv6
+    is_ipv6: bool  # is_ipv6
     ipv4_mask: str  # ipv4_mask
-    ipv6_prefix: str  # ipv6_prefix
+    ipv6_prefix: int  # ipv6_prefix
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -36,9 +36,9 @@ class InternetServiceMatchResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
     ipv4_mask: str
-    ipv6_prefix: str
+    ipv6_prefix: int
 
 
 @final
@@ -52,11 +52,11 @@ class InternetServiceMatchObject:
     # ip
     ip: str
     # is_ipv6
-    is_ipv6: str
+    is_ipv6: bool
     # ipv4_mask
     ipv4_mask: str
     # ipv6_prefix
-    ipv6_prefix: str
+    ipv6_prefix: int
     
     # Common API response fields
     status: str
@@ -254,7 +254,7 @@ class InternetServiceMatch:
         ip: str | None = ...,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceMatchObject: ...
     
@@ -265,7 +265,7 @@ class InternetServiceMatch:
         ip: str | None = ...,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -277,7 +277,7 @@ class InternetServiceMatch:
         ip: str | None = ...,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -287,7 +287,7 @@ class InternetServiceMatch:
         ip: str | None = ...,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +303,7 @@ class InternetServiceMatch:
         ip: str | None = ...,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

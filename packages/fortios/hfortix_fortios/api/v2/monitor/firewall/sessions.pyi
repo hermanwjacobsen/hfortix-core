@@ -18,8 +18,8 @@ class SessionsPayload(TypedDict, total=False):
         }
     """
     ip_version: str  # ip_version
-    count: str  # count
-    summary: str  # summary
+    count: int  # count
+    summary: bool  # summary
     srcport: str  # srcport
     policyid: str  # policyid
     security_policyid: str  # security-policyid
@@ -295,7 +295,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
@@ -330,7 +330,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
@@ -366,7 +366,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
@@ -400,7 +400,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
@@ -440,7 +440,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,

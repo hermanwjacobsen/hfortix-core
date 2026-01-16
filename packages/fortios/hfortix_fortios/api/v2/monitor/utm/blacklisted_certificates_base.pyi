@@ -17,8 +17,8 @@ class BlacklistedCertificatesPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    start: str  # start
-    count: str  # count
+    start: int  # start
+    count: int  # count
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -33,8 +33,8 @@ class BlacklistedCertificatesResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    start: str
-    count: str
+    start: int
+    count: int
 
 
 @final
@@ -46,9 +46,9 @@ class BlacklistedCertificatesObject:
     """
     
     # start
-    start: str
+    start: int
     # count
-    count: str
+    count: int
     
     # Common API response fields
     status: str
@@ -241,8 +241,8 @@ class BlacklistedCertificates:
     def put(
         self,
         payload_dict: BlacklistedCertificatesPayload | None = ...,
-        start: str | None = ...,
-        count: str | None = ...,
+        start: int | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> BlacklistedCertificatesObject: ...
     
@@ -250,8 +250,8 @@ class BlacklistedCertificates:
     def put(
         self,
         payload_dict: BlacklistedCertificatesPayload | None = ...,
-        start: str | None = ...,
-        count: str | None = ...,
+        start: int | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -260,16 +260,16 @@ class BlacklistedCertificates:
     def put(
         self,
         payload_dict: BlacklistedCertificatesPayload | None = ...,
-        start: str | None = ...,
-        count: str | None = ...,
+        start: int | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: BlacklistedCertificatesPayload | None = ...,
-        start: str | None = ...,
-        count: str | None = ...,
+        start: int | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -282,8 +282,8 @@ class BlacklistedCertificates:
     def set(
         self,
         payload_dict: BlacklistedCertificatesPayload | None = ...,
-        start: str | None = ...,
-        count: str | None = ...,
+        start: int | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

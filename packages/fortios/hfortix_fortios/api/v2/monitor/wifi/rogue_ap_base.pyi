@@ -17,7 +17,7 @@ class RogueApPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    managed_ssid_only: str  # managed_ssid_only
+    managed_ssid_only: bool  # managed_ssid_only
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class RogueApResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    managed_ssid_only: str
+    managed_ssid_only: bool
 
 
 @final
@@ -44,7 +44,7 @@ class RogueApObject:
     """
     
     # managed_ssid_only
-    managed_ssid_only: str
+    managed_ssid_only: bool
     
     # Common API response fields
     status: str

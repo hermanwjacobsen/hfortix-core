@@ -33,7 +33,7 @@ class AcmeCertificateStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    is_ssl_server_cert: str
+    is_ssl_server_cert: bool
     acme_status: str
 
 
@@ -46,7 +46,7 @@ class AcmeCertificateStatusObject:
     """
     
     # is_ssl_server_cert
-    is_ssl_server_cert: str
+    is_ssl_server_cert: bool
     # acme_status
     acme_status: str
     

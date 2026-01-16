@@ -17,13 +17,13 @@ class LookupPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     destination: str  # destination
     source: str  # source
-    destination_port: str  # destination_port
-    source_port: str  # source_port
+    destination_port: int  # destination_port
+    source_port: int  # source_port
     interface_name: str  # interface_name
-    protocol_number: str  # protocol_number
+    protocol_number: int  # protocol_number
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -38,9 +38,9 @@ class LookupPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    success: str
-    is_vwl_route: str
-    is_static_route: str
+    success: bool
+    is_vwl_route: bool
+    is_static_route: bool
     id: int
 
 
@@ -53,11 +53,11 @@ class LookupPolicyObject:
     """
     
     # success
-    success: str
+    success: bool
     # is_vwl_route
-    is_vwl_route: str
+    is_vwl_route: bool
     # is_static_route
-    is_static_route: str
+    is_static_route: bool
     # id
     id: int
     
@@ -260,10 +260,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> LookupPolicyObject: ...
     
@@ -274,10 +274,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -289,10 +289,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -302,10 +302,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -321,10 +321,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

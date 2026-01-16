@@ -34,7 +34,7 @@ class SetTier1Response(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    success: str
+    success: bool
     error: str
 
 
@@ -47,7 +47,7 @@ class SetTier1Object:
     """
     
     # success
-    success: str
+    success: bool
     # error
     error: str
     

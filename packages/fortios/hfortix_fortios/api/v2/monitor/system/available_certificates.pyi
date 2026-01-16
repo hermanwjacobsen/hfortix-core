@@ -18,11 +18,11 @@ class AvailableCertificatesPayload(TypedDict, total=False):
         }
     """
     scope: str  # scope
-    with_remote: str  # with_remote
-    with_ca: str  # with_ca
-    with_crl: str  # with_crl
+    with_remote: bool  # with_remote
+    with_ca: bool  # with_ca
+    with_crl: bool  # with_crl
     mkey: str  # mkey
-    find_all_references: str  # find_all_references
+    find_all_references: bool  # find_all_references
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -38,11 +38,11 @@ class AvailableCertificatesResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     scope: str
-    with_remote: str
-    with_ca: str
-    with_crl: str
+    with_remote: bool
+    with_ca: bool
+    with_crl: bool
     mkey: str
-    find_all_references: str
+    find_all_references: bool
 
 
 @final
@@ -56,15 +56,15 @@ class AvailableCertificatesObject:
     # scope
     scope: str
     # with_remote
-    with_remote: str
+    with_remote: bool
     # with_ca
-    with_ca: str
+    with_ca: bool
     # with_crl
-    with_crl: str
+    with_crl: bool
     # mkey
     mkey: str
     # find_all_references
-    find_all_references: str
+    find_all_references: bool
     
     # Common API response fields
     status: str

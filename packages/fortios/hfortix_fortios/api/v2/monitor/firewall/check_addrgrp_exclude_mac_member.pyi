@@ -33,7 +33,7 @@ class CheckAddrgrpExcludeMacMemberResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    exclude_mac_member: str
+    exclude_mac_member: bool
 
 
 @final
@@ -45,7 +45,7 @@ class CheckAddrgrpExcludeMacMemberObject:
     """
     
     # exclude_mac_member
-    exclude_mac_member: str
+    exclude_mac_member: bool
     
     # Common API response fields
     status: str

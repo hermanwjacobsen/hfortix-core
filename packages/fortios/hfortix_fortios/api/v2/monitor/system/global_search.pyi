@@ -21,7 +21,7 @@ class GlobalSearchPayload(TypedDict, total=False):
     scope: str  # scope
     search_tables: str  # search_tables
     skip_tables: str  # skip_tables
-    exact: str  # exact
+    exact: bool  # exact
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -40,7 +40,7 @@ class GlobalSearchResponse(TypedDict):
     scope: str
     search_tables: str
     skip_tables: str
-    exact: str
+    exact: bool
 
 
 @final
@@ -60,7 +60,7 @@ class GlobalSearchObject:
     # skip_tables
     skip_tables: str
     # exact
-    exact: str
+    exact: bool
     
     # Common API response fields
     status: str

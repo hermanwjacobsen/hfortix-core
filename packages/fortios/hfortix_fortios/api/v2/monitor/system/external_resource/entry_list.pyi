@@ -18,9 +18,9 @@ class EntryListPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    status_only: str  # status_only
-    include_notes: str  # include_notes
-    counts_only: str  # counts_only
+    status_only: bool  # status_only
+    include_notes: bool  # include_notes
+    counts_only: bool  # counts_only
     entry: str  # entry
 
 # Nested TypedDicts for table field children (dict mode)
@@ -49,7 +49,7 @@ class EntryListResponse(TypedDict):
     valid_count: int
     accepted_count: int
     accepted_limit: int
-    overflow: str
+    overflow: bool
     matched_invalid: int
     matched_valid: int
     notes: str
@@ -90,7 +90,7 @@ class EntryListObject:
     # accepted_limit
     accepted_limit: int
     # overflow
-    overflow: str
+    overflow: bool
     # matched_invalid
     matched_invalid: int
     # matched_valid

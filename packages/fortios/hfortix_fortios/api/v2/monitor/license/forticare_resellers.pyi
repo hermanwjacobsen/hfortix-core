@@ -17,7 +17,7 @@ class ForticareResellersPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    country_code: str  # country_code
+    country_code: int  # country_code
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class ForticareResellersResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    country_code: str
+    country_code: int
 
 
 @final
@@ -44,7 +44,7 @@ class ForticareResellersObject:
     """
     
     # country_code
-    country_code: str
+    country_code: int
     
     # Common API response fields
     status: str
@@ -236,7 +236,7 @@ class ForticareResellers:
     def put(
         self,
         payload_dict: ForticareResellersPayload | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> ForticareResellersObject: ...
     
@@ -244,7 +244,7 @@ class ForticareResellers:
     def put(
         self,
         payload_dict: ForticareResellersPayload | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -253,14 +253,14 @@ class ForticareResellers:
     def put(
         self,
         payload_dict: ForticareResellersPayload | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: ForticareResellersPayload | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -273,7 +273,7 @@ class ForticareResellers:
     def set(
         self,
         payload_dict: ForticareResellersPayload | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

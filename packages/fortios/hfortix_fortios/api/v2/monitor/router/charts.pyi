@@ -18,7 +18,7 @@ class ChartsPayload(TypedDict, total=False):
         }
     """
     operator: str  # operator
-    ip_version: str  # ip_version
+    ip_version: int  # ip_version
     ip_mask: str  # ip_mask
     gateway: str  # gateway
     type: str  # type
@@ -258,7 +258,7 @@ class Charts:
         self,
         payload_dict: ChartsPayload | None = ...,
         operator: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
@@ -272,7 +272,7 @@ class Charts:
         self,
         payload_dict: ChartsPayload | None = ...,
         operator: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
@@ -287,7 +287,7 @@ class Charts:
         self,
         payload_dict: ChartsPayload | None = ...,
         operator: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
@@ -300,7 +300,7 @@ class Charts:
         self,
         payload_dict: ChartsPayload | None = ...,
         operator: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
@@ -319,7 +319,7 @@ class Charts:
         self,
         payload_dict: ChartsPayload | None = ...,
         operator: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,

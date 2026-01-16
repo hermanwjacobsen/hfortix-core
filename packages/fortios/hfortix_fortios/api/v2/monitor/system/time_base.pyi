@@ -17,12 +17,12 @@ class TimePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    year: str  # year
-    month: str  # month
-    day: str  # day
-    hour: str  # hour
-    minute: str  # minute
-    second: str  # second
+    year: int  # year
+    month: int  # month
+    day: int  # day
+    hour: int  # hour
+    minute: int  # minute
+    second: int  # second
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -37,12 +37,12 @@ class TimeResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    year: str
-    month: str
-    day: str
-    hour: str
-    minute: str
-    second: str
+    year: int
+    month: int
+    day: int
+    hour: int
+    minute: int
+    second: int
 
 
 @final
@@ -54,17 +54,17 @@ class TimeObject:
     """
     
     # year
-    year: str
+    year: int
     # month
-    month: str
+    month: int
     # day
-    day: str
+    day: int
     # hour
-    hour: str
+    hour: int
     # minute
-    minute: str
+    minute: int
     # second
-    second: str
+    second: int
     
     # Common API response fields
     status: str
@@ -291,12 +291,12 @@ class Time:
     def put(
         self,
         payload_dict: TimePayload | None = ...,
-        year: str | None = ...,
-        month: str | None = ...,
-        day: str | None = ...,
-        hour: str | None = ...,
-        minute: str | None = ...,
-        second: str | None = ...,
+        year: int | None = ...,
+        month: int | None = ...,
+        day: int | None = ...,
+        hour: int | None = ...,
+        minute: int | None = ...,
+        second: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> TimeObject: ...
     
@@ -304,12 +304,12 @@ class Time:
     def put(
         self,
         payload_dict: TimePayload | None = ...,
-        year: str | None = ...,
-        month: str | None = ...,
-        day: str | None = ...,
-        hour: str | None = ...,
-        minute: str | None = ...,
-        second: str | None = ...,
+        year: int | None = ...,
+        month: int | None = ...,
+        day: int | None = ...,
+        hour: int | None = ...,
+        minute: int | None = ...,
+        second: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -318,24 +318,24 @@ class Time:
     def put(
         self,
         payload_dict: TimePayload | None = ...,
-        year: str | None = ...,
-        month: str | None = ...,
-        day: str | None = ...,
-        hour: str | None = ...,
-        minute: str | None = ...,
-        second: str | None = ...,
+        year: int | None = ...,
+        month: int | None = ...,
+        day: int | None = ...,
+        hour: int | None = ...,
+        minute: int | None = ...,
+        second: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: TimePayload | None = ...,
-        year: str | None = ...,
-        month: str | None = ...,
-        day: str | None = ...,
-        hour: str | None = ...,
-        minute: str | None = ...,
-        second: str | None = ...,
+        year: int | None = ...,
+        month: int | None = ...,
+        day: int | None = ...,
+        hour: int | None = ...,
+        minute: int | None = ...,
+        second: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -348,12 +348,12 @@ class Time:
     def set(
         self,
         payload_dict: TimePayload | None = ...,
-        year: str | None = ...,
-        month: str | None = ...,
-        day: str | None = ...,
-        hour: str | None = ...,
-        minute: str | None = ...,
-        second: str | None = ...,
+        year: int | None = ...,
+        month: int | None = ...,
+        day: int | None = ...,
+        hour: int | None = ...,
+        minute: int | None = ...,
+        second: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

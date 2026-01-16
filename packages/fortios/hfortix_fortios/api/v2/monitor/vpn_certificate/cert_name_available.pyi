@@ -33,7 +33,7 @@ class CertNameAvailableResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    is_valid: str
+    is_valid: bool
     value: str
 
 
@@ -46,7 +46,7 @@ class CertNameAvailableObject:
     """
     
     # is_valid
-    is_valid: str
+    is_valid: bool
     # value
     value: str
     

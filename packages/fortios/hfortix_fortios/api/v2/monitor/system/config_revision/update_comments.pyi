@@ -17,7 +17,7 @@ class UpdateCommentsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    config_id: str  # config_id
+    config_id: int  # config_id
     comments: str  # comments
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class UpdateCommentsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    config_id: str
+    config_id: int
     comments: str
 
 
@@ -46,7 +46,7 @@ class UpdateCommentsObject:
     """
     
     # config_id
-    config_id: str
+    config_id: int
     # comments
     comments: str
     
@@ -275,7 +275,7 @@ class UpdateComments:
     def post(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UpdateCommentsObject: ...
@@ -284,7 +284,7 @@ class UpdateComments:
     def post(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -294,7 +294,7 @@ class UpdateComments:
     def post(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -302,7 +302,7 @@ class UpdateComments:
     def post(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -312,7 +312,7 @@ class UpdateComments:
     def put(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UpdateCommentsObject: ...
@@ -321,7 +321,7 @@ class UpdateComments:
     def put(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -331,7 +331,7 @@ class UpdateComments:
     def put(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -339,7 +339,7 @@ class UpdateComments:
     def put(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +353,7 @@ class UpdateComments:
     def set(
         self,
         payload_dict: UpdateCommentsPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

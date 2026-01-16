@@ -17,12 +17,12 @@ class InternetServiceDetailsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: str  # id
-    country_id: str  # country_id
-    region_id: str  # region_id
-    city_id: str  # city_id
-    summary_only: str  # summary_only
-    ipv6_only: str  # ipv6_only
+    id: int  # id
+    country_id: int  # country_id
+    region_id: int  # region_id
+    city_id: int  # city_id
+    summary_only: bool  # summary_only
+    ipv6_only: bool  # ipv6_only
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -37,12 +37,12 @@ class InternetServiceDetailsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: str
-    country_id: str
-    region_id: str
-    city_id: str
-    summary_only: str
-    ipv6_only: str
+    id: int
+    country_id: int
+    region_id: int
+    city_id: int
+    summary_only: bool
+    ipv6_only: bool
 
 
 @final
@@ -54,17 +54,17 @@ class InternetServiceDetailsObject:
     """
     
     # id
-    id: str
+    id: int
     # country_id
-    country_id: str
+    country_id: int
     # region_id
-    region_id: str
+    region_id: int
     # city_id
-    city_id: str
+    city_id: int
     # summary_only
-    summary_only: str
+    summary_only: bool
     # ipv6_only
-    ipv6_only: str
+    ipv6_only: bool
     
     # Common API response fields
     status: str
@@ -261,10 +261,10 @@ class InternetServiceDetails:
     def put(
         self,
         payload_dict: InternetServiceDetailsPayload | None = ...,
-        id: str | None = ...,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int | None = ...,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
@@ -274,10 +274,10 @@ class InternetServiceDetails:
     def put(
         self,
         payload_dict: InternetServiceDetailsPayload | None = ...,
-        id: str | None = ...,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int | None = ...,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
@@ -288,10 +288,10 @@ class InternetServiceDetails:
     def put(
         self,
         payload_dict: InternetServiceDetailsPayload | None = ...,
-        id: str | None = ...,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int | None = ...,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
@@ -300,10 +300,10 @@ class InternetServiceDetails:
     def put(
         self,
         payload_dict: InternetServiceDetailsPayload | None = ...,
-        id: str | None = ...,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int | None = ...,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
@@ -318,10 +318,10 @@ class InternetServiceDetails:
     def set(
         self,
         payload_dict: InternetServiceDetailsPayload | None = ...,
-        id: str | None = ...,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int | None = ...,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,

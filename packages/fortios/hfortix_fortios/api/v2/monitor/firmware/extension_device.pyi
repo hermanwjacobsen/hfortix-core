@@ -18,7 +18,7 @@ class ExtensionDevicePayload(TypedDict, total=False):
         }
     """
     type: str  # type
-    timeout: str  # timeout
+    timeout: int  # timeout
     version: str  # version
 
 # Nested TypedDicts for table field children (dict mode)
@@ -247,7 +247,7 @@ class ExtensionDevice:
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
         type: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExtensionDeviceObject: ...
@@ -257,7 +257,7 @@ class ExtensionDevice:
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
         type: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -268,7 +268,7 @@ class ExtensionDevice:
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
         type: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -277,7 +277,7 @@ class ExtensionDevice:
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
         type: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -292,7 +292,7 @@ class ExtensionDevice:
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
         type: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

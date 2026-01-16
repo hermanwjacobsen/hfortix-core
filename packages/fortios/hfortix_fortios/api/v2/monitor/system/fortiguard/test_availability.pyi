@@ -18,7 +18,7 @@ class TestAvailabilityPayload(TypedDict, total=False):
         }
     """
     protocol: str  # protocol
-    port: str  # port
+    port: int  # port
     service: str  # service
 
 # Nested TypedDicts for table field children (dict mode)
@@ -35,7 +35,7 @@ class TestAvailabilityResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     protocol: str
-    port: str
+    port: int
     service: str
 
 
@@ -50,7 +50,7 @@ class TestAvailabilityObject:
     # protocol
     protocol: str
     # port
-    port: str
+    port: int
     # service
     service: str
     
@@ -280,7 +280,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> TestAvailabilityObject: ...
@@ -290,7 +290,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -301,7 +301,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -310,7 +310,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -321,7 +321,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> TestAvailabilityObject: ...
@@ -331,7 +331,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -342,7 +342,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -351,7 +351,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -366,7 +366,7 @@ class TestAvailability:
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
         protocol: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -18,7 +18,7 @@ class StopPayload(TypedDict, total=False):
         }
     """
     wtp_id: str  # wtp_id
-    radio_id: str  # radio_id
+    radio_id: int  # radio_id
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class StopResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     wtp_id: str
-    radio_id: str
+    radio_id: int
 
 
 @final
@@ -48,7 +48,7 @@ class StopObject:
     # wtp_id
     wtp_id: str
     # radio_id
-    radio_id: str
+    radio_id: int
     
     # Common API response fields
     status: str
@@ -276,7 +276,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StopObject: ...
     
@@ -285,7 +285,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,7 +295,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +303,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -313,7 +313,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StopObject: ...
     
@@ -322,7 +322,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -332,7 +332,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -340,7 +340,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +354,7 @@ class Stop:
         self,
         payload_dict: StopPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

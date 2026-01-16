@@ -18,8 +18,8 @@ class LedBlinkPayload(TypedDict, total=False):
         }
     """
     serials: str  # serials
-    blink: str  # blink
-    duration: str  # duration
+    blink: bool  # blink
+    duration: int  # duration
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -35,8 +35,8 @@ class LedBlinkResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serials: str
-    blink: str
-    duration: str
+    blink: bool
+    duration: int
 
 
 @final
@@ -50,9 +50,9 @@ class LedBlinkObject:
     # serials
     serials: str
     # blink
-    blink: str
+    blink: bool
     # duration
-    duration: str
+    duration: int
     
     # Common API response fields
     status: str
@@ -281,7 +281,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> LedBlinkObject: ...
     
@@ -291,7 +291,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -302,7 +302,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -311,7 +311,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -322,7 +322,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> LedBlinkObject: ...
     
@@ -332,7 +332,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -343,7 +343,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,7 +352,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -367,7 +367,7 @@ class LedBlink:
         payload_dict: LedBlinkPayload | None = ...,
         serials: str | None = ...,
         blink: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

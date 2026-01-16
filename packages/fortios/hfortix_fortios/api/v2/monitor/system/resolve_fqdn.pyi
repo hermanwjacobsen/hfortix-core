@@ -17,7 +17,7 @@ class ResolveFqdnPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     fqdn: str  # fqdn
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class ResolveFqdnResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6: str
+    ipv6: bool
     fqdn: str
 
 
@@ -46,7 +46,7 @@ class ResolveFqdnObject:
     """
     
     # ipv6
-    ipv6: str
+    ipv6: bool
     # fqdn
     fqdn: str
     

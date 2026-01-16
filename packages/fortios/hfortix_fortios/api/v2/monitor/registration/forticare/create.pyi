@@ -25,17 +25,17 @@ class CreatePayload(TypedDict, total=False):
     company: str  # company
     address: str  # address
     city: str  # city
-    country_code: str  # country_code
+    country_code: int  # country_code
     state: str  # state
     state_code: str  # state_code
     postal_code: str  # postal_code
     phone: str  # phone
     industry: str  # industry
-    industry_id: str  # industry_id
-    orgsize_id: str  # orgsize_id
+    industry_id: int  # industry_id
+    orgsize_id: int  # orgsize_id
     reseller_name: str  # reseller_name
-    reseller_id: str  # reseller_id
-    is_government: str  # is_government
+    reseller_id: int  # reseller_id
+    is_government: bool  # is_government
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -58,17 +58,17 @@ class CreateResponse(TypedDict):
     company: str
     address: str
     city: str
-    country_code: str
+    country_code: int
     state: str
     state_code: str
     postal_code: str
     phone: str
     industry: str
-    industry_id: str
-    orgsize_id: str
+    industry_id: int
+    orgsize_id: int
     reseller_name: str
-    reseller_id: str
-    is_government: str
+    reseller_id: int
+    is_government: bool
 
 
 @final
@@ -96,7 +96,7 @@ class CreateObject:
     # city
     city: str
     # country_code
-    country_code: str
+    country_code: int
     # state
     state: str
     # state_code
@@ -108,15 +108,15 @@ class CreateObject:
     # industry
     industry: str
     # industry_id
-    industry_id: str
+    industry_id: int
     # orgsize_id
-    orgsize_id: str
+    orgsize_id: int
     # reseller_name
     reseller_name: str
     # reseller_id
-    reseller_id: str
+    reseller_id: int
     # is_government
-    is_government: str
+    is_government: bool
     
     # Common API response fields
     status: str
@@ -351,16 +351,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> CreateObject: ...
@@ -377,16 +377,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -404,16 +404,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -429,16 +429,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -456,16 +456,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> CreateObject: ...
@@ -482,16 +482,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -509,16 +509,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -534,16 +534,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -565,16 +565,16 @@ class Create:
         company: str | None = ...,
         address: str | None = ...,
         city: str | None = ...,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         state: str | None = ...,
         state_code: str | None = ...,
         postal_code: str | None = ...,
         phone: str | None = ...,
         industry: str | None = ...,
-        industry_id: str | None = ...,
-        orgsize_id: str | None = ...,
+        industry_id: int | None = ...,
+        orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

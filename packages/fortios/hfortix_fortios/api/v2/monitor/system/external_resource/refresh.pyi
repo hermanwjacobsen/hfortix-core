@@ -18,8 +18,8 @@ class RefreshPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    check_status_only: str  # check_status_only
-    last_connection_time: str  # last_connection_time
+    check_status_only: bool  # check_status_only
+    last_connection_time: int  # last_connection_time
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -278,7 +278,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> RefreshObject: ...
     
@@ -288,7 +288,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -299,7 +299,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -308,7 +308,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -319,7 +319,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> RefreshObject: ...
     
@@ -329,7 +329,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -340,7 +340,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -349,7 +349,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,7 +364,7 @@ class Refresh:
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
         check_status_only: str | None = ...,
-        last_connection_time: str | None = ...,
+        last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -32,7 +32,7 @@ class ValidateJsonpathResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    valid: str
+    valid: bool
     error_code: int
 
 
@@ -45,7 +45,7 @@ class ValidateJsonpathObject:
     """
     
     # valid
-    valid: str
+    valid: bool
     # error_code
     error_code: int
     

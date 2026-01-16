@@ -18,7 +18,7 @@ class HaPeerPayload(TypedDict, total=False):
         }
     """
     serial: str  # serial
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     destination: str  # destination
 
 # Nested TypedDicts for table field children (dict mode)
@@ -35,7 +35,7 @@ class HaPeerResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serial: str
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -50,7 +50,7 @@ class HaPeerObject:
     # serial
     serial: str
     # ipv6
-    ipv6: str
+    ipv6: bool
     # destination
     destination: str
     

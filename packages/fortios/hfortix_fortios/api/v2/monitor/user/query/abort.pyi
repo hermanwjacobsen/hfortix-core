@@ -17,7 +17,7 @@ class AbortPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    query_id: str  # query_id
+    query_id: int  # query_id
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class AbortResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    query_id: str
+    query_id: int
 
 
 @final
@@ -44,7 +44,7 @@ class AbortObject:
     """
     
     # query_id
-    query_id: str
+    query_id: int
     
     # Common API response fields
     status: str
@@ -271,7 +271,7 @@ class Abort:
     def post(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AbortObject: ...
     
@@ -279,7 +279,7 @@ class Abort:
     def post(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -288,14 +288,14 @@ class Abort:
     def post(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -304,7 +304,7 @@ class Abort:
     def put(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AbortObject: ...
     
@@ -312,7 +312,7 @@ class Abort:
     def put(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -321,14 +321,14 @@ class Abort:
     def put(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -341,7 +341,7 @@ class Abort:
     def set(
         self,
         payload_dict: AbortPayload | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -18,7 +18,7 @@ class AvailableInterfacesPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    include_ha: str  # include_ha
+    include_ha: bool  # include_ha
     view_type: str  # view_type
     scope: str  # scope
 
@@ -36,7 +36,7 @@ class AvailableInterfacesResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mkey: str
-    include_ha: str
+    include_ha: bool
     view_type: str
     scope: str
 
@@ -52,7 +52,7 @@ class AvailableInterfacesObject:
     # mkey
     mkey: str
     # include_ha
-    include_ha: str
+    include_ha: bool
     # view_type
     view_type: str
     # scope

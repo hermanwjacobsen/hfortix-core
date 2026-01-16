@@ -18,8 +18,8 @@ class SessionsPayload(TypedDict, total=False):
         }
     """
     ip_version: str  # ip_version
-    count: str  # count
-    summary: str  # summary
+    count: int  # count
+    summary: bool  # summary
     srcaddr: str  # srcaddr
     dstaddr: str  # dstaddr
     srcaddr6: str  # srcaddr6
@@ -282,7 +282,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
@@ -311,7 +311,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
@@ -341,7 +341,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
@@ -369,7 +369,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
@@ -403,7 +403,7 @@ class Sessions:
         self,
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         summary: str | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,

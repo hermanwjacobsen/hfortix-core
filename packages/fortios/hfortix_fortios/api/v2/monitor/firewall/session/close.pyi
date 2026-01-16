@@ -20,8 +20,8 @@ class ClosePayload(TypedDict, total=False):
     pro: str  # pro
     saddr: str  # saddr
     daddr: str  # daddr
-    sport: str  # sport
-    dport: str  # dport
+    sport: int  # sport
+    dport: int  # dport
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -39,8 +39,8 @@ class CloseResponse(TypedDict):
     pro: str
     saddr: str
     daddr: str
-    sport: str
-    dport: str
+    sport: int
+    dport: int
 
 
 @final
@@ -58,9 +58,9 @@ class CloseObject:
     # daddr
     daddr: str
     # sport
-    sport: str
+    sport: int
     # dport
-    dport: str
+    dport: int
     
     # Common API response fields
     status: str
@@ -290,8 +290,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> CloseObject: ...
     
@@ -302,8 +302,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -315,8 +315,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -326,8 +326,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -339,8 +339,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> CloseObject: ...
     
@@ -351,8 +351,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,8 +364,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -375,8 +375,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,8 +392,8 @@ class Close:
         pro: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

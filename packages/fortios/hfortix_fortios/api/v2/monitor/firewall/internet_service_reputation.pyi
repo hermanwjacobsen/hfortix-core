@@ -18,7 +18,7 @@ class InternetServiceReputationPayload(TypedDict, total=False):
         }
     """
     ip: str  # ip
-    is_ipv6: str  # is_ipv6
+    is_ipv6: bool  # is_ipv6
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class InternetServiceReputationResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
 
 
 @final
@@ -48,7 +48,7 @@ class InternetServiceReputationObject:
     # ip
     ip: str
     # is_ipv6
-    is_ipv6: str
+    is_ipv6: bool
     
     # Common API response fields
     status: str

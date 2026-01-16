@@ -17,9 +17,9 @@ class FirewallPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv4: str  # ipv4
-    ipv6: str  # ipv6
-    include_fsso: str  # include_fsso
+    ipv4: bool  # ipv4
+    ipv6: bool  # ipv6
+    include_fsso: bool  # include_fsso
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,9 +34,9 @@ class FirewallResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv4: str
-    ipv6: str
-    include_fsso: str
+    ipv4: bool
+    ipv6: bool
+    include_fsso: bool
 
 
 @final
@@ -48,11 +48,11 @@ class FirewallObject:
     """
     
     # ipv4
-    ipv4: str
+    ipv4: bool
     # ipv6
-    ipv6: str
+    ipv6: bool
     # include_fsso
-    include_fsso: str
+    include_fsso: bool
     
     # Common API response fields
     status: str

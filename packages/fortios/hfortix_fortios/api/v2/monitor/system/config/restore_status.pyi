@@ -32,9 +32,9 @@ class RestoreStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    success: str
-    session_file_not_found: str
-    in_progress: str
+    success: bool
+    session_file_not_found: bool
+    in_progress: bool
     error: int
 
 
@@ -47,11 +47,11 @@ class RestoreStatusObject:
     """
     
     # success
-    success: str
+    success: bool
     # session_file_not_found
-    session_file_not_found: str
+    session_file_not_found: bool
     # in_progress
-    in_progress: str
+    in_progress: bool
     # error
     error: int
     

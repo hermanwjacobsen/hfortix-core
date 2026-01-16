@@ -22,7 +22,7 @@ class BackupPayload(TypedDict, total=False):
     password: str  # password
     scope: str  # scope
     vdom: str  # vdom
-    password_mask: str  # password_mask
+    password_mask: bool  # password_mask
     file_format: str  # file_format
 
 # Nested TypedDicts for table field children (dict mode)
@@ -43,7 +43,7 @@ class BackupResponse(TypedDict):
     password: str
     scope: str
     vdom: str
-    password_mask: str
+    password_mask: bool
     file_format: str
 
 
@@ -66,7 +66,7 @@ class BackupObject:
     # vdom
     vdom: str
     # password_mask
-    password_mask: str
+    password_mask: bool
     # file_format
     file_format: str
     

@@ -18,8 +18,8 @@ class QueryPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    server_info_only: str  # server_info_only
-    skip_schema: str  # skip_schema
+    server_info_only: bool  # server_info_only
+    skip_schema: bool  # skip_schema
     ldap_filter: str  # ldap_filter
     ldap: str  # ldap
 
@@ -37,8 +37,8 @@ class QueryResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mkey: str
-    server_info_only: str
-    skip_schema: str
+    server_info_only: bool
+    skip_schema: bool
     ldap_filter: str
     ldap: str
 
@@ -54,9 +54,9 @@ class QueryObject:
     # mkey
     mkey: str
     # server_info_only
-    server_info_only: str
+    server_info_only: bool
     # skip_schema
-    skip_schema: str
+    skip_schema: bool
     # ldap_filter
     ldap_filter: str
     # ldap

@@ -18,7 +18,7 @@ class FswFirmwarePayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    timeout: str  # timeout
+    timeout: int  # timeout
     version: str  # version
 
 # Nested TypedDicts for table field children (dict mode)
@@ -35,7 +35,7 @@ class FswFirmwareResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mkey: str
-    timeout: str
+    timeout: int
     version: str
 
 
@@ -50,7 +50,7 @@ class FswFirmwareObject:
     # mkey
     mkey: str
     # timeout
-    timeout: str
+    timeout: int
     # version
     version: str
     
@@ -247,7 +247,7 @@ class FswFirmware:
         self,
         payload_dict: FswFirmwarePayload | None = ...,
         mkey: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FswFirmwareObject: ...
@@ -257,7 +257,7 @@ class FswFirmware:
         self,
         payload_dict: FswFirmwarePayload | None = ...,
         mkey: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -268,7 +268,7 @@ class FswFirmware:
         self,
         payload_dict: FswFirmwarePayload | None = ...,
         mkey: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -277,7 +277,7 @@ class FswFirmware:
         self,
         payload_dict: FswFirmwarePayload | None = ...,
         mkey: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -292,7 +292,7 @@ class FswFirmware:
         self,
         payload_dict: FswFirmwarePayload | None = ...,
         mkey: str | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -20,7 +20,7 @@ class WakeOnLanPayload(TypedDict, total=False):
     mkey: str  # mkey
     mac: str  # mac
     protocol_option: str  # protocol_option
-    port: str  # port
+    port: int  # port
     address: str  # address
     secureon_password: str  # secureon_password
 
@@ -40,7 +40,7 @@ class WakeOnLanResponse(TypedDict):
     mkey: str
     mac: str
     protocol_option: str
-    port: str
+    port: int
     address: str
     secureon_password: str
 
@@ -60,7 +60,7 @@ class WakeOnLanObject:
     # protocol_option
     protocol_option: str
     # port
-    port: str
+    port: int
     # address
     address: str
     # secureon_password
@@ -294,7 +294,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -307,7 +307,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -321,7 +321,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -333,7 +333,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -347,7 +347,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -360,7 +360,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -374,7 +374,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -386,7 +386,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -404,7 +404,7 @@ class WakeOnLan:
         mkey: str | None = ...,
         mac: str | None = ...,
         protocol_option: str | None = ...,
-        port: str | None = ...,
+        port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
         vdom: str | bool | None = ...,

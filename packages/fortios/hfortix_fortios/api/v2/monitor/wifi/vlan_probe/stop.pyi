@@ -17,7 +17,7 @@ class StopPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ap_interface: str  # ap_interface
+    ap_interface: int  # ap_interface
     wtp: str  # wtp
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class StopResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ap_interface: str
+    ap_interface: int
     wtp: str
 
 
@@ -46,7 +46,7 @@ class StopObject:
     """
     
     # ap_interface
-    ap_interface: str
+    ap_interface: int
     # wtp
     wtp: str
     
@@ -275,7 +275,7 @@ class Stop:
     def post(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> StopObject: ...
@@ -284,7 +284,7 @@ class Stop:
     def post(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -294,7 +294,7 @@ class Stop:
     def post(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -302,7 +302,7 @@ class Stop:
     def post(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -312,7 +312,7 @@ class Stop:
     def put(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> StopObject: ...
@@ -321,7 +321,7 @@ class Stop:
     def put(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -331,7 +331,7 @@ class Stop:
     def put(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -339,7 +339,7 @@ class Stop:
     def put(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +353,7 @@ class Stop:
     def set(
         self,
         payload_dict: StopPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

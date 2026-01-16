@@ -35,14 +35,14 @@ class SelectResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    valid: str
-    minimum_length: str
-    invalid_user: str
-    min_upper_case_letter: str
-    min_lower_case_letter: str
-    min_number: str
-    min_non_alphanumeric: str
-    reuse_password: str
+    valid: bool
+    minimum_length: bool
+    invalid_user: bool
+    min_upper_case_letter: bool
+    min_lower_case_letter: bool
+    min_number: bool
+    min_non_alphanumeric: bool
+    reuse_password: bool
 
 
 @final
@@ -54,21 +54,21 @@ class SelectObject:
     """
     
     # valid
-    valid: str
+    valid: bool
     # minimum-length
-    minimum_length: str
+    minimum_length: bool
     # invalid-user
-    invalid_user: str
+    invalid_user: bool
     # min-upper-case-letter
-    min_upper_case_letter: str
+    min_upper_case_letter: bool
     # min-lower-case-letter
-    min_lower_case_letter: str
+    min_lower_case_letter: bool
     # min-number
-    min_number: str
+    min_number: bool
     # min-non-alphanumeric
-    min_non_alphanumeric: str
+    min_non_alphanumeric: bool
     # reuse-password
-    reuse_password: str
+    reuse_password: bool
     
     # Common API response fields
     status: str

@@ -20,7 +20,7 @@ class MembersPayload(TypedDict, total=False):
     interface: str  # interface
     zone: str  # zone
     sla: str  # sla
-    skip_vpn_child: str  # skip_vpn_child
+    skip_vpn_child: bool  # skip_vpn_child
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -38,7 +38,7 @@ class MembersResponse(TypedDict):
     interface: str
     zone: str
     sla: str
-    skip_vpn_child: str
+    skip_vpn_child: bool
 
 
 @final
@@ -56,7 +56,7 @@ class MembersObject:
     # sla
     sla: str
     # skip_vpn_child
-    skip_vpn_child: str
+    skip_vpn_child: bool
     
     # Common API response fields
     status: str

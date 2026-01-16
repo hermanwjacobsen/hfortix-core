@@ -20,11 +20,11 @@ class CloseMultiplePayload(TypedDict, total=False):
     proto: str  # proto
     saddr: str  # saddr
     daddr: str  # daddr
-    sport: str  # sport
-    dport: str  # dport
+    sport: int  # sport
+    dport: int  # dport
     naddr: str  # naddr
-    nport: str  # nport
-    policy: str  # policy
+    nport: int  # nport
+    policy: int  # policy
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -42,11 +42,11 @@ class CloseMultipleResponse(TypedDict):
     proto: str
     saddr: str
     daddr: str
-    sport: str
-    dport: str
+    sport: int
+    dport: int
     naddr: str
-    nport: str
-    policy: str
+    nport: int
+    policy: int
 
 
 @final
@@ -64,15 +64,15 @@ class CloseMultipleObject:
     # daddr
     daddr: str
     # sport
-    sport: str
+    sport: int
     # dport
-    dport: str
+    dport: int
     # naddr
     naddr: str
     # nport
-    nport: str
+    nport: int
     # policy
-    policy: str
+    policy: int
     
     # Common API response fields
     status: str
@@ -302,11 +302,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> CloseMultipleObject: ...
     
@@ -317,11 +317,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -333,11 +333,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -347,11 +347,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,11 +363,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> CloseMultipleObject: ...
     
@@ -378,11 +378,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,11 +394,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -408,11 +408,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,11 +428,11 @@ class CloseMultiple:
         proto: str | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
-        sport: str | None = ...,
-        dport: str | None = ...,
+        sport: int | None = ...,
+        dport: int | None = ...,
         naddr: str | None = ...,
-        nport: str | None = ...,
-        policy: str | None = ...,
+        nport: int | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

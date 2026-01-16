@@ -18,7 +18,7 @@ class DhcpStatusPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -40,8 +40,8 @@ class DhcpStatusResponse(TypedDict):
     dynamic_dns1: str
     dynamic_dns2: str
     dynamic_gateway: str
-    show_gateway: str
-    override_dns: str
+    show_gateway: bool
+    override_dns: bool
 
 
 @final
@@ -67,9 +67,9 @@ class DhcpStatusObject:
     # dynamic_gateway
     dynamic_gateway: str
     # show_gateway
-    show_gateway: str
+    show_gateway: bool
     # override_dns
-    override_dns: str
+    override_dns: bool
     
     # Common API response fields
     status: str

@@ -18,11 +18,11 @@ class DeauthPayload(TypedDict, total=False):
         }
     """
     user_type: str  # user_type
-    id: str  # id
+    id: int  # id
     ip: str  # ip
     ip_version: str  # ip_version
     method: str  # method
-    all: str  # all
+    all: bool  # all
     users: str  # users
 
 # Nested TypedDicts for table field children (dict mode)
@@ -39,11 +39,11 @@ class DeauthResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     user_type: str
-    id: str
+    id: int
     ip: str
     ip_version: str
     method: str
-    all: str
+    all: bool
     users: str
 
 
@@ -58,7 +58,7 @@ class DeauthObject:
     # user_type
     user_type: str
     # id
-    id: str
+    id: int
     # ip
     ip: str
     # ip_version
@@ -66,7 +66,7 @@ class DeauthObject:
     # method
     method: str
     # all
-    all: str
+    all: bool
     # users
     users: str
     
@@ -296,7 +296,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -310,7 +310,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -325,7 +325,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -338,7 +338,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -353,7 +353,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -367,7 +367,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -382,7 +382,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -395,7 +395,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
@@ -414,7 +414,7 @@ class Deauth:
         self,
         payload_dict: DeauthPayload | None = ...,
         user_type: str | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,

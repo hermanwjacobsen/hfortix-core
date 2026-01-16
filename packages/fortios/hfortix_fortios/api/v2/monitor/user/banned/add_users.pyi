@@ -18,7 +18,7 @@ class AddUsersPayload(TypedDict, total=False):
         }
     """
     ip_addresses: str  # ip_addresses
-    expiry: str  # expiry
+    expiry: int  # expiry
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class AddUsersResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ip_addresses: str
-    expiry: str
+    expiry: int
 
 
 @final
@@ -48,7 +48,7 @@ class AddUsersObject:
     # ip_addresses
     ip_addresses: str
     # expiry
-    expiry: str
+    expiry: int
     
     # Common API response fields
     status: str
@@ -276,7 +276,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AddUsersObject: ...
     
@@ -285,7 +285,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,7 +295,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +303,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -313,7 +313,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AddUsersObject: ...
     
@@ -322,7 +322,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -332,7 +332,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -340,7 +340,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +354,7 @@ class AddUsers:
         self,
         payload_dict: AddUsersPayload | None = ...,
         ip_addresses: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

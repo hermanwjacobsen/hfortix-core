@@ -33,7 +33,7 @@ class ReverseIpLookupResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     domain: str
-    resolved: str
+    resolved: bool
 
 
 @final
@@ -47,7 +47,7 @@ class ReverseIpLookupObject:
     # domain
     domain: str
     # resolved
-    resolved: str
+    resolved: bool
     
     # Common API response fields
     status: str

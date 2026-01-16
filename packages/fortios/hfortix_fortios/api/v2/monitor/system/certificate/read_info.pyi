@@ -44,7 +44,7 @@ class ReadInfoResponse(TypedDict):
     issuer_raw: str
     fingerprint: str
     version: int
-    is_ca: str
+    is_ca: bool
     serial_number: str
     ext: str
 
@@ -82,7 +82,7 @@ class ReadInfoObject:
     # version
     version: int
     # is_ca
-    is_ca: str
+    is_ca: bool
     # serial_number
     serial_number: str
     # ext

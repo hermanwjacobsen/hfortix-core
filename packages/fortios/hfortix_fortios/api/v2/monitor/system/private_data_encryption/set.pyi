@@ -17,7 +17,7 @@ class SetPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    enable: str  # enable
+    enable: bool  # enable
     password: str  # password
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class SetResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    enable: str
+    enable: bool
     password: str
 
 
@@ -46,7 +46,7 @@ class SetObject:
     """
     
     # enable
-    enable: str
+    enable: bool
     # password
     password: str
     

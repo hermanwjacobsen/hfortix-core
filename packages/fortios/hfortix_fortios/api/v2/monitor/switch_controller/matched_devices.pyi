@@ -18,7 +18,7 @@ class MatchedDevicesPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    include_dynamic: str  # include_dynamic
+    include_dynamic: bool  # include_dynamic
     mac: str  # mac
 
 # Nested TypedDicts for table field children (dict mode)
@@ -35,7 +35,7 @@ class MatchedDevicesResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mkey: str
-    include_dynamic: str
+    include_dynamic: bool
     mac: str
 
 
@@ -50,7 +50,7 @@ class MatchedDevicesObject:
     # mkey
     mkey: str
     # include_dynamic
-    include_dynamic: str
+    include_dynamic: bool
     # mac
     mac: str
     

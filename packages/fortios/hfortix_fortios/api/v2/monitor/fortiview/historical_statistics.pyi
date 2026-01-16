@@ -18,12 +18,12 @@ class HistoricalStatisticsPayload(TypedDict, total=False):
         }
     """
     filter: str  # filter
-    sessionid: str  # sessionid
+    sessionid: int  # sessionid
     device: str  # device
     report_by: str  # report_by
     sort_by: str  # sort_by
-    chart_only: str  # chart_only
-    end: str  # end
+    chart_only: bool  # chart_only
+    end: int  # end
     ip_version: str  # ip_version
 
 # Nested TypedDicts for table field children (dict mode)
@@ -40,12 +40,12 @@ class HistoricalStatisticsResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     filter: str
-    sessionid: str
+    sessionid: int
     device: str
     report_by: str
     sort_by: str
-    chart_only: str
-    end: str
+    chart_only: bool
+    end: int
     ip_version: str
 
 
@@ -60,7 +60,7 @@ class HistoricalStatisticsObject:
     # filter
     filter: str
     # sessionid
-    sessionid: str
+    sessionid: int
     # device
     device: str
     # report_by
@@ -68,9 +68,9 @@ class HistoricalStatisticsObject:
     # sort_by
     sort_by: str
     # chart_only
-    chart_only: str
+    chart_only: bool
     # end
-    end: str
+    end: int
     # ip_version
     ip_version: str
     
@@ -272,12 +272,12 @@ class HistoricalStatistics:
         self,
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> HistoricalStatisticsObject: ...
@@ -287,12 +287,12 @@ class HistoricalStatistics:
         self,
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -303,12 +303,12 @@ class HistoricalStatistics:
         self,
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -317,12 +317,12 @@ class HistoricalStatistics:
         self,
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -337,12 +337,12 @@ class HistoricalStatistics:
         self,
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

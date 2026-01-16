@@ -21,9 +21,9 @@ class LoginPayload(TypedDict, total=False):
     email: str  # email
     password: str  # password
     reseller_name: str  # reseller_name
-    reseller_id: str  # reseller_id
-    agreement_accepted: str  # agreement_accepted
-    is_government: str  # is_government
+    reseller_id: int  # reseller_id
+    agreement_accepted: bool  # agreement_accepted
+    is_government: bool  # is_government
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -39,7 +39,7 @@ class LoginResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     forticare_error: str
-    forticare_success: str
+    forticare_success: bool
     forticare_agreement: str
 
 
@@ -54,7 +54,7 @@ class LoginObject:
     # forticare_error
     forticare_error: str
     # forticare_success
-    forticare_success: str
+    forticare_success: bool
     # forticare_agreement
     forticare_agreement: str
     
@@ -287,7 +287,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -301,7 +301,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -316,7 +316,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -329,7 +329,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -344,7 +344,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -358,7 +358,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -373,7 +373,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -386,7 +386,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
@@ -405,7 +405,7 @@ class Login:
         email: str | None = ...,
         password: str | None = ...,
         reseller_name: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
