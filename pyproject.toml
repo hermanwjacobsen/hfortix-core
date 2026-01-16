@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.5.62"
+version = "0.5.89"
 description = "Meta-package for HFortix - Python SDK for Fortinet Products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -182,7 +182,7 @@ exclude_lines = [
 ]
 
 [tool.bandit]
-exclude_dirs = ["X", "Tests", "tests", ".venv", "venv", "build", "dist", "packages/fortios/hfortix_fortios/api"]
+exclude_dirs = ["X", "Tests", "tests", ".venv", "venv", "build", "dist"]
 # Exclude files with SSH key format strings (not actual keys)
 exclude = [
     "*/system/cloud_service.py",

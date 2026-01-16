@@ -54,6 +54,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "operator": "string",  # 
+    "ip_version": "int",  # 
+    "ip_mask": "string",  # 
+    "gateway": "string",  # 
+    "type": "string",  # 
+    "origin": "string",  # 
+    "interface": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +186,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "router/charts",
     "help": "Retrieve routing chart statistics, including a map of interfaces and route types.",
-    "total_fields": 0,
+    "total_fields": 7,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

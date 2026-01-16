@@ -54,6 +54,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "file_content": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +180,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/vmlicense/upload",
     "help": "Update VM license using uploaded file. Reboots immediately if successful.",
-    "total_fields": 0,
+    "total_fields": 1,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

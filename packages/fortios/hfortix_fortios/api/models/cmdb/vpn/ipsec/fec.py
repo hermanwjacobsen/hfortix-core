@@ -10,32 +10,30 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 from typing import Any
 
-
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class FecMappings(BaseModel):
     """
     Child table model for mappings.
-
+    
     FEC redundancy mapping table.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    seqno: int = Field(ge=0, le=64, default=0, description="Sequence number (1 - 64).")
-    base: int = Field(ge=1, le=20, default=0, description="Number of base FEC packets (1 - 20).")
-    redundant: int = Field(ge=1, le=5, default=0, description="Number of redundant FEC packets (1 - 5).")
-    packet_loss_threshold: int | None = Field(ge=0, le=100, default=0, description="Apply FEC parameters when packet loss is >= threshold (0 - 100, 0 means no threshold).")
-    latency_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when latency is <= threshold (0 means no threshold).")
-    bandwidth_up_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when available up bandwidth is >= threshold (kbps, 0 means no threshold).")
-    bandwidth_down_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when available down bandwidth is >= threshold (kbps, 0 means no threshold).")
+    
+    seqno: int = Field(ge=0, le=64, default=0, description="Sequence number (1 - 64).")    
+    base: int = Field(ge=1, le=20, default=0, description="Number of base FEC packets (1 - 20).")    
+    redundant: int = Field(ge=1, le=5, default=0, description="Number of redundant FEC packets (1 - 5).")    
+    packet_loss_threshold: int | None = Field(ge=0, le=100, default=0, description="Apply FEC parameters when packet loss is >= threshold (0 - 100, 0 means no threshold).")    
+    latency_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when latency is <= threshold (0 means no threshold).")    
+    bandwidth_up_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when available up bandwidth is >= threshold (kbps, 0 means no threshold).")    
+    bandwidth_down_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when available down bandwidth is >= threshold (kbps, 0 means no threshold).")    
     bandwidth_bi_threshold: int | None = Field(ge=0, le=4294967295, default=0, description="Apply FEC parameters when available bi-bandwidth is >= threshold (kbps, 0 means no threshold).")
-
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -45,56 +43,53 @@ class FecMappings(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class FecModel(BaseModel):
     """
     Pydantic model for vpn/ipsec/fec configuration.
-
+    
     Configure Forward Error Correction (FEC) mapping profiles.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - mappings: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - mappings: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Profile name.")
-    mappings: list[FecMappings] | None = Field(description="FEC redundancy mapping table.")
+    
+    name: str = Field(max_length=35, default="", description="Profile name.")    
+    mappings: list[Mappings] = Field(description="FEC redundancy mapping table.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "FecModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -104,8 +99,7 @@ class FecModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-FecModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -118,5 +112,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:37.679786Z
+# Generated: 2026-01-16T19:53:52.236504Z
 # ============================================================================

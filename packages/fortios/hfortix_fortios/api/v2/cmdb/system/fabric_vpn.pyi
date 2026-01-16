@@ -1,9 +1,85 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FabricVpnOverlaysItem(TypedDict, total=False):
+    """Type hints for overlays table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - ipsec_network_id: int
+        - overlay_tunnel_block: str
+        - remote_gw: str
+        - interface: str
+        - bgp_neighbor: str
+        - overlay_policy: int
+        - bgp_network: int
+        - route_policy: int
+        - bgp_neighbor_group: str
+        - bgp_neighbor_range: int
+        - ipsec_phase1: str
+        - sdwan_member: int
+    
+    **Example:**
+        entry: FabricVpnOverlaysItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Overlay name. | MaxLen: 79
+    ipsec_network_id: int  # VPN gateway network ID. | Default: 0 | Min: 0 | Max: 255
+    overlay_tunnel_block: str  # IPv4 address and subnet mask for the overlay tunne | Default: 0.0.0.0 0.0.0.0
+    remote_gw: str  # IP address of the hub gateway (Set by hub). | Default: 0.0.0.0
+    interface: str  # Underlying interface name. | MaxLen: 15
+    bgp_neighbor: str  # Underlying BGP neighbor entry. | MaxLen: 45
+    overlay_policy: int  # The overlay policy to allow ADVPN thru traffic. | Default: 0 | Min: 0 | Max: 4294967295
+    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
+    route_policy: int  # Underlying router policy. | Default: 0 | Min: 0 | Max: 4294967295
+    bgp_neighbor_group: str  # Underlying BGP neighbor group entry. | MaxLen: 45
+    bgp_neighbor_range: int  # Underlying BGP neighbor range entry. | Default: 0 | Min: 0 | Max: 4294967295
+    ipsec_phase1: str  # IPsec interface. | MaxLen: 35
+    sdwan_member: int  # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class FabricVpnAdvertisedsubnetsItem(TypedDict, total=False):
+    """Type hints for advertised-subnets table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - access: "inbound" | "bidirectional"
+        - bgp_network: int
+        - firewall_address: str
+        - policies: int
+    
+    **Example:**
+        entry: FabricVpnAdvertisedsubnetsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967294
+    prefix: str  # Network prefix. | Default: 0.0.0.0 0.0.0.0
+    access: Literal["inbound", "bidirectional"]  # Access policy direction. | Default: inbound
+    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
+    firewall_address: str  # Underlying firewall address. | MaxLen: 79
+    policies: int  # Underlying policies. | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -31,8 +107,8 @@ class FabricVpnPayload(TypedDict, total=False):
     branch_name: str  # Branch name. | MaxLen: 35
     policy_rule: Literal["health-check", "manual", "auto"]  # Policy creation rule. | Default: health-check
     vpn_role: Literal["hub", "spoke"]  # Fabric VPN role. | Default: hub
-    overlays: list[dict[str, Any]]  # Local overlay interfaces table.
-    advertised_subnets: list[dict[str, Any]]  # Local advertised subnets.
+    overlays: list[FabricVpnOverlaysItem]  # Local overlay interfaces table.
+    advertised_subnets: list[FabricVpnAdvertisedsubnetsItem]  # Local advertised subnets.
     loopback_address_block: str  # IPv4 address and subnet mask for hub's loopback ad | Default: 0.0.0.0 0.0.0.0
     loopback_interface: str  # Loopback interface. | MaxLen: 15
     loopback_advertised_subnet: int  # Loopback advertised subnet reference. | Default: 0 | Min: 0 | Max: 4294967295
@@ -41,46 +117,9 @@ class FabricVpnPayload(TypedDict, total=False):
     sdwan_zone: str  # Reference to created SD-WAN zone. | MaxLen: 35
     health_checks: list[dict[str, Any]]  # Underlying health checks. | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FabricVpnOverlaysItem(TypedDict):
-    """Type hints for overlays table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Overlay name. | MaxLen: 79
-    ipsec_network_id: int  # VPN gateway network ID. | Default: 0 | Min: 0 | Max: 255
-    overlay_tunnel_block: str  # IPv4 address and subnet mask for the overlay tunne | Default: 0.0.0.0 0.0.0.0
-    remote_gw: str  # IP address of the hub gateway (Set by hub). | Default: 0.0.0.0
-    interface: str  # Underlying interface name. | MaxLen: 15
-    bgp_neighbor: str  # Underlying BGP neighbor entry. | MaxLen: 45
-    overlay_policy: int  # The overlay policy to allow ADVPN thru traffic. | Default: 0 | Min: 0 | Max: 4294967295
-    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
-    route_policy: int  # Underlying router policy. | Default: 0 | Min: 0 | Max: 4294967295
-    bgp_neighbor_group: str  # Underlying BGP neighbor group entry. | MaxLen: 45
-    bgp_neighbor_range: int  # Underlying BGP neighbor range entry. | Default: 0 | Min: 0 | Max: 4294967295
-    ipsec_phase1: str  # IPsec interface. | MaxLen: 35
-    sdwan_member: int  # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class FabricVpnAdvertisedsubnetsItem(TypedDict):
-    """Type hints for advertised-subnets table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967294
-    prefix: str  # Network prefix. | Default: 0.0.0.0 0.0.0.0
-    access: Literal["inbound", "bidirectional"]  # Access policy direction. | Default: inbound
-    bgp_network: int  # Underlying BGP network. | Default: 0 | Min: 0 | Max: 4294967295
-    firewall_address: str  # Underlying firewall address. | MaxLen: 79
-    policies: int  # Underlying policies. | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FabricVpnOverlaysObject:
@@ -117,14 +156,33 @@ class FabricVpnOverlaysObject:
     # Reference to SD-WAN member entry. | Default: 0 | Min: 0 | Max: 4294967295
     sdwan_member: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -148,14 +206,34 @@ class FabricVpnAdvertisedsubnetsObject:
     # Underlying policies. | Min: 0 | Max: 4294967295
     policies: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -220,17 +298,32 @@ class FabricVpnObject:
     health_checks: list[dict[str, Any]]
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> FabricVpnPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class FabricVpn:
@@ -241,17 +334,12 @@ class FabricVpn:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -265,10 +353,9 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -283,10 +370,9 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -300,14 +386,13 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -321,13 +406,9 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> FabricVpnObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -342,12 +423,9 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> FabricVpnObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -361,29 +439,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> FabricVpnObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -399,10 +455,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -419,10 +472,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -438,10 +488,7 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
+    ) -> FabricVpnObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -457,16 +504,27 @@ class FabricVpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FabricVpnObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -478,8 +536,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -488,10 +546,6 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> FabricVpnObject: ...
     
     @overload
@@ -503,8 +557,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -513,12 +567,9 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -528,8 +579,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -538,12 +589,8 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: FabricVpnPayload | None = ...,
@@ -552,8 +599,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -562,9 +609,7 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -580,8 +625,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -590,597 +635,37 @@ class FabricVpn:
         sdwan_zone: str | None = ...,
         health_checks: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class FabricVpnDictMode:
-    """FabricVpn endpoint for dict response mode (default for this client).
-    
-    By default returns FabricVpnResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return FabricVpnObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class FabricVpnObjectMode:
-    """FabricVpn endpoint for object response mode (default for this client).
-    
-    By default returns FabricVpnObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return FabricVpnResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> FabricVpnResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> FabricVpnObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
-        branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = ...,
-        loopback_address_block: str | None = ...,
-        loopback_interface: str | None = ...,
-        loopback_advertised_subnet: int | None = ...,
-        psksecret: str | None = ...,
-        bgp_as: str | None = ...,
-        sdwan_zone: str | None = ...,
-        health_checks: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "FabricVpn",
-    "FabricVpnDictMode",
-    "FabricVpnObjectMode",
     "FabricVpnPayload",
+    "FabricVpnResponse",
     "FabricVpnObject",
 ]

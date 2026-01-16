@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "destination",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ipv6": "boolean",  # 
+    "destination": "string",  # 
+    "source": "string",  # 
+    "destination_port": "int",  # 
+    "source_port": "int",  # 
+    "interface_name": "string",  # 
+    "protocol_number": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +187,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "router/lookup-policy",
     "help": "Performs a route lookup by querying the policy routing table.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 7,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

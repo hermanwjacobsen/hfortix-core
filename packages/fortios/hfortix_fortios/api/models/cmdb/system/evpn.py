@@ -7,42 +7,39 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
-
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class EvpnImportRt(BaseModel):
     """
     Child table model for import-rt.
-
+    
     List of import route targets.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+    
     route_target: str | None = Field(max_length=79, default="", description="Route target: AA:NN|A.B.C.D:NN.")
-
-
 class EvpnExportRt(BaseModel):
     """
     Child table model for export-rt.
-
+    
     List of export route targets.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+    
     route_target: str | None = Field(max_length=79, default="", description="Route target: AA:NN|A.B.C.D:NN.")
-
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -52,64 +49,57 @@ class EvpnExportRt(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class EvpnModel(BaseModel):
     """
     Pydantic model for system/evpn configuration.
-
+    
     Configure EVPN instance.
-
-    Validation Rules:
-        - id: min=1 max=65535 pattern=
-        - rd: max_length=79 pattern=
-        - import_rt: pattern=
-        - export_rt: pattern=
-        - ip_local_learning: pattern=
-        - arp_suppression: pattern=
-    """
-
+    
+    Validation Rules:        - id: min=1 max=65535 pattern=        - rd: max_length=79 pattern=        - import_rt: pattern=        - export_rt: pattern=        - ip_local_learning: pattern=        - arp_suppression: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int | None = Field(ge=1, le=65535, default=0, description="ID.")
-    rd: str | None = Field(max_length=79, default="", description="Route Distinguisher: AA:NN|A.B.C.D:NN.")
-    import_rt: list[EvpnImportRt] | None = Field(default=None, description="List of import route targets.")
-    export_rt: list[EvpnExportRt] | None = Field(default=None, description="List of export route targets.")
-    ip_local_learning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP address local learning.")
-    arp_suppression: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ARP suppression.")
+    
+    id: int | None = Field(ge=1, le=65535, default=0, description="ID.")    
+    rd: str | None = Field(max_length=79, default="", description="Route Distinguisher: AA:NN|A.B.C.D:NN.")    
+    import_rt: list[ImportRt] = Field(default=None, description="List of import route targets.")    
+    export_rt: list[ExportRt] = Field(default=None, description="List of export route targets.")    
+    ip_local_learning: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP address local learning.")    
+    arp_suppression: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ARP suppression.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "EvpnModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -119,8 +109,7 @@ class EvpnModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-EvpnModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -133,5 +122,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:38.796960Z
+# Generated: 2026-01-16T19:53:52.945064Z
 # ============================================================================

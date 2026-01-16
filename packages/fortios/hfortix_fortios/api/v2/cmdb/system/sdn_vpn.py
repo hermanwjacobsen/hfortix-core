@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -90,9 +91,8 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/sdn_vpn configuration.
@@ -118,12 +118,12 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -175,15 +175,14 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = "/system/sdn-vpn/" + str(name)
+            endpoint = "/system/sdn-vpn/" + quote_path_param(name)
             unwrap_single = True
         else:
             endpoint = "/system/sdn-vpn"
             unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -248,13 +247,16 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type_: int | None = None,
+        type: int | None = None,
         status: int | None = None,
         code: int | None = None,
+        q_action: Literal["move"] | None = None,
+        q_before: str | None = None,
+        q_after: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Update existing system/sdn_vpn object.
@@ -279,16 +281,15 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Remote subnet address and subnet mask.
             cgw_name: AWS customer gateway name to be created.
             psksecret: Pre-shared secret for PSK authentication. Auto-generated if not specified
-            type_: SDN VPN type.
+            type: SDN VPN type.
             status: SDN VPN status.
             code: SDN VPN error code.
             vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
 
         Raises:
             ValueError: If name is missing from payload
@@ -331,7 +332,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type_=type_,
+            type=type,
             status=status,
             code=code,
             data=payload_dict,
@@ -350,10 +351,21 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/system/sdn-vpn/" + str(name_value)
+        endpoint = "/system/sdn-vpn/" + quote_path_param(name_value)
 
+        # Add explicit query parameters for PUT
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_before is not None:
+            params["before"] = q_before
+        if q_after is not None:
+            params["after"] = q_after
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -380,13 +392,15 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type_: int | None = None,
+        type: int | None = None,
         status: int | None = None,
         code: int | None = None,
+        q_action: Literal["clone"] | None = None,
+        q_nkey: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Create new system/sdn_vpn object.
@@ -411,16 +425,15 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Remote subnet address and subnet mask.
             cgw_name: AWS customer gateway name to be created.
             psksecret: Pre-shared secret for PSK authentication. Auto-generated if not specified
-            type_: SDN VPN type.
+            type: SDN VPN type.
             status: SDN VPN status.
             code: SDN VPN error code.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict containing created object with assigned name.
+            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
 
         Examples:
             >>> # Create using individual parameters
@@ -465,7 +478,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type_=type_,
+            type=type,
             status=status,
             code=code,
             data=payload_dict,
@@ -482,8 +495,18 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             )
 
         endpoint = "/system/sdn-vpn"
+        
+        # Add explicit query parameters for POST
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_nkey is not None:
+            params["nkey"] = q_nkey
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -494,10 +517,10 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
     def delete(
         self,
         name: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Delete system/sdn_vpn object.
@@ -507,12 +530,11 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         Args:
             name: Primary key identifier
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is not provided
@@ -531,10 +553,15 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/system/sdn-vpn/" + str(name)
+        endpoint = "/system/sdn-vpn/" + quote_path_param(name)
 
+        # Add explicit query parameters for DELETE
+        params: dict[str, Any] = {}
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, params=params, vdom=vdom
         )
 
     def exists(
@@ -569,30 +596,37 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/system/sdn-vpn"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "cmdb",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
             
-            if isinstance(response, dict):
+            if isinstance(result, dict):
                 # Synchronous response - check status
-                return is_success(response)
+                return result.get("status") == "success"
             else:
                 # Asynchronous response
                 async def _check() -> bool:
-                    r = await response
-                    return is_success(r)
+                    r = await result
+                    return r.get("status") == "success"
                 return _check()
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 
 
     def set(
@@ -614,12 +648,12 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         remote_cidr: str | None = None,
         cgw_name: str | None = None,
         psksecret: Any | None = None,
-        type_: int | None = None,
+        type: int | None = None,
         status: int | None = None,
         code: int | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -646,16 +680,14 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr: Field remote-cidr
             cgw_name: Field cgw-name
             psksecret: Field psksecret
-            type_: Field type
+            type: Field type
             status: Field status
             code: Field code
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            API response dictionary
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is missing from payload
@@ -708,7 +740,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             remote_cidr=remote_cidr,
             cgw_name=cgw_name,
             psksecret=psksecret,
-            type_=type_,
+            type=type,
             status=status,
             code=code,
             data=payload_dict,
@@ -721,10 +753,10 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -817,44 +849,4 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
             },
         )
 
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if system/sdn_vpn object exists.
-        
-        Args:
-            name: Identifier to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.system_sdn_vpn.exists(name=1):
-            ...     fgt.api.cmdb.system_sdn_vpn.post(payload_dict=data)
-        """
-        # Try to fetch the object - 404 means it doesn't exist
-        try:
-            response = self.get(
-                name=name,
-                vdom=vdom,
-                raw_json=True
-            )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
 

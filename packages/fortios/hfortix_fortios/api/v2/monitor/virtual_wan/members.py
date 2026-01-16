@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,17 @@ class Members(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        interface: list[str] | None = None,
+        zone: str | None = None,
+        sla: str | None = None,
+        skip_vpn_child: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve virtual_wan/members configuration.
@@ -100,7 +103,10 @@ class Members(CRUDEndpoint, MetadataMixin):
         Retrieve interface statistics for each SD-WAN link.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            interface: Interface names. "interface" param take precedence over "zone" or "sla". If set, will return only return the members that matches the interfaces.
+            zone: SD-WAN zone name. "zone" param take precedence over "sla". If set, will only return members of the zone.
+            sla: SLA name. If set, will only return members that are participants of the SLA.
+            skip_vpn_child: If set, will skip all VPN child interfaces.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -117,12 +123,12 @@ class Members(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -167,17 +173,20 @@ class Members(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
+        if interface is not None:
+            params["interface"] = interface
+        if zone is not None:
+            params["zone"] = zone
+        if sla is not None:
+            params["sla"] = sla
+        if skip_vpn_child is not None:
+            params["skip_vpn_child"] = skip_vpn_child
         
-        if name:
-            endpoint = f"/virtual-wan/members/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/virtual-wan/members"
-            unwrap_single = False
+        endpoint = "/virtual-wan/members"
+        unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
 
@@ -212,20 +221,35 @@ class Members(CRUDEndpoint, MetadataMixin):
             >>> if not fgt.api.monitor.virtual_wan_members.exists(name="myobj"):
             ...     fgt.api.monitor.virtual_wan_members.post(payload_dict=data)
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/virtual-wan/members"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "monitor",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+            
+            if isinstance(result, dict):
+                # Synchronous response - check status
+                return result.get("status") == "success"
+            else:
+                # Asynchronous response
+                async def _check() -> bool:
+                    r = await result
+                    return r.get("status") == "success"
+                return _check()
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 

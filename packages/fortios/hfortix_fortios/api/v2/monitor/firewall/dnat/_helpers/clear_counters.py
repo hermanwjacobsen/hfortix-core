@@ -54,6 +54,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "id": "int",  # 
+    "is_ipv6": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +181,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/dnat/clear-counters",
     "help": "Reset hit count statistics for one or more firewall virtual IP/server by ID.",
-    "total_fields": 0,
+    "total_fields": 2,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

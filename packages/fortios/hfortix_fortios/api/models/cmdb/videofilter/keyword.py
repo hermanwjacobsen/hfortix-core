@@ -7,31 +7,29 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
-
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class KeywordWord(BaseModel):
     """
     Child table model for word.
-
+    
     List of keywords.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    name: str | None = Field(max_length=79, default="", description="Name.")
-    comment: str | None = Field(max_length=255, default=None, description="Comment.")
-    pattern_type: Literal["wildcard", "regex"] = Field(default="wildcard", description="Pattern type.")
+    
+    name: str | None = Field(max_length=79, default="", description="Name.")    
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")    
+    pattern_type: Literal["wildcard", "regex"] = Field(default="wildcard", description="Pattern type.")    
     status: Literal["enable", "disable"] = Field(default="enable", description="Enable(consider)/disable(ignore) this keyword.")
-
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -41,62 +39,56 @@ class KeywordWord(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class KeywordModel(BaseModel):
     """
     Pydantic model for videofilter/keyword configuration.
-
+    
     Configure video filter keywords.
-
-    Validation Rules:
-        - id: min=0 max=4294967295 pattern=
-        - name: max_length=35 pattern=
-        - comment: max_length=255 pattern=
-        - match: pattern=
-        - word: pattern=
-    """
-
+    
+    Validation Rules:        - id: min=0 max=4294967295 pattern=        - name: max_length=35 pattern=        - comment: max_length=255 pattern=        - match: pattern=        - word: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
-    name: str = Field(max_length=35, default="", description="Name.")
-    comment: str | None = Field(max_length=255, default=None, description="Comment.")
-    match: Literal["or", "and"] = Field(default="or", description="Keyword matching logic.")
-    word: list[KeywordWord] | None = Field(default=None, description="List of keywords.")
+    
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
+    name: str = Field(max_length=35, default="", description="Name.")    
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")    
+    match: Literal["or", "and"] = Field(default="or", description="Keyword matching logic.")    
+    word: list[Word] = Field(default=None, description="List of keywords.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "KeywordModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -106,8 +98,7 @@ class KeywordModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-KeywordModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -120,5 +111,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:38.412650Z
+# Generated: 2026-01-16T19:53:52.699321Z
 # ============================================================================

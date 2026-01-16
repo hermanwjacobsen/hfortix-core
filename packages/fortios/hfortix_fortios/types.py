@@ -120,10 +120,10 @@ class FortiOSResponse(TypedDict):
 class FortiOSListResponse(TypedDict):
     """
     FortiOS API response with list results (collection queries).
-
+    
     Use this type when you know the response will contain a list of items,
     such as when calling `.get()` without a `name` parameter.
-
+    
     Example:
         >>> response: FortiOSListResponse = fgt.api.cmdb.firewall.address.get()
         >>> first_address = response["results"][0]  # No type error!
@@ -143,10 +143,10 @@ class FortiOSListResponse(TypedDict):
 class FortiOSDictResponse(TypedDict):
     """
     FortiOS API response with dict results (single object queries).
-
+    
     Use this type when you know the response will contain a single object,
     such as when calling `.get(name="...")`.
-
+    
     Example:
         >>> response: FortiOSDictResponse = fgt.api.cmdb.firewall.address.get(name="web-server")
         >>> address_name = response["results"]["name"]  # No type error!

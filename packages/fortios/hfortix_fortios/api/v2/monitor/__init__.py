@@ -13,7 +13,6 @@ from . import geoip
 from . import ips
 from . import license
 from . import log
-from . import monitor
 from . import network
 from . import registration
 from . import router
@@ -48,7 +47,6 @@ __all__ = [
     "Ips",
     "License",
     "Log",
-    "Monitor",
     "Monitor",
     "Network",
     "Registration",
@@ -94,7 +92,6 @@ class Monitor:
         self.ips = ips.Ips(client)
         self.license = license.License(client)
         self.log = log.Log(client)
-        self.monitor = monitor.Monitor(client)
         self.network = network.Network(client)
         self.registration = registration.Registration(client)
         self.router = router.Router(client)

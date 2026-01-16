@@ -1,55 +1,82 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class WebPortalBookmarkPayload(TypedDict, total=False):
-    """
-    Type hints for ztna/web_portal_bookmark payload fields.
-    
-    Configure ztna web-portal bookmark.
-    
-    **Usage:**
-        payload: WebPortalBookmarkPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Bookmark name. | MaxLen: 35
-    users: list[dict[str, Any]]  # User name.
-    groups: list[dict[str, Any]]  # User groups.
-    bookmarks: list[dict[str, Any]]  # Bookmark table.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class WebPortalBookmarkUsersItem(TypedDict):
+class WebPortalBookmarkUsersItem(TypedDict, total=False):
     """Type hints for users table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: WebPortalBookmarkUsersItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # User name. | MaxLen: 79
 
 
-class WebPortalBookmarkGroupsItem(TypedDict):
+class WebPortalBookmarkGroupsItem(TypedDict, total=False):
     """Type hints for groups table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: WebPortalBookmarkGroupsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Group name. | MaxLen: 79
 
 
-class WebPortalBookmarkBookmarksItem(TypedDict):
+class WebPortalBookmarkBookmarksItem(TypedDict, total=False):
     """Type hints for bookmarks table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - apptype: "ftp" | "rdp" | "sftp" | "smb" | "ssh" | "telnet" | "vnc" | "web"
+        - url: str
+        - host: str
+        - folder: str
+        - domain: str
+        - description: str
+        - keyboard_layout: "ar-101" | "ar-102" | "ar-102-azerty" | "can-mul" | "cz" | "cz-qwerty" | "cz-pr" | "da" | "nl" | "de" | "de-ch" | "de-ibm" | "en-uk" | "en-uk-ext" | "en-us" | "en-us-dvorak" | "es" | "es-var" | "fi" | "fi-sami" | "fr" | "fr-apple" | "fr-ca" | "fr-ch" | "fr-be" | "hr" | "hu" | "hu-101" | "it" | "it-142" | "ja" | "ja-106" | "ko" | "la-am" | "lt" | "lt-ibm" | "lt-std" | "lav-std" | "lav-leg" | "mk" | "mk-std" | "no" | "no-sami" | "pol-214" | "pol-pr" | "pt" | "pt-br" | "pt-br-abnt2" | "ru" | "ru-mne" | "ru-t" | "sl" | "sv" | "sv-sami" | "tuk" | "tur-f" | "tur-q" | "zh-sym-sg-us" | "zh-sym-us" | "zh-tr-hk" | "zh-tr-mo" | "zh-tr-us"
+        - security: "any" | "rdp" | "nla" | "tls"
+        - send_preconnection_id: "enable" | "disable"
+        - preconnection_id: int
+        - preconnection_blob: str
+        - load_balancing_info: str
+        - restricted_admin: "enable" | "disable"
+        - port: int
+        - logon_user: str
+        - logon_password: str
+        - color_depth: "32" | "16" | "8"
+        - sso: "disable" | "enable"
+        - width: int
+        - height: int
+        - vnc_keyboard_layout: "default" | "da" | "nl" | "en-uk" | "en-uk-ext" | "fi" | "fr" | "fr-be" | "fr-ca-mul" | "de" | "de-ch" | "it" | "it-142" | "pt" | "pt-br-abnt2" | "no" | "gd" | "es" | "sv" | "us-intl"
+    
+    **Example:**
+        entry: WebPortalBookmarkBookmarksItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Bookmark name. | MaxLen: 35
@@ -76,7 +103,31 @@ class WebPortalBookmarkBookmarksItem(TypedDict):
     vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]  # Keyboard layout. | Default: default
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class WebPortalBookmarkPayload(TypedDict, total=False):
+    """
+    Type hints for ztna/web_portal_bookmark payload fields.
+    
+    Configure ztna web-portal bookmark.
+    
+    **Usage:**
+        payload: WebPortalBookmarkPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Bookmark name. | MaxLen: 35
+    users: list[WebPortalBookmarkUsersItem]  # User name.
+    groups: list[WebPortalBookmarkGroupsItem]  # User groups.
+    bookmarks: list[WebPortalBookmarkBookmarksItem]  # Bookmark table.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WebPortalBookmarkUsersObject:
@@ -89,14 +140,33 @@ class WebPortalBookmarkUsersObject:
     # User name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -110,14 +180,33 @@ class WebPortalBookmarkGroupsObject:
     # Group name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -173,14 +262,34 @@ class WebPortalBookmarkBookmarksObject:
     # Keyboard layout. | Default: default
     vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -217,16 +326,30 @@ class WebPortalBookmarkObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> WebPortalBookmarkPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class WebPortalBookmark:
@@ -238,17 +361,12 @@ class WebPortalBookmark:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -262,10 +380,9 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WebPortalBookmarkResponse: ...
+    ) -> WebPortalBookmarkObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -280,10 +397,9 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WebPortalBookmarkResponse: ...
+    ) -> WebPortalBookmarkObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -297,14 +413,13 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[WebPortalBookmarkResponse]: ...
+    ) -> FortiObjectList[WebPortalBookmarkObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -318,13 +433,9 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WebPortalBookmarkObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -339,12 +450,9 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> WebPortalBookmarkObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -358,29 +466,7 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[WebPortalBookmarkObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -396,10 +482,7 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkResponse: ...
+    ) -> WebPortalBookmarkObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -416,10 +499,7 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkResponse: ...
+    ) -> WebPortalBookmarkObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -435,10 +515,7 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkResponse]: ...
+    ) -> FortiObjectList[WebPortalBookmarkObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -454,16 +531,27 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> WebPortalBookmarkObject | list[WebPortalBookmarkObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -471,14 +559,10 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WebPortalBookmarkObject: ...
     
     @overload
@@ -486,42 +570,33 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -529,14 +604,10 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WebPortalBookmarkObject: ...
     
     @overload
@@ -544,42 +615,33 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -587,10 +649,6 @@ class WebPortalBookmark:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WebPortalBookmarkObject: ...
     
     @overload
@@ -598,30 +656,21 @@ class WebPortalBookmark:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -633,709 +682,41 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class WebPortalBookmarkDictMode:
-    """WebPortalBookmark endpoint for dict response mode (default for this client).
-    
-    By default returns WebPortalBookmarkResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return WebPortalBookmarkObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class WebPortalBookmarkObjectMode:
-    """WebPortalBookmark endpoint for object response mode (default for this client).
-    
-    By default returns WebPortalBookmarkObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return WebPortalBookmarkResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WebPortalBookmarkObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "WebPortalBookmark",
-    "WebPortalBookmarkDictMode",
-    "WebPortalBookmarkObjectMode",
     "WebPortalBookmarkPayload",
+    "WebPortalBookmarkResponse",
     "WebPortalBookmarkObject",
 ]

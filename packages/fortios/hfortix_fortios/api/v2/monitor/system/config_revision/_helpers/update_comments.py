@@ -54,6 +54,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "config_id": "int",  # 
+    "comments": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +181,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/config-revision/update-comments",
     "help": "Updates comments for a system configuration file.",
-    "total_fields": 0,
+    "total_fields": 2,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -27,7 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -39,6 +39,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -86,9 +87,8 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/replacemsg/nac_quar configuration.
@@ -114,12 +114,12 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -164,14 +164,12 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         cache_key = f"cmdb/system/replacemsg/nac_quar"
         
         # Only use cache for full list queries (no identifier, no filters)
-        is_list_query = msg_type is None and not filter and not payload_dict and not kwargs
+        is_list_query = msg_type is None and not filter and not payload_dict
         
         if is_list_query:
             cached_data = readonly_cache.get(cache_key)
             if cached_data is not None:
                 # Return cached data
-                if raw_json:
-                    return cached_data
                 return cached_data
         
         params = payload_dict.copy() if payload_dict else {}
@@ -185,17 +183,16 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if msg_type:
-            endpoint = "/system.replacemsg/nac-quar/" + str(msg_type)
+            endpoint = "/system.replacemsg/nac-quar/" + quote_path_param(msg_type)
             unwrap_single = True
         else:
             endpoint = "/system.replacemsg/nac-quar"
             unwrap_single = False
         
-        params.update(kwargs)
         
         # Fetch data and cache if this is a list query
         response = self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
         
         # Cache the response for list queries
@@ -256,11 +253,14 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format_: Literal["none", "text", "html"] | None = None,
+        format: Literal["none", "text", "html"] | None = None,
+        q_action: Literal["move"] | None = None,
+        q_before: str | None = None,
+        q_after: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Update existing system/replacemsg/nac_quar object.
@@ -272,14 +272,13 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type: Message type.
             buffer: Message string.
             header: Header flag.
-            format_: Format flag.
+            format: Format flag.
             vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
 
         Raises:
             ValueError: If msg-type is missing from payload
@@ -309,7 +308,7 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format_=format_,
+            format=format,
             data=payload_dict,
         )
         
@@ -326,10 +325,21 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         msg_type_value = payload_data.get("msg-type")
         if not msg_type_value:
             raise ValueError("msg-type is required for PUT")
-        endpoint = "/system.replacemsg/nac-quar/" + str(msg_type_value)
+        endpoint = "/system.replacemsg/nac-quar/" + quote_path_param(msg_type_value)
 
+        # Add explicit query parameters for PUT
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_before is not None:
+            params["before"] = q_before
+        if q_after is not None:
+            params["after"] = q_after
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -343,11 +353,13 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format_: Literal["none", "text", "html"] | None = None,
+        format: Literal["none", "text", "html"] | None = None,
+        q_action: Literal["clone"] | None = None,
+        q_nkey: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Create new system/replacemsg/nac_quar object.
@@ -359,14 +371,13 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type: Message type.
             buffer: Message string.
             header: Header flag.
-            format_: Format flag.
+            format: Format flag.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict containing created object with assigned msg-type.
+            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
 
         Examples:
             >>> # Create using individual parameters
@@ -398,7 +409,7 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format_=format_,
+            format=format,
             data=payload_dict,
         )
 
@@ -413,8 +424,18 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             )
 
         endpoint = "/system.replacemsg/nac-quar"
+        
+        # Add explicit query parameters for POST
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_nkey is not None:
+            params["nkey"] = q_nkey
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -425,10 +446,10 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
     def delete(
         self,
         msg_type: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Delete system/replacemsg/nac_quar object.
@@ -438,12 +459,11 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         Args:
             msg_type: Primary key identifier
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If msg-type is not provided
@@ -462,10 +482,15 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         """
         if not msg_type:
             raise ValueError("msg-type is required for DELETE")
-        endpoint = "/system.replacemsg/nac-quar/" + str(msg_type)
+        endpoint = "/system.replacemsg/nac-quar/" + quote_path_param(msg_type)
 
+        # Add explicit query parameters for DELETE
+        params: dict[str, Any] = {}
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, params=params, vdom=vdom
         )
 
     def exists(
@@ -502,7 +527,8 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        response = self.get(vdom=vdom, raw_json=True)
+        result = self.get(vdom=vdom)
+        response = result.raw if hasattr(result, 'raw') else result
         
         if isinstance(response, dict):
             # Synchronous response
@@ -542,10 +568,10 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         msg_type: str | None = None,
         buffer: str | None = None,
         header: Literal["none", "http", "8bit"] | None = None,
-        format_: Literal["none", "text", "html"] | None = None,
+        format: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -559,14 +585,12 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type: Field msg-type
             buffer: Field buffer
             header: Field header
-            format_: Field format
+            format: Field format
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            API response dictionary
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If msg-type is missing from payload
@@ -606,7 +630,7 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
             msg_type=msg_type,
             buffer=buffer,
             header=header,
-            format_=format_,
+            format=format,
             data=payload_dict,
         )
         
@@ -617,10 +641,10 @@ class NacQuar(CRUDEndpoint, MetadataMixin):
         # Check if resource exists
         if self.exists(msg_type=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "type",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,17 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "type": "string",  # 
+    "certname": "string",  # 
+    "password": "string",  # 
+    "key_file_content": "string",  # 
+    "scope": "string",  # 
+    "acme_domain": "string",  # 
+    "acme_email": "string",  # 
+    "acme_ca_url": "string",  # 
+    "acme_rsa_key_size": "int",  # 
+    "acme_renew_window": "int",  # 
+    "file_content": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -77,7 +89,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_vpn_certificate_local_import_get(
+def validate_vpn_certificate_local_import__get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -101,7 +113,7 @@ def validate_vpn_certificate_local_import_get(
 # ============================================================================
 
 
-def validate_vpn_certificate_local_import_post(
+def validate_vpn_certificate_local_import__post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -125,7 +137,7 @@ def validate_vpn_certificate_local_import_post(
 # ============================================================================
 
 
-def validate_vpn_certificate_local_import_put(
+def validate_vpn_certificate_local_import__put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -179,8 +191,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "vpn-certificate/local/import",
     "help": "Import local certificate.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 11,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

@@ -1,9 +1,221 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class RipngDistanceItem(TypedDict, total=False):
+    """Type hints for distance table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - distance: int
+        - prefix6: str
+        - access_list6: str
+    
+    **Example:**
+        entry: RipngDistanceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Distance ID. | Default: 0 | Min: 0 | Max: 4294967295
+    distance: int  # Distance (1 - 255). | Default: 0 | Min: 1 | Max: 255
+    prefix6: str  # Distance prefix6. | Default: ::/0
+    access_list6: str  # Access list for route destination. | MaxLen: 35
+
+
+class RipngDistributelistItem(TypedDict, total=False):
+    """Type hints for distribute-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - direction: "in" | "out"
+        - listname: str
+        - interface: str
+    
+    **Example:**
+        entry: RipngDistributelistItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Distribute list ID. | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    direction: Literal["in", "out"]  # Distribute list direction. | Default: out
+    listname: str  # Distribute access/prefix list name. | MaxLen: 35
+    interface: str  # Distribute list interface name. | MaxLen: 15
+
+
+class RipngNeighborItem(TypedDict, total=False):
+    """Type hints for neighbor table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - ip6: str
+        - interface: str
+    
+    **Example:**
+        entry: RipngNeighborItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip6: str  # IPv6 link-local address. | Default: ::
+    interface: str  # Interface name. | MaxLen: 15
+
+
+class RipngNetworkItem(TypedDict, total=False):
+    """Type hints for network table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix: str
+    
+    **Example:**
+        entry: RipngNetworkItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Network IPv6 link-local prefix. | Default: ::/0
+
+
+class RipngAggregateaddressItem(TypedDict, total=False):
+    """Type hints for aggregate-address table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix6: str
+    
+    **Example:**
+        entry: RipngAggregateaddressItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Aggregate address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix6: str  # Aggregate address prefix. | Default: ::/0
+
+
+class RipngOffsetlistItem(TypedDict, total=False):
+    """Type hints for offset-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - direction: "in" | "out"
+        - access_list6: str
+        - offset: int
+        - interface: str
+    
+    **Example:**
+        entry: RipngOffsetlistItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Offset-list ID. | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Status. | Default: enable
+    direction: Literal["in", "out"]  # Offset list direction. | Default: out
+    access_list6: str  # IPv6 access list name. | MaxLen: 35
+    offset: int  # Offset. | Default: 0 | Min: 1 | Max: 16
+    interface: str  # Interface name. | MaxLen: 15
+
+
+class RipngPassiveinterfaceItem(TypedDict, total=False):
+    """Type hints for passive-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: RipngPassiveinterfaceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Passive interface name. | MaxLen: 79
+
+
+class RipngRedistributeItem(TypedDict, total=False):
+    """Type hints for redistribute table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - metric: int
+        - routemap: str
+    
+    **Example:**
+        entry: RipngRedistributeItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Redistribute name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    metric: int  # Redistribute metric setting. | Default: 0 | Min: 1 | Max: 16
+    routemap: str  # Route map name. | MaxLen: 35
+
+
+class RipngInterfaceItem(TypedDict, total=False):
+    """Type hints for interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - split_horizon_status: "enable" | "disable"
+        - split_horizon: "poisoned" | "regular"
+        - flags: int
+    
+    **Example:**
+        entry: RipngInterfaceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 35
+    split_horizon_status: Literal["enable", "disable"]  # Enable/disable split horizon. | Default: enable
+    split_horizon: Literal["poisoned", "regular"]  # Enable/disable split horizon. | Default: poisoned
+    flags: int  # Flags. | Default: 8 | Min: 0 | Max: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,134 +233,22 @@ class RipngPayload(TypedDict, total=False):
     default_information_originate: Literal["enable", "disable"]  # Enable/disable generation of default route. | Default: disable
     default_metric: int  # Default metric. | Default: 1 | Min: 1 | Max: 16
     max_out_metric: int  # Maximum metric allowed to output | Default: 0 | Min: 0 | Max: 15
-    distance: list[dict[str, Any]]  # Distance.
-    distribute_list: list[dict[str, Any]]  # Distribute list.
-    neighbor: list[dict[str, Any]]  # Neighbor.
-    network: list[dict[str, Any]]  # Network.
-    aggregate_address: list[dict[str, Any]]  # Aggregate address.
-    offset_list: list[dict[str, Any]]  # Offset list.
-    passive_interface: list[dict[str, Any]]  # Passive interface configuration.
-    redistribute: list[dict[str, Any]]  # Redistribute configuration.
+    distance: list[RipngDistanceItem]  # Distance.
+    distribute_list: list[RipngDistributelistItem]  # Distribute list.
+    neighbor: list[RipngNeighborItem]  # Neighbor.
+    network: list[RipngNetworkItem]  # Network.
+    aggregate_address: list[RipngAggregateaddressItem]  # Aggregate address.
+    offset_list: list[RipngOffsetlistItem]  # Offset list.
+    passive_interface: list[RipngPassiveinterfaceItem]  # Passive interface configuration.
+    redistribute: list[RipngRedistributeItem]  # Redistribute configuration.
     update_timer: int  # Update timer in seconds. | Default: 30 | Min: 5 | Max: 2147483647
     timeout_timer: int  # Timeout timer in seconds. | Default: 180 | Min: 5 | Max: 2147483647
     garbage_timer: int  # Garbage timer in seconds. | Default: 120 | Min: 5 | Max: 2147483647
-    interface: list[dict[str, Any]]  # RIPng interface configuration.
+    interface: list[RipngInterfaceItem]  # RIPng interface configuration.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class RipngDistanceItem(TypedDict):
-    """Type hints for distance table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Distance ID. | Default: 0 | Min: 0 | Max: 4294967295
-    distance: int  # Distance (1 - 255). | Default: 0 | Min: 1 | Max: 255
-    prefix6: str  # Distance prefix6. | Default: ::/0
-    access_list6: str  # Access list for route destination. | MaxLen: 35
-
-
-class RipngDistributelistItem(TypedDict):
-    """Type hints for distribute-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Distribute list ID. | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Status. | Default: disable
-    direction: Literal["in", "out"]  # Distribute list direction. | Default: out
-    listname: str  # Distribute access/prefix list name. | MaxLen: 35
-    interface: str  # Distribute list interface name. | MaxLen: 15
-
-
-class RipngNeighborItem(TypedDict):
-    """Type hints for neighbor table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip6: str  # IPv6 link-local address. | Default: ::
-    interface: str  # Interface name. | MaxLen: 15
-
-
-class RipngNetworkItem(TypedDict):
-    """Type hints for network table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix: str  # Network IPv6 link-local prefix. | Default: ::/0
-
-
-class RipngAggregateaddressItem(TypedDict):
-    """Type hints for aggregate-address table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Aggregate address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    prefix6: str  # Aggregate address prefix. | Default: ::/0
-
-
-class RipngOffsetlistItem(TypedDict):
-    """Type hints for offset-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Offset-list ID. | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Status. | Default: enable
-    direction: Literal["in", "out"]  # Offset list direction. | Default: out
-    access_list6: str  # IPv6 access list name. | MaxLen: 35
-    offset: int  # Offset. | Default: 0 | Min: 1 | Max: 16
-    interface: str  # Interface name. | MaxLen: 15
-
-
-class RipngPassiveinterfaceItem(TypedDict):
-    """Type hints for passive-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Passive interface name. | MaxLen: 79
-
-
-class RipngRedistributeItem(TypedDict):
-    """Type hints for redistribute table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Redistribute name. | MaxLen: 35
-    status: Literal["enable", "disable"]  # Status. | Default: disable
-    metric: int  # Redistribute metric setting. | Default: 0 | Min: 1 | Max: 16
-    routemap: str  # Route map name. | MaxLen: 35
-
-
-class RipngInterfaceItem(TypedDict):
-    """Type hints for interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 35
-    split_horizon_status: Literal["enable", "disable"]  # Enable/disable split horizon. | Default: enable
-    split_horizon: Literal["poisoned", "regular"]  # Enable/disable split horizon. | Default: poisoned
-    flags: int  # Flags. | Default: 8 | Min: 0 | Max: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class RipngDistanceObject:
@@ -167,14 +267,33 @@ class RipngDistanceObject:
     # Access list for route destination. | MaxLen: 35
     access_list6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -196,14 +315,33 @@ class RipngDistributelistObject:
     # Distribute list interface name. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -221,14 +359,33 @@ class RipngNeighborObject:
     # Interface name. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -244,14 +401,33 @@ class RipngNetworkObject:
     # Network IPv6 link-local prefix. | Default: ::/0
     prefix: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -267,14 +443,33 @@ class RipngAggregateaddressObject:
     # Aggregate address prefix. | Default: ::/0
     prefix6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -298,14 +493,33 @@ class RipngOffsetlistObject:
     # Interface name. | MaxLen: 15
     interface: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -319,14 +533,33 @@ class RipngPassiveinterfaceObject:
     # Passive interface name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -346,14 +579,33 @@ class RipngRedistributeObject:
     # Route map name. | MaxLen: 35
     routemap: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -373,14 +625,34 @@ class RipngInterfaceObject:
     # Flags. | Default: 8 | Min: 0 | Max: 255
     flags: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -450,16 +722,30 @@ class RipngObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> RipngPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Ripng:
@@ -470,17 +756,12 @@ class Ripng:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -494,10 +775,9 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -512,10 +792,9 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -529,14 +808,13 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -550,13 +828,9 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> RipngObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -571,12 +845,9 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> RipngObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -590,29 +861,7 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> RipngObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -628,10 +877,7 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -648,10 +894,7 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -667,10 +910,7 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> RipngResponse: ...
+    ) -> RipngObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -686,16 +926,27 @@ class Ripng:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> RipngObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -705,23 +956,19 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> RipngObject: ...
     
     @overload
@@ -731,25 +978,22 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -757,47 +1001,41 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: RipngPayload | None = ...,
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -811,621 +1049,50 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class RipngDictMode:
-    """Ripng endpoint for dict response mode (default for this client).
-    
-    By default returns RipngResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return RipngObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> RipngResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> RipngResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class RipngObjectMode:
-    """Ripng endpoint for object response mode (default for this client).
-    
-    By default returns RipngObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return RipngResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> RipngResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> RipngResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> RipngObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> RipngObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
-        default_metric: int | None = ...,
-        max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        update_timer: int | None = ...,
-        timeout_timer: int | None = ...,
-        garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Ripng",
-    "RipngDictMode",
-    "RipngObjectMode",
     "RipngPayload",
+    "RipngResponse",
     "RipngObject",
 ]

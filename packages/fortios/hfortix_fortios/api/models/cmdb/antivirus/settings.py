@@ -7,8 +7,8 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -19,62 +19,56 @@ from typing import Any, Literal
 # Main Model
 # ============================================================================
 
-
 class SettingsModel(BaseModel):
     """
     Pydantic model for antivirus/settings configuration.
-
+    
     Configure AntiVirus settings.
-
-    Validation Rules:
-        - machine_learning_detection: pattern=
-        - use_extreme_db: pattern=
-        - grayware: pattern=
-        - override_timeout: min=30 max=3600 pattern=
-        - cache_infected_result: pattern=
-    """
-
+    
+    Validation Rules:        - machine_learning_detection: pattern=        - use_extreme_db: pattern=        - grayware: pattern=        - override_timeout: min=30 max=3600 pattern=        - cache_infected_result: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    machine_learning_detection: Literal["enable", "monitor", "disable"] | None = Field(default="enable", description="Use machine learning based malware detection.")
-    use_extreme_db: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the use of Extreme AVDB.")
-    grayware: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable grayware detection when an AntiVirus profile is applied to traffic.")
-    override_timeout: int | None = Field(ge=30, le=3600, default=0, description="Override the large file scan timeout value in seconds (30 - 3600). Zero is the default value and is used to disable this command. When disabled, the daemon adjusts the large file scan timeout based on the file size.")
-    cache_infected_result: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable cache of infected scan results (default = enable).")
+    
+    machine_learning_detection: Literal["enable", "monitor", "disable"] | None = Field(default="enable", description="Use machine learning based malware detection.")    
+    use_extreme_db: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the use of Extreme AVDB.")    
+    grayware: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable grayware detection when an AntiVirus profile is applied to traffic.")    
+    override_timeout: int | None = Field(ge=30, le=3600, default=0, description="Override the large file scan timeout value in seconds (30 - 3600). Zero is the default value and is used to disable this command. When disabled, the daemon adjusts the large file scan timeout based on the file size.")    
+    cache_infected_result: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable cache of infected scan results (default = enable).")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "SettingsModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -84,8 +78,7 @@ class SettingsModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-SettingsModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -98,5 +91,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:34.986025Z
+# Generated: 2026-01-16T19:53:50.639148Z
 # ============================================================================

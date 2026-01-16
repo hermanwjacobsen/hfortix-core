@@ -85,7 +85,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_firewall_global_get(
+def validate_firewall_global__get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -109,7 +109,7 @@ def validate_firewall_global_get(
 # ============================================================================
 
 
-def validate_firewall_global_post(
+def validate_firewall_global__post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -142,7 +142,7 @@ def validate_firewall_global_post(
 # ============================================================================
 
 
-def validate_firewall_global_put(
+def validate_firewall_global__put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

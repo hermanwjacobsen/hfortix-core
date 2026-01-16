@@ -7,28 +7,26 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
-
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class ObjectTaggingTags(BaseModel):
     """
     Child table model for tags.
-
+    
     Tags.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+    
     name: str | None = Field(max_length=79, default="", description="Tag name.")
-
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -38,66 +36,58 @@ class ObjectTaggingTags(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class ObjectTaggingModel(BaseModel):
     """
     Pydantic model for system/object_tagging configuration.
-
+    
     Configure object tagging.
-
-    Validation Rules:
-        - category: max_length=63 pattern=
-        - address: pattern=
-        - device: pattern=
-        - interface: pattern=
-        - multiple: pattern=
-        - color: min=0 max=32 pattern=
-        - tags: pattern=
-    """
-
+    
+    Validation Rules:        - category: max_length=63 pattern=        - address: pattern=        - device: pattern=        - interface: pattern=        - multiple: pattern=        - color: min=0 max=32 pattern=        - tags: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    category: str | None = Field(max_length=63, default="", description="Tag Category.")
-    address: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Address.")
-    device: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Device.")
-    interface: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Interface.")
-    multiple: Literal["enable", "disable"] | None = Field(default="enable", description="Allow multiple tag selection.")
-    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")
-    tags: list[ObjectTaggingTags] | None = Field(default=None, description="Tags.")
+    
+    category: str | None = Field(max_length=63, default="", description="Tag Category.")    
+    address: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Address.")    
+    device: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Device.")    
+    interface: Literal["disable", "mandatory", "optional"] | None = Field(default="optional", description="Interface.")    
+    multiple: Literal["enable", "disable"] | None = Field(default="enable", description="Allow multiple tag selection.")    
+    color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    
+    tags: list[Tags] = Field(default=None, description="Tags.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "ObjectTaggingModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -107,8 +97,7 @@ class ObjectTaggingModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-ObjectTaggingModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -121,5 +110,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:38.086043Z
+# Generated: 2026-01-16T19:53:52.497340Z
 # ============================================================================

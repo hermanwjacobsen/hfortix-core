@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "account_id",  # 
+    "account_password",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "account_id": "string",  # 
+    "account_password": "string",  # 
+    "is_government": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +184,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/vmlicense/download-eval",
     "help": "Download Evaluation VM License and reboot immediately if successful.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 3,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

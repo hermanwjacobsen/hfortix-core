@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "platform_type",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "country": "string",  # 
+    "platform_type": "string",  # 
+    "indoor_outdoor": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +183,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "wifi/ap_channels",
     "help": "Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 3,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

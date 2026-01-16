@@ -140,9 +140,7 @@ def to_xml(data: Any, root: str = "data", indent: int = 2) -> str:
     """
     ...
 
-def to_key_value(
-    data: Any, separator: str = "=", delimiter: str = "\n"
-) -> str:
+def to_key_value(data: Any, separator: str = "=", delimiter: str = "\n") -> str:
     """
     Convert data to key=value pairs format.
 

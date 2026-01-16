@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "count",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,34 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ip_version": "string",  # 
+    "count": "int",  # 
+    "summary": "boolean",  # 
+    "srcport": "object",  # 
+    "policyid": "object",  # 
+    "security-policyid": "object",  # 
+    "application": "object",  # 
+    "protocol": "object",  # 
+    "dstport": "object",  # 
+    "srcintf": "object",  # 
+    "dstintf": "object",  # 
+    "srcintfrole": "array",  # 
+    "dstintfrole": "array",  # 
+    "srcaddr": "object",  # 
+    "srcaddr6": "object",  # 
+    "srcuuid": "object",  # 
+    "dstaddr": "object",  # 
+    "dstaddr6": "object",  # 
+    "dstuuid": "object",  # 
+    "username": "object",  # 
+    "shaper": "object",  # 
+    "country": "object",  # 
+    "owner": "object",  # 
+    "natsourceaddress": "object",  # 
+    "natsourceport": "object",  # 
+    "since": "object",  # 
+    "seconds": "object",  # 
+    "fortiasic": "object",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +208,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/sessions",
     "help": "List all active firewall sessions (optionally filtered).",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 28,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

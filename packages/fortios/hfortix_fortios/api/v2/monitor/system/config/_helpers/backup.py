@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "scope",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "destination": "string",  # 
+    "usb_filename": "string",  # 
+    "password": "string",  # 
+    "scope": "string",  # 
+    "vdom": "string",  # 
+    "password_mask": "boolean",  # 
+    "file_format": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +187,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/config/backup",
     "help": "Backup system config",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 7,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

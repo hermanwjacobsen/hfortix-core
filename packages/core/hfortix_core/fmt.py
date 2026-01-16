@@ -858,14 +858,14 @@ def to_listdict(data: Any) -> dict[str, list[Any]]:
             processed_data.append({"value": item})
 
     # Get all unique keys
-    all_keys: list[str] = []
+    all_keys = []
     for item in processed_data:
         for key in item.keys():
             if key not in all_keys:
                 all_keys.append(key)
 
     # Build dict of lists
-    result: dict[str, list[Any]] = {key: [] for key in all_keys}
+    result = {key: [] for key in all_keys}
     for item in processed_data:
         for key in all_keys:
             result[key].append(item.get(key, None))

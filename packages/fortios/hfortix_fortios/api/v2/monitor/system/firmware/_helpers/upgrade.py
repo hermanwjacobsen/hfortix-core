@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "source",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,16 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "source": "string",  # 
+    "url": "string",  # 
+    "passphrase": "string",  # 
+    "force": "boolean",  # 
+    "filename": "string",  # 
+    "format_partition": "boolean",  # 
+    "ignore_invalid_signature": "boolean",  # 
+    "file_id": "string",  # 
+    "ignore_admin_lockout_upon_downgrade": "boolean",  # 
+    "file_content": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +190,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/firmware/upgrade",
     "help": "Upgrade firmware image on this device.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 10,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

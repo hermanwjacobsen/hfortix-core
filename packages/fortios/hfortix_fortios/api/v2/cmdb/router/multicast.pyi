@@ -1,37 +1,32 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class MulticastPayload(TypedDict, total=False):
-    """
-    Type hints for router/multicast payload fields.
-    
-    Configure router multicast.
-    
-    **Usage:**
-        payload: MulticastPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    route_threshold: int  # Generate warnings when the number of multicast rou | Min: 1 | Max: 2147483647
-    route_limit: int  # Maximum number of multicast routes. | Default: 2147483647 | Min: 1 | Max: 2147483647
-    multicast_routing: Literal["enable", "disable"]  # Enable/disable IP multicast routing. | Default: disable
-    pim_sm_global: str  # PIM sparse-mode global settings.
-    pim_sm_global_vrf: list[dict[str, Any]]  # per-VRF PIM sparse-mode global settings.
-    interface: list[dict[str, Any]]  # PIM interfaces.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class MulticastPimsmglobalvrfItem(TypedDict):
+class MulticastPimsmglobalvrfItem(TypedDict, total=False):
     """Type hints for pim-sm-global-vrf table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - vrf: int
+        - bsr_candidate: "enable" | "disable"
+        - bsr_interface: str
+        - bsr_priority: int
+        - bsr_hash: int
+        - bsr_allow_quick_refresh: "enable" | "disable"
+        - cisco_crp_prefix: "enable" | "disable"
+        - rp_address: str
+    
+    **Example:**
+        entry: MulticastPimsmglobalvrfItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     vrf: int  # VRF ID. | Default: 0 | Min: 1 | Max: 511
@@ -44,11 +39,40 @@ class MulticastPimsmglobalvrfItem(TypedDict):
     rp_address: str  # Statically configure RP addresses.
 
 
-class MulticastInterfaceItem(TypedDict):
+class MulticastInterfaceItem(TypedDict, total=False):
     """Type hints for interface table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - ttl_threshold: int
+        - pim_mode: "sparse-mode" | "dense-mode"
+        - passive: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - neighbour_filter: str
+        - hello_interval: int
+        - hello_holdtime: int
+        - cisco_exclude_genid: "enable" | "disable"
+        - dr_priority: int
+        - propagation_delay: int
+        - state_refresh_interval: int
+        - rp_candidate: "enable" | "disable"
+        - rp_candidate_group: str
+        - rp_candidate_priority: int
+        - rp_candidate_interval: int
+        - multicast_flow: str
+        - static_group: str
+        - rpf_nbr_fail_back: "enable" | "disable"
+        - rpf_nbr_fail_back_filter: str
+        - join_group: str
+        - igmp: str
+    
+    **Example:**
+        entry: MulticastInterfaceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Interface name. | MaxLen: 15
@@ -75,7 +99,33 @@ class MulticastInterfaceItem(TypedDict):
     igmp: str  # IGMP configuration options.
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class MulticastPayload(TypedDict, total=False):
+    """
+    Type hints for router/multicast payload fields.
+    
+    Configure router multicast.
+    
+    **Usage:**
+        payload: MulticastPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    route_threshold: int  # Generate warnings when the number of multicast rou | Min: 1 | Max: 2147483647
+    route_limit: int  # Maximum number of multicast routes. | Default: 2147483647 | Min: 1 | Max: 2147483647
+    multicast_routing: Literal["enable", "disable"]  # Enable/disable IP multicast routing. | Default: disable
+    pim_sm_global: str  # PIM sparse-mode global settings.
+    pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]  # per-VRF PIM sparse-mode global settings.
+    interface: list[MulticastInterfaceItem]  # PIM interfaces.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MulticastPimsmglobalvrfObject:
@@ -102,14 +152,33 @@ class MulticastPimsmglobalvrfObject:
     # Statically configure RP addresses.
     rp_address: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -165,14 +234,34 @@ class MulticastInterfaceObject:
     # IGMP configuration options.
     igmp: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -215,16 +304,30 @@ class MulticastObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> MulticastPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Multicast:
@@ -235,17 +338,12 @@ class Multicast:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -259,10 +357,9 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -277,10 +374,9 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -294,14 +390,13 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -315,13 +410,9 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> MulticastObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -336,12 +427,9 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> MulticastObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -355,29 +443,7 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> MulticastObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -393,10 +459,7 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -413,10 +476,7 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -432,10 +492,7 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
+    ) -> MulticastObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -451,16 +508,27 @@ class Multicast:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> MulticastObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -471,13 +539,9 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> MulticastObject: ...
     
     @overload
@@ -488,15 +552,12 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -505,15 +566,11 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: MulticastPayload | None = ...,
@@ -521,12 +578,10 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -541,512 +596,40 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class MulticastDictMode:
-    """Multicast endpoint for dict response mode (default for this client).
-    
-    By default returns MulticastResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return MulticastObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class MulticastObjectMode:
-    """Multicast endpoint for object response mode (default for this client).
-    
-    By default returns MulticastObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return MulticastResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MulticastResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MulticastObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: MulticastPayload | None = ...,
-        route_threshold: int | None = ...,
-        route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Multicast",
-    "MulticastDictMode",
-    "MulticastObjectMode",
     "MulticastPayload",
+    "MulticastResponse",
     "MulticastObject",
 ]

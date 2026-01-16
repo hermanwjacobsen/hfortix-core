@@ -207,5 +207,47 @@ class HTTPClient:
         """Create an exists() helper that works with both sync and async modes."""
         ...
 
+    # Static validation helper methods
+    @staticmethod
+    def validate_mkey(mkey: Any, parameter_name: str = "mkey") -> str:
+        """Validate and convert mkey to string."""
+        ...
+
+    @staticmethod
+    def validate_required_params(
+        params: dict[str, Any], required: list[str]
+    ) -> None:
+        """Validate that required parameters are present."""
+        ...
+
+    @staticmethod
+    def validate_range(
+        value: Union[int, float],
+        min_val: Union[int, float],
+        max_val: Union[int, float],
+        parameter_name: str = "value",
+    ) -> None:
+        """Validate that a numeric value is within a specified range."""
+        ...
+
+    @staticmethod
+    def validate_choice(
+        value: Any, choices: list[Any], parameter_name: str = "value"
+    ) -> None:
+        """Validate that a value is one of the allowed choices."""
+        ...
+
+    @staticmethod
+    def build_params(**kwargs: Any) -> dict[str, Any]:
+        """Build parameters dict, filtering out None values."""
+        ...
+
+    @staticmethod
+    def make_exists_method(
+        get_method: Callable[..., Any],
+    ) -> Callable[..., bool]:
+        """Create an exists() helper that works with both sync and async modes."""
+        ...
+
     def __enter__(self) -> HTTPClient: ...
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None: ...

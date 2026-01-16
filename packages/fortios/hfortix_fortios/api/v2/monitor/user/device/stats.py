@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,19 @@ class Stats(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        stat_query_type: Literal["device", "fortiswitch_client", "forticlient"] | None = None,
+        stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"] | None = None,
+        timestamp_from: int | None = None,
+        timestamp_to: int | None = None,
+        filters: Literal["exact", "contains"] | None = None,
+        filter_logic: Literal["and", "or"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/device/stats configuration.
@@ -100,7 +105,12 @@ class Stats(CRUDEndpoint, MetadataMixin):
         Retrieve user devices stats from device store by given stat item.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            stat_query_type: Stat query type [device|fortiswitch_client|forticlient]. Default is device.
+            stat_key: key of the stats count on [os_name|hardware_type|detected_interface|is_online|max_vuln_level|fortiswitch_id|fortiswitch_port_name]. fortiswitch_id and fortiswitch_port_name only for fortiswitch_client stats query type
+            timestamp_from: To get entries since the timestamp for stats query.
+            timestamp_to: To get entries before the timestamp for stats query.
+            filters: A list of filters. Type:{"type": string, "value": string, "op": string}. Only is_online type is supported. Op: filter operator [exact|contains]. Default is exact.
+            filter_logic: The logic between filters [and|or]). Default is and.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -117,12 +127,12 @@ class Stats(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -167,17 +177,24 @@ class Stats(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
+        if stat_query_type is not None:
+            params["stat-query-type"] = stat_query_type
+        if stat_key is not None:
+            params["stat-key"] = stat_key
+        if timestamp_from is not None:
+            params["timestamp_from"] = timestamp_from
+        if timestamp_to is not None:
+            params["timestamp_to"] = timestamp_to
+        if filters is not None:
+            params["filters"] = filters
+        if filter_logic is not None:
+            params["filter_logic"] = filter_logic
         
-        if name:
-            endpoint = f"/user/device/stats/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/device/stats"
-            unwrap_single = False
+        endpoint = "/user/device/stats"
+        unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
 
@@ -212,20 +229,35 @@ class Stats(CRUDEndpoint, MetadataMixin):
             >>> if not fgt.api.monitor.user_device_stats.exists(name="myobj"):
             ...     fgt.api.monitor.user_device_stats.post(payload_dict=data)
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/user/device/stats"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "monitor",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+            
+            if isinstance(result, dict):
+                # Synchronous response - check status
+                return result.get("status") == "success"
+            else:
+                # Asynchronous response
+                async def _check() -> bool:
+                    r = await result
+                    return r.get("status") == "success"
+                return _check()
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 

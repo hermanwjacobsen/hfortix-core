@@ -54,6 +54,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "user_type": "string",  # 
+    "id": "int",  # 
+    "ip": "string",  # 
+    "ip_version": "string",  # 
+    "method": "string",  # 
+    "all": "boolean",  # 
+    "users": "array",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +186,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/firewall/deauth",
     "help": "Deauthenticate single, multiple, or all firewall users.",
-    "total_fields": 0,
+    "total_fields": 7,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

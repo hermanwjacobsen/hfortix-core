@@ -1,9 +1,149 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Phase1CertificateItem(TypedDict, total=False):
+    """Type hints for certificate table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Phase1CertificateItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Certificate name. | MaxLen: 79
+
+
+class Phase1InternaldomainlistItem(TypedDict, total=False):
+    """Type hints for internal-domain-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - domain_name: str
+    
+    **Example:**
+        entry: Phase1InternaldomainlistItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    domain_name: str  # Domain name. | MaxLen: 79
+
+
+class Phase1DnssuffixsearchItem(TypedDict, total=False):
+    """Type hints for dns-suffix-search table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - dns_suffix: str
+    
+    **Example:**
+        entry: Phase1DnssuffixsearchItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    dns_suffix: str  # DNS suffix. | MaxLen: 79
+
+
+class Phase1Ipv4excluderangeItem(TypedDict, total=False):
+    """Type hints for ipv4-exclude-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+    
+    **Example:**
+        entry: Phase1Ipv4excluderangeItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_ip: str  # Start of IPv4 exclusive range. | Default: 0.0.0.0
+    end_ip: str  # End of IPv4 exclusive range. | Default: 0.0.0.0
+
+
+class Phase1Ipv6excluderangeItem(TypedDict, total=False):
+    """Type hints for ipv6-exclude-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+    
+    **Example:**
+        entry: Phase1Ipv6excluderangeItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_ip: str  # Start of IPv6 exclusive range. | Default: ::
+    end_ip: str  # End of IPv6 exclusive range. | Default: ::
+
+
+class Phase1BackupgatewayItem(TypedDict, total=False):
+    """Type hints for backup-gateway table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - address: str
+    
+    **Example:**
+        entry: Phase1BackupgatewayItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    address: str  # Address of backup gateway. | MaxLen: 79
+
+
+class Phase1RemotegwztnatagsItem(TypedDict, total=False):
+    """Type hints for remote-gw-ztna-tags table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Phase1RemotegwztnatagsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -34,14 +174,14 @@ class Phase1Payload(TypedDict, total=False):
         }
     """
     name: str  # IPsec remote gateway name. | MaxLen: 35
-    type_: Literal["static", "dynamic", "ddns"]  # Remote gateway type. | Default: static
+    type: Literal["static", "dynamic", "ddns"]  # Remote gateway type. | Default: static
     interface: str  # Local physical, aggregate, or VLAN outgoing interf | MaxLen: 35
     ike_version: Literal["1", "2"]  # IKE protocol version. | Default: 1
     remote_gw: str  # Remote VPN gateway. | Default: 0.0.0.0
     local_gw: str  # Local VPN gateway. | Default: 0.0.0.0
     remotegw_ddns: str  # Domain name of remote gateway. For example, name.d | MaxLen: 63
     keylife: int  # Time to wait in seconds before phase 1 encryption | Default: 86400 | Min: 120 | Max: 172800
-    certificate: list[dict[str, Any]]  # Names of up to 4 signed personal certificates.
+    certificate: list[Phase1CertificateItem]  # Names of up to 4 signed personal certificates.
     authmethod: Literal["psk", "signature"]  # Authentication method. | Default: psk
     authmethod_remote: Literal["psk", "signature"]  # Authentication method (remote side).
     mode: Literal["aggressive", "main"]  # ID protection mode used to establish a secure chan | Default: main
@@ -63,11 +203,11 @@ class Phase1Payload(TypedDict, total=False):
     ipv4_dns_server1: str  # IPv4 DNS server 1. | Default: 0.0.0.0
     ipv4_dns_server2: str  # IPv4 DNS server 2. | Default: 0.0.0.0
     ipv4_dns_server3: str  # IPv4 DNS server 3. | Default: 0.0.0.0
-    internal_domain_list: list[dict[str, Any]]  # One or more internal domain names in quotes separa
-    dns_suffix_search: list[dict[str, Any]]  # One or more DNS domain name suffixes in quotes sep
+    internal_domain_list: list[Phase1InternaldomainlistItem]  # One or more internal domain names in quotes separa
+    dns_suffix_search: list[Phase1DnssuffixsearchItem]  # One or more DNS domain name suffixes in quotes sep
     ipv4_wins_server1: str  # WINS server 1. | Default: 0.0.0.0
     ipv4_wins_server2: str  # WINS server 2. | Default: 0.0.0.0
-    ipv4_exclude_range: list[dict[str, Any]]  # Configuration Method IPv4 exclude ranges.
+    ipv4_exclude_range: list[Phase1Ipv4excluderangeItem]  # Configuration Method IPv4 exclude ranges.
     ipv4_split_include: str  # IPv4 split-include subnets. | MaxLen: 79
     split_include_service: str  # Split-include services. | MaxLen: 79
     ipv4_name: str  # IPv4 address name. | MaxLen: 79
@@ -77,7 +217,7 @@ class Phase1Payload(TypedDict, total=False):
     ipv6_dns_server1: str  # IPv6 DNS server 1. | Default: ::
     ipv6_dns_server2: str  # IPv6 DNS server 2. | Default: ::
     ipv6_dns_server3: str  # IPv6 DNS server 3. | Default: ::
-    ipv6_exclude_range: list[dict[str, Any]]  # Configuration method IPv6 exclude ranges.
+    ipv6_exclude_range: list[Phase1Ipv6excluderangeItem]  # Configuration method IPv6 exclude ranges.
     ipv6_split_include: str  # IPv6 split-include subnets. | MaxLen: 79
     ipv6_name: str  # IPv6 address name. | MaxLen: 79
     ip_delay_interval: int  # IP address reuse delay interval in seconds | Default: 0 | Min: 0 | Max: 28800
@@ -90,7 +230,7 @@ class Phase1Payload(TypedDict, total=False):
     save_password: Literal["disable", "enable"]  # Enable/disable saving XAuth username and password | Default: disable
     client_auto_negotiate: Literal["disable", "enable"]  # Enable/disable allowing the VPN client to bring up | Default: disable
     client_keep_alive: Literal["disable", "enable"]  # Enable/disable allowing the VPN client to keep the | Default: disable
-    backup_gateway: list[dict[str, Any]]  # Instruct unity clients about the backup gateway ad
+    backup_gateway: list[Phase1BackupgatewayItem]  # Instruct unity clients about the backup gateway ad
     proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"]  # Phase1 proposal.
     add_route: Literal["disable", "enable"]  # Enable/disable control addition of a route to peer | Default: disable
     add_gw_route: Literal["enable", "disable"]  # Enable/disable automatically add a route to the re | Default: disable
@@ -187,7 +327,7 @@ class Phase1Payload(TypedDict, total=False):
     remote_gw_start_ip: str  # First IPv4 address in the range. | Default: 0.0.0.0
     remote_gw_end_ip: str  # Last IPv4 address in the range. | Default: 0.0.0.0
     remote_gw_country: str  # IPv4 addresses associated to a specific country. | MaxLen: 2
-    remote_gw_ztna_tags: list[dict[str, Any]]  # IPv4 ZTNA posture tags.
+    remote_gw_ztna_tags: list[Phase1RemotegwztnatagsItem]  # IPv4 ZTNA posture tags.
     remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"]  # Set type of IPv6 remote gateway address matching. | Default: any
     remote_gw6_subnet: str  # IPv6 address and prefix. | Default: ::/0
     remote_gw6_start_ip: str  # First IPv6 address in the range. | Default: ::
@@ -196,83 +336,9 @@ class Phase1Payload(TypedDict, total=False):
     cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"]  # Enable/disable cross validation of peer username a | Default: none
     cert_peer_username_strip: Literal["disable", "enable"]  # Enable/disable domain stripping on certificate ide | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Phase1CertificateItem(TypedDict):
-    """Type hints for certificate table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Certificate name. | MaxLen: 79
-
-
-class Phase1InternaldomainlistItem(TypedDict):
-    """Type hints for internal-domain-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    domain_name: str  # Domain name. | MaxLen: 79
-
-
-class Phase1DnssuffixsearchItem(TypedDict):
-    """Type hints for dns-suffix-search table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    dns_suffix: str  # DNS suffix. | MaxLen: 79
-
-
-class Phase1Ipv4excluderangeItem(TypedDict):
-    """Type hints for ipv4-exclude-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_ip: str  # Start of IPv4 exclusive range. | Default: 0.0.0.0
-    end_ip: str  # End of IPv4 exclusive range. | Default: 0.0.0.0
-
-
-class Phase1Ipv6excluderangeItem(TypedDict):
-    """Type hints for ipv6-exclude-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_ip: str  # Start of IPv6 exclusive range. | Default: ::
-    end_ip: str  # End of IPv6 exclusive range. | Default: ::
-
-
-class Phase1BackupgatewayItem(TypedDict):
-    """Type hints for backup-gateway table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    address: str  # Address of backup gateway. | MaxLen: 79
-
-
-class Phase1RemotegwztnatagsItem(TypedDict):
-    """Type hints for remote-gw-ztna-tags table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Phase1CertificateObject:
@@ -285,14 +351,33 @@ class Phase1CertificateObject:
     # Certificate name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -306,14 +391,33 @@ class Phase1InternaldomainlistObject:
     # Domain name. | MaxLen: 79
     domain_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -327,14 +431,33 @@ class Phase1DnssuffixsearchObject:
     # DNS suffix. | MaxLen: 79
     dns_suffix: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -352,14 +475,33 @@ class Phase1Ipv4excluderangeObject:
     # End of IPv4 exclusive range. | Default: 0.0.0.0
     end_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -377,14 +519,33 @@ class Phase1Ipv6excluderangeObject:
     # End of IPv6 exclusive range. | Default: ::
     end_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -398,14 +559,33 @@ class Phase1BackupgatewayObject:
     # Address of backup gateway. | MaxLen: 79
     address: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -419,14 +599,34 @@ class Phase1RemotegwztnatagsObject:
     # Address name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -438,7 +638,7 @@ class Phase1Response(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     name: str  # IPsec remote gateway name. | MaxLen: 35
-    type_: Literal["static", "dynamic", "ddns"]  # Remote gateway type. | Default: static
+    type: Literal["static", "dynamic", "ddns"]  # Remote gateway type. | Default: static
     interface: str  # Local physical, aggregate, or VLAN outgoing interf | MaxLen: 35
     ike_version: Literal["1", "2"]  # IKE protocol version. | Default: 1
     remote_gw: str  # Remote VPN gateway. | Default: 0.0.0.0
@@ -612,7 +812,7 @@ class Phase1Object:
     # IPsec remote gateway name. | MaxLen: 35
     name: str
     # Remote gateway type. | Default: static
-    type_: Literal["static", "dynamic", "ddns"]
+    type: Literal["static", "dynamic", "ddns"]
     # Local physical, aggregate, or VLAN outgoing interface. | MaxLen: 35
     interface: str
     # IKE protocol version. | Default: 1
@@ -937,16 +1137,30 @@ class Phase1Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> Phase1Payload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Phase1:
@@ -958,17 +1172,12 @@ class Phase1:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -982,10 +1191,9 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Phase1Response: ...
+    ) -> Phase1Object: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -1000,10 +1208,9 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Phase1Response: ...
+    ) -> Phase1Object: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -1017,14 +1224,13 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[Phase1Response]: ...
+    ) -> FortiObjectList[Phase1Object]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -1038,13 +1244,9 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase1Object: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -1059,12 +1261,9 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> Phase1Object: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -1078,29 +1277,7 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[Phase1Object]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[Phase1Object]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -1116,10 +1293,7 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Phase1Response: ...
+    ) -> Phase1Object: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -1136,10 +1310,7 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Phase1Response: ...
+    ) -> Phase1Object: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -1155,10 +1326,7 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[Phase1Response]: ...
+    ) -> FortiObjectList[Phase1Object]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -1174,16 +1342,27 @@ class Phase1:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> Phase1Object | list[Phase1Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -1191,14 +1370,14 @@ class Phase1:
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1220,11 +1399,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1234,7 +1413,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1247,7 +1426,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1344,7 +1523,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -1353,10 +1532,6 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase1Object: ...
     
     @overload
@@ -1364,14 +1539,14 @@ class Phase1:
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1393,11 +1568,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1407,7 +1582,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1420,7 +1595,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1517,7 +1692,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -1526,25 +1701,22 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1566,11 +1738,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1580,7 +1752,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1593,7 +1765,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1690,7 +1862,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -1699,24 +1871,20 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1738,11 +1906,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1752,7 +1920,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1765,7 +1933,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1862,7 +2030,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -1871,9 +2039,7 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -1881,14 +2047,14 @@ class Phase1:
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1910,11 +2076,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1924,7 +2090,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1937,7 +2103,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -2034,7 +2200,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -2043,10 +2209,6 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase1Object: ...
     
     @overload
@@ -2054,14 +2216,14 @@ class Phase1:
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -2083,11 +2245,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -2097,7 +2259,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -2110,7 +2272,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -2207,7 +2369,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -2216,25 +2378,22 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -2256,11 +2415,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -2270,7 +2429,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -2283,7 +2442,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -2380,7 +2539,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -2389,24 +2548,20 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -2428,11 +2583,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -2442,7 +2597,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -2455,7 +2610,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -2552,7 +2707,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -2561,9 +2716,7 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -2571,10 +2724,6 @@ class Phase1:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase1Object: ...
     
     @overload
@@ -2582,30 +2731,21 @@ class Phase1:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -2617,14 +2757,14 @@ class Phase1:
         self,
         payload_dict: Phase1Payload | None = ...,
         name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
+        type: Literal["static", "dynamic", "ddns"] | None = ...,
         interface: str | None = ...,
         ike_version: Literal["1", "2"] | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        certificate: str | list[str] | list[Phase1CertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -2646,11 +2786,11 @@ class Phase1:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1DnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1Ipv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -2660,7 +2800,7 @@ class Phase1:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1Ipv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -2673,7 +2813,7 @@ class Phase1:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1BackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -2770,7 +2910,7 @@ class Phase1:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1RemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -2779,3865 +2919,37 @@ class Phase1:
         cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
         cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class Phase1DictMode:
-    """Phase1 endpoint for dict response mode (default for this client).
-    
-    By default returns Phase1Response (TypedDict).
-    Can be overridden per-call with response_mode="object" to return Phase1Object.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[Phase1Object]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> Phase1Response: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Phase1Response]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class Phase1ObjectMode:
-    """Phase1 endpoint for object response mode (default for this client).
-    
-    By default returns Phase1Object (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return Phase1Response (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> Phase1Response: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[Phase1Response]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Phase1Object]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase1Object: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Phase1Payload | None = ...,
-        name: str | None = ...,
-        type_: Literal["static", "dynamic", "ddns"] | None = ...,
-        interface: str | None = ...,
-        ike_version: Literal["1", "2"] | None = ...,
-        remote_gw: str | None = ...,
-        local_gw: str | None = ...,
-        remotegw_ddns: str | None = ...,
-        keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | None = ...,
-        authmethod: Literal["psk", "signature"] | None = ...,
-        authmethod_remote: Literal["psk", "signature"] | None = ...,
-        mode: Literal["aggressive", "main"] | None = ...,
-        peertype: Literal["any", "one", "dialup", "peer", "peergrp"] | None = ...,
-        peerid: str | None = ...,
-        usrgrp: str | None = ...,
-        peer: str | None = ...,
-        peergrp: str | None = ...,
-        mode_cfg: Literal["disable", "enable"] | None = ...,
-        mode_cfg_allow_client_selector: Literal["disable", "enable"] | None = ...,
-        assign_ip: Literal["disable", "enable"] | None = ...,
-        assign_ip_from: Literal["range", "usrgrp", "dhcp", "name"] | None = ...,
-        ipv4_start_ip: str | None = ...,
-        ipv4_end_ip: str | None = ...,
-        ipv4_netmask: str | None = ...,
-        dhcp_ra_giaddr: str | None = ...,
-        dhcp6_ra_linkaddr: str | None = ...,
-        dns_mode: Literal["manual", "auto"] | None = ...,
-        ipv4_dns_server1: str | None = ...,
-        ipv4_dns_server2: str | None = ...,
-        ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_wins_server1: str | None = ...,
-        ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv4_split_include: str | None = ...,
-        split_include_service: str | None = ...,
-        ipv4_name: str | None = ...,
-        ipv6_start_ip: str | None = ...,
-        ipv6_end_ip: str | None = ...,
-        ipv6_prefix: int | None = ...,
-        ipv6_dns_server1: str | None = ...,
-        ipv6_dns_server2: str | None = ...,
-        ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ipv6_split_include: str | None = ...,
-        ipv6_name: str | None = ...,
-        ip_delay_interval: int | None = ...,
-        unity_support: Literal["disable", "enable"] | None = ...,
-        domain: str | None = ...,
-        banner: str | None = ...,
-        include_local_lan: Literal["disable", "enable"] | None = ...,
-        ipv4_split_exclude: str | None = ...,
-        ipv6_split_exclude: str | None = ...,
-        save_password: Literal["disable", "enable"] | None = ...,
-        client_auto_negotiate: Literal["disable", "enable"] | None = ...,
-        client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | None = ...,
-        proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        add_route: Literal["disable", "enable"] | None = ...,
-        add_gw_route: Literal["enable", "disable"] | None = ...,
-        psksecret: str | None = ...,
-        psksecret_remote: str | None = ...,
-        keepalive: int | None = ...,
-        distance: int | None = ...,
-        priority: int | None = ...,
-        localid: str | None = ...,
-        localid_type: Literal["auto", "fqdn", "user-fqdn", "keyid", "address", "asn1dn"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        negotiate_timeout: int | None = ...,
-        fragmentation: Literal["enable", "disable"] | None = ...,
-        dpd: Literal["disable", "on-idle", "on-demand"] | None = ...,
-        dpd_retrycount: int | None = ...,
-        dpd_retryinterval: str | None = ...,
-        comments: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
-        send_cert_chain: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        suite_b: Literal["disable", "suite-b-gcm-128", "suite-b-gcm-256"] | None = ...,
-        eap: Literal["enable", "disable"] | None = ...,
-        eap_identity: Literal["use-id-payload", "send-request"] | None = ...,
-        eap_exclude_peergrp: str | None = ...,
-        eap_cert_auth: Literal["enable", "disable"] | None = ...,
-        acct_verify: Literal["enable", "disable"] | None = ...,
-        ppk: Literal["disable", "allow", "require"] | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        wizard_type: Literal["custom", "dialup-forticlient", "dialup-ios", "dialup-android", "dialup-windows", "dialup-cisco", "static-fortigate", "dialup-fortigate", "static-cisco", "dialup-cisco-fw", "simplified-static-fortigate", "hub-fortigate-auto-discovery", "spoke-fortigate-auto-discovery", "fabric-overlay-orchestrator"] | None = ...,
-        xauthtype: Literal["disable", "client", "pap", "chap", "auto"] | None = ...,
-        reauth: Literal["disable", "enable"] | None = ...,
-        authusr: str | None = ...,
-        authpasswd: str | None = ...,
-        group_authentication: Literal["enable", "disable"] | None = ...,
-        group_authentication_secret: str | None = ...,
-        authusrgrp: str | None = ...,
-        mesh_selector_type: Literal["disable", "subnet", "host"] | None = ...,
-        idle_timeout: Literal["enable", "disable"] | None = ...,
-        shared_idle_timeout: Literal["enable", "disable"] | None = ...,
-        idle_timeoutinterval: int | None = ...,
-        ha_sync_esp_seqno: Literal["enable", "disable"] | None = ...,
-        fgsp_sync: Literal["enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["enable", "disable"] | None = ...,
-        nattraversal: Literal["enable", "disable", "forced"] | None = ...,
-        esn: Literal["require", "allow", "disable"] | None = ...,
-        fragmentation_mtu: int | None = ...,
-        childless_ike: Literal["enable", "disable"] | None = ...,
-        azure_ad_autoconnect: Literal["enable", "disable"] | None = ...,
-        client_resume: Literal["enable", "disable"] | None = ...,
-        client_resume_interval: int | None = ...,
-        rekey: Literal["enable", "disable"] | None = ...,
-        digital_signature_auth: Literal["enable", "disable"] | None = ...,
-        signature_hash_alg: Literal["sha1", "sha2-256", "sha2-384", "sha2-512"] | list[str] | None = ...,
-        rsa_signature_format: Literal["pkcs1", "pss"] | None = ...,
-        rsa_signature_hash_override: Literal["enable", "disable"] | None = ...,
-        enforce_unique_id: Literal["disable", "keep-new", "keep-old"] | None = ...,
-        cert_id_validation: Literal["enable", "disable"] | None = ...,
-        fec_egress: Literal["enable", "disable"] | None = ...,
-        fec_send_timeout: int | None = ...,
-        fec_base: int | None = ...,
-        fec_codec: Literal["rs", "xor"] | None = ...,
-        fec_redundant: int | None = ...,
-        fec_ingress: Literal["enable", "disable"] | None = ...,
-        fec_receive_timeout: int | None = ...,
-        fec_health_check: str | None = ...,
-        fec_mapping_profile: str | None = ...,
-        network_overlay: Literal["disable", "enable"] | None = ...,
-        network_id: int | None = ...,
-        dev_id_notification: Literal["disable", "enable"] | None = ...,
-        dev_id: str | None = ...,
-        loopback_asymroute: Literal["enable", "disable"] | None = ...,
-        link_cost: int | None = ...,
-        kms: str | None = ...,
-        exchange_fgt_device_id: Literal["enable", "disable"] | None = ...,
-        ipv6_auto_linklocal: Literal["enable", "disable"] | None = ...,
-        ems_sn_check: Literal["enable", "disable"] | None = ...,
-        cert_trust_store: Literal["local", "ems"] | None = ...,
-        qkd: Literal["disable", "allow", "require"] | None = ...,
-        qkd_hybrid: Literal["disable", "allow", "require"] | None = ...,
-        qkd_profile: str | None = ...,
-        transport: Literal["udp", "auto", "tcp"] | None = ...,
-        fortinet_esp: Literal["enable", "disable"] | None = ...,
-        auto_transport_threshold: int | None = ...,
-        remote_gw_match: Literal["any", "ipmask", "iprange", "geography", "ztna"] | None = ...,
-        remote_gw_subnet: str | None = ...,
-        remote_gw_start_ip: str | None = ...,
-        remote_gw_end_ip: str | None = ...,
-        remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | None = ...,
-        remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
-        remote_gw6_subnet: str | None = ...,
-        remote_gw6_start_ip: str | None = ...,
-        remote_gw6_end_ip: str | None = ...,
-        remote_gw6_country: str | None = ...,
-        cert_peer_username_validation: Literal["none", "othername", "rfc822name", "cn"] | None = ...,
-        cert_peer_username_strip: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Phase1",
-    "Phase1DictMode",
-    "Phase1ObjectMode",
     "Phase1Payload",
+    "Phase1Response",
     "Phase1Object",
 ]

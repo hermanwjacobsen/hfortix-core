@@ -7,91 +7,74 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-
 class SearchEngineSafesearchEnum(str, Enum):
     """Allowed values for safesearch field."""
-    DISABLE = "disable"
-    URL = "url"
-    HEADER = "header"
-    TRANSLATE = "translate"
-    YT_PATTERN = "yt-pattern"
-    YT_SCAN = "yt-scan"
-    YT_VIDEO = "yt-video"
-    YT_CHANNEL = "yt-channel"
-
+    DISABLE = "disable"    URL = "url"    HEADER = "header"    TRANSLATE = "translate"    YT_PATTERN = "yt-pattern"    YT_SCAN = "yt-scan"    YT_VIDEO = "yt-video"    YT_CHANNEL = "yt-channel"
 
 # ============================================================================
 # Main Model
 # ============================================================================
 
-
 class SearchEngineModel(BaseModel):
     """
     Pydantic model for webfilter/search_engine configuration.
-
+    
     Configure web filter search engines.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - hostname: max_length=127 pattern=
-        - url: max_length=127 pattern=
-        - query: max_length=15 pattern=
-        - safesearch: pattern=
-        - charset: pattern=
-        - safesearch_str: max_length=255 pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - hostname: max_length=127 pattern=        - url: max_length=127 pattern=        - query: max_length=15 pattern=        - safesearch: pattern=        - charset: pattern=        - safesearch_str: max_length=255 pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Search engine name.")
-    hostname: str | None = Field(max_length=127, default="", description="Hostname (regular expression).")
-    url: str | None = Field(max_length=127, default="", description="URL (regular expression).")
-    query: str | None = Field(max_length=15, default="", description="Code used to prefix a query (must end with an equals character).")
-    safesearch: str | SearchEngineSafesearchEnum | None = Field(default="disable", description="Safe search method. You can disable safe search, add the safe search string to URLs, or insert a safe search header.")
-    charset: Literal["utf-8", "gb2312"] | None = Field(default="utf-8", description="Search engine charset.")
-    safesearch_str: str | None = Field(max_length=255, default="", description="Safe search parameter used in the URL in URL mode. In translate mode, it provides either the regex to translate the URL or the special case to translate the URL.")
+    
+    name: str = Field(max_length=35, default="", description="Search engine name.")    
+    hostname: str | None = Field(max_length=127, default="", description="Hostname (regular expression).")    
+    url: str | None = Field(max_length=127, default="", description="URL (regular expression).")    
+    query: str | None = Field(max_length=15, default="", description="Code used to prefix a query (must end with an equals character).")    
+    safesearch: SafesearchEnum | None = Field(default="disable", description="Safe search method. You can disable safe search, add the safe search string to URLs, or insert a safe search header.")    
+    charset: Literal["utf-8", "gb2312"] | None = Field(default="utf-8", description="Search engine charset.")    
+    safesearch_str: str | None = Field(max_length=255, default="", description="Safe search parameter used in the URL in URL mode. In translate mode, it provides either the regex to translate the URL or the special case to translate the URL.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "SearchEngineModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -101,8 +84,7 @@ class SearchEngineModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-SearchEngineModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -115,5 +97,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:37.892946Z
+# Generated: 2026-01-16T19:53:52.373931Z
 # ============================================================================

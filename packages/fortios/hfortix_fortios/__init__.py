@@ -49,29 +49,41 @@ from hfortix_core import (
 from .client import FortiOS
 from .formatting import to_csv, to_dict, to_json, to_multiline, to_quoted
 from .help import help
-from .models import FortiObject
+from .models import FortiObject, FortiObjectList
+
+# FortiManager proxy support
+from .fmg_proxy import (
+    FortiManagerProxy,
+    ProxyResponse,
+    DeviceResult,
+)
 
 # Import type definitions for IDE support
 from .types import (
     ActionType,
-    FortiOSDictResponse,
     FortiOSErrorResponse,
-    FortiOSListResponse,
     FortiOSResponse,
     FortiOSSuccessResponse,
+    FortiOSListResponse,
+    FortiOSDictResponse,
     LogSeverity,
     ProtocolType,
     ScheduleType,
     StatusType,
 )
 
-__version__ = "0.5.62"
+__version__ = "0.5.89"
 
 __all__ = [
     # Main client
     "FortiOS",
     "FortiObject",
+    "FortiObjectList",
     "configure_logging",
+    # FortiManager proxy
+    "FortiManagerProxy",
+    "ProxyResponse",
+    "DeviceResult",
     # Formatting utilities
     "to_json",
     "to_csv",

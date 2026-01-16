@@ -7,85 +7,72 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-
-class Pop3SslMinProtoVersionEnum(str, Enum):
+class Pop3Ssl_min_proto_versionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"
-    SSLV3 = "SSLv3"
-    TLSV1 = "TLSv1"
-    TLSV1_1 = "TLSv1-1"
-    TLSV1_2 = "TLSv1-2"
-    TLSV1_3 = "TLSv1-3"
-
+    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
 
 # ============================================================================
 # Main Model
 # ============================================================================
 
-
 class Pop3Model(BaseModel):
     """
     Pydantic model for user/pop3 configuration.
-
+    
     POP3 server entry configuration.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - server: max_length=63 pattern=
-        - port: min=0 max=65535 pattern=
-        - secure: pattern=
-        - ssl_min_proto_version: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - server: max_length=63 pattern=        - port: min=0 max=65535 pattern=        - secure: pattern=        - ssl_min_proto_version: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="POP3 server entry name.")
-    server: str = Field(max_length=63, default="", description="Server domain name or IP address.")
-    port: int | None = Field(ge=0, le=65535, default=0, description="POP3 service port number.")
-    secure: Literal["none", "starttls", "pop3s"] | None = Field(default="starttls", description="SSL connection.")
-    ssl_min_proto_version: str | Pop3SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")
+    
+    name: str | None = Field(max_length=35, default="", description="POP3 server entry name.")    
+    server: str = Field(max_length=63, default="", description="Server domain name or IP address.")    
+    port: int | None = Field(ge=0, le=65535, default=0, description="POP3 service port number.")    
+    secure: Literal["none", "starttls", "pop3s"] | None = Field(default="starttls", description="SSL connection.")    
+    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "Pop3Model":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -95,8 +82,7 @@ class Pop3Model(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-Pop3ModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -109,5 +95,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:39.832652Z
+# Generated: 2026-01-16T19:53:53.548309Z
 # ============================================================================

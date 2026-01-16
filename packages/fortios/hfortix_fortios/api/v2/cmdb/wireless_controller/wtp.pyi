@@ -1,9 +1,35 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class WtpSplittunnelingaclItem(TypedDict, total=False):
+    """Type hints for split-tunneling-acl table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - dest_ip: str
+    
+    **Example:**
+        entry: WtpSplittunnelingaclItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,7 +54,7 @@ class WtpPayload(TypedDict, total=False):
     """
     wtp_id: str  # WTP ID. | MaxLen: 35
     index: int  # Index (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     admin: Literal["discovered", "disable", "enable"]  # Configure how the FortiGate operating as a wireles | Default: enable
     name: str  # WTP, AP or FortiAP configuration name. | MaxLen: 35
     location: str  # Field for describing the physical location of the | MaxLen: 35
@@ -54,7 +80,7 @@ class WtpPayload(TypedDict, total=False):
     override_split_tunnel: Literal["enable", "disable"]  # Enable/disable overriding the WTP profile split tu | Default: disable
     split_tunneling_acl_path: Literal["tunnel", "local"]  # Split tunneling ACL path is local/tunnel. | Default: local
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]  # Enable/disable automatically adding local subnetwo | Default: disable
-    split_tunneling_acl: list[dict[str, Any]]  # Split tunneling ACL filter list.
+    split_tunneling_acl: list[WtpSplittunnelingaclItem]  # Split tunneling ACL filter list.
     override_lan: Literal["enable", "disable"]  # Enable to override the WTP profile LAN port settin | Default: disable
     lan: str  # WTP LAN port mapping.
     override_allowaccess: Literal["enable", "disable"]  # Enable to override the WTP profile management acce | Default: disable
@@ -74,20 +100,9 @@ class WtpPayload(TypedDict, total=False):
     coordinate_latitude: str  # WTP latitude coordinate. | MaxLen: 19
     coordinate_longitude: str  # WTP longitude coordinate. | MaxLen: 19
 
-# Nested TypedDicts for table field children (dict mode)
-
-class WtpSplittunnelingaclItem(TypedDict):
-    """Type hints for split-tunneling-acl table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WtpSplittunnelingaclObject:
@@ -102,14 +117,34 @@ class WtpSplittunnelingaclObject:
     # Destination IP and mask for the split-tunneling subnet. | Default: 0.0.0.0 0.0.0.0
     dest_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -122,7 +157,7 @@ class WtpResponse(TypedDict):
     """
     wtp_id: str  # WTP ID. | MaxLen: 35
     index: int  # Index (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     admin: Literal["discovered", "disable", "enable"]  # Configure how the FortiGate operating as a wireles | Default: enable
     name: str  # WTP, AP or FortiAP configuration name. | MaxLen: 35
     location: str  # Field for describing the physical location of the | MaxLen: 35
@@ -181,7 +216,7 @@ class WtpObject:
     wtp_id: str
     # Index (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     index: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
     # Configure how the FortiGate operating as a wireless controll | Default: enable
     admin: Literal["discovered", "disable", "enable"]
@@ -275,16 +310,30 @@ class WtpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> WtpPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Wtp:
@@ -296,17 +345,12 @@ class Wtp:
     Primary Key: wtp-id
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -320,10 +364,9 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WtpResponse: ...
+    ) -> WtpObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -338,10 +381,9 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WtpResponse: ...
+    ) -> WtpObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -355,14 +397,13 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[WtpResponse]: ...
+    ) -> FortiObjectList[WtpObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -376,13 +417,9 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -397,12 +434,9 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> WtpObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -416,29 +450,7 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[WtpObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        wtp_id: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[WtpObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -454,10 +466,7 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WtpResponse: ...
+    ) -> WtpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -474,10 +483,7 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WtpResponse: ...
+    ) -> WtpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -493,10 +499,7 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[WtpResponse]: ...
+    ) -> FortiObjectList[WtpObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -512,16 +515,27 @@ class Wtp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        wtp_id: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> WtpObject | list[WtpObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -556,7 +570,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -576,10 +590,6 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpObject: ...
     
     @overload
@@ -614,7 +624,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -634,12 +644,9 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -672,7 +679,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -692,12 +699,8 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: WtpPayload | None = ...,
@@ -729,7 +732,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -749,9 +752,7 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -786,7 +787,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -806,10 +807,6 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpObject: ...
     
     @overload
@@ -844,7 +841,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -864,12 +861,9 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -902,7 +896,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -922,12 +916,8 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: WtpPayload | None = ...,
@@ -959,7 +949,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -979,9 +969,7 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -989,10 +977,6 @@ class Wtp:
         self,
         wtp_id: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpObject: ...
     
     @overload
@@ -1000,30 +984,21 @@ class Wtp:
         self,
         wtp_id: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         wtp_id: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         wtp_id: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1062,7 +1037,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -1082,1565 +1057,37 @@ class Wtp:
         coordinate_latitude: str | None = ...,
         coordinate_longitude: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class WtpDictMode:
-    """Wtp endpoint for dict response mode (default for this client).
-    
-    By default returns WtpResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return WtpObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        wtp_id: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        wtp_id: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        wtp_id: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[WtpObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        wtp_id: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> WtpResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        wtp_id: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WtpResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class WtpObjectMode:
-    """Wtp endpoint for object response mode (default for this client).
-    
-    By default returns WtpObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return WtpResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        wtp_id: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        wtp_id: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> WtpResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        wtp_id: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[WtpResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        wtp_id: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        wtp_id: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WtpObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        wtp_id: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WtpPayload | None = ...,
-        wtp_id: str | None = ...,
-        index: int | None = ...,
-        uuid: str | None = ...,
-        admin: Literal["discovered", "disable", "enable"] | None = ...,
-        name: str | None = ...,
-        location: str | None = ...,
-        comment: str | None = ...,
-        region: str | None = ...,
-        region_x: str | None = ...,
-        region_y: str | None = ...,
-        firmware_provision: str | None = ...,
-        firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        wtp_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        bonjour_profile: str | None = ...,
-        ble_major_id: int | None = ...,
-        ble_minor_id: int | None = ...,
-        override_led_state: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        override_wan_port_mode: Literal["enable", "disable"] | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        override_ip_fragment: Literal["enable", "disable"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        override_split_tunnel: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
-        override_allowaccess: Literal["enable", "disable"] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        override_login_passwd_change: Literal["enable", "disable"] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        override_default_mesh_root: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        image_download: Literal["enable", "disable"] | None = ...,
-        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
-        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
-        coordinate_latitude: str | None = ...,
-        coordinate_longitude: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Wtp",
-    "WtpDictMode",
-    "WtpObjectMode",
     "WtpPayload",
+    "WtpResponse",
     "WtpObject",
 ]

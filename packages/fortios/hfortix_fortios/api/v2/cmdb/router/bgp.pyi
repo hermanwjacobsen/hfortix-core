@@ -1,112 +1,46 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class BgpPayload(TypedDict, total=False):
-    """
-    Type hints for router/bgp payload fields.
-    
-    Configure BGP.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.router.route-map.RouteMapEndpoint` (via: dampening-route-map)
-
-    **Usage:**
-        payload: BgpPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    asn: str  # Router AS number, asplain/asdot/asdot+ format, 0 t
-    router_id: str  # Router ID.
-    keepalive_timer: int  # Frequency to send keep alive requests. | Default: 60 | Min: 0 | Max: 65535
-    holdtime_timer: int  # Number of seconds to mark peer as dead. | Default: 180 | Min: 3 | Max: 65535
-    always_compare_med: Literal["enable", "disable"]  # Enable/disable always compare MED. | Default: disable
-    bestpath_as_path_ignore: Literal["enable", "disable"]  # Enable/disable ignore AS path. | Default: disable
-    bestpath_cmp_confed_aspath: Literal["enable", "disable"]  # Enable/disable compare federation AS path length. | Default: disable
-    bestpath_cmp_routerid: Literal["enable", "disable"]  # Enable/disable compare router ID for identical EBG | Default: disable
-    bestpath_med_confed: Literal["enable", "disable"]  # Enable/disable compare MED among confederation pat | Default: disable
-    bestpath_med_missing_as_worst: Literal["enable", "disable"]  # Enable/disable treat missing MED as least preferre | Default: disable
-    client_to_client_reflection: Literal["enable", "disable"]  # Enable/disable client-to-client route reflection. | Default: enable
-    dampening: Literal["enable", "disable"]  # Enable/disable route-flap dampening. | Default: disable
-    deterministic_med: Literal["enable", "disable"]  # Enable/disable enforce deterministic comparison of | Default: disable
-    ebgp_multipath: Literal["enable", "disable"]  # Enable/disable EBGP multi-path. | Default: disable
-    ibgp_multipath: Literal["enable", "disable"]  # Enable/disable IBGP multi-path. | Default: disable
-    enforce_first_as: Literal["enable", "disable"]  # Enable/disable enforce first AS for EBGP routes. | Default: enable
-    fast_external_failover: Literal["enable", "disable"]  # Enable/disable reset peer BGP session if link goes | Default: enable
-    log_neighbour_changes: Literal["enable", "disable"]  # Log BGP neighbor changes. | Default: enable
-    network_import_check: Literal["enable", "disable"]  # Enable/disable ensure BGP network route exists in | Default: enable
-    ignore_optional_capability: Literal["enable", "disable"]  # Do not send unknown optional capability notificati | Default: enable
-    additional_path: Literal["enable", "disable"]  # Enable/disable selection of BGP IPv4 additional pa | Default: disable
-    additional_path6: Literal["enable", "disable"]  # Enable/disable selection of BGP IPv6 additional pa | Default: disable
-    additional_path_vpnv4: Literal["enable", "disable"]  # Enable/disable selection of BGP VPNv4 additional p | Default: disable
-    additional_path_vpnv6: Literal["enable", "disable"]  # Enable/disable selection of BGP VPNv6 additional p | Default: disable
-    multipath_recursive_distance: Literal["enable", "disable"]  # Enable/disable use of recursive distance to select | Default: disable
-    recursive_next_hop: Literal["enable", "disable"]  # Enable/disable recursive resolution of next-hop us | Default: disable
-    recursive_inherit_priority: Literal["enable", "disable"]  # Enable/disable priority inheritance for recursive | Default: disable
-    tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"]  # Configure tag-match mode. Resolves BGP routes with | Default: disable
-    cluster_id: str  # Route reflector cluster ID. | Default: 0.0.0.0
-    confederation_identifier: int  # Confederation identifier. | Default: 0 | Min: 1 | Max: 4294967295
-    confederation_peers: list[dict[str, Any]]  # Confederation peers.
-    dampening_route_map: str  # Criteria for dampening. | MaxLen: 35
-    dampening_reachability_half_life: int  # Reachability half-life time for penalty (min). | Default: 15 | Min: 1 | Max: 45
-    dampening_reuse: int  # Threshold to reuse routes. | Default: 750 | Min: 1 | Max: 20000
-    dampening_suppress: int  # Threshold to suppress routes. | Default: 2000 | Min: 1 | Max: 20000
-    dampening_max_suppress_time: int  # Maximum minutes a route can be suppressed. | Default: 60 | Min: 1 | Max: 255
-    dampening_unreachability_half_life: int  # Unreachability half-life time for penalty (min). | Default: 15 | Min: 1 | Max: 45
-    default_local_preference: int  # Default local preference. | Default: 100 | Min: 0 | Max: 4294967295
-    scan_time: int  # Background scanner interval (sec), 0 to disable it | Default: 60 | Min: 5 | Max: 60
-    distance_external: int  # Distance for routes external to the AS. | Default: 20 | Min: 1 | Max: 255
-    distance_internal: int  # Distance for routes internal to the AS. | Default: 200 | Min: 1 | Max: 255
-    distance_local: int  # Distance for routes local to the AS. | Default: 200 | Min: 1 | Max: 255
-    synchronization: Literal["enable", "disable"]  # Enable/disable only advertise routes from iBGP if | Default: disable
-    graceful_restart: Literal["enable", "disable"]  # Enable/disable BGP graceful restart capabilities. | Default: disable
-    graceful_restart_time: int  # Time needed for neighbors to restart (sec). | Default: 120 | Min: 1 | Max: 3600
-    graceful_stalepath_time: int  # Time to hold stale paths of restarting neighbor | Default: 360 | Min: 1 | Max: 3600
-    graceful_update_delay: int  # Route advertisement/selection delay after restart | Default: 120 | Min: 1 | Max: 3600
-    graceful_end_on_timer: Literal["enable", "disable"]  # Enable/disable to exit graceful restart on timer o | Default: disable
-    additional_path_select: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
-    additional_path_select6: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
-    additional_path_select_vpnv4: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
-    additional_path_select_vpnv6: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
-    cross_family_conditional_adv: Literal["enable", "disable"]  # Enable/disable cross address family conditional ad | Default: disable
-    aggregate_address: list[dict[str, Any]]  # BGP aggregate address table.
-    aggregate_address6: list[dict[str, Any]]  # BGP IPv6 aggregate address table.
-    neighbor: list[dict[str, Any]]  # BGP neighbor table.
-    neighbor_group: list[dict[str, Any]]  # BGP neighbor group table.
-    neighbor_range: list[dict[str, Any]]  # BGP neighbor range table.
-    neighbor_range6: list[dict[str, Any]]  # BGP IPv6 neighbor range table.
-    network: list[dict[str, Any]]  # BGP network table.
-    network6: list[dict[str, Any]]  # BGP IPv6 network table.
-    redistribute: list[dict[str, Any]]  # BGP IPv4 redistribute table.
-    redistribute6: list[dict[str, Any]]  # BGP IPv6 redistribute table.
-    admin_distance: list[dict[str, Any]]  # Administrative distance modifications.
-    vrf: list[dict[str, Any]]  # BGP VRF leaking table.
-    vrf6: list[dict[str, Any]]  # BGP IPv6 VRF leaking table.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class BgpConfederationpeersItem(TypedDict):
+class BgpConfederationpeersItem(TypedDict, total=False):
     """Type hints for confederation-peers table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - peer: str
+    
+    **Example:**
+        entry: BgpConfederationpeersItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     peer: str  # Peer ID. | MaxLen: 79
 
 
-class BgpAggregateaddressItem(TypedDict):
+class BgpAggregateaddressItem(TypedDict, total=False):
     """Type hints for aggregate-address table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - as_set: "enable" | "disable"
+        - summary_only: "enable" | "disable"
+    
+    **Example:**
+        entry: BgpAggregateaddressItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -115,11 +49,22 @@ class BgpAggregateaddressItem(TypedDict):
     summary_only: Literal["enable", "disable"]  # Enable/disable filter more specific routes from up | Default: disable
 
 
-class BgpAggregateaddress6Item(TypedDict):
+class BgpAggregateaddress6Item(TypedDict, total=False):
     """Type hints for aggregate-address6 table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - as_set: "enable" | "disable"
+        - summary_only: "enable" | "disable"
+    
+    **Example:**
+        entry: BgpAggregateaddress6Item = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -128,11 +73,180 @@ class BgpAggregateaddress6Item(TypedDict):
     summary_only: Literal["enable", "disable"]  # Enable/disable filter more specific routes from up | Default: disable
 
 
-class BgpNeighborItem(TypedDict):
+class BgpNeighborItem(TypedDict, total=False):
     """Type hints for neighbor table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - ip: str
+        - advertisement_interval: int
+        - allowas_in_enable: "enable" | "disable"
+        - allowas_in_enable6: "enable" | "disable"
+        - allowas_in_enable_vpnv4: "enable" | "disable"
+        - allowas_in_enable_vpnv6: "enable" | "disable"
+        - allowas_in_enable_evpn: "enable" | "disable"
+        - allowas_in: int
+        - allowas_in6: int
+        - allowas_in_vpnv4: int
+        - allowas_in_vpnv6: int
+        - allowas_in_evpn: int
+        - attribute_unchanged: "as-path" | "med" | "next-hop"
+        - attribute_unchanged6: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv4: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv6: "as-path" | "med" | "next-hop"
+        - activate: "enable" | "disable"
+        - activate6: "enable" | "disable"
+        - activate_vpnv4: "enable" | "disable"
+        - activate_vpnv6: "enable" | "disable"
+        - activate_evpn: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - capability_dynamic: "enable" | "disable"
+        - capability_orf: "none" | "receive" | "send" | "both"
+        - capability_orf6: "none" | "receive" | "send" | "both"
+        - capability_graceful_restart: "enable" | "disable"
+        - capability_graceful_restart6: "enable" | "disable"
+        - capability_graceful_restart_vpnv4: "enable" | "disable"
+        - capability_graceful_restart_vpnv6: "enable" | "disable"
+        - capability_graceful_restart_evpn: "enable" | "disable"
+        - capability_route_refresh: "enable" | "disable"
+        - capability_default_originate: "enable" | "disable"
+        - capability_default_originate6: "enable" | "disable"
+        - dont_capability_negotiate: "enable" | "disable"
+        - ebgp_enforce_multihop: "enable" | "disable"
+        - link_down_failover: "enable" | "disable"
+        - stale_route: "enable" | "disable"
+        - next_hop_self: "enable" | "disable"
+        - next_hop_self6: "enable" | "disable"
+        - next_hop_self_rr: "enable" | "disable"
+        - next_hop_self_rr6: "enable" | "disable"
+        - next_hop_self_vpnv4: "enable" | "disable"
+        - next_hop_self_vpnv6: "enable" | "disable"
+        - override_capability: "enable" | "disable"
+        - passive: "enable" | "disable"
+        - remove_private_as: "enable" | "disable"
+        - remove_private_as6: "enable" | "disable"
+        - remove_private_as_vpnv4: "enable" | "disable"
+        - remove_private_as_vpnv6: "enable" | "disable"
+        - remove_private_as_evpn: "enable" | "disable"
+        - route_reflector_client: "enable" | "disable"
+        - route_reflector_client6: "enable" | "disable"
+        - route_reflector_client_vpnv4: "enable" | "disable"
+        - route_reflector_client_vpnv6: "enable" | "disable"
+        - route_reflector_client_evpn: "enable" | "disable"
+        - route_server_client: "enable" | "disable"
+        - route_server_client6: "enable" | "disable"
+        - route_server_client_vpnv4: "enable" | "disable"
+        - route_server_client_vpnv6: "enable" | "disable"
+        - route_server_client_evpn: "enable" | "disable"
+        - rr_attr_allow_change: "enable" | "disable"
+        - rr_attr_allow_change6: "enable" | "disable"
+        - rr_attr_allow_change_vpnv4: "enable" | "disable"
+        - rr_attr_allow_change_vpnv6: "enable" | "disable"
+        - rr_attr_allow_change_evpn: "enable" | "disable"
+        - shutdown: "enable" | "disable"
+        - soft_reconfiguration: "enable" | "disable"
+        - soft_reconfiguration6: "enable" | "disable"
+        - soft_reconfiguration_vpnv4: "enable" | "disable"
+        - soft_reconfiguration_vpnv6: "enable" | "disable"
+        - soft_reconfiguration_evpn: "enable" | "disable"
+        - as_override: "enable" | "disable"
+        - as_override6: "enable" | "disable"
+        - strict_capability_match: "enable" | "disable"
+        - default_originate_routemap: str
+        - default_originate_routemap6: str
+        - description: str
+        - distribute_list_in: str
+        - distribute_list_in6: str
+        - distribute_list_in_vpnv4: str
+        - distribute_list_in_vpnv6: str
+        - distribute_list_out: str
+        - distribute_list_out6: str
+        - distribute_list_out_vpnv4: str
+        - distribute_list_out_vpnv6: str
+        - ebgp_multihop_ttl: int
+        - filter_list_in: str
+        - filter_list_in6: str
+        - filter_list_in_vpnv4: str
+        - filter_list_in_vpnv6: str
+        - filter_list_out: str
+        - filter_list_out6: str
+        - filter_list_out_vpnv4: str
+        - filter_list_out_vpnv6: str
+        - interface: str
+        - maximum_prefix: int
+        - maximum_prefix6: int
+        - maximum_prefix_vpnv4: int
+        - maximum_prefix_vpnv6: int
+        - maximum_prefix_evpn: int
+        - maximum_prefix_threshold: int
+        - maximum_prefix_threshold6: int
+        - maximum_prefix_threshold_vpnv4: int
+        - maximum_prefix_threshold_vpnv6: int
+        - maximum_prefix_threshold_evpn: int
+        - maximum_prefix_warning_only: "enable" | "disable"
+        - maximum_prefix_warning_only6: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv4: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv6: "enable" | "disable"
+        - maximum_prefix_warning_only_evpn: "enable" | "disable"
+        - prefix_list_in: str
+        - prefix_list_in6: str
+        - prefix_list_in_vpnv4: str
+        - prefix_list_in_vpnv6: str
+        - prefix_list_out: str
+        - prefix_list_out6: str
+        - prefix_list_out_vpnv4: str
+        - prefix_list_out_vpnv6: str
+        - remote_as: str
+        - local_as: str
+        - local_as_no_prepend: "enable" | "disable"
+        - local_as_replace_as: "enable" | "disable"
+        - retain_stale_time: int
+        - route_map_in: str
+        - route_map_in6: str
+        - route_map_in_vpnv4: str
+        - route_map_in_vpnv6: str
+        - route_map_in_evpn: str
+        - route_map_out: str
+        - route_map_out_preferable: str
+        - route_map_out6: str
+        - route_map_out6_preferable: str
+        - route_map_out_vpnv4: str
+        - route_map_out_vpnv6: str
+        - route_map_out_vpnv4_preferable: str
+        - route_map_out_vpnv6_preferable: str
+        - route_map_out_evpn: str
+        - send_community: "standard" | "extended" | "both" | "disable"
+        - send_community6: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv4: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv6: "standard" | "extended" | "both" | "disable"
+        - send_community_evpn: "standard" | "extended" | "both" | "disable"
+        - keep_alive_timer: int
+        - holdtime_timer: int
+        - connect_timer: int
+        - unsuppress_map: str
+        - unsuppress_map6: str
+        - update_source: str
+        - weight: int
+        - restart_time: int
+        - additional_path: "send" | "receive" | "both" | "disable"
+        - additional_path6: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv4: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv6: "send" | "receive" | "both" | "disable"
+        - adv_additional_path: int
+        - adv_additional_path6: int
+        - adv_additional_path_vpnv4: int
+        - adv_additional_path_vpnv6: int
+        - password: str
+        - auth_options: str
+        - conditional_advertise: str
+        - conditional_advertise6: str
+    
+    **Example:**
+        entry: BgpNeighborItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     ip: str  # IP/IPv6 address of neighbor. | MaxLen: 45
@@ -299,11 +413,179 @@ class BgpNeighborItem(TypedDict):
     conditional_advertise6: str  # IPv6 conditional advertisement.
 
 
-class BgpNeighborgroupItem(TypedDict):
+class BgpNeighborgroupItem(TypedDict, total=False):
     """Type hints for neighbor-group table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - advertisement_interval: int
+        - allowas_in_enable: "enable" | "disable"
+        - allowas_in_enable6: "enable" | "disable"
+        - allowas_in_enable_vpnv4: "enable" | "disable"
+        - allowas_in_enable_vpnv6: "enable" | "disable"
+        - allowas_in_enable_evpn: "enable" | "disable"
+        - allowas_in: int
+        - allowas_in6: int
+        - allowas_in_vpnv4: int
+        - allowas_in_vpnv6: int
+        - allowas_in_evpn: int
+        - attribute_unchanged: "as-path" | "med" | "next-hop"
+        - attribute_unchanged6: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv4: "as-path" | "med" | "next-hop"
+        - attribute_unchanged_vpnv6: "as-path" | "med" | "next-hop"
+        - activate: "enable" | "disable"
+        - activate6: "enable" | "disable"
+        - activate_vpnv4: "enable" | "disable"
+        - activate_vpnv6: "enable" | "disable"
+        - activate_evpn: "enable" | "disable"
+        - bfd: "enable" | "disable"
+        - capability_dynamic: "enable" | "disable"
+        - capability_orf: "none" | "receive" | "send" | "both"
+        - capability_orf6: "none" | "receive" | "send" | "both"
+        - capability_graceful_restart: "enable" | "disable"
+        - capability_graceful_restart6: "enable" | "disable"
+        - capability_graceful_restart_vpnv4: "enable" | "disable"
+        - capability_graceful_restart_vpnv6: "enable" | "disable"
+        - capability_graceful_restart_evpn: "enable" | "disable"
+        - capability_route_refresh: "enable" | "disable"
+        - capability_default_originate: "enable" | "disable"
+        - capability_default_originate6: "enable" | "disable"
+        - dont_capability_negotiate: "enable" | "disable"
+        - ebgp_enforce_multihop: "enable" | "disable"
+        - link_down_failover: "enable" | "disable"
+        - stale_route: "enable" | "disable"
+        - next_hop_self: "enable" | "disable"
+        - next_hop_self6: "enable" | "disable"
+        - next_hop_self_rr: "enable" | "disable"
+        - next_hop_self_rr6: "enable" | "disable"
+        - next_hop_self_vpnv4: "enable" | "disable"
+        - next_hop_self_vpnv6: "enable" | "disable"
+        - override_capability: "enable" | "disable"
+        - passive: "enable" | "disable"
+        - remove_private_as: "enable" | "disable"
+        - remove_private_as6: "enable" | "disable"
+        - remove_private_as_vpnv4: "enable" | "disable"
+        - remove_private_as_vpnv6: "enable" | "disable"
+        - remove_private_as_evpn: "enable" | "disable"
+        - route_reflector_client: "enable" | "disable"
+        - route_reflector_client6: "enable" | "disable"
+        - route_reflector_client_vpnv4: "enable" | "disable"
+        - route_reflector_client_vpnv6: "enable" | "disable"
+        - route_reflector_client_evpn: "enable" | "disable"
+        - route_server_client: "enable" | "disable"
+        - route_server_client6: "enable" | "disable"
+        - route_server_client_vpnv4: "enable" | "disable"
+        - route_server_client_vpnv6: "enable" | "disable"
+        - route_server_client_evpn: "enable" | "disable"
+        - rr_attr_allow_change: "enable" | "disable"
+        - rr_attr_allow_change6: "enable" | "disable"
+        - rr_attr_allow_change_vpnv4: "enable" | "disable"
+        - rr_attr_allow_change_vpnv6: "enable" | "disable"
+        - rr_attr_allow_change_evpn: "enable" | "disable"
+        - shutdown: "enable" | "disable"
+        - soft_reconfiguration: "enable" | "disable"
+        - soft_reconfiguration6: "enable" | "disable"
+        - soft_reconfiguration_vpnv4: "enable" | "disable"
+        - soft_reconfiguration_vpnv6: "enable" | "disable"
+        - soft_reconfiguration_evpn: "enable" | "disable"
+        - as_override: "enable" | "disable"
+        - as_override6: "enable" | "disable"
+        - strict_capability_match: "enable" | "disable"
+        - default_originate_routemap: str
+        - default_originate_routemap6: str
+        - description: str
+        - distribute_list_in: str
+        - distribute_list_in6: str
+        - distribute_list_in_vpnv4: str
+        - distribute_list_in_vpnv6: str
+        - distribute_list_out: str
+        - distribute_list_out6: str
+        - distribute_list_out_vpnv4: str
+        - distribute_list_out_vpnv6: str
+        - ebgp_multihop_ttl: int
+        - filter_list_in: str
+        - filter_list_in6: str
+        - filter_list_in_vpnv4: str
+        - filter_list_in_vpnv6: str
+        - filter_list_out: str
+        - filter_list_out6: str
+        - filter_list_out_vpnv4: str
+        - filter_list_out_vpnv6: str
+        - interface: str
+        - maximum_prefix: int
+        - maximum_prefix6: int
+        - maximum_prefix_vpnv4: int
+        - maximum_prefix_vpnv6: int
+        - maximum_prefix_evpn: int
+        - maximum_prefix_threshold: int
+        - maximum_prefix_threshold6: int
+        - maximum_prefix_threshold_vpnv4: int
+        - maximum_prefix_threshold_vpnv6: int
+        - maximum_prefix_threshold_evpn: int
+        - maximum_prefix_warning_only: "enable" | "disable"
+        - maximum_prefix_warning_only6: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv4: "enable" | "disable"
+        - maximum_prefix_warning_only_vpnv6: "enable" | "disable"
+        - maximum_prefix_warning_only_evpn: "enable" | "disable"
+        - prefix_list_in: str
+        - prefix_list_in6: str
+        - prefix_list_in_vpnv4: str
+        - prefix_list_in_vpnv6: str
+        - prefix_list_out: str
+        - prefix_list_out6: str
+        - prefix_list_out_vpnv4: str
+        - prefix_list_out_vpnv6: str
+        - remote_as: str
+        - remote_as_filter: str
+        - local_as: str
+        - local_as_no_prepend: "enable" | "disable"
+        - local_as_replace_as: "enable" | "disable"
+        - retain_stale_time: int
+        - route_map_in: str
+        - route_map_in6: str
+        - route_map_in_vpnv4: str
+        - route_map_in_vpnv6: str
+        - route_map_in_evpn: str
+        - route_map_out: str
+        - route_map_out_preferable: str
+        - route_map_out6: str
+        - route_map_out6_preferable: str
+        - route_map_out_vpnv4: str
+        - route_map_out_vpnv6: str
+        - route_map_out_vpnv4_preferable: str
+        - route_map_out_vpnv6_preferable: str
+        - route_map_out_evpn: str
+        - send_community: "standard" | "extended" | "both" | "disable"
+        - send_community6: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv4: "standard" | "extended" | "both" | "disable"
+        - send_community_vpnv6: "standard" | "extended" | "both" | "disable"
+        - send_community_evpn: "standard" | "extended" | "both" | "disable"
+        - keep_alive_timer: int
+        - holdtime_timer: int
+        - connect_timer: int
+        - unsuppress_map: str
+        - unsuppress_map6: str
+        - update_source: str
+        - weight: int
+        - restart_time: int
+        - additional_path: "send" | "receive" | "both" | "disable"
+        - additional_path6: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv4: "send" | "receive" | "both" | "disable"
+        - additional_path_vpnv6: "send" | "receive" | "both" | "disable"
+        - adv_additional_path: int
+        - adv_additional_path6: int
+        - adv_additional_path_vpnv4: int
+        - adv_additional_path_vpnv6: int
+        - password: str
+        - auth_options: str
+    
+    **Example:**
+        entry: BgpNeighborgroupItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Neighbor group name. | MaxLen: 45
@@ -469,11 +751,22 @@ class BgpNeighborgroupItem(TypedDict):
     auth_options: str  # Key-chain name for TCP authentication options. | MaxLen: 35
 
 
-class BgpNeighborrangeItem(TypedDict):
+class BgpNeighborrangeItem(TypedDict, total=False):
     """Type hints for neighbor-range table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - max_neighbor_num: int
+        - neighbor_group: str
+    
+    **Example:**
+        entry: BgpNeighborrangeItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # Neighbor range ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -482,11 +775,22 @@ class BgpNeighborrangeItem(TypedDict):
     neighbor_group: str  # Neighbor group name. | MaxLen: 63
 
 
-class BgpNeighborrange6Item(TypedDict):
+class BgpNeighborrange6Item(TypedDict, total=False):
     """Type hints for neighbor-range6 table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - max_neighbor_num: int
+        - neighbor_group: str
+    
+    **Example:**
+        entry: BgpNeighborrange6Item = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # IPv6 neighbor range ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -495,11 +799,24 @@ class BgpNeighborrange6Item(TypedDict):
     neighbor_group: str  # Neighbor group name. | MaxLen: 63
 
 
-class BgpNetworkItem(TypedDict):
+class BgpNetworkItem(TypedDict, total=False):
     """Type hints for network table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix: str
+        - network_import_check: "global" | "enable" | "disable"
+        - backdoor: "enable" | "disable"
+        - route_map: str
+        - prefix_name: str
+    
+    **Example:**
+        entry: BgpNetworkItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -510,11 +827,23 @@ class BgpNetworkItem(TypedDict):
     prefix_name: str  # Name of firewall address or address group. | MaxLen: 79
 
 
-class BgpNetwork6Item(TypedDict):
+class BgpNetwork6Item(TypedDict, total=False):
     """Type hints for network6 table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - network_import_check: "global" | "enable" | "disable"
+        - backdoor: "enable" | "disable"
+        - route_map: str
+    
+    **Example:**
+        entry: BgpNetwork6Item = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -524,11 +853,21 @@ class BgpNetwork6Item(TypedDict):
     route_map: str  # Route map to modify generated route. | MaxLen: 35
 
 
-class BgpRedistributeItem(TypedDict):
+class BgpRedistributeItem(TypedDict, total=False):
     """Type hints for redistribute table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - route_map: str
+    
+    **Example:**
+        entry: BgpRedistributeItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Distribute list entry name. | MaxLen: 35
@@ -536,11 +875,21 @@ class BgpRedistributeItem(TypedDict):
     route_map: str  # Route map name. | MaxLen: 35
 
 
-class BgpRedistribute6Item(TypedDict):
+class BgpRedistribute6Item(TypedDict, total=False):
     """Type hints for redistribute6 table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - route_map: str
+    
+    **Example:**
+        entry: BgpRedistribute6Item = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     name: str  # Distribute list entry name. | MaxLen: 35
@@ -548,11 +897,22 @@ class BgpRedistribute6Item(TypedDict):
     route_map: str  # Route map name. | MaxLen: 35
 
 
-class BgpAdmindistanceItem(TypedDict):
+class BgpAdmindistanceItem(TypedDict, total=False):
     """Type hints for admin-distance table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - neighbour_prefix: str
+        - route_list: str
+        - distance: int
+    
+    **Example:**
+        entry: BgpAdmindistanceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -561,11 +921,25 @@ class BgpAdmindistanceItem(TypedDict):
     distance: int  # Administrative distance to apply (1 - 255). | Default: 0 | Min: 1 | Max: 255
 
 
-class BgpVrfItem(TypedDict):
+class BgpVrfItem(TypedDict, total=False):
     """Type hints for vrf table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - vrf: str
+        - role: "standalone" | "ce" | "pe"
+        - rd: str
+        - export_rt: str
+        - import_rt: str
+        - import_route_map: str
+        - leak_target: str
+    
+    **Example:**
+        entry: BgpVrfItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     vrf: str  # Origin VRF ID <0-511>. | MaxLen: 7
@@ -577,11 +951,25 @@ class BgpVrfItem(TypedDict):
     leak_target: str  # Target VRF table.
 
 
-class BgpVrf6Item(TypedDict):
+class BgpVrf6Item(TypedDict, total=False):
     """Type hints for vrf6 table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - vrf: str
+        - role: "standalone" | "ce" | "pe"
+        - rd: str
+        - export_rt: str
+        - import_rt: str
+        - import_route_map: str
+        - leak_target: str
+    
+    **Example:**
+        entry: BgpVrf6Item = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     vrf: str  # Origin VRF ID <0-511>. | MaxLen: 7
@@ -593,7 +981,98 @@ class BgpVrf6Item(TypedDict):
     leak_target: str  # Target VRF table.
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class BgpPayload(TypedDict, total=False):
+    """
+    Type hints for router/bgp payload fields.
+    
+    Configure BGP.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.router.route-map.RouteMapEndpoint` (via: dampening-route-map)
+
+    **Usage:**
+        payload: BgpPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    asn: str  # Router AS number, asplain/asdot/asdot+ format, 0 t
+    router_id: str  # Router ID.
+    keepalive_timer: int  # Frequency to send keep alive requests. | Default: 60 | Min: 0 | Max: 65535
+    holdtime_timer: int  # Number of seconds to mark peer as dead. | Default: 180 | Min: 3 | Max: 65535
+    always_compare_med: Literal["enable", "disable"]  # Enable/disable always compare MED. | Default: disable
+    bestpath_as_path_ignore: Literal["enable", "disable"]  # Enable/disable ignore AS path. | Default: disable
+    bestpath_cmp_confed_aspath: Literal["enable", "disable"]  # Enable/disable compare federation AS path length. | Default: disable
+    bestpath_cmp_routerid: Literal["enable", "disable"]  # Enable/disable compare router ID for identical EBG | Default: disable
+    bestpath_med_confed: Literal["enable", "disable"]  # Enable/disable compare MED among confederation pat | Default: disable
+    bestpath_med_missing_as_worst: Literal["enable", "disable"]  # Enable/disable treat missing MED as least preferre | Default: disable
+    client_to_client_reflection: Literal["enable", "disable"]  # Enable/disable client-to-client route reflection. | Default: enable
+    dampening: Literal["enable", "disable"]  # Enable/disable route-flap dampening. | Default: disable
+    deterministic_med: Literal["enable", "disable"]  # Enable/disable enforce deterministic comparison of | Default: disable
+    ebgp_multipath: Literal["enable", "disable"]  # Enable/disable EBGP multi-path. | Default: disable
+    ibgp_multipath: Literal["enable", "disable"]  # Enable/disable IBGP multi-path. | Default: disable
+    enforce_first_as: Literal["enable", "disable"]  # Enable/disable enforce first AS for EBGP routes. | Default: enable
+    fast_external_failover: Literal["enable", "disable"]  # Enable/disable reset peer BGP session if link goes | Default: enable
+    log_neighbour_changes: Literal["enable", "disable"]  # Log BGP neighbor changes. | Default: enable
+    network_import_check: Literal["enable", "disable"]  # Enable/disable ensure BGP network route exists in | Default: enable
+    ignore_optional_capability: Literal["enable", "disable"]  # Do not send unknown optional capability notificati | Default: enable
+    additional_path: Literal["enable", "disable"]  # Enable/disable selection of BGP IPv4 additional pa | Default: disable
+    additional_path6: Literal["enable", "disable"]  # Enable/disable selection of BGP IPv6 additional pa | Default: disable
+    additional_path_vpnv4: Literal["enable", "disable"]  # Enable/disable selection of BGP VPNv4 additional p | Default: disable
+    additional_path_vpnv6: Literal["enable", "disable"]  # Enable/disable selection of BGP VPNv6 additional p | Default: disable
+    multipath_recursive_distance: Literal["enable", "disable"]  # Enable/disable use of recursive distance to select | Default: disable
+    recursive_next_hop: Literal["enable", "disable"]  # Enable/disable recursive resolution of next-hop us | Default: disable
+    recursive_inherit_priority: Literal["enable", "disable"]  # Enable/disable priority inheritance for recursive | Default: disable
+    tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"]  # Configure tag-match mode. Resolves BGP routes with | Default: disable
+    cluster_id: str  # Route reflector cluster ID. | Default: 0.0.0.0
+    confederation_identifier: int  # Confederation identifier. | Default: 0 | Min: 1 | Max: 4294967295
+    confederation_peers: list[BgpConfederationpeersItem]  # Confederation peers.
+    dampening_route_map: str  # Criteria for dampening. | MaxLen: 35
+    dampening_reachability_half_life: int  # Reachability half-life time for penalty (min). | Default: 15 | Min: 1 | Max: 45
+    dampening_reuse: int  # Threshold to reuse routes. | Default: 750 | Min: 1 | Max: 20000
+    dampening_suppress: int  # Threshold to suppress routes. | Default: 2000 | Min: 1 | Max: 20000
+    dampening_max_suppress_time: int  # Maximum minutes a route can be suppressed. | Default: 60 | Min: 1 | Max: 255
+    dampening_unreachability_half_life: int  # Unreachability half-life time for penalty (min). | Default: 15 | Min: 1 | Max: 45
+    default_local_preference: int  # Default local preference. | Default: 100 | Min: 0 | Max: 4294967295
+    scan_time: int  # Background scanner interval (sec), 0 to disable it | Default: 60 | Min: 5 | Max: 60
+    distance_external: int  # Distance for routes external to the AS. | Default: 20 | Min: 1 | Max: 255
+    distance_internal: int  # Distance for routes internal to the AS. | Default: 200 | Min: 1 | Max: 255
+    distance_local: int  # Distance for routes local to the AS. | Default: 200 | Min: 1 | Max: 255
+    synchronization: Literal["enable", "disable"]  # Enable/disable only advertise routes from iBGP if | Default: disable
+    graceful_restart: Literal["enable", "disable"]  # Enable/disable BGP graceful restart capabilities. | Default: disable
+    graceful_restart_time: int  # Time needed for neighbors to restart (sec). | Default: 120 | Min: 1 | Max: 3600
+    graceful_stalepath_time: int  # Time to hold stale paths of restarting neighbor | Default: 360 | Min: 1 | Max: 3600
+    graceful_update_delay: int  # Route advertisement/selection delay after restart | Default: 120 | Min: 1 | Max: 3600
+    graceful_end_on_timer: Literal["enable", "disable"]  # Enable/disable to exit graceful restart on timer o | Default: disable
+    additional_path_select: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
+    additional_path_select6: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
+    additional_path_select_vpnv4: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
+    additional_path_select_vpnv6: int  # Number of additional paths to be selected for each | Default: 2 | Min: 2 | Max: 255
+    cross_family_conditional_adv: Literal["enable", "disable"]  # Enable/disable cross address family conditional ad | Default: disable
+    aggregate_address: list[BgpAggregateaddressItem]  # BGP aggregate address table.
+    aggregate_address6: list[BgpAggregateaddress6Item]  # BGP IPv6 aggregate address table.
+    neighbor: list[BgpNeighborItem]  # BGP neighbor table.
+    neighbor_group: list[BgpNeighborgroupItem]  # BGP neighbor group table.
+    neighbor_range: list[BgpNeighborrangeItem]  # BGP neighbor range table.
+    neighbor_range6: list[BgpNeighborrange6Item]  # BGP IPv6 neighbor range table.
+    network: list[BgpNetworkItem]  # BGP network table.
+    network6: list[BgpNetwork6Item]  # BGP IPv6 network table.
+    redistribute: list[BgpRedistributeItem]  # BGP IPv4 redistribute table.
+    redistribute6: list[BgpRedistribute6Item]  # BGP IPv6 redistribute table.
+    admin_distance: list[BgpAdmindistanceItem]  # Administrative distance modifications.
+    vrf: list[BgpVrfItem]  # BGP VRF leaking table.
+    vrf6: list[BgpVrf6Item]  # BGP IPv6 VRF leaking table.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class BgpConfederationpeersObject:
@@ -606,14 +1085,33 @@ class BgpConfederationpeersObject:
     # Peer ID. | MaxLen: 79
     peer: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -633,14 +1131,33 @@ class BgpAggregateaddressObject:
     # Enable/disable filter more specific routes from updates. | Default: disable
     summary_only: Literal["enable", "disable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -660,14 +1177,33 @@ class BgpAggregateaddress6Object:
     # Enable/disable filter more specific routes from updates. | Default: disable
     summary_only: Literal["enable", "disable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1003,14 +1539,33 @@ class BgpNeighborObject:
     # IPv6 conditional advertisement.
     conditional_advertise6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1344,14 +1899,33 @@ class BgpNeighborgroupObject:
     # Key-chain name for TCP authentication options. | MaxLen: 35
     auth_options: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1371,14 +1945,33 @@ class BgpNeighborrangeObject:
     # Neighbor group name. | MaxLen: 63
     neighbor_group: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1398,14 +1991,33 @@ class BgpNeighborrange6Object:
     # Neighbor group name. | MaxLen: 63
     neighbor_group: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1429,14 +2041,33 @@ class BgpNetworkObject:
     # Name of firewall address or address group. | MaxLen: 79
     prefix_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1458,14 +2089,33 @@ class BgpNetwork6Object:
     # Route map to modify generated route. | MaxLen: 35
     route_map: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1483,14 +2133,33 @@ class BgpRedistributeObject:
     # Route map name. | MaxLen: 35
     route_map: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1508,14 +2177,33 @@ class BgpRedistribute6Object:
     # Route map name. | MaxLen: 35
     route_map: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1535,14 +2223,33 @@ class BgpAdmindistanceObject:
     # Administrative distance to apply (1 - 255). | Default: 0 | Min: 1 | Max: 255
     distance: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1568,14 +2275,33 @@ class BgpVrfObject:
     # Target VRF table.
     leak_target: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -1601,14 +2327,34 @@ class BgpVrf6Object:
     # Target VRF table.
     leak_target: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -1831,16 +2577,30 @@ class BgpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> BgpPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Bgp:
@@ -1851,17 +2611,12 @@ class Bgp:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -1875,10 +2630,9 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -1893,10 +2647,9 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -1910,14 +2663,13 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -1931,13 +2683,9 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> BgpObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -1952,12 +2700,9 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> BgpObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -1971,29 +2716,7 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> BgpObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -2009,10 +2732,7 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -2029,10 +2749,7 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -2048,10 +2765,7 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> BgpResponse: ...
+    ) -> BgpObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -2067,16 +2781,27 @@ class Bgp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> BgpObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -2113,7 +2838,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -2136,24 +2861,20 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> BgpObject: ...
     
     @overload
@@ -2190,7 +2911,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -2213,26 +2934,23 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -2267,7 +2985,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -2290,26 +3008,22 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: BgpPayload | None = ...,
@@ -2343,7 +3057,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -2366,23 +3080,21 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -2423,7 +3135,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -2446,1183 +3158,51 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class BgpDictMode:
-    """Bgp endpoint for dict response mode (default for this client).
-    
-    By default returns BgpResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return BgpObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> BgpResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> BgpResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class BgpObjectMode:
-    """Bgp endpoint for object response mode (default for this client).
-    
-    By default returns BgpObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return BgpResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> BgpResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> BgpResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> BgpObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> BgpObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: BgpPayload | None = ...,
-        asn: str | None = ...,
-        router_id: str | None = ...,
-        keepalive_timer: int | None = ...,
-        holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
-        cluster_id: str | None = ...,
-        confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        dampening_route_map: str | None = ...,
-        dampening_reachability_half_life: int | None = ...,
-        dampening_reuse: int | None = ...,
-        dampening_suppress: int | None = ...,
-        dampening_max_suppress_time: int | None = ...,
-        dampening_unreachability_half_life: int | None = ...,
-        default_local_preference: int | None = ...,
-        scan_time: int | None = ...,
-        distance_external: int | None = ...,
-        distance_internal: int | None = ...,
-        distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
-        graceful_restart_time: int | None = ...,
-        graceful_stalepath_time: int | None = ...,
-        graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
-        additional_path_select: int | None = ...,
-        additional_path_select6: int | None = ...,
-        additional_path_select_vpnv4: int | None = ...,
-        additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Bgp",
-    "BgpDictMode",
-    "BgpObjectMode",
     "BgpPayload",
+    "BgpResponse",
     "BgpObject",
 ]

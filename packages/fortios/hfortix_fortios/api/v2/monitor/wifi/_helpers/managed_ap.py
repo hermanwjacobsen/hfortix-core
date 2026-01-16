@@ -54,6 +54,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "wtp_id": "string",  # 
+    "incl_local": "boolean",  # 
+    "skip_eos": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +182,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "wifi/managed_ap",
     "help": "Retrieve a list of managed FortiAPs.",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

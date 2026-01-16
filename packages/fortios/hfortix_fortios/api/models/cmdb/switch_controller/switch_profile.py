@@ -7,8 +7,8 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -19,64 +19,57 @@ from typing import Any, Literal
 # Main Model
 # ============================================================================
 
-
 class SwitchProfileModel(BaseModel):
     """
     Pydantic model for switch_controller/switch_profile configuration.
-
+    
     Configure FortiSwitch switch profile.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - login_passwd_override: pattern=
-        - login_passwd: max_length=64 pattern=
-        - login: pattern=
-        - revision_backup_on_logout: pattern=
-        - revision_backup_on_upgrade: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - login_passwd_override: pattern=        - login_passwd: max_length=64 pattern=        - login: pattern=        - revision_backup_on_logout: pattern=        - revision_backup_on_upgrade: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="FortiSwitch Profile name.")
-    login_passwd_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the admin administrator password for a managed FortiSwitch with the FortiGate admin administrator account password.")
-    login_passwd: Any = Field(max_length=64, default=None, description="Login password of managed FortiSwitch.")
-    login: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiSwitch serial console.")
-    revision_backup_on_logout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic revision backup upon logout from FortiSwitch.")
-    revision_backup_on_upgrade: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic revision backup upon FortiSwitch image upgrade.")
+    
+    name: str | None = Field(max_length=35, default="", description="FortiSwitch Profile name.")    
+    login_passwd_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the admin administrator password for a managed FortiSwitch with the FortiGate admin administrator account password.")    
+    login_passwd: Any = Field(max_length=64, default=None, description="Login password of managed FortiSwitch.")    
+    login: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiSwitch serial console.")    
+    revision_backup_on_logout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic revision backup upon logout from FortiSwitch.")    
+    revision_backup_on_upgrade: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic revision backup upon FortiSwitch image upgrade.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "SwitchProfileModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -86,8 +79,7 @@ class SwitchProfileModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-SwitchProfileModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -100,5 +92,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:35.992114Z
+# Generated: 2026-01-16T19:53:51.205864Z
 # ============================================================================

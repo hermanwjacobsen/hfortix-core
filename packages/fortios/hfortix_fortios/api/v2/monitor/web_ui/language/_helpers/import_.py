@@ -77,7 +77,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_web_ui_language_import_get(
+def validate_web_ui_language_import__get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -101,7 +101,7 @@ def validate_web_ui_language_import_get(
 # ============================================================================
 
 
-def validate_web_ui_language_import_post(
+def validate_web_ui_language_import__post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -125,7 +125,7 @@ def validate_web_ui_language_import_post(
 # ============================================================================
 
 
-def validate_web_ui_language_import_put(
+def validate_web_ui_language_import__put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

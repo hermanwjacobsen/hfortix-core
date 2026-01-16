@@ -1,9 +1,51 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class NacPolicySeverityItem(TypedDict, total=False):
+    """Type hints for severity table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - severity_num: int
+    
+    **Example:**
+        entry: NacPolicySeverityItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    severity_num: int  # Enter multiple severity levels, where 0 = Info, 1 | Default: 0 | Min: 0 | Max: 4
+
+
+class NacPolicySwitchgroupItem(TypedDict, total=False):
+    """Type hints for switch-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: NacPolicySwitchgroupItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Managed FortiSwitch group name from available opti | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -36,7 +78,7 @@ class NacPolicyPayload(TypedDict, total=False):
     match_remove: Literal["default", "link-down"]  # Options to remove the matched override devices. | Default: default
     mac: str  # NAC policy matching MAC address. | MaxLen: 17
     hw_vendor: str  # NAC policy matching hardware vendor. | MaxLen: 15
-    type_: str  # NAC policy matching type. | MaxLen: 15
+    type: str  # NAC policy matching type. | MaxLen: 15
     family: str  # NAC policy matching family. | MaxLen: 31
     os: str  # NAC policy matching operating system. | MaxLen: 31
     hw_version: str  # NAC policy matching hardware version. | MaxLen: 15
@@ -47,36 +89,16 @@ class NacPolicyPayload(TypedDict, total=False):
     user_group: str  # NAC policy matching user group. | MaxLen: 35
     ems_tag: str  # NAC policy matching EMS tag. | MaxLen: 79
     fortivoice_tag: str  # NAC policy matching FortiVoice tag. | MaxLen: 79
-    severity: list[dict[str, Any]]  # NAC policy matching devices vulnerability severity
+    severity: list[NacPolicySeverityItem]  # NAC policy matching devices vulnerability severity
     switch_fortilink: str  # FortiLink interface for which this NAC policy belo | MaxLen: 15
-    switch_group: list[dict[str, Any]]  # List of managed FortiSwitch groups on which NAC po
+    switch_group: list[NacPolicySwitchgroupItem]  # List of managed FortiSwitch groups on which NAC po
     switch_mac_policy: str  # Switch MAC policy action to be applied on the matc | MaxLen: 63
     firewall_address: str  # Dynamic firewall address to associate MAC which ma | MaxLen: 79
     ssid_policy: str  # SSID policy to be applied on the matched NAC polic | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class NacPolicySeverityItem(TypedDict):
-    """Type hints for severity table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    severity_num: int  # Enter multiple severity levels, where 0 = Info, 1 | Default: 0 | Min: 0 | Max: 4
-
-
-class NacPolicySwitchgroupItem(TypedDict):
-    """Type hints for switch-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Managed FortiSwitch group name from available opti | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class NacPolicySeverityObject:
@@ -89,14 +111,33 @@ class NacPolicySeverityObject:
     # Enter multiple severity levels, where 0 = Info, 1 = Low, ... | Default: 0 | Min: 0 | Max: 4
     severity_num: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -110,14 +151,34 @@ class NacPolicySwitchgroupObject:
     # Managed FortiSwitch group name from available options. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -137,7 +198,7 @@ class NacPolicyResponse(TypedDict):
     match_remove: Literal["default", "link-down"]  # Options to remove the matched override devices. | Default: default
     mac: str  # NAC policy matching MAC address. | MaxLen: 17
     hw_vendor: str  # NAC policy matching hardware vendor. | MaxLen: 15
-    type_: str  # NAC policy matching type. | MaxLen: 15
+    type: str  # NAC policy matching type. | MaxLen: 15
     family: str  # NAC policy matching family. | MaxLen: 31
     os: str  # NAC policy matching operating system. | MaxLen: 31
     hw_version: str  # NAC policy matching hardware version. | MaxLen: 15
@@ -183,7 +244,7 @@ class NacPolicyObject:
     # NAC policy matching hardware vendor. | MaxLen: 15
     hw_vendor: str
     # NAC policy matching type. | MaxLen: 15
-    type_: str
+    type: str
     # NAC policy matching family. | MaxLen: 31
     family: str
     # NAC policy matching operating system. | MaxLen: 31
@@ -218,17 +279,32 @@ class NacPolicyObject:
     ssid_policy: str
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> NacPolicyPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class NacPolicy:
@@ -240,17 +316,12 @@ class NacPolicy:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -264,10 +335,9 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> NacPolicyResponse: ...
+    ) -> NacPolicyObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -282,10 +352,9 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> NacPolicyResponse: ...
+    ) -> NacPolicyObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -299,14 +368,13 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[NacPolicyResponse]: ...
+    ) -> FortiObjectList[NacPolicyObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -320,13 +388,9 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NacPolicyObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -341,12 +405,9 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> NacPolicyObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -360,29 +421,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[NacPolicyObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[NacPolicyObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -398,10 +437,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> NacPolicyResponse: ...
+    ) -> NacPolicyObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -418,10 +454,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> NacPolicyResponse: ...
+    ) -> NacPolicyObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -437,10 +470,7 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[NacPolicyResponse]: ...
+    ) -> FortiObjectList[NacPolicyObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -456,16 +486,27 @@ class NacPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> NacPolicyObject | list[NacPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -481,7 +522,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -492,17 +533,13 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     @overload
@@ -518,7 +555,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -529,19 +566,16 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -555,7 +589,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -566,19 +600,15 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -591,7 +621,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -602,16 +632,14 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -627,7 +655,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -638,17 +666,13 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     @overload
@@ -664,7 +688,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -675,19 +699,16 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -701,7 +722,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -712,19 +733,15 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: NacPolicyPayload | None = ...,
@@ -737,7 +754,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -748,16 +765,14 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -765,10 +780,6 @@ class NacPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NacPolicyObject: ...
     
     @overload
@@ -776,30 +787,21 @@ class NacPolicy:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -819,7 +821,7 @@ class NacPolicy:
         match_remove: Literal["default", "link-down"] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
-        type_: str | None = ...,
+        type: str | None = ...,
         family: str | None = ...,
         os: str | None = ...,
         hw_version: str | None = ...,
@@ -830,1152 +832,44 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class NacPolicyDictMode:
-    """NacPolicy endpoint for dict response mode (default for this client).
-    
-    By default returns NacPolicyResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return NacPolicyObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[NacPolicyObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> NacPolicyResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[NacPolicyResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class NacPolicyObjectMode:
-    """NacPolicy endpoint for object response mode (default for this client).
-    
-    By default returns NacPolicyObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return NacPolicyResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> NacPolicyResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[NacPolicyResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[NacPolicyObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> NacPolicyObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: NacPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
-        match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
-        mac: str | None = ...,
-        hw_vendor: str | None = ...,
-        type_: str | None = ...,
-        family: str | None = ...,
-        os: str | None = ...,
-        hw_version: str | None = ...,
-        sw_version: str | None = ...,
-        host: str | None = ...,
-        user: str | None = ...,
-        src: str | None = ...,
-        user_group: str | None = ...,
-        ems_tag: str | None = ...,
-        fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | None = ...,
-        switch_mac_policy: str | None = ...,
-        firewall_address: str | None = ...,
-        ssid_policy: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "NacPolicy",
-    "NacPolicyDictMode",
-    "NacPolicyObjectMode",
     "NacPolicyPayload",
+    "NacPolicyResponse",
     "NacPolicyObject",
 ]

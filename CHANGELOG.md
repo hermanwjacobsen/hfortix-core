@@ -5,197 +5,648 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.63] - 2026-01-14
+## [0.5.90] - Unreleased
+
+### Fixed - **Stub Types: Accept `list[str]` for Table Fields**
+
+- ✅ **Pylance errors resolved**: Table field parameters now accept `list[str]` in addition to `list[TypedDict]`
+- ✅ **Flexible input support**: Parameters like `member`, `srcintf`, `entries` now accept all formats:
+  - Single string: `"value"`
+  - List of strings: `["val1", "val2"]` ← **NEW: No longer causes Pylance error**
+  - List of dicts: `[{"name": "val1"}]` ← Still works with autocomplete
+- ✅ **Template fix**: Updated `endpoint_class.pyi.j2` to generate `str | list[str] | list[TypedDictItem]` union types
+- ✅ **All 1062 endpoints regenerated**: Every stub file updated with the fix
+
+### Example
+
+```python
+# Before (Pylance error: list[str] not assignable to list[GroupMemberItem])
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group",
+    member=["HTTP", "HTTPS"]  # ❌ Error
+)
+
+# After (works correctly)
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group", 
+    member=["HTTP", "HTTPS"]  # ✅ No error
+)
+
+# Dict format still works with autocomplete
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group",
+    member=[{"name": "HTTP"}]  # ✅ Autocomplete shows 'name' field
+)
+```
+
+---
+
+## [0.5.89] - 2026-01-16
+
+### Fixed - **Generator: Response Properties on Nested Child Objects**
+
+- ✅ **Added missing response properties to nested child objects**: All nested table field object stubs now include `http_status_code`, `http_method`, and `http_response_time`
+- ✅ **Pylance support for nested objects**: Properties like `policy.srcintf[0].http_status_code` now recognized
+- ✅ **Template fix**: Updated `endpoint_class.pyi.j2` to add response properties to nested child object classes (e.g., `PolicySrcintfObject`, `AddressTaggingObject`)
+- ✅ **Consistency**: Both main endpoint objects and nested child objects now have identical response property signatures
+
+### Added - **New Fully Tested Endpoints**
+
+**Service API** (12 tests total):
+- ✅ **`service/security_rating.py`** - 4 tests for security rating recommendations and reports
+- ✅ **`service/system.py`** - 2 tests for fabric admin lockout and time sync checks
+
+**Monitor API** (4 tests total):
+- ✅ **`monitor/casb.py`** - 1 test for CASB SaaS application monitoring
+- ✅ **`monitor/firewall_policy.py`** - 3 tests for firewall policy monitoring and hit count
+
+**CMDB Email Filter** (36 tests total):
+- ✅ **`cmdb/emailfilter/block_allow_list.py`** - Block/allow list management
+- ✅ **`cmdb/emailfilter/bword.py`** - Banned word filtering
+- ✅ **`cmdb/emailfilter/dnsbl.py`** - DNS block list configuration
+- ✅ **`cmdb/emailfilter/fortishield.py`** - FortiGuard email filtering
+- ✅ **`cmdb/emailfilter/iptrust.py`** - IP trust list management
+- ✅ **`cmdb/emailfilter/mheader.py`** - Email header filtering
+- ✅ **`cmdb/emailfilter/options.py`** - Email filter options
+- ✅ **`cmdb/emailfilter/profile.py`** - Email filter profiles
+
+**Total new tests**: 52 comprehensive endpoint tests added
+
+---
+
+## [0.5.88] - 2026-01-16
+
+### Fixed - **Generator: Stub File Response Properties**
+
+- ✅ **Added missing response properties**: Endpoint object stubs now include `http_status_code`, `http_method`, and `http_response_time`
+- ✅ **Pylance support**: `result.http_status_code` now recognized on all endpoint objects
+
+
+---
+
+## [0.5.87] - 2026-01-16
+
+### Fixed - **Generator: Stub Files and Pydantic Models**
+
+- ✅ **Helper stub exports**: Added `DEPRECATED_FIELDS` and `REQUIRED_FIELDS` to validator stub template
+- ✅ **Core stub signature**: Fixed `check_deprecated_fields()` signature in `hfortix_core/__init__.pyi` to match implementation
+- ✅ **Pydantic model return type**: Fixed `from_fortios_response()` return type from empty string to correct class name
+
+### Fixed - **Test Generator: HTTP Methods and Parameters**
+
+- ✅ **HTTP methods extraction**: Test generator now correctly reads `http_methods` from schema top-level (was looking in `_metadata`)
+- ✅ **POST-only endpoints**: Endpoints like `system/os/reboot` that only support POST no longer generate GET tests
+- ✅ **Removed unsupported `format` parameter**: Test template was using `format` parameter directly, but endpoint implementations only accept it via `payload_dict`
+- ✅ **Regenerated all 1066 tests**: Test files now use only supported parameters and correct HTTP methods
+
+### Fixed - **Generator: exists() Method API Path**
+
+- ✅ **API path fix**: `exists()` method now uses `schema.api_path` (with hyphens) instead of `schema.path` (with underscores)
+- ✅ **Example**: `/firewall/ssl-ssh-profile` instead of `/firewall/ssl_ssh_profile`
+- ✅ **Impact**: All `exists()` calls now correctly query the FortiOS API
+
+---
+
+## [0.5.86] - 2026-01-16
+
+### Fixed - **Generator: Response Fields and Integer Types for Service/Monitor Endpoints**
+
+- ✅ **Added `response_fields` support**: Schema parser now extracts `response_fields` from service/monitor endpoint schemas
+- ✅ **Correct response types**: Object classes now use `response_fields` for type hints (falling back to `fields` for CMDB)
+- ✅ **Boolean type support**: Added `boolean` type mapping in templates (was defaulting to `str`)
+- ✅ **Integer type support**: Added `int` type alongside `integer` (monitor/service schemas use `int`, CMDB uses `integer`)
+- ✅ **Example fix**: `FabricTimeInSyncObject.synchronized` now correctly typed as `bool` instead of `str`
+- ✅ **Example fix**: `clear_counters.post(policy=1)` now accepts `int` instead of `str`
+
+### Technical Details
+
+| Category    | Request Fields   | Response Fields   |
+| ----------- | ---------------- | ----------------- |
+| **CMDB**    | `fields`         | `fields` (same)   |
+| **Monitor** | `request_fields` | `response_fields` |
+| **Service** | `request_fields` | `response_fields` |
+
+**Type mappings fixed:**
+- `boolean` → `bool`
+- `int` → `int` (monitor/service schemas)
+- `integer` → `int` (CMDB schemas)
+
+### Example
+
+```python
+# Before (missing attribute or wrong type)
+result = fgt.api.service.system.fabric_time_in_sync.get()
+print(result.synchronized)  # AttributeError or typed as str
+
+# After (correct type)
+result = fgt.api.service.system.fabric_time_in_sync.get()
+print(result.synchronized)  # True/False (typed as bool)
+
+# Before (type error)
+fgt.api.monitor.firewall.policy.clear_counters.post(policy=1)  # Pylance error: expected str
+
+# After (correct type)
+fgt.api.monitor.firewall.policy.clear_counters.post(policy=1)  # Works correctly (int)
+```
+
+---
+
+## [0.5.85] - 2026-01-16
+
+### Fixed - **URL Encoding for Special Characters in mkey Values**
+
+- ✅ **Proper URL encoding**: Object names containing `/` (like `CGNAT_100.64.0.0/10`) are now properly URL-encoded
+- ✅ **New helper function**: Added `quote_path_param()` to `_helpers` module for consistent path parameter encoding
+- ✅ **All methods fixed**: GET, PUT, DELETE, and `exists()` all now use proper encoding
+
+### Example
+
+```python
+# Before (failed with 404)
+addr = fgt.api.cmdb.firewall.address.get(name="CGNAT_100.64.0.0/10")
+# Request: GET /api/v2/cmdb/firewall/address/CGNAT_100.64.0.0/10  (interpreted as path)
+
+# After (works correctly)
+addr = fgt.api.cmdb.firewall.address.get(name="CGNAT_100.64.0.0/10")
+# Request: GET /api/v2/cmdb/firewall/address/CGNAT_100.64.0.0%2F10  (properly encoded)
+```
+
+---
+
+## [0.5.84] - 2026-01-16
+
+### Fixed - **FMG Proxy HTML Error Handling**
+
+- ✅ **Graceful HTML error handling**: When a FortiGate returns an HTML error page via FMG proxy, it's now converted to a proper error response
+- ✅ **No more raw strings**: Previously, HTML error pages were returned as raw strings causing `AttributeError: 'str' object has no attribute 'raw'`
+- ✅ **Proper error info**: Error responses include `http_status: 404`, clear error message, and the raw HTML for debugging
+
+### Example
+
+```python
+# Before (crashed with AttributeError)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")
+print(psirt.raw)  # AttributeError: 'str' object has no attribute 'raw'
+
+# After (proper error handling)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")
+print(psirt.http_status_code)  # 404
+print(psirt.raw["error"])      # "Endpoint not found"
+print(psirt.raw["message"])    # "The FortiGate returned an HTML error page..."
+```
+
+---
+
+## [0.5.83] - 2026-01-16
+
+### Fixed - **Consistent `.json` Property Return Type**
+
+- ✅ **Fixed inconsistency**: Both `FortiObject.json` and `FortiObjectList.json` now return a formatted JSON string
+- ✅ **Unified API**: No more confusion - `.json` always returns a string, `.dict` returns a dict
+
+### Migration
+
+```python
+# Before (inconsistent behavior)
+obj.json    # FortiObject returned dict
+list.json   # FortiObjectList returned str
+
+# After (consistent behavior)
+obj.json    # Returns formatted JSON string
+list.json   # Returns formatted JSON string
+obj.dict    # Returns dict (use this for dict access)
+obj.raw     # Returns raw API response dict
+```
+
+---
+
+## [0.5.82] - 2026-01-16
+
+### Added - **Literal Type Autocomplete for Query Parameters**
+
+- ✅ **Literal types for allowed values**: Query parameters with known values now use `Literal` types for IDE autocomplete
+- ✅ **Extracted from descriptions**: Values are automatically parsed from descriptions like `['psirt', 'insight']` or `[global | vdom*]`
+
+### Examples
+
+```python
+# Before (no autocomplete for values)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")  # No hints
+
+# After (full autocomplete with Literal types)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")  # ✓ Suggests: "psirt", "insight"
+psirt = fgt.api.service.security_rating.report.get(scope="global")  # ✓ Suggests: "global", "vdom"
+```
+
+---
+
+## [0.5.81] - 2026-01-16
+
+### Fixed - **Service Endpoint Type Hints**
+
+- ✅ **Reverted `name` to `mkey`**: Service endpoints now use `mkey` parameter to match stub files
+- ✅ **Type hint alignment**: Generated `.py` files now match `.pyi` stub files for proper Pylance support
+
+### Changed - **Service Endpoint API**
+
+Service POST endpoints now use `mkey` parameter (matching stub files):
+
+```python
+# Service endpoints with mkey parameter
+fgt.api.service.sniffer.start.post(mkey="capture1", vdom="test")
+fgt.api.service.sniffer.stop.post(mkey="capture1", vdom="test")
+```
+
+---
+
+## [0.5.79] - 2026-01-16
+
+### Added - **Full Log, Monitor, and Service API Support**
+
+- ✅ **Log endpoints**: Full support for `fgt.api.log.*` endpoints (disk, memory, fortianalyzer, etc.)
+- ✅ **Monitor endpoints**: Full support for `fgt.api.monitor.*` endpoints with proper POST method generation
+- ✅ **Service endpoints**: Full support for `fgt.api.service.*` endpoints with `name` parameter
+
+### Fixed - **Code Generator Improvements**
+
+- ✅ **POST method generation**: Fixed schema parser to read `http_methods` from schema JSON instead of hardcoding GET
+- ✅ **Monitor action endpoints**: Endpoints like `monitor.firewall.policy.reset.post()` now work correctly
+- ✅ **Service POST endpoints**: Service endpoints now use intuitive `name` parameter instead of `mkey`
+- ✅ **Request fields parsing**: Schema parser now reads `request_fields` for service/monitor schemas
+- ✅ **Log generator fix**: Fixed log generator to use correct schema directory path
+
+### Changed - **Service Endpoint API**
+
+Service POST endpoints now use `name` parameter which maps to `mkey` internally:
+
+```python
+# Before (confusing)
+fgt.api.service.sniffer.start.post(payload_dict={"mkey": "sniffer1"}, vdom="test")
+
+# After (intuitive)
+fgt.api.service.sniffer.start.post(name="sniffer1", vdom="test")
+```
+
+### Examples
+
+```python
+# Log endpoints
+logs = fgt.api.log.disk.traffic.forward.get(rows=15)
+
+# Monitor endpoints (including POST actions)
+stats = fgt.api.monitor.firewall.policy.get()
+reset = fgt.api.monitor.firewall.policy.reset.post()
+
+# Service endpoints with name parameter
+fgt.api.service.sniffer.start.post(name="capture1", vdom="test")
+fgt.api.service.sniffer.stop.post(name="capture1", vdom="test")
+pcap = fgt.api.service.sniffer.download.post(name="capture1", vdom="test")
+# pcap.raw['content'] contains binary PCAP data
+```
+
+---
+
+## [0.5.78] - 2026-01-16
 
 ### Fixed
-- **Endpoint Naming: Builtins no longer get underscore suffix** (`schema_parser.py`, `generate_tests.py`)
-  - Endpoint attributes like `list`, `filter`, `set` are now accessed without underscore suffix
-  - Only Python **keywords** (`global`, `class`, `import`) need underscore suffix
-  - Changed: `fgt.api.cmdb.application.list_` → `fgt.api.cmdb.application.list`
-  - Changed: `fgt.api.cmdb.log.syslogd.filter_` → `fgt.api.cmdb.log.syslogd.filter`
-  - Keywords still correctly use underscore: `fgt.api.cmdb.system.global_` (unchanged)
+- ✅ **Envelope-only responses (DELETE, some POST/PUT)**: Fixed property collision where `.status` returned `"success"` instead of `None` for responses without `results` key
 
-## [0.5.62] - 2026-01-14
+### Tested
+- ✅ **dnsfilter**: Fully tested endpoint category
 
-### Fixed
-- **Test Generator: Fixed validator function name double underscore** (`generate_tests.py`, `test_basic.py.j2`)
-  - Test generator now uses shared `kebab_to_snake` from `utils.naming` which collapses multiple underscores
-  - Fixed `validate_system_global__post` → `validate_system_global_post` (single underscore)
-  - Fixed validator test to use `validate_{path}_post` instead of non-existent `validate_{name}_create`
-  - Eliminated 2 test failures for `global` endpoints in `system` and `web_proxy` categories
+---
 
-- **Stub Generator: Fixed implementation functions in stub files** (`endpoint_class.pyi.j2`, `models.pyi`)
-  - Added missing `@overload` decorators to 6 Dict mode default methods (POST, PUT, DELETE)
-  - Removed non-`@overload` implementation of `process_response` in `models.pyi`
-  - Reduced mypy `[misc]` errors from 4,041 to 6
+## [0.5.77] - 2026-01-15
 
-- **Stub Generator: Fixed duplicate property definitions** (`endpoint_class.pyi.j2`)
-  - Added conditional checks to avoid duplicating `status` and `vdom` properties when they exist in schema
-  - Reduced mypy `[no-redef]` errors from 146 to 1
+### Changed - **Renamed envelope properties to avoid collision**
 
-- **Model Generator: Fixed missing Literal imports** (`model_generator.py`)
-  - `_get_imports_needed()` now checks child table fields for `Literal` usage
-  - Fixed 95 `[name-defined]` errors for missing `Literal` import
+- ✅ **`status` → `http_status`**: API response status ("success"/"error") now accessed via `http_status`
+- ✅ **`http_status` → `http_status_code`**: HTTP status code (200, 404, etc.) now accessed via `http_status_code`
+- ✅ **Updated `http_stats` dict**: Keys now use `http_` prefix consistently
 
-- **Model Generator: Fixed list field type annotations** (`model_generator.py`)
-  - Changed list field types from `list[ChildModel]` to `list[ChildModel] | None`
-  - Allows `None` defaults in Pydantic `Field()` without type mismatch
-  - Reduced mypy `[arg-type]` errors from 1,081 to 86
+**Why:**
+The previous `.status` property on `FortiObject` shadowed the actual object field `status` that many FortiOS objects use (e.g., `status: "enable"` on firewall policies). This caused:
+- `policy.status` → returned `"success"` (API envelope) instead of `"enable"` (object field)
+- `policy["status"]` → returned `"enable"` (correct, but inconsistent)
 
-- **Model Generator: Added type annotations to validation methods** (`pydantic_model.py.j2`)
-  - Added `list[str]` type annotation to `errors` and `all_errors` variables
-  - Reduced mypy `[var-annotated]` errors from 1,092 to 0
+**Migration:**
+```python
+# Before (0.5.76)
+result.status           # API status ("success"/"error")
+result.http_status      # HTTP code (200, 404)
 
-- **Core: Added type annotations to `fmt.py`** (`packages/core/hfortix_core/fmt.py`)
-  - Added type annotations to `all_keys` and `result` variables in `to_listdict()`
+# After (0.5.77)
+result.http_status      # API status ("success"/"error")
+result.http_status_code # HTTP code (200, 404)
 
-- **Model Generator: Fixed enum syntax errors** (`pydantic_model.py.j2`, `model_generator.py`)
-  - Enum values were rendered on a single line causing syntax errors
-  - Changed `{%- endfor %}` to `{% endfor %}` to preserve newlines between enum values
+# Object fields now accessible directly
+policy.status           # "enable" or "disable" (actual object field)
+```
 
-- **Model Generator: Fixed invalid Python identifiers** (`model_generator.py`, `utils/naming.py`)
-  - Field names with spaces (e.g., `default value`) now converted to underscores
-  - Field names with angle brackets (e.g., `<field_name>`) now stripped
-  - Field names with parentheses (e.g., `threshold(default)`) now handled
-  - Field names starting with digits (e.g., `204-size-limit`) now use consistent naming:
-    - Simple numeric prefixes moved to end: `204-size-limit` → `size_limit_204`
-    - Protocol identifiers prefixed with `x`: `802-1x` → `x802_1x`
-  - Plus signs in identifiers: `tacacs+` → `tacacs_plus` (consistent with schema parser)
+---
 
-- **Model Generator: Fixed multi-line default values** (`model_generator.py`)
-  - Default string values containing newlines now properly escaped as `\n`
-  - Previously caused unterminated string literal syntax errors
+## [0.5.76] - 2026-01-15
 
-- **Model Generator: Fixed undefined child model references** (`model_generator.py`)
-  - Child table type references now include schema class prefix (e.g., `GroupApplication` not `Application`)
-  - Enum type references now include schema class prefix (e.g., `GroupPopularityEnum` not `PopularityEnum`)
-  - Only fields with actual children generate child model types (not `multiple_values` fields)
+### Added - **FortiManager Proxy Support**
 
-- **Model Generator: Fixed empty forward annotation** (`pydantic_model.py.j2`)
-  - `from_fortios_response()` method was using undefined `schema.pydantic_class_name`
-  - Changed to `schema.class_name + "Model"` for correct forward reference
+- ✅ **FortiManagerProxy client**: Route FortiOS API calls through FortiManager to managed devices
+- ✅ **HTTPClientFMG**: New HTTP client for FortiManager JSON-RPC API (in `hfortix_core`)
+- ✅ **Same FortiOS API**: Use the exact same `fgt.api.cmdb.*` and `fgt.api.monitor.*` patterns
+- ✅ **Full retry/circuit-breaker support**: Shares infrastructure with FortiOS HTTPClient
 
-- **Model Generator: Fixed Python builtin/keyword name conflicts** (`utils/naming.py`, `schema_parser.py`)
-  - Added `PYTHON_BUILTINS` set with 50+ reserved names (`list`, `dict`, `set`, `type`, `id`, etc.)
-  - Added common dict/object method names (`keys`, `values`, `items`, `get`, `update`, `pop`, etc.)
-  - Field names matching builtins now suffixed with underscore: `list` → `list_`, `values` → `values_`
-  - File names matching builtins also suffixed: `set.py` → `set_.py`, `filter.py` → `filter_.py`
-  - Fixed mypy `[valid-type]` errors (12 → 0) and `[no-redef]` errors (1 → 0)
+**Usage:**
+```python
+from hfortix_fortios import FortiManagerProxy
 
-- **Model Generator: Fixed PascalCase conversion for enum/child class names** (`model_generator.py`, `pydantic_model.py.j2`)
-  - Added `_to_pascal()` filter for consistent snake_case/kebab-case → PascalCase conversion
-  - Fixed mismatch: enum class `Control_message_offloadEnum` vs reference `ControlMessageOffloadEnum`
-  - Now handles hyphens in names: `nac-quar` → `NacQuar` (previously caused syntax error)
-  - Reduced mypy `[name-defined]` errors from 815 to 0
+# Connect to FortiManager
+fmg = FortiManagerProxy(
+    host="fmg.example.com",
+    username="admin",
+    password="password",
+    adom="production",
+)
 
-- **Model Generator: Fixed optional field type annotations** (`model_generator.py`)
-  - Added `default_will_be_none` logic to properly type optional fields
-  - Fields with invalid defaults (empty string for Literal, non-numeric string for int) now include `| None`
-  - Literal and Enum types now include `| None` when default will be None
-  - Reduced mypy `[assignment]` errors from 130+ to 0
+# Get a proxied FortiOS client for a specific device
+fgt = fmg.proxy(device="firewall-01")
 
-- **Model Generator: Fixed non-numeric string defaults for int fields** (`model_generator.py`)
-  - Int fields with string defaults like `"unspecified"` now use `default=None` instead
-  - String defaults that can be parsed as integers are converted: `"0"` → `0`
-  - Reduced mypy `[assignment]` errors for int fields
+# Use the exact same FortiOS API!
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(f"{addr.name}: {addr.subnet}")
+```
 
-- **Model Generator: Fixed string defaults for list fields** (`model_generator.py`)
-  - List fields with string defaults now use `default=None` instead
-  - Properly sets `| None` on list field types when default will be None
+### Added - **Response Timing & Envelope Properties**
 
-- **Model Generator: Fixed duplicate enum member definitions** (`model_generator.py`)
-  - Schema options are now deduplicated while preserving order
-  - Prevents `Attempted to reuse member name` errors in enums
-  - Reduced mypy `[misc]` errors from 6 to 4
+- ✅ **Response timing**: `response_time` (seconds), `response_time_ms` (milliseconds), `http_stats` property
+- ✅ **Explicit envelope properties**: `http_method`, `http_status`, `status`, `vdom`, `mkey`, `revision`, `serial`, `version`, `build`
+- ✅ **FortiObjectList support**: Same properties available on list responses
 
-- **Fixed `performance_test.py` credential validation** (`performance_test.py`)
-  - Added validation check before sync test: `if username is None or password is None: raise ValueError(...)`
-  - Added validation check before async concurrent test with captured credentials
-  - Uses conditional `FortiOS` instantiation based on token vs username/password auth
-  - Fixes Pylance/mypy `[arg-type]` errors for `str | None` passed to `FortiOS()`
+```python
+result = fgt.api.cmdb.firewall.address.get()
+print(f"Query took {result.response_time_ms:.1f}ms")
+print(result.http_stats)  # {'http_response_time': 206.4}
+```
 
-- **Test Generator: Fixed Python builtin method naming in paths** (`helpers/generate_tests.py`)
-  - Only endpoint METHOD names get underscore suffix for builtins (`list_`, `clear_`, `update_`)
-  - Module/directory names in path are NOT renamed (`license` stays `license`, not `license_`)
-  - Added `PYTHON_BUILTIN_METHODS` set for method-specific builtins (`list`, `dict`, `set`, `get`, `update`, `pop`, `clear`, `copy`, `keys`, `values`, `items`, `format`, `filter`)
-  - Fixed 40+ test collection errors for paths like `fgt.api.monitor.license_` (should be `license`)
+### Fixed - **Silent 404 for exists() Method**
+
+- ✅ **Silent 404 handling**: `exists()` no longer logs "Request failed: HTTP 404" messages
+- ✅ **Clean set() workflow**: No noisy 404 logs when checking existence before create/update
+
+### Fixed - **Mutation Methods Return FortiObject**
+
+- ✅ **Type stubs updated**: `post()`, `put()`, `delete()`, and `set()` now return `FortiObject` with full autocomplete
+- ✅ **Consistent API**: All endpoint methods return properly typed `FortiObject` instances
+
+### Fixed - **FortiObject.raw Property**
+
+- ✅ **Fixed `.raw` property**: Now returns the full API response envelope (with `status`, `http_status`, `vdom`, etc.)
+- ✅ **Fixed `exists()` method**: Properly detects existing objects
+- ✅ **Fixed `set()` method**: Now correctly uses `put()` for updates and `post()` for creates
+
+### Fixed - **Performance Test Utility and Client Type Stubs**
+
+- ✅ **Fixed `performance_test.py`**: Proper endpoint navigation including `monitor`/`cmdb` namespace
+- ✅ **Updated `client.pyi`**: Added all missing constructor parameters with proper `@overload`
+
+### Fixed - **Singleton Endpoint Response Handling**
+
+- ✅ **Fixed singleton endpoints**: Endpoints returning dict (not list) in `results` now wrap correctly
+- ✅ **Direct attribute access**: `result.mailto1` works for singleton endpoints
+
+---
+
+## [0.5.75] - 2026-01-15
+
+### Changed - **Improved Type Safety: Generic `FortiObjectList` for proper list iteration typing**
+
+**What Changed:**
+- ✅ **Made `FortiObjectList` generic**: Now `FortiObjectList[T]` where T is the specific object type
+- ✅ **List iteration now properly typed**: Iterating over policy list returns `PolicyObject`, not generic `FortiObject`
+- ✅ **Nested table field access now type-checked**: `policy.srcaddr` returns properly typed objects
+- ✅ **Removed `raw_json` parameter from public API**: Use `.raw` property instead
+
+**Why:**
+Previously, `FortiObjectList` was typed as `list[FortiObject]`, so when iterating over a list of policies, Pylance couldn't detect invalid attribute access like `policy.nonexistent`.
+
+**Before (no type error on list iteration):**
+```python
+policies = fg.api.cmdb.firewall.policy.get()
+for policy in policies:
+    policy.nonexistent  # No error! FortiObject accepts any attribute
+```
+
+**After (proper type error):**
+```python
+policies = fg.api.cmdb.firewall.policy.get()  # FortiObjectList[PolicyObject]
+for policy in policies:
+    policy.name         # ✅ Works - PolicyObject has 'name'
+    policy.nonexistent  # ❌ Error: Cannot access attribute "nonexistent" for class "PolicyObject"
+
+for addr in policy.srcaddr:  # list[PolicySrcaddrObject]
+    addr.name           # ✅ Works
+    addr.nonexistent    # ❌ Error: Attribute "nonexistent" is unknown
+```
+
+**Also in this release:**
+- Removed `raw_json` parameter from `FortiOS.request()` method
+- Updated all docstrings to reference `.raw` property instead of `raw_json` parameter
+- Cleaned up internal `raw_json` references (internal calls still use `raw_json=True`)
+
+---
+
+## [0.5.74] - 2026-01-15
+
+### Changed - **Improved Type Safety: Removed `**kwargs: Any` from type stubs**
+
+**What Changed:**
+- ✅ **Removed `**kwargs: Any` from all method signatures in `.pyi` stubs**
+- ✅ **Unknown keyword arguments now properly show type errors**
+- ✅ **Passing deprecated `response_mode` parameter now shows error**
+
+**Why:**
+Previously, `**kwargs: Any` acted as a catch-all that accepted any keyword argument without type checking. This meant passing invalid or deprecated parameters like `response_mode="dict"` would be silently accepted.
+
+**Before (no type error):**
+```python
+# No error even though response_mode was removed in v0.5.71!
+settings = fg.api.cmdb.antivirus.settings.get(response_mode="dict")
+```
+
+**After (proper type error):**
+```python
+settings = fg.api.cmdb.antivirus.settings.get(response_mode="dict")
+# ❌ Error: Unexpected keyword argument "response_mode"
+```
+
+---
+
+## [0.5.73] - 2026-01-15
+
+### Changed - **Improved Type Safety: Removed `__getitem__` from FortiObject stubs**
+
+**What Changed:**
+- ✅ **Removed `__getitem__` method from all generated type stubs** (`*Object` classes)
+- ✅ **Bracket access (`obj['field']`) now properly shows type errors**
+- ✅ **Forces attribute access (`obj.field`) for proper type checking**
+- ✅ **Invalid field access now detected by Pylance/type checkers**
+
+**Why:**
+Previously, `__getitem__(self, key: str) -> Any` allowed bracket notation but returned `Any`, defeating type checking. Invalid field access like `obj['nonexistent_field']` would not show errors.
+
+**Before (no type error):**
+```python
+rule = fg.api.cmdb.authentication.rule.get(name="test")
+rule['nonexistent_field']  # No error! Returns Any
+```
+
+**After (proper type error):**
+```python
+rule = fg.api.cmdb.authentication.rule.get(name="test")
+rule['srcintf']  # ❌ Error: "__getitem__" method not defined on type "RuleObject"
+rule.srcintf     # ✅ Works with full autocomplete and type checking
+rule.nonexistent # ❌ Error: Cannot access attribute "nonexistent" for class "RuleObject"
+```
+
+**Migration:**
+Use attribute access (`.field`) instead of bracket access (`['field']`):
+```python
+# ❌ OLD: rule['srcintf']
+# ✅ NEW: rule.srcintf
+```
+
+---
+
+## [0.5.72] - 2026-01-15
 
 ### Changed
-- **Overall mypy error reduction: 20,200+ → 4,802 errors (76% reduction)**
-  - Remaining 4,798 errors are `[overload-overlap]` and `[overload-cannot-match]` (known mypy limitations)
-  - Only 4 `[misc]` errors remain (related to `__new__` return type in overloaded client stubs)
-  - All fixable generator issues resolved
+- Updated `test_autocomplete.py` for unified FortiObject API
+  - File is now purely for **static analysis** (Pylance/type checking validation)
+  - Demonstrates autocomplete, type errors, and IDE integration
+  - NOT meant to be executed - just for checking IDE behavior
+  - Added comprehensive scenarios: `.dict`, `.json`, `.raw` properties, `raw_json=True`, nested tables, Literal validation
 
-- **Model Generator: Improved code style compliance** (`pydantic_model.py.j2`, `model_generator.py`)
-  - Added post-processing to strip trailing whitespace from generated files
-  - Ensures newline at end of file (PEP 8)
-  - Added proper blank lines between class definitions (PEP 8 E302)
-  - Conditional imports for `field_validator` (only when datasource validators present)
-  - Removed unused `Optional` import (Python 3.10+ uses `| None` syntax)
+---
 
-- **Model Generator: Uses shared naming utility** (`model_generator.py`)
-  - Field name conversion now uses `kebab_to_snake()` from `utils/naming.py`
-  - Ensures consistent naming between endpoint files and model files
+## [0.5.71] - 2026-01-15
 
-## [0.5.61] - 2026-01-14
+### Changed - **BREAKING: Simplified API - Removed `response_mode` parameter**
 
-### Fixed
-- **Bug #31: Fixed deprecated `datetime.utcnow()` warning** (`hfortix_core/audit/formatters.py`)
-  - `SyslogFormatter` was using deprecated `datetime.utcnow()` (deprecated in Python 3.12+)
-  - Changed to `datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")`
-  - Eliminates deprecation warnings on Python 3.12+
+**What Changed:**
+- ✅ **Removed `response_mode` parameter** from `FortiOS` client initialization
+- ✅ **All API methods now return `FortiObject` instances** (no more dict mode)
+- ✅ **Added `.dict`, `.json`, `.raw` properties** to `FortiObject` for flexible data access
+- ✅ **Simplified client architecture** - removed `FortiOSDictMode`, `FortiOSObjectMode`, `APIDictMode`, `APIObjectMode` classes
+- ✅ **Massive codebase reduction** - eliminated 267,743 lines of type stub code (50.6% reduction!)
 
-### Changed
-- **Linting configuration updates**
-  - Added `E501` (line too long) to `.flake8` `extend-ignore` - line length handled by black
-  - Added `packages/fortios/hfortix_fortios/api` to bandit `exclude_dirs` in `pyproject.toml`
-  - Added `X` and `Tests` directories to `.flake8` excludes for consistency
-  - Updated CI workflow comment to reflect actual flake8 configuration (120 chars)
+**Impact on Generated API:**
+```
+BEFORE (dual response_mode API):
+- Directory size:  145M
+- Type stub lines: 529,626 lines
+- Largest .pyi:    9,135 lines (system/interface.pyi)
 
-- **Code formatting fixes** (isort + black)
-  - Fixed import sorting in 4 files (`.pyi` stubs and `__init__.py`)
-  - Reformatted 8 files with black (line length, spacing)
-  - All packages now pass isort, black, flake8, and bandit checks
+AFTER (unified FortiObject API):
+- Directory size:  123M (-22M, -15.2%)
+- Type stub lines: 261,883 lines (-267,743 lines, -50.6%)
+- Largest .pyi:    4,586 lines (-50% reduction)
 
-## [0.5.60] - 2026-01-14
+Generated 1,062 endpoints in 6.7 seconds
+```
 
-### Fixed
-- **Bug #29: Fixed `fields()` stub return type with proper overloads** (`endpoint_class.pyi.j2`)
-  - Stub incorrectly declared return type as `Union[list[str], list[dict[str, Any]]]`
-  - Now uses `@overload` for precise typing:
-    - `fields(detailed=False)` → `list[str]`
-    - `fields(detailed=True)` → `dict[str, Any]`
-  - Fixes Pylance error when calling `.items()` on `fields(detailed=True)` result
+**Impact on Test Suite:**
+```
+Test Generation Summary:
+- ✅ Generated:  1,066 test files
+- ⏭️  Skipped:   282 endpoints (category containers, unsupported)
+- ❌ Errors:     0
+- 📝 Total:      1,348 schemas processed
 
-- **Bug #30: Fixed `field_info()` stub return type** (`endpoint_class.pyi.j2`)
-  - Stub incorrectly declared return type as `dict[str, Any]`
-  - Now correctly returns `dict[str, Any] | None`
-  - Fixes Pylance error when field doesn't exist
+All tests updated to use new unified API:
+- Removed all response_mode="dict" parameter calls
+- Tests now use .dict property: endpoint.get().dict
+- 100% test compatibility with v0.6.0+ API
+```
 
-### Changed
-- Updated all 1062 generated `.pyi` stub files with correct `fields()` and `field_info()` signatures
+**Migration Guide:**
 
-## [0.5.59] - 2026-01-14
+```python
+# ❌ OLD (v0.5.x):
+fgt = FortiOS(host="...", token="...", response_mode="dict")  # Dict mode
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(addr["name"])  # Dictionary access
 
-### Fixed
-- **Bug #27: Fixed `MetadataMixin.validate_field()` stub return type** (`endpoint_class.pyi.j2`)
-  - Stub incorrectly declared return type as `bool`
-  - Actual runtime returns `tuple[bool, str | None]` where second element is error message
-  - Updated all 1062 generated `.pyi` stub files with correct signature
-  - Fixes Pylance error "bool is not iterable" when unpacking validation result
+fgt = FortiOS(host="...", token="...", response_mode="object")  # Object mode  
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(addr.name)  # Attribute access
 
-- **Bug #28: Added `FortiObject.json` property to stub** (`models.pyi`)
-  - Property was missing from type stubs
-  - Added `@property def json(self) -> dict[str, Any]: ...`
+# ✅ NEW (v0.6.0+):
+fgt = FortiOS(host="...", token="...")  # No response_mode parameter!
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    # Attribute access (recommended)
+    print(addr.name)
+    print(addr.subnet)
+    
+    # Dictionary access still works!
+    print(addr["name"])
+    
+    # Convert to dict when needed
+    addr_dict = addr.dict  # or addr.json or addr.raw
+    print(addr_dict)  # {'name': 'MyAddress', 'subnet': '10.0.0.1/32', ...}
+```
+
+**Why This Change:**
+- 🎯 **Simpler API** - One obvious way to do things (Pythonic!)
+- 🚀 **Better UX** - Choose output format when you need it, not upfront
+- 🧹 **Cleaner codebase** - Eliminated 50% of duplicate classes and type stubs
+- ✨ **More flexible** - Access as object OR dict, convert when needed
+- 📦 **Smaller package** - 22MB smaller distribution size
+
+**Benefits:**
+- ✅ Always get `FortiObject` with full IDE autocomplete
+- ✅ Use `.dict`, `.json`, or `.raw` properties when you need a dictionary
+- ✅ Both `obj.field` and `obj["field"]` work on the same object
+- ✅ No need to choose mode upfront - decide at access time!
+- ✅ 50% reduction in generated code complexity
 
 ### Added
-- **Expanded test suite with 2 new test files (~30 new tests)**
-  - `test_metadata_mixin.py` - 26 tests for `MetadataMixin` methods on endpoint classes
-  - `test_forti_object.py` (updated) - +4 tests for `FortiObject.json` property
+- **Added `pydantic>=2.0` as dependency** - Required for 1,062 generated Pydantic models used for request validation
+
+## [0.5.70] - 2026-01-15
+
+### Changed
+- **BREAKING: Removed `**kwargs` from all endpoint methods**
+  - All query parameters are now explicitly typed in method signatures
+  - Query parameters use `q_` prefix to avoid conflicts with body field parameters (e.g., `q_action`, `q_format`)
+  - Special exclusions: `vdom`, `filter`, `count`, `start` (no `q_` prefix as they never conflict)
+  - Improved IDE autocomplete and type safety
+  - Example: `endpoint.get(q_format="name|id", q_action="move")` instead of `endpoint.get(format="name|id", action="move")`
+
+- **BREAKING: Changed default `response_mode` from `"dict"` to `"object"`**
+  - All GET/PUT/POST/DELETE methods now return `FortiObject` instances by default
+  - For dictionary responses, explicitly pass `response_mode="dict"`
+  - Provides better attribute access: `result.name` instead of `result["name"]`
+
+- **Added `error_mode` and `error_format` parameters to all CRUD methods**
+  - Optional per-call overrides for error handling behavior
+  - Example: `endpoint.get(error_mode="raise", error_format="detailed")`
+
+### Fixed
+- **Eliminated `datetime.utcnow()` deprecation warnings in audit logging**
+  - `SyslogFormatter` now uses timezone-aware UTC timestamps (`datetime.now(timezone.utc)` → `...Z`).
+  - Matches ISO 8601 output while avoiding Python 3.12 deprecation warnings.
+- **Generator metadata now UTC-aware**
+  - Schema downloader uses the same timezone-aware helper for `downloaded_at` and summaries.
+  - Regenerated schemas will embed compliant `...Z` timestamps without deprecation warnings.
+- **Fixed circular imports in monitor/service categories**
+  - Removed duplicate `schema/7.6.5/monitor/monitor/` directory causing circular imports
+  - Generator no longer creates same-name subdirectories (e.g., `monitor/monitor`, `service/service`)
 
 ## [0.5.57] - 2026-01-14
 
-### Added
+### Added (Docs)
 - **Expanded test suite with 8 new test files (~78 new tests)**
   - `test_readonly_cache.py` - 9 tests for module-level cache functions (`hfortix_core.readonly_cache`)
   - `test_debug_session.py` - 6 tests for `DebugSession` class (request tracking)
@@ -364,17 +815,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.51] - 2026-01-12
 
 ### Fixed
-- **Bug #3: Fixed `FortiObject` hyphen-to-underscore attribute access** (`models.py`)
-  - `obj.list_data` returned `None` when key was `"list-data"`
-  - `__getattr__` now tries both `name` and `name.replace('_', '-')` for lookup
-  - Enables Pythonic snake_case access to FortiOS hyphenated field names
-
-- **Bug #4: Fixed `FortiObject.get()` ignoring default value** (`models.py`)
-  - `obj.get("missing", "default")` returned `None` instead of `"default"`
-  - Now checks `if key in self._data` before using attribute access
-  - Returns default when key is not present in data
-
-- **Bug #5: Fixed `to_xml()` producing invalid XML with special characters** (`formatting.py`, `fmt.py`)
+- **BUG #5: Fixed `to_xml()` producing invalid XML with special characters** (`formatting.py`, `fmt.py`)
   - Special characters (`<`, `>`, `&`, `"`, `'`) were not escaped, causing XML parse errors
   - Added `_escape_xml()` helper function that properly escapes all XML special characters
   - Fixed in both `hfortix_fortios/formatting.py` and `hfortix_core/fmt.py`
@@ -411,10 +852,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `test_exceptions.py` (11 tests) - Full exception hierarchy
 
 ### Fixed
-- **Bug #1: Fixed `CEFFormatter` crash when `user_context=None`** (`hfortix_core/audit/formatters.py`)
+- **Fixed `CEFFormatter` crash when `user_context=None`** (`hfortix_core/audit/formatters.py`)
   - `operation.get("user_context", {}).get("username")` crashes if `user_context` is explicitly `None`
   - Changed to `(operation.get("user_context") or {}).get("username")` to handle `None` values
-- **Bug #2: Fixed `StreamHandler` crash with `StringIO` objects** (`hfortix_core/audit/handlers.py`)
+- **Fixed `StreamHandler` crash with `StringIO` objects** (`hfortix_core/audit/handlers.py`)
   - `StringIO` objects don't have a `.name` attribute, causing `AttributeError`
   - Changed `self.stream.name` to `getattr(self.stream, "name", "<unnamed>")` (3 occurrences)
 
@@ -816,7 +1257,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **Fixed stub generator comment truncation causing syntax errors**
   - Added `sanitize_comment` filter to properly truncate help text in `.pyi` stubs
-  - Prevents broken comments like `# Sample one packet every configured number of packets (1 -` 
+  - Prevents broken comments like `# Sample one packet every configured number of packets (1 -`
   - Comments now safely truncate without breaking parentheses or special characters
   - Fixes Pylance failing to parse endpoints like `system.interface` due to syntax errors
 

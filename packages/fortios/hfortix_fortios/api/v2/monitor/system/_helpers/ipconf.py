@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "devs",  # 
+    "ipaddr",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "devs": "array",  # 
+    "ipaddr": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +183,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/ipconf",
     "help": "Determine if there is an IP conflict for a specific IP using ARP.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 2,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

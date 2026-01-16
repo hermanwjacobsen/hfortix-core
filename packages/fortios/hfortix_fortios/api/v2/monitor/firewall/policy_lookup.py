@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,28 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ipv6: bool | None = None,
+        srcintf: str | None = None,
+        sourceport: int | None = None,
+        sourceip: str | None = None,
+        protocol: str | None = None,
+        dest: str | None = None,
+        destport: int | None = None,
+        icmptype: int | None = None,
+        icmpcode: int | None = None,
+        policy_type: Literal["*policy", "proxy"] | None = None,
+        auth_type: Literal["user", "group", "saml", "ldap"] | None = None,
+        user_group: list[str] | None = None,
+        server_name: str | None = None,
+        user_db: str | None = None,
+        group_attr_type: Literal["*name", "id"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/policy_lookup configuration.
@@ -100,7 +114,21 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
         Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ipv6: Perform an IPv6 lookup?
+            srcintf: Source interface.
+            sourceport: Source port.
+            sourceip: Source IP.
+            protocol: Protocol.
+            dest: Destination IP/FQDN.
+            destport: Destination port.
+            icmptype: ICMP type.
+            icmpcode: ICMP code.
+            policy_type: Policy type. [*policy | proxy]
+            auth_type: Authentication type. [user | group | saml | ldap] Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            user_group: List of remote user groups. ['cn=remote desktop users,cn=builtin,dc=devqa,dc=lab','cn=domain users,cn=users,dc=devqa,dc=lab', ...] Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            server_name: Remote user/group server name. Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            user_db: Authentication server to contain user information.
+            group_attr_type: Remote user group attribute type. [*name | id]
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -117,12 +145,12 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -167,17 +195,42 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
+        if ipv6 is not None:
+            params["ipv6"] = ipv6
+        if srcintf is not None:
+            params["srcintf"] = srcintf
+        if sourceport is not None:
+            params["sourceport"] = sourceport
+        if sourceip is not None:
+            params["sourceip"] = sourceip
+        if protocol is not None:
+            params["protocol"] = protocol
+        if dest is not None:
+            params["dest"] = dest
+        if destport is not None:
+            params["destport"] = destport
+        if icmptype is not None:
+            params["icmptype"] = icmptype
+        if icmpcode is not None:
+            params["icmpcode"] = icmpcode
+        if policy_type is not None:
+            params["policy_type"] = policy_type
+        if auth_type is not None:
+            params["auth_type"] = auth_type
+        if user_group is not None:
+            params["user_group"] = user_group
+        if server_name is not None:
+            params["server_name"] = server_name
+        if user_db is not None:
+            params["user_db"] = user_db
+        if group_attr_type is not None:
+            params["group_attr_type"] = group_attr_type
         
-        if name:
-            endpoint = f"/firewall/policy-lookup/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/policy-lookup"
-            unwrap_single = False
+        endpoint = "/firewall/policy-lookup"
+        unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
 
@@ -212,20 +265,35 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
             >>> if not fgt.api.monitor.firewall_policy_lookup.exists(name="myobj"):
             ...     fgt.api.monitor.firewall_policy_lookup.post(payload_dict=data)
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/firewall/policy-lookup"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "monitor",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+            
+            if isinstance(result, dict):
+                # Synchronous response - check status
+                return result.get("status") == "success"
+            else:
+                # Asynchronous response
+                async def _check() -> bool:
+                    r = await result
+                    return r.get("status") == "success"
+                return _check()
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 

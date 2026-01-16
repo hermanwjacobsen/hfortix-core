@@ -1,9 +1,81 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ThreatWeightWebItem(TypedDict, total=False):
+    """Type hints for web table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - category: int
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
+    **Example:**
+        entry: ThreatWeightWebItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    category: int  # Threat weight score for web category filtering mat | Default: 0 | Min: 0 | Max: 255
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for web category filtering mat | Default: low
+
+
+class ThreatWeightGeolocationItem(TypedDict, total=False):
+    """Type hints for geolocation table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - country: str
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
+    **Example:**
+        entry: ThreatWeightGeolocationItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    country: str  # Country code. | MaxLen: 2
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Geolocation-based events. | Default: low
+
+
+class ThreatWeightApplicationItem(TypedDict, total=False):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - category: int
+        - level: "disable" | "low" | "medium" | "high" | "critical"
+    
+    **Example:**
+        entry: ThreatWeightApplicationItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
+    category: int  # Application category. | Default: 0 | Min: 0 | Max: 65535
+    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Application events. | Default: low
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,49 +98,13 @@ class ThreatWeightPayload(TypedDict, total=False):
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for detected botnet connection | Default: critical
     malware: str  # Anti-virus malware threat weight settings.
     ips: str  # IPS threat weight settings.
-    web: list[dict[str, Any]]  # Web filtering threat weight settings.
-    geolocation: list[dict[str, Any]]  # Geolocation-based threat weight settings.
-    application: list[dict[str, Any]]  # Application-control threat weight settings.
+    web: list[ThreatWeightWebItem]  # Web filtering threat weight settings.
+    geolocation: list[ThreatWeightGeolocationItem]  # Geolocation-based threat weight settings.
+    application: list[ThreatWeightApplicationItem]  # Application-control threat weight settings.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ThreatWeightWebItem(TypedDict):
-    """Type hints for web table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    category: int  # Threat weight score for web category filtering mat | Default: 0 | Min: 0 | Max: 255
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for web category filtering mat | Default: low
-
-
-class ThreatWeightGeolocationItem(TypedDict):
-    """Type hints for geolocation table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    country: str  # Country code. | MaxLen: 2
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Geolocation-based events. | Default: low
-
-
-class ThreatWeightApplicationItem(TypedDict):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    category: int  # Application category. | Default: 0 | Min: 0 | Max: 65535
-    level: Literal["disable", "low", "medium", "high", "critical"]  # Threat weight score for Application events. | Default: low
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ThreatWeightWebObject:
@@ -85,14 +121,33 @@ class ThreatWeightWebObject:
     # Threat weight score for web category filtering matches. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -110,14 +165,33 @@ class ThreatWeightGeolocationObject:
     # Threat weight score for Geolocation-based events. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -135,14 +209,34 @@ class ThreatWeightApplicationObject:
     # Threat weight score for Application events. | Default: low
     level: Literal["disable", "low", "medium", "high", "critical"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -198,17 +292,32 @@ class ThreatWeightObject:
     application: list[ThreatWeightApplicationObject]
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> ThreatWeightPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class ThreatWeight:
@@ -219,17 +328,12 @@ class ThreatWeight:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -243,10 +347,9 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -261,10 +364,9 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -278,14 +380,13 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -299,13 +400,9 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ThreatWeightObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -320,12 +417,9 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> ThreatWeightObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -339,29 +433,7 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> ThreatWeightObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -377,10 +449,7 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -397,10 +466,7 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -416,10 +482,7 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
+    ) -> ThreatWeightObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -435,16 +498,27 @@ class ThreatWeight:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ThreatWeightObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -459,14 +533,10 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ThreatWeightObject: ...
     
     @overload
@@ -481,16 +551,13 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -503,16 +570,12 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: ThreatWeightPayload | None = ...,
@@ -524,13 +587,11 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -549,568 +610,41 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class ThreatWeightDictMode:
-    """ThreatWeight endpoint for dict response mode (default for this client).
-    
-    By default returns ThreatWeightResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return ThreatWeightObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class ThreatWeightObjectMode:
-    """ThreatWeight endpoint for object response mode (default for this client).
-    
-    By default returns ThreatWeightObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return ThreatWeightResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> ThreatWeightResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> ThreatWeightObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: ThreatWeightPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
-        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "ThreatWeight",
-    "ThreatWeightDictMode",
-    "ThreatWeightObjectMode",
     "ThreatWeightPayload",
+    "ThreatWeightResponse",
     "ThreatWeightObject",
 ]

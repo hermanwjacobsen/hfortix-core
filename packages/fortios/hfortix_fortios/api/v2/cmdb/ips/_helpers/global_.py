@@ -195,7 +195,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_ips_global_get(
+def validate_ips_global__get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -219,7 +219,7 @@ def validate_ips_global_get(
 # ============================================================================
 
 
-def validate_ips_global_post(
+def validate_ips_global__post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -315,7 +315,7 @@ def validate_ips_global_post(
 # ============================================================================
 
 
-def validate_ips_global_put(
+def validate_ips_global__put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

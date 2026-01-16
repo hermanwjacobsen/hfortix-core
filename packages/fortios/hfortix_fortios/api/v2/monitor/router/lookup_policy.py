@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,20 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ipv6: bool | None = None,
+        destination: str | None = None,
+        source: str | None = None,
+        destination_port: int | None = None,
+        source_port: int | None = None,
+        interface_name: str | None = None,
+        protocol_number: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/lookup_policy configuration.
@@ -100,7 +106,13 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
         Performs a route lookup by querying the policy routing table.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ipv6: Perform an IPv6 lookup.
+            destination: Destination IP/FQDN.
+            source: Source IP/FQDN.
+            destination_port: Destination Port.
+            source_port: Source Port.
+            interface_name: Incoming Interface.
+            protocol_number: IP Protocol Number.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -117,12 +129,12 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -167,17 +179,26 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
+        if ipv6 is not None:
+            params["ipv6"] = ipv6
+        if destination is not None:
+            params["destination"] = destination
+        if source is not None:
+            params["source"] = source
+        if destination_port is not None:
+            params["destination_port"] = destination_port
+        if source_port is not None:
+            params["source_port"] = source_port
+        if interface_name is not None:
+            params["interface_name"] = interface_name
+        if protocol_number is not None:
+            params["protocol_number"] = protocol_number
         
-        if name:
-            endpoint = f"/router/lookup-policy/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/router/lookup-policy"
-            unwrap_single = False
+        endpoint = "/router/lookup-policy"
+        unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
 
@@ -212,20 +233,35 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
             >>> if not fgt.api.monitor.router_lookup_policy.exists(name="myobj"):
             ...     fgt.api.monitor.router_lookup_policy.post(payload_dict=data)
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/router/lookup-policy"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "monitor",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+            
+            if isinstance(result, dict):
+                # Synchronous response - check status
+                return result.get("status") == "success"
+            else:
+                # Asynchronous response
+                async def _check() -> bool:
+                    r = await result
+                    return r.get("status") == "success"
+                return _check()
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 

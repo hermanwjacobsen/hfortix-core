@@ -27,7 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -39,6 +39,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -86,9 +87,8 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/timezone configuration.
@@ -114,12 +114,12 @@ class Timezone(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -164,14 +164,12 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         cache_key = f"cmdb/system/timezone"
         
         # Only use cache for full list queries (no identifier, no filters)
-        is_list_query = name is None and not filter and not payload_dict and not kwargs
+        is_list_query = name is None and not filter and not payload_dict
         
         if is_list_query:
             cached_data = readonly_cache.get(cache_key)
             if cached_data is not None:
                 # Return cached data
-                if raw_json:
-                    return cached_data
                 return cached_data
         
         params = payload_dict.copy() if payload_dict else {}
@@ -185,17 +183,16 @@ class Timezone(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = "/system/timezone/" + str(name)
+            endpoint = "/system/timezone/" + quote_path_param(name)
             unwrap_single = True
         else:
             endpoint = "/system/timezone"
             unwrap_single = False
         
-        params.update(kwargs)
         
         # Fetch data and cache if this is a list query
         response = self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
         
         # Cache the response for list queries
@@ -254,10 +251,13 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
+        q_action: Literal["move"] | None = None,
+        q_before: str | None = None,
+        q_after: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Update existing system/timezone object.
@@ -268,12 +268,11 @@ class Timezone(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Database name of a timezone.
             vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
 
         Raises:
             ValueError: If name is missing from payload
@@ -317,10 +316,21 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/system/timezone/" + str(name_value)
+        endpoint = "/system/timezone/" + quote_path_param(name_value)
 
+        # Add explicit query parameters for PUT
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_before is not None:
+            params["before"] = q_before
+        if q_after is not None:
+            params["after"] = q_after
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -332,10 +342,12 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
+        q_action: Literal["clone"] | None = None,
+        q_nkey: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Create new system/timezone object.
@@ -346,12 +358,11 @@ class Timezone(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Database name of a timezone.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict containing created object with assigned name.
+            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
 
         Examples:
             >>> # Create using individual parameters
@@ -395,8 +406,18 @@ class Timezone(CRUDEndpoint, MetadataMixin):
             )
 
         endpoint = "/system/timezone"
+        
+        # Add explicit query parameters for POST
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_nkey is not None:
+            params["nkey"] = q_nkey
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -407,10 +428,10 @@ class Timezone(CRUDEndpoint, MetadataMixin):
     def delete(
         self,
         name: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Delete system/timezone object.
@@ -420,12 +441,11 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         Args:
             name: Primary key identifier
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is not provided
@@ -444,10 +464,15 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/system/timezone/" + str(name)
+        endpoint = "/system/timezone/" + quote_path_param(name)
 
+        # Add explicit query parameters for DELETE
+        params: dict[str, Any] = {}
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, params=params, vdom=vdom
         )
 
     def exists(
@@ -484,7 +509,8 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        response = self.get(vdom=vdom, raw_json=True)
+        result = self.get(vdom=vdom)
+        response = result.raw if hasattr(result, 'raw') else result
         
         if isinstance(response, dict):
             # Synchronous response
@@ -523,8 +549,8 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -537,12 +563,10 @@ class Timezone(CRUDEndpoint, MetadataMixin):
             payload_dict: Resource data including name (primary key)
             name: Field name
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            API response dictionary
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is missing from payload
@@ -590,10 +614,10 @@ class Timezone(CRUDEndpoint, MetadataMixin):
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -1,9 +1,15 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -80,9 +86,10 @@ class Phase2Payload(TypedDict, total=False):
     dst_subnet6: str  # Remote proxy ID IPv6 subnet. | Default: ::/0
     dst_port: int  # Quick mode destination port | Default: 0 | Min: 0 | Max: 65535
 
-# Nested TypedDicts for table field children (dict mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
-# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -262,16 +269,30 @@ class Phase2Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> Phase2Payload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Phase2:
@@ -283,17 +304,12 @@ class Phase2:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -307,10 +323,9 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Phase2Response: ...
+    ) -> Phase2Object: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -325,10 +340,9 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Phase2Response: ...
+    ) -> Phase2Object: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -342,14 +356,13 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[Phase2Response]: ...
+    ) -> FortiObjectList[Phase2Object]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -363,13 +376,9 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase2Object: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -384,12 +393,9 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> Phase2Object: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -403,29 +409,7 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[Phase2Object]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[Phase2Object]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -441,10 +425,7 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Phase2Response: ...
+    ) -> Phase2Object: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -461,10 +442,7 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Phase2Response: ...
+    ) -> Phase2Object: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -480,10 +458,7 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[Phase2Response]: ...
+    ) -> FortiObjectList[Phase2Object]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -499,16 +474,27 @@ class Phase2:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> Phase2Object | list[Phase2Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -568,10 +554,6 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase2Object: ...
     
     @overload
@@ -631,12 +613,9 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -694,12 +673,8 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: Phase2Payload | None = ...,
@@ -756,9 +731,7 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -818,10 +791,6 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase2Object: ...
     
     @overload
@@ -881,12 +850,9 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -944,12 +910,8 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: Phase2Payload | None = ...,
@@ -1006,9 +968,7 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -1016,10 +976,6 @@ class Phase2:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Phase2Object: ...
     
     @overload
@@ -1027,30 +983,21 @@ class Phase2:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1114,1665 +1061,37 @@ class Phase2:
         dst_subnet6: str | None = ...,
         dst_port: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class Phase2DictMode:
-    """Phase2 endpoint for dict response mode (default for this client).
-    
-    By default returns Phase2Response (TypedDict).
-    Can be overridden per-call with response_mode="object" to return Phase2Object.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[Phase2Object]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> Phase2Response: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Phase2Response]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class Phase2ObjectMode:
-    """Phase2 endpoint for object response mode (default for this client).
-    
-    By default returns Phase2Object (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return Phase2Response (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> Phase2Response: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[Phase2Response]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Phase2Object]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Phase2Object: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Phase2Payload | None = ...,
-        name: str | None = ...,
-        phase1name: str | None = ...,
-        dhcp_ipsec: Literal["enable", "disable"] | None = ...,
-        use_natip: Literal["enable", "disable"] | None = ...,
-        selector_match: Literal["exact", "subset", "auto"] | None = ...,
-        proposal: Literal["null-md5", "null-sha1", "null-sha256", "null-sha384", "null-sha512", "des-null", "des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-null", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-null", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm", "aes192-null", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-null", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm", "chacha20poly1305", "aria128-null", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-null", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-null", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-null", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
-        pfs: Literal["enable", "disable"] | None = ...,
-        dhgrp: Literal["1", "2", "5", "14", "15", "16", "17", "18", "19", "20", "21", "27", "28", "29", "30", "31", "32"] | list[str] | None = ...,
-        addke1: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke2: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke3: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke4: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke5: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke6: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        addke7: Literal["0", "35", "36", "37", "1080", "1081", "1082", "1083", "1084", "1085", "1089", "1090", "1091", "1092", "1093", "1094"] | list[str] | None = ...,
-        replay: Literal["enable", "disable"] | None = ...,
-        keepalive: Literal["enable", "disable"] | None = ...,
-        auto_negotiate: Literal["enable", "disable"] | None = ...,
-        add_route: Literal["phase1", "enable", "disable"] | None = ...,
-        inbound_dscp_copy: Literal["phase1", "enable", "disable"] | None = ...,
-        keylifeseconds: int | None = ...,
-        keylifekbs: int | None = ...,
-        keylife_type: Literal["seconds", "kbs", "both"] | None = ...,
-        single_source: Literal["enable", "disable"] | None = ...,
-        route_overlap: Literal["use-old", "use-new", "allow"] | None = ...,
-        encapsulation: Literal["tunnel-mode", "transport-mode"] | None = ...,
-        l2tp: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        initiator_ts_narrow: Literal["enable", "disable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
-        diffservcode: str | None = ...,
-        protocol: int | None = ...,
-        src_name: str | None = ...,
-        src_name6: str | None = ...,
-        src_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        src_start_ip: str | None = ...,
-        src_start_ip6: str | None = ...,
-        src_end_ip: str | None = ...,
-        src_end_ip6: str | None = ...,
-        src_subnet: str | None = ...,
-        src_subnet6: str | None = ...,
-        src_port: int | None = ...,
-        dst_name: str | None = ...,
-        dst_name6: str | None = ...,
-        dst_addr_type: Literal["subnet", "range", "ip", "name"] | None = ...,
-        dst_start_ip: str | None = ...,
-        dst_start_ip6: str | None = ...,
-        dst_end_ip: str | None = ...,
-        dst_end_ip6: str | None = ...,
-        dst_subnet: str | None = ...,
-        dst_subnet6: str | None = ...,
-        dst_port: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Phase2",
-    "Phase2DictMode",
-    "Phase2ObjectMode",
     "Phase2Payload",
+    "Phase2Response",
     "Phase2Object",
 ]

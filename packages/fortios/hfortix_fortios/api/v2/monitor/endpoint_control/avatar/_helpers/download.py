@@ -54,6 +54,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "uid": "string",  # 
+    "user": "string",  # 
+    "fingerprint": "string",  # 
+    "default": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +183,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "endpoint-control/avatar/download",
     "help": "Download an endpoint avatar image.",
-    "total_fields": 0,
+    "total_fields": 4,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

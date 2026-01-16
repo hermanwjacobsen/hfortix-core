@@ -54,6 +54,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "scope": "string",  # 
+    "ipv6": "boolean",  # 
+    "interface": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +182,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/dhcp",
     "help": "List all DHCP and DHCPv6 leases.",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -54,6 +54,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ipv6": "boolean",  # 
+    "fqdn": "array",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +181,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/resolve-fqdn",
     "help": "Resolves the provided FQDNs to FQDN -> IP mappings.",
-    "total_fields": 0,
+    "total_fields": 2,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

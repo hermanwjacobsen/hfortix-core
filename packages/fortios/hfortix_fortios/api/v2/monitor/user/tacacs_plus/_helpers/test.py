@@ -54,6 +54,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "ordinal": "string",  # 
+    "server": "string",  # 
+    "secret": "string",  # 
+    "port": "int",  # 
+    "source_ip": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +185,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/tacacs-plus/test",
     "help": "Test the connectivity of the given TACACS+ server.",
-    "total_fields": 0,
+    "total_fields": 6,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

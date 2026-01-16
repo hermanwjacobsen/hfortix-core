@@ -7,89 +7,74 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Literal
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-
-class ProfilePdelayReqIntervalEnum(str, Enum):
+class ProfilePdelay_req_intervalEnum(str, Enum):
     """Allowed values for pdelay_req_interval field."""
-    VALUE_1SEC = "1sec"
-    VALUE_2SEC = "2sec"
-    VALUE_4SEC = "4sec"
-    VALUE_8SEC = "8sec"
-    VALUE_16SEC = "16sec"
-    VALUE_32SEC = "32sec"
-
+    1SEC = "1sec"    2SEC = "2sec"    4SEC = "4sec"    8SEC = "8sec"    16SEC = "16sec"    32SEC = "32sec"
 
 # ============================================================================
 # Main Model
 # ============================================================================
 
-
 class ProfileModel(BaseModel):
     """
     Pydantic model for switch_controller/ptp/profile configuration.
-
+    
     Global PTP profile.
-
-    Validation Rules:
-        - name: max_length=63 pattern=
-        - description: max_length=63 pattern=
-        - mode: pattern=
-        - ptp_profile: pattern=
-        - transport: pattern=
-        - domain: min=0 max=255 pattern=
-        - pdelay_req_interval: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - mode: pattern=        - ptp_profile: pattern=        - transport: pattern=        - domain: min=0 max=255 pattern=        - pdelay_req_interval: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=63, default="", description="Profile name.")
-    description: str | None = Field(max_length=63, default="", description="Description.")
-    mode: Literal["transparent-e2e", "transparent-p2p"] | None = Field(default="transparent-e2e", description="Select PTP mode.")
-    ptp_profile: Literal["C37.238-2017"] | None = Field(default="C37.238-2017", description="Configure PTP power profile.")
-    transport: Literal["l2-mcast"] | None = Field(default="l2-mcast", description="Configure PTP transport mode.")
-    domain: int | None = Field(ge=0, le=255, default=254, description="Configure PTP domain value (0 - 255, default = 254).")
-    pdelay_req_interval: str | ProfilePdelayReqIntervalEnum | None = Field(default="1sec", description="Configure PTP peer delay request interval.")
+    
+    name: str = Field(max_length=63, default="", description="Profile name.")    
+    description: str | None = Field(max_length=63, default="", description="Description.")    
+    mode: Literal["transparent-e2e", "transparent-p2p"] | None = Field(default="transparent-e2e", description="Select PTP mode.")    
+    ptp_profile: Literal["C37.238-2017"] | None = Field(default="C37.238-2017", description="Configure PTP power profile.")    
+    transport: Literal["l2-mcast"] | None = Field(default="l2-mcast", description="Configure PTP transport mode.")    
+    domain: int | None = Field(ge=0, le=255, default=254, description="Configure PTP domain value (0 - 255, default = 254).")    
+    pdelay_req_interval: PdelayReqIntervalEnum | None = Field(default="1sec", description="Configure PTP peer delay request interval.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "ProfileModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -99,8 +84,7 @@ class ProfileModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-ProfileModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -113,5 +97,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:38.920223Z
+# Generated: 2026-01-16T19:53:53.021451Z
 # ============================================================================

@@ -1,9 +1,33 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingsGuidefaultpolicycolumnsItem(TypedDict, total=False):
+    """Type hints for gui-default-policy-columns table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: SettingsGuidefaultpolicycolumnsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Select column name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -59,7 +83,7 @@ class SettingsPayload(TypedDict, total=False):
     dhcp_server_ip: list[dict[str, Any]]  # DHCP Server IPv4 address.
     dhcp6_server_ip: list[dict[str, Any]]  # DHCPv6 server IPv6 address.
     central_nat: Literal["enable", "disable"]  # Enable/disable central NAT. | Default: disable
-    gui_default_policy_columns: list[dict[str, Any]]  # Default columns to display for policy lists on GUI
+    gui_default_policy_columns: list[SettingsGuidefaultpolicycolumnsItem]  # Default columns to display for policy lists on GUI
     lldp_reception: Literal["enable", "disable", "global"]  # Enable/disable Link Layer Discovery Protocol | Default: global
     lldp_transmission: Literal["enable", "disable", "global"]  # Enable/disable Link Layer Discovery Protocol | Default: global
     link_down_access: Literal["enable", "disable"]  # Enable/disable link down access traffic. | Default: enable
@@ -166,19 +190,9 @@ class SettingsPayload(TypedDict, total=False):
     internet_service_database_cache: Literal["disable", "enable"]  # Enable/disable Internet Service database caching. | Default: disable
     internet_service_app_ctrl_size: int  # Maximum number of tuple entries | Default: 32768 | Min: 0 | Max: 4294967295
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingsGuidefaultpolicycolumnsItem(TypedDict):
-    """Type hints for gui-default-policy-columns table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Select column name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingsGuidefaultpolicycolumnsObject:
@@ -191,14 +205,34 @@ class SettingsGuidefaultpolicycolumnsObject:
     # Select column name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -647,17 +681,32 @@ class SettingsObject:
     internet_service_app_ctrl_size: int
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> SettingsPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Settings:
@@ -668,17 +717,12 @@ class Settings:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -692,10 +736,9 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -710,10 +753,9 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -727,14 +769,13 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -748,13 +789,9 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> SettingsObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -769,12 +806,9 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> SettingsObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -788,29 +822,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> SettingsObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -826,10 +838,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -846,10 +855,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -865,10 +871,7 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
+    ) -> SettingsObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -884,16 +887,27 @@ class Settings:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingsObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -936,7 +950,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1043,10 +1057,6 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> SettingsObject: ...
     
     @overload
@@ -1089,7 +1099,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1196,12 +1206,9 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -1242,7 +1249,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1349,12 +1356,8 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
@@ -1394,7 +1397,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1501,9 +1504,7 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1550,7 +1551,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -1657,2005 +1658,37 @@ class Settings:
         internet_service_database_cache: Literal["disable", "enable"] | None = ...,
         internet_service_app_ctrl_size: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class SettingsDictMode:
-    """Settings endpoint for dict response mode (default for this client).
-    
-    By default returns SettingsResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return SettingsObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class SettingsObjectMode:
-    """Settings endpoint for object response mode (default for this client).
-    
-    By default returns SettingsObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return SettingsResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> SettingsResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> SettingsObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: SettingsPayload | None = ...,
-        comments: str | None = ...,
-        vdom_type: Literal["traffic", "lan-extension", "admin"] | None = ...,
-        lan_extension_controller_addr: str | None = ...,
-        lan_extension_controller_port: int | None = ...,
-        opmode: Literal["nat", "transparent"] | None = ...,
-        ngfw_mode: Literal["profile-based", "policy-based"] | None = ...,
-        http_external_dest: Literal["fortiweb", "forticache"] | None = ...,
-        firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = ...,
-        manageip: str | None = ...,
-        gateway: str | None = ...,
-        ip: str | None = ...,
-        manageip6: str | None = ...,
-        gateway6: str | None = ...,
-        ip6: str | None = ...,
-        device: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        bfd_desired_min_tx: int | None = ...,
-        bfd_required_min_rx: int | None = ...,
-        bfd_detect_mult: int | None = ...,
-        bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = ...,
-        utf8_spam_tagging: Literal["enable", "disable"] | None = ...,
-        wccp_cache_engine: Literal["enable", "disable"] | None = ...,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = ...,
-        vpn_stats_period: int | None = ...,
-        v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = ...,
-        mac_ttl: int | None = ...,
-        fw_session_hairpin: Literal["enable", "disable"] | None = ...,
-        prp_trailer_action: Literal["enable", "disable"] | None = ...,
-        snat_hairpin_traffic: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy: Literal["enable", "disable"] | None = ...,
-        dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        dhcp_proxy_interface: str | None = ...,
-        dhcp_proxy_vrf_select: int | None = ...,
-        dhcp_server_ip: str | list[str] | None = ...,
-        dhcp6_server_ip: str | list[str] | None = ...,
-        central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = ...,
-        lldp_reception: Literal["enable", "disable", "global"] | None = ...,
-        lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
-        link_down_access: Literal["enable", "disable"] | None = ...,
-        nat46_generate_ipv6_fragment_header: Literal["enable", "disable"] | None = ...,
-        nat46_force_ipv4_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        nat64_force_ipv6_packet_forwarding: Literal["enable", "disable"] | None = ...,
-        detect_unknown_esp: Literal["enable", "disable"] | None = ...,
-        intree_ses_best_route: Literal["force", "disable"] | None = ...,
-        auxiliary_session: Literal["enable", "disable"] | None = ...,
-        asymroute: Literal["enable", "disable"] | None = ...,
-        asymroute_icmp: Literal["enable", "disable"] | None = ...,
-        tcp_session_without_syn: Literal["enable", "disable"] | None = ...,
-        ses_denied_traffic: Literal["enable", "disable"] | None = ...,
-        ses_denied_multicast_traffic: Literal["enable", "disable"] | None = ...,
-        strict_src_check: Literal["enable", "disable"] | None = ...,
-        allow_linkdown_path: Literal["enable", "disable"] | None = ...,
-        asymroute6: Literal["enable", "disable"] | None = ...,
-        asymroute6_icmp: Literal["enable", "disable"] | None = ...,
-        sctp_session_without_init: Literal["enable", "disable"] | None = ...,
-        sip_expectation: Literal["enable", "disable"] | None = ...,
-        sip_nat_trace: Literal["enable", "disable"] | None = ...,
-        h323_direct_model: Literal["disable", "enable"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sip_tcp_port: int | list[int] | None = ...,
-        sip_udp_port: int | list[int] | None = ...,
-        sip_ssl_port: int | None = ...,
-        sccp_port: int | None = ...,
-        multicast_forward: Literal["enable", "disable"] | None = ...,
-        multicast_ttl_notchange: Literal["enable", "disable"] | None = ...,
-        multicast_skip_policy: Literal["enable", "disable"] | None = ...,
-        allow_subnet_overlap: Literal["enable", "disable"] | None = ...,
-        deny_tcp_with_icmp: Literal["enable", "disable"] | None = ...,
-        ecmp_max_paths: int | None = ...,
-        discovered_device_timeout: int | None = ...,
-        email_portal_check_dns: Literal["disable", "enable"] | None = ...,
-        default_voip_alg_mode: Literal["proxy-based", "kernel-helper-based"] | None = ...,
-        gui_icap: Literal["enable", "disable"] | None = ...,
-        gui_implicit_policy: Literal["enable", "disable"] | None = ...,
-        gui_dns_database: Literal["enable", "disable"] | None = ...,
-        gui_load_balance: Literal["enable", "disable"] | None = ...,
-        gui_multicast_policy: Literal["enable", "disable"] | None = ...,
-        gui_dos_policy: Literal["enable", "disable"] | None = ...,
-        gui_object_colors: Literal["enable", "disable"] | None = ...,
-        gui_route_tag_address_creation: Literal["enable", "disable"] | None = ...,
-        gui_voip_profile: Literal["enable", "disable"] | None = ...,
-        gui_ap_profile: Literal["enable", "disable"] | None = ...,
-        gui_security_profile_group: Literal["enable", "disable"] | None = ...,
-        gui_local_in_policy: Literal["enable", "disable"] | None = ...,
-        gui_wanopt_cache: Literal["enable", "disable"] | None = ...,
-        gui_explicit_proxy: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_routing: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_personal_bookmarks: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn_realms: Literal["enable", "disable"] | None = ...,
-        gui_policy_based_ipsec: Literal["enable", "disable"] | None = ...,
-        gui_threat_weight: Literal["enable", "disable"] | None = ...,
-        gui_spamfilter: Literal["enable", "disable"] | None = ...,
-        gui_file_filter: Literal["enable", "disable"] | None = ...,
-        gui_application_control: Literal["enable", "disable"] | None = ...,
-        gui_ips: Literal["enable", "disable"] | None = ...,
-        gui_dhcp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_vpn: Literal["enable", "disable"] | None = ...,
-        gui_sslvpn: Literal["enable", "disable"] | None = ...,
-        gui_wireless_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_wireless_features: Literal["enable", "disable"] | None = ...,
-        gui_switch_controller: Literal["enable", "disable"] | None = ...,
-        gui_fortiap_split_tunneling: Literal["enable", "disable"] | None = ...,
-        gui_webfilter_advanced: Literal["enable", "disable"] | None = ...,
-        gui_traffic_shaping: Literal["enable", "disable"] | None = ...,
-        gui_wan_load_balancing: Literal["enable", "disable"] | None = ...,
-        gui_antivirus: Literal["enable", "disable"] | None = ...,
-        gui_webfilter: Literal["enable", "disable"] | None = ...,
-        gui_videofilter: Literal["enable", "disable"] | None = ...,
-        gui_dnsfilter: Literal["enable", "disable"] | None = ...,
-        gui_waf_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_profile: Literal["enable", "disable"] | None = ...,
-        gui_dlp_advanced: Literal["enable", "disable"] | None = ...,
-        gui_virtual_patch_profile: Literal["enable", "disable"] | None = ...,
-        gui_casb: Literal["enable", "disable"] | None = ...,
-        gui_fortiextender_controller: Literal["enable", "disable"] | None = ...,
-        gui_advanced_policy: Literal["enable", "disable"] | None = ...,
-        gui_allow_unnamed_policy: Literal["enable", "disable"] | None = ...,
-        gui_email_collection: Literal["enable", "disable"] | None = ...,
-        gui_multiple_interface_policy: Literal["enable", "disable"] | None = ...,
-        gui_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        gui_ztna: Literal["enable", "disable"] | None = ...,
-        gui_ot: Literal["enable", "disable"] | None = ...,
-        gui_dynamic_device_os_id: Literal["enable", "disable"] | None = ...,
-        gui_gtp: Literal["enable", "disable"] | None = ...,
-        location_id: str | None = ...,
-        ike_session_resume: Literal["enable", "disable"] | None = ...,
-        ike_quick_crash_detect: Literal["enable", "disable"] | None = ...,
-        ike_dn_format: Literal["with-space", "no-space"] | None = ...,
-        ike_port: int | None = ...,
-        ike_tcp_port: int | None = ...,
-        ike_policy_route: Literal["enable", "disable"] | None = ...,
-        ike_detailed_event_logs: Literal["disable", "enable"] | None = ...,
-        block_land_attack: Literal["disable", "enable"] | None = ...,
-        default_app_port_as_service: Literal["enable", "disable"] | None = ...,
-        fqdn_session_check: Literal["enable", "disable"] | None = ...,
-        ext_resource_session_check: Literal["enable", "disable"] | None = ...,
-        dyn_addr_session_check: Literal["enable", "disable"] | None = ...,
-        default_policy_expiry_days: int | None = ...,
-        gui_enforce_change_summary: Literal["disable", "require", "optional"] | None = ...,
-        internet_service_database_cache: Literal["disable", "enable"] | None = ...,
-        internet_service_app_ctrl_size: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Settings",
-    "SettingsDictMode",
-    "SettingsObjectMode",
     "SettingsPayload",
+    "SettingsResponse",
     "SettingsObject",
 ]

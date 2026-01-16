@@ -1,9 +1,399 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ReplacemsgGroupMailItem(TypedDict, total=False):
+    """Type hints for mail table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupMailItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupHttpItem(TypedDict, total=False):
+    """Type hints for http table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupHttpItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupWebproxyItem(TypedDict, total=False):
+    """Type hints for webproxy table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupWebproxyItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupFtpItem(TypedDict, total=False):
+    """Type hints for ftp table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupFtpItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupFortiguardwfItem(TypedDict, total=False):
+    """Type hints for fortiguard-wf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupFortiguardwfItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupSpamItem(TypedDict, total=False):
+    """Type hints for spam table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupSpamItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupAlertmailItem(TypedDict, total=False):
+    """Type hints for alertmail table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupAlertmailItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupAdminItem(TypedDict, total=False):
+    """Type hints for admin table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupAdminItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupAuthItem(TypedDict, total=False):
+    """Type hints for auth table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupAuthItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupSslvpnItem(TypedDict, total=False):
+    """Type hints for sslvpn table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupSslvpnItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupNacquarItem(TypedDict, total=False):
+    """Type hints for nac-quar table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupNacquarItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupTrafficquotaItem(TypedDict, total=False):
+    """Type hints for traffic-quota table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupTrafficquotaItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupUtmItem(TypedDict, total=False):
+    """Type hints for utm table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupUtmItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupCustommessageItem(TypedDict, total=False):
+    """Type hints for custom-message table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupCustommessageItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupIcapItem(TypedDict, total=False):
+    """Type hints for icap table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupIcapItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+class ReplacemsgGroupAutomationItem(TypedDict, total=False):
+    """Type hints for automation table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
+    **Example:**
+        entry: ReplacemsgGroupAutomationItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    msg_type: str  # Message type. | MaxLen: 28
+    buffer: str  # Message string. | MaxLen: 32768
+    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
+    format: Literal["none", "text", "html"]  # Format flag. | Default: none
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,234 +411,26 @@ class ReplacemsgGroupPayload(TypedDict, total=False):
     name: str  # Group name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     group_type: Literal["default", "utm", "auth"]  # Group type. | Default: default
-    mail: list[dict[str, Any]]  # Replacement message table entries.
-    http: list[dict[str, Any]]  # Replacement message table entries.
-    webproxy: list[dict[str, Any]]  # Replacement message table entries.
-    ftp: list[dict[str, Any]]  # Replacement message table entries.
-    fortiguard_wf: list[dict[str, Any]]  # Replacement message table entries.
-    spam: list[dict[str, Any]]  # Replacement message table entries.
-    alertmail: list[dict[str, Any]]  # Replacement message table entries.
-    admin: list[dict[str, Any]]  # Replacement message table entries.
-    auth: list[dict[str, Any]]  # Replacement message table entries.
-    sslvpn: list[dict[str, Any]]  # Replacement message table entries.
-    nac_quar: list[dict[str, Any]]  # Replacement message table entries.
-    traffic_quota: list[dict[str, Any]]  # Replacement message table entries.
-    utm: list[dict[str, Any]]  # Replacement message table entries.
-    custom_message: list[dict[str, Any]]  # Replacement message table entries.
-    icap: list[dict[str, Any]]  # Replacement message table entries.
-    automation: list[dict[str, Any]]  # Replacement message table entries.
+    mail: list[ReplacemsgGroupMailItem]  # Replacement message table entries.
+    http: list[ReplacemsgGroupHttpItem]  # Replacement message table entries.
+    webproxy: list[ReplacemsgGroupWebproxyItem]  # Replacement message table entries.
+    ftp: list[ReplacemsgGroupFtpItem]  # Replacement message table entries.
+    fortiguard_wf: list[ReplacemsgGroupFortiguardwfItem]  # Replacement message table entries.
+    spam: list[ReplacemsgGroupSpamItem]  # Replacement message table entries.
+    alertmail: list[ReplacemsgGroupAlertmailItem]  # Replacement message table entries.
+    admin: list[ReplacemsgGroupAdminItem]  # Replacement message table entries.
+    auth: list[ReplacemsgGroupAuthItem]  # Replacement message table entries.
+    sslvpn: list[ReplacemsgGroupSslvpnItem]  # Replacement message table entries.
+    nac_quar: list[ReplacemsgGroupNacquarItem]  # Replacement message table entries.
+    traffic_quota: list[ReplacemsgGroupTrafficquotaItem]  # Replacement message table entries.
+    utm: list[ReplacemsgGroupUtmItem]  # Replacement message table entries.
+    custom_message: list[ReplacemsgGroupCustommessageItem]  # Replacement message table entries.
+    icap: list[ReplacemsgGroupIcapItem]  # Replacement message table entries.
+    automation: list[ReplacemsgGroupAutomationItem]  # Replacement message table entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ReplacemsgGroupMailItem(TypedDict):
-    """Type hints for mail table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupHttpItem(TypedDict):
-    """Type hints for http table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupWebproxyItem(TypedDict):
-    """Type hints for webproxy table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupFtpItem(TypedDict):
-    """Type hints for ftp table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupFortiguardwfItem(TypedDict):
-    """Type hints for fortiguard-wf table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupSpamItem(TypedDict):
-    """Type hints for spam table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupAlertmailItem(TypedDict):
-    """Type hints for alertmail table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupAdminItem(TypedDict):
-    """Type hints for admin table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupAuthItem(TypedDict):
-    """Type hints for auth table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupSslvpnItem(TypedDict):
-    """Type hints for sslvpn table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupNacquarItem(TypedDict):
-    """Type hints for nac-quar table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupTrafficquotaItem(TypedDict):
-    """Type hints for traffic-quota table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupUtmItem(TypedDict):
-    """Type hints for utm table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupCustommessageItem(TypedDict):
-    """Type hints for custom-message table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupIcapItem(TypedDict):
-    """Type hints for icap table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-class ReplacemsgGroupAutomationItem(TypedDict):
-    """Type hints for automation table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    msg_type: str  # Message type. | MaxLen: 28
-    buffer: str  # Message string. | MaxLen: 32768
-    header: Literal["none", "http", "8bit"]  # Header flag. | Default: none
-    format_: Literal["none", "text", "html"]  # Format flag. | Default: none
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ReplacemsgGroupMailObject:
@@ -265,16 +447,35 @@ class ReplacemsgGroupMailObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -292,16 +493,35 @@ class ReplacemsgGroupHttpObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -319,16 +539,35 @@ class ReplacemsgGroupWebproxyObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -346,16 +585,35 @@ class ReplacemsgGroupFtpObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -373,16 +631,35 @@ class ReplacemsgGroupFortiguardwfObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -400,16 +677,35 @@ class ReplacemsgGroupSpamObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -427,16 +723,35 @@ class ReplacemsgGroupAlertmailObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -454,16 +769,35 @@ class ReplacemsgGroupAdminObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -481,16 +815,35 @@ class ReplacemsgGroupAuthObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -508,16 +861,35 @@ class ReplacemsgGroupSslvpnObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -535,16 +907,35 @@ class ReplacemsgGroupNacquarObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -562,16 +953,35 @@ class ReplacemsgGroupTrafficquotaObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -589,16 +999,35 @@ class ReplacemsgGroupUtmObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -616,16 +1045,35 @@ class ReplacemsgGroupCustommessageObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -643,16 +1091,35 @@ class ReplacemsgGroupIcapObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -670,16 +1137,36 @@ class ReplacemsgGroupAutomationObject:
     # Header flag. | Default: none
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
-    format_: Literal["none", "text", "html"]
+    format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -761,16 +1248,30 @@ class ReplacemsgGroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> ReplacemsgGroupPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class ReplacemsgGroup:
@@ -782,17 +1283,12 @@ class ReplacemsgGroup:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -806,10 +1302,9 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> ReplacemsgGroupResponse: ...
+    ) -> ReplacemsgGroupObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -824,10 +1319,9 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> ReplacemsgGroupResponse: ...
+    ) -> ReplacemsgGroupObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -841,14 +1335,13 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[ReplacemsgGroupResponse]: ...
+    ) -> FortiObjectList[ReplacemsgGroupObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -862,13 +1355,9 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -883,12 +1372,9 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -902,29 +1388,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[ReplacemsgGroupObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -940,10 +1404,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupResponse: ...
+    ) -> ReplacemsgGroupObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -960,10 +1421,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupResponse: ...
+    ) -> ReplacemsgGroupObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -979,10 +1437,7 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupResponse]: ...
+    ) -> FortiObjectList[ReplacemsgGroupObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -998,16 +1453,27 @@ class ReplacemsgGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ReplacemsgGroupObject | list[ReplacemsgGroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -1017,27 +1483,23 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     @overload
@@ -1047,29 +1509,26 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -1077,55 +1536,49 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -1135,27 +1588,23 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     @overload
@@ -1165,29 +1614,26 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -1195,55 +1641,49 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: ReplacemsgGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -1251,10 +1691,6 @@ class ReplacemsgGroup:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> ReplacemsgGroupObject: ...
     
     @overload
@@ -1262,30 +1698,21 @@ class ReplacemsgGroup:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1299,1022 +1726,54 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class ReplacemsgGroupDictMode:
-    """ReplacemsgGroup endpoint for dict response mode (default for this client).
-    
-    By default returns ReplacemsgGroupResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return ReplacemsgGroupObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class ReplacemsgGroupObjectMode:
-    """ReplacemsgGroup endpoint for object response mode (default for this client).
-    
-    By default returns ReplacemsgGroupObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return ReplacemsgGroupResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[ReplacemsgGroupObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> ReplacemsgGroupObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: ReplacemsgGroupPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "ReplacemsgGroup",
-    "ReplacemsgGroupDictMode",
-    "ReplacemsgGroupObjectMode",
     "ReplacemsgGroupPayload",
+    "ReplacemsgGroupResponse",
     "ReplacemsgGroupObject",
 ]

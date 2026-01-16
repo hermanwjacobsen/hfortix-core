@@ -1,9 +1,53 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GlobalDisablediscoveryItem(TypedDict, total=False):
+    """Type hints for disable-discovery table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: GlobalDisablediscoveryItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # FortiSwitch Serial-number. | MaxLen: 79
+
+
+class GlobalCustomcommandItem(TypedDict, total=False):
+    """Type hints for custom-command table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - command_entry: str
+        - command_name: str
+    
+    **Example:**
+        entry: GlobalCustomcommandItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    command_entry: str  # List of FortiSwitch commands. | MaxLen: 35
+    command_name: str  # Name of custom command to push to all FortiSwitche | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,7 +72,7 @@ class GlobalPayload(TypedDict, total=False):
     vlan_all_mode: Literal["all", "defined"]  # VLAN configuration mode, user-defined-vlans or all | Default: defined
     vlan_optimization: Literal["prune", "configured", "none"]  # FortiLink VLAN optimization. | Default: configured
     vlan_identity: Literal["description", "name"]  # Identity of the VLAN. Commonly used for RADIUS Tun | Default: name
-    disable_discovery: list[dict[str, Any]]  # Prevent this FortiSwitch from discovering.
+    disable_discovery: list[GlobalDisablediscoveryItem]  # Prevent this FortiSwitch from discovering.
     mac_retention_period: int  # Time in hours after which an inactive MAC is remov | Default: 24 | Min: 0 | Max: 168
     default_virtual_switch_vlan: str  # Default VLAN for ports when added to the virtual-s | MaxLen: 15
     dhcp_server_access_list: Literal["enable", "disable"]  # Enable/disable DHCP snooping server access list. | Default: disable
@@ -44,37 +88,16 @@ class GlobalPayload(TypedDict, total=False):
     mac_event_logging: Literal["enable", "disable"]  # Enable/disable MAC address event logging. | Default: disable
     bounce_quarantined_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: disable
     quarantine_mode: Literal["by-vlan", "by-redirect"]  # Quarantine mode. | Default: by-vlan
-    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
-    custom_command: list[dict[str, Any]]  # List of custom commands to be pushed to all FortiS
+    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
+    custom_command: list[GlobalCustomcommandItem]  # List of custom commands to be pushed to all FortiS
     fips_enforce: Literal["disable", "enable"]  # Enable/disable enforcement of FIPS on managed Fort | Default: enable
     firmware_provision_on_authorization: Literal["enable", "disable"]  # Enable/disable automatic provisioning of latest fi | Default: disable
     switch_on_deauth: Literal["no-op", "factory-reset"]  # No-operation/Factory-reset the managed FortiSwitch | Default: no-op
     firewall_auth_user_hold_period: int  # Time period in minutes to hold firewall authentica | Default: 5 | Min: 5 | Max: 1440
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GlobalDisablediscoveryItem(TypedDict):
-    """Type hints for disable-discovery table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # FortiSwitch Serial-number. | MaxLen: 79
-
-
-class GlobalCustomcommandItem(TypedDict):
-    """Type hints for custom-command table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    command_entry: str  # List of FortiSwitch commands. | MaxLen: 35
-    command_name: str  # Name of custom command to push to all FortiSwitche | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GlobalDisablediscoveryObject:
@@ -87,14 +110,33 @@ class GlobalDisablediscoveryObject:
     # FortiSwitch Serial-number. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -110,14 +152,34 @@ class GlobalCustomcommandObject:
     # Name of custom command to push to all FortiSwitches in VDOM. | MaxLen: 35
     command_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -149,7 +211,7 @@ class GlobalResponse(TypedDict):
     mac_event_logging: Literal["enable", "disable"]  # Enable/disable MAC address event logging. | Default: disable
     bounce_quarantined_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: disable
     quarantine_mode: Literal["by-vlan", "by-redirect"]  # Quarantine mode. | Default: by-vlan
-    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
+    update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
     custom_command: list[GlobalCustomcommandItem]  # List of custom commands to be pushed to all FortiS
     fips_enforce: Literal["disable", "enable"]  # Enable/disable enforcement of FIPS on managed Fort | Default: enable
     firmware_provision_on_authorization: Literal["enable", "disable"]  # Enable/disable automatic provisioning of latest fi | Default: disable
@@ -207,7 +269,7 @@ class GlobalObject:
     bounce_quarantined_link: Literal["disable", "enable"]
     # Quarantine mode. | Default: by-vlan
     quarantine_mode: Literal["by-vlan", "by-redirect"]
-    # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l
+    # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
     update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]
     # List of custom commands to be pushed to all FortiSwitches in
     custom_command: list[GlobalCustomcommandObject]
@@ -223,16 +285,30 @@ class GlobalObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> GlobalPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Global:
@@ -243,17 +319,12 @@ class Global:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -267,10 +338,9 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -285,10 +355,9 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -302,14 +371,13 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -323,13 +391,9 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -344,12 +408,9 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -363,29 +424,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> GlobalObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -401,10 +440,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -421,10 +457,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -440,10 +473,7 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
+    ) -> GlobalObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -459,16 +489,27 @@ class Global:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -480,7 +521,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -497,16 +538,12 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> GlobalObject: ...
     
     @overload
@@ -518,7 +555,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -535,18 +572,15 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -556,7 +590,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -573,18 +607,14 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: GlobalPayload | None = ...,
@@ -593,7 +623,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -610,15 +640,13 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -634,7 +662,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -651,746 +679,43 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
         firewall_auth_user_hold_period: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class GlobalDictMode:
-    """Global endpoint for dict response mode (default for this client).
-    
-    By default returns GlobalResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return GlobalObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class GlobalObjectMode:
-    """Global endpoint for object response mode (default for this client).
-    
-    By default returns GlobalObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> GlobalResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> GlobalObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: GlobalPayload | None = ...,
-        mac_aging_interval: int | None = ...,
-        https_image_push: Literal["enable", "disable"] | None = ...,
-        vlan_all_mode: Literal["all", "defined"] | None = ...,
-        vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
-        vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
-        mac_retention_period: int | None = ...,
-        default_virtual_switch_vlan: str | None = ...,
-        dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
-        dhcp_option82_format: Literal["ascii", "legacy"] | None = ...,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = ...,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = ...,
-        dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = ...,
-        dhcp_snoop_client_db_exp: int | None = ...,
-        dhcp_snoop_db_per_port_learn_limit: int | None = ...,
-        log_mac_limit_violations: Literal["enable", "disable"] | None = ...,
-        mac_violation_timer: int | None = ...,
-        sn_dns_resolution: Literal["enable", "disable"] | None = ...,
-        mac_event_logging: Literal["enable", "disable"] | None = ...,
-        bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
-        quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        fips_enforce: Literal["disable", "enable"] | None = ...,
-        firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
-        switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
-        firewall_auth_user_hold_period: int | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Global",
-    "GlobalDictMode",
-    "GlobalObjectMode",
     "GlobalPayload",
+    "GlobalResponse",
     "GlobalObject",
 ]

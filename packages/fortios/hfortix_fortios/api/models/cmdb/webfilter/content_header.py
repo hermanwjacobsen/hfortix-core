@@ -8,29 +8,27 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Literal
-
+from typing import Any, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class ContentHeaderEntries(BaseModel):
     """
     Child table model for entries.
-
+    
     Configure content types used by web filter.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    pattern: str | None = Field(max_length=31, default="", description="Content type (regular expression).")
-    action: Literal["block", "allow", "exempt"] = Field(default="allow", description="Action to take for this content type.")
-    category: str = Field(default="all", description="Categories that this content type applies to.")
-
+    
+    pattern: str | None = Field(max_length=31, default="", description="Content type (regular expression).")    
+    action: Literal["block", "allow", "exempt"] = Field(default="allow", description="Action to take for this content type.")    
+    category: list[Category] = Field(default="all", description="Categories that this content type applies to.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -40,60 +38,55 @@ class ContentHeaderEntries(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class ContentHeaderModel(BaseModel):
     """
     Pydantic model for webfilter/content_header configuration.
-
+    
     Configure content types used by Web filter.
-
-    Validation Rules:
-        - id: min=0 max=4294967295 pattern=
-        - name: max_length=63 pattern=
-        - comment: max_length=255 pattern=
-        - entries: pattern=
-    """
-
+    
+    Validation Rules:        - id: min=0 max=4294967295 pattern=        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - entries: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")
-    name: str = Field(max_length=63, default="", description="Name of table.")
-    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")
-    entries: list[ContentHeaderEntries] | None = Field(default=None, description="Configure content types used by web filter.")
+    
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
+    name: str = Field(max_length=63, default="", description="Name of table.")    
+    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
+    entries: list[Entries] = Field(default=None, description="Configure content types used by web filter.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "ContentHeaderModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -103,8 +96,7 @@ class ContentHeaderModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-ContentHeaderModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -117,5 +109,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:35.813578Z
+# Generated: 2026-01-16T19:53:51.091376Z
 # ============================================================================

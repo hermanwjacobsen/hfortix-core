@@ -32,6 +32,9 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "protocol",  # 
+    "port",  # 
+    "service",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +57,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "protocol": "string",  # 
+    "port": "int",  # 
+    "service": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +185,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/fortiguard/test-availability",
     "help": "Test availability of FortiGuard services.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 3,
+    "required_fields_count": 3,
     "fields_with_defaults_count": 0,
 }
 

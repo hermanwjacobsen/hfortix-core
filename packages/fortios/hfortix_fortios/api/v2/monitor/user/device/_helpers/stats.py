@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "stat-key",  # 
+    "timestamp_to",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "stat-query-type": "string",  # 
+    "stat-key": "string",  # 
+    "timestamp_from": "int",  # 
+    "timestamp_to": "int",  # 
+    "filters": "array",  # 
+    "filter_logic": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +187,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/device/stats",
     "help": "Retrieve user devices stats from device store by given stat item.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 6,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

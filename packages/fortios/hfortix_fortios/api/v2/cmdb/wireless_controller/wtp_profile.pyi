@@ -1,9 +1,73 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class WtpProfileLedschedulesItem(TypedDict, total=False):
+    """Type hints for led-schedules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: WtpProfileLedschedulesItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Schedule name. | MaxLen: 35
+
+
+class WtpProfileDenymaclistItem(TypedDict, total=False):
+    """Type hints for deny-mac-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - mac: str
+    
+    **Example:**
+        entry: WtpProfileDenymaclistItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    mac: str  # A WiFi device with this MAC address is denied acce | Default: 00:00:00:00:00:00
+
+
+class WtpProfileSplittunnelingaclItem(TypedDict, total=False):
+    """Type hints for split-tunneling-acl table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - dest_ip: str
+    
+    **Example:**
+        entry: WtpProfileSplittunnelingaclItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -33,7 +97,7 @@ class WtpProfilePayload(TypedDict, total=False):
     name: str  # WTP (or FortiAP or AP) profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     platform: str  # WTP, FortiAP, or AP platform.
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-lis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
     bonjour_profile: str  # Bonjour profile name. | MaxLen: 35
     apcfg_profile: str  # AP local configuration profile name. | MaxLen: 35
     apcfg_mesh: Literal["enable", "disable"]  # Enable/disable AP local mesh configuration | Default: disable
@@ -47,21 +111,21 @@ class WtpProfilePayload(TypedDict, total=False):
     lan: str  # WTP LAN port mapping.
     energy_efficient_ethernet: Literal["enable", "disable"]  # Enable/disable use of energy efficient Ethernet on | Default: disable
     led_state: Literal["enable", "disable"]  # Enable/disable use of LEDs on WTP | Default: enable
-    led_schedules: list[dict[str, Any]]  # Recurring firewall schedules for illuminating LEDs
+    led_schedules: list[WtpProfileLedschedulesItem]  # Recurring firewall schedules for illuminating LEDs
     dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"]  # WTP data channel DTLS policy | Default: clear-text
     dtls_in_kernel: Literal["enable", "disable"]  # Enable/disable data channel DTLS in kernel. | Default: disable
     max_clients: int  # Maximum number of stations (STAs) supported by the | Default: 0 | Min: 0 | Max: 4294967295
     handoff_rssi: int  # Minimum received signal strength indicator (RSSI) | Default: 25 | Min: 20 | Max: 30
     handoff_sta_thresh: int  # Threshold value for AP handoff. | Default: 0 | Min: 5 | Max: 60
     handoff_roaming: Literal["enable", "disable"]  # Enable/disable client load balancing during roamin | Default: enable
-    deny_mac_list: list[dict[str, Any]]  # List of MAC addresses that are denied access to th
+    deny_mac_list: list[WtpProfileDenymaclistItem]  # List of MAC addresses that are denied access to th
     ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"]  # Country in which this WTP, FortiAP, or AP will ope | Default: --
     ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"]  # Method(s) by which IP fragmentation is prevented f | Default: tcp-mss-adjust
     tun_mtu_uplink: int  # The maximum transmission unit (MTU) of uplink CAPW | Default: 0 | Min: 576 | Max: 1500
     tun_mtu_downlink: int  # The MTU of downlink CAPWAP tunnel | Default: 0 | Min: 576 | Max: 1500
     split_tunneling_acl_path: Literal["tunnel", "local"]  # Split tunneling ACL path is local/tunnel. | Default: local
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]  # Enable/disable automatically adding local subnetwo | Default: disable
-    split_tunneling_acl: list[dict[str, Any]]  # Split tunneling ACL filter list.
+    split_tunneling_acl: list[WtpProfileSplittunnelingaclItem]  # Split tunneling ACL filter list.
     allowaccess: Literal["https", "ssh", "snmp"]  # Control management access to the managed WTP, Fort
     login_passwd_change: Literal["yes", "default", "no"]  # Change or reset the administrator password of a ma | Default: no
     login_passwd: str  # Set the managed WTP, FortiAP, or AP's administrato | MaxLen: 128
@@ -109,41 +173,9 @@ class WtpProfilePayload(TypedDict, total=False):
     admin_auth_tacacs_plus: str  # Remote authentication server for admin user. | MaxLen: 35
     admin_restrict_local: Literal["enable", "disable"]  # Enable/disable local admin authentication restrict | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class WtpProfileLedschedulesItem(TypedDict):
-    """Type hints for led-schedules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Schedule name. | MaxLen: 35
-
-
-class WtpProfileDenymaclistItem(TypedDict):
-    """Type hints for deny-mac-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    mac: str  # A WiFi device with this MAC address is denied acce | Default: 00:00:00:00:00:00
-
-
-class WtpProfileSplittunnelingaclItem(TypedDict):
-    """Type hints for split-tunneling-acl table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WtpProfileLedschedulesObject:
@@ -156,14 +188,33 @@ class WtpProfileLedschedulesObject:
     # Schedule name. | MaxLen: 35
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -179,14 +230,33 @@ class WtpProfileDenymaclistObject:
     # A WiFi device with this MAC address is denied access to this | Default: 00:00:00:00:00:00
     mac: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -202,14 +272,34 @@ class WtpProfileSplittunnelingaclObject:
     # Destination IP and mask for the split-tunneling subnet. | Default: 0.0.0.0 0.0.0.0
     dest_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -223,7 +313,7 @@ class WtpProfileResponse(TypedDict):
     name: str  # WTP (or FortiAP or AP) profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     platform: str  # WTP, FortiAP, or AP platform.
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-lis
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Enable/disable CAPWAP control message data channel | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
     bonjour_profile: str  # Bonjour profile name. | MaxLen: 35
     apcfg_profile: str  # AP local configuration profile name. | MaxLen: 35
     apcfg_mesh: Literal["enable", "disable"]  # Enable/disable AP local mesh configuration | Default: disable
@@ -314,7 +404,7 @@ class WtpProfileObject:
     comment: str
     # WTP, FortiAP, or AP platform.
     platform: str
-    # Enable/disable CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-lis
+    # Enable/disable CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
     control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]
     # Bonjour profile name. | MaxLen: 35
     bonjour_profile: str
@@ -468,16 +558,30 @@ class WtpProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> WtpProfilePayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class WtpProfile:
@@ -489,17 +593,12 @@ class WtpProfile:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -513,10 +612,9 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WtpProfileResponse: ...
+    ) -> WtpProfileObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -531,10 +629,9 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> WtpProfileResponse: ...
+    ) -> WtpProfileObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -548,14 +645,13 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[WtpProfileResponse]: ...
+    ) -> FortiObjectList[WtpProfileObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -569,13 +665,9 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpProfileObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -590,12 +682,9 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> WtpProfileObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -609,29 +698,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[WtpProfileObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[WtpProfileObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -647,10 +714,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WtpProfileResponse: ...
+    ) -> WtpProfileObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -667,10 +731,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> WtpProfileResponse: ...
+    ) -> WtpProfileObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -686,10 +747,7 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[WtpProfileResponse]: ...
+    ) -> FortiObjectList[WtpProfileObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -705,16 +763,27 @@ class WtpProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> WtpProfileObject | list[WtpProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -738,21 +807,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -800,10 +869,6 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     @overload
@@ -827,21 +892,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -889,12 +954,9 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -916,21 +978,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -978,12 +1040,8 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -1004,21 +1062,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1066,9 +1124,7 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -1092,21 +1148,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1154,10 +1210,6 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     @overload
@@ -1181,21 +1233,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1243,12 +1295,9 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -1270,21 +1319,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1332,12 +1381,8 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: WtpProfilePayload | None = ...,
@@ -1358,21 +1403,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1420,9 +1465,7 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -1430,10 +1473,6 @@ class WtpProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> WtpProfileObject: ...
     
     @overload
@@ -1441,30 +1480,21 @@ class WtpProfile:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1492,21 +1522,21 @@ class WtpProfile:
         lan: str | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1554,2185 +1584,37 @@ class WtpProfile:
         admin_auth_tacacs_plus: str | None = ...,
         admin_restrict_local: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class WtpProfileDictMode:
-    """WtpProfile endpoint for dict response mode (default for this client).
-    
-    By default returns WtpProfileResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return WtpProfileObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[WtpProfileObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> WtpProfileResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WtpProfileResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class WtpProfileObjectMode:
-    """WtpProfile endpoint for object response mode (default for this client).
-    
-    By default returns WtpProfileObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return WtpProfileResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> WtpProfileResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[WtpProfileResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[WtpProfileObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> WtpProfileObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: WtpProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        platform: str | None = ...,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
-        bonjour_profile: str | None = ...,
-        apcfg_profile: str | None = ...,
-        apcfg_mesh: Literal["enable", "disable"] | None = ...,
-        apcfg_mesh_ap_type: Literal["ethernet", "mesh", "auto"] | None = ...,
-        apcfg_mesh_ssid: str | None = ...,
-        apcfg_mesh_eth_bridge: Literal["enable", "disable"] | None = ...,
-        ble_profile: str | None = ...,
-        lw_profile: str | None = ...,
-        syslog_profile: str | None = ...,
-        wan_port_mode: Literal["wan-lan", "wan-only"] | None = ...,
-        lan: str | None = ...,
-        energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
-        led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
-        dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
-        dtls_in_kernel: Literal["enable", "disable"] | None = ...,
-        max_clients: int | None = ...,
-        handoff_rssi: int | None = ...,
-        handoff_sta_thresh: int | None = ...,
-        handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
-        tun_mtu_uplink: int | None = ...,
-        tun_mtu_downlink: int | None = ...,
-        split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
-        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
-        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
-        login_passwd_change: Literal["yes", "default", "no"] | None = ...,
-        login_passwd: str | None = ...,
-        lldp: Literal["enable", "disable"] | None = ...,
-        poe_mode: Literal["auto", "8023af", "8023at", "power-adapter", "full", "high", "low"] | None = ...,
-        usb_port: Literal["enable", "disable"] | None = ...,
-        frequency_handoff: Literal["enable", "disable"] | None = ...,
-        ap_handoff: Literal["enable", "disable"] | None = ...,
-        default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
-        lbs: str | None = ...,
-        ext_info_enable: Literal["enable", "disable"] | None = ...,
-        indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = ...,
-        esl_ses_dongle: str | None = ...,
-        console_login: Literal["enable", "disable"] | None = ...,
-        wan_port_auth: Literal["none", "802.1x"] | None = ...,
-        wan_port_auth_usrname: str | None = ...,
-        wan_port_auth_password: str | None = ...,
-        wan_port_auth_methods: Literal["all", "EAP-FAST", "EAP-TLS", "EAP-PEAP"] | None = ...,
-        wan_port_auth_macsec: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert: Literal["enable", "disable"] | None = ...,
-        apcfg_auto_cert_enroll_protocol: Literal["none", "est", "scep"] | None = ...,
-        apcfg_auto_cert_crypto_algo: Literal["rsa-1024", "rsa-1536", "rsa-2048", "rsa-4096", "ec-secp256r1", "ec-secp384r1", "ec-secp521r1"] | None = ...,
-        apcfg_auto_cert_est_server: str | None = ...,
-        apcfg_auto_cert_est_ca_id: str | None = ...,
-        apcfg_auto_cert_est_http_username: str | None = ...,
-        apcfg_auto_cert_est_http_password: str | None = ...,
-        apcfg_auto_cert_est_subject: str | None = ...,
-        apcfg_auto_cert_est_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_auto_regen_days: int | None = ...,
-        apcfg_auto_cert_est_https_ca: str | None = ...,
-        apcfg_auto_cert_scep_keytype: Literal["rsa", "ec"] | None = ...,
-        apcfg_auto_cert_scep_keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
-        apcfg_auto_cert_scep_ec_name: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        apcfg_auto_cert_scep_sub_fully_dn: str | None = ...,
-        apcfg_auto_cert_scep_url: str | None = ...,
-        apcfg_auto_cert_scep_password: str | None = ...,
-        apcfg_auto_cert_scep_ca_id: str | None = ...,
-        apcfg_auto_cert_scep_subject_alt_name: str | None = ...,
-        apcfg_auto_cert_scep_https_ca: str | None = ...,
-        unii_4_5ghz_band: Literal["enable", "disable"] | None = ...,
-        admin_auth_tacacs_plus: str | None = ...,
-        admin_restrict_local: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "WtpProfile",
-    "WtpProfileDictMode",
-    "WtpProfileObjectMode",
     "WtpProfilePayload",
+    "WtpProfileResponse",
     "WtpProfileObject",
 ]

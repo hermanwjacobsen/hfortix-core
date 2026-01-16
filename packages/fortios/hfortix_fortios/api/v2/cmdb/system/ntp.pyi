@@ -1,43 +1,35 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class NtpPayload(TypedDict, total=False):
-    """
-    Type hints for system/ntp payload fields.
-    
-    Configure system NTP information.
-    
-    **Usage:**
-        payload: NtpPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
-    type_: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
-    syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
-    ntpserver: list[dict[str, Any]]  # Configure the FortiGate to connect to any availabl
-    source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
-    source_ip6: str  # Source IPv6 address for communication to the NTP s | Default: ::
-    server_mode: Literal["enable", "disable"]  # Enable/disable FortiGate NTP Server Mode. Your For | Default: disable
-    authentication: Literal["enable", "disable"]  # Enable/disable authentication. | Default: disable
-    key_type: Literal["MD5", "SHA1", "SHA256"]  # Key type for authentication (MD5, SHA1, SHA256). | Default: MD5
-    key: str  # Key for authentication. | MaxLen: 64
-    key_id: int  # Key ID for authentication. | Default: 0 | Min: 0 | Max: 4294967295
-    interface: list[dict[str, Any]]  # FortiGate interface(s) with NTP server mode enable
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class NtpNtpserverItem(TypedDict):
+class NtpNtpserverItem(TypedDict, total=False):
     """Type hints for ntpserver table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - server: str
+        - ntpv3: "enable" | "disable"
+        - authentication: "enable" | "disable"
+        - key_type: "MD5" | "SHA1" | "SHA256"
+        - key: str
+        - key_id: int
+        - ip_type: "IPv6" | "IPv4" | "Both"
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+        - vrf_select: int
+    
+    **Example:**
+        entry: NtpNtpserverItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     id: int  # NTP server ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -53,17 +45,57 @@ class NtpNtpserverItem(TypedDict):
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
 
-class NtpInterfaceItem(TypedDict):
+class NtpInterfaceItem(TypedDict, total=False):
     """Type hints for interface table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - interface_name: str
+    
+    **Example:**
+        entry: NtpInterfaceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
     """
     
     interface_name: str  # Interface name. | MaxLen: 79
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class NtpPayload(TypedDict, total=False):
+    """
+    Type hints for system/ntp payload fields.
+    
+    Configure system NTP information.
+    
+    **Usage:**
+        payload: NtpPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
+    type: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
+    syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
+    ntpserver: list[NtpNtpserverItem]  # Configure the FortiGate to connect to any availabl
+    source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
+    source_ip6: str  # Source IPv6 address for communication to the NTP s | Default: ::
+    server_mode: Literal["enable", "disable"]  # Enable/disable FortiGate NTP Server Mode. Your For | Default: disable
+    authentication: Literal["enable", "disable"]  # Enable/disable authentication. | Default: disable
+    key_type: Literal["MD5", "SHA1", "SHA256"]  # Key type for authentication (MD5, SHA1, SHA256). | Default: MD5
+    key: str  # Key for authentication. | MaxLen: 64
+    key_id: int  # Key ID for authentication. | Default: 0 | Min: 0 | Max: 4294967295
+    interface: list[NtpInterfaceItem]  # FortiGate interface(s) with NTP server mode enable
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class NtpNtpserverObject:
@@ -96,14 +128,33 @@ class NtpNtpserverObject:
     # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -117,14 +168,34 @@ class NtpInterfaceObject:
     # Interface name. | MaxLen: 79
     interface_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -136,7 +207,7 @@ class NtpResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
-    type_: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
+    type: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
     syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
     ntpserver: list[NtpNtpserverItem]  # Configure the FortiGate to connect to any availabl
     source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
@@ -160,7 +231,7 @@ class NtpObject:
     # Enable/disable setting the FortiGate system time by synchron | Default: disable
     ntpsync: Literal["enable", "disable"]
     # Use the FortiGuard NTP server or any other available NTP Ser | Default: fortiguard
-    type_: Literal["fortiguard", "custom"]
+    type: Literal["fortiguard", "custom"]
     # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
     syncinterval: int
     # Configure the FortiGate to connect to any available third-pa
@@ -185,16 +256,30 @@ class NtpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> NtpPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Ntp:
@@ -205,17 +290,12 @@ class Ntp:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -229,10 +309,9 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -247,10 +326,9 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -264,14 +342,13 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -285,13 +362,9 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NtpObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -306,12 +379,9 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> NtpObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -325,29 +395,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> NtpObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -363,10 +411,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -383,10 +428,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -402,10 +444,7 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> NtpResponse: ...
+    ) -> NtpObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -421,16 +460,27 @@ class Ntp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> NtpObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -438,9 +488,9 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
+        type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -448,12 +498,8 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> NtpObject: ...
     
     @overload
@@ -461,9 +507,9 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
+        type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -471,22 +517,19 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
+        type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -494,21 +537,17 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
+        type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -516,11 +555,9 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -532,9 +569,9 @@ class Ntp:
         self,
         payload_dict: NtpPayload | None = ...,
         ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
+        type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -542,577 +579,39 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class NtpDictMode:
-    """Ntp endpoint for dict response mode (default for this client).
-    
-    By default returns NtpResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return NtpObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> NtpResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> NtpResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class NtpObjectMode:
-    """Ntp endpoint for object response mode (default for this client).
-    
-    By default returns NtpObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return NtpResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> NtpResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> NtpResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> NtpObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> NtpObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type_: Literal["fortiguard", "custom"] | None = ...,
-        syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
-        source_ip: str | None = ...,
-        source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
-        key: str | None = ...,
-        key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Ntp",
-    "NtpDictMode",
-    "NtpObjectMode",
     "NtpPayload",
+    "NtpResponse",
     "NtpObject",
 ]

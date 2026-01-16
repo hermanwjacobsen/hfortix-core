@@ -54,6 +54,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "ordinal": "string",  # 
+    "server": "string",  # 
+    "secret": "string",  # 
+    "auth_type": "string",  # 
+    "user": "string",  # 
+    "password": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +186,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/radius/get-test-connect",
     "help": "Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.",
-    "total_fields": 0,
+    "total_fields": 7,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

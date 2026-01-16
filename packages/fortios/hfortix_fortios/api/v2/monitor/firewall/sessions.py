@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,41 @@ class Sessions(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        summary: bool | None = None,
+        srcport: str | None = None,
+        policyid: str | None = None,
+        security_policyid: str | None = None,
+        application: str | None = None,
+        protocol: Literal["all", "igmp", "tcp", "udp", "icmp", "etc"] | None = None,
+        dstport: str | None = None,
+        srcintf: str | None = None,
+        dstintf: str | None = None,
+        srcintfrole: list[str] | None = None,
+        dstintfrole: list[str] | None = None,
+        srcaddr: str | None = None,
+        srcaddr6: str | None = None,
+        srcuuid: str | None = None,
+        dstaddr: str | None = None,
+        dstaddr6: str | None = None,
+        dstuuid: str | None = None,
+        username: str | None = None,
+        shaper: str | None = None,
+        country: str | None = None,
+        owner: str | None = None,
+        natsourceaddress: str | None = None,
+        natsourceport: str | None = None,
+        since: str | None = None,
+        seconds: str | None = None,
+        fortiasic: str | None = None,
+        nturbo: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/sessions configuration.
@@ -100,7 +127,35 @@ class Sessions(CRUDEndpoint, MetadataMixin):
         List all active firewall sessions (optionally filtered).
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ip_version: IP version [*ipv4 | ipv6 | ipboth].
+            count: Maximum number of entries to return. Valid range is [20, 1000]; if a value is specified out of that range, it will be rounded up or down.
+            summary: Enable/disable inclusion of session summary (setup rate, total sessions, etc).
+            srcport: Source port.
+            policyid: Policy ID.
+            security_policyid: Filter: Security Policy ID.
+            application: Application ID, or application PROTO/PORT pair. (e.g. "TCP/443")
+            protocol: Protocol name [all|igmp|tcp|udp|icmp|etc].
+            dstport: Destination port.
+            srcintf: Source interface name.
+            dstintf: Destination interface name.
+            srcintfrole: Source interface roles.
+            dstintfrole: Filter: Destination interface roles.
+            srcaddr: Source IPv4 address.
+            srcaddr6: Source IPv6 address.
+            srcuuid: Source UUID.
+            dstaddr: Destination IPv4 address.
+            dstaddr6: Destination IPv6 address.
+            dstuuid: Destination UUID.
+            username: Authenticated username.
+            shaper: Forward traffic shaper name.
+            country: Destination country name.
+            owner: Destination owner.
+            natsourceaddress: NAT source address.
+            natsourceport: NAT source port.
+            since: Only return sessions generated since this Unix timestamp.
+            seconds: Only return sessions generated in the last N seconds.
+            fortiasic: "true" to show NPU accelerated sessions only, false to exclude.
+            nturbo: "true" to include nTurbo sessions, false to exclude.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -117,12 +172,12 @@ class Sessions(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -167,17 +222,68 @@ class Sessions(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
+        if ip_version is not None:
+            params["ip_version"] = ip_version
+        if summary is not None:
+            params["summary"] = summary
+        if srcport is not None:
+            params["srcport"] = srcport
+        if policyid is not None:
+            params["policyid"] = policyid
+        if security_policyid is not None:
+            params["security-policyid"] = security_policyid
+        if application is not None:
+            params["application"] = application
+        if protocol is not None:
+            params["protocol"] = protocol
+        if dstport is not None:
+            params["dstport"] = dstport
+        if srcintf is not None:
+            params["srcintf"] = srcintf
+        if dstintf is not None:
+            params["dstintf"] = dstintf
+        if srcintfrole is not None:
+            params["srcintfrole"] = srcintfrole
+        if dstintfrole is not None:
+            params["dstintfrole"] = dstintfrole
+        if srcaddr is not None:
+            params["srcaddr"] = srcaddr
+        if srcaddr6 is not None:
+            params["srcaddr6"] = srcaddr6
+        if srcuuid is not None:
+            params["srcuuid"] = srcuuid
+        if dstaddr is not None:
+            params["dstaddr"] = dstaddr
+        if dstaddr6 is not None:
+            params["dstaddr6"] = dstaddr6
+        if dstuuid is not None:
+            params["dstuuid"] = dstuuid
+        if username is not None:
+            params["username"] = username
+        if shaper is not None:
+            params["shaper"] = shaper
+        if country is not None:
+            params["country"] = country
+        if owner is not None:
+            params["owner"] = owner
+        if natsourceaddress is not None:
+            params["natsourceaddress"] = natsourceaddress
+        if natsourceport is not None:
+            params["natsourceport"] = natsourceport
+        if since is not None:
+            params["since"] = since
+        if seconds is not None:
+            params["seconds"] = seconds
+        if fortiasic is not None:
+            params["fortiasic"] = fortiasic
+        if nturbo is not None:
+            params["nturbo"] = nturbo
         
-        if name:
-            endpoint = f"/firewall/sessions/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/sessions"
-            unwrap_single = False
+        endpoint = "/firewall/sessions"
+        unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
 
@@ -212,20 +318,35 @@ class Sessions(CRUDEndpoint, MetadataMixin):
             >>> if not fgt.api.monitor.firewall_sessions.exists(name="myobj"):
             ...     fgt.api.monitor.firewall_sessions.post(payload_dict=data)
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/firewall/sessions"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "monitor",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+            
+            if isinstance(result, dict):
+                # Synchronous response - check status
+                return result.get("status") == "success"
+            else:
+                # Asynchronous response
+                async def _check() -> bool:
+                    r = await result
+                    return r.get("status") == "success"
+                return _check()
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 

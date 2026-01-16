@@ -1,9 +1,61 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class UserActivityMatchItem(TypedDict, total=False):
+    """Type hints for match table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - strategy: "and" | "or"
+        - rules: str
+        - tenant_extraction: str
+    
+    **Example:**
+        entry: UserActivityMatchItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # CASB user activity match rules ID. | Default: 0 | Min: 0 | Max: 4294967295
+    strategy: Literal["and", "or"]  # CASB user activity rules strategy. | Default: and
+    rules: str  # CASB user activity rules.
+    tenant_extraction: str  # CASB user activity tenant extraction.
+
+
+class UserActivityControloptionsItem(TypedDict, total=False):
+    """Type hints for control-options table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - operations: str
+    
+    **Example:**
+        entry: UserActivityControloptionsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # CASB control option name. | MaxLen: 79
+    status: Literal["enable", "disable"]  # CASB control option status. | Default: enable
+    operations: str  # CASB control option operations.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,42 +79,17 @@ class UserActivityPayload(TypedDict, total=False):
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # CASB user activity status. | Default: enable
     description: str  # CASB user activity description. | MaxLen: 63
-    type_: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
+    type: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
     casb_name: str  # CASB user activity signature name. | MaxLen: 79
     application: str  # CASB SaaS application name. | MaxLen: 79
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]  # CASB user activity category. | Default: activity-control
     match_strategy: Literal["and", "or"]  # CASB user activity match strategy. | Default: or
-    match: list[dict[str, Any]]  # CASB user activity match rules.
-    control_options: list[dict[str, Any]]  # CASB control options.
+    match: list[UserActivityMatchItem]  # CASB user activity match rules.
+    control_options: list[UserActivityControloptionsItem]  # CASB control options.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class UserActivityMatchItem(TypedDict):
-    """Type hints for match table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # CASB user activity match rules ID. | Default: 0 | Min: 0 | Max: 4294967295
-    strategy: Literal["and", "or"]  # CASB user activity rules strategy. | Default: and
-    rules: str  # CASB user activity rules.
-    tenant_extraction: str  # CASB user activity tenant extraction.
-
-
-class UserActivityControloptionsItem(TypedDict):
-    """Type hints for control-options table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # CASB control option name. | MaxLen: 79
-    status: Literal["enable", "disable"]  # CASB control option status. | Default: enable
-    operations: str  # CASB control option operations.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class UserActivityMatchObject:
@@ -81,14 +108,33 @@ class UserActivityMatchObject:
     # CASB user activity tenant extraction.
     tenant_extraction: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -106,14 +152,34 @@ class UserActivityControloptionsObject:
     # CASB control option operations.
     operations: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -128,7 +194,7 @@ class UserActivityResponse(TypedDict):
     uuid: str  # Universally Unique Identifier | MaxLen: 36
     status: Literal["enable", "disable"]  # CASB user activity status. | Default: enable
     description: str  # CASB user activity description. | MaxLen: 63
-    type_: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
+    type: Literal["built-in", "customized"]  # CASB user activity type. | Default: customized
     casb_name: str  # CASB user activity signature name. | MaxLen: 79
     application: str  # CASB SaaS application name. | MaxLen: 79
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]  # CASB user activity category. | Default: activity-control
@@ -154,7 +220,7 @@ class UserActivityObject:
     # CASB user activity description. | MaxLen: 63
     description: str
     # CASB user activity type. | Default: customized
-    type_: Literal["built-in", "customized"]
+    type: Literal["built-in", "customized"]
     # CASB user activity signature name. | MaxLen: 79
     casb_name: str
     # CASB SaaS application name. | MaxLen: 79
@@ -169,17 +235,32 @@ class UserActivityObject:
     control_options: list[UserActivityControloptionsObject]
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> UserActivityPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class UserActivity:
@@ -191,17 +272,12 @@ class UserActivity:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -215,10 +291,9 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> UserActivityResponse: ...
+    ) -> UserActivityObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -233,10 +308,9 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> UserActivityResponse: ...
+    ) -> UserActivityObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -250,14 +324,13 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[UserActivityResponse]: ...
+    ) -> FortiObjectList[UserActivityObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -271,13 +344,9 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> UserActivityObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -292,12 +361,9 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> UserActivityObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -311,29 +377,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[UserActivityObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[UserActivityObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -349,10 +393,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> UserActivityResponse: ...
+    ) -> UserActivityObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -369,10 +410,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> UserActivityResponse: ...
+    ) -> UserActivityObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -388,10 +426,7 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[UserActivityResponse]: ...
+    ) -> FortiObjectList[UserActivityObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -407,16 +442,27 @@ class UserActivity:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> UserActivityObject | list[UserActivityObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -427,18 +473,14 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> UserActivityObject: ...
     
     @overload
@@ -449,20 +491,17 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -471,20 +510,16 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -492,17 +527,15 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -513,18 +546,14 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> UserActivityObject: ...
     
     @overload
@@ -535,20 +564,17 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -557,20 +583,16 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: UserActivityPayload | None = ...,
@@ -578,17 +600,15 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -596,10 +616,6 @@ class UserActivity:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> UserActivityObject: ...
     
     @overload
@@ -607,30 +623,21 @@ class UserActivity:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -645,853 +652,45 @@ class UserActivity:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
+        type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class UserActivityDictMode:
-    """UserActivity endpoint for dict response mode (default for this client).
-    
-    By default returns UserActivityResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return UserActivityObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[UserActivityObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> UserActivityResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[UserActivityResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class UserActivityObjectMode:
-    """UserActivity endpoint for object response mode (default for this client).
-    
-    By default returns UserActivityObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return UserActivityResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> UserActivityResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[UserActivityResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[UserActivityObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> UserActivityObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: UserActivityPayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        description: str | None = ...,
-        type_: Literal["built-in", "customized"] | None = ...,
-        casb_name: str | None = ...,
-        application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "UserActivity",
-    "UserActivityDictMode",
-    "UserActivityObjectMode",
     "UserActivityPayload",
+    "UserActivityResponse",
     "UserActivityObject",
 ]

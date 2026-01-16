@@ -54,6 +54,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "q_path": "string",  # 
+    "q_name": "string",  # 
+    "qtypes": "array",  # 
+    "scope": "string",  # 
+    "mkey": "string",  # 
+    "child_path": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +185,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/object/usage",
     "help": "Retrieve all objects that are currently using as well as objects that can use the given object.",
-    "total_fields": 0,
+    "total_fields": 6,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "type",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,11 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "scope": "string",  # 
+    "standalone": "string",  # 
+    "type": "string",  # 
+    "checks": "string",  # 
+    "show-hidden": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +185,8 @@ SCHEMA_INFO = {
     "category": "service",
     "api_path": "security-rating/report",
     "help": "Retrieve full report of all Security Rating tests.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 5,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

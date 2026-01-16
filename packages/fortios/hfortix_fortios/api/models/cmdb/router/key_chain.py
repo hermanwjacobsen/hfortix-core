@@ -8,32 +8,29 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any
-from enum import Enum
-
+from typing import Any, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class KeyChainKey(BaseModel):
     """
     Child table model for key.
-
+    
     Configuration method to edit key settings.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    id: str = Field(max_length=10, default="", description="Key ID (0 - 2147483647).")
-    accept_lifetime: str = Field(default="", description="Lifetime of received authentication key (format: hh:mm:ss day month year).")
-    send_lifetime: str = Field(default="", description="Lifetime of sent authentication key (format: hh:mm:ss day month year).")
-    key_string: Any = Field(max_length=60, description="Password for the key (maximum = 64 characters).")
-    algorithm: str | None = Field(default="md5", description="Cryptographic algorithm.")
-
+    
+    id: str = Field(max_length=10, default="", description="Key ID (0 - 2147483647).")    
+    accept_lifetime: str = Field(default="", description="Lifetime of received authentication key (format: hh:mm:ss day month year).")    
+    send_lifetime: str = Field(default="", description="Lifetime of sent authentication key (format: hh:mm:ss day month year).")    
+    key_string: Any = Field(max_length=60, description="Password for the key (maximum = 64 characters).")    
+    algorithm: AlgorithmEnum | None = Field(default="md5", description="Cryptographic algorithm.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -43,56 +40,53 @@ class KeyChainKey(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class KeyChainModel(BaseModel):
     """
     Pydantic model for router/key_chain configuration.
-
+    
     Configure key-chain.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - key: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - key: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str = Field(max_length=35, default="", description="Key-chain name.")
-    key: list[KeyChainKey] | None = Field(default=None, description="Configuration method to edit key settings.")
+    
+    name: str = Field(max_length=35, default="", description="Key-chain name.")    
+    key: list[Key] = Field(default=None, description="Configuration method to edit key settings.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "KeyChainModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -102,8 +96,7 @@ class KeyChainModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-KeyChainModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -116,5 +109,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:38.421688Z
+# Generated: 2026-01-16T19:53:52.706760Z
 # ============================================================================

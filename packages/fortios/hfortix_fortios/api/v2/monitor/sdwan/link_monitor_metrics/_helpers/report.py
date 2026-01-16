@@ -32,6 +32,12 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "agent_ip",  # 
+    "application_name",  # 
+    "application_id",  # 
+    "latency",  # 
+    "jitter",  # 
+    "packet_loss",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +60,15 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "agent_ip": "string",  # 
+    "application_name": "string",  # 
+    "application_id": "int",  # 
+    "latency": "double",  # 
+    "jitter": "double",  # 
+    "packet_loss": "double",  # 
+    "ntt": "double",  # 
+    "srt": "double",  # 
+    "application_error": "double",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +194,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "sdwan/link-monitor-metrics/report",
     "help": "Report the application-level performance metrics collected by other fabric devices.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 9,
+    "required_fields_count": 6,
     "fields_with_defaults_count": 0,
 }
 

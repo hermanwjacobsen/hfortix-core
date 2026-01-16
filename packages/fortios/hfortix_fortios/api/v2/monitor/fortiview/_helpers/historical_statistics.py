@@ -54,6 +54,14 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "filter": "object",  # 
+    "sessionid": "int",  # 
+    "device": "string",  # 
+    "report_by": "string",  # 
+    "sort_by": "string",  # 
+    "chart_only": "boolean",  # 
+    "end": "int",  # 
+    "ip_version": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +187,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "fortiview/historical-statistics",
     "help": "Retrieve historical drill-down and summary data for FortiView.",
-    "total_fields": 0,
+    "total_fields": 8,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

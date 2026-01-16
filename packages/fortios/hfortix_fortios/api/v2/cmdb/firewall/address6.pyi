@@ -1,9 +1,95 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Address6MacaddrItem(TypedDict, total=False):
+    """Type hints for macaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - macaddr: str
+    
+    **Example:**
+        entry: Address6MacaddrItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    macaddr: str  # MAC address ranges <start>[-<end>] separated by sp | MaxLen: 127
+
+
+class Address6TaggingItem(TypedDict, total=False):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - category: str
+        - tags: str
+    
+    **Example:**
+        entry: Address6TaggingItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+class Address6SubnetsegmentItem(TypedDict, total=False):
+    """Type hints for subnet-segment table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+        - type: "any" | "specific"
+        - value: str
+    
+    **Example:**
+        entry: Address6SubnetsegmentItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Name. | MaxLen: 63
+    type: Literal["any", "specific"]  # Subnet segment type. | Default: any
+    value: str  # Subnet segment value. | MaxLen: 35
+
+
+class Address6ListItem(TypedDict, total=False):
+    """Type hints for list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - ip: str
+    
+    **Example:**
+        entry: Address6ListItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    ip: str  # IP. | MaxLen: 89
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,186 +111,8 @@ class Address6Payload(TypedDict, total=False):
         }
     """
     name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
-    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
-    route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
-    macaddr: list[dict[str, Any]]  # Multiple MAC address ranges.
-    sdn: str  # SDN. | MaxLen: 35
-    ip6: str  # IPv6 address prefix | Default: ::/0
-    wildcard: str  # IPv6 address and wildcard netmask. | Default: :: ::
-    start_ip: str  # First IP address (inclusive) in the range for the | Default: ::
-    end_ip: str  # Final IP address (inclusive) in the range for the | Default: ::
-    fqdn: str  # Fully qualified domain name. | MaxLen: 255
-    country: str  # IPv6 addresses associated to a specific country. | MaxLen: 2
-    cache_ttl: int  # Minimal TTL of individual IPv6 addresses in FQDN c | Default: 0 | Min: 0 | Max: 86400
-    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    obj_id: str  # Object ID for NSX. | MaxLen: 255
-    tagging: list[dict[str, Any]]  # Config object tagging.
-    comment: str  # Comment. | MaxLen: 255
-    template: str  # IPv6 address template. | MaxLen: 63
-    subnet_segment: list[dict[str, Any]]  # IPv6 subnet segments.
-    host_type: Literal["any", "specific"]  # Host type. | Default: any
-    host: str  # Host Address. | Default: ::
-    tenant: str  # Tenant. | MaxLen: 35
-    epg_name: str  # Endpoint group name. | MaxLen: 255
-    sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter_: str  # Match criteria filter. | MaxLen: 2047
-    list_: list[dict[str, Any]]  # IP address list.
-    sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
-    passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
-    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
-
-# Nested TypedDicts for table field children (dict mode)
-
-class Address6MacaddrItem(TypedDict):
-    """Type hints for macaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    macaddr: str  # MAC address ranges <start>[-<end>] separated by sp | MaxLen: 127
-
-
-class Address6TaggingItem(TypedDict):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
-
-
-class Address6SubnetsegmentItem(TypedDict):
-    """Type hints for subnet-segment table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name. | MaxLen: 63
-    type_: Literal["any", "specific"]  # Subnet segment type. | Default: any
-    value: str  # Subnet segment value. | MaxLen: 35
-
-
-class Address6ListItem(TypedDict):
-    """Type hints for list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    ip: str  # IP. | MaxLen: 89
-
-
-# Nested classes for table field children (object mode)
-
-@final
-class Address6MacaddrObject:
-    """Typed object for macaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # MAC address ranges <start>[-<end>] separated by space. | MaxLen: 127
-    macaddr: str
-    
-    # Methods from FortiObject
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
-
-
-@final
-class Address6TaggingObject:
-    """Typed object for tagging table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Tagging entry name. | MaxLen: 63
-    name: str
-    # Tag category. | MaxLen: 63
-    category: str
-    # Tags.
-    tags: str
-    
-    # Methods from FortiObject
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
-
-
-@final
-class Address6SubnetsegmentObject:
-    """Typed object for subnet-segment table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Name. | MaxLen: 63
-    name: str
-    # Subnet segment type. | Default: any
-    type_: Literal["any", "specific"]
-    # Subnet segment value. | MaxLen: 35
-    value: str
-    
-    # Methods from FortiObject
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
-
-
-@final
-class Address6ListObject:
-    """Typed object for list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IP. | MaxLen: 89
-    ip: str
-    
-    # Methods from FortiObject
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class Address6Response(TypedDict):
-    """
-    Type hints for firewall/address6 API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
-    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
     route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
     sdn: str  # SDN. | MaxLen: 35
@@ -226,8 +134,219 @@ class Address6Response(TypedDict):
     tenant: str  # Tenant. | MaxLen: 35
     epg_name: str  # Endpoint group name. | MaxLen: 255
     sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter_: str  # Match criteria filter. | MaxLen: 2047
-    list_: list[Address6ListItem]  # IP address list.
+    filter: str  # Match criteria filter. | MaxLen: 2047
+    list: list[Address6ListItem]  # IP address list.
+    sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
+    passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
+    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
+
+@final
+class Address6MacaddrObject:
+    """Typed object for macaddr table items.
+    
+    Provides IDE autocomplete for nested table field attributes.
+    At runtime, this is a FortiObject instance.
+    """
+    
+    # MAC address ranges <start>[-<end>] separated by space. | MaxLen: 127
+    macaddr: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FortiObject: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
+@final
+class Address6TaggingObject:
+    """Typed object for tagging table items.
+    
+    Provides IDE autocomplete for nested table field attributes.
+    At runtime, this is a FortiObject instance.
+    """
+    
+    # Tagging entry name. | MaxLen: 63
+    name: str
+    # Tag category. | MaxLen: 63
+    category: str
+    # Tags.
+    tags: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FortiObject: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
+@final
+class Address6SubnetsegmentObject:
+    """Typed object for subnet-segment table items.
+    
+    Provides IDE autocomplete for nested table field attributes.
+    At runtime, this is a FortiObject instance.
+    """
+    
+    # Name. | MaxLen: 63
+    name: str
+    # Subnet segment type. | Default: any
+    type: Literal["any", "specific"]
+    # Subnet segment value. | MaxLen: 35
+    value: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FortiObject: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
+@final
+class Address6ListObject:
+    """Typed object for list table items.
+    
+    Provides IDE autocomplete for nested table field attributes.
+    At runtime, this is a FortiObject instance.
+    """
+    
+    # IP. | MaxLen: 89
+    ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FortiObject: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class Address6Response(TypedDict):
+    """
+    Type hints for firewall/address6 API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    name: str  # Address name. | MaxLen: 79
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
+    route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
+    macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
+    sdn: str  # SDN. | MaxLen: 35
+    ip6: str  # IPv6 address prefix | Default: ::/0
+    wildcard: str  # IPv6 address and wildcard netmask. | Default: :: ::
+    start_ip: str  # First IP address (inclusive) in the range for the | Default: ::
+    end_ip: str  # Final IP address (inclusive) in the range for the | Default: ::
+    fqdn: str  # Fully qualified domain name. | MaxLen: 255
+    country: str  # IPv6 addresses associated to a specific country. | MaxLen: 2
+    cache_ttl: int  # Minimal TTL of individual IPv6 addresses in FQDN c | Default: 0 | Min: 0 | Max: 86400
+    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
+    obj_id: str  # Object ID for NSX. | MaxLen: 255
+    tagging: list[Address6TaggingItem]  # Config object tagging.
+    comment: str  # Comment. | MaxLen: 255
+    template: str  # IPv6 address template. | MaxLen: 63
+    subnet_segment: list[Address6SubnetsegmentItem]  # IPv6 subnet segments.
+    host_type: Literal["any", "specific"]  # Host type. | Default: any
+    host: str  # Host Address. | Default: ::
+    tenant: str  # Tenant. | MaxLen: 35
+    epg_name: str  # Endpoint group name. | MaxLen: 255
+    sdn_tag: str  # SDN Tag. | MaxLen: 15
+    filter: str  # Match criteria filter. | MaxLen: 2047
+    list: list[Address6ListItem]  # IP address list.
     sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
     passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
@@ -243,10 +362,10 @@ class Address6Object:
     
     # Address name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
     # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
-    type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
+    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
     # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     route_tag: int
     # Multiple MAC address ranges.
@@ -290,9 +409,9 @@ class Address6Object:
     # SDN Tag. | MaxLen: 15
     sdn_tag: str
     # Match criteria filter. | MaxLen: 2047
-    filter_: str
+    filter: str
     # IP address list.
-    list_: list[Address6ListObject]
+    list: list[Address6ListObject]
     # Type of addresses to collect. | Default: private
     sdn_addr_type: Literal["private", "public", "all"]
     # Enable/disable passive learning of FQDNs.  When enabled, the | Default: enable
@@ -303,16 +422,30 @@ class Address6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> Address6Payload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Address6:
@@ -324,17 +457,12 @@ class Address6:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -348,10 +476,9 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Address6Response: ...
+    ) -> Address6Object: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -366,10 +493,9 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Address6Response: ...
+    ) -> Address6Object: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -383,14 +509,13 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[Address6Response]: ...
+    ) -> FortiObjectList[Address6Object]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -404,13 +529,9 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Address6Object: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -425,12 +546,9 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> Address6Object: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -444,29 +562,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[Address6Object]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[Address6Object]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -482,10 +578,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Address6Response: ...
+    ) -> Address6Object: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -502,10 +595,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Address6Response: ...
+    ) -> Address6Object: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -521,10 +611,7 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[Address6Response]: ...
+    ) -> FortiObjectList[Address6Object]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -540,16 +627,27 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> Address6Object | list[Address6Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -558,9 +656,9 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -571,25 +669,21 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Address6Object: ...
     
     @overload
@@ -598,9 +692,9 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -611,36 +705,33 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -651,35 +742,31 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -690,24 +777,22 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -716,9 +801,9 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -729,25 +814,21 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Address6Object: ...
     
     @overload
@@ -756,9 +837,9 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -769,36 +850,33 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -809,35 +887,31 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -848,24 +922,22 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -873,10 +945,6 @@ class Address6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Address6Object: ...
     
     @overload
@@ -884,30 +952,21 @@ class Address6:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -920,9 +979,9 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -933,1220 +992,52 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
+        filter: str | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class Address6DictMode:
-    """Address6 endpoint for dict response mode (default for this client).
-    
-    By default returns Address6Response (TypedDict).
-    Can be overridden per-call with response_mode="object" to return Address6Object.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[Address6Object]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> Address6Response: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Address6Response]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class Address6ObjectMode:
-    """Address6 endpoint for object response mode (default for this client).
-    
-    By default returns Address6Object (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return Address6Response (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> Address6Response: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[Address6Response]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Address6Object]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Address6Object: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type_: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter_: str | None = ...,
-        list_: str | list[str] | list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Address6",
-    "Address6DictMode",
-    "Address6ObjectMode",
     "Address6Payload",
+    "Address6Response",
     "Address6Object",
 ]

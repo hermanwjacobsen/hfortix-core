@@ -27,7 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -39,6 +39,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -86,9 +87,8 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/vendor_mac_summary configuration.
@@ -113,12 +113,12 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -159,14 +159,12 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
         cache_key = f"cmdb/firewall/vendor_mac_summary"
         
         # Only use cache for full list queries (no identifier, no filters)
-        is_list_query = name is None and not filter and not payload_dict and not kwargs
+        is_list_query = name is None and not filter and not payload_dict
         
         if is_list_query:
             cached_data = readonly_cache.get(cache_key)
             if cached_data is not None:
                 # Return cached data
-                if raw_json:
-                    return cached_data
                 return cached_data
         
         params = payload_dict.copy() if payload_dict else {}
@@ -180,17 +178,16 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = f"/firewall/vendor-mac-summary/{name}"
+            endpoint = f"/firewall/vendor-mac-summary/{quote_path_param(name)}"
             unwrap_single = True
         else:
             endpoint = "/firewall/vendor-mac-summary"
             unwrap_single = False
         
-        params.update(kwargs)
         
         # Fetch data and cache if this is a list query
         response = self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
         
         # Cache the response for list queries
@@ -248,10 +245,13 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        q_action: Literal["move"] | None = None,
+        q_before: str | None = None,
+        q_after: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/vendor_mac_summary object.
@@ -261,12 +261,11 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
 
         Raises:
             ValueError: If name is missing from payload
@@ -309,8 +308,19 @@ class VendorMacSummary(CRUDEndpoint, MetadataMixin):
         # Singleton endpoint - no identifier needed
         endpoint = "/firewall/vendor-mac-summary"
 
+        # Add explicit query parameters for PUT
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_before is not None:
+            params["before"] = q_before
+        if q_after is not None:
+            params["after"] = q_after
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
 

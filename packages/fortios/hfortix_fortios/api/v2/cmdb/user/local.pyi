@@ -1,9 +1,15 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -33,7 +39,7 @@ class LocalPayload(TypedDict, total=False):
     name: str  # Local user name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the local user to authenti | Default: enable
-    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
+    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
     passwd: str  # User's password. | MaxLen: 128
     ldap_server: str  # Name of LDAP server with which the user must authe | MaxLen: 35
     radius_server: str  # Name of RADIUS server with which the user must aut | MaxLen: 35
@@ -58,9 +64,10 @@ class LocalPayload(TypedDict, total=False):
     qkd_profile: str  # Quantum Key Distribution (QKD) profile. | MaxLen: 35
     username_sensitivity: Literal["disable", "enable"]  # Enable/disable case and accent sensitivity when pe | Default: enable
 
-# Nested TypedDicts for table field children (dict mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
-# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -73,7 +80,7 @@ class LocalResponse(TypedDict):
     name: str  # Local user name. | MaxLen: 64
     id: int  # User ID. | Default: 0 | Min: 0 | Max: 4294967295
     status: Literal["enable", "disable"]  # Enable/disable allowing the local user to authenti | Default: enable
-    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
+    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]  # Authentication method. | Default: password
     passwd: str  # User's password. | MaxLen: 128
     ldap_server: str  # Name of LDAP server with which the user must authe | MaxLen: 35
     radius_server: str  # Name of RADIUS server with which the user must aut | MaxLen: 35
@@ -114,7 +121,7 @@ class LocalObject:
     # Enable/disable allowing the local user to authenticate with | Default: enable
     status: Literal["enable", "disable"]
     # Authentication method. | Default: password
-    type_: Literal["password", "radius", "tacacs+", "ldap", "saml"]
+    type: Literal["password", "radius", "tacacs+", "ldap", "saml"]
     # User's password. | MaxLen: 128
     passwd: str
     # Name of LDAP server with which the user must authenticate. | MaxLen: 35
@@ -163,17 +170,32 @@ class LocalObject:
     username_sensitivity: Literal["disable", "enable"]
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> LocalPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Local:
@@ -185,17 +207,12 @@ class Local:
     Primary Key: name
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -209,10 +226,9 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> LocalResponse: ...
+    ) -> LocalObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -227,10 +243,9 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> LocalResponse: ...
+    ) -> LocalObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -244,14 +259,13 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[LocalResponse]: ...
+    ) -> FortiObjectList[LocalObject]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -265,13 +279,9 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> LocalObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -286,12 +296,9 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> LocalObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -305,29 +312,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[LocalObject]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[LocalObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -343,10 +328,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> LocalResponse: ...
+    ) -> LocalObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -363,10 +345,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> LocalResponse: ...
+    ) -> LocalObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -382,10 +361,7 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[LocalResponse]: ...
+    ) -> FortiObjectList[LocalObject]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -401,16 +377,27 @@ class Local:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LocalObject | list[LocalObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -420,7 +407,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -445,10 +432,6 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> LocalObject: ...
     
     @overload
@@ -458,7 +441,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -483,12 +466,9 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
@@ -496,7 +476,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -521,19 +501,15 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -558,9 +534,7 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -570,7 +544,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -595,10 +569,6 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> LocalObject: ...
     
     @overload
@@ -608,7 +578,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -633,12 +603,9 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -646,7 +613,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -671,19 +638,15 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: LocalPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -708,9 +671,7 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -718,10 +679,6 @@ class Local:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> LocalObject: ...
     
     @overload
@@ -729,30 +686,21 @@ class Local:
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -766,7 +714,7 @@ class Local:
         name: str | None = ...,
         id: int | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
         passwd: str | None = ...,
         ldap_server: str | None = ...,
         radius_server: str | None = ...,
@@ -791,1165 +739,37 @@ class Local:
         qkd_profile: str | None = ...,
         username_sensitivity: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class LocalDictMode:
-    """Local endpoint for dict response mode (default for this client).
-    
-    By default returns LocalResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return LocalObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[LocalObject]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> LocalResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[LocalResponse]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class LocalObjectMode:
-    """Local endpoint for object response mode (default for this client).
-    
-    By default returns LocalObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return LocalResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> LocalResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[LocalResponse]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[LocalObject]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> LocalObject: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: LocalPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type_: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = ...,
-        passwd: str | None = ...,
-        ldap_server: str | None = ...,
-        radius_server: str | None = ...,
-        tacacs_plus_server: str | None = ...,
-        saml_server: str | None = ...,
-        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = ...,
-        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = ...,
-        two_factor_notification: Literal["email", "sms"] | None = ...,
-        fortitoken: str | None = ...,
-        email_to: str | None = ...,
-        sms_server: Literal["fortiguard", "custom"] | None = ...,
-        sms_custom_server: str | None = ...,
-        sms_phone: str | None = ...,
-        passwd_policy: str | None = ...,
-        passwd_time: str | None = ...,
-        authtimeout: int | None = ...,
-        workstation: str | None = ...,
-        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
-        auth_concurrent_value: int | None = ...,
-        ppk_secret: str | None = ...,
-        ppk_identity: str | None = ...,
-        qkd_profile: str | None = ...,
-        username_sensitivity: Literal["disable", "enable"] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Local",
-    "LocalDictMode",
-    "LocalObjectMode",
     "LocalPayload",
+    "LocalResponse",
     "LocalObject",
 ]

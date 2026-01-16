@@ -32,6 +32,9 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "certname",  # 
+    "subject",  # 
+    "keytype",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +57,22 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "certname": "string",  # 
+    "subject": "string",  # 
+    "keytype": "string",  # 
+    "keysize": "int",  # 
+    "curvename": "string",  # 
+    "orgunits": "array",  # 
+    "org": "string",  # 
+    "city": "string",  # 
+    "state": "string",  # 
+    "countrycode": "string",  # 
+    "email": "string",  # 
+    "subject_alt_name": "string",  # 
+    "password": "string",  # 
+    "scep_url": "string",  # 
+    "scep_password": "string",  # 
+    "scope": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +198,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "vpn-certificate/csr/generate",
     "help": "Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved / downloaded from CLI, GUI and REST API.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 16,
+    "required_fields_count": 3,
     "fields_with_defaults_count": 0,
 }
 

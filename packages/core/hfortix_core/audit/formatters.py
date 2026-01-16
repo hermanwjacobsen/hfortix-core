@@ -19,6 +19,11 @@ __all__ = [
 ]
 
 
+def _utc_timestamp() -> str:
+    """Return an ISO 8601 UTC timestamp with a trailing Z."""
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
 @runtime_checkable
 class AuditFormatter(Protocol):
     """Protocol for audit log formatters"""
@@ -153,10 +158,7 @@ class SyslogFormatter:
         hostname = self.hostname or operation.get("host", "-")
 
         # Get timestamp (use operation timestamp or current time)
-        timestamp = operation.get(
-            "timestamp",
-            datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        )
+        timestamp = operation.get("timestamp", _utc_timestamp())
 
         # Message is the full operation as JSON
         message = json.dumps(operation, separators=(",", ":"))

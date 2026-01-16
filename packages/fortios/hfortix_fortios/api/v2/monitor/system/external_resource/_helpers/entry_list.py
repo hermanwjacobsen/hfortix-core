@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "mkey",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,11 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "status_only": "boolean",  # 
+    "include_notes": "boolean",  # 
+    "counts_only": "boolean",  # 
+    "entry": "object",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +185,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/external-resource/entry-list",
     "help": "Retrieve resource file status with a list of valid/invalid entries for the specific external resource. Empty lines and comment lines are not returned.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 5,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

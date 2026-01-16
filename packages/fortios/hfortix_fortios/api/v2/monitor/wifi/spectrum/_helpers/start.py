@@ -32,6 +32,10 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "wtp_id",  # 
+    "radio_id",  # 
+    "channels",  # 
+    "duration",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +58,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "wtp_id": "string",  # 
+    "radio_id": "int",  # 
+    "channels": "array",  # 
+    "duration": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +187,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "wifi/spectrum/start",
     "help": "Start spectrum analysis for a specific FortiAP for a duration of time.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 4,
+    "required_fields_count": 4,
     "fields_with_defaults_count": 0,
 }
 

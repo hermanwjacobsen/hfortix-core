@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "api-user",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "api-user": "string",  # 
+    "expiry": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +182,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/api-user/generate-key",
     "help": "Generate a new api-key for the specified api-key-auth admin. The old api-key will be replaced. The response contains the only chance to read the new api-key plaintext in the api_key field.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 2,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

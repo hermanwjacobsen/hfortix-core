@@ -1,9 +1,135 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class HaAutovirtualmacinterfaceItem(TypedDict, total=False):
+    """Type hints for auto-virtual-mac-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - interface_name: str
+    
+    **Example:**
+        entry: HaAutovirtualmacinterfaceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 15
+
+
+class HaBackuphbdevItem(TypedDict, total=False):
+    """Type hints for backup-hbdev table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: HaBackuphbdevItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class HaHamgmtinterfacesItem(TypedDict, total=False):
+    """Type hints for ha-mgmt-interfaces table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - interface: str
+        - dst: str
+        - gateway: str
+        - dst6: str
+        - gateway6: str
+    
+    **Example:**
+        entry: HaHamgmtinterfacesItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    interface: str  # Interface to reserve for HA management. | MaxLen: 15
+    dst: str  # Default route destination for reserved HA manageme | Default: 0.0.0.0 0.0.0.0
+    gateway: str  # Default route gateway for reserved HA management i | Default: 0.0.0.0
+    dst6: str  # Default IPv6 destination for reserved HA managemen | Default: ::/0
+    gateway6: str  # Default IPv6 gateway for reserved HA management in | Default: ::
+
+
+class HaUnicastpeersItem(TypedDict, total=False):
+    """Type hints for unicast-peers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+        - peer_ip: str
+    
+    **Example:**
+        entry: HaUnicastpeersItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    peer_ip: str  # Unicast peer IP. | Default: 0.0.0.0
+
+
+class HaVclusterItem(TypedDict, total=False):
+    """Type hints for vcluster table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - vcluster_id: int
+        - override: "enable" | "disable"
+        - priority: int
+        - override_wait_time: int
+        - monitor: str
+        - pingserver_monitor_interface: str
+        - pingserver_failover_threshold: int
+        - pingserver_secondary_force_reset: "enable" | "disable"
+        - pingserver_flip_timeout: int
+        - vdom: str
+    
+    **Example:**
+        entry: HaVclusterItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    vcluster_id: int  # ID. | Default: 1 | Min: 1 | Max: 30
+    override: Literal["enable", "disable"]  # Enable and increase the priority of the unit that | Default: disable
+    priority: int  # Increase the priority to select the primary unit | Default: 128 | Min: 0 | Max: 255
+    override_wait_time: int  # Delay negotiating if override is enabled | Default: 0 | Min: 0 | Max: 3600
+    monitor: str  # Interfaces to check for port monitoring
+    pingserver_monitor_interface: str  # Interfaces to check for remote IP monitoring.
+    pingserver_failover_threshold: int  # Remote IP monitoring failover threshold (0 - 50). | Default: 0 | Min: 0 | Max: 50
+    pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
+    pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
+    vdom: str  # Virtual domain(s) in the virtual cluster.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -30,8 +156,8 @@ class HaPayload(TypedDict, total=False):
     password: str  # Cluster password. Must be the same for all members | MaxLen: 128
     key: str  # Key. | MaxLen: 16
     hbdev: list[dict[str, Any]]  # Heartbeat interfaces. Must be the same for all mem
-    auto_virtual_mac_interface: list[dict[str, Any]]  # The physical interface that will be assigned an au
-    backup_hbdev: list[dict[str, Any]]  # Backup heartbeat interfaces. Must be the same for
+    auto_virtual_mac_interface: list[HaAutovirtualmacinterfaceItem]  # The physical interface that will be assigned an au
+    backup_hbdev: list[HaBackuphbdevItem]  # Backup heartbeat interfaces. Must be the same for
     unicast_hb: Literal["enable", "disable"]  # Enable/disable unicast heartbeat. | Default: disable
     unicast_hb_peerip: str  # Unicast heartbeat peer IP. | Default: 0.0.0.0
     unicast_hb_netmask: str  # Unicast heartbeat netmask. | Default: 0.0.0.0
@@ -62,7 +188,7 @@ class HaPayload(TypedDict, total=False):
     uninterruptible_primary_wait: int  # Number of minutes the primary HA unit waits before | Default: 30 | Min: 15 | Max: 300
     standalone_mgmt_vdom: Literal["enable", "disable"]  # Enable/disable standalone management VDOM. | Default: disable
     ha_mgmt_status: Literal["enable", "disable"]  # Enable to reserve interfaces to manage individual | Default: disable
-    ha_mgmt_interfaces: list[dict[str, Any]]  # Reserve interfaces to manage individual cluster un
+    ha_mgmt_interfaces: list[HaHamgmtinterfacesItem]  # Reserve interfaces to manage individual cluster un
     ha_eth_type: str  # HA heartbeat packet Ethertype (4-digit hex). | Default: 8890 | MaxLen: 4
     hc_eth_type: str  # Transparent mode HA heartbeat packet Ethertype | Default: 8891 | MaxLen: 4
     l2ep_eth_type: str  # Telnet session HA heartbeat packet Ethertype | Default: 8893 | MaxLen: 4
@@ -70,7 +196,7 @@ class HaPayload(TypedDict, total=False):
     standalone_config_sync: Literal["enable", "disable"]  # Enable/disable FGSP configuration synchronization. | Default: disable
     unicast_status: Literal["enable", "disable"]  # Enable/disable unicast connection. | Default: disable
     unicast_gateway: str  # Default route gateway for unicast interface. | Default: 0.0.0.0
-    unicast_peers: list[dict[str, Any]]  # Number of unicast peers.
+    unicast_peers: list[HaUnicastpeersItem]  # Number of unicast peers.
     schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"]  # Type of A-A load balancing. Use none if you have e | Default: round-robin
     weight: str  # Weight-round-robin weight for each cluster unit. S | Default: 0 40
     cpu_threshold: str  # Dynamic weighted load balancing CPU usage weight a
@@ -90,7 +216,7 @@ class HaPayload(TypedDict, total=False):
     pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
     pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
     vcluster_status: Literal["enable", "disable"]  # Enable/disable virtual cluster for virtual cluster | Default: disable
-    vcluster: list[dict[str, Any]]  # Virtual cluster table.
+    vcluster: list[HaVclusterItem]  # Virtual cluster table.
     ha_direct: Literal["enable", "disable"]  # Enable/disable using ha-mgmt interface for syslog, | Default: disable
     ssd_failover: Literal["enable", "disable"]  # Enable/disable automatic HA failover on SSD disk f | Default: disable
     memory_compatible_mode: Literal["enable", "disable"]  # Enable/disable memory compatible mode. | Default: disable
@@ -105,74 +231,9 @@ class HaPayload(TypedDict, total=False):
     bounce_intf_upon_failover: Literal["enable", "disable"]  # Enable/disable notification of kernel to bring dow | Default: disable
     status: str  # list ha status information
 
-# Nested TypedDicts for table field children (dict mode)
-
-class HaAutovirtualmacinterfaceItem(TypedDict):
-    """Type hints for auto-virtual-mac-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 15
-
-
-class HaBackuphbdevItem(TypedDict):
-    """Type hints for backup-hbdev table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class HaHamgmtinterfacesItem(TypedDict):
-    """Type hints for ha-mgmt-interfaces table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    interface: str  # Interface to reserve for HA management. | MaxLen: 15
-    dst: str  # Default route destination for reserved HA manageme | Default: 0.0.0.0 0.0.0.0
-    gateway: str  # Default route gateway for reserved HA management i | Default: 0.0.0.0
-    dst6: str  # Default IPv6 destination for reserved HA managemen | Default: ::/0
-    gateway6: str  # Default IPv6 gateway for reserved HA management in | Default: ::
-
-
-class HaUnicastpeersItem(TypedDict):
-    """Type hints for unicast-peers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    peer_ip: str  # Unicast peer IP. | Default: 0.0.0.0
-
-
-class HaVclusterItem(TypedDict):
-    """Type hints for vcluster table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    vcluster_id: int  # ID. | Default: 1 | Min: 1 | Max: 30
-    override: Literal["enable", "disable"]  # Enable and increase the priority of the unit that | Default: disable
-    priority: int  # Increase the priority to select the primary unit | Default: 128 | Min: 0 | Max: 255
-    override_wait_time: int  # Delay negotiating if override is enabled | Default: 0 | Min: 0 | Max: 3600
-    monitor: str  # Interfaces to check for port monitoring
-    pingserver_monitor_interface: str  # Interfaces to check for remote IP monitoring.
-    pingserver_failover_threshold: int  # Remote IP monitoring failover threshold (0 - 50). | Default: 0 | Min: 0 | Max: 50
-    pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
-    pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
-    vdom: str  # Virtual domain(s) in the virtual cluster.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class HaAutovirtualmacinterfaceObject:
@@ -185,14 +246,33 @@ class HaAutovirtualmacinterfaceObject:
     # Interface name. | MaxLen: 15
     interface_name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -206,14 +286,33 @@ class HaBackuphbdevObject:
     # Interface name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -237,14 +336,33 @@ class HaHamgmtinterfacesObject:
     # Default IPv6 gateway for reserved HA management interface. | Default: ::
     gateway6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -260,14 +378,33 @@ class HaUnicastpeersObject:
     # Unicast peer IP. | Default: 0.0.0.0
     peer_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -299,14 +436,34 @@ class HaVclusterObject:
     # Virtual domain(s) in the virtual cluster.
     vdom: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -572,17 +729,32 @@ class HaObject:
     status: str
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> HaPayload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Ha:
@@ -593,17 +765,12 @@ class Ha:
     Category: cmdb
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -617,10 +784,9 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -635,10 +801,9 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -652,14 +817,13 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -673,13 +837,9 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> HaObject: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -694,12 +854,9 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> HaObject: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -713,29 +870,7 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> HaObject: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -751,10 +886,7 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -771,10 +903,7 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -790,10 +919,7 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> HaResponse: ...
+    ) -> HaObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -809,16 +935,27 @@ class Ha:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> HaObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -832,8 +969,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[str] | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[str] | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -864,7 +1001,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[str] | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -872,7 +1009,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[str] | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -892,7 +1029,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[str] | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -907,10 +1044,6 @@ class Ha:
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> HaObject: ...
     
     @overload
@@ -924,8 +1057,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[str] | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[str] | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -956,7 +1089,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[str] | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -964,7 +1097,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[str] | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -984,7 +1117,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[str] | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -999,12 +1132,9 @@ class Ha:
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
@@ -1016,8 +1146,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[str] | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[str] | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1048,7 +1178,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[str] | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1056,7 +1186,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[str] | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1076,7 +1206,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[str] | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1091,12 +1221,8 @@ class Ha:
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: HaPayload | None = ...,
@@ -1107,8 +1233,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[str] | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[str] | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1139,7 +1265,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[str] | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1147,7 +1273,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[str] | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1167,7 +1293,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[str] | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1182,9 +1308,7 @@ class Ha:
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1202,8 +1326,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[str] | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[str] | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1234,7 +1358,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[str] | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1242,7 +1366,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[str] | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1262,7 +1386,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[str] | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1277,1334 +1401,37 @@ class Ha:
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class HaDictMode:
-    """Ha endpoint for dict response mode (default for this client).
-    
-    By default returns HaResponse (TypedDict).
-    Can be overridden per-call with response_mode="object" to return HaObject.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> HaResponse: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> HaResponse: ...
-
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class HaObjectMode:
-    """Ha endpoint for object response mode (default for this client).
-    
-    By default returns HaObject (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return HaResponse (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> HaResponse: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> HaResponse: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        name: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> HaObject: ...
-
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> HaObject: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: HaPayload | None = ...,
-        group_id: int | None = ...,
-        group_name: str | None = ...,
-        mode: Literal["standalone", "a-a", "a-p"] | None = ...,
-        sync_packet_balance: Literal["enable", "disable"] | None = ...,
-        password: str | None = ...,
-        key: str | None = ...,
-        hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
-        unicast_hb: Literal["enable", "disable"] | None = ...,
-        unicast_hb_peerip: str | None = ...,
-        unicast_hb_netmask: str | None = ...,
-        session_sync_dev: str | list[str] | None = ...,
-        route_ttl: int | None = ...,
-        route_wait: int | None = ...,
-        route_hold: int | None = ...,
-        multicast_ttl: int | None = ...,
-        evpn_ttl: int | None = ...,
-        load_balance_all: Literal["enable", "disable"] | None = ...,
-        sync_config: Literal["enable", "disable"] | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        hb_interval: int | None = ...,
-        hb_interval_in_milliseconds: Literal["100ms", "10ms"] | None = ...,
-        hb_lost_threshold: int | None = ...,
-        hello_holddown: int | None = ...,
-        gratuitous_arps: Literal["enable", "disable"] | None = ...,
-        arps: int | None = ...,
-        arps_interval: int | None = ...,
-        session_pickup: Literal["enable", "disable"] | None = ...,
-        session_pickup_connectionless: Literal["enable", "disable"] | None = ...,
-        session_pickup_expectation: Literal["enable", "disable"] | None = ...,
-        session_pickup_nat: Literal["enable", "disable"] | None = ...,
-        session_pickup_delay: Literal["enable", "disable"] | None = ...,
-        link_failed_signal: Literal["enable", "disable"] | None = ...,
-        upgrade_mode: Literal["simultaneous", "uninterruptible", "local-only", "secondary-only"] | None = ...,
-        uninterruptible_primary_wait: int | None = ...,
-        standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_eth_type: str | None = ...,
-        hc_eth_type: str | None = ...,
-        l2ep_eth_type: str | None = ...,
-        ha_uptime_diff_margin: int | None = ...,
-        standalone_config_sync: Literal["enable", "disable"] | None = ...,
-        unicast_status: Literal["enable", "disable"] | None = ...,
-        unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
-        schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
-        weight: str | None = ...,
-        cpu_threshold: str | None = ...,
-        memory_threshold: str | None = ...,
-        http_proxy_threshold: str | None = ...,
-        ftp_proxy_threshold: str | None = ...,
-        imap_proxy_threshold: str | None = ...,
-        nntp_proxy_threshold: str | None = ...,
-        pop3_proxy_threshold: str | None = ...,
-        smtp_proxy_threshold: str | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
-        priority: int | None = ...,
-        override_wait_time: int | None = ...,
-        monitor: str | list[str] | None = ...,
-        pingserver_monitor_interface: str | list[str] | None = ...,
-        pingserver_failover_threshold: int | None = ...,
-        pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
-        pingserver_flip_timeout: int | None = ...,
-        vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
-        ha_direct: Literal["enable", "disable"] | None = ...,
-        ssd_failover: Literal["enable", "disable"] | None = ...,
-        memory_compatible_mode: Literal["enable", "disable"] | None = ...,
-        memory_based_failover: Literal["enable", "disable"] | None = ...,
-        memory_failover_threshold: int | None = ...,
-        memory_failover_monitor_period: int | None = ...,
-        memory_failover_sample_rate: int | None = ...,
-        memory_failover_flip_timeout: int | None = ...,
-        failover_hold_time: int | None = ...,
-        check_secondary_dev_health: Literal["enable", "disable"] | None = ...,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
-        bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
-        status: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Ha",
-    "HaDictMode",
-    "HaObjectMode",
     "HaPayload",
+    "HaResponse",
     "HaObject",
 ]

@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.57**
+> **⚠️ BETA STATUS - Version 0.5.89**
 >
-> - **Current Version**: 0.5.57 (Released - January 14, 2026)
+> - **Current Version**: 0.5.89 (Released - January 16, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -51,12 +51,42 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.45 - Enhanced fmt module in core, improved type annotations, key normalization
+**Latest Release:** v0.5.89 - Generator Fixes, New Endpoints, Enhanced Test Coverage
 
 **Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
 **🔥 Latest Improvements (January 2026):**
+
+**v0.5.89 - Generator Fixes & New Endpoints (52 New Tests):**
+- ✅ **Nested child object response properties**: All nested table field objects now include `http_status_code`, `http_method`, `http_response_time`
+- ✅ **Service API endpoints**: Security rating recommendations and reports (4 tests), system fabric/time checks (2 tests)
+- ✅ **Monitor API endpoints**: CASB SaaS monitoring (1 test), firewall policy hit count (3 tests)
+- ✅ **CMDB emailfilter**: Block/allow lists, banned words, DNS blocklists, FortiShield, IP trust, headers, options, profiles (36 tests)
+- ✅ **Test generator fixes**: HTTP methods extraction, POST-only endpoint handling, removed unsupported parameters
+
+**v0.5.77 - FortiManager Proxy Support & Response Enhancements:**
+- 🎯 **FortiManagerProxy**: Route FortiOS API calls through FortiManager!
+  - Proxy API requests to managed FortiGate devices
+  - Full ADOM and device targeting support
+  - Session-based authentication with FortiManager
+  - JSON-RPC protocol support for FMG API
+- 🔧 **HTTPClientFMG**: New HTTP client for FortiManager in `hfortix_core`
+  - Extends BaseHTTPClient with retry/circuit-breaker support
+  - Session-based login/logout with token caching
+  - Proxy request method for FMG's `/sys/proxy/json` endpoint
+- 📦 **ProxiedFortiOS**: FortiOS-like interface through FMG
+  - Same API patterns: `proxied_fgt.api.cmdb.firewall.address.get()`
+  - Automatic request translation to FMG JSON-RPC format
+  - Full response wrapping with timing and metadata
+- ⚡ **http_stats property**: Simplified timing access
+  - `obj.http_stats` returns `{"http_response_time": 123.5}` (in milliseconds)
+- ⏱️ **Response timing properties**: Track API performance
+  - `obj.response_time` - Response time in seconds (float)
+  - `obj.response_time_ms` - Response time in milliseconds (int)
+- 📊 **Explicit envelope properties**: Clear access to API metadata
+  - `obj.revision`, `obj.serial`, `obj.build`, `obj.version`
+- 🔕 **Silent 404 handling**: `exists()` returns `False` without printing errors
 
 **v0.5.45 - Formatting & Type Improvements:**
 - ✨ **fmt module in core**: `from hfortix_core import fmt` - 13 formatting utilities
@@ -514,62 +544,57 @@ fgt.api.cmdb.firewall.address.clone(
 #### **Object Response Mode - Clean Attribute Access** ✨
 - **FortiObject wrapper** for cleaner, more Pythonic code
 - **Attribute access** instead of dict keys: `obj.name` vs `obj["name"]`
-- **Nested table field wrapping** (v0.5.32) - Full attribute access on nested objects
-- **Single object returns** (v0.5.32) - Querying by mkey returns single object/dict, not list
-- **Dictionary-style access** (v0.5.26) - Both `obj.field` and `obj['field']` work
+- **Nested table field wrapping** - Full attribute access on nested objects
+- **Single object returns** - Querying by mkey returns single object, not list
+- **Dictionary-style access** - Both `obj.field` and `obj['field']` work
+- **Multiple output formats** - Access as `.dict`, `.json`, or `.raw`
 - **Full IDE autocomplete** with type stubs for all FortiObject methods
 - **Zero maintenance** - works with any FortiOS version, no schemas required
 
 ```python
-# Traditional dict mode (default)
+# All API calls now return FortiObject instances! ✨
+
 fgt = FortiOS(host="...", token="...")
 
-# Query all addresses - returns list of dicts
+# Query all addresses - returns list of FortiObjects
 addresses = fgt.api.cmdb.firewall.address.get()
 for addr in addresses:
-    print(addr["name"])  # Dictionary access - no autocomplete ❌
+    # Attribute access with full autocomplete ✅
+    print(addr.name)
+    print(addr.subnet)
+    
+    # Dictionary-style access also works ✅
+    print(addr["name"])
+    
+    # Convert to dict when needed ✅
+    addr_dict = addr.dict    # or addr.json or addr.raw
+    print(addr_dict)         # {'name': 'MyAddress', 'subnet': '10.0.0.1/32', ...}
 
-# Query by name - returns SINGLE dict (not list) ✨ NEW in v0.5.32!
-addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")
-print(addr["name"])  # Direct access - no need for addr[0]["name"]
-
-# Object mode - Clean attribute access with autocomplete ✨
-fgt = FortiOS(host="...", token="...", response_mode="object")
-
-# Query all - returns list of FortiObjects
-addresses = fgt.api.cmdb.firewall.address.get()
-for addr in addresses:
-    print(addr.name)     # Attribute access - full autocomplete ✅
-    print(addr.subnet)   # IDE suggests all available fields!
-
-# Query by name - returns SINGLE FortiObject (not list) ✨ NEW in v0.5.32!
+# Query by name - returns SINGLE FortiObject (not list) ✨
 addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")
 print(addr.name)      # Direct access - no need for addr[0].name
 print(addr.subnet)    # Clean and intuitive!
+print(addr.dict)      # Convert to dict: {'name': 'MyAddress', ...}
 
-# Nested table field wrapping ✨ NEW in v0.5.32!
+# Nested table field support ✨
 group = fgt.api.cmdb.firewall.service.group.get(name="MyGroup")
 # Access nested members with full attribute support
 for member in group.member:
-    print(member.name)  # ✅ Works! (was: AttributeError before v0.5.32)
+    print(member.name)  # ✅ Works! FortiObjects all the way down
     
-# Both attribute and bracket notation work (v0.5.26)
-print(addr.name)      # ✅ Attribute access
+# Multiple ways to access the same data:
+print(addr.name)      # ✅ Attribute access (recommended)
 print(addr['name'])   # ✅ Dictionary-style access
+print(addr.dict)      # ✅ Full dictionary: {'name': 'x', 'subnet': 'y', ...}
+print(addr.json)      # ✅ Alias for .dict
+print(addr.raw)       # ✅ Raw API response
     
-# Convert back to dict (two ways)
+# Convert back to dict for JSON serialization or dict operations
 addr_dict = addr.to_dict()  # Full method
-addr_dict = addr.json       # Shortcut property (v0.5.17+)
-    
-# Override response_mode per request (v0.5.14)
-fgt = FortiOS(host="...", token="...", response_mode="dict")  # Default dict
-addr = fgt.api.cmdb.firewall.address.get(
-    name="MyAddress",
-    response_mode="object"  # Use object mode for this call
-)
-print(addr.name)  # Attribute access works!
+addr_dict = addr.dict        # Shortcut property  
+addr_dict = addr.json        # Another alias
 
-# Keyword argument support (v0.5.31)
+# Keyword argument support
 addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")  # ✅ Works
 addr = fgt.api.cmdb.firewall.address.get("MyAddress")        # ✅ Also works
 ```

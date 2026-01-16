@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -77,107 +78,125 @@ class Generate(CRUDEndpoint, MetadataMixin):
         """Initialize Generate endpoint."""
         self._client = client
 
+
+
     # ========================================================================
-    # GET Method
+    # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
     # ========================================================================
     
-    def get(
+    def post(
         self,
-        name: str | None = None,
-        filter: list[str] | None = None,
-        count: int | None = None,
-        start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
+        certname: str | None = None,
+        subject: str | None = None,
+        keytype: str | None = None,
+        keysize: Any | None = None,
+        curvename: str | None = None,
+        orgunits: Any | None = None,
+        org: str | None = None,
+        city: str | None = None,
+        state: str | None = None,
+        countrycode: str | None = None,
+        email: str | None = None,
+        subject_alt_name: str | None = None,
+        password: str | None = None,
+        scep_url: str | None = None,
+        scep_password: str | None = None,
+        scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
-        Retrieve vpn_certificate/csr/generate configuration.
+        Create new vpn_certificate/csr/generate object.
 
         Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved / downloaded from CLI, GUI and REST API.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
-            filter: List of filter expressions to limit results.
-                Each filter uses format: "field==value" or "field!=value"
-                Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
-                Multiple filters use AND logic. For OR, use comma in single string.
-                Example: ["name==test", "status==enable"] or ["name==test,name==prod"]
-            count: Maximum number of entries to return (pagination).
-            start: Starting entry index for pagination (0-based).
-            payload_dict: Additional query parameters for advanced options:
-                - datasource (bool): Include datasource information
-                - with_meta (bool): Include metadata about each object
-                - with_contents_hash (bool): Include checksum of object contents
-                - format (list[str]): Property names to include (e.g., ["policyid", "srcintf"])
-                - scope (str): Query scope - "global", "vdom", or "both"
-                - action (str): Special actions - "schema", "default"
-                See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            certname: certname
+            subject: subject
+            keytype: keytype
+            keysize: keysize
+            curvename: curvename
+            orgunits: orgunits
+            org: org
+            city: city
+            state: state
+            countrycode: countrycode
+            email: email
+            subject_alt_name: subject_alt_name
+            password: password
+            scep_url: scep_url
+            scep_password: scep_password
+            scope: scope
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
-            
-            Response structure:
-                - http_method: GET
-                - results: Configuration object(s)
-                - vdom: Virtual domain
-                - path: API path
-                - name: Object name (single object queries)
-                - status: success/error
-                - http_status: HTTP status code
-                - build: FortiOS build number
+            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
 
         Examples:
-            >>> # Get all vpn_certificate/csr/generate objects
-            >>> result = fgt.api.monitor.vpn_certificate_csr_generate.get()
-            >>> print(f"Found {len(result['results'])} objects")
-            
-            >>> # Get with filter
-            >>> result = fgt.api.monitor.vpn_certificate_csr_generate.get(
-            ...     filter=["name==test", "status==enable"]
+            >>> # Create using individual parameters
+            >>> result = fgt.api.monitor.vpn_certificate_csr_generate.post(
+            ...     name="example",
+            ...     # ... other required fields
             ... )
+            >>> print(f"Created object: {result['results']}")
             
-            >>> # Get with pagination
-            >>> result = fgt.api.monitor.vpn_certificate_csr_generate.get(
-            ...     start=0, count=100
-            ... )
+            >>> # Create using payload dict
+            >>> payload = Generate.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.monitor.vpn_certificate_csr_generate.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Generate.required_fields()) }}
             
-            >>> # Get schema information  
-            >>> schema = fgt.api.monitor.vpn_certificate_csr_generate.get_schema()
+            Use Generate.help('field_name') to get field details.
 
         See Also:
-            - post(): Create new vpn_certificate/csr/generate object
-            - put(): Update existing vpn_certificate/csr/generate object
-            - delete(): Remove vpn_certificate/csr/generate object
-            - exists(): Check if object exists
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
         """
-        params = payload_dict.copy() if payload_dict else {}
-        
-        # Add explicit query parameters
-        if filter is not None:
-            params["filter"] = filter
-        if count is not None:
-            params["count"] = count
-        if start is not None:
-            params["start"] = start
-        
-        if name:
-            endpoint = f"/vpn-certificate/csr/generate/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/vpn-certificate/csr/generate"
-            unwrap_single = False
-        
-        params.update(kwargs)
-        return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
+            certname=certname,
+            subject=subject,
+            keytype=keytype,
+            keysize=keysize,
+            curvename=curvename,
+            orgunits=orgunits,
+            org=org,
+            city=city,
+            state=state,
+            countrycode=countrycode,
+            email=email,
+            subject_alt_name=subject_alt_name,
+            password=password,
+            scep_url=scep_url,
+            scep_password=scep_password,
+            scope=scope,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.generate import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="monitor/vpn_certificate/csr/generate",
+            )
+
+        endpoint = "/vpn-certificate/csr/generate"
+        return self._client.post(
+            "monitor", endpoint, data=payload_data, vdom=vdom
         )
 
 
@@ -185,47 +204,4 @@ class Generate(CRUDEndpoint, MetadataMixin):
 
 
 
-
-
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if vpn_certificate/csr/generate object exists.
-        
-        Args:
-            name: Name to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.monitor.vpn_certificate_csr_generate.exists(name="myobj"):
-            ...     fgt.api.monitor.vpn_certificate_csr_generate.post(payload_dict=data)
-        """
-        # Try to fetch the object - 404 means it doesn't exist
-        try:
-            response = self.get(
-                name=name,
-                vdom=vdom,
-                raw_json=True
-            )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
 

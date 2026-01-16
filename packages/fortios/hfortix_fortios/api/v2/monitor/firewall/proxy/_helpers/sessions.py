@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "count",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,28 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ip_version": "string",  # 
+    "count": "int",  # 
+    "summary": "boolean",  # 
+    "srcaddr": "object",  # 
+    "dstaddr": "object",  # 
+    "srcaddr6": "object",  # 
+    "dstaddr6": "object",  # 
+    "srcport": "object",  # 
+    "dstport": "object",  # 
+    "srcintf": "object",  # 
+    "dstintf": "object",  # 
+    "policyid": "object",  # 
+    "proxy-policyid": "object",  # 
+    "protocol": "object",  # 
+    "application": "object",  # 
+    "country": "object",  # 
+    "seconds": "object",  # 
+    "since": "object",  # 
+    "owner": "object",  # 
+    "username": "object",  # 
+    "src_uuid": "object",  # 
+    "dst_uuid": "object",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +202,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/proxy/sessions",
     "help": "List all active proxy sessions (optionally filtered).",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 22,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "db_name",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,11 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "db_name": "string",  # 
+    "confirm_not_signed": "boolean",  # 
+    "confirm_not_ga_certified": "boolean",  # 
+    "file_id": "string",  # 
+    "file_content": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +185,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "license/database/upgrade",
     "help": "Upgrade or downgrade UTM engine or signature package (IPS/AntiVirus/Application Control/Industrial database/Security Rating/Internet Service Database) using uploaded file.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 5,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

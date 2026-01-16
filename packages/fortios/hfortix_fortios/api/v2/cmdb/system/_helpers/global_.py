@@ -1548,7 +1548,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_system_global_get(
+def validate_system_global__get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -1572,7 +1572,7 @@ def validate_system_global_get(
 # ============================================================================
 
 
-def validate_system_global_post(
+def validate_system_global__post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -2739,7 +2739,7 @@ def validate_system_global_post(
 # ============================================================================
 
 
-def validate_system_global_put(
+def validate_system_global__put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

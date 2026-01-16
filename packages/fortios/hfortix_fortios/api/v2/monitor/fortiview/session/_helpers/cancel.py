@@ -54,6 +54,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "sessionid": "int",  # 
+    "device": "string",  # 
+    "report_by": "string",  # 
+    "view_level": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +183,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "fortiview/session/cancel",
     "help": "Cancel a FortiView request session.",
-    "total_fields": 0,
+    "total_fields": 4,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

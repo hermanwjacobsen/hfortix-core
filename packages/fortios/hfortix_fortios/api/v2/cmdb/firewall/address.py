@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
     normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
@@ -80,7 +81,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             "required_fields": ['name'],
             "example": "[{'name': 'value'}]",
         },
-        "list_": {
+        "list": {
             "mkey": "ip",
             "required_fields": ['ip'],
             "example": "[{'ip': '192.168.1.10'}]",
@@ -123,9 +124,8 @@ class Address(CRUDEndpoint, MetadataMixin):
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/address configuration.
@@ -151,12 +151,12 @@ class Address(CRUDEndpoint, MetadataMixin):
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional query parameters passed directly to API.
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            Configuration data as dict. Returns Coroutine if using async client.
+            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
+            Use .dict, .json, or .raw properties to access as dictionary.
             
             Response structure:
                 - http_method: GET
@@ -208,15 +208,14 @@ class Address(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = "/firewall/address/" + str(name)
+            endpoint = "/firewall/address/" + quote_path_param(name)
             unwrap_single = True
         else:
             endpoint = "/firewall/address"
             unwrap_single = False
         
-        params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -268,7 +267,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -301,19 +300,22 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter_: str | None = None,
+        filter: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list_: str | list[str] | list[dict[str, Any]] | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
+        q_action: Literal["move"] | None = None,
+        q_before: str | None = None,
+        q_after: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/address object.
@@ -325,7 +327,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             subnet: IP address and subnet mask of address.
-            type_: Type of address.
+            type: Type of address.
             route_tag: route-tag address.
             sub_type: Sub-type of address.
             clearpass_spt: SPT (System Posture Token) value.
@@ -373,11 +375,16 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             associated_interface: Network interface associated with address.
             color: Color of icon on the GUI.
-            filter_: Match criteria filter.
+            filter: Match criteria filter.
             sdn_addr_type: Type of addresses to collect.
             node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
             obj_id: Object ID for NSX.
-            list_: IP address list.
+            list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             tagging: Config object tagging.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -388,12 +395,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
 
         Raises:
             ValueError: If name is missing from payload
@@ -441,12 +447,12 @@ class Address(CRUDEndpoint, MetadataMixin):
                 field_name="sso_attribute_value",
                 example="[{'name': 'value'}]",
             )
-        if list_ is not None:
-            list_ = normalize_table_field(
-                list_,
+        if list is not None:
+            list = normalize_table_field(
+                list,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list_",
+                field_name="list",
                 example="[{'ip': '192.168.1.10'}]",
             )
         if tagging is not None:
@@ -465,7 +471,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type_=type_,
+            type=type,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -498,11 +504,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter_=filter_,
+            filter=filter,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list_=list_,
+            list=list,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,
@@ -523,10 +529,21 @@ class Address(CRUDEndpoint, MetadataMixin):
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/firewall/address/" + str(name_value)
+        endpoint = "/firewall/address/" + quote_path_param(name_value)
 
+        # Add explicit query parameters for PUT
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_before is not None:
+            params["before"] = q_before
+        if q_after is not None:
+            params["after"] = q_after
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -540,7 +557,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -573,19 +590,21 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter_: str | None = None,
+        filter: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list_: str | list[str] | list[dict[str, Any]] | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
+        q_action: Literal["clone"] | None = None,
+        q_nkey: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/address object.
@@ -597,7 +616,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Address name.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             subnet: IP address and subnet mask of address.
-            type_: Type of address.
+            type: Type of address.
             route_tag: route-tag address.
             sub_type: Sub-type of address.
             clearpass_spt: SPT (System Posture Token) value.
@@ -645,11 +664,16 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             associated_interface: Network interface associated with address.
             color: Color of icon on the GUI.
-            filter_: Match criteria filter.
+            filter: Match criteria filter.
             sdn_addr_type: Type of addresses to collect.
             node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
             obj_id: Object ID for NSX.
-            list_: IP address list.
+            list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             tagging: Config object tagging.
                 Default format: [{'name': 'value'}]
                 Supported formats:
@@ -660,12 +684,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict containing created object with assigned name.
+            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
 
         Examples:
             >>> # Create using individual parameters
@@ -715,12 +738,12 @@ class Address(CRUDEndpoint, MetadataMixin):
                 field_name="sso_attribute_value",
                 example="[{'name': 'value'}]",
             )
-        if list_ is not None:
-            list_ = normalize_table_field(
-                list_,
+        if list is not None:
+            list = normalize_table_field(
+                list,
                 mkey="ip",
                 required_fields=['ip'],
-                field_name="list_",
+                field_name="list",
                 example="[{'ip': '192.168.1.10'}]",
             )
         if tagging is not None:
@@ -739,7 +762,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type_=type_,
+            type=type,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -772,11 +795,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter_=filter_,
+            filter=filter,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list_=list_,
+            list=list,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,
@@ -795,8 +818,18 @@ class Address(CRUDEndpoint, MetadataMixin):
             )
 
         endpoint = "/firewall/address"
+        
+        # Add explicit query parameters for POST
+        params: dict[str, Any] = {}
+        if q_action is not None:
+            params["action"] = q_action
+        if q_nkey is not None:
+            params["nkey"] = q_nkey
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
         )
 
     # ========================================================================
@@ -807,10 +840,10 @@ class Address(CRUDEndpoint, MetadataMixin):
     def delete(
         self,
         name: str | None = None,
+        q_scope: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
-        **kwargs: Any,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/address object.
@@ -820,12 +853,11 @@ class Address(CRUDEndpoint, MetadataMixin):
         Args:
             name: Primary key identifier
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
-            **kwargs: Additional parameters
+            error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
+            error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            API response dict
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is not provided
@@ -844,10 +876,15 @@ class Address(CRUDEndpoint, MetadataMixin):
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/firewall/address/" + str(name)
+        endpoint = "/firewall/address/" + quote_path_param(name)
 
+        # Add explicit query parameters for DELETE
+        params: dict[str, Any] = {}
+        if q_scope is not None:
+            params["scope"] = q_scope
+        
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
+            "cmdb", endpoint, params=params, vdom=vdom
         )
 
     def exists(
@@ -882,30 +919,37 @@ class Address(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Try to fetch the object - 404 means it doesn't exist
+        # Use direct request with silent error handling to avoid logging 404s
+        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        endpoint = "/firewall/address"
+        endpoint = f"{endpoint}/{quote_path_param(name)}"
+        
+        # Make request with silent=True to suppress 404 error logging
+        # (404 is expected when checking existence - it just means "doesn't exist")
+        # Use _wrapped_client to access the underlying HTTPClient directly
+        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            response = self.get(
-                name=name,
+            result = self._client._wrapped_client.get(
+                "cmdb",
+                endpoint,
+                params=None,
                 vdom=vdom,
-                raw_json=True
+                raw_json=True,
+                silent=True,
             )
             
-            if isinstance(response, dict):
+            if isinstance(result, dict):
                 # Synchronous response - check status
-                return is_success(response)
+                return result.get("status") == "success"
             else:
                 # Asynchronous response
                 async def _check() -> bool:
-                    r = await response
-                    return is_success(r)
+                    r = await result
+                    return r.get("status") == "success"
                 return _check()
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
+        except Exception:
+            # Any error (404, network, etc.) means we can't confirm existence
+            return False
 
 
     def set(
@@ -914,7 +958,7 @@ class Address(CRUDEndpoint, MetadataMixin):
         name: str | None = None,
         uuid: str | None = None,
         subnet: Any | None = None,
-        type_: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
@@ -947,18 +991,18 @@ class Address(CRUDEndpoint, MetadataMixin):
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
-        filter_: str | None = None,
+        filter: str | None = None,
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list_: str | list[str] | list[dict[str, Any]] | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
         tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
-        response_mode: Literal["dict", "object"] | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -972,7 +1016,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name: Field name
             uuid: Field uuid
             subnet: Field subnet
-            type_: Field type
+            type: Field type
             route_tag: Field route-tag
             sub_type: Field sub-type
             clearpass_spt: Field clearpass-spt
@@ -1005,22 +1049,20 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment: Field comment
             associated_interface: Field associated-interface
             color: Field color
-            filter_: Field filter
+            filter: Field filter
             sdn_addr_type: Field sdn-addr-type
             node_ip_only: Field node-ip-only
             obj_id: Field obj-id
-            list_: Field list
+            list: Field list
             tagging: Field tagging
             allow_routing: Field allow-routing
             passive_fqdn_learning: Field passive-fqdn-learning
             fabric_object: Field fabric-object
             vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            API response dictionary
+            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
 
         Raises:
             ValueError: If name is missing from payload
@@ -1060,7 +1102,7 @@ class Address(CRUDEndpoint, MetadataMixin):
             name=name,
             uuid=uuid,
             subnet=subnet,
-            type_=type_,
+            type=type,
             route_tag=route_tag,
             sub_type=sub_type,
             clearpass_spt=clearpass_spt,
@@ -1093,11 +1135,11 @@ class Address(CRUDEndpoint, MetadataMixin):
             comment=comment,
             associated_interface=associated_interface,
             color=color,
-            filter_=filter_,
+            filter=filter,
             sdn_addr_type=sdn_addr_type,
             node_ip_only=node_ip_only,
             obj_id=obj_id,
-            list_=list_,
+            list=list,
             tagging=tagging,
             allow_routing=allow_routing,
             passive_fqdn_learning=passive_fqdn_learning,
@@ -1112,10 +1154,10 @@ class Address(CRUDEndpoint, MetadataMixin):
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -1208,44 +1250,4 @@ class Address(CRUDEndpoint, MetadataMixin):
             },
         )
 
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if firewall/address object exists.
-        
-        Args:
-            name: Identifier to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.firewall_address.exists(name=1):
-            ...     fgt.api.cmdb.firewall_address.post(payload_dict=data)
-        """
-        # Try to fetch the object - 404 means it doesn't exist
-        try:
-            response = self.get(
-                name=name,
-                vdom=vdom,
-                raw_json=True
-            )
-            # Check if response indicates success
-            return is_success(response)
-        except Exception as e:
-            # 404 means object doesn't exist - return False
-            # Any other error should be re-raised
-            error_str = str(e)
-            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
-                return False
-            raise
 

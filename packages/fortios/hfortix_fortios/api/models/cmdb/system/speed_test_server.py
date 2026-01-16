@@ -8,34 +8,32 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any
-
+from typing import Any, Optional
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
-
 class SpeedTestServerHost(BaseModel):
     """
     Child table model for host.
-
+    
     Hosts of the server.
     """
-
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Server host ID.")
-    ip: str | None = Field(default="0.0.0.0", description="Server host IPv4 address.")
-    port: int | None = Field(ge=1, le=65535, default=5204, description="Server host port number to communicate with client.")
-    user: str | None = Field(max_length=64, default="", description="Speed test host user name.")
-    password: Any = Field(max_length=128, default=None, description="Speed test host password.")
-    longitude: str | None = Field(max_length=7, default="", description="Speed test host longitude.")
-    latitude: str | None = Field(max_length=7, default="", description="Speed test host latitude.")
+    
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="Server host ID.")    
+    ip: str | None = Field(default="0.0.0.0", description="Server host IPv4 address.")    
+    port: int | None = Field(ge=1, le=65535, default=5204, description="Server host port number to communicate with client.")    
+    user: str | None = Field(max_length=64, default="", description="Speed test host user name.")    
+    password: Any = Field(max_length=128, default=None, description="Speed test host password.")    
+    longitude: str | None = Field(max_length=7, default="", description="Speed test host longitude.")    
+    latitude: str | None = Field(max_length=7, default="", description="Speed test host latitude.")    
     distance: int | None = Field(ge=0, le=4294967295, default=0, description="Speed test host distance.")
-
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -45,58 +43,54 @@ class SpeedTestServerHost(BaseModel):
 # Main Model
 # ============================================================================
 
-
 class SpeedTestServerModel(BaseModel):
     """
     Pydantic model for system/speed_test_server configuration.
-
+    
     Configure speed test server list.
-
-    Validation Rules:
-        - name: max_length=35 pattern=
-        - timestamp: min=0 max=4294967295 pattern=
-        - host: pattern=
-    """
-
+    
+    Validation Rules:        - name: max_length=35 pattern=        - timestamp: min=0 max=4294967295 pattern=        - host: pattern=    """
+    
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-
+    
     # ========================================================================
     # Model Fields
     # ========================================================================
-    name: str | None = Field(max_length=35, default="", description="Speed test server name.")
-    timestamp: int | None = Field(ge=0, le=4294967295, default=0, description="Speed test server timestamp.")
-    host: list[SpeedTestServerHost] | None = Field(default=None, description="Hosts of the server.")
+    
+    name: str | None = Field(max_length=35, default="", description="Speed test server name.")    
+    timestamp: int | None = Field(ge=0, le=4294967295, default=0, description="Speed test server timestamp.")    
+    host: list[Host] = Field(default=None, description="Hosts of the server.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
-
+    
     # ========================================================================
     # Helper Methods
     # ========================================================================
-
+    
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-
+        
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-
+    
     @classmethod
     def from_fortios_response(cls, data: dict[str, Any]) -> "SpeedTestServerModel":
         """
         Create model instance from FortiOS API response.
-
+        
         Args:
             data: Response data from API
-
+            
         Returns:
             Validated model instance
         """
@@ -106,8 +100,7 @@ class SpeedTestServerModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-
-SpeedTestServerModelDict = dict[str, Any]  # For backward compatibility
+Dict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -120,5 +113,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T22:43:34.464533Z
+# Generated: 2026-01-16T19:53:50.311793Z
 # ============================================================================

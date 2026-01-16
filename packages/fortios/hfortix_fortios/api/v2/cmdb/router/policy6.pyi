@@ -1,9 +1,195 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject
-from hfortix_core.types import MutationResponse, RawAPIResponse
+from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Policy6InputdeviceItem(TypedDict, total=False):
+    """Type hints for input-device table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6InputdeviceItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class Policy6SrcItem(TypedDict, total=False):
+    """Type hints for src table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - addr6: str
+    
+    **Example:**
+        entry: Policy6SrcItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    addr6: str  # IPv6 address prefix. | MaxLen: 79
+
+
+class Policy6SrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6SrcaddrItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Address/group name. | MaxLen: 79
+
+
+class Policy6DstItem(TypedDict, total=False):
+    """Type hints for dst table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - addr6: str
+    
+    **Example:**
+        entry: Policy6DstItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    addr6: str  # IPv6 address prefix. | MaxLen: 79
+
+
+class Policy6DstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6DstaddrItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Address/group name. | MaxLen: 79
+
+
+class Policy6InternetserviceidItem(TypedDict, total=False):
+    """Type hints for internet-service-id table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - id: int
+    
+    **Example:**
+        entry: Policy6InternetserviceidItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    id: int  # Destination Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class Policy6InternetservicecustomItem(TypedDict, total=False):
+    """Type hints for internet-service-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6InternetservicecustomItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Custom Destination Internet Service name. | MaxLen: 79
+
+
+class Policy6InternetservicefortiguardItem(TypedDict, total=False):
+    """Type hints for internet-service-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6InternetservicefortiguardItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # FortiGuard Destination Internet Service name. | MaxLen: 79
+
+
+class Policy6UsersItem(TypedDict, total=False):
+    """Type hints for users table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6UsersItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # User name. | MaxLen: 79
+
+
+class Policy6GroupsItem(TypedDict, total=False):
+    """Type hints for groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Available fields:**
+        - name: str
+    
+    **Example:**
+        entry: Policy6GroupsItem = {
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
+        }
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,13 +210,13 @@ class Policy6Payload(TypedDict, total=False):
         }
     """
     seq_num: int  # Sequence number(1-65535). | Default: 0 | Min: 1 | Max: 65535
-    input_device: list[dict[str, Any]]  # Incoming interface name.
+    input_device: list[Policy6InputdeviceItem]  # Incoming interface name.
     input_device_negate: Literal["enable", "disable"]  # Enable/disable negation of input device match. | Default: disable
-    src: list[dict[str, Any]]  # Source IPv6 prefix.
-    srcaddr: list[dict[str, Any]]  # Source address name.
+    src: list[Policy6SrcItem]  # Source IPv6 prefix.
+    srcaddr: list[Policy6SrcaddrItem]  # Source address name.
     src_negate: Literal["enable", "disable"]  # Enable/disable negating source address match. | Default: disable
-    dst: list[dict[str, Any]]  # Destination IPv6 prefix.
-    dstaddr: list[dict[str, Any]]  # Destination address name.
+    dst: list[Policy6DstItem]  # Destination IPv6 prefix.
+    dstaddr: list[Policy6DstaddrItem]  # Destination address name.
     dst_negate: Literal["enable", "disable"]  # Enable/disable negating destination address match. | Default: disable
     action: Literal["deny", "permit"]  # Action of the policy route. | Default: permit
     protocol: int  # Protocol number (0 - 255). | Default: 0 | Min: 0 | Max: 255
@@ -44,115 +230,15 @@ class Policy6Payload(TypedDict, total=False):
     tos_mask: str  # Type of service evaluated bits.
     status: Literal["enable", "disable"]  # Enable/disable this policy route. | Default: enable
     comments: str  # Optional comments. | MaxLen: 255
-    internet_service_id: list[dict[str, Any]]  # Destination Internet Service ID.
-    internet_service_custom: list[dict[str, Any]]  # Custom Destination Internet Service name.
-    internet_service_fortiguard: list[dict[str, Any]]  # FortiGuard Destination Internet Service name.
-    users: list[dict[str, Any]]  # List of users.
-    groups: list[dict[str, Any]]  # List of user groups.
+    internet_service_id: list[Policy6InternetserviceidItem]  # Destination Internet Service ID.
+    internet_service_custom: list[Policy6InternetservicecustomItem]  # Custom Destination Internet Service name.
+    internet_service_fortiguard: list[Policy6InternetservicefortiguardItem]  # FortiGuard Destination Internet Service name.
+    users: list[Policy6UsersItem]  # List of users.
+    groups: list[Policy6GroupsItem]  # List of user groups.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Policy6InputdeviceItem(TypedDict):
-    """Type hints for input-device table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class Policy6SrcItem(TypedDict):
-    """Type hints for src table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    addr6: str  # IPv6 address prefix. | MaxLen: 79
-
-
-class Policy6SrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address/group name. | MaxLen: 79
-
-
-class Policy6DstItem(TypedDict):
-    """Type hints for dst table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    addr6: str  # IPv6 address prefix. | MaxLen: 79
-
-
-class Policy6DstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address/group name. | MaxLen: 79
-
-
-class Policy6InternetserviceidItem(TypedDict):
-    """Type hints for internet-service-id table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Destination Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class Policy6InternetservicecustomItem(TypedDict):
-    """Type hints for internet-service-custom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Custom Destination Internet Service name. | MaxLen: 79
-
-
-class Policy6InternetservicefortiguardItem(TypedDict):
-    """Type hints for internet-service-fortiguard table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # FortiGuard Destination Internet Service name. | MaxLen: 79
-
-
-class Policy6UsersItem(TypedDict):
-    """Type hints for users table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # User name. | MaxLen: 79
-
-
-class Policy6GroupsItem(TypedDict):
-    """Type hints for groups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Group name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Policy6InputdeviceObject:
@@ -165,14 +251,33 @@ class Policy6InputdeviceObject:
     # Interface name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -186,14 +291,33 @@ class Policy6SrcObject:
     # IPv6 address prefix. | MaxLen: 79
     addr6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -207,14 +331,33 @@ class Policy6SrcaddrObject:
     # Address/group name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -228,14 +371,33 @@ class Policy6DstObject:
     # IPv6 address prefix. | MaxLen: 79
     addr6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -249,14 +411,33 @@ class Policy6DstaddrObject:
     # Address/group name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -270,14 +451,33 @@ class Policy6InternetserviceidObject:
     # Destination Internet Service ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -291,14 +491,33 @@ class Policy6InternetservicecustomObject:
     # Custom Destination Internet Service name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -312,14 +531,33 @@ class Policy6InternetservicefortiguardObject:
     # FortiGuard Destination Internet Service name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -333,14 +571,33 @@ class Policy6UsersObject:
     # User name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 @final
@@ -354,14 +611,34 @@ class Policy6GroupsObject:
     # Group name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> FortiObject: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
+
 
 
 
@@ -462,17 +739,32 @@ class Policy6Object:
     groups: list[Policy6GroupsObject]
     
     # Common API response fields
+    status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
     def get_full(self, name: str) -> Any: ...
     def to_dict(self) -> Policy6Payload: ...
     def keys(self) -> Any: ...
     def values(self) -> Generator[Any, None, None]: ...
     def items(self) -> Generator[tuple[str, Any], None, None]: ...
     def get(self, key: str, default: Any = None) -> Any: ...
-    def __getitem__(self, key: str) -> Any: ...
 
 
 class Policy6:
@@ -484,17 +776,12 @@ class Policy6:
     Primary Key: seq-num
     """
     
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
     # ================================================================
-    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
-    # These match when response_mode is NOT passed (client default is "dict")
+    # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Default mode: mkey as positional arg -> returns typed dict
+    # With mkey as positional arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -508,10 +795,9 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Policy6Response: ...
+    ) -> Policy6Object: ...
     
-    # Default mode: mkey as keyword arg -> returns typed dict
+    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
@@ -526,10 +812,9 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> Policy6Response: ...
+    ) -> Policy6Object: ...
     
-    # Default mode: no mkey -> returns list of typed dicts
+    # Without mkey -> returns list of FortiObjects
     @overload
     def get(
         self,
@@ -543,14 +828,13 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-    ) -> list[Policy6Response]: ...
+    ) -> FortiObjectList[Policy6Object]: ...
     
     # ================================================================
-    # EXPLICIT response_mode="object" OVERLOADS
+    # (removed - all GET now returns FortiObject)
     # ================================================================
     
-    # Object mode: mkey as positional arg -> returns single object
+    # With mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -564,13 +848,9 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Policy6Object: ...
     
-    # Object mode: mkey as keyword arg -> returns single object
+    # With mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -585,12 +865,9 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
     ) -> Policy6Object: ...
     
-    # Object mode: no mkey -> returns list of objects
+    # With no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -604,29 +881,7 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> list[Policy6Object]: ...
-    
-    # raw_json=True returns the full API envelope
-    @overload
-    def get(
-        self,
-        seq_num: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        response_mode: Literal["object"] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObjectList[Policy6Object]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -642,10 +897,7 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Policy6Response: ...
+    ) -> Policy6Object: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -662,10 +914,7 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> Policy6Response: ...
+    ) -> Policy6Object: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -681,10 +930,7 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] = ...,
-        **kwargs: Any,
-    ) -> list[Policy6Response]: ...
+    ) -> FortiObjectList[Policy6Object]: ...
     
     # Fallback overload for all other cases
     @overload
@@ -700,16 +946,27 @@ class Policy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get(
+        self,
+        seq_num: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> Policy6Object | list[Policy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
-    ) -> dict[str, Any]: ...
+    ) -> FortiObject: ...
     
     # POST overloads
     @overload
@@ -717,13 +974,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -737,16 +994,12 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Policy6Object: ...
     
     @overload
@@ -754,13 +1007,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -774,30 +1027,27 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def post(
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -811,29 +1061,25 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def post(
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -847,15 +1093,13 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # PUT overloads
     @overload
@@ -863,13 +1107,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -883,16 +1127,12 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Policy6Object: ...
     
     @overload
@@ -900,13 +1140,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -920,30 +1160,27 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def put(
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -957,29 +1194,25 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def put(
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -993,15 +1226,13 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # DELETE overloads
     @overload
@@ -1009,10 +1240,6 @@ class Policy6:
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
     ) -> Policy6Object: ...
     
     @overload
@@ -1020,30 +1247,21 @@ class Policy6:
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[False] = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
-    # raw_json=True returns the full API envelope
+    # Default overload
     @overload
     def delete(
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: Literal[True] = ...,
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
+    ) -> FortiObject: ...
     
-    # Default overload (no response_mode or raw_json specified)
-    @overload
     def delete(
         self,
         seq_num: int | None = ...,
         vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     def exists(
         self,
@@ -1055,13 +1273,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -1075,1151 +1293,43 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
+    ) -> FortiObject: ...
     
     # Helper methods
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @overload
     @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
+    def field_info(field_name: str) -> FortiObject: ...
     
     @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
+    def validate_field(name: str, value: Any) -> bool: ...
     
     @staticmethod
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> dict[str, Any]: ...
+    def defaults() -> FortiObject: ...
     
     @staticmethod
-    def schema() -> dict[str, Any]: ...
+    def schema() -> FortiObject: ...
 
 
 # ================================================================
-# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
-# ================================================================
-
-class Policy6DictMode:
-    """Policy6 endpoint for dict response mode (default for this client).
-    
-    By default returns Policy6Response (TypedDict).
-    Can be overridden per-call with response_mode="object" to return Policy6Object.
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse regardless of response_mode
-    @overload
-    def get(
-        self,
-        seq_num: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Object mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        seq_num: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # Object mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        seq_num: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> list[Policy6Object]: ...
-    
-    # Dict mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        seq_num: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> Policy6Response: ...
-    
-    # Dict mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        seq_num: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Policy6Response]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Object mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # POST - Default overload (returns MutationResponse)
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Dict mode (default for DictMode class)
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # PUT - Default overload (returns MutationResponse)
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # PUT - Dict mode (default for DictMode class)
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Object mode override
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # DELETE - Default overload (returns MutationResponse)
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Dict mode (default for DictMode class)
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
-
-
-class Policy6ObjectMode:
-    """Policy6 endpoint for object response mode (default for this client).
-    
-    By default returns Policy6Object (FortiObject).
-    Can be overridden per-call with response_mode="dict" to return Policy6Response (TypedDict).
-    """
-    
-    def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client."""
-        ...
-    
-    # raw_json=True returns RawAPIResponse for GET
-    @overload
-    def get(
-        self,
-        seq_num: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # Dict mode override with mkey (single item)
-    @overload
-    def get(
-        self,
-        seq_num: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> Policy6Response: ...
-    
-    # Dict mode override without mkey (list)
-    @overload
-    def get(
-        self,
-        seq_num: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> list[Policy6Response]: ...
-    
-    # Object mode with mkey (single item) - default
-    @overload
-    def get(
-        self,
-        seq_num: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # Object mode without mkey (list) - default
-    @overload
-    def get(
-        self,
-        seq_num: None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["object"] | None = ...,
-        **kwargs: Any,
-    ) -> list[Policy6Object]: ...
-
-    # raw_json=True returns RawAPIResponse for POST
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # POST - Dict mode override
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # POST - Object mode override (requires explicit response_mode="object")
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def post(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # PUT - Dict mode override
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # raw_json=True returns RawAPIResponse for PUT
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # PUT - Object mode override (requires explicit response_mode="object")
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def put(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # raw_json=True returns RawAPIResponse for DELETE
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        *,
-        raw_json: Literal[True],
-        **kwargs: Any,
-    ) -> RawAPIResponse: ...
-    
-    # DELETE - Dict mode override
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["dict"],
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    # DELETE - Object mode override (requires explicit response_mode="object")
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        *,
-        response_mode: Literal["object"],
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        response_mode: Literal[None] = ...,
-        **kwargs: Any,
-    ) -> Policy6Object: ...
-    
-    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
-    @overload
-    def delete(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-
-    # Helper methods (inherited from base class)
-    def exists(
-        self,
-        seq_num: int,
-        vdom: str | bool | None = ...,
-    ) -> bool: ...
-    
-    def set(
-        self,
-        payload_dict: Policy6Payload | None = ...,
-        seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        start_source_port: int | None = ...,
-        end_source_port: int | None = ...,
-        gateway: str | None = ...,
-        output_device: str | None = ...,
-        tos: str | None = ...,
-        tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
-        vdom: str | bool | None = ...,
-        raw_json: bool = ...,
-        response_mode: Literal["dict", "object"] | None = ...,
-        **kwargs: Any,
-    ) -> MutationResponse: ...
-    
-    @staticmethod
-    def help(field_name: str | None = ...) -> str: ...
-    
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[False] = ...) -> list[str]: ...
-    @overload
-    @staticmethod
-    def fields(detailed: Literal[True]) -> dict[str, Any]: ...
-    
-    @staticmethod
-    def field_info(field_name: str) -> dict[str, Any] | None: ...
-    
-    @staticmethod
-    def validate_field(name: str, value: Any) -> tuple[bool, str | None]: ...
-    
-    @staticmethod
-    def required_fields() -> list[str]: ...
-    
-    @staticmethod
-    def defaults() -> dict[str, Any]: ...
-    
-    @staticmethod
-    def schema() -> dict[str, Any]: ...
 
 
 __all__ = [
     "Policy6",
-    "Policy6DictMode",
-    "Policy6ObjectMode",
     "Policy6Payload",
+    "Policy6Response",
     "Policy6Object",
 ]

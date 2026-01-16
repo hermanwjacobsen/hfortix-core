@@ -54,6 +54,20 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "scope": "string",  # 
+    "gtp_profile": "string",  # 
+    "version": "int",  # 
+    "imsi": "string",  # 
+    "msisdn": "string",  # 
+    "ms_addr": "string",  # 
+    "ms_addr6": "string",  # 
+    "cteid": "int",  # 
+    "cteid_addr": "string",  # 
+    "cteid_addr6": "string",  # 
+    "fteid": "int",  # 
+    "fteid_addr": "string",  # 
+    "fteid_addr6": "string",  # 
+    "apn": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +193,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/gtp/flush",
     "help": "Flush GTP tunnels.",
-    "total_fields": 0,
+    "total_fields": 14,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

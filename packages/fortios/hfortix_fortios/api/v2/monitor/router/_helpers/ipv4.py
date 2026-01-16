@@ -54,6 +54,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "operator": "string",  # 
+    "ip_mask": "string",  # 
+    "gateway": "string",  # 
+    "type": "string",  # 
+    "origin": "string",  # 
+    "interface": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +185,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "router/ipv4",
     "help": "List all active IPv4 routing table entries.",
-    "total_fields": 0,
+    "total_fields": 6,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }
