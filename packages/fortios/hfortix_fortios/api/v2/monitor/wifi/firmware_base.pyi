@@ -25,6 +25,7 @@ class FirmwarePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class FirmwareResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class FirmwareResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    timeout: str
-    version: str
+    models: str
+    status: str
 
 
 @final
@@ -44,10 +45,10 @@ class FirmwareObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # timeout
-    timeout: str
-    # version
-    version: str
+    # models
+    models: str
+    # status
+    status: str
     
     # Common API response fields
     status: str

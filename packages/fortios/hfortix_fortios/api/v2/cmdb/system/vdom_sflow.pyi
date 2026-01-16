@@ -82,6 +82,7 @@ class VdomSflowCollectorsObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class VdomSflowResponse(TypedDict):
     """

@@ -24,6 +24,7 @@ class HistoricDailyRemoteLogsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class HistoricDailyRemoteLogsResponse(TypedDict):
     """
@@ -31,7 +32,27 @@ class HistoricDailyRemoteLogsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    server: str
+    traffic: str
+    event: str
+    virus: str
+    ips: str
+    emailfilter: str
+    anomaly: str
+    voip: str
+    dlp: str
+    app_ctrl: str
+    webfilter: str
+    waf: str
+    dns: str
+    ssh: str
+    ssl: str
+    file_filter: str
+    icap: str
+    sctp_filter: str
+    forti_switch: str
+    virtual_patch: str
+    casb: str
+    unknown: str
 
 
 @final
@@ -42,8 +63,48 @@ class HistoricDailyRemoteLogsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # server
-    server: str
+    # traffic
+    traffic: str
+    # event
+    event: str
+    # virus
+    virus: str
+    # ips
+    ips: str
+    # emailfilter
+    emailfilter: str
+    # anomaly
+    anomaly: str
+    # voip
+    voip: str
+    # dlp
+    dlp: str
+    # app-ctrl
+    app_ctrl: str
+    # webfilter
+    webfilter: str
+    # waf
+    waf: str
+    # dns
+    dns: str
+    # ssh
+    ssh: str
+    # ssl
+    ssl: str
+    # file-filter
+    file_filter: str
+    # icap
+    icap: str
+    # sctp-filter
+    sctp_filter: str
+    # forti-switch
+    forti_switch: str
+    # virtual-patch
+    virtual_patch: str
+    # casb
+    casb: str
+    # unknown
+    unknown: str
     
     # Common API response fields
     status: str

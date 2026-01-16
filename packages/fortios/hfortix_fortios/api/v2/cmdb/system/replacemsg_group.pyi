@@ -858,6 +858,7 @@ class ReplacemsgGroupAutomationObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ReplacemsgGroupResponse(TypedDict):
     """

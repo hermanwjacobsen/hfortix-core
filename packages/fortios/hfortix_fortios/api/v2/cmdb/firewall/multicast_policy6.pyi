@@ -132,6 +132,7 @@ class MulticastPolicy6DstaddrObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class MulticastPolicy6Response(TypedDict):
     """

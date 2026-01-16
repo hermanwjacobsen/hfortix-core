@@ -26,6 +26,7 @@ class DownloadEvalPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class DownloadEvalResponse(TypedDict):
     """
@@ -33,9 +34,8 @@ class DownloadEvalResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    account_id: str
-    account_password: str
-    is_government: str
+    forticare_error_code: int
+    forticare_error_message: str
 
 
 @final
@@ -46,12 +46,10 @@ class DownloadEvalObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # account_id
-    account_id: str
-    # account_password
-    account_password: str
-    # is_government
-    is_government: str
+    # forticare_error_code
+    forticare_error_code: int
+    # forticare_error_message
+    forticare_error_message: str
     
     # Common API response fields
     status: str

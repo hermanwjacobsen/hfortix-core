@@ -24,6 +24,7 @@ class PerIpShaperPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class PerIpShaperResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class PerIpShaperResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    shaper_name: str
+    memory_allocated: str
+    drops: str
+    data: str
 
 
 @final
@@ -42,8 +45,12 @@ class PerIpShaperObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # shaper_name
-    shaper_name: str
+    # memory_allocated
+    memory_allocated: str
+    # drops
+    drops: str
+    # data
+    data: str
     
     # Common API response fields
     status: str

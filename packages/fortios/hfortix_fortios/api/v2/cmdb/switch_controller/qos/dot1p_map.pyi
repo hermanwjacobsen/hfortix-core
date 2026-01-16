@@ -34,6 +34,7 @@ class Dot1pMapPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class Dot1pMapResponse(TypedDict):
     """

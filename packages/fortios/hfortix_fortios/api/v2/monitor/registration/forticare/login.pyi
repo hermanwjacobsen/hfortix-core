@@ -30,6 +30,7 @@ class LoginPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class LoginResponse(TypedDict):
     """
@@ -37,13 +38,9 @@ class LoginResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    serial: str
-    email: str
-    password: str
-    reseller_name: str
-    reseller_id: str
-    agreement_accepted: str
-    is_government: str
+    forticare_error: str
+    forticare_success: str
+    forticare_agreement: str
 
 
 @final
@@ -54,20 +51,12 @@ class LoginObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # serial
-    serial: str
-    # email
-    email: str
-    # password
-    password: str
-    # reseller_name
-    reseller_name: str
-    # reseller_id
-    reseller_id: str
-    # agreement_accepted
-    agreement_accepted: str
-    # is_government
-    is_government: str
+    # forticare_error
+    forticare_error: str
+    # forticare_success
+    forticare_success: str
+    # forticare_agreement
+    forticare_agreement: str
     
     # Common API response fields
     status: str

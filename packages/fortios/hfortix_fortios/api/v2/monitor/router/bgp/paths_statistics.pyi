@@ -24,6 +24,7 @@ class PathsStatisticsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class PathsStatisticsResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class PathsStatisticsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ip_version: str
+    total: int
+    ipv4: int
+    ipv6: int
 
 
 @final
@@ -42,8 +45,12 @@ class PathsStatisticsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ip_version
-    ip_version: str
+    # total
+    total: int
+    # ipv4
+    ipv4: int
+    # ipv6
+    ipv6: int
     
     # Common API response fields
     status: str

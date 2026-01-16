@@ -24,6 +24,7 @@ class ModemFirmwarePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ModemFirmwareResponse(TypedDict):
     """
@@ -31,7 +32,8 @@ class ModemFirmwareResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    serial: str
+    current: str
+    available: str
 
 
 @final
@@ -42,8 +44,10 @@ class ModemFirmwareObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # serial
-    serial: str
+    # current
+    current: str
+    # available
+    available: str
     
     # Common API response fields
     status: str

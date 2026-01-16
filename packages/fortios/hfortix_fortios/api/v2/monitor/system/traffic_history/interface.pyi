@@ -25,6 +25,7 @@ class InterfacePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class InterfaceResponse(TypedDict):
     """
@@ -32,8 +33,10 @@ class InterfaceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    interface: str
-    time_period: str
+    last_rx: int
+    last_tx: int
+    rx: str
+    tx: str
 
 
 @final
@@ -44,10 +47,14 @@ class InterfaceObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # interface
-    interface: str
-    # time_period
-    time_period: str
+    # last_rx
+    last_rx: int
+    # last_tx
+    last_tx: int
+    # rx
+    rx: str
+    # tx
+    tx: str
     
     # Common API response fields
     status: str

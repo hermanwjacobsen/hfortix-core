@@ -24,6 +24,7 @@ class InterfaceConnectedAdminsInfoPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class InterfaceConnectedAdminsInfoResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class InterfaceConnectedAdminsInfoResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    interface: str
+    current_admin_connected: str
+    num_admins_connected: int
+    admin_methods: str
 
 
 @final
@@ -42,8 +45,12 @@ class InterfaceConnectedAdminsInfoObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # interface
-    interface: str
+    # current_admin_connected
+    current_admin_connected: str
+    # num_admins_connected
+    num_admins_connected: int
+    # admin_methods
+    admin_methods: str
     
     # Common API response fields
     status: str

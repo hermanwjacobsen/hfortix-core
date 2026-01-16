@@ -25,6 +25,7 @@ class VlanProbePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class VlanProbeResponse(TypedDict):
     """
@@ -32,8 +33,9 @@ class VlanProbeResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ap_interface: str
-    wtp: str
+    results: str
+    probe_results_exist: str
+    probe_in_progress: str
 
 
 @final
@@ -44,10 +46,12 @@ class VlanProbeObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ap_interface
-    ap_interface: str
-    # wtp
-    wtp: str
+    # results
+    results: str
+    # probe_results_exist
+    probe_results_exist: str
+    # probe_in_progress
+    probe_in_progress: str
     
     # Common API response fields
     status: str

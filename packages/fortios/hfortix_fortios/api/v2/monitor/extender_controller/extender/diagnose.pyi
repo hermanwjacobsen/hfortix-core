@@ -25,6 +25,7 @@ class DiagnosePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class DiagnoseResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class DiagnoseResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: str
-    cmd: str
+    result: str
+    error: int
 
 
 @final
@@ -44,10 +45,10 @@ class DiagnoseObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # id
-    id: str
-    # cmd
-    cmd: str
+    # result
+    result: str
+    # error
+    error: int
     
     # Common API response fields
     status: str

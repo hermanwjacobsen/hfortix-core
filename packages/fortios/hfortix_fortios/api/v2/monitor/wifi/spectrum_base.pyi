@@ -24,6 +24,7 @@ class SpectrumPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SpectrumResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class SpectrumResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    wtp_id: str
+    name: str
+    serial: str
+    bands: str
 
 
 @final
@@ -42,8 +45,12 @@ class SpectrumObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # wtp_id
-    wtp_id: str
+    # name
+    name: str
+    # serial
+    serial: str
+    # bands
+    bands: str
     
     # Common API response fields
     status: str

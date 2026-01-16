@@ -24,6 +24,7 @@ class HistoryPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class HistoryResponse(TypedDict):
     """
@@ -31,7 +32,7 @@ class HistoryResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    period: str
+    protocol: str
 
 
 @final
@@ -42,8 +43,8 @@ class HistoryObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # period
-    period: str
+    # protocol
+    protocol: str
     
     # Common API response fields
     status: str

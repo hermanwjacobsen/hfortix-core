@@ -29,6 +29,7 @@ class TestPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class TestResponse(TypedDict):
     """
@@ -36,12 +37,8 @@ class TestResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    ordinal: str
-    server: str
-    secret: str
-    port: str
-    source_ip: str
+    status: int
+    message: str
 
 
 @final
@@ -52,18 +49,10 @@ class TestObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # ordinal
-    ordinal: str
-    # server
-    server: str
-    # secret
-    secret: str
-    # port
-    port: str
-    # source_ip
-    source_ip: str
+    # status
+    status: int
+    # message
+    message: str
     
     # Common API response fields
     status: str

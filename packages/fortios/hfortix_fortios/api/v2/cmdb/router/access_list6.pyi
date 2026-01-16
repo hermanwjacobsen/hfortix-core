@@ -80,6 +80,7 @@ class AccessList6RuleObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class AccessList6Response(TypedDict):
     """

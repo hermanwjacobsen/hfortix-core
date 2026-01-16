@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.86] - 2026-01-16
+
+### Fixed - **Generator: Response Fields for Service/Monitor Endpoints**
+
+- ✅ **Added `response_fields` support**: Schema parser now extracts `response_fields` from service/monitor endpoint schemas
+- ✅ **Correct response types**: Object classes now use `response_fields` for type hints (falling back to `fields` for CMDB)
+- ✅ **Boolean type support**: Added `boolean` type mapping in templates (was defaulting to `str`)
+- ✅ **Example fix**: `FabricTimeInSyncObject.synchronized` now correctly typed as `bool` instead of `str`
+
+### Technical Details
+
+| Category    | Request Fields   | Response Fields   |
+| ----------- | ---------------- | ----------------- |
+| **CMDB**    | `fields`         | `fields` (same)   |
+| **Monitor** | `request_fields` | `response_fields` |
+| **Service** | `request_fields` | `response_fields` |
+
+### Example
+
+```python
+# Before (missing attribute or wrong type)
+result = fgt.api.service.system.fabric_time_in_sync.get()
+print(result.synchronized)  # AttributeError or typed as str
+
+# After (correct type)
+result = fgt.api.service.system.fabric_time_in_sync.get()
+print(result.synchronized)  # True/False (typed as bool)
+```
+
+---
+
 ## [0.5.85] - 2026-01-16
 
 ### Fixed - **URL Encoding for Special Characters in mkey Values**

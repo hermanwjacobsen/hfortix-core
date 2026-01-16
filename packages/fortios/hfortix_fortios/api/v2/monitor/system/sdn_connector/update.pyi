@@ -24,6 +24,7 @@ class UpdatePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class UpdateResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class UpdateResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
+    name: str
+    type: str
+    status: str
 
 
 @final
@@ -42,8 +45,12 @@ class UpdateObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
+    # name
+    name: str
+    # type
+    type: str
+    # status
+    status: str
     
     # Common API response fields
     status: str

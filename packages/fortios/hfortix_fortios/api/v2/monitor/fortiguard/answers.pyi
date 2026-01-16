@@ -28,6 +28,7 @@ class AnswersPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class AnswersResponse(TypedDict):
     """
@@ -35,11 +36,15 @@ class AnswersResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    page: str
-    pagesize: str
-    sortkey: str
-    topics: str
-    limit: str
+    name: str
+    sort: str
+    page: int
+    pageSize: int
+    pageCount: int
+    listCount: int
+    totalCount: int
+    sorts: str
+    list: str
 
 
 @final
@@ -50,16 +55,24 @@ class AnswersObject:
     At runtime, this is actually a FortiObject instance.
     """
     
+    # name
+    name: str
+    # sort
+    sort: str
     # page
-    page: str
-    # pagesize
-    pagesize: str
-    # sortkey
-    sortkey: str
-    # topics
-    topics: str
-    # limit
-    limit: str
+    page: int
+    # pageSize
+    pageSize: int
+    # pageCount
+    pageCount: int
+    # listCount
+    listCount: int
+    # totalCount
+    totalCount: int
+    # sorts
+    sorts: str
+    # list
+    list: str
     
     # Common API response fields
     status: str

@@ -25,6 +25,7 @@ class DownloadPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class DownloadResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class DownloadResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    token: str
-    proxy_url: str
+    forticare_error_code: int
+    forticare_error_message: str
 
 
 @final
@@ -44,10 +45,10 @@ class DownloadObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # token
-    token: str
-    # proxy_url
-    proxy_url: str
+    # forticare_error_code
+    forticare_error_code: int
+    # forticare_error_message
+    forticare_error_message: str
     
     # Common API response fields
     status: str

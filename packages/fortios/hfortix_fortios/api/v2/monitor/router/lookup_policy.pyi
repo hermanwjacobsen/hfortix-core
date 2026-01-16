@@ -30,6 +30,7 @@ class LookupPolicyPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class LookupPolicyResponse(TypedDict):
     """
@@ -37,13 +38,10 @@ class LookupPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6: str
-    destination: str
-    source: str
-    destination_port: str
-    source_port: str
-    interface_name: str
-    protocol_number: str
+    success: str
+    is_vwl_route: str
+    is_static_route: str
+    id: int
 
 
 @final
@@ -54,20 +52,14 @@ class LookupPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ipv6
-    ipv6: str
-    # destination
-    destination: str
-    # source
-    source: str
-    # destination_port
-    destination_port: str
-    # source_port
-    source_port: str
-    # interface_name
-    interface_name: str
-    # protocol_number
-    protocol_number: str
+    # success
+    success: str
+    # is_vwl_route
+    is_vwl_route: str
+    # is_static_route
+    is_static_route: str
+    # id
+    id: int
     
     # Common API response fields
     status: str

@@ -28,6 +28,7 @@ class TransferPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class TransferResponse(TypedDict):
     """
@@ -35,11 +36,8 @@ class TransferResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    email: str
-    password: str
-    old_email: str
-    old_password: str
-    is_government: str
+    forticare_error: str
+    forticare_success: str
 
 
 @final
@@ -50,16 +48,10 @@ class TransferObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # email
-    email: str
-    # password
-    password: str
-    # old_email
-    old_email: str
-    # old_password
-    old_password: str
-    # is_government
-    is_government: str
+    # forticare_error
+    forticare_error: str
+    # forticare_success
+    forticare_success: str
     
     # Common API response fields
     status: str

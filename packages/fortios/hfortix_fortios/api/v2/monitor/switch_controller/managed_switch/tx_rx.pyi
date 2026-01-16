@@ -25,6 +25,7 @@ class TxRxPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class TxRxResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class TxRxResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    port: str
+    limits: str
+    status: str
 
 
 @final
@@ -44,10 +45,10 @@ class TxRxObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # port
-    port: str
+    # limits
+    limits: str
+    # status
+    status: str
     
     # Common API response fields
     status: str

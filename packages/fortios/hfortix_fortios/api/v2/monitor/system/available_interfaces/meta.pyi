@@ -25,6 +25,7 @@ class MetaPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class MetaResponse(TypedDict):
     """
@@ -32,8 +33,7 @@ class MetaResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    scope: str
-    include_ha: str
+    total: int
 
 
 @final
@@ -44,10 +44,8 @@ class MetaObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # scope
-    scope: str
-    # include_ha
-    include_ha: str
+    # total
+    total: int
     
     # Common API response fields
     status: str

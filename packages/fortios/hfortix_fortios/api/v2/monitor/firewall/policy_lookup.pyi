@@ -38,6 +38,7 @@ class PolicyLookupPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class PolicyLookupResponse(TypedDict):
     """
@@ -45,21 +46,23 @@ class PolicyLookupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6: str
-    srcintf: str
-    sourceport: str
-    sourceip: str
-    protocol: str
-    dest: str
-    destport: str
-    icmptype: str
-    icmpcode: str
-    policy_type: str
-    auth_type: str
+    dstaddr: str
+    dst_cate: int
+    match: str
+    matched_policy_type: str
+    policy_action: str
+    policy_id: int
+    proxy_policy_id: int
+    remote_groups: str
+    sec_default_action: str
+    srcaddr: str
+    success: str
+    urlf_entry_id: int
     user_group: str
-    server_name: str
-    user_db: str
-    group_attr_type: str
+    webfilter_action: str
+    webfilter_category: int
+    webfilter_profile: str
+    error_code: str
 
 
 @final
@@ -70,36 +73,40 @@ class PolicyLookupObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ipv6
-    ipv6: str
-    # srcintf
-    srcintf: str
-    # sourceport
-    sourceport: str
-    # sourceip
-    sourceip: str
-    # protocol
-    protocol: str
-    # dest
-    dest: str
-    # destport
-    destport: str
-    # icmptype
-    icmptype: str
-    # icmpcode
-    icmpcode: str
-    # policy_type
-    policy_type: str
-    # auth_type
-    auth_type: str
+    # dstaddr
+    dstaddr: str
+    # dst_cate
+    dst_cate: int
+    # match
+    match: str
+    # matched_policy_type
+    matched_policy_type: str
+    # policy_action
+    policy_action: str
+    # policy_id
+    policy_id: int
+    # proxy_policy_id
+    proxy_policy_id: int
+    # remote_groups
+    remote_groups: str
+    # sec_default_action
+    sec_default_action: str
+    # srcaddr
+    srcaddr: str
+    # success
+    success: str
+    # urlf_entry_id
+    urlf_entry_id: int
     # user_group
     user_group: str
-    # server_name
-    server_name: str
-    # user_db
-    user_db: str
-    # group_attr_type
-    group_attr_type: str
+    # webfilter_action
+    webfilter_action: str
+    # webfilter_category
+    webfilter_category: int
+    # webfilter_profile
+    webfilter_profile: str
+    # error_code
+    error_code: str
     
     # Common API response fields
     status: str

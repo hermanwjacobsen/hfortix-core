@@ -25,6 +25,7 @@ class CableStatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class CableStatusResponse(TypedDict):
     """
@@ -32,8 +33,11 @@ class CableStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
+    type: str
     port: str
+    error_range: int
+    unit: str
+    pairs: str
 
 
 @final
@@ -44,10 +48,16 @@ class CableStatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
+    # type
+    type: str
     # port
     port: str
+    # error_range
+    error_range: int
+    # unit
+    unit: str
+    # pairs
+    pairs: str
     
     # Common API response fields
     status: str

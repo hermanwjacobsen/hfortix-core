@@ -25,6 +25,7 @@ class LookupPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class LookupResponse(TypedDict):
     """
@@ -32,8 +33,9 @@ class LookupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6: str
-    destination: str
+    success: str
+    error_message: str
+    entries: str
 
 
 @final
@@ -44,10 +46,12 @@ class LookupObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ipv6
-    ipv6: str
-    # destination
-    destination: str
+    # success
+    success: str
+    # error_message
+    error_message: str
+    # entries
+    entries: str
     
     # Common API response fields
     status: str

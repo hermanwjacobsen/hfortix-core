@@ -26,6 +26,7 @@ class RefreshPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class RefreshResponse(TypedDict):
     """
@@ -33,9 +34,8 @@ class RefreshResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    check_status_only: str
-    last_connection_time: str
+    status: str
+    last_connection_time: int
 
 
 @final
@@ -46,12 +46,10 @@ class RefreshObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # check_status_only
-    check_status_only: str
+    # status
+    status: str
     # last_connection_time
-    last_connection_time: str
+    last_connection_time: int
     
     # Common API response fields
     status: str

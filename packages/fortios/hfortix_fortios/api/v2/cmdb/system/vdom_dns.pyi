@@ -87,6 +87,7 @@ class VdomDnsServerhostnameObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class VdomDnsResponse(TypedDict):
     """

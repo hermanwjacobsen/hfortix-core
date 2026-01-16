@@ -68,6 +68,7 @@ class IpsecAggregateMemberObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class IpsecAggregateResponse(TypedDict):
     """

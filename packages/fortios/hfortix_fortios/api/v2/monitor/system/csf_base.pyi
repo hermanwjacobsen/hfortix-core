@@ -25,6 +25,7 @@ class CsfPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class CsfResponse(TypedDict):
     """
@@ -32,8 +33,12 @@ class CsfResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    scope: str
-    all_vdoms: str
+    protocol_enabled: str
+    csf_group_name: str
+    pending: str
+    trusted: str
+    devices: str
+    faceplate_map: str
 
 
 @final
@@ -44,10 +49,18 @@ class CsfObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # scope
-    scope: str
-    # all_vdoms
-    all_vdoms: str
+    # protocol_enabled
+    protocol_enabled: str
+    # csf_group_name
+    csf_group_name: str
+    # pending
+    pending: str
+    # trusted
+    trusted: str
+    # devices
+    devices: str
+    # faceplate_map
+    faceplate_map: str
     
     # Common API response fields
     status: str

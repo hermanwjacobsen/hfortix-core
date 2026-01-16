@@ -25,6 +25,7 @@ class DhcpStatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class DhcpStatusResponse(TypedDict):
     """
@@ -32,8 +33,15 @@ class DhcpStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    ipv6: str
+    status: str
+    ip: str
+    netmask: str
+    expiry_date: str
+    dynamic_dns1: str
+    dynamic_dns2: str
+    dynamic_gateway: str
+    show_gateway: str
+    override_dns: str
 
 
 @final
@@ -44,10 +52,24 @@ class DhcpStatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # ipv6
-    ipv6: str
+    # status
+    status: str
+    # ip
+    ip: str
+    # netmask
+    netmask: str
+    # expiry_date
+    expiry_date: str
+    # dynamic_dns1
+    dynamic_dns1: str
+    # dynamic_dns2
+    dynamic_dns2: str
+    # dynamic_gateway
+    dynamic_gateway: str
+    # show_gateway
+    show_gateway: str
+    # override_dns
+    override_dns: str
     
     # Common API response fields
     status: str

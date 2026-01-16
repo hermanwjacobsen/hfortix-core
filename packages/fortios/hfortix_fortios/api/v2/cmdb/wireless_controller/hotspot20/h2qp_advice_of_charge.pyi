@@ -79,6 +79,7 @@ class H2qpAdviceOfChargeAoclistObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class H2qpAdviceOfChargeResponse(TypedDict):
     """

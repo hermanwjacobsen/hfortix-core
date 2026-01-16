@@ -26,6 +26,7 @@ class VerifyCertPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class VerifyCertResponse(TypedDict):
     """
@@ -33,9 +34,13 @@ class VerifyCertResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ems_id: str
-    scope: str
-    fingerprint: str
+    ems_id: int
+    ems_name: str
+    status: str
+    ems_status_id: int
+    ems_status: str
+    error: str
+    cert: str
 
 
 @final
@@ -47,11 +52,19 @@ class VerifyCertObject:
     """
     
     # ems_id
-    ems_id: str
-    # scope
-    scope: str
-    # fingerprint
-    fingerprint: str
+    ems_id: int
+    # ems_name
+    ems_name: str
+    # status
+    status: str
+    # ems_status_id
+    ems_status_id: int
+    # ems_status
+    ems_status: str
+    # error
+    error: str
+    # cert
+    cert: str
     
     # Common API response fields
     status: str

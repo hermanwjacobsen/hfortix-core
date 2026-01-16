@@ -32,6 +32,7 @@ class QueryPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class QueryResponse(TypedDict):
     """
@@ -39,15 +40,9 @@ class QueryResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    timestamp_from: str
-    timestamp_to: str
-    filters: str
-    query_type: str
-    query_id: str
-    cache_query: str
-    key_only: str
-    filter_logic: str
-    total_only: str
+    total: int
+    count: int
+    entries: str
 
 
 @final
@@ -58,24 +53,12 @@ class QueryObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # timestamp_from
-    timestamp_from: str
-    # timestamp_to
-    timestamp_to: str
-    # filters
-    filters: str
-    # query_type
-    query_type: str
-    # query_id
-    query_id: str
-    # cache_query
-    cache_query: str
-    # key_only
-    key_only: str
-    # filter_logic
-    filter_logic: str
-    # total_only
-    total_only: str
+    # total
+    total: int
+    # count
+    count: int
+    # entries
+    entries: str
     
     # Common API response fields
     status: str

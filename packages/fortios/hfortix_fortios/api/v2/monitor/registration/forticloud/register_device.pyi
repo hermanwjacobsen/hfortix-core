@@ -31,6 +31,7 @@ class RegisterDevicePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class RegisterDeviceResponse(TypedDict):
     """
@@ -38,14 +39,10 @@ class RegisterDeviceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    serial: str
-    email: str
-    password: str
-    reseller: str
-    reseller_id: str
-    country: str
-    is_government: str
-    agreement_accepted: str
+    successful_registration_count: int
+    failed_registration_count: int
+    success: str
+    forticare_agreement: str
 
 
 @final
@@ -56,22 +53,14 @@ class RegisterDeviceObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # serial
-    serial: str
-    # email
-    email: str
-    # password
-    password: str
-    # reseller
-    reseller: str
-    # reseller_id
-    reseller_id: str
-    # country
-    country: str
-    # is_government
-    is_government: str
-    # agreement_accepted
-    agreement_accepted: str
+    # successful_registration_count
+    successful_registration_count: int
+    # failed_registration_count
+    failed_registration_count: int
+    # success
+    success: str
+    # forticare_agreement
+    forticare_agreement: str
     
     # Common API response fields
     status: str
