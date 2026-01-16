@@ -17,6 +17,8 @@ FIELD_DESCRIPTIONS: dict[str, str]
 FIELD_CONSTRAINTS: dict[str, dict[str, Any]]
 NESTED_SCHEMAS: dict[str, dict[str, Any]]
 FIELDS_WITH_DEFAULTS: dict[str, Any]
+DEPRECATED_FIELDS: dict[str, dict[str, str]]
+REQUIRED_FIELDS: list[str]
 
 # Helper functions
 def get_field_type(field_name: str) -> str | None: ...
@@ -46,6 +48,8 @@ __all__ = [
     "FIELD_CONSTRAINTS",
     "NESTED_SCHEMAS",
     "FIELDS_WITH_DEFAULTS",
+    "DEPRECATED_FIELDS",
+    "REQUIRED_FIELDS",
     "get_field_type",
     "get_field_description",
     "get_field_default",

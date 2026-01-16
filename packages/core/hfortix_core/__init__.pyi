@@ -21,7 +21,13 @@ class TTLCache:
 def readonly_cache(ttl: float = 300.0) -> Callable[[Callable[_P, _T]], Callable[_P, _T]]: ...
 
 # Deprecation utilities
-def check_deprecated_fields(data: dict[str, Any], deprecated_fields: dict[str, str]) -> None: ...
+def check_deprecated_fields(
+    payload: dict[str, Any],
+    deprecated_fields: dict[str, dict[str, str]],
+    endpoint: str,
+) -> None:
+    """Check payload for deprecated fields and emit warnings."""
+    ...
 def warn_deprecated_field(field_name: str, replacement: str | None = None) -> None: ...
 
 # Debug utilities
