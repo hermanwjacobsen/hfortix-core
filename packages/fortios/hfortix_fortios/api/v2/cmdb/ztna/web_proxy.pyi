@@ -13,9 +13,34 @@ class WebProxyApigatewayItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - url_map: str
+        - service: "http" | "https"
+        - ldb_method: "static" | "round-robin" | "weighted" | "first-alive" | "http-host"
+        - url_map_type: "sub-string" | "wildcard" | "regex"
+        - h2_support: "enable" | "disable"
+        - h3_support: "enable" | "disable"
+        - quic: str
+        - realservers: str
+        - persistence: "none" | "http-cookie"
+        - http_cookie_domain_from_host: "disable" | "enable"
+        - http_cookie_domain: str
+        - http_cookie_path: str
+        - http_cookie_generation: int
+        - http_cookie_age: int
+        - http_cookie_share: "disable" | "same-ip"
+        - https_cookie_secure: "disable" | "enable"
+        - ssl_dh_bits: "768" | "1024" | "1536" | "2048" | "3072" | "4096"
+        - ssl_algorithm: "high" | "medium" | "low"
+        - ssl_cipher_suites: str
+        - ssl_min_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+        - ssl_max_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+        - ssl_renegotiation: "enable" | "disable"
+    
     **Example:**
         entry: WebProxyApigatewayItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -50,9 +75,34 @@ class WebProxyApigateway6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - url_map: str
+        - service: "http" | "https"
+        - ldb_method: "static" | "round-robin" | "weighted" | "first-alive" | "http-host"
+        - url_map_type: "sub-string" | "wildcard" | "regex"
+        - h2_support: "enable" | "disable"
+        - h3_support: "enable" | "disable"
+        - quic: str
+        - realservers: str
+        - persistence: "none" | "http-cookie"
+        - http_cookie_domain_from_host: "disable" | "enable"
+        - http_cookie_domain: str
+        - http_cookie_path: str
+        - http_cookie_generation: int
+        - http_cookie_age: int
+        - http_cookie_share: "disable" | "same-ip"
+        - https_cookie_secure: "disable" | "enable"
+        - ssl_dh_bits: "768" | "1024" | "1536" | "2048" | "3072" | "4096"
+        - ssl_algorithm: "high" | "medium" | "low"
+        - ssl_cipher_suites: str
+        - ssl_min_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+        - ssl_max_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
+        - ssl_renegotiation: "enable" | "disable"
+    
     **Example:**
         entry: WebProxyApigateway6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -180,6 +230,14 @@ class WebProxyApigatewayObject:
     # Enable/disable secure renegotiation to comply with RFC 5746. | Default: enable
     ssl_renegotiation: Literal["enable", "disable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -255,6 +313,14 @@ class WebProxyApigateway6Object:
     ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     # Enable/disable secure renegotiation to comply with RFC 5746. | Default: enable
     ssl_renegotiation: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

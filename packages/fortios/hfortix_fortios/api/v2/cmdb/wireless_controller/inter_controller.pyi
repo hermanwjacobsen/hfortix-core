@@ -13,9 +13,15 @@ class InterControllerIntercontrollerpeerItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - peer_ip: str
+        - peer_port: int
+        - peer_priority: "primary" | "secondary"
+    
     **Example:**
         entry: InterControllerIntercontrollerpeerItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -70,6 +76,14 @@ class InterControllerIntercontrollerpeerObject:
     peer_port: int
     # Peer wireless controller's priority | Default: primary
     peer_priority: Literal["primary", "secondary"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

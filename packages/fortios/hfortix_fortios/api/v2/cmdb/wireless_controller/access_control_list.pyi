@@ -13,9 +13,19 @@ class AccessControlListLayer3ipv4rulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - rule_id: int
+        - comment: str
+        - srcaddr: str
+        - srcport: int
+        - dstaddr: str
+        - dstport: int
+        - protocol: int
+        - action: "allow" | "deny"
+    
     **Example:**
         entry: AccessControlListLayer3ipv4rulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -35,9 +45,19 @@ class AccessControlListLayer3ipv6rulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - rule_id: int
+        - comment: str
+        - srcaddr: str
+        - srcport: int
+        - dstaddr: str
+        - dstport: int
+        - protocol: int
+        - action: "allow" | "deny"
+    
     **Example:**
         entry: AccessControlListLayer3ipv6rulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -102,6 +122,14 @@ class AccessControlListLayer3ipv4rulesObject:
     # Policy action (allow | deny).
     action: Literal["allow", "deny"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -147,6 +175,14 @@ class AccessControlListLayer3ipv6rulesObject:
     protocol: int
     # Policy action (allow | deny).
     action: Literal["allow", "deny"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

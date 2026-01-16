@@ -13,9 +13,15 @@ class FlowTrackingCollectorsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - ip: str
+        - port: int
+        - transport: "udp" | "tcp" | "sctp"
+    
     **Example:**
         entry: FlowTrackingCollectorsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,13 @@ class FlowTrackingAggregatesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+    
     **Example:**
         entry: FlowTrackingAggregatesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -95,6 +105,14 @@ class FlowTrackingCollectorsObject:
     # Collector L4 transport protocol for exporting packets. | Default: udp
     transport: Literal["udp", "tcp", "sctp"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -128,6 +146,14 @@ class FlowTrackingAggregatesObject:
     id: int
     # IP address to group all matching traffic sessions to a flow. | Default: 0.0.0.0 0.0.0.0
     ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

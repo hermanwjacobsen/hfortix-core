@@ -13,9 +13,15 @@ class ReplacemsgGroupMailItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupMailItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -31,9 +37,15 @@ class ReplacemsgGroupHttpItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupHttpItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -49,9 +61,15 @@ class ReplacemsgGroupWebproxyItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupWebproxyItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -67,9 +85,15 @@ class ReplacemsgGroupFtpItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupFtpItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -85,9 +109,15 @@ class ReplacemsgGroupFortiguardwfItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupFortiguardwfItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -103,9 +133,15 @@ class ReplacemsgGroupSpamItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupSpamItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -121,9 +157,15 @@ class ReplacemsgGroupAlertmailItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupAlertmailItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -139,9 +181,15 @@ class ReplacemsgGroupAdminItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupAdminItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -157,9 +205,15 @@ class ReplacemsgGroupAuthItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupAuthItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -175,9 +229,15 @@ class ReplacemsgGroupSslvpnItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupSslvpnItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -193,9 +253,15 @@ class ReplacemsgGroupNacquarItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupNacquarItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -211,9 +277,15 @@ class ReplacemsgGroupTrafficquotaItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupTrafficquotaItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -229,9 +301,15 @@ class ReplacemsgGroupUtmItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupUtmItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -247,9 +325,15 @@ class ReplacemsgGroupCustommessageItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupCustommessageItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -265,9 +349,15 @@ class ReplacemsgGroupIcapItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupIcapItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -283,9 +373,15 @@ class ReplacemsgGroupAutomationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - msg_type: str
+        - buffer: str
+        - header: "none" | "http" | "8bit"
+        - format: "none" | "text" | "html"
+    
     **Example:**
         entry: ReplacemsgGroupAutomationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -353,6 +449,14 @@ class ReplacemsgGroupMailObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -390,6 +494,14 @@ class ReplacemsgGroupHttpObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -429,6 +541,14 @@ class ReplacemsgGroupWebproxyObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -466,6 +586,14 @@ class ReplacemsgGroupFtpObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -505,6 +633,14 @@ class ReplacemsgGroupFortiguardwfObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -542,6 +678,14 @@ class ReplacemsgGroupSpamObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -581,6 +725,14 @@ class ReplacemsgGroupAlertmailObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -618,6 +770,14 @@ class ReplacemsgGroupAdminObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -657,6 +817,14 @@ class ReplacemsgGroupAuthObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -694,6 +862,14 @@ class ReplacemsgGroupSslvpnObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -733,6 +909,14 @@ class ReplacemsgGroupNacquarObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -770,6 +954,14 @@ class ReplacemsgGroupTrafficquotaObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -809,6 +1001,14 @@ class ReplacemsgGroupUtmObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -846,6 +1046,14 @@ class ReplacemsgGroupCustommessageObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -885,6 +1093,14 @@ class ReplacemsgGroupIcapObject:
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -922,6 +1138,14 @@ class ReplacemsgGroupAutomationObject:
     header: Literal["none", "http", "8bit"]
     # Format flag. | Default: none
     format: Literal["none", "text", "html"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

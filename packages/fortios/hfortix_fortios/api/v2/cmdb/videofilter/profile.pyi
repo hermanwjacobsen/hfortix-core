@@ -13,9 +13,19 @@ class ProfileFiltersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - comment: str
+        - type: "category" | "channel" | "title" | "description"
+        - keyword: int
+        - category: str
+        - channel: str
+        - action: "allow" | "monitor" | "block"
+        - log: "enable" | "disable"
+    
     **Example:**
         entry: ProfileFiltersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -87,6 +97,14 @@ class ProfileFiltersObject:
     action: Literal["allow", "monitor", "block"]
     # Enable/disable logging. | Default: enable
     log: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

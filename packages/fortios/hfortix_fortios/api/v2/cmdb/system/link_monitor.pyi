@@ -13,9 +13,12 @@ class LinkMonitorServerItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - address: str
+    
     **Example:**
         entry: LinkMonitorServerItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class LinkMonitorRouteItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - subnet: str
+    
     **Example:**
         entry: LinkMonitorRouteItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +49,16 @@ class LinkMonitorServerlistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - dst: str
+        - protocol: "ping" | "tcp-echo" | "udp-echo" | "http" | "https" | "twamp"
+        - port: int
+        - weight: int
+    
     **Example:**
         entry: LinkMonitorServerlistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -129,6 +142,14 @@ class LinkMonitorServerObject:
     # Server address. | MaxLen: 79
     address: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -160,6 +181,14 @@ class LinkMonitorRouteObject:
     
     # IP and netmask (x.x.x.x/y). | MaxLen: 79
     subnet: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -200,6 +229,14 @@ class LinkMonitorServerlistObject:
     port: int
     # Weight of the monitor to this dst (0 - 255). | Default: 0 | Min: 0 | Max: 255
     weight: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,12 @@ class WebPortalBookmarkUsersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: WebPortalBookmarkUsersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class WebPortalBookmarkGroupsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: WebPortalBookmarkGroupsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +49,33 @@ class WebPortalBookmarkBookmarksItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - apptype: "ftp" | "rdp" | "sftp" | "smb" | "ssh" | "telnet" | "vnc" | "web"
+        - url: str
+        - host: str
+        - folder: str
+        - domain: str
+        - description: str
+        - keyboard_layout: "ar-101" | "ar-102" | "ar-102-azerty" | "can-mul" | "cz" | "cz-qwerty" | "cz-pr" | "da" | "nl" | "de" | "de-ch" | "de-ibm" | "en-uk" | "en-uk-ext" | "en-us" | "en-us-dvorak" | "es" | "es-var" | "fi" | "fi-sami" | "fr" | "fr-apple" | "fr-ca" | "fr-ch" | "fr-be" | "hr" | "hu" | "hu-101" | "it" | "it-142" | "ja" | "ja-106" | "ko" | "la-am" | "lt" | "lt-ibm" | "lt-std" | "lav-std" | "lav-leg" | "mk" | "mk-std" | "no" | "no-sami" | "pol-214" | "pol-pr" | "pt" | "pt-br" | "pt-br-abnt2" | "ru" | "ru-mne" | "ru-t" | "sl" | "sv" | "sv-sami" | "tuk" | "tur-f" | "tur-q" | "zh-sym-sg-us" | "zh-sym-us" | "zh-tr-hk" | "zh-tr-mo" | "zh-tr-us"
+        - security: "any" | "rdp" | "nla" | "tls"
+        - send_preconnection_id: "enable" | "disable"
+        - preconnection_id: int
+        - preconnection_blob: str
+        - load_balancing_info: str
+        - restricted_admin: "enable" | "disable"
+        - port: int
+        - logon_user: str
+        - logon_password: str
+        - color_depth: "32" | "16" | "8"
+        - sso: "disable" | "enable"
+        - width: int
+        - height: int
+        - vnc_keyboard_layout: "default" | "da" | "nl" | "en-uk" | "en-uk-ext" | "fi" | "fr" | "fr-be" | "fr-ca-mul" | "de" | "de-ch" | "it" | "it-142" | "pt" | "pt-br-abnt2" | "no" | "gd" | "es" | "sv" | "us-intl"
+    
     **Example:**
         entry: WebPortalBookmarkBookmarksItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -110,6 +140,14 @@ class WebPortalBookmarkUsersObject:
     # User name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -141,6 +179,14 @@ class WebPortalBookmarkGroupsObject:
     
     # Group name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -215,6 +261,14 @@ class WebPortalBookmarkBookmarksObject:
     height: int
     # Keyboard layout. | Default: default
     vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

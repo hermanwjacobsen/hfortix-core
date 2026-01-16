@@ -13,9 +13,12 @@ class ProfileExternalipblocklistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: ProfileExternalipblocklistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,20 @@ class ProfileDnstranslationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - addr_type: "ipv4" | "ipv6"
+        - src: str
+        - dst: str
+        - netmask: str
+        - status: "enable" | "disable"
+        - src6: str
+        - dst6: str
+        - prefix: int
+    
     **Example:**
         entry: ProfileDnstranslationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -51,9 +65,12 @@ class ProfileTransparentdnsdatabaseItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: ProfileTransparentdnsdatabaseItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -110,6 +127,14 @@ class ProfileExternalipblocklistObject:
     # External domain block list name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -158,6 +183,14 @@ class ProfileDnstranslationObject:
     # If src6 and dst6 are subnets rather than single IP addresses | Default: 128 | Min: 1 | Max: 128
     prefix: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -189,6 +222,14 @@ class ProfileTransparentdnsdatabaseObject:
     
     # DNS database zone name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

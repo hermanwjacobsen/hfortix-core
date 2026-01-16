@@ -13,9 +13,19 @@ class FecMappingsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - seqno: int
+        - base: int
+        - redundant: int
+        - packet_loss_threshold: int
+        - latency_threshold: int
+        - bandwidth_up_threshold: int
+        - bandwidth_down_threshold: int
+        - bandwidth_bi_threshold: int
+    
     **Example:**
         entry: FecMappingsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -77,6 +87,14 @@ class FecMappingsObject:
     bandwidth_down_threshold: int
     # Apply FEC parameters when available bi-bandwidth is >= thres | Default: 0 | Min: 0 | Max: 4294967295
     bandwidth_bi_threshold: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

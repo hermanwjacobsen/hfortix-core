@@ -13,9 +13,36 @@ class ListEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - risk: str
+        - category: str
+        - application: str
+        - protocols: str
+        - vendor: str
+        - technology: str
+        - behavior: str
+        - popularity: "1" | "2" | "3" | "4" | "5"
+        - exclusion: str
+        - parameters: str
+        - action: "pass" | "block" | "reset"
+        - log: "disable" | "enable"
+        - log_packet: "disable" | "enable"
+        - rate_count: int
+        - rate_duration: int
+        - rate_mode: "periodical" | "continuous"
+        - rate_track: "none" | "src-ip" | "dest-ip" | "dhcp-client-mac" | "dns-domain"
+        - session_ttl: int
+        - shaper: str
+        - shaper_reverse: str
+        - per_ip_shaper: str
+        - quarantine: "none" | "attacker"
+        - quarantine_expiry: str
+        - quarantine_log: "disable" | "enable"
+    
     **Example:**
         entry: ListEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -52,9 +79,15 @@ class ListDefaultnetworkservicesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - port: int
+        - services: "http" | "ssh" | "telnet" | "ftp" | "dns" | "smtp" | "pop3" | "imap" | "snmp" | "nntp" | "https"
+        - violation_action: "pass" | "monitor" | "block"
+    
     **Example:**
         entry: ListDefaultnetworkservicesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -167,6 +200,14 @@ class ListEntriesObject:
     # Enable/disable quarantine logging. | Default: enable
     quarantine_log: Literal["disable", "enable"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -204,6 +245,14 @@ class ListDefaultnetworkservicesObject:
     services: Literal["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"]
     # Action for protocols not in the allowlist for selected port. | Default: block
     violation_action: Literal["pass", "monitor", "block"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,23 @@ class SamlServiceprovidersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - prefix: str
+        - sp_binding_protocol: "post" | "redirect"
+        - sp_cert: str
+        - sp_entity_id: str
+        - sp_single_sign_on_url: str
+        - sp_single_logout_url: str
+        - sp_portal_url: str
+        - idp_entity_id: str
+        - idp_single_sign_on_url: str
+        - idp_single_logout_url: str
+        - assertion_attributes: str
+    
     **Example:**
         entry: SamlServiceprovidersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -113,6 +127,14 @@ class SamlServiceprovidersObject:
     idp_single_logout_url: str
     # Customized SAML attributes to send along with assertion.
     assertion_attributes: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

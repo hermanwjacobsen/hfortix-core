@@ -13,9 +13,19 @@ class ServerIprangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+        - vci_match: "disable" | "enable"
+        - vci_string: str
+        - uci_match: "disable" | "enable"
+        - uci_string: str
+        - lease_time: int
+    
     **Example:**
         entry: ServerIprangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -35,9 +45,12 @@ class ServerTftpserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - tftp_server: str
+    
     **Example:**
         entry: ServerTftpserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -50,9 +63,20 @@ class ServerOptionsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - code: int
+        - type: "hex" | "string" | "ip" | "fqdn"
+        - value: str
+        - ip: str
+        - vci_match: "disable" | "enable"
+        - vci_string: str
+        - uci_match: "disable" | "enable"
+        - uci_string: str
+    
     **Example:**
         entry: ServerOptionsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -73,9 +97,12 @@ class ServerVcistringItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vci_string: str
+    
     **Example:**
         entry: ServerVcistringItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -88,9 +115,19 @@ class ServerExcluderangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+        - vci_match: "disable" | "enable"
+        - vci_string: str
+        - uci_match: "disable" | "enable"
+        - uci_string: str
+        - lease_time: int
+    
     **Example:**
         entry: ServerExcluderangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -110,9 +147,21 @@ class ServerReservedaddressItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - type: "mac" | "option82"
+        - ip: str
+        - mac: str
+        - action: "assign" | "block" | "reserved"
+        - circuit_id_type: "hex" | "string"
+        - circuit_id: str
+        - remote_id_type: "hex" | "string"
+        - remote_id: str
+        - description: str
+    
     **Example:**
         entry: ServerReservedaddressItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -233,6 +282,14 @@ class ServerIprangeObject:
     # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
     lease_time: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -264,6 +321,14 @@ class ServerTftpserverObject:
     
     # TFTP server. | MaxLen: 63
     tftp_server: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -313,6 +378,14 @@ class ServerOptionsObject:
     # One or more UCI strings in quotes separated by spaces.
     uci_string: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -344,6 +417,14 @@ class ServerVcistringObject:
     
     # VCI strings. | MaxLen: 255
     vci_string: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -390,6 +471,14 @@ class ServerExcluderangeObject:
     uci_string: str
     # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
     lease_time: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -440,6 +529,14 @@ class ServerReservedaddressObject:
     remote_id: str
     # Description. | MaxLen: 255
     description: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

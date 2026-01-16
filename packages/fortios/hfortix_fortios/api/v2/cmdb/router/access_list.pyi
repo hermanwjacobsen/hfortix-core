@@ -13,9 +13,16 @@ class AccessListRuleItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - action: "permit" | "deny"
+        - prefix: str
+        - wildcard: str
+        - exact_match: "enable" | "disable"
+    
     **Example:**
         entry: AccessListRuleItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -69,6 +76,14 @@ class AccessListRuleObject:
     wildcard: str
     # Enable/disable exact match. | Default: disable
     exact_match: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

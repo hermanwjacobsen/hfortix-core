@@ -13,9 +13,21 @@ class StandaloneClusterClusterpeerItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - sync_id: int
+        - peervd: str
+        - peerip: str
+        - syncvd: str
+        - down_intfs_before_sess_sync: str
+        - hb_interval: int
+        - hb_lost_threshold: int
+        - ipsec_tunnel_sync: "enable" | "disable"
+        - secondary_add_ipsec_routes: "enable" | "disable"
+        - session_sync_filter: str
+    
     **Example:**
         entry: StandaloneClusterClusterpeerItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -37,9 +49,12 @@ class StandaloneClusterMonitorinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: StandaloneClusterMonitorinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -52,9 +67,12 @@ class StandaloneClusterPingsvrmonitorinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: StandaloneClusterPingsvrmonitorinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -67,9 +85,15 @@ class StandaloneClusterMonitorprefixItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - vdom: str
+        - vrf: int
+        - prefix: str
+    
     **Example:**
         entry: StandaloneClusterMonitorprefixItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -148,6 +172,14 @@ class StandaloneClusterClusterpeerObject:
     # Add one or more filters if you only want to synchronize some
     session_sync_filter: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -180,6 +212,14 @@ class StandaloneClusterMonitorinterfaceObject:
     # Interface name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -211,6 +251,14 @@ class StandaloneClusterPingsvrmonitorinterfaceObject:
     
     # Interface name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -249,6 +297,14 @@ class StandaloneClusterMonitorprefixObject:
     vrf: int
     # Prefix. | Default: 0.0.0.0 0.0.0.0
     prefix: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

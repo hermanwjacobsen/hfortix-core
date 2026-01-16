@@ -13,9 +13,17 @@ class MheaderEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - status: "enable" | "disable"
+        - id: int
+        - fieldname: str
+        - fieldbody: str
+        - pattern_type: "wildcard" | "regexp"
+        - action: "spam" | "clear"
+    
     **Example:**
         entry: MheaderEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -73,6 +81,14 @@ class MheaderEntriesObject:
     pattern_type: Literal["wildcard", "regexp"]
     # Mark spam or good. | Default: spam
     action: Literal["spam", "clear"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,14 @@ class QosMapDscpexceptItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - index: int
+        - dscp: int
+        - up: int
+    
     **Example:**
         entry: QosMapDscpexceptItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -30,9 +35,15 @@ class QosMapDscprangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - index: int
+        - up: int
+        - low: int
+        - high: int
+    
     **Example:**
         entry: QosMapDscprangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -82,6 +93,14 @@ class QosMapDscpexceptObject:
     # User priority. | Default: 0 | Min: 0 | Max: 7
     up: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -119,6 +138,14 @@ class QosMapDscprangeObject:
     low: int
     # DSCP high value. | Default: 255 | Min: 0 | Max: 63
     high: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

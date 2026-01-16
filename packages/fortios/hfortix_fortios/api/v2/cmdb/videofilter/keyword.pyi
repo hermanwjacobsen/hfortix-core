@@ -13,9 +13,15 @@ class KeywordWordItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - comment: str
+        - pattern_type: "wildcard" | "regex"
+        - status: "enable" | "disable"
+    
     **Example:**
         entry: KeywordWordItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -68,6 +74,14 @@ class KeywordWordObject:
     pattern_type: Literal["wildcard", "regex"]
     # Enable(consider)/disable(ignore) this keyword. | Default: enable
     status: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

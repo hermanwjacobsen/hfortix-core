@@ -13,9 +13,12 @@ class GroupMemberItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: GroupMemberItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,14 @@ class GroupMatchItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - server_name: str
+        - group_name: str
+    
     **Example:**
         entry: GroupMatchItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -45,9 +53,21 @@ class GroupGuestItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - user_id: str
+        - name: str
+        - password: str
+        - mobile_phone: str
+        - sponsor: str
+        - company: str
+        - email: str
+        - expiration: str
+        - comment: str
+    
     **Example:**
         entry: GroupGuestItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -125,6 +145,14 @@ class GroupMemberObject:
     # Group member name. | MaxLen: 511
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -160,6 +188,14 @@ class GroupMatchObject:
     server_name: str
     # Name of matching user or group on remote authentication serv | MaxLen: 511
     group_name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -210,6 +246,14 @@ class GroupGuestObject:
     expiration: str
     # Comment. | MaxLen: 255
     comment: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,27 @@ class Ospf6AreaItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: str
+        - default_cost: int
+        - nssa_translator_role: "candidate" | "never" | "always"
+        - stub_type: "no-summary" | "summary"
+        - type: "regular" | "nssa" | "stub"
+        - nssa_default_information_originate: "enable" | "disable"
+        - nssa_default_information_originate_metric: int
+        - nssa_default_information_originate_metric_type: "1" | "2"
+        - nssa_redistribution: "enable" | "disable"
+        - authentication: "none" | "ah" | "esp"
+        - key_rollover_interval: int
+        - ipsec_auth_alg: "md5" | "sha1" | "sha256" | "sha384" | "sha512"
+        - ipsec_enc_alg: "null" | "des" | "3des" | "aes128" | "aes192" | "aes256"
+        - ipsec_keys: str
+        - range: str
+        - virtual_link: str
+    
     **Example:**
         entry: Ospf6AreaItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -43,9 +61,31 @@ class Ospf6Ospf6interfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - area_id: str
+        - interface: str
+        - retransmit_interval: int
+        - transmit_delay: int
+        - cost: int
+        - priority: int
+        - dead_interval: int
+        - hello_interval: int
+        - status: "disable" | "enable"
+        - network_type: "broadcast" | "point-to-point" | "non-broadcast" | "point-to-multipoint" | "point-to-multipoint-non-broadcast"
+        - bfd: "global" | "enable" | "disable"
+        - mtu: int
+        - mtu_ignore: "enable" | "disable"
+        - authentication: "none" | "ah" | "esp" | "area"
+        - key_rollover_interval: int
+        - ipsec_auth_alg: "md5" | "sha1" | "sha256" | "sha384" | "sha512"
+        - ipsec_enc_alg: "null" | "des" | "3des" | "aes128" | "aes192" | "aes256"
+        - ipsec_keys: str
+        - neighbor: str
+    
     **Example:**
         entry: Ospf6Ospf6interfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -77,9 +117,16 @@ class Ospf6RedistributeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - metric: int
+        - routemap: str
+        - metric_type: "1" | "2"
+    
     **Example:**
         entry: Ospf6RedistributeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -96,9 +143,12 @@ class Ospf6PassiveinterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: Ospf6PassiveinterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -111,9 +161,15 @@ class Ospf6SummaryaddressItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - prefix6: str
+        - advertise: "disable" | "enable"
+        - tag: int
+    
     **Example:**
         entry: Ospf6SummaryaddressItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -210,6 +266,14 @@ class Ospf6AreaObject:
     # OSPF6 virtual link configuration.
     virtual_link: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -280,6 +344,14 @@ class Ospf6Ospf6interfaceObject:
     # OSPFv3 neighbors are used when OSPFv3 runs on non-broadcast
     neighbor: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -320,6 +392,14 @@ class Ospf6RedistributeObject:
     # Metric type. | Default: 2
     metric_type: Literal["1", "2"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -351,6 +431,14 @@ class Ospf6PassiveinterfaceObject:
     
     # Passive interface name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -389,6 +477,14 @@ class Ospf6SummaryaddressObject:
     advertise: Literal["disable", "enable"]
     # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
     tag: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

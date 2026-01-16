@@ -13,9 +13,17 @@ class NetflowExclusionfiltersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - source_ip: str
+        - destination_ip: str
+        - source_port: str
+        - destination_port: str
+        - protocol: int
+    
     **Example:**
         entry: NetflowExclusionfiltersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -33,9 +41,19 @@ class NetflowCollectorsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - collector_ip: str
+        - collector_port: int
+        - source_ip: str
+        - source_ip_interface: str
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+        - vrf_select: int
+    
     **Example:**
         entry: NetflowCollectorsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -99,6 +117,14 @@ class NetflowExclusionfiltersObject:
     # Session IP protocol (0 - 255, default = 255, meaning any). | Default: 255 | Min: 0 | Max: 255
     protocol: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -144,6 +170,14 @@ class NetflowCollectorsObject:
     interface: str
     # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

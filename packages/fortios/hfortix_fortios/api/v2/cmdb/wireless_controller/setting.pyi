@@ -13,9 +13,14 @@ class SettingOffendingssidItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ssid_pattern: str
+        - action: "log" | "suppress"
+    
     **Example:**
         entry: SettingOffendingssidItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -30,9 +35,12 @@ class SettingDarrpoptimizeschedulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: SettingDarrpoptimizeschedulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -91,6 +99,14 @@ class SettingOffendingssidObject:
     # Actions taken for detected offending SSID. | Default: log
     action: Literal["log", "suppress"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -122,6 +138,14 @@ class SettingDarrpoptimizeschedulesObject:
     
     # Schedule name. | MaxLen: 35
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,19 @@ class CommunityHostsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - source_ip: str
+        - ip: str
+        - ha_direct: "enable" | "disable"
+        - host_type: "any" | "query" | "trap"
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+        - vrf_select: int
+    
     **Example:**
         entry: CommunityHostsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -35,9 +45,19 @@ class CommunityHosts6Item(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - source_ipv6: str
+        - ipv6: str
+        - ha_direct: "enable" | "disable"
+        - host_type: "any" | "query" | "trap"
+        - interface_select_method: "auto" | "sdwan" | "specify"
+        - interface: str
+        - vrf_select: int
+    
     **Example:**
         entry: CommunityHosts6Item = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -57,9 +77,12 @@ class CommunityVdomsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: CommunityVdomsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -136,6 +159,14 @@ class CommunityHostsObject:
     # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -182,6 +213,14 @@ class CommunityHosts6Object:
     # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -213,6 +252,14 @@ class CommunityVdomsObject:
     
     # VDOM name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

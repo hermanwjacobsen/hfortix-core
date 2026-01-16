@@ -13,9 +13,14 @@ class FilepatternEntriesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - filter_type: "pattern" | "type"
+        - pattern: str
+        - file_type: "7z" | "arj" | "cab" | "lzh" | "rar" | "tar" | "zip" | "bzip" | "gzip" | "bzip2" | "xz" | "bat" | "uue" | "mime" | "base64" | "binhex" | "elf" | "exe" | "dll" | "jnlp" | "hta" | "html" | "jad" | "class" | "cod" | "javascript" | "msoffice" | "msofficex" | "fsg" | "upx" | "petite" | "aspack" | "sis" | "hlp" | "activemime" | "jpeg" | "gif" | "tiff" | "png" | "bmp" | "unknown" | "mpeg" | "mov" | "mp3" | "wma" | "wav" | "pdf" | "avi" | "rm" | "torrent" | "hibun" | "msi" | "mach-o" | "dmg" | ".net" | "xar" | "chm" | "iso" | "crx" | "flac" | "registry" | "hwp" | "rpm" | "genscript" | "python" | "c/cpp" | "pfile" | "lzip" | "wasm" | "sylk" | "shellscript"
+    
     **Example:**
         entry: FilepatternEntriesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -64,6 +69,14 @@ class FilepatternEntriesObject:
     pattern: str
     # Select a file type. | Default: unknown
     file_type: Literal["7z", "arj", "cab", "lzh", "rar", "tar", "zip", "bzip", "gzip", "bzip2", "xz", "bat", "uue", "mime", "base64", "binhex", "elf", "exe", "dll", "jnlp", "hta", "html", "jad", "class", "cod", "javascript", "msoffice", "msofficex", "fsg", "upx", "petite", "aspack", "sis", "hlp", "activemime", "jpeg", "gif", "tiff", "png", "bmp", "unknown", "mpeg", "mov", "mp3", "wma", "wav", "pdf", "avi", "rm", "torrent", "hibun", "msi", "mach-o", "dmg", ".net", "xar", "chm", "iso", "crx", "flac", "registry", "hwp", "rpm", "genscript", "python", "c/cpp", "pfile", "lzip", "wasm", "sylk", "shellscript"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

@@ -13,9 +13,20 @@ class QueuePolicyCosqueueItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - min_rate: int
+        - max_rate: int
+        - min_rate_percent: int
+        - max_rate_percent: int
+        - drop_policy: "taildrop" | "weighted-random-early-detection"
+        - ecn: "disable" | "enable"
+        - weight: int
+    
     **Example:**
         entry: QueuePolicyCosqueueItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -82,6 +93,14 @@ class QueuePolicyCosqueueObject:
     ecn: Literal["disable", "enable"]
     # Weight of weighted round robin scheduling. | Default: 1 | Min: 0 | Max: 4294967295
     weight: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

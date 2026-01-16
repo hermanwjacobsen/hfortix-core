@@ -13,9 +13,14 @@ class GeoipOverrideIprangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+    
     **Example:**
         entry: GeoipOverrideIprangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -30,9 +35,14 @@ class GeoipOverrideIp6rangeItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - start_ip: str
+        - end_ip: str
+    
     **Example:**
         entry: GeoipOverrideIp6rangeItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -83,6 +93,14 @@ class GeoipOverrideIprangeObject:
     # Ending IP address, inclusive, of the address range | Default: 0.0.0.0
     end_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -118,6 +136,14 @@ class GeoipOverrideIp6rangeObject:
     start_ip: str
     # Ending IP address, inclusive, of the address range | Default: ::
     end_ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

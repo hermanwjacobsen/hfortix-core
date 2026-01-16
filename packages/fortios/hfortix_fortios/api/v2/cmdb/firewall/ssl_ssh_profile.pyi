@@ -13,9 +13,18 @@ class SslSshProfileSslexemptItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - type: "fortiguard-category" | "address" | "address6" | "wildcard-fqdn" | "regex"
+        - fortiguard_category: int
+        - address: str
+        - address6: str
+        - wildcard_fqdn: str
+        - regex: str
+    
     **Example:**
         entry: SslSshProfileSslexemptItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -34,9 +43,13 @@ class SslSshProfileEchoutersniItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - sni: str
+    
     **Example:**
         entry: SslSshProfileEchoutersniItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -50,9 +63,12 @@ class SslSshProfileServercertItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: SslSshProfileServercertItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -65,9 +81,19 @@ class SslSshProfileSslserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip: str
+        - https_client_certificate: "bypass" | "inspect" | "block"
+        - smtps_client_certificate: "bypass" | "inspect" | "block"
+        - pop3s_client_certificate: "bypass" | "inspect" | "block"
+        - imaps_client_certificate: "bypass" | "inspect" | "block"
+        - ftps_client_certificate: "bypass" | "inspect" | "block"
+        - ssl_other_client_certificate: "bypass" | "inspect" | "block"
+    
     **Example:**
         entry: SslSshProfileSslserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -161,6 +187,14 @@ class SslSshProfileSslexemptObject:
     # Exempt servers by regular expression. | MaxLen: 255
     regex: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -195,6 +229,14 @@ class SslSshProfileEchoutersniObject:
     # ClientHelloOuter SNI to be blocked. | MaxLen: 255
     sni: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -226,6 +268,14 @@ class SslSshProfileServercertObject:
     
     # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -272,6 +322,14 @@ class SslSshProfileSslserverObject:
     ftps_client_certificate: Literal["bypass", "inspect", "block"]
     # Action based on received client certificate during an SSL pr | Default: bypass
     ssl_other_client_certificate: Literal["bypass", "inspect", "block"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

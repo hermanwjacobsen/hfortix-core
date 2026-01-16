@@ -13,9 +13,12 @@ class EvpnImportrtItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - route_target: str
+    
     **Example:**
         entry: EvpnImportrtItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,12 @@ class EvpnExportrtItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - route_target: str
+    
     **Example:**
         entry: EvpnExportrtItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -76,6 +82,14 @@ class EvpnImportrtObject:
     # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
     route_target: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -107,6 +121,14 @@ class EvpnExportrtObject:
     
     # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
     route_target: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

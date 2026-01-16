@@ -13,9 +13,13 @@ class ManagedSwitchRouteoffloadrouterItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vlan_name: str
+        - router_ip: str
+    
     **Example:**
         entry: ManagedSwitchRouteoffloadrouterItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -29,9 +33,13 @@ class ManagedSwitchVlanItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - vlan_name: str
+        - assignment_priority: int
+    
     **Example:**
         entry: ManagedSwitchVlanItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -45,9 +53,112 @@ class ManagedSwitchPortsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - port_name: str
+        - port_owner: str
+        - switch_id: str
+        - speed: "10half" | "10full" | "100half" | "100full" | "1000full" | "10000full" | "auto" | "1000auto" | "1000full-fiber" | "40000full" | "auto-module" | "100FX-half" | "100FX-full" | "100000full" | "2500auto" | "2500full" | "25000full" | "50000full" | "10000cr" | "10000sr" | "100000sr4" | "100000cr4" | "40000sr4" | "40000cr4" | "40000auto" | "25000cr" | "25000sr" | "50000cr" | "50000sr" | "5000auto" | "sgmii-auto"
+        - status: "up" | "down"
+        - poe_status: "enable" | "disable"
+        - ip_source_guard: "disable" | "enable"
+        - ptp_status: "disable" | "enable"
+        - ptp_policy: str
+        - aggregator_mode: "bandwidth" | "count"
+        - flapguard: "enable" | "disable"
+        - flap_rate: int
+        - flap_duration: int
+        - flap_timeout: int
+        - rpvst_port: "disabled" | "enabled"
+        - poe_pre_standard_detection: "enable" | "disable"
+        - port_number: int
+        - port_prefix_type: int
+        - fortilink_port: int
+        - poe_capable: int
+        - pd_capable: int
+        - stacking_port: int
+        - p2p_port: int
+        - mclag_icl_port: int
+        - authenticated_port: int
+        - restricted_auth_port: int
+        - encrypted_port: int
+        - fiber_port: int
+        - media_type: str
+        - poe_standard: str
+        - poe_max_power: str
+        - poe_mode_bt_cabable: int
+        - poe_port_mode: "ieee802-3af" | "ieee802-3at" | "ieee802-3bt"
+        - poe_port_priority: "critical-priority" | "high-priority" | "low-priority" | "medium-priority"
+        - poe_port_power: "normal" | "perpetual" | "perpetual-fast"
+        - flags: int
+        - isl_local_trunk_name: str
+        - isl_peer_port_name: str
+        - isl_peer_device_name: str
+        - isl_peer_device_sn: str
+        - fgt_peer_port_name: str
+        - fgt_peer_device_name: str
+        - vlan: str
+        - allowed_vlans_all: "enable" | "disable"
+        - allowed_vlans: str
+        - untagged_vlans: str
+        - type: "physical" | "trunk"
+        - access_mode: "dynamic" | "nac" | "static"
+        - matched_dpp_policy: str
+        - matched_dpp_intf_tags: str
+        - acl_group: str
+        - fortiswitch_acls: str
+        - dhcp_snooping: "untrusted" | "trusted"
+        - dhcp_snoop_option82_trust: "enable" | "disable"
+        - dhcp_snoop_option82_override: str
+        - arp_inspection_trust: "untrusted" | "trusted"
+        - igmp_snooping_flood_reports: "enable" | "disable"
+        - mcast_snooping_flood_traffic: "enable" | "disable"
+        - stp_state: "enabled" | "disabled"
+        - stp_root_guard: "enabled" | "disabled"
+        - stp_bpdu_guard: "enabled" | "disabled"
+        - stp_bpdu_guard_timeout: int
+        - edge_port: "enable" | "disable"
+        - discard_mode: "none" | "all-untagged" | "all-tagged"
+        - packet_sampler: "enabled" | "disabled"
+        - packet_sample_rate: int
+        - sflow_counter_interval: int
+        - sample_direction: "tx" | "rx" | "both"
+        - fec_capable: int
+        - fec_state: "disabled" | "cl74" | "cl91" | "detect-by-module"
+        - flow_control: "disable" | "tx" | "rx" | "both"
+        - pause_meter: int
+        - pause_meter_resume: "75%" | "50%" | "25%"
+        - loop_guard: "enabled" | "disabled"
+        - loop_guard_timeout: int
+        - port_policy: str
+        - qos_policy: str
+        - storm_control_policy: str
+        - port_security_policy: str
+        - export_to_pool: str
+        - interface_tags: str
+        - learning_limit: int
+        - sticky_mac: "enable" | "disable"
+        - lldp_status: "disable" | "rx-only" | "tx-only" | "tx-rx"
+        - lldp_profile: str
+        - export_to: str
+        - mac_addr: str
+        - allow_arp_monitor: "disable" | "enable"
+        - qnq: str
+        - log_mac_event: "disable" | "enable"
+        - port_selection_criteria: "src-mac" | "dst-mac" | "src-dst-mac" | "src-ip" | "dst-ip" | "src-dst-ip"
+        - description: str
+        - lacp_speed: "slow" | "fast"
+        - mode: "static" | "lacp-passive" | "lacp-active"
+        - bundle: "enable" | "disable"
+        - member_withdrawal_behavior: "forward" | "block"
+        - mclag: "enable" | "disable"
+        - min_bundle: int
+        - max_bundle: int
+        - members: str
+        - fallback_port: str
+    
     **Example:**
         entry: ManagedSwitchPortsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -160,9 +271,14 @@ class ManagedSwitchIpsourceguardItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - port: str
+        - description: str
+        - binding_entry: str
+    
     **Example:**
         entry: ManagedSwitchIpsourceguardItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -177,9 +293,13 @@ class ManagedSwitchStpinstanceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: str
+        - priority: "0" | "4096" | "8192" | "12288" | "16384" | "20480" | "24576" | "28672" | "32768" | "36864" | "40960" | "45056" | "49152" | "53248" | "57344" | "61440"
+    
     **Example:**
         entry: ManagedSwitchStpinstanceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -193,9 +313,26 @@ class ManagedSwitchSnmpcommunityItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - status: "disable" | "enable"
+        - hosts: str
+        - query_v1_status: "disable" | "enable"
+        - query_v1_port: int
+        - query_v2c_status: "disable" | "enable"
+        - query_v2c_port: int
+        - trap_v1_status: "disable" | "enable"
+        - trap_v1_lport: int
+        - trap_v1_rport: int
+        - trap_v2c_status: "disable" | "enable"
+        - trap_v2c_lport: int
+        - trap_v2c_rport: int
+        - events: "cpu-high" | "mem-low" | "log-full" | "intf-ip" | "ent-conf-change" | "l2mac"
+    
     **Example:**
         entry: ManagedSwitchSnmpcommunityItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -222,9 +359,19 @@ class ManagedSwitchSnmpuserItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - queries: "disable" | "enable"
+        - query_port: int
+        - security_level: "no-auth-no-priv" | "auth-no-priv" | "auth-priv"
+        - auth_proto: "md5" | "sha1" | "sha224" | "sha256" | "sha384" | "sha512"
+        - auth_pwd: str
+        - priv_proto: "aes128" | "aes192" | "aes192c" | "aes256" | "aes256c" | "des"
+        - priv_pwd: str
+    
     **Example:**
         entry: ManagedSwitchSnmpuserItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -244,9 +391,18 @@ class ManagedSwitchRemotelogItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - server: str
+        - port: int
+        - severity: "emergency" | "alert" | "critical" | "error" | "warning" | "notification" | "information" | "debug"
+        - csv: "enable" | "disable"
+        - facility: "kernel" | "user" | "mail" | "daemon" | "auth" | "syslog" | "lpr" | "news" | "uucp" | "cron" | "authpriv" | "ftp" | "ntp" | "audit" | "alert" | "clock" | "local0" | "local1" | "local2" | "local3" | "local4" | "local5" | "local6" | "local7"
+    
     **Example:**
         entry: ManagedSwitchRemotelogItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -265,9 +421,17 @@ class ManagedSwitchMirrorItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "active" | "inactive"
+        - switching_packet: "enable" | "disable"
+        - dst: str
+        - src_ingress: str
+        - src_egress: str
+    
     **Example:**
         entry: ManagedSwitchMirrorItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -285,9 +449,17 @@ class ManagedSwitchStaticmacItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - type: "static" | "sticky"
+        - vlan: str
+        - mac: str
+        - interface: str
+        - description: str
+    
     **Example:**
         entry: ManagedSwitchStaticmacItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -305,9 +477,13 @@ class ManagedSwitchCustomcommandItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - command_entry: str
+        - command_name: str
+    
     **Example:**
         entry: ManagedSwitchCustomcommandItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -321,9 +497,16 @@ class ManagedSwitchDhcpsnoopingstaticclientItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - vlan: str
+        - ip: str
+        - mac: str
+        - port: str
+    
     **Example:**
         entry: ManagedSwitchDhcpsnoopingstaticclientItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -340,9 +523,14 @@ class ManagedSwitchRoutervrfItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - switch_id: str
+        - vrfid: int
+    
     **Example:**
         entry: ManagedSwitchRoutervrfItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -357,9 +545,21 @@ class ManagedSwitchSysteminterfaceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - switch_id: str
+        - mode: "static" | "dhcp"
+        - ip: str
+        - status: "disable" | "enable"
+        - allowaccess: "ping" | "https" | "http" | "ssh" | "snmp" | "telnet" | "radius-acct"
+        - vlan: str
+        - type: "vlan" | "physical"
+        - interface: str
+        - vrf: str
+    
     **Example:**
         entry: ManagedSwitchSysteminterfaceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -381,9 +581,22 @@ class ManagedSwitchRouterstaticItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - switch_id: str
+        - blackhole: "disable" | "enable"
+        - comment: str
+        - device: str
+        - distance: int
+        - dst: str
+        - dynamic_gateway: "disable" | "enable"
+        - gateway: str
+        - status: "disable" | "enable"
+        - vrf: str
+    
     **Example:**
         entry: ManagedSwitchRouterstaticItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -406,9 +619,28 @@ class ManagedSwitchSystemdhcpserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - switch_id: str
+        - status: "disable" | "enable"
+        - lease_time: int
+        - dns_service: "local" | "default" | "specify"
+        - dns_server1: str
+        - dns_server2: str
+        - dns_server3: str
+        - ntp_service: "local" | "default" | "specify"
+        - ntp_server1: str
+        - ntp_server2: str
+        - ntp_server3: str
+        - default_gateway: str
+        - netmask: str
+        - interface: str
+        - ip_range: str
+        - options: str
+    
     **Example:**
         entry: ManagedSwitchSystemdhcpserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -542,6 +774,14 @@ class ManagedSwitchRouteoffloadrouterObject:
     # Router IP address. | Default: 0.0.0.0
     router_ip: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -575,6 +815,14 @@ class ManagedSwitchVlanObject:
     vlan_name: str
     # 802.1x Radius (Tunnel-Private-Group-Id) VLANID assign-by-nam | Default: 128 | Min: 1 | Max: 255
     assignment_priority: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -808,6 +1056,14 @@ class ManagedSwitchPortsObject:
     # LACP fallback port. | MaxLen: 79
     fallback_port: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -844,6 +1100,14 @@ class ManagedSwitchIpsourceguardObject:
     # IP and MAC address configuration.
     binding_entry: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -877,6 +1141,14 @@ class ManagedSwitchStpinstanceObject:
     id: str
     # Priority. | Default: 32768
     priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344", "61440"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -938,6 +1210,14 @@ class ManagedSwitchSnmpcommunityObject:
     # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
     events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -984,6 +1264,14 @@ class ManagedSwitchSnmpuserObject:
     # Password for privacy (encryption) protocol. | MaxLen: 128
     priv_pwd: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1028,6 +1316,14 @@ class ManagedSwitchRemotelogObject:
     # Facility to log to remote syslog server. | Default: local7
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1069,6 +1365,14 @@ class ManagedSwitchMirrorObject:
     src_ingress: str
     # Source egress interfaces.
     src_egress: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1112,6 +1416,14 @@ class ManagedSwitchStaticmacObject:
     # Description. | MaxLen: 63
     description: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1145,6 +1457,14 @@ class ManagedSwitchCustomcommandObject:
     command_entry: str
     # Names of commands to be pushed to this FortiSwitch device, a | MaxLen: 35
     command_name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1186,6 +1506,14 @@ class ManagedSwitchDhcpsnoopingstaticclientObject:
     # Interface name. | MaxLen: 15
     port: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -1221,6 +1549,14 @@ class ManagedSwitchRoutervrfObject:
     switch_id: str
     # VRF ID. | Default: 0 | Min: 0 | Max: 1023
     vrfid: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1271,6 +1607,14 @@ class ManagedSwitchSysteminterfaceObject:
     interface: str
     # VRF for this route. | MaxLen: 63
     vrf: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1323,6 +1667,14 @@ class ManagedSwitchRouterstaticObject:
     status: Literal["disable", "enable"]
     # VRF for this route. | MaxLen: 35
     vrf: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -1387,6 +1739,14 @@ class ManagedSwitchSystemdhcpserverObject:
     ip_range: str
     # DHCP options.
     options: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

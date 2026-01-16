@@ -13,9 +13,25 @@ class AlarmGroupsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - period: int
+        - admin_auth_failure_threshold: int
+        - admin_auth_lockout_threshold: int
+        - user_auth_failure_threshold: int
+        - user_auth_lockout_threshold: int
+        - replay_attempt_threshold: int
+        - self_test_failure_threshold: int
+        - log_full_warning_threshold: int
+        - encryption_failure_threshold: int
+        - decryption_failure_threshold: int
+        - fw_policy_violations: str
+        - fw_policy_id: int
+        - fw_policy_id_threshold: int
+    
     **Example:**
         entry: AlarmGroupsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -96,6 +112,14 @@ class AlarmGroupsObject:
     fw_policy_id: int
     # Firewall policy ID threshold. | Default: 0 | Min: 0 | Max: 1024
     fw_policy_id_threshold: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

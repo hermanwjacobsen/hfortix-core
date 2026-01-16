@@ -13,9 +13,12 @@ class SdwanFailalertinterfacesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: SdwanFailalertinterfacesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,16 @@ class SdwanZoneItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - advpn_select: "enable" | "disable"
+        - advpn_health_check: str
+        - service_sla_tie_break: "cfg-order" | "fib-best-match" | "priority" | "input-device"
+        - minimum_sla_meet_members: int
+    
     **Example:**
         entry: SdwanZoneItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -47,9 +57,31 @@ class SdwanMembersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - seq_num: int
+        - interface: str
+        - zone: str
+        - gateway: str
+        - preferred_source: str
+        - source: str
+        - gateway6: str
+        - source6: str
+        - cost: int
+        - weight: int
+        - priority: int
+        - priority6: int
+        - priority_in_sla: int
+        - priority_out_sla: int
+        - spillover_threshold: int
+        - ingress_spillover_threshold: int
+        - volume_ratio: int
+        - status: "disable" | "enable"
+        - transport_group: int
+        - comment: str
+    
     **Example:**
         entry: SdwanMembersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -81,9 +113,66 @@ class SdwanHealthcheckItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - fortiguard: "disable" | "enable"
+        - fortiguard_name: str
+        - probe_packets: "disable" | "enable"
+        - addr_mode: "ipv4" | "ipv6"
+        - system_dns: "disable" | "enable"
+        - server: str
+        - detect_mode: "active" | "passive" | "prefer-passive" | "remote" | "agent-based"
+        - protocol: "ping" | "tcp-echo" | "udp-echo" | "http" | "https" | "twamp" | "dns" | "tcp-connect" | "ftp"
+        - port: int
+        - quality_measured_method: "half-open" | "half-close"
+        - security_mode: "none" | "authentication"
+        - user: str
+        - password: str
+        - packet_size: int
+        - ha_priority: int
+        - ftp_mode: "passive" | "port"
+        - ftp_file: str
+        - http_get: str
+        - http_agent: str
+        - http_match: str
+        - dns_request_domain: str
+        - dns_match_ip: str
+        - interval: int
+        - probe_timeout: int
+        - agent_probe_timeout: int
+        - remote_probe_timeout: int
+        - failtime: int
+        - recoverytime: int
+        - probe_count: int
+        - diffservcode: str
+        - update_cascade_interface: "enable" | "disable"
+        - update_static_route: "enable" | "disable"
+        - update_bgp_route: "enable" | "disable"
+        - embed_measured_health: "enable" | "disable"
+        - sla_id_redistribute: int
+        - sla_fail_log_period: int
+        - sla_pass_log_period: int
+        - threshold_warning_packetloss: int
+        - threshold_alert_packetloss: int
+        - threshold_warning_latency: int
+        - threshold_alert_latency: int
+        - threshold_warning_jitter: int
+        - threshold_alert_jitter: int
+        - vrf: int
+        - source: str
+        - source6: str
+        - members: str
+        - mos_codec: "g711" | "g722" | "g729"
+        - class_id: int
+        - packet_loss_weight: int
+        - latency_weight: int
+        - jitter_weight: int
+        - bandwidth_weight: int
+        - sla: str
+    
     **Example:**
         entry: SdwanHealthcheckItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -150,9 +239,77 @@ class SdwanServiceItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - addr_mode: "ipv4" | "ipv6"
+        - load_balance: "enable" | "disable"
+        - input_device: str
+        - input_device_negate: "enable" | "disable"
+        - input_zone: str
+        - mode: "auto" | "manual" | "priority" | "sla"
+        - zone_mode: "enable" | "disable"
+        - minimum_sla_meet_members: int
+        - hash_mode: "round-robin" | "source-ip-based" | "source-dest-ip-based" | "inbandwidth" | "outbandwidth" | "bibandwidth"
+        - shortcut_priority: "enable" | "disable" | "auto"
+        - role: "standalone" | "primary" | "secondary"
+        - standalone_action: "enable" | "disable"
+        - quality_link: int
+        - tos: str
+        - tos_mask: str
+        - protocol: int
+        - start_port: int
+        - end_port: int
+        - start_src_port: int
+        - end_src_port: int
+        - dst: str
+        - dst_negate: "enable" | "disable"
+        - src: str
+        - dst6: str
+        - src6: str
+        - src_negate: "enable" | "disable"
+        - users: str
+        - groups: str
+        - internet_service: "enable" | "disable"
+        - internet_service_custom: str
+        - internet_service_custom_group: str
+        - internet_service_fortiguard: str
+        - internet_service_name: str
+        - internet_service_group: str
+        - internet_service_app_ctrl: str
+        - internet_service_app_ctrl_group: str
+        - internet_service_app_ctrl_category: str
+        - health_check: str
+        - link_cost_factor: "latency" | "jitter" | "packet-loss" | "inbandwidth" | "outbandwidth" | "bibandwidth" | "custom-profile-1"
+        - packet_loss_weight: int
+        - latency_weight: int
+        - jitter_weight: int
+        - bandwidth_weight: int
+        - link_cost_threshold: int
+        - hold_down_time: int
+        - sla_stickiness: "enable" | "disable"
+        - dscp_forward: "enable" | "disable"
+        - dscp_reverse: "enable" | "disable"
+        - dscp_forward_tag: str
+        - dscp_reverse_tag: str
+        - sla: str
+        - priority_members: str
+        - priority_zone: str
+        - status: "enable" | "disable"
+        - gateway: "enable" | "disable"
+        - default: "enable" | "disable"
+        - sla_compare_method: "order" | "number"
+        - fib_best_match_force: "disable" | "enable"
+        - tie_break: "zone" | "cfg-order" | "fib-best-match" | "priority" | "input-device"
+        - use_shortcut_sla: "enable" | "disable"
+        - passive_measurement: "enable" | "disable"
+        - agent_exclusive: "enable" | "disable"
+        - shortcut: "enable" | "disable"
+        - comment: str
+    
     **Example:**
         entry: SdwanServiceItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -230,9 +387,20 @@ class SdwanNeighborItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - ip: str
+        - member: str
+        - service_id: int
+        - minimum_sla_meet_members: int
+        - mode: "sla" | "speedtest"
+        - role: "standalone" | "primary" | "secondary"
+        - route_metric: "preferable" | "priority"
+        - health_check: str
+        - sla_id: int
+    
     **Example:**
         entry: SdwanNeighborItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -253,9 +421,23 @@ class SdwanDuplicationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - service_id: str
+        - srcaddr: str
+        - dstaddr: str
+        - srcaddr6: str
+        - dstaddr6: str
+        - srcintf: str
+        - dstintf: str
+        - service: str
+        - packet_duplication: "disable" | "force" | "on-demand"
+        - sla_match_service: "enable" | "disable"
+        - packet_de_duplication: "enable" | "disable"
+    
     **Example:**
         entry: SdwanDuplicationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -323,6 +505,14 @@ class SdwanFailalertinterfacesObject:
     # Physical interface name. | MaxLen: 79
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -362,6 +552,14 @@ class SdwanZoneObject:
     service_sla_tie_break: Literal["cfg-order", "fib-best-match", "priority", "input-device"]
     # Minimum number of members which meet SLA when the neighbor i | Default: 1 | Min: 1 | Max: 255
     minimum_sla_meet_members: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -432,6 +630,14 @@ class SdwanMembersObject:
     transport_group: int
     # Comments. | MaxLen: 255
     comment: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -572,6 +778,14 @@ class SdwanHealthcheckObject:
     bandwidth_weight: int
     # Service level agreement (SLA).
     sla: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -735,6 +949,14 @@ class SdwanServiceObject:
     # Comments. | MaxLen: 255
     comment: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -782,6 +1004,14 @@ class SdwanNeighborObject:
     health_check: str
     # SLA ID. | Default: 0 | Min: 0 | Max: 4294967295
     sla_id: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
@@ -836,6 +1066,14 @@ class SdwanDuplicationObject:
     sla_match_service: Literal["enable", "disable"]
     # Enable/disable discarding of packets that have been duplicat | Default: disable
     packet_de_duplication: Literal["enable", "disable"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

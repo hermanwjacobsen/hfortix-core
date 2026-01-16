@@ -13,9 +13,20 @@ class SnmpCommunityItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - name: str
+        - status: "enable" | "disable"
+        - query_v1_status: "enable" | "disable"
+        - query_v2c_status: "enable" | "disable"
+        - trap_v1_status: "enable" | "disable"
+        - trap_v2c_status: "enable" | "disable"
+        - hosts: str
+        - hosts6: str
+    
     **Example:**
         entry: SnmpCommunityItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -36,9 +47,22 @@ class SnmpUserItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - queries: "enable" | "disable"
+        - trap_status: "enable" | "disable"
+        - security_level: "no-auth-no-priv" | "auth-no-priv" | "auth-priv"
+        - auth_proto: "md5" | "sha" | "sha224" | "sha256" | "sha384" | "sha512"
+        - auth_pwd: str
+        - priv_proto: "aes" | "des" | "aes256" | "aes256cisco"
+        - priv_pwd: str
+        - notify_hosts: str
+        - notify_hosts6: str
+    
     **Example:**
         entry: SnmpUserItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -110,6 +134,14 @@ class SnmpCommunityObject:
     # Configure IPv6 SNMP managers (hosts).
     hosts6: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -161,6 +193,14 @@ class SnmpUserObject:
     notify_hosts: str
     # Configure IPv6 SNMP User Notify Hosts.
     notify_hosts6: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

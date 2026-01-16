@@ -13,9 +13,23 @@ class ProfileSaasapplicationItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - status: "enable" | "disable"
+        - safe_search: "enable" | "disable"
+        - safe_search_control: str
+        - tenant_control: "enable" | "disable"
+        - tenant_control_tenants: str
+        - advanced_tenant_control: str
+        - domain_control: "enable" | "disable"
+        - domain_control_domains: str
+        - log: "enable" | "disable"
+        - access_rule: str
+        - custom_control: str
+    
     **Example:**
         entry: ProfileSaasapplicationItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -90,6 +104,14 @@ class ProfileSaasapplicationObject:
     access_rule: str
     # CASB profile custom control.
     custom_control: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

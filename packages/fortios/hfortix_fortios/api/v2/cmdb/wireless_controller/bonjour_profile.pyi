@@ -13,9 +13,16 @@ class BonjourProfilePolicylistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - policy_id: int
+        - description: str
+        - from_vlan: str
+        - to_vlan: str
+        - services: "all" | "airplay" | "afp" | "bit-torrent" | "ftp" | "ichat" | "itunes" | "printers" | "samba" | "scanners" | "ssh" | "chromecast" | "miracast"
+    
     **Example:**
         entry: BonjourProfilePolicylistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -70,6 +77,14 @@ class BonjourProfilePolicylistObject:
     to_vlan: str
     # Bonjour services for the VLAN connecting to the Bonjour netw | Default: all
     services: Literal["all", "airplay", "afp", "bit-torrent", "ftp", "ichat", "itunes", "printers", "samba", "scanners", "ssh", "chromecast", "miracast"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

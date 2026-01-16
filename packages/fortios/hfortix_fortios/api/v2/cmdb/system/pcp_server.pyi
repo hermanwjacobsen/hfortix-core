@@ -13,9 +13,30 @@ class PcpServerPoolsItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+        - description: str
+        - id: int
+        - client_subnet: str
+        - ext_intf: str
+        - arp_reply: "disable" | "enable"
+        - extip: str
+        - extport: str
+        - minimal_lifetime: int
+        - maximal_lifetime: int
+        - client_mapping_limit: int
+        - mapping_filter_limit: int
+        - allow_opcode: "map" | "peer" | "announce"
+        - third_party: "allow" | "disallow"
+        - third_party_subnet: str
+        - multicast_announcement: "enable" | "disable"
+        - announcement_count: int
+        - intl_intf: str
+        - recycle_delay: int
+    
     **Example:**
         entry: PcpServerPoolsItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -110,6 +131,14 @@ class PcpServerPoolsObject:
     intl_intf: str
     # Minimum delay (in seconds) the PCP Server will wait before r | Default: 0 | Min: 0 | Max: 3600
     recycle_delay: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

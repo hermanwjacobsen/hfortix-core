@@ -13,9 +13,12 @@ class WtpProfileLedschedulesItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: WtpProfileLedschedulesItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,13 @@ class WtpProfileDenymaclistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - mac: str
+    
     **Example:**
         entry: WtpProfileDenymaclistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -44,9 +51,13 @@ class WtpProfileSplittunnelingaclItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - dest_ip: str
+    
     **Example:**
         entry: WtpProfileSplittunnelingaclItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -177,6 +188,14 @@ class WtpProfileLedschedulesObject:
     # Schedule name. | MaxLen: 35
     name: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -211,6 +230,14 @@ class WtpProfileDenymaclistObject:
     # A WiFi device with this MAC address is denied access to this | Default: 00:00:00:00:00:00
     mac: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -244,6 +271,14 @@ class WtpProfileSplittunnelingaclObject:
     id: int
     # Destination IP and mask for the split-tunneling subnet. | Default: 0.0.0.0 0.0.0.0
     dest_ip: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

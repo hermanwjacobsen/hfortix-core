@@ -13,9 +13,16 @@ class DomainControllerExtraserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - ip_address: str
+        - port: int
+        - source_ip_address: str
+        - source_port: int
+    
     **Example:**
         entry: DomainControllerExtraserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -32,9 +39,12 @@ class DomainControllerLdapserverItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - name: str
+    
     **Example:**
         entry: DomainControllerLdapserverItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -111,6 +121,14 @@ class DomainControllerExtraserverObject:
     # Source port to be used for communication with the domain con | Default: 0 | Min: 0 | Max: 65535
     source_port: int
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -142,6 +160,14 @@ class DomainControllerLdapserverObject:
     
     # LDAP server name. | MaxLen: 79
     name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

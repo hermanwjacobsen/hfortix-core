@@ -13,9 +13,12 @@ class FederatedUpgradeKnownhamembersItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - serial: str
+    
     **Example:**
         entry: FederatedUpgradeKnownhamembersItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -28,9 +31,21 @@ class FederatedUpgradeNodelistItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - serial: str
+        - timing: "immediate" | "scheduled"
+        - maximum_minutes: int
+        - time: str
+        - setup_time: str
+        - upgrade_path: str
+        - device_type: "fortigate" | "fortiswitch" | "fortiap" | "fortiextender"
+        - allow_download: "enable" | "disable"
+        - coordinating_fortigate: str
+        - failure_reason: "none" | "internal" | "timeout" | "device-type-unsupported" | "download-failed" | "device-missing" | "version-unavailable" | "staging-failed" | "reboot-failed" | "device-not-reconnected" | "node-not-ready" | "no-final-confirmation" | "no-confirmation-query" | "config-error-log-nonempty" | "csf-tree-not-supported" | "firmware-changed" | "node-failed" | "image-missing"
+    
     **Example:**
         entry: FederatedUpgradeNodelistItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -91,6 +106,14 @@ class FederatedUpgradeKnownhamembersObject:
     # Serial number of HA member | MaxLen: 79
     serial: str
     
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
     # Methods from FortiObject
     @property
     def dict(self) -> dict[str, Any]:
@@ -140,6 +163,14 @@ class FederatedUpgradeNodelistObject:
     coordinating_fortigate: str
     # Upgrade failure reason. | Default: none
     failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"]
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property

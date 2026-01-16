@@ -13,9 +13,20 @@ class DnsDatabaseDnsentryItem(TypedDict, total=False):
     Provides IDE autocomplete for nested table field items.
     Use this when building payloads for POST/PUT requests.
     
+    **Available fields:**
+        - id: int
+        - status: "enable" | "disable"
+        - type: "A" | "NS" | "CNAME" | "MX" | "AAAA" | "PTR" | "PTR_V6"
+        - ttl: int
+        - preference: int
+        - ip: str
+        - ipv6: str
+        - hostname: str
+        - canonical_name: str
+    
     **Example:**
         entry: DnsDatabaseDnsentryItem = {
-            "field": "value",  # <- autocomplete shows all fields
+            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
         }
     """
     
@@ -104,6 +115,14 @@ class DnsDatabaseDnsentryObject:
     hostname: str
     # Canonical name of the host. | MaxLen: 255
     canonical_name: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
     
     # Methods from FortiObject
     @property
