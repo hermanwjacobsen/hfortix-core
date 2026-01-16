@@ -24,37 +24,10 @@ if TYPE_CHECKING:
     from .tx_rx import TxRx
     from .update import Update
 
-__all__ = [
-    "Bios",
-    "BouncePort",
-    "CableStatus",
-    "DhcpSnooping",
-    "FaceplateXml",
-    "FactoryReset",
-    "HealthStatus",
-    "Models",
-    "PoeReset",
-    "PortHealth",
-    "PortStats",
-    "PortStatsReset",
-    "Restart",
-    "Status",
-    "Transceivers",
-    "TxRx",
-    "Update",
-    "ManagedSwitch",
-]
-
 
 class ManagedSwitch:
-    """MANAGED_SWITCH API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for ManagedSwitch."""
+
     bios: Bios
     bounce_port: BouncePort
     cable_status: CableStatus
@@ -73,6 +46,4 @@ class ManagedSwitch:
     tx_rx: TxRx
     update: Update
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize managed_switch category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

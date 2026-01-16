@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,53 +59,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "interface"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "client_options": {
-            "mkey": "id",
-            "required_fields": ['id', 'code'],
-            "example": "[{'id': 1, 'code': 1}]",
-        },
-        "fail_alert_interfaces": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "member": {
-            "mkey": "interface-name",
-            "required_fields": ['interface-name'],
-            "example": "[{'interface-name': 'value'}]",
-        },
-        "security_groups": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "vrrp": {
-            "mkey": "vrid",
-            "required_fields": ['vrid', 'vrip'],
-            "example": "[{'vrid': 1, 'vrip': '192.168.1.10'}]",
-        },
-        "secondaryip": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "dhcp_snooping_server_list": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "tagging": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -523,9 +475,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_source_ip: Source IP address used in FortiLink over L3 connections.
             mode: Addressing mode (static, DHCP, PPPoE).
             client_options: DHCP client options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             distance: Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.
             priority: Priority of learned routes.
             dhcp_relay_interface_select_method: Specify how to select outgoing interface to reach server.
@@ -556,11 +505,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             fail_alert_method: Select link-failed-signal or link-down method to alert about a failed link.
             fail_action_on_extender: Action on FortiExtender when interface fail.
             fail_alert_interfaces: Names of the FortiGate interfaces to which the link failure alert is sent.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dhcp_client_identifier: DHCP client identifier.
             dhcp_renew_time: DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.
             ipunnumbered: Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.
@@ -654,11 +598,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             forward_domain: Transparent mode forward domain.
             remote_ip: Remote IP address of tunnel.
             member: Physical interfaces that belong to the aggregate or redundant interface.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             lacp_mode: LACP mode.
             lacp_ha_secondary: LACP HA secondary member.
             system_id_type: Method in which system ID is generated.
@@ -688,11 +627,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             auth_portal_addr: Address of captive portal.
             security_exempt_list: Name of security-exempt-list.
             security_groups: User groups that can authenticate with the captive portal.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ike_saml_server: Configure IKE authentication SAML server.
             device_identification: Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.
             exclude_signatures: Exclude IOT or OT application signatures.
@@ -708,19 +642,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             monitor_bandwidth: Enable monitoring bandwidth on this interface.
             vrrp_virtual_mac: Enable/disable use of virtual MAC for VRRP.
             vrrp: VRRP configuration.
-                Default format: [{'vrid': 1, 'vrip': '192.168.1.10'}]
-                Required format: List of dicts with keys: vrid, vrip
-                  (String format not allowed due to multiple required fields)
             phy_setting: PHY settings
             role: Interface role.
             snmp_index: Permanent SNMP Index of the interface.
             secondary_IP: Enable/disable adding a secondary IP to this interface.
             secondaryip: Second IP address of interface.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             preserve_session_route: Enable/disable preservation of session route when dirty.
             auto_auth_extension_device: Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.
             ap_discover: Enable/disable automatic registration of unknown FortiAP devices.
@@ -742,11 +668,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_dhcp_snooping_verify_mac: Switch controller DHCP snooping verify MAC.
             switch_controller_dhcp_snooping_option82: Switch controller DHCP snooping option82.
             dhcp_snooping_server_list: Configure DHCP server access list.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_controller_arp_inspection: Enable/disable/Monitor FortiSwitch ARP inspection.
             switch_controller_learning_limit: Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).
             switch_controller_nac: Integrated FortiLink settings for managed FortiSwitch.
@@ -760,11 +681,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             swc_first_create: Initial create for switch-controller VLANs.
             color: Color of icon on the GUI.
             tagging: Config object tagging.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             eap_supplicant: Enable/disable EAP-Supplicant.
             eap_method: EAP method.
             eap_identity: EAP identity.
@@ -802,72 +718,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if client_options is not None:
-            client_options = normalize_table_field(
-                client_options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="client_options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if fail_alert_interfaces is not None:
-            fail_alert_interfaces = normalize_table_field(
-                fail_alert_interfaces,
-                mkey="name",
-                required_fields=['name'],
-                field_name="fail_alert_interfaces",
-                example="[{'name': 'value'}]",
-            )
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        if security_groups is not None:
-            security_groups = normalize_table_field(
-                security_groups,
-                mkey="name",
-                required_fields=['name'],
-                field_name="security_groups",
-                example="[{'name': 'value'}]",
-            )
-        if vrrp is not None:
-            vrrp = normalize_table_field(
-                vrrp,
-                mkey="vrid",
-                required_fields=['vrid', 'vrip'],
-                field_name="vrrp",
-                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
-            )
-        if secondaryip is not None:
-            secondaryip = normalize_table_field(
-                secondaryip,
-                mkey="id",
-                required_fields=['id'],
-                field_name="secondaryip",
-                example="[{'id': 1}]",
-            )
-        if dhcp_snooping_server_list is not None:
-            dhcp_snooping_server_list = normalize_table_field(
-                dhcp_snooping_server_list,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dhcp_snooping_server_list",
-                example="[{'name': 'value'}]",
-            )
-        if tagging is not None:
-            tagging = normalize_table_field(
-                tagging,
-                mkey="name",
-                required_fields=['name'],
-                field_name="tagging",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1377,9 +1227,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_source_ip: Source IP address used in FortiLink over L3 connections.
             mode: Addressing mode (static, DHCP, PPPoE).
             client_options: DHCP client options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             distance: Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.
             priority: Priority of learned routes.
             dhcp_relay_interface_select_method: Specify how to select outgoing interface to reach server.
@@ -1410,11 +1257,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             fail_alert_method: Select link-failed-signal or link-down method to alert about a failed link.
             fail_action_on_extender: Action on FortiExtender when interface fail.
             fail_alert_interfaces: Names of the FortiGate interfaces to which the link failure alert is sent.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dhcp_client_identifier: DHCP client identifier.
             dhcp_renew_time: DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.
             ipunnumbered: Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.
@@ -1508,11 +1350,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             forward_domain: Transparent mode forward domain.
             remote_ip: Remote IP address of tunnel.
             member: Physical interfaces that belong to the aggregate or redundant interface.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             lacp_mode: LACP mode.
             lacp_ha_secondary: LACP HA secondary member.
             system_id_type: Method in which system ID is generated.
@@ -1542,11 +1379,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             auth_portal_addr: Address of captive portal.
             security_exempt_list: Name of security-exempt-list.
             security_groups: User groups that can authenticate with the captive portal.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ike_saml_server: Configure IKE authentication SAML server.
             device_identification: Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.
             exclude_signatures: Exclude IOT or OT application signatures.
@@ -1562,19 +1394,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             monitor_bandwidth: Enable monitoring bandwidth on this interface.
             vrrp_virtual_mac: Enable/disable use of virtual MAC for VRRP.
             vrrp: VRRP configuration.
-                Default format: [{'vrid': 1, 'vrip': '192.168.1.10'}]
-                Required format: List of dicts with keys: vrid, vrip
-                  (String format not allowed due to multiple required fields)
             phy_setting: PHY settings
             role: Interface role.
             snmp_index: Permanent SNMP Index of the interface.
             secondary_IP: Enable/disable adding a secondary IP to this interface.
             secondaryip: Second IP address of interface.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             preserve_session_route: Enable/disable preservation of session route when dirty.
             auto_auth_extension_device: Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.
             ap_discover: Enable/disable automatic registration of unknown FortiAP devices.
@@ -1596,11 +1420,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_dhcp_snooping_verify_mac: Switch controller DHCP snooping verify MAC.
             switch_controller_dhcp_snooping_option82: Switch controller DHCP snooping option82.
             dhcp_snooping_server_list: Configure DHCP server access list.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_controller_arp_inspection: Enable/disable/Monitor FortiSwitch ARP inspection.
             switch_controller_learning_limit: Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).
             switch_controller_nac: Integrated FortiLink settings for managed FortiSwitch.
@@ -1614,11 +1433,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             swc_first_create: Initial create for switch-controller VLANs.
             color: Color of icon on the GUI.
             tagging: Config object tagging.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             eap_supplicant: Enable/disable EAP-Supplicant.
             eap_method: EAP method.
             eap_identity: EAP identity.
@@ -1658,72 +1472,6 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if client_options is not None:
-            client_options = normalize_table_field(
-                client_options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="client_options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if fail_alert_interfaces is not None:
-            fail_alert_interfaces = normalize_table_field(
-                fail_alert_interfaces,
-                mkey="name",
-                required_fields=['name'],
-                field_name="fail_alert_interfaces",
-                example="[{'name': 'value'}]",
-            )
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        if security_groups is not None:
-            security_groups = normalize_table_field(
-                security_groups,
-                mkey="name",
-                required_fields=['name'],
-                field_name="security_groups",
-                example="[{'name': 'value'}]",
-            )
-        if vrrp is not None:
-            vrrp = normalize_table_field(
-                vrrp,
-                mkey="vrid",
-                required_fields=['vrid', 'vrip'],
-                field_name="vrrp",
-                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
-            )
-        if secondaryip is not None:
-            secondaryip = normalize_table_field(
-                secondaryip,
-                mkey="id",
-                required_fields=['id'],
-                field_name="secondaryip",
-                example="[{'id': 1}]",
-            )
-        if dhcp_snooping_server_list is not None:
-            dhcp_snooping_server_list = normalize_table_field(
-                dhcp_snooping_server_list,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dhcp_snooping_server_list",
-                example="[{'name': 'value'}]",
-            )
-        if tagging is not None:
-            tagging = normalize_table_field(
-                tagging,
-                mkey="name",
-                required_fields=['name'],
-                field_name="tagging",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

@@ -13,26 +13,10 @@ if TYPE_CHECKING:
     from .start import Start
     from .stop import Stop
 
-__all__ = [
-    "Delete",
-    "Download",
-    "List",
-    "Meta",
-    "Start",
-    "Stop",
-    "Sniffer",
-]
-
 
 class Sniffer:
-    """SNIFFER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Sniffer."""
+
     delete: Delete
     download: Download
     list: List
@@ -40,6 +24,4 @@ class Sniffer:
     start: Start
     stop: Stop
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize sniffer category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

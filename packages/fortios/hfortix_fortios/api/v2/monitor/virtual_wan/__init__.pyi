@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .sla_log import SlaLog
     from .sladb import Sladb
 
-__all__ = [
-    "HealthCheck",
-    "InterfaceLog",
-    "Members",
-    "SlaLog",
-    "Sladb",
-    "VirtualWan",
-]
-
 
 class VirtualWan:
-    """VIRTUAL_WAN API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for VirtualWan."""
+
     health_check: HealthCheck
     interface_log: InterfaceLog
     members: Members
     sla_log: SlaLog
     sladb: Sladb
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize virtual_wan category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -8,23 +8,10 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .query import Query
 
-__all__ = [
-    "Query",
-    "Ldap",
-]
-
 
 class Ldap:
-    """LDAP API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ldap."""
+
     query: Query
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ldap category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

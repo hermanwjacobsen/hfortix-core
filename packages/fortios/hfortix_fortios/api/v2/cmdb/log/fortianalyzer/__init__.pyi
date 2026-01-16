@@ -11,29 +11,13 @@ if TYPE_CHECKING:
     from .override_setting import OverrideSetting
     from .setting import Setting
 
-__all__ = [
-    "Filter",
-    "OverrideFilter",
-    "OverrideSetting",
-    "Setting",
-    "Fortianalyzer",
-]
-
 
 class Fortianalyzer:
-    """FORTIANALYZER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Fortianalyzer."""
+
     filter: Filter
     override_filter: OverrideFilter
     override_setting: OverrideSetting
     setting: Setting
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize fortianalyzer category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -35,47 +35,10 @@ if TYPE_CHECKING:
     from .wtp_profile import WtpProfile
     from .hotspot20 import Hotspot20
 
-__all__ = [
-    "AccessControlList",
-    "ApStatus",
-    "ApcfgProfile",
-    "ArrpProfile",
-    "BleProfile",
-    "BonjourProfile",
-    "Global",
-    "InterController",
-    "Log",
-    "LwProfile",
-    "MpskProfile",
-    "NacProfile",
-    "QosProfile",
-    "Region",
-    "Setting",
-    "Snmp",
-    "SsidPolicy",
-    "SyslogProfile",
-    "Timers",
-    "UtmProfile",
-    "Vap",
-    "VapGroup",
-    "WagProfile",
-    "WidsProfile",
-    "Wtp",
-    "WtpGroup",
-    "WtpProfile",
-    "WirelessController",
-]
-
 
 class WirelessController:
-    """WIRELESS_CONTROLLER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for WirelessController."""
+
     hotspot20: Hotspot20
     access_control_list: AccessControlList
     ap_status: ApStatus
@@ -105,6 +68,4 @@ class WirelessController:
     wtp_group: WtpGroup
     wtp_profile: WtpProfile
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize wireless_controller category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "switch_group"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "members": {
-            "mkey": "switch-id",
-            "required_fields": ['switch-id'],
-            "example": "[{'switch-id': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -267,11 +254,6 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
             description: Optional switch group description.
             fortilink: FortiLink interface to which switch group members belong.
             members: FortiSwitch members belonging to this switch group.
-                Default format: [{'switch-id': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'switch-id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'switch-id': 'val1'}, ...]
-                  - List of dicts: [{'switch-id': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -300,16 +282,6 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if members is not None:
-            members = normalize_table_field(
-                members,
-                mkey="switch-id",
-                required_fields=['switch-id'],
-                field_name="members",
-                example="[{'switch-id': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -381,11 +353,6 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
             description: Optional switch group description.
             fortilink: FortiLink interface to which switch group members belong.
             members: FortiSwitch members belonging to this switch group.
-                Default format: [{'switch-id': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'switch-id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'switch-id': 'val1'}, ...]
-                  - List of dicts: [{'switch-id': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -416,16 +383,6 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if members is not None:
-            members = normalize_table_field(
-                members,
-                mkey="switch-id",
-                required_fields=['switch-id'],
-                field_name="members",
-                example="[{'switch-id': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

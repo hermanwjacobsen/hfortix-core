@@ -14,27 +14,10 @@ if TYPE_CHECKING:
     from .migrate import Migrate
     from .register_device import RegisterDevice
 
-__all__ = [
-    "DeviceStatus",
-    "Disclaimer",
-    "Domains",
-    "Login",
-    "Logout",
-    "Migrate",
-    "RegisterDevice",
-    "Forticloud",
-]
-
 
 class Forticloud:
-    """FORTICLOUD API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Forticloud."""
+
     device_status: DeviceStatus
     disclaimer: Disclaimer
     domains: Domains
@@ -43,6 +26,4 @@ class Forticloud:
     migrate: Migrate
     register_device: RegisterDevice
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize forticloud category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

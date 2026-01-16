@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .name import Name
     from .rule_settings import RuleSettings
 
-__all__ = [
-    "Custom",
-    "Group",
-    "List",
-    "Name",
-    "RuleSettings",
-    "Application",
-]
-
 
 class Application:
-    """APPLICATION API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Application."""
+
     custom: Custom
     group: Group
     list: List
     name: Name
     rule_settings: RuleSettings
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize application category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

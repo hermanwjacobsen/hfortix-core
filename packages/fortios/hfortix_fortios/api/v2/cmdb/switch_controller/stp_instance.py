@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "stp_instance"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "vlan_range": {
-            "mkey": "vlan-name",
-            "required_fields": ['vlan-name'],
-            "example": "[{'vlan-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -263,11 +250,6 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include id (primary key).
             id: Instance ID.
             vlan_range: Configure VLAN range for STP instance.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -296,16 +278,6 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vlan_range is not None:
-            vlan_range = normalize_table_field(
-                vlan_range,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="vlan_range",
-                example="[{'vlan-name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -371,11 +343,6 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             id: Instance ID.
             vlan_range: Configure VLAN range for STP instance.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -406,16 +373,6 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vlan_range is not None:
-            vlan_range = normalize_table_field(
-                vlan_range,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="vlan_range",
-                example="[{'vlan-name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

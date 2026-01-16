@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "access_proxy_ssh_client_cert"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "cert_extension": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -276,11 +263,6 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
             permit_pty: Enable/disable appending permit-pty certificate extension.
             permit_user_rc: Enable/disable appending permit-user-rc certificate extension.
             cert_extension: Configure certificate extension for user certificate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             auth_ca: Name of the SSH server public key authentication CA.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -310,16 +292,6 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if cert_extension is not None:
-            cert_extension = normalize_table_field(
-                cert_extension,
-                mkey="name",
-                required_fields=['name'],
-                field_name="cert_extension",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -405,11 +377,6 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
             permit_pty: Enable/disable appending permit-pty certificate extension.
             permit_user_rc: Enable/disable appending permit-user-rc certificate extension.
             cert_extension: Configure certificate extension for user certificate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             auth_ca: Name of the SSH server public key authentication CA.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -441,16 +408,6 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if cert_extension is not None:
-            cert_extension = normalize_table_field(
-                cert_extension,
-                mkey="name",
-                required_fields=['name'],
-                field_name="cert_extension",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

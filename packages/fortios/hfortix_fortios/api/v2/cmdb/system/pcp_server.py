@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class PcpServer(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "pcp_server"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "pools": {
-            "mkey": "name",
-            "required_fields": ['name', 'client-subnet', 'ext-intf', 'extip', 'extport', 'intl-intf'],
-            "example": "[{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -258,9 +245,6 @@ class PcpServer(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             status: Enable/disable PCP server.
             pools: Configure PCP pools.
-                Default format: [{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]
-                Required format: List of dicts with keys: name, client-subnet, ext-intf, extip, extport, intl-intf
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -289,16 +273,6 @@ class PcpServer(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if pools is not None:
-            pools = normalize_table_field(
-                pools,
-                mkey="name",
-                required_fields=['name', 'client-subnet', 'ext-intf', 'extip', 'extport', 'intl-intf'],
-                field_name="pools",
-                example="[{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

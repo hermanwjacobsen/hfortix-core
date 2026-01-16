@@ -10,24 +10,12 @@ if TYPE_CHECKING:
     from .ipsec import Ipsec
     from .ssl import Ssl
 
-__all__ = [
-    "Vpn",
-]
-
 
 class Vpn:
-    """VPN API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Vpn."""
+
     ike: Ike
     ipsec: Ipsec
     ssl: Ssl
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize vpn category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

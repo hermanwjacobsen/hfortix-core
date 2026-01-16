@@ -12,30 +12,14 @@ if TYPE_CHECKING:
     from .rate_based import RateBased
     from .session import Session
 
-__all__ = [
-    "Anomaly",
-    "HoldSignatures",
-    "Metadata",
-    "RateBased",
-    "Ips",
-]
-
 
 class Ips:
-    """IPS API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ips."""
+
     session: Session
     anomaly: Anomaly
     hold_signatures: HoldSignatures
     metadata: Metadata
     rate_based: RateBased
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ips category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

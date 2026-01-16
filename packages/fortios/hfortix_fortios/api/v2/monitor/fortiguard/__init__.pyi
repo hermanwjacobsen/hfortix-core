@@ -10,27 +10,12 @@ if TYPE_CHECKING:
     from .redirect_portal import RedirectPortal
     from .service_communication_stats import ServiceCommunicationStats
 
-__all__ = [
-    "Answers",
-    "RedirectPortal",
-    "ServiceCommunicationStats",
-    "Fortiguard",
-]
-
 
 class Fortiguard:
-    """FORTIGUARD API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Fortiguard."""
+
     answers: Answers
     redirect_portal: RedirectPortal
     service_communication_stats: ServiceCommunicationStats
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize fortiguard category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

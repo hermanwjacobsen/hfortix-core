@@ -15,28 +15,10 @@ if TYPE_CHECKING:
     from .settings import Settings
     from .view_map import ViewMap
 
-__all__ = [
-    "Custom",
-    "Decoder",
-    "Global",
-    "Rule",
-    "RuleSettings",
-    "Sensor",
-    "Settings",
-    "ViewMap",
-    "Ips",
-]
-
 
 class Ips:
-    """IPS API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ips."""
+
     custom: Custom
     decoder: Decoder
     global_: Global
@@ -46,6 +28,4 @@ class Ips:
     settings: Settings
     view_map: ViewMap
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ips category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

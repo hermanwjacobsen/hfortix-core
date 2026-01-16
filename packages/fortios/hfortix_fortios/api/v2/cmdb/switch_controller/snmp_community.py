@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "snmp_community"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "hosts": {
-            "mkey": "id",
-            "required_fields": ['id', 'ip'],
-            "example": "[{'id': 1, 'ip': '192.168.1.10'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -278,9 +265,6 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
             name: SNMP community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
-                Default format: [{'id': 1, 'ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, ip
-                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -320,16 +304,6 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if hosts is not None:
-            hosts = normalize_table_field(
-                hosts,
-                mkey="id",
-                required_fields=['id', 'ip'],
-                field_name="hosts",
-                example="[{'id': 1, 'ip': '192.168.1.10'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -423,9 +397,6 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
             name: SNMP community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
-                Default format: [{'id': 1, 'ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, ip
-                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -467,16 +438,6 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if hosts is not None:
-            hosts = normalize_table_field(
-                hosts,
-                mkey="id",
-                required_fields=['id', 'ip'],
-                field_name="hosts",
-                example="[{'id': 1, 'ip': '192.168.1.10'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

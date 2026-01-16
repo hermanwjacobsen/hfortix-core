@@ -12,28 +12,14 @@ if TYPE_CHECKING:
     from .malicious_urls import MaliciousUrls
     from .override import Override
 
-__all__ = [
-    "FortiguardCategories",
-    "TrustedUrls",
-    "Webfilter",
-]
-
 
 class Webfilter:
-    """WEBFILTER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Webfilter."""
+
     category_quota: CategoryQuota
     malicious_urls: MaliciousUrls
     override: Override
     fortiguard_categories: FortiguardCategories
     trusted_urls: TrustedUrls
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize webfilter category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

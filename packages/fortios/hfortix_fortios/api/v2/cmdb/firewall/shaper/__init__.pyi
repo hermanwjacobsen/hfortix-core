@@ -9,25 +9,11 @@ if TYPE_CHECKING:
     from .per_ip_shaper import PerIpShaper
     from .traffic_shaper import TrafficShaper
 
-__all__ = [
-    "PerIpShaper",
-    "TrafficShaper",
-    "Shaper",
-]
-
 
 class Shaper:
-    """SHAPER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Shaper."""
+
     per_ip_shaper: PerIpShaper
     traffic_shaper: TrafficShaper
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize shaper category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

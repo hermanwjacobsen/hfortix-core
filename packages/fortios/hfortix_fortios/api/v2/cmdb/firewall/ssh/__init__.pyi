@@ -11,29 +11,13 @@ if TYPE_CHECKING:
     from .local_key import LocalKey
     from .setting import Setting
 
-__all__ = [
-    "HostKey",
-    "LocalCa",
-    "LocalKey",
-    "Setting",
-    "Ssh",
-]
-
 
 class Ssh:
-    """SSH API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ssh."""
+
     host_key: HostKey
     local_ca: LocalCa
     local_key: LocalKey
     setting: Setting
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ssh category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

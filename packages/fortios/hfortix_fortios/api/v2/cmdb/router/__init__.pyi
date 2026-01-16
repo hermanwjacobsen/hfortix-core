@@ -33,46 +33,10 @@ if TYPE_CHECKING:
     from .static import Static
     from .static6 import Static6
 
-__all__ = [
-    "AccessList",
-    "AccessList6",
-    "AspathList",
-    "AuthPath",
-    "Bfd",
-    "Bfd6",
-    "Bgp",
-    "CommunityList",
-    "ExtcommunityList",
-    "Isis",
-    "KeyChain",
-    "Multicast",
-    "Multicast6",
-    "MulticastFlow",
-    "Ospf",
-    "Ospf6",
-    "Policy",
-    "Policy6",
-    "PrefixList",
-    "PrefixList6",
-    "Rip",
-    "Ripng",
-    "RouteMap",
-    "Setting",
-    "Static",
-    "Static6",
-    "Router",
-]
-
 
 class Router:
-    """ROUTER API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Router."""
+
     access_list: AccessList
     access_list6: AccessList6
     aspath_list: AspathList
@@ -100,6 +64,4 @@ class Router:
     static: Static
     static6: Static6
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize router category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

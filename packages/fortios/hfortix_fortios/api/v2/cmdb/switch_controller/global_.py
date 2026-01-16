@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +59,6 @@ class Global(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "disable_discovery": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "custom_command": {
-            "mkey": "command-entry",
-            "required_fields": ['command-name'],
-            "example": "[{'command-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -292,11 +274,6 @@ class Global(CRUDEndpoint, MetadataMixin):
             vlan_optimization: FortiLink VLAN optimization.
             vlan_identity: Identity of the VLAN. Commonly used for RADIUS Tunnel-Private-Group-Id.
             disable_discovery: Prevent this FortiSwitch from discovering.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             mac_retention_period: Time in hours after which an inactive MAC is removed from client DB (0 = aged out based on mac-aging-interval).
             default_virtual_switch_vlan: Default VLAN for ports when added to the virtual-switch.
             dhcp_server_access_list: Enable/disable DHCP snooping server access list.
@@ -314,11 +291,6 @@ class Global(CRUDEndpoint, MetadataMixin):
             quarantine_mode: Quarantine mode.
             update_user_device: Control which sources update the device user list.
             custom_command: List of custom commands to be pushed to all FortiSwitches in the VDOM.
-                Default format: [{'command-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'command-entry': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'command-entry': 'val1'}, ...]
-                  - List of dicts: [{'command-name': 'value'}] (recommended)
             fips_enforce: Enable/disable enforcement of FIPS on managed FortiSwitch devices.
             firmware_provision_on_authorization: Enable/disable automatic provisioning of latest firmware on authorization.
             switch_on_deauth: No-operation/Factory-reset the managed FortiSwitch on deauthorization.
@@ -351,24 +323,6 @@ class Global(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if disable_discovery is not None:
-            disable_discovery = normalize_table_field(
-                disable_discovery,
-                mkey="name",
-                required_fields=['name'],
-                field_name="disable_discovery",
-                example="[{'name': 'value'}]",
-            )
-        if custom_command is not None:
-            custom_command = normalize_table_field(
-                custom_command,
-                mkey="command-entry",
-                required_fields=['command-name'],
-                field_name="custom_command",
-                example="[{'command-name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

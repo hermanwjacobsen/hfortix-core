@@ -10,27 +10,12 @@ if TYPE_CHECKING:
     from .close_all import CloseAll
     from .close_multiple import CloseMultiple
 
-__all__ = [
-    "Close",
-    "CloseAll",
-    "CloseMultiple",
-    "Session",
-]
-
 
 class Session:
-    """SESSION API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Session."""
+
     close: Close
     close_all: CloseAll
     close_multiple: CloseMultiple
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize session category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

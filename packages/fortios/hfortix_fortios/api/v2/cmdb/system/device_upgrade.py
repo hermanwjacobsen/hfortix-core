@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "device_upgrade"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "known_ha_members": {
-            "mkey": "serial",
-            "required_fields": ['serial'],
-            "example": "[{'serial': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -279,11 +266,6 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
             ha_reboot_controller: Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.
             next_path_index: The index of the next image to upgrade to.
             known_ha_members: Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
-                Default format: [{'serial': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'serial': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
-                  - List of dicts: [{'serial': 'value'}] (recommended)
             initial_version: Firmware version when the upgrade was set up.
             starter_admin: Admin that started the upgrade.
             serial: Serial number of the node to include.
@@ -323,16 +305,6 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if known_ha_members is not None:
-            known_ha_members = normalize_table_field(
-                known_ha_members,
-                mkey="serial",
-                required_fields=['serial'],
-                field_name="known_ha_members",
-                example="[{'serial': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -427,11 +399,6 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
             ha_reboot_controller: Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.
             next_path_index: The index of the next image to upgrade to.
             known_ha_members: Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
-                Default format: [{'serial': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'serial': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
-                  - List of dicts: [{'serial': 'value'}] (recommended)
             initial_version: Firmware version when the upgrade was set up.
             starter_admin: Admin that started the upgrade.
             serial: Serial number of the node to include.
@@ -473,16 +440,6 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if known_ha_members is not None:
-            known_ha_members = normalize_table_field(
-                known_ha_members,
-                mkey="serial",
-                required_fields=['serial'],
-                field_name="known_ha_members",
-                example="[{'serial': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

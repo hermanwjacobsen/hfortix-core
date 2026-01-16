@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +59,6 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "addrgrp"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "member": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "exclude_member": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "tagging": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -286,27 +263,12 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
             category: Address group category.
             allow_routing: Enable/disable use of this group in routing configurations.
             member: Address objects contained within the group.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             comment: Comment.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             exclude: Enable/disable address exclusion.
             exclude_member: Address exclusion member.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             color: Color of icon on the GUI.
             tagging: Config object tagging.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -336,32 +298,6 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="member",
-                example="[{'name': 'value'}]",
-            )
-        if exclude_member is not None:
-            exclude_member = normalize_table_field(
-                exclude_member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="exclude_member",
-                example="[{'name': 'value'}]",
-            )
-        if tagging is not None:
-            tagging = normalize_table_field(
-                tagging,
-                mkey="name",
-                required_fields=['name'],
-                field_name="tagging",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -450,27 +386,12 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
             category: Address group category.
             allow_routing: Enable/disable use of this group in routing configurations.
             member: Address objects contained within the group.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             comment: Comment.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             exclude: Enable/disable address exclusion.
             exclude_member: Address exclusion member.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             color: Color of icon on the GUI.
             tagging: Config object tagging.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -502,32 +423,6 @@ class Addrgrp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="member",
-                example="[{'name': 'value'}]",
-            )
-        if exclude_member is not None:
-            exclude_member = normalize_table_field(
-                exclude_member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="exclude_member",
-                example="[{'name': 'value'}]",
-            )
-        if tagging is not None:
-            tagging = normalize_table_field(
-                tagging,
-                mkey="name",
-                required_fields=['name'],
-                field_name="tagging",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

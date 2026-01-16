@@ -10,27 +10,12 @@ if TYPE_CHECKING:
     from .default import Default
     from .policy import Policy
 
-__all__ = [
-    "Custom",
-    "Default",
-    "Policy",
-    "AutoConfig",
-]
-
 
 class AutoConfig:
-    """AUTO_CONFIG API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for AutoConfig."""
+
     custom: Custom
     default: Default
     policy: Policy
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize auto_config category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

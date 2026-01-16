@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.90] - Unreleased
+## [0.5.90] - 2026-01-16
+
+### Fixed - **Generator: Invalid LOG Module File Names**
+
+- ✅ **Fixed LOG module syntax error**: Removed incorrectly generated `FortiOS 7.py` and `FortiOS 7.pyi` files with spaces in names
+- ✅ **Regenerated LOG endpoints**: All log endpoints regenerated from correct schema files (disk, memory, fortianalyzer, forticloud, search)
+- ✅ **Import error resolved**: `SyntaxError: invalid syntax` from `from .FortiOS 7 import Fortios 7` now fixed
+- ✅ **Schema source corrected**: LOG generator now correctly uses `schema/7.6.5/log/` instead of swagger files with spaces in names
 
 ### Fixed - **Stub Types: Accept `list[str]` for Table Fields**
 

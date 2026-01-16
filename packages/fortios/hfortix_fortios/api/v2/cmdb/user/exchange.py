@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "exchange"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "kdc_ip": {
-            "mkey": "ipv4",
-            "required_fields": ['ipv4'],
-            "example": "[{'ipv4': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -287,11 +274,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
             auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
             kdc_ip: KDC IPv4 addresses for Kerberos authentication.
-                Default format: [{'ipv4': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ipv4': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
-                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -320,16 +302,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if kdc_ip is not None:
-            kdc_ip = normalize_table_field(
-                kdc_ip,
-                mkey="ipv4",
-                required_fields=['ipv4'],
-                field_name="kdc_ip",
-                example="[{'ipv4': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -431,11 +403,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
             auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
             kdc_ip: KDC IPv4 addresses for Kerberos authentication.
-                Default format: [{'ipv4': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ipv4': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
-                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -466,16 +433,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if kdc_ip is not None:
-            kdc_ip = normalize_table_field(
-                kdc_ip,
-                mkey="ipv4",
-                required_fields=['ipv4'],
-                field_name="kdc_ip",
-                example="[{'ipv4': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

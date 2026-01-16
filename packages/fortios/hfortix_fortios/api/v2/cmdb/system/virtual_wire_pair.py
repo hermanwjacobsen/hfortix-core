@@ -47,7 +47,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +59,6 @@ class VirtualWirePair(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "virtual_wire_pair"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "member": {
-            "mkey": "interface-name",
-            "required_fields": ['interface-name'],
-            "example": "[{'interface-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -265,11 +252,6 @@ class VirtualWirePair(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: Virtual-wire-pair name. Must be a unique interface name.
             member: Interfaces belong to the virtual-wire-pair.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             wildcard_vlan: Enable/disable wildcard VLAN.
             vlan_filter: VLAN ranges to allow
             vdom: Virtual domain name.
@@ -300,16 +282,6 @@ class VirtualWirePair(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -379,11 +351,6 @@ class VirtualWirePair(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: Virtual-wire-pair name. Must be a unique interface name.
             member: Interfaces belong to the virtual-wire-pair.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             wildcard_vlan: Enable/disable wildcard VLAN.
             vlan_filter: VLAN ranges to allow
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -416,16 +383,6 @@ class VirtualWirePair(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly

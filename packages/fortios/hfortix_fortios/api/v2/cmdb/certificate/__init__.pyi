@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .local import Local
     from .remote import Remote
 
-__all__ = [
-    "Ca",
-    "Crl",
-    "HsmLocal",
-    "Local",
-    "Remote",
-    "Certificate",
-]
-
 
 class Certificate:
-    """CERTIFICATE API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Certificate."""
+
     ca: Ca
     crl: Crl
     hsm_local: HsmLocal
     local: Local
     remote: Remote
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize certificate category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

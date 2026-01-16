@@ -9,25 +9,11 @@ if TYPE_CHECKING:
     from .add import Add
     from .delete import Delete
 
-__all__ = [
-    "Add",
-    "Delete",
-    "ClearpassAddress",
-]
-
 
 class ClearpassAddress:
-    """CLEARPASS_ADDRESS API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for ClearpassAddress."""
+
     add: Add
     delete: Delete
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize clearpass_address category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...
