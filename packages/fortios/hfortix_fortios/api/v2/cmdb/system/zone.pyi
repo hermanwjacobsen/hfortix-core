@@ -429,10 +429,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ZoneObject: ...
     
@@ -441,10 +441,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,10 +454,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -465,10 +465,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -478,10 +478,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ZoneObject: ...
     
@@ -490,10 +490,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -503,10 +503,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -514,10 +514,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -560,10 +560,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

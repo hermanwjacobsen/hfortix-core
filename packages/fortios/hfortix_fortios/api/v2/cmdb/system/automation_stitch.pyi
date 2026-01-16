@@ -511,10 +511,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
@@ -526,10 +526,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -542,10 +542,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -556,10 +556,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -572,10 +572,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
@@ -587,10 +587,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -603,10 +603,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -617,10 +617,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -666,10 +666,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

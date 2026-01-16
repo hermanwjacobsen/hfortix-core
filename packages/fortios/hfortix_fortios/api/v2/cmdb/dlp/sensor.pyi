@@ -378,7 +378,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -390,7 +390,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +403,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -439,7 +439,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,7 +463,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -509,7 +509,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

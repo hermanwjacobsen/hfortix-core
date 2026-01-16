@@ -539,8 +539,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastObject: ...
     
@@ -552,8 +552,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -566,8 +566,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -578,8 +578,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -596,8 +596,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

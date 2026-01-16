@@ -374,7 +374,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExactDataMatchObject: ...
     
@@ -385,7 +385,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExactDataMatchObject: ...
     
@@ -430,7 +430,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -442,7 +442,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,7 +497,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

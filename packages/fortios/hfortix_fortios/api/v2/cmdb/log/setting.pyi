@@ -484,7 +484,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> SettingObject: ...
@@ -520,7 +520,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -557,7 +557,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -592,7 +592,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -633,7 +633,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

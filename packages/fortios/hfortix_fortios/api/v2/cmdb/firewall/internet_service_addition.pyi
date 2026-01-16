@@ -373,7 +373,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceAdditionObject: ...
     
@@ -383,7 +383,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +403,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceAdditionObject: ...
     
@@ -424,7 +424,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +435,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +444,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -488,7 +488,7 @@ class InternetServiceAddition:
         payload_dict: InternetServiceAdditionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceAdditionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceAdditionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

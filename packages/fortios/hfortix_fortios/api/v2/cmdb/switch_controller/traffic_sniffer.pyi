@@ -499,9 +499,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> TrafficSnifferObject: ...
     
@@ -511,9 +511,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -524,9 +524,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -535,9 +535,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -552,9 +552,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

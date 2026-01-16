@@ -594,8 +594,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -608,7 +608,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CommunityObject: ...
     
@@ -619,8 +619,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -633,7 +633,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -645,8 +645,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -659,7 +659,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -669,8 +669,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -683,7 +683,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -695,8 +695,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -709,7 +709,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CommunityObject: ...
     
@@ -720,8 +720,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -734,7 +734,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -746,8 +746,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -760,7 +760,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -770,8 +770,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -784,7 +784,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -829,8 +829,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -843,7 +843,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

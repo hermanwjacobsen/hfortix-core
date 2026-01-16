@@ -438,7 +438,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -458,7 +458,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -479,7 +479,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -498,7 +498,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -519,7 +519,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -539,7 +539,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -560,7 +560,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -579,7 +579,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -633,7 +633,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

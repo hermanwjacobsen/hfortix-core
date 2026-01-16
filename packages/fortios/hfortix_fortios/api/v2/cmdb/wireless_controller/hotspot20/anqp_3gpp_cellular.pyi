@@ -359,7 +359,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Anqp3gppCellularObject: ...
     
@@ -368,7 +368,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Anqp3gppCellularObject: ...
     
@@ -405,7 +405,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

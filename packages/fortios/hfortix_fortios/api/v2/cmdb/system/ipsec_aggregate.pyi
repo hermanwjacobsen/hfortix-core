@@ -355,7 +355,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpsecAggregateObject: ...
@@ -365,7 +365,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -376,7 +376,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -385,7 +385,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -396,7 +396,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpsecAggregateObject: ...
@@ -406,7 +406,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -417,7 +417,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -426,7 +426,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -470,7 +470,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -369,7 +369,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FilepatternObject: ...
     
@@ -380,7 +380,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +392,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FilepatternObject: ...
     
@@ -425,7 +425,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -437,7 +437,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -447,7 +447,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -492,7 +492,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -422,7 +422,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PcpServerObject: ...
     
@@ -431,7 +431,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -449,7 +449,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,7 +463,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

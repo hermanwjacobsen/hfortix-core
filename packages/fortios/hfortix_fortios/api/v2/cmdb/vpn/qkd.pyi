@@ -381,7 +381,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> QkdObject: ...
@@ -395,7 +395,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -410,7 +410,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -423,7 +423,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -438,7 +438,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> QkdObject: ...
@@ -452,7 +452,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -467,7 +467,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -480,7 +480,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -528,7 +528,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

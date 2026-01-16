@@ -360,7 +360,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationDestinationObject: ...
@@ -371,7 +371,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -383,7 +383,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -393,7 +393,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -405,7 +405,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationDestinationObject: ...
@@ -416,7 +416,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -428,7 +428,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -438,7 +438,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -483,7 +483,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

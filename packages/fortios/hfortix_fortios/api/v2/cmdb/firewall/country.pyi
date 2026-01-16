@@ -356,7 +356,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CountryObject: ...
     
@@ -366,7 +366,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -377,7 +377,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CountryObject: ...
     
@@ -407,7 +407,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +418,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

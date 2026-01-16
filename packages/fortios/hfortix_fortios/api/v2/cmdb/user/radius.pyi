@@ -743,7 +743,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RadiusObject: ...
     
@@ -811,7 +811,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -880,7 +880,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -947,7 +947,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1016,7 +1016,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RadiusObject: ...
     
@@ -1084,7 +1084,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1153,7 +1153,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1220,7 +1220,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1322,7 +1322,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

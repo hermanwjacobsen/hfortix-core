@@ -376,7 +376,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ObjectTaggingObject: ...
     
@@ -390,7 +390,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -405,7 +405,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +418,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -433,7 +433,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ObjectTaggingObject: ...
     
@@ -447,7 +447,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +462,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +475,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -523,7 +523,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

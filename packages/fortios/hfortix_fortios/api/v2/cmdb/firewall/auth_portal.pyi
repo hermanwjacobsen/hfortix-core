@@ -366,7 +366,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -378,7 +378,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -391,7 +391,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -402,7 +402,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -419,7 +419,7 @@ class AuthPortal:
     def set(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,

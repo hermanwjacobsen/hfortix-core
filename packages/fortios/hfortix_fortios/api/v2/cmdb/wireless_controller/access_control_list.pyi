@@ -474,8 +474,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessControlListObject: ...
     
@@ -485,8 +485,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,8 +497,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -507,8 +507,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -519,8 +519,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessControlListObject: ...
     
@@ -530,8 +530,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -542,8 +542,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -552,8 +552,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -597,8 +597,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

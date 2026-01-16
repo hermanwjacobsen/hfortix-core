@@ -367,7 +367,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeyChainObject: ...
     
@@ -376,7 +376,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +404,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeyChainObject: ...
     
@@ -413,7 +413,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -431,7 +431,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,7 +474,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[KeyChainKeyItem] | None = ...,
+        key: str | list[str] | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

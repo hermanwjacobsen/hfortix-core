@@ -356,7 +356,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VapGroupObject: ...
     
@@ -366,7 +366,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -377,7 +377,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VapGroupObject: ...
     
@@ -407,7 +407,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +418,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -439,8 +439,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GeoipOverrideObject: ...
     
@@ -451,8 +451,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -464,8 +464,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,8 +475,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -488,8 +488,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GeoipOverrideObject: ...
     
@@ -500,8 +500,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,8 +513,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -524,8 +524,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -570,8 +570,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

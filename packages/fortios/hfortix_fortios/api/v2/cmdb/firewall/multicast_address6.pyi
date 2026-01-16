@@ -374,7 +374,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastAddress6Object: ...
     
@@ -386,7 +386,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -399,7 +399,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +410,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastAddress6Object: ...
     
@@ -435,7 +435,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,7 +448,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -459,7 +459,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -505,7 +505,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

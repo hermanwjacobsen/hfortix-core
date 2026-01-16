@@ -355,7 +355,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
     
@@ -364,7 +364,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +374,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,7 +382,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +392,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CustomObject: ...
     
@@ -401,7 +401,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +411,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +462,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

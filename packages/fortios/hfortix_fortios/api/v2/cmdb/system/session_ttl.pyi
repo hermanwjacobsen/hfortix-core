@@ -370,7 +370,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SessionTtlObject: ...
     
@@ -379,7 +379,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +411,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

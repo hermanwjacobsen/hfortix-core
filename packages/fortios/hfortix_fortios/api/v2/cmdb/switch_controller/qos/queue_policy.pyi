@@ -393,7 +393,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QueuePolicyObject: ...
     
@@ -404,7 +404,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +416,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -426,7 +426,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +438,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QueuePolicyObject: ...
     
@@ -449,7 +449,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -461,7 +461,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -516,7 +516,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

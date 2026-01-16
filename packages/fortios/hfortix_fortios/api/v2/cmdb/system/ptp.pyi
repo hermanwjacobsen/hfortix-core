@@ -388,7 +388,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
@@ -402,7 +402,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -417,7 +417,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +430,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -449,7 +449,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

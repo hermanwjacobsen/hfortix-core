@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.90] - Unreleased
+
+### Fixed - **Stub Types: Accept `list[str]` for Table Fields**
+
+- ✅ **Pylance errors resolved**: Table field parameters now accept `list[str]` in addition to `list[TypedDict]`
+- ✅ **Flexible input support**: Parameters like `member`, `srcintf`, `entries` now accept all formats:
+  - Single string: `"value"`
+  - List of strings: `["val1", "val2"]` ← **NEW: No longer causes Pylance error**
+  - List of dicts: `[{"name": "val1"}]` ← Still works with autocomplete
+- ✅ **Template fix**: Updated `endpoint_class.pyi.j2` to generate `str | list[str] | list[TypedDictItem]` union types
+- ✅ **All 1062 endpoints regenerated**: Every stub file updated with the fix
+
+### Example
+
+```python
+# Before (Pylance error: list[str] not assignable to list[GroupMemberItem])
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group",
+    member=["HTTP", "HTTPS"]  # ❌ Error
+)
+
+# After (works correctly)
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group", 
+    member=["HTTP", "HTTPS"]  # ✅ No error
+)
+
+# Dict format still works with autocomplete
+fgt.api.cmdb.firewall.service.group.post(
+    name="my_group",
+    member=[{"name": "HTTP"}]  # ✅ Autocomplete shows 'name' field
+)
+```
+
+---
+
 ## [0.5.89] - 2026-01-16
 
 ### Fixed - **Generator: Response Properties on Nested Child Objects**

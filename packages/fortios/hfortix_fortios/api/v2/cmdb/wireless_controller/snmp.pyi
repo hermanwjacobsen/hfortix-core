@@ -499,8 +499,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[SnmpCommunityItem] | None = ...,
-        user: str | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnmpObject: ...
     
@@ -512,8 +512,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[SnmpCommunityItem] | None = ...,
-        user: str | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -526,8 +526,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[SnmpCommunityItem] | None = ...,
-        user: str | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -538,8 +538,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[SnmpCommunityItem] | None = ...,
-        user: str | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -556,8 +556,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[SnmpCommunityItem] | None = ...,
-        user: str | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

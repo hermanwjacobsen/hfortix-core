@@ -509,8 +509,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SettingObject: ...
     
@@ -537,8 +537,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -566,8 +566,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -593,8 +593,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -626,8 +626,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

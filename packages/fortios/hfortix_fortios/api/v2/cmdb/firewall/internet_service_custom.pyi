@@ -386,7 +386,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomObject: ...
     
@@ -397,7 +397,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +409,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -431,7 +431,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomObject: ...
     
@@ -442,7 +442,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,7 +454,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -464,7 +464,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -509,7 +509,7 @@ class InternetServiceCustom:
         name: str | None = ...,
         reputation: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceCustomEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceCustomEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

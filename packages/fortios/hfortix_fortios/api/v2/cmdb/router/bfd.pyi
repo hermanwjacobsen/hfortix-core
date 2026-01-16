@@ -439,8 +439,8 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BfdObject: ...
     
@@ -448,8 +448,8 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,16 +458,16 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -480,8 +480,8 @@ class Bfd:
     def set(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

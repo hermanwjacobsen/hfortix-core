@@ -389,7 +389,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BwordObject: ...
     
@@ -400,7 +400,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -412,7 +412,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BwordObject: ...
     
@@ -445,7 +445,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,7 +457,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -467,7 +467,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -512,7 +512,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

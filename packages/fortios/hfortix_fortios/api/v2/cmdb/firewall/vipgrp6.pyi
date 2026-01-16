@@ -366,7 +366,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Vipgrp6Object: ...
     
@@ -378,7 +378,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -391,7 +391,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Vipgrp6Object: ...
     
@@ -427,7 +427,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -440,7 +440,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +451,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,7 +497,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

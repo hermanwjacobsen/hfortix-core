@@ -359,7 +359,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpVenueUrlObject: ...
     
@@ -368,7 +368,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpVenueUrlObject: ...
     
@@ -405,7 +405,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

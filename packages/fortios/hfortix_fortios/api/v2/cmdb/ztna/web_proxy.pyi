@@ -652,8 +652,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebProxyObject: ...
     
@@ -673,8 +673,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -695,8 +695,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -715,8 +715,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -737,8 +737,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebProxyObject: ...
     
@@ -758,8 +758,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -780,8 +780,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -800,8 +800,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -855,8 +855,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -359,7 +359,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
@@ -369,7 +369,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -380,7 +380,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -389,7 +389,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -400,7 +400,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
@@ -410,7 +410,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -421,7 +421,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -430,7 +430,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -474,7 +474,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[DecoderParameterItem] | None = ...,
+        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

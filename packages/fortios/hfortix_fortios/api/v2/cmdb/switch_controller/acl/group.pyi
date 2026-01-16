@@ -351,7 +351,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -360,7 +360,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -370,7 +370,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -388,7 +388,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -397,7 +397,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,7 +458,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

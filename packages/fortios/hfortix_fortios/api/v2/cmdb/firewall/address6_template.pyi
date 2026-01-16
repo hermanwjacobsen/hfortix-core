@@ -386,7 +386,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Address6TemplateObject: ...
@@ -399,7 +399,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -413,7 +413,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -425,7 +425,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -439,7 +439,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Address6TemplateObject: ...
@@ -452,7 +452,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -466,7 +466,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -478,7 +478,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -525,7 +525,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

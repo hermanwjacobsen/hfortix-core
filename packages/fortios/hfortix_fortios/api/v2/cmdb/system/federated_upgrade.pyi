@@ -491,10 +491,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
@@ -510,10 +510,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -530,10 +530,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -548,10 +548,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -572,10 +572,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -433,8 +433,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QosMapObject: ...
     
@@ -443,8 +443,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,8 +454,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,8 +463,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,8 +474,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QosMapObject: ...
     
@@ -484,8 +484,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -495,8 +495,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -504,8 +504,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -548,8 +548,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

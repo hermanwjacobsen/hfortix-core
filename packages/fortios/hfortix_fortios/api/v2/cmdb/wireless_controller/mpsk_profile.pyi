@@ -388,7 +388,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MpskProfileObject: ...
     
@@ -401,7 +401,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MpskProfileObject: ...
     
@@ -454,7 +454,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -468,7 +468,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -480,7 +480,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -527,7 +527,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

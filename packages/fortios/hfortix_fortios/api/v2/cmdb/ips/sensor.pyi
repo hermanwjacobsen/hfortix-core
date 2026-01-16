@@ -477,7 +477,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -491,7 +491,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -506,7 +506,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -519,7 +519,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -534,7 +534,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -548,7 +548,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -563,7 +563,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -576,7 +576,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -624,7 +624,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

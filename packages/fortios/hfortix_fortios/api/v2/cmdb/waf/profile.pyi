@@ -405,7 +405,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
@@ -421,7 +421,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -438,7 +438,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -453,7 +453,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -470,7 +470,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
@@ -486,7 +486,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -503,7 +503,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -518,7 +518,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -568,7 +568,7 @@ class Profile:
         constraint: str | None = ...,
         method: str | None = ...,
         address_list: str | None = ...,
-        url_access: str | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

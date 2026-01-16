@@ -478,8 +478,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UserActivityObject: ...
     
@@ -496,8 +496,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -515,8 +515,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -532,8 +532,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -551,8 +551,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UserActivityObject: ...
     
@@ -569,8 +569,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -588,8 +588,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -605,8 +605,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -657,8 +657,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

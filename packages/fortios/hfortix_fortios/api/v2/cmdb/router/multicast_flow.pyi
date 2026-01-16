@@ -364,7 +364,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastFlowObject: ...
     
@@ -374,7 +374,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -385,7 +385,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -405,7 +405,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastFlowObject: ...
     
@@ -415,7 +415,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -426,7 +426,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +435,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -479,7 +479,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

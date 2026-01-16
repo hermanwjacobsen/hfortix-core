@@ -351,7 +351,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceSubappObject: ...
     
@@ -360,7 +360,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -370,7 +370,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -388,7 +388,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceSubappObject: ...
     
@@ -397,7 +397,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,7 +458,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

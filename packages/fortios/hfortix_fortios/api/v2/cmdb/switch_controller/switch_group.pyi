@@ -366,7 +366,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SwitchGroupObject: ...
     
@@ -377,7 +377,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -399,7 +399,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +411,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SwitchGroupObject: ...
     
@@ -422,7 +422,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +444,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -489,7 +489,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

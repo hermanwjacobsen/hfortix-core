@@ -374,7 +374,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> QuarantineObject: ...
     
@@ -385,7 +385,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

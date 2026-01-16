@@ -486,7 +486,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SamlObject: ...
     
@@ -512,7 +512,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -539,7 +539,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -564,7 +564,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -595,7 +595,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -371,7 +371,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IconObject: ...
     
@@ -380,7 +380,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -390,7 +390,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +398,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -408,7 +408,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IconObject: ...
     
@@ -417,7 +417,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +435,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -478,7 +478,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

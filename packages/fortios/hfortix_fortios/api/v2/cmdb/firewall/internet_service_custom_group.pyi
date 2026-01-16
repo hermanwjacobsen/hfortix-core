@@ -356,7 +356,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomGroupObject: ...
     
@@ -366,7 +366,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -377,7 +377,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceCustomGroupObject: ...
     
@@ -407,7 +407,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +418,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -548,7 +548,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RouteMapObject: ...
     
@@ -558,7 +558,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -569,7 +569,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -578,7 +578,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -589,7 +589,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RouteMapObject: ...
     
@@ -599,7 +599,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -610,7 +610,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -619,7 +619,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -663,7 +663,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

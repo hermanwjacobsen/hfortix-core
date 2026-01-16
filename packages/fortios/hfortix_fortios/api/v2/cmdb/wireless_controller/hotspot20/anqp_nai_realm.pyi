@@ -363,7 +363,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpNaiRealmObject: ...
     
@@ -372,7 +372,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,7 +382,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -390,7 +390,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -400,7 +400,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpNaiRealmObject: ...
     
@@ -409,7 +409,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -470,7 +470,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

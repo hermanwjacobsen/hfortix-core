@@ -376,7 +376,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceFortiguardObject: ...
     
@@ -386,7 +386,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -417,7 +417,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceFortiguardObject: ...
     
@@ -427,7 +427,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +438,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -447,7 +447,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -491,7 +491,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -372,7 +372,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExtcommunityListObject: ...
     
@@ -382,7 +382,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +393,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +413,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExtcommunityListObject: ...
     
@@ -423,7 +423,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class ExtcommunityList:
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[ExtcommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[ExtcommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

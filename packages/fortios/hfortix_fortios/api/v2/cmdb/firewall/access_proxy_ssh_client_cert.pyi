@@ -402,7 +402,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxySshClientCertObject: ...
@@ -418,7 +418,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -435,7 +435,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -450,7 +450,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -467,7 +467,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxySshClientCertObject: ...
@@ -483,7 +483,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -500,7 +500,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -515,7 +515,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -565,7 +565,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

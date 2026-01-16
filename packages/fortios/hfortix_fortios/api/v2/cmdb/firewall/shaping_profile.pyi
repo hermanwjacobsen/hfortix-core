@@ -416,7 +416,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ShapingProfileObject: ...
     
@@ -429,7 +429,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +469,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ShapingProfileObject: ...
     
@@ -482,7 +482,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,7 +496,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -508,7 +508,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -555,7 +555,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

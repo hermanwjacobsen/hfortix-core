@@ -407,7 +407,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AlarmObject: ...
     
@@ -417,7 +417,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +428,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -437,7 +437,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

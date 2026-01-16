@@ -374,7 +374,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AttributeMatchObject: ...
     
@@ -385,7 +385,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AttributeMatchObject: ...
     
@@ -430,7 +430,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -442,7 +442,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,7 +497,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

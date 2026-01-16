@@ -377,7 +377,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BonjourProfileObject: ...
     
@@ -388,7 +388,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -400,7 +400,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +410,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BonjourProfileObject: ...
     
@@ -433,7 +433,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -445,7 +445,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -500,7 +500,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

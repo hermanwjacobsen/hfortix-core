@@ -388,7 +388,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LabelObject: ...
     
@@ -401,7 +401,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LabelObject: ...
     
@@ -454,7 +454,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -468,7 +468,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -480,7 +480,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -527,7 +527,7 @@ class Label:
         mpip_type: Literal["remote", "local"] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[LabelEntriesItem] | None = ...,
+        entries: str | list[str] | list[LabelEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

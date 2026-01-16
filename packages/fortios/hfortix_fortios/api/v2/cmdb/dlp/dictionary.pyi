@@ -395,7 +395,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DictionaryObject: ...
     
@@ -408,7 +408,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,7 +448,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DictionaryObject: ...
     
@@ -461,7 +461,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +475,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -534,7 +534,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

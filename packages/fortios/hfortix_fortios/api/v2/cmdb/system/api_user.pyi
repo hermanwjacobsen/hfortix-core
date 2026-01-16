@@ -465,7 +465,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApiUserObject: ...
     
@@ -481,7 +481,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -498,7 +498,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +513,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -530,7 +530,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApiUserObject: ...
     
@@ -546,7 +546,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -563,7 +563,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -578,7 +578,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -628,7 +628,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

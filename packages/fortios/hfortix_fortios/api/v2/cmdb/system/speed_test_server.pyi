@@ -384,7 +384,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SpeedTestServerObject: ...
     
@@ -394,7 +394,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -405,7 +405,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -425,7 +425,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SpeedTestServerObject: ...
     
@@ -435,7 +435,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -446,7 +446,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -499,7 +499,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

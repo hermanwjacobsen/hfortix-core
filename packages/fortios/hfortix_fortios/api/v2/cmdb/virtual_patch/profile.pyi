@@ -383,7 +383,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -396,7 +396,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +410,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -436,7 +436,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -449,7 +449,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,7 +463,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +475,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -522,7 +522,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

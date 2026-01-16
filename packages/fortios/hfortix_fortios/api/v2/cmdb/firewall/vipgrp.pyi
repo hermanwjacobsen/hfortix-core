@@ -376,7 +376,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VipgrpObject: ...
     
@@ -389,7 +389,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +403,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -429,7 +429,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VipgrpObject: ...
     
@@ -442,7 +442,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -456,7 +456,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -468,7 +468,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -515,7 +515,7 @@ class Vipgrp:
         interface: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[VipgrpMemberItem] | None = ...,
+        member: str | list[str] | list[VipgrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

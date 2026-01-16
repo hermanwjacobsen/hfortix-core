@@ -397,7 +397,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApcfgProfileObject: ...
     
@@ -412,7 +412,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +428,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -442,7 +442,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,7 +458,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApcfgProfileObject: ...
     
@@ -473,7 +473,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -489,7 +489,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -503,7 +503,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -552,7 +552,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

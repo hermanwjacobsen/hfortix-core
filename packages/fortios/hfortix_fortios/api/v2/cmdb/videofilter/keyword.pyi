@@ -378,7 +378,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeywordObject: ...
     
@@ -390,7 +390,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +403,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -427,7 +427,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeywordObject: ...
     
@@ -439,7 +439,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,7 +463,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -509,7 +509,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

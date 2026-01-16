@@ -360,7 +360,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerGroupObject: ...
     
@@ -370,7 +370,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +381,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -390,7 +390,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +401,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerGroupObject: ...
     
@@ -411,7 +411,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -431,7 +431,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +475,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

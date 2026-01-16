@@ -373,7 +373,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DnsblObject: ...
     
@@ -384,7 +384,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +418,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DnsblObject: ...
     
@@ -429,7 +429,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +451,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,7 +496,7 @@ class Dnsbl:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DnsblEntriesItem] | None = ...,
+        entries: str | list[str] | list[DnsblEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

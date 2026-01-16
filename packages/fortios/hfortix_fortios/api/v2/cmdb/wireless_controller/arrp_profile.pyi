@@ -451,7 +451,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ArrpProfileObject: ...
     
@@ -480,7 +480,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -510,7 +510,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -538,7 +538,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -568,7 +568,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ArrpProfileObject: ...
     
@@ -597,7 +597,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -627,7 +627,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -655,7 +655,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -718,7 +718,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

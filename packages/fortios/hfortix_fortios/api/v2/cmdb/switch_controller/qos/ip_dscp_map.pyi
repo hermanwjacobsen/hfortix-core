@@ -372,7 +372,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpDscpMapObject: ...
     
@@ -382,7 +382,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +393,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +413,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpDscpMapObject: ...
     
@@ -423,7 +423,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

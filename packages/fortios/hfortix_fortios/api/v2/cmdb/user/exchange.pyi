@@ -411,7 +411,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExchangeObject: ...
     
@@ -432,7 +432,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,7 +454,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,7 +474,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,7 +496,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ExchangeObject: ...
     
@@ -517,7 +517,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -539,7 +539,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -559,7 +559,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -614,7 +614,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

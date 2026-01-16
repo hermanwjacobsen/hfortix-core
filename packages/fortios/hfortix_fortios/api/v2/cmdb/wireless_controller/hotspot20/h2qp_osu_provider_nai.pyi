@@ -355,7 +355,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderNaiObject: ...
     
@@ -364,7 +364,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +374,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,7 +382,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +392,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderNaiObject: ...
     
@@ -401,7 +401,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +411,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +462,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

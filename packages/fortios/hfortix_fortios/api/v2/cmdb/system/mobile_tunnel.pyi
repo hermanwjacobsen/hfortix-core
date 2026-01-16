@@ -429,7 +429,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MobileTunnelObject: ...
     
@@ -451,7 +451,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,7 +474,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -495,7 +495,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -518,7 +518,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MobileTunnelObject: ...
     
@@ -540,7 +540,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -563,7 +563,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -584,7 +584,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -640,7 +640,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

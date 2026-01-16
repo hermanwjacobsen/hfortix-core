@@ -478,7 +478,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -489,7 +489,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FlowTrackingObject: ...
     
@@ -500,7 +500,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -511,7 +511,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -523,7 +523,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -534,7 +534,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -544,7 +544,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -555,7 +555,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -571,7 +571,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -582,7 +582,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

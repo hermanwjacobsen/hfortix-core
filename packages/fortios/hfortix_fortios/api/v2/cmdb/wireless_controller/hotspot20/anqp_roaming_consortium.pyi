@@ -359,7 +359,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpRoamingConsortiumObject: ...
     
@@ -368,7 +368,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnqpRoamingConsortiumObject: ...
     
@@ -405,7 +405,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

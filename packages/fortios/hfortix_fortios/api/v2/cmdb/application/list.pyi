@@ -595,9 +595,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ListObject: ...
     
@@ -619,9 +619,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -644,9 +644,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -667,9 +667,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -692,9 +692,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ListObject: ...
     
@@ -716,9 +716,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -741,9 +741,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -764,9 +764,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -822,9 +822,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

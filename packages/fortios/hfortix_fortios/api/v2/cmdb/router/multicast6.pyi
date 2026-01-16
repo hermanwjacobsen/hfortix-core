@@ -367,7 +367,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> Multicast6Object: ...
@@ -378,7 +378,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -390,7 +390,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -400,7 +400,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -416,7 +416,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

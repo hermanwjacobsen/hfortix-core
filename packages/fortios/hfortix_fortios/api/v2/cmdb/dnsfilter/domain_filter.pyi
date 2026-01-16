@@ -381,7 +381,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DomainFilterObject: ...
     
@@ -392,7 +392,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +404,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +414,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -426,7 +426,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DomainFilterObject: ...
     
@@ -437,7 +437,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -449,7 +449,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -459,7 +459,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -504,7 +504,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

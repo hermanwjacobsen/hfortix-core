@@ -359,7 +359,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AspathListObject: ...
     
@@ -368,7 +368,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AspathListObject: ...
     
@@ -405,7 +405,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

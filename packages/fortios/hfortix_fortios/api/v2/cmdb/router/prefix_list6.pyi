@@ -376,7 +376,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixList6Object: ...
     
@@ -386,7 +386,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -417,7 +417,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixList6Object: ...
     
@@ -427,7 +427,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +438,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -447,7 +447,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -491,7 +491,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

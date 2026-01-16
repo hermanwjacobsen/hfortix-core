@@ -410,7 +410,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -425,7 +425,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -486,7 +486,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -502,7 +502,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -516,7 +516,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -565,7 +565,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

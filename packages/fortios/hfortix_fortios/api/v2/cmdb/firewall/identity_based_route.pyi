@@ -368,7 +368,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IdentityBasedRouteObject: ...
     
@@ -378,7 +378,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +398,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +409,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IdentityBasedRouteObject: ...
     
@@ -419,7 +419,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +430,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +439,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -483,7 +483,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -532,9 +532,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SaasApplicationObject: ...
     
@@ -548,9 +548,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -565,9 +565,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -580,9 +580,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -597,9 +597,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SaasApplicationObject: ...
     
@@ -613,9 +613,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -630,9 +630,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -645,9 +645,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -695,9 +695,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

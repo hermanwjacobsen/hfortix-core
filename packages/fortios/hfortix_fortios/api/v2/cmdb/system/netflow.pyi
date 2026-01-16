@@ -480,8 +480,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
@@ -494,8 +494,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -509,8 +509,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -522,8 +522,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -541,8 +541,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

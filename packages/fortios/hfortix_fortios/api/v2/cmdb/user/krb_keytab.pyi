@@ -365,7 +365,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> KrbKeytabObject: ...
@@ -377,7 +377,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -390,7 +390,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -401,7 +401,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -414,7 +414,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> KrbKeytabObject: ...
@@ -426,7 +426,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -439,7 +439,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -450,7 +450,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -496,7 +496,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

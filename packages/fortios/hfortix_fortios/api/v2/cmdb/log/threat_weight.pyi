@@ -533,9 +533,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ThreatWeightObject: ...
     
@@ -551,9 +551,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -570,9 +570,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -587,9 +587,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -610,9 +610,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: str | None = ...,
         ips: str | None = ...,
-        web: str | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

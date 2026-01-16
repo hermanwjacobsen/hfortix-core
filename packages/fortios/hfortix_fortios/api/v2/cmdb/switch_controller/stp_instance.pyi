@@ -351,7 +351,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> StpInstanceObject: ...
     
@@ -360,7 +360,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -370,7 +370,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -388,7 +388,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> StpInstanceObject: ...
     
@@ -397,7 +397,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +407,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,7 +458,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

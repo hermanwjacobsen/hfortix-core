@@ -596,10 +596,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DosPolicy6Object: ...
     
@@ -612,10 +612,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -629,10 +629,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -644,10 +644,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -661,10 +661,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DosPolicy6Object: ...
     
@@ -677,10 +677,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -694,10 +694,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -709,10 +709,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -759,10 +759,10 @@ class DosPolicy6:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[DosPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[DosPolicy6DstaddrItem] | None = ...,
-        service: str | list[DosPolicy6ServiceItem] | None = ...,
-        anomaly: str | list[DosPolicy6AnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicy6DstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicy6ServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicy6AnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

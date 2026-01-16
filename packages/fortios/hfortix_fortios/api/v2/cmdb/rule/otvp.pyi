@@ -424,7 +424,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> OtvpObject: ...
     
@@ -446,7 +446,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +469,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -490,7 +490,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +513,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> OtvpObject: ...
     
@@ -535,7 +535,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -558,7 +558,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -579,7 +579,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -635,7 +635,7 @@ class Otvp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[OtvpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

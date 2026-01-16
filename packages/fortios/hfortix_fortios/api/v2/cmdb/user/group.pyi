@@ -611,8 +611,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -626,7 +626,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -642,8 +642,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -657,7 +657,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -674,8 +674,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -689,7 +689,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -704,8 +704,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -719,7 +719,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -736,8 +736,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -751,7 +751,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -767,8 +767,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -782,7 +782,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -799,8 +799,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -814,7 +814,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -829,8 +829,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -844,7 +844,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -894,8 +894,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[GroupMemberItem] | None = ...,
-        match: str | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -909,7 +909,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

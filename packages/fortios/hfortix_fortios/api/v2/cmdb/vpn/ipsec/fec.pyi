@@ -379,7 +379,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FecObject: ...
     
@@ -388,7 +388,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +398,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +416,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FecObject: ...
     
@@ -425,7 +425,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -435,7 +435,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -486,7 +486,7 @@ class Fec:
         self,
         payload_dict: FecPayload | None = ...,
         name: str | None = ...,
-        mappings: str | list[FecMappingsItem] | None = ...,
+        mappings: str | list[str] | list[FecMappingsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

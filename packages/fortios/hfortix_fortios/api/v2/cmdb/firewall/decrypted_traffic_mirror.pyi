@@ -366,7 +366,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecryptedTrafficMirrorObject: ...
     
@@ -378,7 +378,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -391,7 +391,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecryptedTrafficMirrorObject: ...
     
@@ -427,7 +427,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -440,7 +440,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +451,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,7 +497,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

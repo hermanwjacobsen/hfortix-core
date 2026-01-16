@@ -368,7 +368,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -378,7 +378,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +398,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +409,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -419,7 +419,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +430,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +439,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -483,7 +483,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

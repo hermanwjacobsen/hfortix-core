@@ -367,7 +367,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
     
@@ -376,7 +376,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +404,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
     
@@ -413,7 +413,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -431,7 +431,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -474,7 +474,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

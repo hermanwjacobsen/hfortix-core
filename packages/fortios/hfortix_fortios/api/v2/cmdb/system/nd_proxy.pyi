@@ -350,7 +350,7 @@ class NdProxy:
         self,
         payload_dict: NdProxyPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        member: str | list[NdProxyMemberItem] | None = ...,
+        member: str | list[str] | list[NdProxyMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> NdProxyObject: ...
     
@@ -359,7 +359,7 @@ class NdProxy:
         self,
         payload_dict: NdProxyPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        member: str | list[NdProxyMemberItem] | None = ...,
+        member: str | list[str] | list[NdProxyMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +369,7 @@ class NdProxy:
         self,
         payload_dict: NdProxyPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        member: str | list[NdProxyMemberItem] | None = ...,
+        member: str | list[str] | list[NdProxyMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -377,7 +377,7 @@ class NdProxy:
         self,
         payload_dict: NdProxyPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        member: str | list[NdProxyMemberItem] | None = ...,
+        member: str | list[str] | list[NdProxyMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -391,7 +391,7 @@ class NdProxy:
         self,
         payload_dict: NdProxyPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        member: str | list[NdProxyMemberItem] | None = ...,
+        member: str | list[str] | list[NdProxyMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

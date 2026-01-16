@@ -478,8 +478,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[IpamPoolsItem] | None = ...,
-        rules: str | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
@@ -494,8 +494,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[IpamPoolsItem] | None = ...,
-        rules: str | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -511,8 +511,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[IpamPoolsItem] | None = ...,
-        rules: str | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -526,8 +526,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[IpamPoolsItem] | None = ...,
-        rules: str | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -547,8 +547,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[IpamPoolsItem] | None = ...,
-        rules: str | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

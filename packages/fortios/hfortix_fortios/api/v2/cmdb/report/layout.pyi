@@ -474,7 +474,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LayoutObject: ...
     
@@ -498,7 +498,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -523,7 +523,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -546,7 +546,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -571,7 +571,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LayoutObject: ...
     
@@ -595,7 +595,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -620,7 +620,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -643,7 +643,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -701,7 +701,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

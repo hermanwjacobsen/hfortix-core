@@ -442,7 +442,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DynamicPortPolicyObject: ...
     
@@ -453,7 +453,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -465,7 +465,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -475,7 +475,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DynamicPortPolicyObject: ...
     
@@ -498,7 +498,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -510,7 +510,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -520,7 +520,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -565,7 +565,7 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -393,7 +393,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BlockAllowListObject: ...
     
@@ -404,7 +404,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +416,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -426,7 +426,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +438,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BlockAllowListObject: ...
     
@@ -449,7 +449,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -461,7 +461,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -516,7 +516,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

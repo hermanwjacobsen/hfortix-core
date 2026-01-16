@@ -372,7 +372,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixListObject: ...
     
@@ -382,7 +382,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +393,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +413,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixListObject: ...
     
@@ -423,7 +423,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class PrefixList:
         payload_dict: PrefixListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[PrefixListRuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

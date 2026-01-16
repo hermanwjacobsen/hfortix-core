@@ -424,7 +424,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RuleObject: ...
     
@@ -446,7 +446,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +469,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -490,7 +490,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +513,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RuleObject: ...
     
@@ -535,7 +535,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -558,7 +558,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -579,7 +579,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -635,7 +635,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

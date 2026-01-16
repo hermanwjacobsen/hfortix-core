@@ -421,7 +421,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UrlfilterObject: ...
     
@@ -436,7 +436,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -452,7 +452,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -482,7 +482,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UrlfilterObject: ...
     
@@ -497,7 +497,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -513,7 +513,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -527,7 +527,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -576,7 +576,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

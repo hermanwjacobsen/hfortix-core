@@ -490,7 +490,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -498,7 +498,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
@@ -509,7 +509,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -517,7 +517,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -529,7 +529,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -537,7 +537,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -547,7 +547,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -555,7 +555,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -571,7 +571,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -579,7 +579,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

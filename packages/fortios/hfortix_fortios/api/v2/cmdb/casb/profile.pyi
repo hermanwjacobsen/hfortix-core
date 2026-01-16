@@ -400,7 +400,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -410,7 +410,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -421,7 +421,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +430,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +441,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -451,7 +451,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +462,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -471,7 +471,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -515,7 +515,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

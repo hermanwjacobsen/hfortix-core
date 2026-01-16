@@ -559,9 +559,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebPortalBookmarkObject: ...
     
@@ -570,9 +570,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -582,9 +582,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -592,9 +592,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -604,9 +604,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> WebPortalBookmarkObject: ...
     
@@ -615,9 +615,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -627,9 +627,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -637,9 +637,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -682,9 +682,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

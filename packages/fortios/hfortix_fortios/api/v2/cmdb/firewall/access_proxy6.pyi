@@ -686,8 +686,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxy6Object: ...
     
@@ -706,8 +706,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -727,8 +727,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -746,8 +746,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -767,8 +767,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxy6Object: ...
     
@@ -787,8 +787,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -808,8 +808,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -827,8 +827,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -881,8 +881,8 @@ class AccessProxy6:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[AccessProxy6ApigatewayItem] | None = ...,
-        api_gateway6: str | list[AccessProxy6Apigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxy6ApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxy6Apigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

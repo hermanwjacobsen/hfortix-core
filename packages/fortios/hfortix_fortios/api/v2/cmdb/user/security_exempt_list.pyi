@@ -368,7 +368,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SecurityExemptListObject: ...
     
@@ -378,7 +378,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +398,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -409,7 +409,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SecurityExemptListObject: ...
     
@@ -419,7 +419,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +430,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +439,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -483,7 +483,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

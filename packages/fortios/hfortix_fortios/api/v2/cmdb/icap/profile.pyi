@@ -588,8 +588,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -626,8 +626,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -665,8 +665,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -702,8 +702,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -741,8 +741,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProfileObject: ...
     
@@ -779,8 +779,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -818,8 +818,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -855,8 +855,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -927,8 +927,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -585,9 +585,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LldpProfileObject: ...
     
@@ -610,9 +610,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -636,9 +636,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -660,9 +660,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -686,9 +686,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LldpProfileObject: ...
     
@@ -711,9 +711,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -737,9 +737,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -761,9 +761,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -820,9 +820,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

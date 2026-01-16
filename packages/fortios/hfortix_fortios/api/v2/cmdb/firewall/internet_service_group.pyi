@@ -361,7 +361,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceGroupObject: ...
     
@@ -372,7 +372,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -384,7 +384,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceGroupObject: ...
     
@@ -417,7 +417,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -429,7 +429,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +439,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -484,7 +484,7 @@ class InternetServiceGroup:
         name: str | None = ...,
         comment: str | None = ...,
         direction: Literal["source", "destination", "both"] | None = ...,
-        member: str | list[InternetServiceGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

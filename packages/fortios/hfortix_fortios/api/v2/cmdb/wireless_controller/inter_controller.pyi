@@ -387,7 +387,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
@@ -401,7 +401,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +416,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -429,7 +429,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -448,7 +448,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

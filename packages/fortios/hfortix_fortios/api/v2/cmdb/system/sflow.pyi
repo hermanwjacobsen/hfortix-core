@@ -365,7 +365,7 @@ class Sflow:
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
@@ -373,7 +373,7 @@ class Sflow:
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,14 +382,14 @@ class Sflow:
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class Sflow:
     def set(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

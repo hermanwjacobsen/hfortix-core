@@ -412,7 +412,7 @@ class Filter:
         voip: Literal["enable", "disable"] | None = ...,
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[FilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
@@ -431,7 +431,7 @@ class Filter:
         voip: Literal["enable", "disable"] | None = ...,
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[FilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +451,7 @@ class Filter:
         voip: Literal["enable", "disable"] | None = ...,
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[FilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +469,7 @@ class Filter:
         voip: Literal["enable", "disable"] | None = ...,
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[FilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -493,7 +493,7 @@ class Filter:
         voip: Literal["enable", "disable"] | None = ...,
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[FilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

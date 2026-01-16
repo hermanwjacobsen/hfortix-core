@@ -370,7 +370,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ForwardServerGroupObject: ...
     
@@ -382,7 +382,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +395,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +419,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ForwardServerGroupObject: ...
     
@@ -431,7 +431,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +444,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -501,7 +501,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -463,8 +463,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceExtensionObject: ...
     
@@ -474,8 +474,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -486,8 +486,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,8 +496,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -508,8 +508,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceExtensionObject: ...
     
@@ -519,8 +519,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -531,8 +531,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -541,8 +541,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -586,8 +586,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

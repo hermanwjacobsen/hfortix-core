@@ -372,7 +372,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessList6Object: ...
     
@@ -382,7 +382,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +393,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +402,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +413,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessList6Object: ...
     
@@ -423,7 +423,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +434,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +443,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,7 +487,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

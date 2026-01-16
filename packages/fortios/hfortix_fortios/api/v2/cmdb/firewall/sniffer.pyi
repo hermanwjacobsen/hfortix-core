@@ -589,11 +589,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnifferObject: ...
     
@@ -626,11 +626,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -664,11 +664,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -700,11 +700,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -738,11 +738,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SnifferObject: ...
     
@@ -775,11 +775,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -813,11 +813,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -849,11 +849,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -920,11 +920,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

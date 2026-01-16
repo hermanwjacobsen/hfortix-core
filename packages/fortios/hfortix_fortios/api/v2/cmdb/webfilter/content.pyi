@@ -377,7 +377,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ContentObject: ...
     
@@ -388,7 +388,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -400,7 +400,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +410,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +422,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ContentObject: ...
     
@@ -433,7 +433,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -445,7 +445,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +455,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -500,7 +500,7 @@ class Content:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[ContentEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

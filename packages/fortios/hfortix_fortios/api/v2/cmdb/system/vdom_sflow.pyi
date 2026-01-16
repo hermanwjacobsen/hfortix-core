@@ -370,7 +370,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VdomSflowObject: ...
     
@@ -379,7 +379,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +389,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +397,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +411,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

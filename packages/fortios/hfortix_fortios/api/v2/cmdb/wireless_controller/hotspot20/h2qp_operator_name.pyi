@@ -359,7 +359,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOperatorNameObject: ...
     
@@ -368,7 +368,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,7 +378,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +386,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -396,7 +396,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOperatorNameObject: ...
     
@@ -405,7 +405,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +415,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +423,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +466,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

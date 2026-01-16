@@ -361,7 +361,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ConcentratorObject: ...
     
@@ -372,7 +372,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -384,7 +384,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +394,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -406,7 +406,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ConcentratorObject: ...
     
@@ -417,7 +417,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -429,7 +429,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +439,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -484,7 +484,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
