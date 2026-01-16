@@ -5,14 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed - **Generator: Stub Files and Pydantic Models**
+
+- ✅ **Helper stub exports**: Added `DEPRECATED_FIELDS` and `REQUIRED_FIELDS` to validator stub template
+- ✅ **Core stub signature**: Fixed `check_deprecated_fields()` signature in `hfortix_core/__init__.pyi` to match implementation
+- ✅ **Pydantic model return type**: Fixed `from_fortios_response()` return type from empty string to correct class name
+
+---
+
 ## [0.5.86] - 2026-01-16
 
-### Fixed - **Generator: Response Fields for Service/Monitor Endpoints**
+### Fixed - **Generator: Response Fields and Integer Types for Service/Monitor Endpoints**
 
 - ✅ **Added `response_fields` support**: Schema parser now extracts `response_fields` from service/monitor endpoint schemas
 - ✅ **Correct response types**: Object classes now use `response_fields` for type hints (falling back to `fields` for CMDB)
 - ✅ **Boolean type support**: Added `boolean` type mapping in templates (was defaulting to `str`)
+- ✅ **Integer type support**: Added `int` type alongside `integer` (monitor/service schemas use `int`, CMDB uses `integer`)
 - ✅ **Example fix**: `FabricTimeInSyncObject.synchronized` now correctly typed as `bool` instead of `str`
+- ✅ **Example fix**: `clear_counters.post(policy=1)` now accepts `int` instead of `str`
 
 ### Technical Details
 
@@ -21,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **CMDB**    | `fields`         | `fields` (same)   |
 | **Monitor** | `request_fields` | `response_fields` |
 | **Service** | `request_fields` | `response_fields` |
+
+**Type mappings fixed:**
+- `boolean` → `bool`
+- `int` → `int` (monitor/service schemas)
+- `integer` → `int` (CMDB schemas)
 
 ### Example
 
@@ -32,6 +49,12 @@ print(result.synchronized)  # AttributeError or typed as str
 # After (correct type)
 result = fgt.api.service.system.fabric_time_in_sync.get()
 print(result.synchronized)  # True/False (typed as bool)
+
+# Before (type error)
+fgt.api.monitor.firewall.policy.clear_counters.post(policy=1)  # Pylance error: expected str
+
+# After (correct type)
+fgt.api.monitor.firewall.policy.clear_counters.post(policy=1)  # Works correctly (int)
 ```
 
 ---
