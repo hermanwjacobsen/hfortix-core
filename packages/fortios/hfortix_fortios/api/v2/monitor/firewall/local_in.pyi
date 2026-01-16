@@ -24,6 +24,7 @@ class LocalInPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class LocalInResponse(TypedDict):
     """
@@ -31,7 +32,10 @@ class LocalInResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    include_ttl: str
+    implicit: str
+    admin: str
+    custom: str
+    ttl: str
 
 
 @final
@@ -42,8 +46,14 @@ class LocalInObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # include_ttl
-    include_ttl: str
+    # implicit
+    implicit: str
+    # admin
+    admin: str
+    # custom
+    custom: str
+    # ttl
+    ttl: str
     
     # Common API response fields
     status: str

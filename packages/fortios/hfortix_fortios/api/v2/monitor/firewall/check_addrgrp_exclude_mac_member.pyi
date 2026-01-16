@@ -25,6 +25,7 @@ class CheckAddrgrpExcludeMacMemberPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class CheckAddrgrpExcludeMacMemberResponse(TypedDict):
     """
@@ -32,8 +33,7 @@ class CheckAddrgrpExcludeMacMemberResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    ip_version: str
+    exclude_mac_member: str
 
 
 @final
@@ -44,10 +44,8 @@ class CheckAddrgrpExcludeMacMemberObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # ip_version
-    ip_version: str
+    # exclude_mac_member
+    exclude_mac_member: str
     
     # Common API response fields
     status: str

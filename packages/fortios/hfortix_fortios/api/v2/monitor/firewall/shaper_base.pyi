@@ -24,6 +24,7 @@ class ShaperPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ShaperResponse(TypedDict):
     """
@@ -31,7 +32,12 @@ class ShaperResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    shaper_name: str
+    shapers: str
+    ipv4: str
+    ipv6: str
+    drops: str
+    dropped_bytes: str
+    data: str
 
 
 @final
@@ -42,8 +48,18 @@ class ShaperObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # shaper_name
-    shaper_name: str
+    # shapers
+    shapers: str
+    # ipv4
+    ipv4: str
+    # ipv6
+    ipv6: str
+    # drops
+    drops: str
+    # dropped_bytes
+    dropped_bytes: str
+    # data
+    data: str
     
     # Common API response fields
     status: str

@@ -26,6 +26,7 @@ class FortianalyzerPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class FortianalyzerResponse(TypedDict):
     """
@@ -33,9 +34,23 @@ class FortianalyzerResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    scope: str
-    server: str
-    srcip: str
+    serial: str
+    error_message_details: str
+    error: int
+    status: str
+    device: str
+    registration: str
+    connection: str
+    received: int
+    mgmt_ip: str
+    mgmt_port: int
+    disk: str
+    adom_name: str
+    log: str
+    ips: str
+    dlp: str
+    quar: str
+    license: str
 
 
 @final
@@ -46,12 +61,40 @@ class FortianalyzerObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # scope
-    scope: str
-    # server
-    server: str
-    # srcip
-    srcip: str
+    # serial
+    serial: str
+    # error_message_details
+    error_message_details: str
+    # error
+    error: int
+    # status
+    status: str
+    # device
+    device: str
+    # registration
+    registration: str
+    # connection
+    connection: str
+    # received
+    received: int
+    # mgmt_ip
+    mgmt_ip: str
+    # mgmt_port
+    mgmt_port: int
+    # disk
+    disk: str
+    # adom_name
+    adom_name: str
+    # log
+    log: str
+    # ips
+    ips: str
+    # dlp
+    dlp: str
+    # quar
+    quar: str
+    # license
+    license: str
     
     # Common API response fields
     status: str

@@ -45,6 +45,7 @@ class SessionsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SessionsResponse(TypedDict):
     """
@@ -52,28 +53,8 @@ class SessionsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ip_version: str
-    count: str
     summary: str
-    srcaddr: str
-    dstaddr: str
-    srcaddr6: str
-    dstaddr6: str
-    srcport: str
-    dstport: str
-    srcintf: str
-    dstintf: str
-    policyid: str
-    proxy_policyid: str
-    protocol: str
-    application: str
-    country: str
-    seconds: str
-    since: str
-    owner: str
-    username: str
-    src_uuid: str
-    dst_uuid: str
+    details: str
 
 
 @final
@@ -84,50 +65,10 @@ class SessionsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ip_version
-    ip_version: str
-    # count
-    count: str
     # summary
     summary: str
-    # srcaddr
-    srcaddr: str
-    # dstaddr
-    dstaddr: str
-    # srcaddr6
-    srcaddr6: str
-    # dstaddr6
-    dstaddr6: str
-    # srcport
-    srcport: str
-    # dstport
-    dstport: str
-    # srcintf
-    srcintf: str
-    # dstintf
-    dstintf: str
-    # policyid
-    policyid: str
-    # proxy-policyid
-    proxy_policyid: str
-    # protocol
-    protocol: str
-    # application
-    application: str
-    # country
-    country: str
-    # seconds
-    seconds: str
-    # since
-    since: str
-    # owner
-    owner: str
-    # username
-    username: str
-    # src_uuid
-    src_uuid: str
-    # dst_uuid
-    dst_uuid: str
+    # details
+    details: str
     
     # Common API response fields
     status: str

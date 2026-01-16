@@ -120,6 +120,7 @@ class VlanPolicyUntaggedvlansObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class VlanPolicyResponse(TypedDict):
     """

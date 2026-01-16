@@ -84,6 +84,7 @@ class Phase2Payload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class Phase2Response(TypedDict):
     """

@@ -238,6 +238,7 @@ class Address6ListObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class Address6Response(TypedDict):
     """

@@ -75,6 +75,7 @@ class Multicast6InterfaceObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class Multicast6Response(TypedDict):
     """

@@ -380,6 +380,7 @@ class Ospf6SummaryaddressObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class Ospf6Response(TypedDict):
     """

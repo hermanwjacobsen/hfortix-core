@@ -25,6 +25,7 @@ class ServiceCommunicationStatsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ServiceCommunicationStatsResponse(TypedDict):
     """
@@ -32,8 +33,15 @@ class ServiceCommunicationStatsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    service_type: str
-    timeslot: str
+    forticare: str
+    fortiguard_download: str
+    fortiguard_query: str
+    forticloud_log: str
+    fortisandbox_cloud: str
+    fortiguard_com: str
+    sdns: str
+    fortitoken_registration: str
+    sms_service: str
 
 
 @final
@@ -44,10 +52,24 @@ class ServiceCommunicationStatsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # service_type
-    service_type: str
-    # timeslot
-    timeslot: str
+    # forticare
+    forticare: str
+    # fortiguard_download
+    fortiguard_download: str
+    # fortiguard_query
+    fortiguard_query: str
+    # forticloud_log
+    forticloud_log: str
+    # fortisandbox_cloud
+    fortisandbox_cloud: str
+    # fortiguard.com
+    fortiguard_com: str
+    # sdns
+    sdns: str
+    # fortitoken_registration
+    fortitoken_registration: str
+    # sms_service
+    sms_service: str
     
     # Common API response fields
     status: str

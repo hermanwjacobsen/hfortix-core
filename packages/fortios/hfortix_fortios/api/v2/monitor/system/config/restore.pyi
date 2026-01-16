@@ -31,6 +31,7 @@ class RestorePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class RestoreResponse(TypedDict):
     """
@@ -38,14 +39,10 @@ class RestoreResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    source: str
-    usb_filename: str
-    config_id: str
-    password: str
-    scope: str
-    vdom: str
-    confirm_password_mask: str
-    file_content: str
+    restore_started: str
+    error: str
+    session_id: str
+    config_restored: str
 
 
 @final
@@ -56,22 +53,14 @@ class RestoreObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # source
-    source: str
-    # usb_filename
-    usb_filename: str
-    # config_id
-    config_id: str
-    # password
-    password: str
-    # scope
-    scope: str
-    # vdom
-    vdom: str
-    # confirm_password_mask
-    confirm_password_mask: str
-    # file_content
-    file_content: str
+    # restore_started
+    restore_started: str
+    # error
+    error: str
+    # session_id
+    session_id: str
+    # config_restored
+    config_restored: str
     
     # Common API response fields
     status: str

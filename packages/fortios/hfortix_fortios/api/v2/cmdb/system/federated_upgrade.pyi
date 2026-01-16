@@ -146,6 +146,7 @@ class FederatedUpgradeNodelistObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class FederatedUpgradeResponse(TypedDict):
     """

@@ -24,6 +24,7 @@ class SpeedTestStatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SpeedTestStatusResponse(TypedDict):
     """
@@ -31,7 +32,11 @@ class SpeedTestStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: str
+    progress: int
+    measured_upstream_bandwidth: int
+    measured_downstream_bandwidth: int
+    measure_time: int
+    error_code: int
 
 
 @final
@@ -42,8 +47,16 @@ class SpeedTestStatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # id
-    id: str
+    # progress
+    progress: int
+    # measured_upstream_bandwidth
+    measured_upstream_bandwidth: int
+    # measured_downstream_bandwidth
+    measured_downstream_bandwidth: int
+    # measure_time
+    measure_time: int
+    # error_code
+    error_code: int
     
     # Common API response fields
     status: str

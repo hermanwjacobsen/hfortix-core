@@ -26,6 +26,7 @@ class ApChannelsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ApChannelsResponse(TypedDict):
     """
@@ -33,9 +34,10 @@ class ApChannelsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    country: str
-    platform_type: str
-    indoor_outdoor: str
+    outdoor: str
+    local: str
+    unii4_5ghz_band_country_support: str
+    channel_lists: str
 
 
 @final
@@ -46,12 +48,14 @@ class ApChannelsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # country
-    country: str
-    # platform_type
-    platform_type: str
-    # indoor_outdoor
-    indoor_outdoor: str
+    # outdoor
+    outdoor: str
+    # local
+    local: str
+    # unii4_5ghz_band_country_support
+    unii4_5ghz_band_country_support: str
+    # channel_lists
+    channel_lists: str
     
     # Common API response fields
     status: str

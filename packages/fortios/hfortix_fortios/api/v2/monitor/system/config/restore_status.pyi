@@ -24,6 +24,7 @@ class RestoreStatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class RestoreStatusResponse(TypedDict):
     """
@@ -31,7 +32,10 @@ class RestoreStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    session_id: str
+    success: str
+    session_file_not_found: str
+    in_progress: str
+    error: int
 
 
 @final
@@ -42,8 +46,14 @@ class RestoreStatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # session_id
-    session_id: str
+    # success
+    success: str
+    # session_file_not_found
+    session_file_not_found: str
+    # in_progress
+    in_progress: str
+    # error
+    error: int
     
     # Common API response fields
     status: str

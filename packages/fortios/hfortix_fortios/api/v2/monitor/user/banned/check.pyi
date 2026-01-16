@@ -24,6 +24,7 @@ class CheckPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class CheckResponse(TypedDict):
     """
@@ -32,6 +33,7 @@ class CheckResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ip_address: str
+    is_banned: str
 
 
 @final
@@ -44,6 +46,8 @@ class CheckObject:
     
     # ip_address
     ip_address: str
+    # is_banned
+    is_banned: str
     
     # Common API response fields
     status: str

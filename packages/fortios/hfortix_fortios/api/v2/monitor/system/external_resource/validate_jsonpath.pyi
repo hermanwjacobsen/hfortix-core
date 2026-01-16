@@ -24,6 +24,7 @@ class ValidateJsonpathPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ValidateJsonpathResponse(TypedDict):
     """
@@ -31,7 +32,8 @@ class ValidateJsonpathResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    path_name: str
+    valid: str
+    error_code: int
 
 
 @final
@@ -42,8 +44,10 @@ class ValidateJsonpathObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # path_name
-    path_name: str
+    # valid
+    valid: str
+    # error_code
+    error_code: int
     
     # Common API response fields
     status: str

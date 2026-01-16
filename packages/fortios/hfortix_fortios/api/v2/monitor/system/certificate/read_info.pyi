@@ -24,6 +24,7 @@ class ReadInfoPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ReadInfoResponse(TypedDict):
     """
@@ -31,7 +32,21 @@ class ReadInfoResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    value: str
+    status: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: str
+    serial_number: str
+    ext: str
 
 
 @final
@@ -42,8 +57,36 @@ class ReadInfoObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # value
-    value: str
+    # status
+    status: str
+    # valid_from
+    valid_from: int
+    # valid_to
+    valid_to: int
+    # valid_from_raw
+    valid_from_raw: str
+    # valid_to_raw
+    valid_to_raw: str
+    # signature_algorithm
+    signature_algorithm: str
+    # subject
+    subject: str
+    # subject_raw
+    subject_raw: str
+    # issuer
+    issuer: str
+    # issuer_raw
+    issuer_raw: str
+    # fingerprint
+    fingerprint: str
+    # version
+    version: int
+    # is_ca
+    is_ca: str
+    # serial_number
+    serial_number: str
+    # ext
+    ext: str
     
     # Common API response fields
     status: str

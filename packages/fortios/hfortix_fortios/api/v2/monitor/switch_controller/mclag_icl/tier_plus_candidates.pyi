@@ -27,6 +27,7 @@ class TierPlusCandidatesPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class TierPlusCandidatesResponse(TypedDict):
     """
@@ -34,10 +35,9 @@ class TierPlusCandidatesResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    is_tier2: str
+    status: str
+    peer1_candidate: str
+    peer2_candidate: str
 
 
 @final
@@ -48,14 +48,12 @@ class TierPlusCandidatesObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # fortilink
-    fortilink: str
-    # parent_peer1
-    parent_peer1: str
-    # parent_peer2
-    parent_peer2: str
-    # is_tier2
-    is_tier2: str
+    # status
+    status: str
+    # peer1_candidate
+    peer1_candidate: str
+    # peer2_candidate
+    peer2_candidate: str
     
     # Common API response fields
     status: str

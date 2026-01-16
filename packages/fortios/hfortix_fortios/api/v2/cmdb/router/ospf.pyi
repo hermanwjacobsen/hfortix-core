@@ -561,6 +561,7 @@ class OspfRedistributeObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class OspfResponse(TypedDict):
     """

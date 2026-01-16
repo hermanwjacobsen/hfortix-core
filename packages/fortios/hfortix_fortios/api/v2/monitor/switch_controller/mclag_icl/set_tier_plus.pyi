@@ -29,6 +29,7 @@ class SetTierPlusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SetTierPlusResponse(TypedDict):
     """
@@ -36,12 +37,8 @@ class SetTierPlusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    peer1: str
-    peer2: str
-    isl_port_group: str
+    success: str
+    error: str
 
 
 @final
@@ -52,18 +49,10 @@ class SetTierPlusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # fortilink
-    fortilink: str
-    # parent_peer1
-    parent_peer1: str
-    # parent_peer2
-    parent_peer2: str
-    # peer1
-    peer1: str
-    # peer2
-    peer2: str
-    # isl_port_group
-    isl_port_group: str
+    # success
+    success: str
+    # error
+    error: str
     
     # Common API response fields
     status: str

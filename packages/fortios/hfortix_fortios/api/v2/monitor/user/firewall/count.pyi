@@ -26,6 +26,7 @@ class CountPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class CountResponse(TypedDict):
     """
@@ -33,9 +34,9 @@ class CountResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv4: str
-    ipv6: str
-    include_fsso: str
+    ipv4: int
+    ipv6: int
+    total: int
 
 
 @final
@@ -47,11 +48,11 @@ class CountObject:
     """
     
     # ipv4
-    ipv4: str
+    ipv4: int
     # ipv6
-    ipv6: str
-    # include_fsso
-    include_fsso: str
+    ipv6: int
+    # total
+    total: int
     
     # Common API response fields
     status: str

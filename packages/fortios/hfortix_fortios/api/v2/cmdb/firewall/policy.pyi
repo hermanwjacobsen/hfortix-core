@@ -2028,6 +2028,7 @@ class PolicyInternetservice6srcfortiguardObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class PolicyResponse(TypedDict):
     """

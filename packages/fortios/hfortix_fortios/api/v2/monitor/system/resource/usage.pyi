@@ -26,6 +26,7 @@ class UsagePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class UsageResponse(TypedDict):
     """
@@ -33,9 +34,29 @@ class UsageResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    scope: str
-    resource: str
-    interval: str
+    cpu: str
+    disk: str
+    disk_lograte: str
+    faz_cloud_lograte: str
+    faz_lograte: str
+    forticloud_lograte: str
+    gtp_tunnel: str
+    gtp_tunnel_setup_rate: str
+    mem: str
+    session: str
+    session6: str
+    setuprate: str
+    setuprate6: str
+    npu_session: str
+    npu_session6: str
+    nturbo_session: str
+    nturbo_session6: str
+    hw_session: str
+    hw_session6: str
+    hw_setuprate: str
+    hw_setuprate6: str
+    hw_ps_log_rate: str
+    hw_pm_log_rate: str
 
 
 @final
@@ -46,12 +67,52 @@ class UsageObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # scope
-    scope: str
-    # resource
-    resource: str
-    # interval
-    interval: str
+    # cpu
+    cpu: str
+    # disk
+    disk: str
+    # disk_lograte
+    disk_lograte: str
+    # faz_cloud_lograte
+    faz_cloud_lograte: str
+    # faz_lograte
+    faz_lograte: str
+    # forticloud_lograte
+    forticloud_lograte: str
+    # gtp_tunnel
+    gtp_tunnel: str
+    # gtp_tunnel_setup_rate
+    gtp_tunnel_setup_rate: str
+    # mem
+    mem: str
+    # session
+    session: str
+    # session6
+    session6: str
+    # setuprate
+    setuprate: str
+    # setuprate6
+    setuprate6: str
+    # npu_session
+    npu_session: str
+    # npu_session6
+    npu_session6: str
+    # nturbo_session
+    nturbo_session: str
+    # nturbo_session6
+    nturbo_session6: str
+    # hw_session
+    hw_session: str
+    # hw_session6
+    hw_session6: str
+    # hw_setuprate
+    hw_setuprate: str
+    # hw_setuprate6
+    hw_setuprate6: str
+    # hw_ps_log_rate
+    hw_ps_log_rate: str
+    # hw_pm_log_rate
+    hw_pm_log_rate: str
     
     # Common API response fields
     status: str

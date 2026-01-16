@@ -26,6 +26,7 @@ class SelectPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SelectResponse(TypedDict):
     """
@@ -33,9 +34,7 @@ class SelectResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    old_password: str
-    new_password: str
+    changed: str
 
 
 @final
@@ -46,12 +45,8 @@ class SelectObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # old_password
-    old_password: str
-    # new_password
-    new_password: str
+    # changed
+    changed: str
     
     # Common API response fields
     status: str

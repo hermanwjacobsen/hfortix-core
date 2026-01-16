@@ -24,6 +24,7 @@ class ReverseIpLookupPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ReverseIpLookupResponse(TypedDict):
     """
@@ -31,7 +32,8 @@ class ReverseIpLookupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ip: str
+    domain: str
+    resolved: str
 
 
 @final
@@ -42,8 +44,10 @@ class ReverseIpLookupObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ip
-    ip: str
+    # domain
+    domain: str
+    # resolved
+    resolved: str
     
     # Common API response fields
     status: str

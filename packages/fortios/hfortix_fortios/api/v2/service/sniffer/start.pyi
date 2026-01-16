@@ -24,6 +24,7 @@ class StartPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class StartResponse(TypedDict):
     """
@@ -31,6 +32,7 @@ class StartResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
+    status: str
     mkey: str
 
 
@@ -42,6 +44,8 @@ class StartObject:
     At runtime, this is actually a FortiObject instance.
     """
     
+    # status
+    status: str
     # mkey
     mkey: str
     

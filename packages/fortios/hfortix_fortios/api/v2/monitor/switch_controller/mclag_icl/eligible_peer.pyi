@@ -24,6 +24,7 @@ class EligiblePeerPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class EligiblePeerResponse(TypedDict):
     """
@@ -31,7 +32,9 @@ class EligiblePeerResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    fortilink: str
+    status: str
+    candidate1: str
+    candidate2: str
 
 
 @final
@@ -42,8 +45,12 @@ class EligiblePeerObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # fortilink
-    fortilink: str
+    # status
+    status: str
+    # candidate1
+    candidate1: str
+    # candidate2
+    candidate2: str
     
     # Common API response fields
     status: str

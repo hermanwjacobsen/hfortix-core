@@ -26,6 +26,7 @@ class ExtensionDevicePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ExtensionDeviceResponse(TypedDict):
     """
@@ -33,9 +34,9 @@ class ExtensionDeviceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    type: str
-    timeout: str
-    version: str
+    fds_response: str
+    fds_response_code: str
+    model_versions: str
 
 
 @final
@@ -46,12 +47,12 @@ class ExtensionDeviceObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # type
-    type: str
-    # timeout
-    timeout: str
-    # version
-    version: str
+    # fds_response
+    fds_response: str
+    # fds_response_code
+    fds_response_code: str
+    # model_versions
+    model_versions: str
     
     # Common API response fields
     status: str

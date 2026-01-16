@@ -30,6 +30,7 @@ class ChartsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ChartsResponse(TypedDict):
     """
@@ -37,13 +38,10 @@ class ChartsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    operator: str
-    ip_version: str
-    ip_mask: str
-    gateway: str
-    type: str
-    origin: str
-    interface: str
+    dumped_ipv4: int
+    dumped_ipv6: int
+    interfaces: str
+    types: str
 
 
 @final
@@ -54,20 +52,14 @@ class ChartsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # operator
-    operator: str
-    # ip_version
-    ip_version: str
-    # ip_mask
-    ip_mask: str
-    # gateway
-    gateway: str
-    # type
-    type: str
-    # origin
-    origin: str
-    # interface
-    interface: str
+    # dumped_ipv4
+    dumped_ipv4: int
+    # dumped_ipv6
+    dumped_ipv6: int
+    # interfaces
+    interfaces: str
+    # types
+    types: str
     
     # Common API response fields
     status: str

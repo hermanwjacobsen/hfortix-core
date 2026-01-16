@@ -24,6 +24,7 @@ class ConnectionPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class ConnectionResponse(TypedDict):
     """
@@ -31,7 +32,8 @@ class ConnectionResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    server: str
+    status: str
+    type: str
 
 
 @final
@@ -42,8 +44,10 @@ class ConnectionObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # server
-    server: str
+    # status
+    status: str
+    # type
+    type: str
     
     # Common API response fields
     status: str

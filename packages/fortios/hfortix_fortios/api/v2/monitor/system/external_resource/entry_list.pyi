@@ -28,6 +28,7 @@ class EntryListPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class EntryListResponse(TypedDict):
     """
@@ -35,11 +36,23 @@ class EntryListResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    status_only: str
-    include_notes: str
-    counts_only: str
-    entry: str
+    status: str
+    error: str
+    error_code: int
+    http_status_code: int
+    conn_attempt_time: int
+    resource_file_status: str
+    last_content_update_time: int
+    last_conn_success_time: int
+    entries: str
+    invalid_count: int
+    valid_count: int
+    accepted_count: int
+    accepted_limit: int
+    overflow: str
+    matched_invalid: int
+    matched_valid: int
+    notes: str
 
 
 @final
@@ -50,16 +63,40 @@ class EntryListObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # status_only
-    status_only: str
-    # include_notes
-    include_notes: str
-    # counts_only
-    counts_only: str
-    # entry
-    entry: str
+    # status
+    status: str
+    # error
+    error: str
+    # error_code
+    error_code: int
+    # http_status_code
+    http_status_code: int
+    # conn_attempt_time
+    conn_attempt_time: int
+    # resource_file_status
+    resource_file_status: str
+    # last_content_update_time
+    last_content_update_time: int
+    # last_conn_success_time
+    last_conn_success_time: int
+    # entries
+    entries: str
+    # invalid_count
+    invalid_count: int
+    # valid_count
+    valid_count: int
+    # accepted_count
+    accepted_count: int
+    # accepted_limit
+    accepted_limit: int
+    # overflow
+    overflow: str
+    # matched_invalid
+    matched_invalid: int
+    # matched_valid
+    matched_valid: int
+    # notes
+    notes: str
     
     # Common API response fields
     status: str

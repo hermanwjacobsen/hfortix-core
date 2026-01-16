@@ -25,6 +25,7 @@ class GenericAddressPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class GenericAddressResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class GenericAddressResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    data: str
+    error: str
+    status: str
 
 
 @final
@@ -44,10 +45,10 @@ class GenericAddressObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # data
-    data: str
+    # error
+    error: str
+    # status
+    status: str
     
     # Common API response fields
     status: str

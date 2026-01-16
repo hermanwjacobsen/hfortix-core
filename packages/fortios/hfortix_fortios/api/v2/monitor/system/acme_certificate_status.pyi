@@ -25,6 +25,7 @@ class AcmeCertificateStatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class AcmeCertificateStatusResponse(TypedDict):
     """
@@ -32,8 +33,8 @@ class AcmeCertificateStatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
-    scope: str
+    is_ssl_server_cert: str
+    acme_status: str
 
 
 @final
@@ -44,10 +45,10 @@ class AcmeCertificateStatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # mkey
-    mkey: str
-    # scope
-    scope: str
+    # is_ssl_server_cert
+    is_ssl_server_cert: str
+    # acme_status
+    acme_status: str
     
     # Common API response fields
     status: str

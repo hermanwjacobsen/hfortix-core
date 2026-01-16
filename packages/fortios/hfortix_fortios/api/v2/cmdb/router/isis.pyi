@@ -455,6 +455,7 @@ class IsisRedistribute6Object:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class IsisResponse(TypedDict):
     """

@@ -131,6 +131,7 @@ class H2qpOsuProviderServicedescriptionObject:
 
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class H2qpOsuProviderResponse(TypedDict):
     """

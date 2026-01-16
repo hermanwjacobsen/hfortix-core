@@ -51,6 +51,7 @@ class SessionsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class SessionsResponse(TypedDict):
     """
@@ -58,34 +59,8 @@ class SessionsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ip_version: str
-    count: str
     summary: str
-    srcport: str
-    policyid: str
-    security_policyid: str
-    application: str
-    protocol: str
-    dstport: str
-    srcintf: str
-    dstintf: str
-    srcintfrole: str
-    dstintfrole: str
-    srcaddr: str
-    srcaddr6: str
-    srcuuid: str
-    dstaddr: str
-    dstaddr6: str
-    dstuuid: str
-    username: str
-    shaper: str
-    country: str
-    owner: str
-    natsourceaddress: str
-    natsourceport: str
-    since: str
-    seconds: str
-    fortiasic: str
+    details: str
 
 
 @final
@@ -96,62 +71,10 @@ class SessionsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # ip_version
-    ip_version: str
-    # count
-    count: str
     # summary
     summary: str
-    # srcport
-    srcport: str
-    # policyid
-    policyid: str
-    # security-policyid
-    security_policyid: str
-    # application
-    application: str
-    # protocol
-    protocol: str
-    # dstport
-    dstport: str
-    # srcintf
-    srcintf: str
-    # dstintf
-    dstintf: str
-    # srcintfrole
-    srcintfrole: str
-    # dstintfrole
-    dstintfrole: str
-    # srcaddr
-    srcaddr: str
-    # srcaddr6
-    srcaddr6: str
-    # srcuuid
-    srcuuid: str
-    # dstaddr
-    dstaddr: str
-    # dstaddr6
-    dstaddr6: str
-    # dstuuid
-    dstuuid: str
-    # username
-    username: str
-    # shaper
-    shaper: str
-    # country
-    country: str
-    # owner
-    owner: str
-    # natsourceaddress
-    natsourceaddress: str
-    # natsourceport
-    natsourceport: str
-    # since
-    since: str
-    # seconds
-    seconds: str
-    # fortiasic
-    fortiasic: str
+    # details
+    details: str
     
     # Common API response fields
     status: str

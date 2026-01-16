@@ -24,6 +24,7 @@ class FabricTimeInSyncPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class FabricTimeInSyncResponse(TypedDict):
     """
@@ -31,7 +32,7 @@ class FabricTimeInSyncResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    utc: str
+    synchronized: bool
 
 
 @final
@@ -42,8 +43,8 @@ class FabricTimeInSyncObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # utc
-    utc: str
+    # synchronized
+    synchronized: bool
     
     # Common API response fields
     status: str

@@ -24,6 +24,7 @@ class StatusPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class StatusResponse(TypedDict):
     """
@@ -31,7 +32,14 @@ class StatusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    skip_detect: str
+    mode: str
+    server: str
+    status: str
+    registration_status: str
+    mgmt_ip: str
+    mgmt_port: int
+    sn: str
+    pending_fortimanager: str
 
 
 @final
@@ -42,8 +50,22 @@ class StatusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # skip_detect
-    skip_detect: str
+    # mode
+    mode: str
+    # server
+    server: str
+    # status
+    status: str
+    # registration_status
+    registration_status: str
+    # mgmt_ip
+    mgmt_ip: str
+    # mgmt_port
+    mgmt_port: int
+    # sn
+    sn: str
+    # pending_fortimanager
+    pending_fortimanager: str
     
     # Common API response fields
     status: str

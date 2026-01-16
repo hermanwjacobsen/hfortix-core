@@ -25,6 +25,7 @@ class HaTableChecksumsPayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class HaTableChecksumsResponse(TypedDict):
     """
@@ -33,7 +34,7 @@ class HaTableChecksumsResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serial_no: str
-    vdom_name: str
+    tables: str
 
 
 @final
@@ -46,8 +47,8 @@ class HaTableChecksumsObject:
     
     # serial_no
     serial_no: str
-    # vdom_name
-    vdom_name: str
+    # tables
+    tables: str
     
     # Common API response fields
     status: str

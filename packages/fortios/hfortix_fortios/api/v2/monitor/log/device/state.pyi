@@ -24,6 +24,7 @@ class StatePayload(TypedDict, total=False):
 # Nested classes for table field children (object mode)
 
 
+
 # Response TypedDict for GET returns (all fields present in API response)
 class StateResponse(TypedDict):
     """
@@ -31,7 +32,12 @@ class StateResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    scope: str
+    memory: str
+    disk: str
+    fortianalyzer: str
+    fortianalyzer_cloud: str
+    forticloud: str
+    is_fortiview_supported: str
 
 
 @final
@@ -42,8 +48,18 @@ class StateObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # scope
-    scope: str
+    # memory
+    memory: str
+    # disk
+    disk: str
+    # fortianalyzer
+    fortianalyzer: str
+    # fortianalyzer_cloud
+    fortianalyzer_cloud: str
+    # forticloud
+    forticloud: str
+    # is_fortiview_supported
+    is_fortiview_supported: str
     
     # Common API response fields
     status: str
