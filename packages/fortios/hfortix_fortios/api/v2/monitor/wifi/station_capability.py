@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class StationCapability(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mac_address: str | None = None,
+        min_age: int | None = None,
+        max_age: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mac_address: str | None = None,
-        q_min_age: int | None = None,
-        q_max_age: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class StationCapability(CRUDEndpoint, MetadataMixin):
         Retrieve a list of stations and their capability to connect to detected access points.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mac_address: Station MAC address.
+            min_age: Minimum value for RSSI 2G age and 5G RSSI age, in seconds.
+            max_age: Maximum value for RSSI 2G age and 5G RSSI age, in seconds.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class StationCapability(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mac_address is not None:
-            params["mac_address"] = q_mac_address
-        if q_min_age is not None:
-            params["min_age"] = q_min_age
-        if q_max_age is not None:
-            params["max_age"] = q_max_age
+        if mac_address is not None:
+            params["mac_address"] = mac_address
+        if min_age is not None:
+            params["min_age"] = min_age
+        if max_age is not None:
+            params["max_age"] = max_age
         
-        if name:
-            endpoint = f"/wifi/station-capability/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/station-capability"
-            unwrap_single = False
+        endpoint = "/wifi/station-capability"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

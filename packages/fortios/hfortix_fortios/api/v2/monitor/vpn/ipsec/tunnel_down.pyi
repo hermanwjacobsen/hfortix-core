@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class TunnelDownPayload(TypedDict, total=False):
+    """
+    Type hints for vpn/ipsec/tunnel_down payload fields.
+    
+    Bring down a specific IPsec VPN tunnel.
+    
+    **Usage:**
+        payload: TunnelDownPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    p1name: str  # p1name
+    p2name: str  # p2name
+    p2serial: str  # p2serial
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class TunnelDownResponse(TypedDict):
+    """
+    Type hints for vpn/ipsec/tunnel_down API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    p1name: str
+    p2name: str
+    p2serial: str
+
+
+@final
+class TunnelDownObject:
+    """Typed FortiObject for vpn/ipsec/tunnel_down with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # p1name
+    p1name: str
+    # p2name
+    p2name: str
+    # p2serial
+    p2serial: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> TunnelDownPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class TunnelDown:
     """
@@ -30,7 +106,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +123,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +139,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +159,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +176,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +192,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +208,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +225,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +241,7 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +271,26 @@ class TunnelDown:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> TunnelDownObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +298,19 @@ class TunnelDown:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +318,20 @@ class TunnelDown:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> TunnelDownObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +339,19 @@ class TunnelDown:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +363,10 @@ class TunnelDown:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: TunnelDownPayload | None = ...,
+        p1name: str | None = ...,
+        p2name: str | None = ...,
+        p2serial: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +398,7 @@ class TunnelDown:
 
 __all__ = [
     "TunnelDown",
+    "TunnelDownPayload",
+    "TunnelDownResponse",
+    "TunnelDownObject",
 ]

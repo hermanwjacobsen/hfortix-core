@@ -54,6 +54,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "scope": "string",  # 
+    "with_remote": "boolean",  # 
+    "with_ca": "boolean",  # 
+    "with_crl": "boolean",  # 
+    "mkey": "string",  # 
+    "find_all_references": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +185,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/available-certificates",
     "help": "Get available certificates.",
-    "total_fields": 0,
+    "total_fields": 6,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

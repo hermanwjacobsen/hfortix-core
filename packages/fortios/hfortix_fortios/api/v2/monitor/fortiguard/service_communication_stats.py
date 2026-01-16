@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class ServiceCommunicationStats(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"] | None = None,
+        timeslot: Literal["1_hour", "24_hour", "1_week"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_service_type: str | None = None,
-        q_timeslot: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class ServiceCommunicationStats(CRUDEndpoint, MetadataMixin):
         Retrieve historical statistics for communication with FortiGuard services.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            service_type: To get stats for [forticare|fortiguard_download|fortiguard_query|forticloud_log|fortisandbox_cloud|fortiguard.com|sdns|fortitoken_registration|sms_service]. Defaults to all stats if not provided.
+            timeslot: History timeslot of stats [1_hour|24_hour|1_week]. Defaults to all timeslots if not provided.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class ServiceCommunicationStats(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_service_type is not None:
-            params["service_type"] = q_service_type
-        if q_timeslot is not None:
-            params["timeslot"] = q_timeslot
+        if service_type is not None:
+            params["service_type"] = service_type
+        if timeslot is not None:
+            params["timeslot"] = timeslot
         
-        if name:
-            endpoint = f"/fortiguard/service-communication-stats/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/fortiguard/service-communication-stats"
-            unwrap_single = False
+        endpoint = "/fortiguard/service-communication-stats"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

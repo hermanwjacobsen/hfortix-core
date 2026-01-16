@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Status(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        type: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_type: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Status(CRUDEndpoint, MetadataMixin):
         Retrieve connection status for SDN connectors.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Filter: SDN connector name.
+            type: Filter: SDN connector type. Ignored if mkey is specified.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Status(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_type is not None:
-            params["type"] = q_type
+        if mkey is not None:
+            params["mkey"] = mkey
+        if type is not None:
+            params["type"] = type
         
-        if name:
-            endpoint = f"/system/sdn-connector/status/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/sdn-connector/status"
-            unwrap_single = False
+        endpoint = "/system/sdn-connector/status"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

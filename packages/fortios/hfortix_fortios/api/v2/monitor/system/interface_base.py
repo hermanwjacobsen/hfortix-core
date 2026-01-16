@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class Interface(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        interface_name: str | None = None,
+        include_vlan: bool | None = None,
+        include_aggregate: bool | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_interface_name: str | None = None,
-        q_include_vlan: bool | None = None,
-        q_include_aggregate: bool | None = None,
-        q_scope: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class Interface(CRUDEndpoint, MetadataMixin):
         Retrieve statistics for all system interfaces.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            interface_name: Filter: interface name.
+            include_vlan: Enable to include VLANs in result list.
+            include_aggregate: Enable to include Aggregate interfaces in result list.
+            scope: Scope from which to retrieve the interface stats from [vdom|global].
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class Interface(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_interface_name is not None:
-            params["interface_name"] = q_interface_name
-        if q_include_vlan is not None:
-            params["include_vlan"] = q_include_vlan
-        if q_include_aggregate is not None:
-            params["include_aggregate"] = q_include_aggregate
-        if q_scope is not None:
-            params["scope"] = q_scope
+        if interface_name is not None:
+            params["interface_name"] = interface_name
+        if include_vlan is not None:
+            params["include_vlan"] = include_vlan
+        if include_aggregate is not None:
+            params["include_aggregate"] = include_aggregate
+        if scope is not None:
+            params["scope"] = scope
         
-        if name:
-            endpoint = f"/system/interface/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/interface"
-            unwrap_single = False
+        endpoint = "/system/interface"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

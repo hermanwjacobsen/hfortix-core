@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,15 @@ class Report(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        agent_ip: str | None = None,
+        application_name: str | None = None,
+        application_id: Any | None = None,
+        latency: Any | None = None,
+        jitter: Any | None = None,
+        packet_loss: Any | None = None,
+        ntt: Any | None = None,
+        srt: Any | None = None,
+        application_error: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +108,15 @@ class Report(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            agent_ip: agent_ip
+            application_name: application_name
+            application_id: application_id
+            latency: latency
+            jitter: jitter
+            packet_loss: packet_loss
+            ntt: ntt
+            srt: srt
+            application_error: application_error
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +151,15 @@ class Report(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            agent_ip=agent_ip,
+            application_name=application_name,
+            application_id=application_id,
+            latency=latency,
+            jitter=jitter,
+            packet_loss=packet_loss,
+            ntt=ntt,
+            srt=srt,
+            application_error=application_error,
             data=payload_dict,
         )
 

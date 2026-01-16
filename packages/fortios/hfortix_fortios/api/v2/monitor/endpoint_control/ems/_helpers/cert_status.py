@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "ems_id",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ems_id": "int",  # 
+    "scope": "string",  # 
+    "with_cert": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +183,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "endpoint-control/ems/cert-status",
     "help": "Retrieve authentication status of the EMS server certificate for a specific EMS.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 3,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

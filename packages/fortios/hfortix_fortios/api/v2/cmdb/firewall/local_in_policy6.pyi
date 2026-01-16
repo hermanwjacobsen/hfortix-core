@@ -158,8 +158,8 @@ class LocalInPolicy6IntfObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -190,8 +190,8 @@ class LocalInPolicy6SrcaddrObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -222,8 +222,8 @@ class LocalInPolicy6DstaddrObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -254,8 +254,8 @@ class LocalInPolicy6Internetservice6srcnameObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -286,8 +286,8 @@ class LocalInPolicy6Internetservice6srcgroupObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -318,8 +318,8 @@ class LocalInPolicy6Internetservice6srccustomObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -350,8 +350,8 @@ class LocalInPolicy6Internetservice6srccustomgroupObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -382,8 +382,8 @@ class LocalInPolicy6Internetservice6srcfortiguardObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -414,8 +414,8 @@ class LocalInPolicy6ServiceObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -525,8 +525,8 @@ class LocalInPolicy6Object:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:

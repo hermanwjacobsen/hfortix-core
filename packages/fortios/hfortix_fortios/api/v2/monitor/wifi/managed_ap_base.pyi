@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ManagedApPayload(TypedDict, total=False):
+    """
+    Type hints for wifi/managed_ap payload fields.
+    
+    Retrieve a list of managed FortiAPs.
+    
+    **Usage:**
+        payload: ManagedApPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    wtp_id: str  # wtp_id
+    incl_local: str  # incl_local
+    skip_eos: str  # skip_eos
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class ManagedApResponse(TypedDict):
+    """
+    Type hints for wifi/managed_ap API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    wtp_id: str
+    incl_local: str
+    skip_eos: str
+
+
+@final
+class ManagedApObject:
+    """Typed FortiObject for wifi/managed_ap with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # wtp_id
+    wtp_id: str
+    # incl_local
+    incl_local: str
+    # skip_eos
+    skip_eos: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> ManagedApPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class ManagedAp:
     """
@@ -16,54 +92,21 @@ class ManagedAp:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +126,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +143,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +159,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +175,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +192,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +208,7 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +238,26 @@ class ManagedAp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> ManagedApObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ManagedApPayload | None = ...,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ManagedApObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ManagedApPayload | None = ...,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +265,19 @@ class ManagedAp:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ManagedApPayload | None = ...,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ManagedApPayload | None = ...,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +289,10 @@ class ManagedAp:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ManagedApPayload | None = ...,
+        wtp_id: str | None = ...,
+        incl_local: str | None = ...,
+        skip_eos: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +324,7 @@ class ManagedAp:
 
 __all__ = [
     "ManagedAp",
+    "ManagedApPayload",
+    "ManagedApResponse",
+    "ManagedApObject",
 ]

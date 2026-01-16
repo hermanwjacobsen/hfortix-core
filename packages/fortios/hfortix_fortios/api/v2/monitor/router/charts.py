@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,17 +85,16 @@ class Charts(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        operator: Literal["*and", "or"] | None = None,
+        ip_version: int | None = None,
+        ip_mask: str | None = None,
+        gateway: str | None = None,
+        type: str | None = None,
+        origin: str | None = None,
+        interface: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_operator: str | None = None,
-        q_ip_version: int | None = None,
-        q_ip_mask: str | None = None,
-        q_gateway: str | None = None,
-        q_type: str | None = None,
-        q_origin: str | None = None,
-        q_interface: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -106,7 +106,13 @@ class Charts(CRUDEndpoint, MetadataMixin):
         Retrieve routing chart statistics, including a map of interfaces and route types.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            operator: Filter logic [*and|or].
+            ip_version: IP version (4|6). If not present, IPv4 and IPv6 will be returned.
+            ip_mask: Filter: IP/netmask.
+            gateway: Filter: gateway.
+            type: Filter: route type.
+            origin: Filter: router origin.
+            interface: Filter: interface name.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -173,27 +179,23 @@ class Charts(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_operator is not None:
-            params["operator"] = q_operator
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
-        if q_ip_mask is not None:
-            params["ip_mask"] = q_ip_mask
-        if q_gateway is not None:
-            params["gateway"] = q_gateway
-        if q_type is not None:
-            params["type"] = q_type
-        if q_origin is not None:
-            params["origin"] = q_origin
-        if q_interface is not None:
-            params["interface"] = q_interface
+        if operator is not None:
+            params["operator"] = operator
+        if ip_version is not None:
+            params["ip_version"] = ip_version
+        if ip_mask is not None:
+            params["ip_mask"] = ip_mask
+        if gateway is not None:
+            params["gateway"] = gateway
+        if type is not None:
+            params["type"] = type
+        if origin is not None:
+            params["origin"] = origin
+        if interface is not None:
+            params["interface"] = interface
         
-        if name:
-            endpoint = f"/router/charts/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/router/charts"
-            unwrap_single = False
+        endpoint = "/router/charts"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

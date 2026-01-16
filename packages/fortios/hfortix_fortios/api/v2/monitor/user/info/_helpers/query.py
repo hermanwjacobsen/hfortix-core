@@ -54,6 +54,15 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "timestamp_from": "int",  # 
+    "timestamp_to": "int",  # 
+    "filters": "array",  # 
+    "query_type": "string",  # 
+    "query_id": "int",  # 
+    "cache_query": "boolean",  # 
+    "key_only": "boolean",  # 
+    "filter_logic": "string",  # 
+    "total_only": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +188,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/info/query",
     "help": "Query user info.",
-    "total_fields": 0,
+    "total_fields": 9,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

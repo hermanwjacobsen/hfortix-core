@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "mkeys",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkeys": "array",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +181,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "log/local-report/delete",
     "help": "Delete a local report.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 1,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

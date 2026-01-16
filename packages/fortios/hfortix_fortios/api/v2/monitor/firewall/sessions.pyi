@@ -2,6 +2,182 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SessionsPayload(TypedDict, total=False):
+    """
+    Type hints for firewall/sessions payload fields.
+    
+    List all active firewall sessions (optionally filtered).
+    
+    **Usage:**
+        payload: SessionsPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    ip_version: str  # ip_version
+    count: str  # count
+    summary: str  # summary
+    srcport: str  # srcport
+    policyid: str  # policyid
+    security_policyid: str  # security-policyid
+    application: str  # application
+    protocol: str  # protocol
+    dstport: str  # dstport
+    srcintf: str  # srcintf
+    dstintf: str  # dstintf
+    srcintfrole: str  # srcintfrole
+    dstintfrole: str  # dstintfrole
+    srcaddr: str  # srcaddr
+    srcaddr6: str  # srcaddr6
+    srcuuid: str  # srcuuid
+    dstaddr: str  # dstaddr
+    dstaddr6: str  # dstaddr6
+    dstuuid: str  # dstuuid
+    username: str  # username
+    shaper: str  # shaper
+    country: str  # country
+    owner: str  # owner
+    natsourceaddress: str  # natsourceaddress
+    natsourceport: str  # natsourceport
+    since: str  # since
+    seconds: str  # seconds
+    fortiasic: str  # fortiasic
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class SessionsResponse(TypedDict):
+    """
+    Type hints for firewall/sessions API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    ip_version: str
+    count: str
+    summary: str
+    srcport: str
+    policyid: str
+    security_policyid: str
+    application: str
+    protocol: str
+    dstport: str
+    srcintf: str
+    dstintf: str
+    srcintfrole: str
+    dstintfrole: str
+    srcaddr: str
+    srcaddr6: str
+    srcuuid: str
+    dstaddr: str
+    dstaddr6: str
+    dstuuid: str
+    username: str
+    shaper: str
+    country: str
+    owner: str
+    natsourceaddress: str
+    natsourceport: str
+    since: str
+    seconds: str
+    fortiasic: str
+
+
+@final
+class SessionsObject:
+    """Typed FortiObject for firewall/sessions with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # ip_version
+    ip_version: str
+    # count
+    count: str
+    # summary
+    summary: str
+    # srcport
+    srcport: str
+    # policyid
+    policyid: str
+    # security-policyid
+    security_policyid: str
+    # application
+    application: str
+    # protocol
+    protocol: str
+    # dstport
+    dstport: str
+    # srcintf
+    srcintf: str
+    # dstintf
+    dstintf: str
+    # srcintfrole
+    srcintfrole: str
+    # dstintfrole
+    dstintfrole: str
+    # srcaddr
+    srcaddr: str
+    # srcaddr6
+    srcaddr6: str
+    # srcuuid
+    srcuuid: str
+    # dstaddr
+    dstaddr: str
+    # dstaddr6
+    dstaddr6: str
+    # dstuuid
+    dstuuid: str
+    # username
+    username: str
+    # shaper
+    shaper: str
+    # country
+    country: str
+    # owner
+    owner: str
+    # natsourceaddress
+    natsourceaddress: str
+    # natsourceport
+    natsourceport: str
+    # since
+    since: str
+    # seconds
+    seconds: str
+    # fortiasic
+    fortiasic: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> SessionsPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Sessions:
     """
@@ -16,54 +192,47 @@ class Sessions:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        count: str,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: Literal["all", "igmp", "tcp", "udp", "icmp", "etc"] | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
+        nturbo: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +252,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +269,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +285,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +301,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +318,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +334,7 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +364,76 @@ class Sessions:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> SessionsObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SessionsPayload | None = ...,
+        ip_version: str | None = ...,
+        count: str | None = ...,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: str | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SessionsObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SessionsPayload | None = ...,
+        ip_version: str | None = ...,
+        count: str | None = ...,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: str | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +441,69 @@ class Sessions:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SessionsPayload | None = ...,
+        ip_version: str | None = ...,
+        count: str | None = ...,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: str | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SessionsPayload | None = ...,
+        ip_version: str | None = ...,
+        count: str | None = ...,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: str | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +515,35 @@ class Sessions:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SessionsPayload | None = ...,
+        ip_version: str | None = ...,
+        count: str | None = ...,
+        summary: str | None = ...,
+        srcport: str | None = ...,
+        policyid: str | None = ...,
+        security_policyid: str | None = ...,
+        application: str | None = ...,
+        protocol: str | None = ...,
+        dstport: str | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcintfrole: str | None = ...,
+        dstintfrole: str | None = ...,
+        srcaddr: str | None = ...,
+        srcaddr6: str | None = ...,
+        srcuuid: str | None = ...,
+        dstaddr: str | None = ...,
+        dstaddr6: str | None = ...,
+        dstuuid: str | None = ...,
+        username: str | None = ...,
+        shaper: str | None = ...,
+        country: str | None = ...,
+        owner: str | None = ...,
+        natsourceaddress: str | None = ...,
+        natsourceport: str | None = ...,
+        since: str | None = ...,
+        seconds: str | None = ...,
+        fortiasic: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +575,7 @@ class Sessions:
 
 __all__ = [
     "Sessions",
+    "SessionsPayload",
+    "SessionsResponse",
+    "SessionsObject",
 ]

@@ -2,6 +2,78 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class InterfacePayload(TypedDict, total=False):
+    """
+    Type hints for system/traffic_history/interface payload fields.
+    
+    Retrieve history traffic stats for an interface.
+    
+    **Usage:**
+        payload: InterfacePayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    interface: str  # interface
+    time_period: str  # time_period
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class InterfaceResponse(TypedDict):
+    """
+    Type hints for system/traffic_history/interface API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    interface: str
+    time_period: str
+
+
+@final
+class InterfaceObject:
+    """Typed FortiObject for system/traffic_history/interface with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # interface
+    interface: str
+    # time_period
+    time_period: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> InterfacePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Interface:
     """
@@ -16,54 +88,20 @@ class Interface:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        interface: str,
+        time_period: Literal["hour", "day", "week"],
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +121,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +138,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +154,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +170,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +187,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +203,7 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +233,24 @@ class Interface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> InterfaceObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InterfacePayload | None = ...,
+        interface: str | None = ...,
+        time_period: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InterfaceObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InterfacePayload | None = ...,
+        interface: str | None = ...,
+        time_period: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +258,17 @@ class Interface:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InterfacePayload | None = ...,
+        interface: str | None = ...,
+        time_period: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InterfacePayload | None = ...,
+        interface: str | None = ...,
+        time_period: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +280,9 @@ class Interface:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InterfacePayload | None = ...,
+        interface: str | None = ...,
+        time_period: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +314,7 @@ class Interface:
 
 __all__ = [
     "Interface",
+    "InterfacePayload",
+    "InterfaceResponse",
+    "InterfaceObject",
 ]

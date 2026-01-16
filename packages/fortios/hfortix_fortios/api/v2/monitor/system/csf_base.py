@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Csf(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        all_vdoms: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_scope: str | None = None,
-        q_all_vdoms: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Csf(CRUDEndpoint, MetadataMixin):
         Retrieve a full tree of downstream FortiGates registered to the Security Fabric.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            scope: Scope from which to retrieve the Security Fabric tree [vdom*|global].
+            all_vdoms: Include information from all VDOMs that the admin can access. Only applies for scope=vdom
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Csf(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_all_vdoms is not None:
-            params["all_vdoms"] = q_all_vdoms
+        if scope is not None:
+            params["scope"] = scope
+        if all_vdoms is not None:
+            params["all_vdoms"] = all_vdoms
         
-        if name:
-            endpoint = f"/system/csf/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/csf"
-            unwrap_single = False
+        endpoint = "/system/csf"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

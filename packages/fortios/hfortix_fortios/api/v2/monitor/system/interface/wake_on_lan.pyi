@@ -2,6 +2,94 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class WakeOnLanPayload(TypedDict, total=False):
+    """
+    Type hints for system/interface/wake_on_lan payload fields.
+    
+    Send wake on lan packet to device.
+    
+    **Usage:**
+        payload: WakeOnLanPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    mkey: str  # mkey
+    mac: str  # mac
+    protocol_option: str  # protocol_option
+    port: str  # port
+    address: str  # address
+    secureon_password: str  # secureon_password
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class WakeOnLanResponse(TypedDict):
+    """
+    Type hints for system/interface/wake_on_lan API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    mkey: str
+    mac: str
+    protocol_option: str
+    port: str
+    address: str
+    secureon_password: str
+
+
+@final
+class WakeOnLanObject:
+    """Typed FortiObject for system/interface/wake_on_lan with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # mkey
+    mkey: str
+    # mac
+    mac: str
+    # protocol_option
+    protocol_option: str
+    # port
+    port: str
+    # address
+    address: str
+    # secureon_password
+    secureon_password: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> WakeOnLanPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class WakeOnLan:
     """
@@ -30,7 +118,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +135,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +151,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +171,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +188,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +204,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +220,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +237,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +253,7 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +283,32 @@ class WakeOnLan:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> WakeOnLanObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +316,25 @@ class WakeOnLan:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +342,26 @@ class WakeOnLan:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> WakeOnLanObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +369,25 @@ class WakeOnLan:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +399,13 @@ class WakeOnLan:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: WakeOnLanPayload | None = ...,
+        mkey: str | None = ...,
+        mac: str | None = ...,
+        protocol_option: str | None = ...,
+        port: str | None = ...,
+        address: str | None = ...,
+        secureon_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +437,7 @@ class WakeOnLan:
 
 __all__ = [
     "WakeOnLan",
+    "WakeOnLanPayload",
+    "WakeOnLanResponse",
+    "WakeOnLanObject",
 ]

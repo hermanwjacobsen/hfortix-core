@@ -391,8 +391,8 @@ class InterfaceClientoptionsObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -423,8 +423,8 @@ class InterfaceFailalertinterfacesObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -455,8 +455,8 @@ class InterfaceMemberObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -487,8 +487,8 @@ class InterfaceSecuritygroupsObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -545,8 +545,8 @@ class InterfaceVrrpObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -593,8 +593,8 @@ class InterfaceSecondaryipObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -627,8 +627,8 @@ class InterfaceDhcpsnoopingserverlistObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -663,8 +663,8 @@ class InterfaceTaggingObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -1374,8 +1374,8 @@ class InterfaceObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:

@@ -60,8 +60,8 @@ class RecommendationsObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -88,54 +88,20 @@ class Recommendations:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> RecommendationsObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        checks: str,
+        scope: Literal["global", "vdom"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> RecommendationsObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> RecommendationsObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)

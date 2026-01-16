@@ -54,6 +54,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "service_type": "string",  # 
+    "timeslot": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +181,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "fortiguard/service-communication-stats",
     "help": "Retrieve historical statistics for communication with FortiGuard services.",
-    "total_fields": 0,
+    "total_fields": 2,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -80,8 +80,8 @@ class Addrgrp6MemberObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -112,8 +112,8 @@ class Addrgrp6ExcludememberObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -148,8 +148,8 @@ class Addrgrp6TaggingObject:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:
@@ -220,8 +220,8 @@ class Addrgrp6Object:
         """Convert to dictionary."""
         ...
     @property
-    def json(self) -> dict[str, Any]:
-        """Convert to dictionary (alias for .dict)."""
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
         ...
     @property
     def raw(self) -> dict[str, Any]:

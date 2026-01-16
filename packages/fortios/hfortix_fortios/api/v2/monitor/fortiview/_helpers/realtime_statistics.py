@@ -54,6 +54,34 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "srcaddr": "object",  # 
+    "dstaddr": "object",  # 
+    "srcaddr6": "object",  # 
+    "dstaddr6": "object",  # 
+    "srcport": "object",  # 
+    "dstport": "object",  # 
+    "srcintf": "object",  # 
+    "srcintfrole": "array",  # 
+    "dstintf": "object",  # 
+    "dstintfrole": "array",  # 
+    "policyid": "object",  # 
+    "security-policyid": "object",  # 
+    "protocol": "object",  # 
+    "web-category": "object",  # 
+    "web-domain": "object",  # 
+    "application": "object",  # 
+    "country": "object",  # 
+    "seconds": "object",  # 
+    "since": "object",  # 
+    "owner": "object",  # 
+    "username": "object",  # 
+    "shaper": "object",  # 
+    "srcuuid": "object",  # 
+    "dstuuid": "object",  # 
+    "sessionid": "int",  # 
+    "report_by": "string",  # 
+    "sort_by": "string",  # 
+    "ip_version": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +207,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "fortiview/realtime-statistics",
     "help": "Retrieve realtime drill-down and summary data for FortiView.",
-    "total_fields": 0,
+    "total_fields": 28,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,17 @@ class Import(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        type: str | None = None,
+        certname: str | None = None,
+        password: str | None = None,
+        key_file_content: str | None = None,
+        scope: str | None = None,
+        acme_domain: str | None = None,
+        acme_email: str | None = None,
+        acme_ca_url: str | None = None,
+        acme_rsa_key_size: Any | None = None,
+        acme_renew_window: Any | None = None,
+        file_content: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +110,17 @@ class Import(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            type: type
+            certname: certname
+            password: password
+            key_file_content: key_file_content
+            scope: scope
+            acme_domain: acme_domain
+            acme_email: acme_email
+            acme_ca_url: acme_ca_url
+            acme_rsa_key_size: acme_rsa_key_size
+            acme_renew_window: acme_renew_window
+            file_content: file_content
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +155,17 @@ class Import(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            type=type,
+            certname=certname,
+            password=password,
+            key_file_content=key_file_content,
+            scope=scope,
+            acme_domain=acme_domain,
+            acme_email=acme_email,
+            acme_ca_url=acme_ca_url,
+            acme_rsa_key_size=acme_rsa_key_size,
+            acme_renew_window=acme_renew_window,
+            file_content=file_content,
             data=payload_dict,
         )
 

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,14 @@ class EntryList(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        status_only: bool | None = None,
+        include_notes: bool | None = None,
+        counts_only: bool | None = None,
+        entry: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_status_only: bool | None = None,
-        q_include_notes: bool | None = None,
-        q_counts_only: bool | None = None,
-        q_entry: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -104,7 +104,11 @@ class EntryList(CRUDEndpoint, MetadataMixin):
         Retrieve resource file status with a list of valid/invalid entries for the specific external resource. Empty lines and comment lines are not returned.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: The external resource name to query.
+            status_only: Set to true to retrieve resource file status only. (Skip valid/invalid entries.)
+            include_notes: Set to true to retrieve notes on the resource file.
+            counts_only: Set to true to retrive valid/invalid counts only. (Skip entries.)
+            entry: Entry of external resource.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -171,23 +175,19 @@ class EntryList(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_status_only is not None:
-            params["status_only"] = q_status_only
-        if q_include_notes is not None:
-            params["include_notes"] = q_include_notes
-        if q_counts_only is not None:
-            params["counts_only"] = q_counts_only
-        if q_entry is not None:
-            params["entry"] = q_entry
+        if mkey is not None:
+            params["mkey"] = mkey
+        if status_only is not None:
+            params["status_only"] = status_only
+        if include_notes is not None:
+            params["include_notes"] = include_notes
+        if counts_only is not None:
+            params["counts_only"] = counts_only
+        if entry is not None:
+            params["entry"] = entry
         
-        if name:
-            endpoint = f"/system/external-resource/entry-list/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/external-resource/entry-list"
-            unwrap_single = False
+        endpoint = "/system/external-resource/entry-list"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

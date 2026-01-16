@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class TxRx(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        port: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_port: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class TxRx(CRUDEndpoint, MetadataMixin):
         Retrieve the transceiver Tx and Rx power for a specific port.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Filter: FortiSwitch ID.
+            port: Name of the port.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class TxRx(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_port is not None:
-            params["port"] = q_port
+        if mkey is not None:
+            params["mkey"] = mkey
+        if port is not None:
+            params["port"] = port
         
-        if name:
-            endpoint = f"/switch-controller/managed-switch/tx-rx/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/switch-controller/managed-switch/tx-rx"
-            unwrap_single = False
+        endpoint = "/switch-controller/managed-switch/tx-rx"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

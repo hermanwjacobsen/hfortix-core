@@ -54,6 +54,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "policy": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +180,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/acl6/clear_counters",
     "help": "Reset counters for one or more IPv6 ACLs by policy ID.",
-    "total_fields": 0,
+    "total_fields": 1,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

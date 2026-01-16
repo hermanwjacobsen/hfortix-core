@@ -54,6 +54,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "token": "string",  # 
+    "proxy_url": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +181,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/vmlicense/download",
     "help": "Download Flex-VM license and reboot immediately if successful.",
-    "total_fields": 0,
+    "total_fields": 2,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

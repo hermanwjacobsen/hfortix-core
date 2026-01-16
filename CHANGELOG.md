@@ -5,6 +5,114 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.85] - 2026-01-16
+
+### Fixed - **URL Encoding for Special Characters in mkey Values**
+
+- ✅ **Proper URL encoding**: Object names containing `/` (like `CGNAT_100.64.0.0/10`) are now properly URL-encoded
+- ✅ **New helper function**: Added `quote_path_param()` to `_helpers` module for consistent path parameter encoding
+- ✅ **All methods fixed**: GET, PUT, DELETE, and `exists()` all now use proper encoding
+
+### Example
+
+```python
+# Before (failed with 404)
+addr = fgt.api.cmdb.firewall.address.get(name="CGNAT_100.64.0.0/10")
+# Request: GET /api/v2/cmdb/firewall/address/CGNAT_100.64.0.0/10  (interpreted as path)
+
+# After (works correctly)
+addr = fgt.api.cmdb.firewall.address.get(name="CGNAT_100.64.0.0/10")
+# Request: GET /api/v2/cmdb/firewall/address/CGNAT_100.64.0.0%2F10  (properly encoded)
+```
+
+---
+
+## [0.5.84] - 2026-01-16
+
+### Fixed - **FMG Proxy HTML Error Handling**
+
+- ✅ **Graceful HTML error handling**: When a FortiGate returns an HTML error page via FMG proxy, it's now converted to a proper error response
+- ✅ **No more raw strings**: Previously, HTML error pages were returned as raw strings causing `AttributeError: 'str' object has no attribute 'raw'`
+- ✅ **Proper error info**: Error responses include `http_status: 404`, clear error message, and the raw HTML for debugging
+
+### Example
+
+```python
+# Before (crashed with AttributeError)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")
+print(psirt.raw)  # AttributeError: 'str' object has no attribute 'raw'
+
+# After (proper error handling)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")
+print(psirt.http_status_code)  # 404
+print(psirt.raw["error"])      # "Endpoint not found"
+print(psirt.raw["message"])    # "The FortiGate returned an HTML error page..."
+```
+
+---
+
+## [0.5.83] - 2026-01-16
+
+### Fixed - **Consistent `.json` Property Return Type**
+
+- ✅ **Fixed inconsistency**: Both `FortiObject.json` and `FortiObjectList.json` now return a formatted JSON string
+- ✅ **Unified API**: No more confusion - `.json` always returns a string, `.dict` returns a dict
+
+### Migration
+
+```python
+# Before (inconsistent behavior)
+obj.json    # FortiObject returned dict
+list.json   # FortiObjectList returned str
+
+# After (consistent behavior)
+obj.json    # Returns formatted JSON string
+list.json   # Returns formatted JSON string
+obj.dict    # Returns dict (use this for dict access)
+obj.raw     # Returns raw API response dict
+```
+
+---
+
+## [0.5.82] - 2026-01-16
+
+### Added - **Literal Type Autocomplete for Query Parameters**
+
+- ✅ **Literal types for allowed values**: Query parameters with known values now use `Literal` types for IDE autocomplete
+- ✅ **Extracted from descriptions**: Values are automatically parsed from descriptions like `['psirt', 'insight']` or `[global | vdom*]`
+
+### Examples
+
+```python
+# Before (no autocomplete for values)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")  # No hints
+
+# After (full autocomplete with Literal types)
+psirt = fgt.api.service.security_rating.report.get(type="psirt")  # ✓ Suggests: "psirt", "insight"
+psirt = fgt.api.service.security_rating.report.get(scope="global")  # ✓ Suggests: "global", "vdom"
+```
+
+---
+
+## [0.5.81] - 2026-01-16
+
+### Fixed - **Service Endpoint Type Hints**
+
+- ✅ **Reverted `name` to `mkey`**: Service endpoints now use `mkey` parameter to match stub files
+- ✅ **Type hint alignment**: Generated `.py` files now match `.pyi` stub files for proper Pylance support
+
+### Changed - **Service Endpoint API**
+
+Service POST endpoints now use `mkey` parameter (matching stub files):
+
+```python
+# Service endpoints with mkey parameter
+fgt.api.service.sniffer.start.post(mkey="capture1", vdom="test")
+fgt.api.service.sniffer.stop.post(mkey="capture1", vdom="test")
+```
+
+---
+
 ## [0.5.79] - 2026-01-16
 
 ### Added - **Full Log, Monitor, and Service API Support**

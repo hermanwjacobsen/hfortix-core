@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class UploadPayload(TypedDict, total=False):
+    """
+    Type hints for wifi/region_image/upload payload fields.
+    
+    Saves a floorplan/region image to an existing region.
+    
+    **Usage:**
+        payload: UploadPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    region_name: str  # region_name
+    image_type: str  # image_type
+    file_content: str  # file_content
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class UploadResponse(TypedDict):
+    """
+    Type hints for wifi/region_image/upload API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    region_name: str
+    image_type: str
+    file_content: str
+
+
+@final
+class UploadObject:
+    """Typed FortiObject for wifi/region_image/upload with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # region_name
+    region_name: str
+    # image_type
+    image_type: str
+    # file_content
+    file_content: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> UploadPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Upload:
     """
@@ -30,7 +106,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +123,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +139,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +159,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +176,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +192,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +208,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +225,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +241,7 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +271,26 @@ class Upload:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> UploadObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +298,19 @@ class Upload:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +318,20 @@ class Upload:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UploadObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +339,19 @@ class Upload:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +363,10 @@ class Upload:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UploadPayload | None = ...,
+        region_name: str | None = ...,
+        image_type: str | None = ...,
+        file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +398,7 @@ class Upload:
 
 __all__ = [
     "Upload",
+    "UploadPayload",
+    "UploadResponse",
+    "UploadObject",
 ]

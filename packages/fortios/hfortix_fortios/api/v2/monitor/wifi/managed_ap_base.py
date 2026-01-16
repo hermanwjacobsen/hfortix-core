@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class ManagedAp(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        wtp_id: str | None = None,
+        incl_local: bool | None = None,
+        skip_eos: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_wtp_id: str | None = None,
-        q_incl_local: bool | None = None,
-        q_skip_eos: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class ManagedAp(CRUDEndpoint, MetadataMixin):
         Retrieve a list of managed FortiAPs.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            wtp_id: Filter: single managed FortiAP by ID.
+            incl_local: Enable to include the local FortiWiFi device in the results.
+            skip_eos: Skip adding Fortiguard end-of-support data.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class ManagedAp(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_wtp_id is not None:
-            params["wtp_id"] = q_wtp_id
-        if q_incl_local is not None:
-            params["incl_local"] = q_incl_local
-        if q_skip_eos is not None:
-            params["skip_eos"] = q_skip_eos
+        if wtp_id is not None:
+            params["wtp_id"] = wtp_id
+        if incl_local is not None:
+            params["incl_local"] = incl_local
+        if skip_eos is not None:
+            params["skip_eos"] = skip_eos
         
-        if name:
-            endpoint = f"/wifi/managed_ap/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/managed_ap"
-            unwrap_single = False
+        endpoint = "/wifi/managed_ap"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

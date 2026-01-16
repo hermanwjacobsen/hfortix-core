@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,16 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        source: str | None = None,
+        url: str | None = None,
+        passphrase: str | None = None,
+        force: Any | None = None,
+        filename: str | None = None,
+        format_partition: Any | None = None,
+        ignore_invalid_signature: Any | None = None,
+        file_id: str | None = None,
+        ignore_admin_lockout_upon_downgrade: Any | None = None,
+        file_content: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +109,16 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            source: source
+            url: url
+            passphrase: passphrase
+            force: force
+            filename: filename
+            format_partition: format_partition
+            ignore_invalid_signature: ignore_invalid_signature
+            file_id: file_id
+            ignore_admin_lockout_upon_downgrade: ignore_admin_lockout_upon_downgrade
+            file_content: file_content
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +153,16 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            source=source,
+            url=url,
+            passphrase=passphrase,
+            force=force,
+            filename=filename,
+            format_partition=format_partition,
+            ignore_invalid_signature=ignore_invalid_signature,
+            file_id=file_id,
+            ignore_admin_lockout_upon_downgrade=ignore_admin_lockout_upon_downgrade,
+            file_content=file_content,
             data=payload_dict,
         )
 

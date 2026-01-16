@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class ApChannels(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        country: str | None = None,
+        platform_type: str | None = None,
+        indoor_outdoor: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_country: str | None = None,
-        q_platform_type: str | None = None,
-        q_indoor_outdoor: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class ApChannels(CRUDEndpoint, MetadataMixin):
         Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            country: Two-letter code for the country the AP is operating in.
+            platform_type: Short name for platform type (e.g. '220A')
+            indoor_outdoor: FortiAP indoor/outdoor configuration value (0 for indoor, 1 for outdoor, 2 for default).
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class ApChannels(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_country is not None:
-            params["country"] = q_country
-        if q_platform_type is not None:
-            params["platform_type"] = q_platform_type
-        if q_indoor_outdoor is not None:
-            params["indoor_outdoor"] = q_indoor_outdoor
+        if country is not None:
+            params["country"] = country
+        if platform_type is not None:
+            params["platform_type"] = platform_type
+        if indoor_outdoor is not None:
+            params["indoor_outdoor"] = indoor_outdoor
         
-        if name:
-            endpoint = f"/wifi/ap_channels/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/ap_channels"
-            unwrap_single = False
+        endpoint = "/wifi/ap_channels"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

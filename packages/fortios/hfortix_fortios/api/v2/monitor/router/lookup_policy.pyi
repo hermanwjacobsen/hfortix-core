@@ -2,6 +2,98 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class LookupPolicyPayload(TypedDict, total=False):
+    """
+    Type hints for router/lookup_policy payload fields.
+    
+    Performs a route lookup by querying the policy routing table.
+    
+    **Usage:**
+        payload: LookupPolicyPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    ipv6: str  # ipv6
+    destination: str  # destination
+    source: str  # source
+    destination_port: str  # destination_port
+    source_port: str  # source_port
+    interface_name: str  # interface_name
+    protocol_number: str  # protocol_number
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class LookupPolicyResponse(TypedDict):
+    """
+    Type hints for router/lookup_policy API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    ipv6: str
+    destination: str
+    source: str
+    destination_port: str
+    source_port: str
+    interface_name: str
+    protocol_number: str
+
+
+@final
+class LookupPolicyObject:
+    """Typed FortiObject for router/lookup_policy with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # ipv6
+    ipv6: str
+    # destination
+    destination: str
+    # source
+    source: str
+    # destination_port
+    destination_port: str
+    # source_port
+    source_port: str
+    # interface_name
+    interface_name: str
+    # protocol_number
+    protocol_number: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> LookupPolicyPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class LookupPolicy:
     """
@@ -16,54 +108,25 @@ class LookupPolicy:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        ipv6: str | None = ...,
+        destination: str,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +146,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +163,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +179,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +195,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +212,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +228,7 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +258,34 @@ class LookupPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> LookupPolicyObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LookupPolicyPayload | None = ...,
+        ipv6: str | None = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> LookupPolicyObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LookupPolicyPayload | None = ...,
+        ipv6: str | None = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +293,27 @@ class LookupPolicy:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LookupPolicyPayload | None = ...,
+        ipv6: str | None = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LookupPolicyPayload | None = ...,
+        ipv6: str | None = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +325,14 @@ class LookupPolicy:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LookupPolicyPayload | None = ...,
+        ipv6: str | None = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
+        destination_port: str | None = ...,
+        source_port: str | None = ...,
+        interface_name: str | None = ...,
+        protocol_number: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +364,7 @@ class LookupPolicy:
 
 __all__ = [
     "LookupPolicy",
+    "LookupPolicyPayload",
+    "LookupPolicyResponse",
+    "LookupPolicyObject",
 ]

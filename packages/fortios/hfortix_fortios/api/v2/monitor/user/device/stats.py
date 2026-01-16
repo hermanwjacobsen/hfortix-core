@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,16 +85,15 @@ class Stats(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        stat_query_type: Literal["device", "fortiswitch_client", "forticlient"] | None = None,
+        stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"] | None = None,
+        timestamp_from: int | None = None,
+        timestamp_to: int | None = None,
+        filters: Literal["exact", "contains"] | None = None,
+        filter_logic: Literal["and", "or"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_stat_query_type: str | None = None,
-        q_stat_key: str | None = None,
-        q_timestamp_from: int | None = None,
-        q_timestamp_to: int | None = None,
-        q_filters: list[str] | None = None,
-        q_filter_logic: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -105,7 +105,12 @@ class Stats(CRUDEndpoint, MetadataMixin):
         Retrieve user devices stats from device store by given stat item.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            stat_query_type: Stat query type [device|fortiswitch_client|forticlient]. Default is device.
+            stat_key: key of the stats count on [os_name|hardware_type|detected_interface|is_online|max_vuln_level|fortiswitch_id|fortiswitch_port_name]. fortiswitch_id and fortiswitch_port_name only for fortiswitch_client stats query type
+            timestamp_from: To get entries since the timestamp for stats query.
+            timestamp_to: To get entries before the timestamp for stats query.
+            filters: A list of filters. Type:{"type": string, "value": string, "op": string}. Only is_online type is supported. Op: filter operator [exact|contains]. Default is exact.
+            filter_logic: The logic between filters [and|or]). Default is and.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -172,25 +177,21 @@ class Stats(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_stat_query_type is not None:
-            params["stat-query-type"] = q_stat_query_type
-        if q_stat_key is not None:
-            params["stat-key"] = q_stat_key
-        if q_timestamp_from is not None:
-            params["timestamp_from"] = q_timestamp_from
-        if q_timestamp_to is not None:
-            params["timestamp_to"] = q_timestamp_to
-        if q_filters is not None:
-            params["filters"] = q_filters
-        if q_filter_logic is not None:
-            params["filter_logic"] = q_filter_logic
+        if stat_query_type is not None:
+            params["stat-query-type"] = stat_query_type
+        if stat_key is not None:
+            params["stat-key"] = stat_key
+        if timestamp_from is not None:
+            params["timestamp_from"] = timestamp_from
+        if timestamp_to is not None:
+            params["timestamp_to"] = timestamp_to
+        if filters is not None:
+            params["filters"] = filters
+        if filter_logic is not None:
+            params["filter_logic"] = filter_logic
         
-        if name:
-            endpoint = f"/user/device/stats/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/device/stats"
-            unwrap_single = False
+        endpoint = "/user/device/stats"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

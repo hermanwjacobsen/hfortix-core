@@ -2,6 +2,102 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class CloseMultiplePayload(TypedDict, total=False):
+    """
+    Type hints for firewall/session/close_multiple payload fields.
+    
+    Close multiple IPv4 firewall sessions which match the provided criteria.
+    
+    **Usage:**
+        payload: CloseMultiplePayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    proto: str  # proto
+    saddr: str  # saddr
+    daddr: str  # daddr
+    sport: str  # sport
+    dport: str  # dport
+    naddr: str  # naddr
+    nport: str  # nport
+    policy: str  # policy
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class CloseMultipleResponse(TypedDict):
+    """
+    Type hints for firewall/session/close_multiple API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    proto: str
+    saddr: str
+    daddr: str
+    sport: str
+    dport: str
+    naddr: str
+    nport: str
+    policy: str
+
+
+@final
+class CloseMultipleObject:
+    """Typed FortiObject for firewall/session/close_multiple with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # proto
+    proto: str
+    # saddr
+    saddr: str
+    # daddr
+    daddr: str
+    # sport
+    sport: str
+    # dport
+    dport: str
+    # naddr
+    naddr: str
+    # nport
+    nport: str
+    # policy
+    policy: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> CloseMultiplePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class CloseMultiple:
     """
@@ -30,7 +126,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +143,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +159,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +179,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +196,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +212,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +228,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +245,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +261,7 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +291,36 @@ class CloseMultiple:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> CloseMultipleObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +328,29 @@ class CloseMultiple:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +358,30 @@ class CloseMultiple:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CloseMultipleObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +389,29 @@ class CloseMultiple:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +423,15 @@ class CloseMultiple:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CloseMultiplePayload | None = ...,
+        proto: str | None = ...,
+        saddr: str | None = ...,
+        daddr: str | None = ...,
+        sport: str | None = ...,
+        dport: str | None = ...,
+        naddr: str | None = ...,
+        nport: str | None = ...,
+        policy: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +463,7 @@ class CloseMultiple:
 
 __all__ = [
     "CloseMultiple",
+    "CloseMultiplePayload",
+    "CloseMultipleResponse",
+    "CloseMultipleObject",
 ]

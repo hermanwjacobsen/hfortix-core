@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -168,7 +169,7 @@ class DetectedDevice(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = f"/switch-controller/detected-device/{name}"
+            endpoint = f"/switch-controller/detected-device/{quote_path_param(name)}"
             unwrap_single = True
         else:
             endpoint = "/switch-controller/detected-device"

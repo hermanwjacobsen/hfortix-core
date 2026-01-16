@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,16 +85,15 @@ class InternetServiceDetails(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        id: int | None = None,
+        country_id: int | None = None,
+        region_id: int | None = None,
+        city_id: int | None = None,
+        summary_only: bool | None = None,
+        ipv6_only: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_id: int | None = None,
-        q_country_id: int | None = None,
-        q_region_id: int | None = None,
-        q_city_id: int | None = None,
-        q_summary_only: bool | None = None,
-        q_ipv6_only: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -105,7 +105,12 @@ class InternetServiceDetails(CRUDEndpoint, MetadataMixin):
         List all details for a given Internet Service ID.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            id: ID of the Internet Service to get details for.
+            country_id: Filter: Country ID.
+            region_id: Filter: Region ID.
+            city_id: Filter: City ID.
+            summary_only: Only return number of entries instead of entries.
+            ipv6_only: Only returns ipv6 entries.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -172,25 +177,21 @@ class InternetServiceDetails(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_id is not None:
-            params["id"] = q_id
-        if q_country_id is not None:
-            params["country_id"] = q_country_id
-        if q_region_id is not None:
-            params["region_id"] = q_region_id
-        if q_city_id is not None:
-            params["city_id"] = q_city_id
-        if q_summary_only is not None:
-            params["summary_only"] = q_summary_only
-        if q_ipv6_only is not None:
-            params["ipv6_only"] = q_ipv6_only
+        if id is not None:
+            params["id"] = id
+        if country_id is not None:
+            params["country_id"] = country_id
+        if region_id is not None:
+            params["region_id"] = region_id
+        if city_id is not None:
+            params["city_id"] = city_id
+        if summary_only is not None:
+            params["summary_only"] = summary_only
+        if ipv6_only is not None:
+            params["ipv6_only"] = ipv6_only
         
-        if name:
-            endpoint = f"/firewall/internet-service-details/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/internet-service-details"
-            unwrap_single = False
+        endpoint = "/firewall/internet-service-details"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mac: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mac: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
         Return a list of devices that match NAC WiFi settings.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mac: WiFi client MAC address.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mac is not None:
-            params["mac"] = q_mac
+        if mac is not None:
+            params["mac"] = mac
         
-        if name:
-            endpoint = f"/wifi/matched-devices/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/matched-devices"
-            unwrap_single = False
+        endpoint = "/wifi/matched-devices"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

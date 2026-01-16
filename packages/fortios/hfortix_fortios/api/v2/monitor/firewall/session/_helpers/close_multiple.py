@@ -54,6 +54,14 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "proto": "string",  # 
+    "saddr": "string",  # 
+    "daddr": "string",  # 
+    "sport": "int",  # 
+    "dport": "int",  # 
+    "naddr": "string",  # 
+    "nport": "int",  # 
+    "policy": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +187,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/session/close-multiple",
     "help": "Close multiple IPv4 firewall sessions which match the provided criteria.",
-    "total_fields": 0,
+    "total_fields": 8,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

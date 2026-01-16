@@ -54,6 +54,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "interface_name": "string",  # 
+    "include_vlan": "boolean",  # 
+    "include_aggregate": "boolean",  # 
+    "scope": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +183,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/interface",
     "help": "Retrieve statistics for all system interfaces.",
-    "total_fields": 0,
+    "total_fields": 4,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

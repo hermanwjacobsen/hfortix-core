@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class HealthCheck(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        health_check_name: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_health_check_name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class HealthCheck(CRUDEndpoint, MetadataMixin):
         Retrieve health-check statistics for each SD-WAN link. To be deprecated and replaced by /api/v2/monitor/virtual-wan/sla-log?latest=1&sla=<sla_name> for SLA health metrics 
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            health_check_name: Health check name. If not provided, will return results of all health checks.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class HealthCheck(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_health_check_name is not None:
-            params["health_check_name"] = q_health_check_name
+        if health_check_name is not None:
+            params["health_check_name"] = health_check_name
         
-        if name:
-            endpoint = f"/virtual-wan/health-check/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/virtual-wan/health-check"
-            unwrap_single = False
+        endpoint = "/virtual-wan/health-check"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
     normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
@@ -176,21 +177,6 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_datasource: bool | None = None,
-        q_skip_to: int | None = None,
-        q_with_meta: bool | None = None,
-        q_with_contents_hash: bool | None = None,
-        q_skip: bool | None = None,
-        q_format: list[str] | None = None,
-        q_key: str | None = None,
-        q_pattern: str | None = None,
-        q_scope: str | None = None,
-        q_exclude_default_values: bool | None = None,
-        q_datasource_format: dict[str, Any] | None = None,
-        q_unfiltered_count: int | None = None,
-        q_stat_items: str | None = None,
-        q_primary_keys: str | None = None,
-        q_action: Literal["default", "schema"] | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -275,39 +261,9 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_datasource is not None:
-            params["datasource"] = q_datasource
-        if q_skip_to is not None:
-            params["skip_to"] = q_skip_to
-        if q_with_meta is not None:
-            params["with_meta"] = q_with_meta
-        if q_with_contents_hash is not None:
-            params["with_contents_hash"] = q_with_contents_hash
-        if q_skip is not None:
-            params["skip"] = q_skip
-        if q_format is not None:
-            params["format"] = q_format
-        if q_key is not None:
-            params["key"] = q_key
-        if q_pattern is not None:
-            params["pattern"] = q_pattern
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_exclude_default_values is not None:
-            params["exclude-default-values"] = q_exclude_default_values
-        if q_datasource_format is not None:
-            params["datasource_format"] = q_datasource_format
-        if q_unfiltered_count is not None:
-            params["unfiltered_count"] = q_unfiltered_count
-        if q_stat_items is not None:
-            params["stat-items"] = q_stat_items
-        if q_primary_keys is not None:
-            params["primary_keys"] = q_primary_keys
-        if q_action is not None:
-            params["action"] = q_action
         
         if switch_id:
-            endpoint = "/switch-controller/managed-switch/" + str(switch_id)
+            endpoint = "/switch-controller/managed-switch/" + quote_path_param(switch_id)
             unwrap_single = True
         else:
             endpoint = "/switch-controller/managed-switch"
@@ -824,7 +780,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         switch_id_value = payload_data.get("switch-id")
         if not switch_id_value:
             raise ValueError("switch-id is required for PUT")
-        endpoint = "/switch-controller/managed-switch/" + str(switch_id_value)
+        endpoint = "/switch-controller/managed-switch/" + quote_path_param(switch_id_value)
 
         # Add explicit query parameters for PUT
         params: dict[str, Any] = {}
@@ -1367,7 +1323,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         """
         if not switch_id:
             raise ValueError("switch-id is required for DELETE")
-        endpoint = "/switch-controller/managed-switch/" + str(switch_id)
+        endpoint = "/switch-controller/managed-switch/" + quote_path_param(switch_id)
 
         # Add explicit query parameters for DELETE
         params: dict[str, Any] = {}
@@ -1413,7 +1369,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         # Use direct request with silent error handling to avoid logging 404s
         # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/switch_controller/managed_switch"
-        endpoint = f"{endpoint}/{switch_id}"
+        endpoint = f"{endpoint}/{quote_path_param(switch_id)}"
         
         # Make request with silent=True to suppress 404 error logging
         # (404 is expected when checking existence - it just means "doesn't exist")

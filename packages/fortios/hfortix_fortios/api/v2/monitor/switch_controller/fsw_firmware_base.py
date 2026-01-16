@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class FswFirmware(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        timeout: int | None = None,
+        version: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_timeout: int | None = None,
-        q_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class FswFirmware(CRUDEndpoint, MetadataMixin):
         Retrieve a list of recommended firmware for managed FortiSwitches.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Filter: FortiSwitch ID.
+            timeout: FortiGuard connection timeout (defaults to 3 seconds).
+            version: Target firmware version of the parent FortiGate.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class FswFirmware(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_timeout is not None:
-            params["timeout"] = q_timeout
-        if q_version is not None:
-            params["version"] = q_version
+        if mkey is not None:
+            params["mkey"] = mkey
+        if timeout is not None:
+            params["timeout"] = timeout
+        if version is not None:
+            params["version"] = version
         
-        if name:
-            endpoint = f"/switch-controller/fsw-firmware/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/switch-controller/fsw-firmware"
-            unwrap_single = False
+        endpoint = "/switch-controller/fsw-firmware"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

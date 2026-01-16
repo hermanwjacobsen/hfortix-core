@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,17 +85,16 @@ class HistoricalStatistics(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        sessionid: int | None = None,
+        device: Literal["disk", "fortianalyzer", "forticloud"] | None = None,
+        report_by: str | None = None,
+        sort_by: str | None = None,
+        chart_only: bool | None = None,
+        end: int | None = None,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_sessionid: int | None = None,
-        q_device: str | None = None,
-        q_report_by: str | None = None,
-        q_sort_by: str | None = None,
-        q_chart_only: bool | None = None,
-        q_end: int | None = None,
-        q_ip_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -106,7 +106,14 @@ class HistoricalStatistics(CRUDEndpoint, MetadataMixin):
         Retrieve historical drill-down and summary data for FortiView.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            filter: A map of filter keys to arrays of values.
+            sessionid: FortiView request Session ID.
+            device: FortiView source device [disk|fortianalyzer|forticloud].
+            report_by: Report by field.
+            sort_by: Sort by field.
+            chart_only: Only return graph values in results.
+            end: End timestamp.
+            ip_version: IP version [*ipv4 | ipv6 | ipboth].
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -173,27 +180,23 @@ class HistoricalStatistics(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_sessionid is not None:
-            params["sessionid"] = q_sessionid
-        if q_device is not None:
-            params["device"] = q_device
-        if q_report_by is not None:
-            params["report_by"] = q_report_by
-        if q_sort_by is not None:
-            params["sort_by"] = q_sort_by
-        if q_chart_only is not None:
-            params["chart_only"] = q_chart_only
-        if q_end is not None:
-            params["end"] = q_end
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
+        if sessionid is not None:
+            params["sessionid"] = sessionid
+        if device is not None:
+            params["device"] = device
+        if report_by is not None:
+            params["report_by"] = report_by
+        if sort_by is not None:
+            params["sort_by"] = sort_by
+        if chart_only is not None:
+            params["chart_only"] = chart_only
+        if end is not None:
+            params["end"] = end
+        if ip_version is not None:
+            params["ip_version"] = ip_version
         
-        if name:
-            endpoint = f"/fortiview/historical-statistics/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/fortiview/historical-statistics"
-            unwrap_single = False
+        endpoint = "/fortiview/historical-statistics"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

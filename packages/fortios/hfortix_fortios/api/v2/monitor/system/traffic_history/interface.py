@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        interface: str | None = None,
+        time_period: Literal["hour", "day", "week"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_interface: str | None = None,
-        q_time_period: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Interface(CRUDEndpoint, MetadataMixin):
         Retrieve history traffic stats for an interface.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            interface: Interface name.
+            time_period: Time period to retrieve data for [hour | day | week].
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Interface(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_interface is not None:
-            params["interface"] = q_interface
-        if q_time_period is not None:
-            params["time_period"] = q_time_period
+        if interface is not None:
+            params["interface"] = interface
+        if time_period is not None:
+            params["time_period"] = time_period
         
-        if name:
-            endpoint = f"/system/traffic-history/interface/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/traffic-history/interface"
-            unwrap_single = False
+        endpoint = "/system/traffic-history/interface"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

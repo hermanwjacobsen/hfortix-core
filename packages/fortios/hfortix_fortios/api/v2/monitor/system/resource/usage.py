@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Usage(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"] | None = None,
+        interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_scope: str | None = None,
-        q_resource: str | None = None,
-        q_interval: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Usage(CRUDEndpoint, MetadataMixin):
         Retreive current and historical usage data for a provided resource.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            scope: Scope of resource [vdom|global]. This parameter is only applicable if the FGT is in VDOM mode.
+            resource: Resource to get usage data for [cpu|mem|disk|session|session6|setuprate|setuprate6|disk_lograte|faz_lograte|forticloud_lograte|gtp_tunnel|gtp_tunnel_setup_rate]. Defaults to all resources if not provided. Additionally, [npu_session|npu_session6] data is available for devices that have an NPU and [nturbo_session|nturbo_session6] data is available for NP6 devices that support NTurbo. [gtp_tunnel|gtp_tunnel_setup_rate] data is available for carrier platforms only.
+            interval: Time interval of resource usage [1-min|10-min|30-min|1-hour|12-hour|24-hour]. Defaults to all intervals if not provided.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Usage(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_resource is not None:
-            params["resource"] = q_resource
-        if q_interval is not None:
-            params["interval"] = q_interval
+        if scope is not None:
+            params["scope"] = scope
+        if resource is not None:
+            params["resource"] = resource
+        if interval is not None:
+            params["interval"] = interval
         
-        if name:
-            endpoint = f"/system/resource/usage/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/resource/usage"
-            unwrap_single = False
+        endpoint = "/system/resource/usage"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

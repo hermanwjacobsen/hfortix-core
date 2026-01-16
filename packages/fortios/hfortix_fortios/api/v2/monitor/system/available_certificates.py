@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,16 +85,15 @@ class AvailableCertificates(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        with_remote: bool | None = None,
+        with_ca: bool | None = None,
+        with_crl: bool | None = None,
+        mkey: str | None = None,
+        find_all_references: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_scope: str | None = None,
-        q_with_remote: bool | None = None,
-        q_with_ca: bool | None = None,
-        q_with_crl: bool | None = None,
-        q_mkey: str | None = None,
-        q_find_all_references: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -105,7 +105,12 @@ class AvailableCertificates(CRUDEndpoint, MetadataMixin):
         Get available certificates.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            scope: Scope of certificate [vdom*|global].
+            with_remote: Include remote certificates.
+            with_ca: Include certificate authorities.
+            with_crl: Include certificate revocation lists.
+            mkey: Check if specific certificate is available.
+            find_all_references: Include reference counts across all VDOMs when scope is global.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -172,25 +177,21 @@ class AvailableCertificates(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_with_remote is not None:
-            params["with_remote"] = q_with_remote
-        if q_with_ca is not None:
-            params["with_ca"] = q_with_ca
-        if q_with_crl is not None:
-            params["with_crl"] = q_with_crl
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_find_all_references is not None:
-            params["find_all_references"] = q_find_all_references
+        if scope is not None:
+            params["scope"] = scope
+        if with_remote is not None:
+            params["with_remote"] = with_remote
+        if with_ca is not None:
+            params["with_ca"] = with_ca
+        if with_crl is not None:
+            params["with_crl"] = with_crl
+        if mkey is not None:
+            params["mkey"] = mkey
+        if find_all_references is not None:
+            params["find_all_references"] = find_all_references
         
-        if name:
-            endpoint = f"/system/available-certificates/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/available-certificates"
-            unwrap_single = False
+        endpoint = "/system/available-certificates"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

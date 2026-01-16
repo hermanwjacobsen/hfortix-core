@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Ipconf(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        devs: list[str] | None = None,
+        ipaddr: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_devs: list[str] | None = None,
-        q_ipaddr: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Ipconf(CRUDEndpoint, MetadataMixin):
         Determine if there is an IP conflict for a specific IP using ARP.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            devs: List of interfaces to check for conflict.
+            ipaddr: IPv4 address to check for conflict.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Ipconf(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_devs is not None:
-            params["devs"] = q_devs
-        if q_ipaddr is not None:
-            params["ipaddr"] = q_ipaddr
+        if devs is not None:
+            params["devs"] = devs
+        if ipaddr is not None:
+            params["ipaddr"] = ipaddr
         
-        if name:
-            endpoint = f"/system/ipconf/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/ipconf"
-            unwrap_single = False
+        endpoint = "/system/ipconf"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

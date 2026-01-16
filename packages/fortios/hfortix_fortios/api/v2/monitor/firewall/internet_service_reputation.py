@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class InternetServiceReputation(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ip: str | None = None,
+        is_ipv6: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ip: str | None = None,
-        q_is_ipv6: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class InternetServiceReputation(CRUDEndpoint, MetadataMixin):
         List internet services with reputation information that exist at a given IP.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ip: IP (in dot-decimal notation).
+            is_ipv6: Whether IP is IPv6. If not provided, will determine IP version based on given IP, but setting is_ipv6 flag is recommended.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class InternetServiceReputation(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ip is not None:
-            params["ip"] = q_ip
-        if q_is_ipv6 is not None:
-            params["is_ipv6"] = q_is_ipv6
+        if ip is not None:
+            params["ip"] = ip
+        if is_ipv6 is not None:
+            params["is_ipv6"] = is_ipv6
         
-        if name:
-            endpoint = f"/firewall/internet-service-reputation/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/internet-service-reputation"
-            unwrap_single = False
+        endpoint = "/firewall/internet-service-reputation"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

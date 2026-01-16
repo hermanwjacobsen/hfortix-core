@@ -2,6 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SelectPayload(TypedDict, total=False):
+    """
+    Type hints for system/password_policy_conform/select payload fields.
+    
+    Check whether password conforms to the password policy.
+    
+    **Usage:**
+        payload: SelectPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    mkey: str  # mkey
+    apply_to: str  # apply_to
+    password: str  # password
+    old_password: str  # old_password
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class SelectResponse(TypedDict):
+    """
+    Type hints for system/password_policy_conform/select API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    mkey: str
+    apply_to: str
+    password: str
+    old_password: str
+
+
+@final
+class SelectObject:
+    """Typed FortiObject for system/password_policy_conform/select with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # mkey
+    mkey: str
+    # apply_to
+    apply_to: str
+    # password
+    password: str
+    # old_password
+    old_password: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> SelectPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Select:
     """
@@ -30,7 +110,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +127,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +143,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +163,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +180,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +196,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +212,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +229,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +245,7 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +275,28 @@ class Select:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> SelectObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +304,21 @@ class Select:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +326,22 @@ class Select:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SelectObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +349,21 @@ class Select:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +375,11 @@ class Select:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SelectPayload | None = ...,
+        mkey: str | None = ...,
+        apply_to: str | None = ...,
+        password: str | None = ...,
+        old_password: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +411,7 @@ class Select:
 
 __all__ = [
     "Select",
+    "SelectPayload",
+    "SelectResponse",
+    "SelectObject",
 ]

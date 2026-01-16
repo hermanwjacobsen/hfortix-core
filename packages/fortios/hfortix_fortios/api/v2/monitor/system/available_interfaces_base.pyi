@@ -2,6 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class AvailableInterfacesPayload(TypedDict, total=False):
+    """
+    Type hints for system/available_interfaces payload fields.
+    
+    Retrieve a list of all interfaces along with some meta information regarding their availability.
+    
+    **Usage:**
+        payload: AvailableInterfacesPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    mkey: str  # mkey
+    include_ha: str  # include_ha
+    view_type: str  # view_type
+    scope: str  # scope
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class AvailableInterfacesResponse(TypedDict):
+    """
+    Type hints for system/available_interfaces API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    mkey: str
+    include_ha: str
+    view_type: str
+    scope: str
+
+
+@final
+class AvailableInterfacesObject:
+    """Typed FortiObject for system/available_interfaces with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # mkey
+    mkey: str
+    # include_ha
+    include_ha: str
+    # view_type
+    view_type: str
+    # scope
+    scope: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> AvailableInterfacesPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class AvailableInterfaces:
     """
@@ -16,54 +96,22 @@ class AvailableInterfaces:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +131,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +148,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +164,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +180,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +197,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +213,7 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +243,28 @@ class AvailableInterfaces:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> AvailableInterfacesObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: AvailableInterfacesPayload | None = ...,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> AvailableInterfacesObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: AvailableInterfacesPayload | None = ...,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +272,21 @@ class AvailableInterfaces:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: AvailableInterfacesPayload | None = ...,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: AvailableInterfacesPayload | None = ...,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +298,11 @@ class AvailableInterfaces:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: AvailableInterfacesPayload | None = ...,
+        mkey: str | None = ...,
+        include_ha: str | None = ...,
+        view_type: str | None = ...,
+        scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +334,7 @@ class AvailableInterfaces:
 
 __all__ = [
     "AvailableInterfaces",
+    "AvailableInterfacesPayload",
+    "AvailableInterfacesResponse",
+    "AvailableInterfacesObject",
 ]

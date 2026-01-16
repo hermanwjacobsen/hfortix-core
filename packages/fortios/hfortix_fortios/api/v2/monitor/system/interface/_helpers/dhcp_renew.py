@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "mkey",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "ipv6": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +182,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/interface/dhcp-renew",
     "help": "Renew DHCP lease of an interface.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 2,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

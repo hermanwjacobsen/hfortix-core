@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class DeviceStatus(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        serials: list[str] | None = None,
+        update_cache: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_serials: list[str] | None = None,
-        q_update_cache: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class DeviceStatus(CRUDEndpoint, MetadataMixin):
         Fetch device registration status from FortiCloud. Currently FortiSwitch and FortiAP are supported.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            serials: Serials of FortiSwitch and FortiAP to fetch registration status.
+            update_cache: Clear cache and retrieve updated data.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class DeviceStatus(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_serials is not None:
-            params["serials"] = q_serials
-        if q_update_cache is not None:
-            params["update_cache"] = q_update_cache
+        if serials is not None:
+            params["serials"] = serials
+        if update_cache is not None:
+            params["update_cache"] = update_cache
         
-        if name:
-            endpoint = f"/registration/forticloud/device-status/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/registration/forticloud/device-status"
-            unwrap_single = False
+        endpoint = "/registration/forticloud/device-status"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

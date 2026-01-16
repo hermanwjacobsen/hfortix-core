@@ -32,6 +32,12 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "fortilink",  # 
+    "parent_peer1",  # 
+    "parent_peer2",  # 
+    "peer1",  # 
+    "peer2",  # 
+    "isl_port_group",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +60,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "fortilink": "string",  # 
+    "parent_peer1": "string",  # 
+    "parent_peer2": "string",  # 
+    "peer1": "string",  # 
+    "peer2": "string",  # 
+    "isl_port_group": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +191,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "switch-controller/mclag-icl/set-tier-plus",
     "help": "Setup a tier 2/3 MC-LAG link between a pair of FortiSwitches.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 6,
+    "required_fields_count": 6,
     "fields_with_defaults_count": 0,
 }
 

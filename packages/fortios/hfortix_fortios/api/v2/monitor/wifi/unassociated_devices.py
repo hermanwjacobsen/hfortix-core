@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class UnassociatedDevices(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        with_triangulation: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_with_triangulation: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class UnassociatedDevices(CRUDEndpoint, MetadataMixin):
         Retrieve a list of unassociated and BLE devices
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            with_triangulation: Enable to include regions of FortiAP detecting the device.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class UnassociatedDevices(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_with_triangulation is not None:
-            params["with_triangulation"] = q_with_triangulation
+        if with_triangulation is not None:
+            params["with_triangulation"] = with_triangulation
         
-        if name:
-            endpoint = f"/wifi/unassociated-devices/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/unassociated-devices"
-            unwrap_single = False
+        endpoint = "/wifi/unassociated-devices"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -31,6 +31,7 @@ from hfortix_fortios._helpers.builders import (
 from hfortix_fortios._helpers.converters import (
     convert_boolean_to_str,
     filter_empty_values,
+    quote_path_param,
 )
 
 # Metadata accessors (shared by all validator modules)
@@ -117,6 +118,7 @@ __all__ = [
     # Data cleaning and conversion
     "filter_empty_values",
     "convert_boolean_to_str",
+    "quote_path_param",
     # Response helpers
     "get_name",
     "get_mkey",  # Alias for backward compatibility

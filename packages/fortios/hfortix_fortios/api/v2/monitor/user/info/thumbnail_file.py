@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class ThumbnailFile(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        filename: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_filename: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class ThumbnailFile(CRUDEndpoint, MetadataMixin):
         Get user info thumbnail by given file name.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            filename: Thumbnail file name. The file name is from thumbnailPhoto field of user info query.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class ThumbnailFile(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_filename is not None:
-            params["filename"] = q_filename
+        if filename is not None:
+            params["filename"] = filename
         
-        if name:
-            endpoint = f"/user/info/thumbnail-file/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/info/thumbnail-file"
-            unwrap_single = False
+        endpoint = "/user/info/thumbnail-file"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

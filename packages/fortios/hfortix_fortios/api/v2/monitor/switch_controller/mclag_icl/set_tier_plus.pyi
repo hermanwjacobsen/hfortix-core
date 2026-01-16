@@ -2,6 +2,94 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SetTierPlusPayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/mclag_icl/set_tier_plus payload fields.
+    
+    Setup a tier 2/3 MC-LAG link between a pair of FortiSwitches.
+    
+    **Usage:**
+        payload: SetTierPlusPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    fortilink: str  # fortilink
+    parent_peer1: str  # parent_peer1
+    parent_peer2: str  # parent_peer2
+    peer1: str  # peer1
+    peer2: str  # peer2
+    isl_port_group: str  # isl_port_group
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class SetTierPlusResponse(TypedDict):
+    """
+    Type hints for switch_controller/mclag_icl/set_tier_plus API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    fortilink: str
+    parent_peer1: str
+    parent_peer2: str
+    peer1: str
+    peer2: str
+    isl_port_group: str
+
+
+@final
+class SetTierPlusObject:
+    """Typed FortiObject for switch_controller/mclag_icl/set_tier_plus with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # fortilink
+    fortilink: str
+    # parent_peer1
+    parent_peer1: str
+    # parent_peer2
+    parent_peer2: str
+    # peer1
+    peer1: str
+    # peer2
+    peer2: str
+    # isl_port_group
+    isl_port_group: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> SetTierPlusPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class SetTierPlus:
     """
@@ -30,7 +118,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +135,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +151,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +171,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +188,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +204,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +220,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +237,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +253,7 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +283,32 @@ class SetTierPlus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> SetTierPlusObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +316,25 @@ class SetTierPlus:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +342,26 @@ class SetTierPlus:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetTierPlusObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +369,25 @@ class SetTierPlus:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +399,13 @@ class SetTierPlus:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetTierPlusPayload | None = ...,
+        fortilink: str | None = ...,
+        parent_peer1: str | None = ...,
+        parent_peer2: str | None = ...,
+        peer1: str | None = ...,
+        peer2: str | None = ...,
+        isl_port_group: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +437,7 @@ class SetTierPlus:
 
 __all__ = [
     "SetTierPlus",
+    "SetTierPlusPayload",
+    "SetTierPlusResponse",
+    "SetTierPlusObject",
 ]

@@ -54,6 +54,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "country_code": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +180,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "license/forticare-resellers",
     "help": "Get current FortiCare resellers for the requested country.",
-    "total_fields": 0,
+    "total_fields": 1,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

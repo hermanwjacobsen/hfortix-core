@@ -2,6 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class DisconnectPayload(TypedDict, total=False):
+    """
+    Type hints for system/ha_peer/disconnect payload fields.
+    
+    Update configuration of peer in HA cluster.
+    
+    **Usage:**
+        payload: DisconnectPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    serial_no: str  # serial_no
+    interface: str  # interface
+    ip: str  # ip
+    mask: str  # mask
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class DisconnectResponse(TypedDict):
+    """
+    Type hints for system/ha_peer/disconnect API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    serial_no: str
+    interface: str
+    ip: str
+    mask: str
+
+
+@final
+class DisconnectObject:
+    """Typed FortiObject for system/ha_peer/disconnect with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # serial_no
+    serial_no: str
+    # interface
+    interface: str
+    # ip
+    ip: str
+    # mask
+    mask: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> DisconnectPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Disconnect:
     """
@@ -30,7 +110,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +127,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +143,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +163,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +180,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +196,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +212,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +229,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +245,7 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +275,28 @@ class Disconnect:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> DisconnectObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +304,21 @@ class Disconnect:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +326,22 @@ class Disconnect:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DisconnectObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +349,21 @@ class Disconnect:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +375,11 @@ class Disconnect:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DisconnectPayload | None = ...,
+        serial_no: str | None = ...,
+        interface: str | None = ...,
+        ip: str | None = ...,
+        mask: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +411,7 @@ class Disconnect:
 
 __all__ = [
     "Disconnect",
+    "DisconnectPayload",
+    "DisconnectResponse",
+    "DisconnectObject",
 ]

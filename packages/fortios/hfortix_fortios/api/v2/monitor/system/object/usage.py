@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,16 +85,15 @@ class Usage(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        q_path: str | None = None,
+        q_name: str | None = None,
+        qtypes: list[str] | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        mkey: str | None = None,
+        child_path: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_q_path: str | None = None,
-        q_q_name: str | None = None,
-        q_qtypes: list[str] | None = None,
-        q_scope: str | None = None,
-        q_mkey: str | None = None,
-        q_child_path: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -105,7 +105,12 @@ class Usage(CRUDEndpoint, MetadataMixin):
         Retrieve all objects that are currently using as well as objects that can use the given object.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            q_path: The CMDB table's path
+            q_name: The CMDB table's name
+            qtypes: List of CMDB table qTypes
+            scope: Scope of resource [vdom|global].
+            mkey: The mkey for the object
+            child_path: The child path for the object
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -172,25 +177,21 @@ class Usage(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_q_path is not None:
-            params["q_path"] = q_q_path
-        if q_q_name is not None:
-            params["q_name"] = q_q_name
-        if q_qtypes is not None:
-            params["qtypes"] = q_qtypes
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_child_path is not None:
-            params["child_path"] = q_child_path
+        if q_path is not None:
+            params["q_path"] = q_path
+        if q_name is not None:
+            params["q_name"] = q_name
+        if qtypes is not None:
+            params["qtypes"] = qtypes
+        if scope is not None:
+            params["scope"] = scope
+        if mkey is not None:
+            params["mkey"] = mkey
+        if child_path is not None:
+            params["child_path"] = child_path
         
-        if name:
-            endpoint = f"/system/object/usage/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/object/usage"
-            unwrap_single = False
+        endpoint = "/system/object/usage"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

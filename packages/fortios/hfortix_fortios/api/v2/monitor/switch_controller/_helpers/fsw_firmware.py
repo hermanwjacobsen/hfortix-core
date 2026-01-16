@@ -54,6 +54,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "timeout": "int",  # 
+    "version": "object",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +182,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "switch-controller/fsw-firmware",
     "help": "Retrieve a list of recommended firmware for managed FortiSwitches.",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

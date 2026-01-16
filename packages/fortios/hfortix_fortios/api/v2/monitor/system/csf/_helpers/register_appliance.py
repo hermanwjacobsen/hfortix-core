@@ -32,6 +32,9 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "type",  # 
+    "mgmt_ip",  # 
+    "serial",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +57,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "type": "string",  # 
+    "mgmt_ip": "string",  # 
+    "mgmt_port": "int",  # 
+    "mgmt_url_parameters": "array",  # 
+    "serial": "string",  # 
+    "hostname": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +188,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/csf/register-appliance",
     "help": "Register appliance to Security Fabric.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 6,
+    "required_fields_count": 3,
     "fields_with_defaults_count": 0,
 }
 

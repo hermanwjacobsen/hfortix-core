@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,17 +85,16 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ipv6: bool | None = None,
+        destination: str | None = None,
+        source: str | None = None,
+        destination_port: int | None = None,
+        source_port: int | None = None,
+        interface_name: str | None = None,
+        protocol_number: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ipv6: bool | None = None,
-        q_destination: str | None = None,
-        q_source: str | None = None,
-        q_destination_port: int | None = None,
-        q_source_port: int | None = None,
-        q_interface_name: str | None = None,
-        q_protocol_number: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -106,7 +106,13 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
         Performs a route lookup by querying the policy routing table.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ipv6: Perform an IPv6 lookup.
+            destination: Destination IP/FQDN.
+            source: Source IP/FQDN.
+            destination_port: Destination Port.
+            source_port: Source Port.
+            interface_name: Incoming Interface.
+            protocol_number: IP Protocol Number.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -173,27 +179,23 @@ class LookupPolicy(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ipv6 is not None:
-            params["ipv6"] = q_ipv6
-        if q_destination is not None:
-            params["destination"] = q_destination
-        if q_source is not None:
-            params["source"] = q_source
-        if q_destination_port is not None:
-            params["destination_port"] = q_destination_port
-        if q_source_port is not None:
-            params["source_port"] = q_source_port
-        if q_interface_name is not None:
-            params["interface_name"] = q_interface_name
-        if q_protocol_number is not None:
-            params["protocol_number"] = q_protocol_number
+        if ipv6 is not None:
+            params["ipv6"] = ipv6
+        if destination is not None:
+            params["destination"] = destination
+        if source is not None:
+            params["source"] = source
+        if destination_port is not None:
+            params["destination_port"] = destination_port
+        if source_port is not None:
+            params["source_port"] = source_port
+        if interface_name is not None:
+            params["interface_name"] = interface_name
+        if protocol_number is not None:
+            params["protocol_number"] = protocol_number
         
-        if name:
-            endpoint = f"/router/lookup-policy/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/router/lookup-policy"
-            unwrap_single = False
+        endpoint = "/router/lookup-policy"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

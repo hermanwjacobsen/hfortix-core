@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class FswFirmwarePayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/fsw_firmware payload fields.
+    
+    Retrieve a list of recommended firmware for managed FortiSwitches.
+    
+    **Usage:**
+        payload: FswFirmwarePayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    mkey: str  # mkey
+    timeout: str  # timeout
+    version: str  # version
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class FswFirmwareResponse(TypedDict):
+    """
+    Type hints for switch_controller/fsw_firmware API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    mkey: str
+    timeout: str
+    version: str
+
+
+@final
+class FswFirmwareObject:
+    """Typed FortiObject for switch_controller/fsw_firmware with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # mkey
+    mkey: str
+    # timeout
+    timeout: str
+    # version
+    version: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> FswFirmwarePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class FswFirmware:
     """
@@ -16,54 +92,21 @@ class FswFirmware:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +126,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +143,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +159,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +175,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +192,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +208,7 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +238,26 @@ class FswFirmware:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> FswFirmwareObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: FswFirmwarePayload | None = ...,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> FswFirmwareObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: FswFirmwarePayload | None = ...,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +265,19 @@ class FswFirmware:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: FswFirmwarePayload | None = ...,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: FswFirmwarePayload | None = ...,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +289,10 @@ class FswFirmware:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: FswFirmwarePayload | None = ...,
+        mkey: str | None = ...,
+        timeout: str | None = ...,
+        version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +324,7 @@ class FswFirmware:
 
 __all__ = [
     "FswFirmware",
+    "FswFirmwarePayload",
+    "FswFirmwareResponse",
+    "FswFirmwareObject",
 ]

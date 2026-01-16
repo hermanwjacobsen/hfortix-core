@@ -2,6 +2,78 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SetStatusPayload(TypedDict, total=False):
+    """
+    Type hints for wifi/managed_ap/set_status payload fields.
+    
+    Update administrative state for a given FortiAP (enable or disable authorization).
+    
+    **Usage:**
+        payload: SetStatusPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    wtpname: str  # wtpname
+    admin: str  # admin
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class SetStatusResponse(TypedDict):
+    """
+    Type hints for wifi/managed_ap/set_status API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    wtpname: str
+    admin: str
+
+
+@final
+class SetStatusObject:
+    """Typed FortiObject for wifi/managed_ap/set_status with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # wtpname
+    wtpname: str
+    # admin
+    admin: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> SetStatusPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class SetStatus:
     """
@@ -30,7 +102,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +119,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +135,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +155,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +172,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +188,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +204,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +221,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +237,7 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +267,24 @@ class SetStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> SetStatusObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +292,17 @@ class SetStatus:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +310,18 @@ class SetStatus:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetStatusObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +329,17 @@ class SetStatus:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +351,9 @@ class SetStatus:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetStatusPayload | None = ...,
+        wtpname: str | None = ...,
+        admin: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +385,7 @@ class SetStatus:
 
 __all__ = [
     "SetStatus",
+    "SetStatusPayload",
+    "SetStatusResponse",
+    "SetStatusObject",
 ]

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Extender(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        fortiextender_name: list[str] | None = None,
+        type: Literal["system", "modem", "usage", "last"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_fortiextender_name: list[str] | None = None,
-        q_type: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Extender(CRUDEndpoint, MetadataMixin):
         Retrieve statistics for specific configured FortiExtender units.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            fortiextender_name: Filter: list of FortiExtender name. Retrieve statistics for all configured FortiExtender units unless specified.
+            type: Statistic type.'type' options are [system | modem | usage | last]. If 'type' is not specified, all types of statistics are retrieved.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Extender(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_fortiextender_name is not None:
-            params["fortiextender-name"] = q_fortiextender_name
-        if q_type is not None:
-            params["type"] = q_type
+        if fortiextender_name is not None:
+            params["fortiextender-name"] = fortiextender_name
+        if type is not None:
+            params["type"] = type
         
-        if name:
-            endpoint = f"/extender-controller/extender/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/extender-controller/extender"
-            unwrap_single = False
+        endpoint = "/extender-controller/extender"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

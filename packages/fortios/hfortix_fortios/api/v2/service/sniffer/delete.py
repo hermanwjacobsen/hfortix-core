@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,7 +88,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        name: str | None = None,
+        mkey: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -99,7 +100,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
-            name: Name/identifier for the action
+            mkey: mkey
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -130,16 +131,11 @@ class Delete(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Map 'name' parameter to 'mkey' in payload for service action endpoints
-        if name is not None:
-            if payload_dict is None:
-                payload_dict = {}
-            payload_dict['mkey'] = name
-
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            mkey=mkey,
             data=payload_dict,
         )
 

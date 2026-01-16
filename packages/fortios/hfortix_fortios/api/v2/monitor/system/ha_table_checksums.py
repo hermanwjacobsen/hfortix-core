@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class HaTableChecksums(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        serial_no: str | None = None,
+        vdom_name: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_serial_no: str | None = None,
-        q_vdom_name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class HaTableChecksums(CRUDEndpoint, MetadataMixin):
         List of table checksums for members of HA cluster.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            serial_no: Serial number of the HA member.
+            vdom_name: VDOM name of the HA member. If not specified, fetch table checksums for global.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class HaTableChecksums(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_serial_no is not None:
-            params["serial_no"] = q_serial_no
-        if q_vdom_name is not None:
-            params["vdom_name"] = q_vdom_name
+        if serial_no is not None:
+            params["serial_no"] = serial_no
+        if vdom_name is not None:
+            params["vdom_name"] = vdom_name
         
-        if name:
-            endpoint = f"/system/ha-table-checksums/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/ha-table-checksums"
-            unwrap_single = False
+        endpoint = "/system/ha-table-checksums"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -32,6 +32,22 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "email",  # 
+    "password",  # 
+    "first_name",  # 
+    "last_name",  # 
+    "company",  # 
+    "address",  # 
+    "city",  # 
+    "country_code",  # 
+    "state",  # 
+    "postal_code",  # 
+    "phone",  # 
+    "industry",  # 
+    "industry_id",  # 
+    "orgsize_id",  # 
+    "reseller_name",  # 
+    "reseller_id",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +70,25 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "email": "string",  # 
+    "password": "string",  # 
+    "first_name": "string",  # 
+    "last_name": "string",  # 
+    "title": "string",  # 
+    "company": "string",  # 
+    "address": "string",  # 
+    "city": "string",  # 
+    "country_code": "int",  # 
+    "state": "string",  # 
+    "state_code": "string",  # 
+    "postal_code": "string",  # 
+    "phone": "string",  # 
+    "industry": "string",  # 
+    "industry_id": "int",  # 
+    "orgsize_id": "int",  # 
+    "reseller_name": "string",  # 
+    "reseller_id": "int",  # 
+    "is_government": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +214,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "registration/forticare/create",
     "help": "Create a new FortiCare account.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 19,
+    "required_fields_count": 16,
     "fields_with_defaults_count": 0,
 }
 

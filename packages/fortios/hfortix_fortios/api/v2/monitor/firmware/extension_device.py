@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class ExtensionDevice(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        type: Literal["fortiswitch", "fortiap", "fortiextender"] | None = None,
+        timeout: int | None = None,
+        version: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_type: str | None = None,
-        q_timeout: int | None = None,
-        q_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class ExtensionDevice(CRUDEndpoint, MetadataMixin):
         Retrieve a list of recommended firmwares for the specified extension device type.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            type: Extension device type to get recommended firmwares for. [fortiswitch|fortiap|fortiextender]
+            timeout: FortiGuard connection timeout.
+            version: Target firmware version of the parent FortiGate.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class ExtensionDevice(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_type is not None:
-            params["type"] = q_type
-        if q_timeout is not None:
-            params["timeout"] = q_timeout
-        if q_version is not None:
-            params["version"] = q_version
+        if type is not None:
+            params["type"] = type
+        if timeout is not None:
+            params["timeout"] = timeout
+        if version is not None:
+            params["version"] = version
         
-        if name:
-            endpoint = f"/firmware/extension-device/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firmware/extension-device"
-            unwrap_single = False
+        endpoint = "/firmware/extension-device"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

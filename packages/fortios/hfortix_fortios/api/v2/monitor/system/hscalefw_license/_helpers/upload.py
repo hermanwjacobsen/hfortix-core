@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "license_key",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "license_key": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +181,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/hscalefw-license/upload",
     "help": "Update Hyperscale firewall license for hardware acceleration using license key.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 1,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

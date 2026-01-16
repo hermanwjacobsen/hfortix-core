@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class HoldSignatures(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ips_sensor: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ips_sensor: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class HoldSignatures(CRUDEndpoint, MetadataMixin):
         Return a list of IPS signatures that are on hold due to active hold time.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ips_sensor: Optional filter: Provide the name of the IPS sensor to retrieve only the hold signatures being used by that sensor.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class HoldSignatures(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ips_sensor is not None:
-            params["ips_sensor"] = q_ips_sensor
+        if ips_sensor is not None:
+            params["ips_sensor"] = ips_sensor
         
-        if name:
-            endpoint = f"/ips/hold-signatures/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/ips/hold-signatures"
-            unwrap_single = False
+        endpoint = "/ips/hold-signatures"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,22 @@ class Generate(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        certname: str | None = None,
+        subject: str | None = None,
+        keytype: str | None = None,
+        keysize: Any | None = None,
+        curvename: str | None = None,
+        orgunits: Any | None = None,
+        org: str | None = None,
+        city: str | None = None,
+        state: str | None = None,
+        countrycode: str | None = None,
+        email: str | None = None,
+        subject_alt_name: str | None = None,
+        password: str | None = None,
+        scep_url: str | None = None,
+        scep_password: str | None = None,
+        scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +115,22 @@ class Generate(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            certname: certname
+            subject: subject
+            keytype: keytype
+            keysize: keysize
+            curvename: curvename
+            orgunits: orgunits
+            org: org
+            city: city
+            state: state
+            countrycode: countrycode
+            email: email
+            subject_alt_name: subject_alt_name
+            password: password
+            scep_url: scep_url
+            scep_password: scep_password
+            scope: scope
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +165,22 @@ class Generate(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            certname=certname,
+            subject=subject,
+            keytype=keytype,
+            keysize=keysize,
+            curvename=curvename,
+            orgunits=orgunits,
+            org=org,
+            city=city,
+            state=state,
+            countrycode=countrycode,
+            email=email,
+            subject_alt_name=subject_alt_name,
+            password=password,
+            scep_url=scep_url,
+            scep_password=scep_password,
+            scope=scope,
             data=payload_dict,
         )
 

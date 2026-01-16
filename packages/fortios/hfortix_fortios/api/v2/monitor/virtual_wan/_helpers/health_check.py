@@ -54,6 +54,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "health_check_name": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +180,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "virtual-wan/health-check",
     "help": "Retrieve health-check statistics for each SD-WAN link. To be deprecated and replaced by /api/v2/monitor/virtual-wan/sla-log?latest=1&sla=<sla_name> for SLA health metrics ",
-    "total_fields": 0,
+    "total_fields": 1,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

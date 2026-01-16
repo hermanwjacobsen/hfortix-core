@@ -32,6 +32,10 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "email",  # 
+    "password",  # 
+    "reseller_name",  # 
+    "reseller_id",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +58,13 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "serial": "string",  # 
+    "email": "string",  # 
+    "password": "string",  # 
+    "reseller_name": "string",  # 
+    "reseller_id": "int",  # 
+    "agreement_accepted": "boolean",  # 
+    "is_government": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +190,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "registration/forticare/login",
     "help": "Login to FortiCare.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 7,
+    "required_fields_count": 4,
     "fields_with_defaults_count": 0,
 }
 

@@ -2,6 +2,98 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class DeauthPayload(TypedDict, total=False):
+    """
+    Type hints for user/firewall/deauth payload fields.
+    
+    Deauthenticate single, multiple, or all firewall users.
+    
+    **Usage:**
+        payload: DeauthPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    user_type: str  # user_type
+    id: str  # id
+    ip: str  # ip
+    ip_version: str  # ip_version
+    method: str  # method
+    all: str  # all
+    users: str  # users
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class DeauthResponse(TypedDict):
+    """
+    Type hints for user/firewall/deauth API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    user_type: str
+    id: str
+    ip: str
+    ip_version: str
+    method: str
+    all: str
+    users: str
+
+
+@final
+class DeauthObject:
+    """Typed FortiObject for user/firewall/deauth with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # user_type
+    user_type: str
+    # id
+    id: str
+    # ip
+    ip: str
+    # ip_version
+    ip_version: str
+    # method
+    method: str
+    # all
+    all: str
+    # users
+    users: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> DeauthPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Deauth:
     """
@@ -30,7 +122,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +139,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +155,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +175,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +192,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +208,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +224,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +241,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +257,7 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +287,34 @@ class Deauth:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> DeauthObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +322,27 @@ class Deauth:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +350,28 @@ class Deauth:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DeauthObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +379,27 @@ class Deauth:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +411,14 @@ class Deauth:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DeauthPayload | None = ...,
+        user_type: str | None = ...,
+        id: str | None = ...,
+        ip: str | None = ...,
+        ip_version: str | None = ...,
+        method: str | None = ...,
+        all: str | None = ...,
+        users: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +450,7 @@ class Deauth:
 
 __all__ = [
     "Deauth",
+    "DeauthPayload",
+    "DeauthResponse",
+    "DeauthObject",
 ]

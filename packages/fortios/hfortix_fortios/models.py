@@ -268,24 +268,24 @@ class FortiObject:
         return self._data
 
     @property
-    def json(self) -> dict:
+    def json(self) -> str:
         """
-        Get the raw JSON data as a dictionary.
-
-        This is an alias for to_dict() providing a more intuitive interface.
-        Use this when you need the complete API response structure.
+        Get pretty-printed JSON string of the object.
 
         Returns:
-            Original API response dictionary
+            JSON string with 2-space indentation
 
         Examples:
             >>> policy = fgt.api.cmdb.firewall.policy.get(policyid=1)
-            >>> policy.json
-            {'policyid': 1, 'name': 'my-policy', 'action': 'accept', ...}
-            >>> policy.json['action']
-            'accept'
+            >>> print(policy.json)
+            {
+              "policyid": 1,
+              "name": "my-policy",
+              "action": "accept"
+            }
         """
-        return self._data
+        import json
+        return json.dumps(self._data, indent=2)
     
     @property
     def dict(self) -> dict:

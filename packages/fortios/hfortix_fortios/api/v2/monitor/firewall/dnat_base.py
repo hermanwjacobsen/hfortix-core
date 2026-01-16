@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Dnat(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        uuid: list[str] | None = None,
+        ip_version: Literal["ipv4", "ipv6"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_uuid: list[str] | None = None,
-        q_ip_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Dnat(CRUDEndpoint, MetadataMixin):
         List hit count statistics for firewall virtual IP/server.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            uuid: Filter: List of Virtual IP UUIDs.
+            ip_version: Filter: Traffic IP Version. [ ipv4 | ipv6 ], if left empty, will retrieve data for both IPv4 and IPv6.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Dnat(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_uuid is not None:
-            params["uuid"] = q_uuid
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
+        if uuid is not None:
+            params["uuid"] = uuid
+        if ip_version is not None:
+            params["ip_version"] = ip_version
         
-        if name:
-            endpoint = f"/firewall/dnat/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/dnat"
-            unwrap_single = False
+        endpoint = "/firewall/dnat"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

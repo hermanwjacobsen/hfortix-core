@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "email",  # 
+    "password",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "email": "string",  # 
+    "password": "string",  # 
+    "send_logs": "boolean",  # 
+    "domain": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +185,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "registration/forticloud/login",
     "help": "Login to FortiCloud.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 4,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

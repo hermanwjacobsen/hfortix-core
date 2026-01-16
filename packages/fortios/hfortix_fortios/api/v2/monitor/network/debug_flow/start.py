@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,22 @@ class Start(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        num_packets: Any | None = None,
+        ipv6: Any | None = None,
+        negate: Any | None = None,
+        addr_from: str | None = None,
+        addr_to: str | None = None,
+        daddr_from: str | None = None,
+        daddr_to: str | None = None,
+        saddr_from: str | None = None,
+        saddr_to: str | None = None,
+        port_from: Any | None = None,
+        port_to: Any | None = None,
+        dport_from: Any | None = None,
+        dport_to: Any | None = None,
+        sport_from: Any | None = None,
+        sport_to: Any | None = None,
+        proto: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +115,22 @@ class Start(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            num_packets: num_packets
+            ipv6: ipv6
+            negate: negate
+            addr_from: addr_from
+            addr_to: addr_to
+            daddr_from: daddr_from
+            daddr_to: daddr_to
+            saddr_from: saddr_from
+            saddr_to: saddr_to
+            port_from: port_from
+            port_to: port_to
+            dport_from: dport_from
+            dport_to: dport_to
+            sport_from: sport_from
+            sport_to: sport_to
+            proto: proto
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +165,22 @@ class Start(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            num_packets=num_packets,
+            ipv6=ipv6,
+            negate=negate,
+            addr_from=addr_from,
+            addr_to=addr_to,
+            daddr_from=daddr_from,
+            daddr_to=daddr_to,
+            saddr_from=saddr_from,
+            saddr_to=saddr_to,
+            port_from=port_from,
+            port_to=port_to,
+            dport_from=dport_from,
+            dport_to=dport_to,
+            sport_from=sport_from,
+            sport_to=sport_to,
+            proto=proto,
             data=payload_dict,
         )
 

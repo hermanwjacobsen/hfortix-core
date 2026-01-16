@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,25 +85,24 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ipv6: bool | None = None,
+        srcintf: str | None = None,
+        sourceport: int | None = None,
+        sourceip: str | None = None,
+        protocol: str | None = None,
+        dest: str | None = None,
+        destport: int | None = None,
+        icmptype: int | None = None,
+        icmpcode: int | None = None,
+        policy_type: Literal["*policy", "proxy"] | None = None,
+        auth_type: Literal["user", "group", "saml", "ldap"] | None = None,
+        user_group: list[str] | None = None,
+        server_name: str | None = None,
+        user_db: str | None = None,
+        group_attr_type: Literal["*name", "id"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ipv6: bool | None = None,
-        q_srcintf: str | None = None,
-        q_sourceport: int | None = None,
-        q_sourceip: str | None = None,
-        q_protocol: str | None = None,
-        q_dest: str | None = None,
-        q_destport: int | None = None,
-        q_icmptype: int | None = None,
-        q_icmpcode: int | None = None,
-        q_policy_type: str | None = None,
-        q_auth_type: str | None = None,
-        q_user_group: list[str] | None = None,
-        q_server_name: str | None = None,
-        q_user_db: str | None = None,
-        q_group_attr_type: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -114,7 +114,21 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
         Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ipv6: Perform an IPv6 lookup?
+            srcintf: Source interface.
+            sourceport: Source port.
+            sourceip: Source IP.
+            protocol: Protocol.
+            dest: Destination IP/FQDN.
+            destport: Destination port.
+            icmptype: ICMP type.
+            icmpcode: ICMP code.
+            policy_type: Policy type. [*policy | proxy]
+            auth_type: Authentication type. [user | group | saml | ldap] Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            user_group: List of remote user groups. ['cn=remote desktop users,cn=builtin,dc=devqa,dc=lab','cn=domain users,cn=users,dc=devqa,dc=lab', ...] Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            server_name: Remote user/group server name. Note: this only works for models that can guarantee WAD workers availability, i.e. those that do not disable proxy features globally.
+            user_db: Authentication server to contain user information.
+            group_attr_type: Remote user group attribute type. [*name | id]
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -181,43 +195,39 @@ class PolicyLookup(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ipv6 is not None:
-            params["ipv6"] = q_ipv6
-        if q_srcintf is not None:
-            params["srcintf"] = q_srcintf
-        if q_sourceport is not None:
-            params["sourceport"] = q_sourceport
-        if q_sourceip is not None:
-            params["sourceip"] = q_sourceip
-        if q_protocol is not None:
-            params["protocol"] = q_protocol
-        if q_dest is not None:
-            params["dest"] = q_dest
-        if q_destport is not None:
-            params["destport"] = q_destport
-        if q_icmptype is not None:
-            params["icmptype"] = q_icmptype
-        if q_icmpcode is not None:
-            params["icmpcode"] = q_icmpcode
-        if q_policy_type is not None:
-            params["policy_type"] = q_policy_type
-        if q_auth_type is not None:
-            params["auth_type"] = q_auth_type
-        if q_user_group is not None:
-            params["user_group"] = q_user_group
-        if q_server_name is not None:
-            params["server_name"] = q_server_name
-        if q_user_db is not None:
-            params["user_db"] = q_user_db
-        if q_group_attr_type is not None:
-            params["group_attr_type"] = q_group_attr_type
+        if ipv6 is not None:
+            params["ipv6"] = ipv6
+        if srcintf is not None:
+            params["srcintf"] = srcintf
+        if sourceport is not None:
+            params["sourceport"] = sourceport
+        if sourceip is not None:
+            params["sourceip"] = sourceip
+        if protocol is not None:
+            params["protocol"] = protocol
+        if dest is not None:
+            params["dest"] = dest
+        if destport is not None:
+            params["destport"] = destport
+        if icmptype is not None:
+            params["icmptype"] = icmptype
+        if icmpcode is not None:
+            params["icmpcode"] = icmpcode
+        if policy_type is not None:
+            params["policy_type"] = policy_type
+        if auth_type is not None:
+            params["auth_type"] = auth_type
+        if user_group is not None:
+            params["user_group"] = user_group
+        if server_name is not None:
+            params["server_name"] = server_name
+        if user_db is not None:
+            params["user_db"] = user_db
+        if group_attr_type is not None:
+            params["group_attr_type"] = group_attr_type
         
-        if name:
-            endpoint = f"/firewall/policy-lookup/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/policy-lookup"
-            unwrap_single = False
+        endpoint = "/firewall/policy-lookup"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

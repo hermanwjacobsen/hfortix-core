@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class Recommendations(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        checks: str | None = None,
+        scope: Literal["global", "vdom"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_checks: str | None = None,
-        q_scope: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class Recommendations(CRUDEndpoint, MetadataMixin):
         Retrieve recommendations for Security Rating tests.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            checks: Retrieve the recommendations for the given Security Rating checks.
+            scope: Scope of the request [global | vdom*].
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class Recommendations(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_checks is not None:
-            params["checks"] = q_checks
-        if q_scope is not None:
-            params["scope"] = q_scope
+        if checks is not None:
+            params["checks"] = checks
+        if scope is not None:
+            params["scope"] = scope
         
-        if name:
-            endpoint = f"/security-rating/recommendations/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/security-rating/recommendations"
-            unwrap_single = False
+        endpoint = "/security-rating/recommendations"
+        unwrap_single = False
         
         return self._client.get(
             "service", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

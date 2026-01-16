@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Users(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        client_name: str | None = None,
+        group_name: str | None = None,
+        user_name: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_client_name: str | None = None,
-        q_group_name: str | None = None,
-        q_user_name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Users(CRUDEndpoint, MetadataMixin):
         Get SCIM client users.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            client_name: SCIM client name to be used to retrieve group names.
+            group_name: SCIM client group name to be used to retrieve users, if left empty, will retrieve users from all groups.
+            user_name: SCIM client user name to retrieve, if left empty, will retrieve all users from group.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Users(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_client_name is not None:
-            params["client_name"] = q_client_name
-        if q_group_name is not None:
-            params["group_name"] = q_group_name
-        if q_user_name is not None:
-            params["user_name"] = q_user_name
+        if client_name is not None:
+            params["client_name"] = client_name
+        if group_name is not None:
+            params["group_name"] = group_name
+        if user_name is not None:
+            params["user_name"] = user_name
         
-        if name:
-            endpoint = f"/user/scim/users/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/scim/users"
-            unwrap_single = False
+        endpoint = "/user/scim/users"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

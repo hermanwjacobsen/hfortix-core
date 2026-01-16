@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "num_packets",  # 
+    "ipv6",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,22 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "num_packets": "int",  # 
+    "ipv6": "boolean",  # 
+    "negate": "boolean",  # 
+    "addr_from": "string",  # 
+    "addr_to": "string",  # 
+    "daddr_from": "string",  # 
+    "daddr_to": "string",  # 
+    "saddr_from": "string",  # 
+    "saddr_to": "string",  # 
+    "port_from": "int",  # 
+    "port_to": "int",  # 
+    "dport_from": "int",  # 
+    "dport_to": "int",  # 
+    "sport_from": "int",  # 
+    "sport_to": "int",  # 
+    "proto": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +197,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "network/debug-flow/start",
     "help": "Start debug flow packet capture.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 16,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

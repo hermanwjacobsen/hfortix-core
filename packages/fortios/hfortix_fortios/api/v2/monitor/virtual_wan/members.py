@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class Members(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        interface: list[str] | None = None,
+        zone: str | None = None,
+        sla: str | None = None,
+        skip_vpn_child: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_interface: list[str] | None = None,
-        q_zone: str | None = None,
-        q_sla: str | None = None,
-        q_skip_vpn_child: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class Members(CRUDEndpoint, MetadataMixin):
         Retrieve interface statistics for each SD-WAN link.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            interface: Interface names. "interface" param take precedence over "zone" or "sla". If set, will return only return the members that matches the interfaces.
+            zone: SD-WAN zone name. "zone" param take precedence over "sla". If set, will only return members of the zone.
+            sla: SLA name. If set, will only return members that are participants of the SLA.
+            skip_vpn_child: If set, will skip all VPN child interfaces.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class Members(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_interface is not None:
-            params["interface"] = q_interface
-        if q_zone is not None:
-            params["zone"] = q_zone
-        if q_sla is not None:
-            params["sla"] = q_sla
-        if q_skip_vpn_child is not None:
-            params["skip_vpn_child"] = q_skip_vpn_child
+        if interface is not None:
+            params["interface"] = interface
+        if zone is not None:
+            params["zone"] = zone
+        if sla is not None:
+            params["sla"] = sla
+        if skip_vpn_child is not None:
+            params["skip_vpn_child"] = skip_vpn_child
         
-        if name:
-            endpoint = f"/virtual-wan/members/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/virtual-wan/members"
-            unwrap_single = False
+        endpoint = "/virtual-wan/members"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -108,9 +108,42 @@ class ProxyResponse:
         
         device_results = []
         for item in result.get("data", []):
+            raw_response = item.get("response", {})
+            
+            # Handle non-dict responses (e.g., HTML error pages from FortiGate)
+            if isinstance(raw_response, str):
+                # Check if it's an HTML error page
+                if raw_response.strip().startswith("<!DOCTYPE") or raw_response.strip().startswith("<html"):
+                    raw_response = {
+                        "status": "error",
+                        "http_status": 404,
+                        "error": "Endpoint not found",
+                        "message": "The FortiGate returned an HTML error page. This endpoint may not exist on this device or firmware version.",
+                        "raw_html": raw_response,
+                        "results": [],
+                    }
+                else:
+                    # Some other string response - wrap it
+                    raw_response = {
+                        "status": "error",
+                        "http_status": 500,
+                        "error": "Unexpected response format",
+                        "message": raw_response,
+                        "results": [],
+                    }
+            elif not isinstance(raw_response, dict):
+                # Handle any other non-dict type
+                raw_response = {
+                    "status": "error",
+                    "http_status": 500,
+                    "error": "Unexpected response type",
+                    "message": str(raw_response),
+                    "results": [],
+                }
+            
             device_results.append(DeviceResult(
                 target=item.get("target", "unknown"),
-                response=item.get("response", {}),
+                response=raw_response,
                 status=item.get("status", {"code": -1, "message": "Unknown"}),
             ))
         

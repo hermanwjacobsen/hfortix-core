@@ -2,6 +2,134 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class StartPayload(TypedDict, total=False):
+    """
+    Type hints for network/debug_flow/start payload fields.
+    
+    Start debug flow packet capture.
+    
+    **Usage:**
+        payload: StartPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    num_packets: str  # num_packets
+    ipv6: str  # ipv6
+    negate: str  # negate
+    addr_from: str  # addr_from
+    addr_to: str  # addr_to
+    daddr_from: str  # daddr_from
+    daddr_to: str  # daddr_to
+    saddr_from: str  # saddr_from
+    saddr_to: str  # saddr_to
+    port_from: str  # port_from
+    port_to: str  # port_to
+    dport_from: str  # dport_from
+    dport_to: str  # dport_to
+    sport_from: str  # sport_from
+    sport_to: str  # sport_to
+    proto: str  # proto
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StartResponse(TypedDict):
+    """
+    Type hints for network/debug_flow/start API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    num_packets: str
+    ipv6: str
+    negate: str
+    addr_from: str
+    addr_to: str
+    daddr_from: str
+    daddr_to: str
+    saddr_from: str
+    saddr_to: str
+    port_from: str
+    port_to: str
+    dport_from: str
+    dport_to: str
+    sport_from: str
+    sport_to: str
+    proto: str
+
+
+@final
+class StartObject:
+    """Typed FortiObject for network/debug_flow/start with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # num_packets
+    num_packets: str
+    # ipv6
+    ipv6: str
+    # negate
+    negate: str
+    # addr_from
+    addr_from: str
+    # addr_to
+    addr_to: str
+    # daddr_from
+    daddr_from: str
+    # daddr_to
+    daddr_to: str
+    # saddr_from
+    saddr_from: str
+    # saddr_to
+    saddr_to: str
+    # port_from
+    port_from: str
+    # port_to
+    port_to: str
+    # dport_from
+    dport_from: str
+    # dport_to
+    dport_to: str
+    # sport_from
+    sport_from: str
+    # sport_to
+    sport_to: str
+    # proto
+    proto: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StartPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Start:
     """
@@ -30,7 +158,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +175,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +191,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +211,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +228,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +244,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +260,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +277,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +293,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +323,52 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> StartObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +376,45 @@ class Start:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +422,46 @@ class Start:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +469,45 @@ class Start:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +519,23 @@ class Start:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        num_packets: str | None = ...,
+        ipv6: str | None = ...,
+        negate: str | None = ...,
+        addr_from: str | None = ...,
+        addr_to: str | None = ...,
+        daddr_from: str | None = ...,
+        daddr_to: str | None = ...,
+        saddr_from: str | None = ...,
+        saddr_to: str | None = ...,
+        port_from: str | None = ...,
+        port_to: str | None = ...,
+        dport_from: str | None = ...,
+        dport_to: str | None = ...,
+        sport_from: str | None = ...,
+        sport_to: str | None = ...,
+        proto: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +567,7 @@ class Start:
 
 __all__ = [
     "Start",
+    "StartPayload",
+    "StartResponse",
+    "StartObject",
 ]

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,14 @@ class Answers(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        page: int | None = None,
+        pagesize: int | None = None,
+        sortkey: str | None = None,
+        topics: str | None = None,
+        limit: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_page: int | None = None,
-        q_pagesize: int | None = None,
-        q_sortkey: str | None = None,
-        q_topics: str | None = None,
-        q_limit: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -104,7 +104,11 @@ class Answers(CRUDEndpoint, MetadataMixin):
         Retrieve a list of questions on answers.fortinet.com
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            page: Page number to retrieve.
+            pagesize: Page size of a list of response.
+            sortkey: Sort key of a list of response.
+            topics: Topic to retrieve.
+            limit: Limit of the number of entries.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -171,23 +175,19 @@ class Answers(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_page is not None:
-            params["page"] = q_page
-        if q_pagesize is not None:
-            params["pagesize"] = q_pagesize
-        if q_sortkey is not None:
-            params["sortkey"] = q_sortkey
-        if q_topics is not None:
-            params["topics"] = q_topics
-        if q_limit is not None:
-            params["limit"] = q_limit
+        if page is not None:
+            params["page"] = page
+        if pagesize is not None:
+            params["pagesize"] = pagesize
+        if sortkey is not None:
+            params["sortkey"] = sortkey
+        if topics is not None:
+            params["topics"] = topics
+        if limit is not None:
+            params["limit"] = limit
         
-        if name:
-            endpoint = f"/fortiguard/answers/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/fortiguard/answers"
-            unwrap_single = False
+        endpoint = "/fortiguard/answers"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

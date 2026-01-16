@@ -2,6 +2,94 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class StartPayload(TypedDict, total=False):
+    """
+    Type hints for wifi/vlan_probe/start payload fields.
+    
+    Start a VLAN probe.
+    
+    **Usage:**
+        payload: StartPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    ap_interface: str  # ap_interface
+    wtp: str  # wtp
+    start_vlan_id: str  # start_vlan_id
+    end_vlan_id: str  # end_vlan_id
+    retries: str  # retries
+    timeout: str  # timeout
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StartResponse(TypedDict):
+    """
+    Type hints for wifi/vlan_probe/start API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    ap_interface: str
+    wtp: str
+    start_vlan_id: str
+    end_vlan_id: str
+    retries: str
+    timeout: str
+
+
+@final
+class StartObject:
+    """Typed FortiObject for wifi/vlan_probe/start with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # ap_interface
+    ap_interface: str
+    # wtp
+    wtp: str
+    # start_vlan_id
+    start_vlan_id: str
+    # end_vlan_id
+    end_vlan_id: str
+    # retries
+    retries: str
+    # timeout
+    timeout: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StartPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Start:
     """
@@ -30,7 +118,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +135,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +151,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +171,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +188,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +204,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +220,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +237,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +253,7 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +283,32 @@ class Start:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> StartObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +316,25 @@ class Start:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +342,26 @@ class Start:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> StartObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +369,25 @@ class Start:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +399,13 @@ class Start:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StartPayload | None = ...,
+        ap_interface: str | None = ...,
+        wtp: str | None = ...,
+        start_vlan_id: str | None = ...,
+        end_vlan_id: str | None = ...,
+        retries: str | None = ...,
+        timeout: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +437,7 @@ class Start:
 
 __all__ = [
     "Start",
+    "StartPayload",
+    "StartResponse",
+    "StartObject",
 ]

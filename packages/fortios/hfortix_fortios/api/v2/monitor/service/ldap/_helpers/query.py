@@ -54,6 +54,11 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "string",  # 
+    "server_info_only": "boolean",  # 
+    "skip_schema": "boolean",  # 
+    "ldap_filter": "string",  # 
+    "ldap": "object",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +184,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "service/ldap/query",
     "help": "Retrieve LDAP server information and LDAP entries.",
-    "total_fields": 0,
+    "total_fields": 5,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "region_name",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,7 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "region_name": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +181,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "wifi/region-image",
     "help": "Retrieves a floorplan/region image from a configured FortiAP region.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 1,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

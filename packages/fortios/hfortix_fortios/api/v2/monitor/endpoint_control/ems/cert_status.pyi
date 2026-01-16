@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class CertStatusPayload(TypedDict, total=False):
+    """
+    Type hints for endpoint_control/ems/cert_status payload fields.
+    
+    Retrieve authentication status of the EMS server certificate for a specific EMS.
+    
+    **Usage:**
+        payload: CertStatusPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    ems_id: str  # ems_id
+    scope: str  # scope
+    with_cert: str  # with_cert
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class CertStatusResponse(TypedDict):
+    """
+    Type hints for endpoint_control/ems/cert_status API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    ems_id: str
+    scope: str
+    with_cert: str
+
+
+@final
+class CertStatusObject:
+    """Typed FortiObject for endpoint_control/ems/cert_status with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # ems_id
+    ems_id: str
+    # scope
+    scope: str
+    # with_cert
+    with_cert: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> CertStatusPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class CertStatus:
     """
@@ -16,54 +92,21 @@ class CertStatus:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        ems_id: str,
+        scope: Literal["vdom", "global"] | None = ...,
+        with_cert: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +126,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +143,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +159,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +175,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +192,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +208,7 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +238,26 @@ class CertStatus:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> CertStatusObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CertStatusPayload | None = ...,
+        ems_id: str | None = ...,
+        scope: str | None = ...,
+        with_cert: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> CertStatusObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CertStatusPayload | None = ...,
+        ems_id: str | None = ...,
+        scope: str | None = ...,
+        with_cert: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +265,19 @@ class CertStatus:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CertStatusPayload | None = ...,
+        ems_id: str | None = ...,
+        scope: str | None = ...,
+        with_cert: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CertStatusPayload | None = ...,
+        ems_id: str | None = ...,
+        scope: str | None = ...,
+        with_cert: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +289,10 @@ class CertStatus:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CertStatusPayload | None = ...,
+        ems_id: str | None = ...,
+        scope: str | None = ...,
+        with_cert: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +324,7 @@ class CertStatus:
 
 __all__ = [
     "CertStatus",
+    "CertStatusPayload",
+    "CertStatusResponse",
+    "CertStatusObject",
 ]

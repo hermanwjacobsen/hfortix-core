@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,14 @@ class Query(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        server_info_only: bool | None = None,
+        skip_schema: bool | None = None,
+        ldap_filter: str | None = None,
+        ldap: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_server_info_only: bool | None = None,
-        q_skip_schema: bool | None = None,
-        q_ldap_filter: str | None = None,
-        q_ldap: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -104,7 +104,11 @@ class Query(CRUDEndpoint, MetadataMixin):
         Retrieve LDAP server information and LDAP entries.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Name of the LDAP server setting object.
+            server_info_only: Only retrieve server information.
+            skip_schema: Explicitly skip schema retrieval.
+            ldap_filter: LDAP filter string.
+            ldap: Object containing overriden values of the LDAP server setting object.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -171,23 +175,19 @@ class Query(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_server_info_only is not None:
-            params["server_info_only"] = q_server_info_only
-        if q_skip_schema is not None:
-            params["skip_schema"] = q_skip_schema
-        if q_ldap_filter is not None:
-            params["ldap_filter"] = q_ldap_filter
-        if q_ldap is not None:
-            params["ldap"] = q_ldap
+        if mkey is not None:
+            params["mkey"] = mkey
+        if server_info_only is not None:
+            params["server_info_only"] = server_info_only
+        if skip_schema is not None:
+            params["skip_schema"] = skip_schema
+        if ldap_filter is not None:
+            params["ldap_filter"] = ldap_filter
+        if ldap is not None:
+            params["ldap"] = ldap
         
-        if name:
-            endpoint = f"/service/ldap/query/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/service/ldap/query"
-            unwrap_single = False
+        endpoint = "/service/ldap/query"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

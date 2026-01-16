@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Fortianalyzer(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        server: str | None = None,
+        srcip: Literal["\u003cip\u003e", "auto"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_scope: str | None = None,
-        q_server: str | None = None,
-        q_srcip: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Fortianalyzer(CRUDEndpoint, MetadataMixin):
         Return FortiAnalyzer/FortiManager log status.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            scope: Scope from which to test the connectivity of the FortiAnalyzer address [vdom|global].
+            server: FortiAnalyzer/FortiManager address.
+            srcip: The IP to use to make the request to the FortiAnalyzer [<ip>|auto]. When set to "auto" it will use the FortiGate's routing table to determine the IP to make the request from.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Fortianalyzer(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_server is not None:
-            params["server"] = q_server
-        if q_srcip is not None:
-            params["srcip"] = q_srcip
+        if scope is not None:
+            params["scope"] = scope
+        if server is not None:
+            params["server"] = server
+        if srcip is not None:
+            params["srcip"] = srcip
         
-        if name:
-            endpoint = f"/log/fortianalyzer/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/log/fortianalyzer"
-            unwrap_single = False
+        endpoint = "/log/fortianalyzer"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

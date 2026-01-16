@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,20 +85,19 @@ class Query(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        timestamp_from: int | None = None,
+        timestamp_to: int | None = None,
+        filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = None,
+        query_type: Literal["latest", "unified_latest", "unified_history"] | None = None,
+        view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"] | None = None,
+        query_id: int | None = None,
+        cache_query: bool | None = None,
+        key_only: bool | None = None,
+        filter_logic: Literal["and", "or"] | None = None,
+        total_only: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_timestamp_from: int | None = None,
-        q_timestamp_to: int | None = None,
-        q_filters: list[str] | None = None,
-        q_query_type: str | None = None,
-        q_view_type: str | None = None,
-        q_query_id: int | None = None,
-        q_cache_query: bool | None = None,
-        q_key_only: bool | None = None,
-        q_filter_logic: str | None = None,
-        q_total_only: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -109,7 +109,16 @@ class Query(CRUDEndpoint, MetadataMixin):
         Retrieve user devices from user device store. List all the user devices if there is no filter set.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            timestamp_from: To get entries since the timestamp for unified historical query.
+            timestamp_to: To get entries before the timestamp for unified historical query.
+            filters: A list of filters. Type:{"type": string, "value": string, "op": string}. Op: filter operator [exact|contains|greaterThanEqualTo|lessThanEqualTo]. Default is exact.
+            query_type: Query type [latest|unified_latest|unified_history]. Default is latest.
+            view_type: View type [device|fortiswitch_client|forticlient|iot_vuln_info]. Default is device.
+            query_id: Provide a query ID to continue getting data for that unified request. Only available for unified query types.
+            cache_query: Cache query result for 5 mins and return query ID. Only available for unified query types. Default is false.
+            key_only: Return primary key fields only. Default is false.
+            filter_logic: The logic between filters [and|or]). Default is and.
+            total_only: Whether the query should return just the total number of devices present.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -176,33 +185,29 @@ class Query(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_timestamp_from is not None:
-            params["timestamp_from"] = q_timestamp_from
-        if q_timestamp_to is not None:
-            params["timestamp_to"] = q_timestamp_to
-        if q_filters is not None:
-            params["filters"] = q_filters
-        if q_query_type is not None:
-            params["query_type"] = q_query_type
-        if q_view_type is not None:
-            params["view_type"] = q_view_type
-        if q_query_id is not None:
-            params["query_id"] = q_query_id
-        if q_cache_query is not None:
-            params["cache_query"] = q_cache_query
-        if q_key_only is not None:
-            params["key_only"] = q_key_only
-        if q_filter_logic is not None:
-            params["filter_logic"] = q_filter_logic
-        if q_total_only is not None:
-            params["total_only"] = q_total_only
+        if timestamp_from is not None:
+            params["timestamp_from"] = timestamp_from
+        if timestamp_to is not None:
+            params["timestamp_to"] = timestamp_to
+        if filters is not None:
+            params["filters"] = filters
+        if query_type is not None:
+            params["query_type"] = query_type
+        if view_type is not None:
+            params["view_type"] = view_type
+        if query_id is not None:
+            params["query_id"] = query_id
+        if cache_query is not None:
+            params["cache_query"] = cache_query
+        if key_only is not None:
+            params["key_only"] = key_only
+        if filter_logic is not None:
+            params["filter_logic"] = filter_logic
+        if total_only is not None:
+            params["total_only"] = total_only
         
-        if name:
-            endpoint = f"/user/device/query/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/device/query"
-            unwrap_single = False
+        endpoint = "/user/device/query"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

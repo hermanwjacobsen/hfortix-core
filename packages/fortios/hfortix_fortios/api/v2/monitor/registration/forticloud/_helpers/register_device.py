@@ -32,6 +32,11 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "email",  # 
+    "password",  # 
+    "reseller",  # 
+    "reseller_id",  # 
+    "country",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +59,14 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "serial": "string",  # 
+    "email": "string",  # 
+    "password": "string",  # 
+    "reseller": "string",  # 
+    "reseller_id": "int",  # 
+    "country": "string",  # 
+    "is_government": "boolean",  # 
+    "agreement_accepted": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +192,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "registration/forticloud/register-device",
     "help": "Register a device to FortiCloud through FortiGate. Currently FortiSwitches, FortiAPs and FortiExtenders are supported.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 8,
+    "required_fields_count": 5,
     "fields_with_defaults_count": 0,
 }
 

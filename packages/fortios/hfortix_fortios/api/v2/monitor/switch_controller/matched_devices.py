@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        include_dynamic: bool | None = None,
+        mac: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_include_dynamic: bool | None = None,
-        q_mac: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
         Return a list of devices that match NAC and/or dynamic port policies.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: FortiSwitch ID. Will return all devices if no ID is provided.
+            include_dynamic: If true, include devices that match dynamic port policies. Default value is false.
+            mac: FortiSwitch client MAC address.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class MatchedDevices(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_include_dynamic is not None:
-            params["include_dynamic"] = q_include_dynamic
-        if q_mac is not None:
-            params["mac"] = q_mac
+        if mkey is not None:
+            params["mkey"] = mkey
+        if include_dynamic is not None:
+            params["include_dynamic"] = include_dynamic
+        if mac is not None:
+            params["mac"] = mac
         
-        if name:
-            endpoint = f"/switch-controller/matched-devices/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/switch-controller/matched-devices"
-            unwrap_single = False
+        endpoint = "/switch-controller/matched-devices"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

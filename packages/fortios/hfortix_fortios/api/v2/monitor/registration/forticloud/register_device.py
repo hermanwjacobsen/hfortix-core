@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -87,6 +88,14 @@ class RegisterDevice(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
+        serial: str | None = None,
+        email: str | None = None,
+        password: str | None = None,
+        reseller: str | None = None,
+        reseller_id: Any | None = None,
+        country: str | None = None,
+        is_government: Any | None = None,
+        agreement_accepted: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
@@ -98,6 +107,14 @@ class RegisterDevice(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
+            serial: serial
+            email: email
+            password: password
+            reseller: reseller
+            reseller_id: reseller_id
+            country: country
+            is_government: is_government
+            agreement_accepted: agreement_accepted
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -132,6 +149,14 @@ class RegisterDevice(CRUDEndpoint, MetadataMixin):
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
         payload_data = build_api_payload(
+            serial=serial,
+            email=email,
+            password=password,
+            reseller=reseller,
+            reseller_id=reseller_id,
+            country=country,
+            is_government=is_government,
+            agreement_accepted=agreement_accepted,
             data=payload_dict,
         )
 

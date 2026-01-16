@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class CheckPortAvailability(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        port_ranges: list[str] | None = None,
+        service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_port_ranges: list[str] | None = None,
-        q_service: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class CheckPortAvailability(CRUDEndpoint, MetadataMixin):
         Check whether a list of TCP port ranges is available for a certain service.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            port_ranges: List of TCP port range objects to check against.
+            service: The service in which the ports could be available. 'service' options are [reserved | sysglobal | webproxy | ftpproxy | sslvpn | slaprobe | fsso | ftm_push]. If 'service' is not specified, the port ranges availability is checked against all services.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class CheckPortAvailability(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_port_ranges is not None:
-            params["port_ranges"] = q_port_ranges
-        if q_service is not None:
-            params["service"] = q_service
+        if port_ranges is not None:
+            params["port_ranges"] = port_ranges
+        if service is not None:
+            params["service"] = service
         
-        if name:
-            endpoint = f"/system/check-port-availability/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/check-port-availability"
-            unwrap_single = False
+        endpoint = "/system/check-port-availability"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

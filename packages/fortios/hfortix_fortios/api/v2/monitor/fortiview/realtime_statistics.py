@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,38 +85,37 @@ class RealtimeStatistics(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        srcaddr: str | None = None,
+        dstaddr: str | None = None,
+        srcaddr6: str | None = None,
+        dstaddr6: str | None = None,
+        srcport: str | None = None,
+        dstport: str | None = None,
+        srcintf: str | None = None,
+        srcintfrole: list[str] | None = None,
+        dstintf: str | None = None,
+        dstintfrole: list[str] | None = None,
+        policyid: str | None = None,
+        security_policyid: str | None = None,
+        protocol: str | None = None,
+        web_category: str | None = None,
+        web_domain: str | None = None,
+        application: str | None = None,
+        country: str | None = None,
+        seconds: str | None = None,
+        since: str | None = None,
+        owner: str | None = None,
+        username: str | None = None,
+        shaper: str | None = None,
+        srcuuid: str | None = None,
+        dstuuid: str | None = None,
+        sessionid: int | None = None,
+        report_by: str | None = None,
+        sort_by: str | None = None,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_srcaddr: str | None = None,
-        q_dstaddr: str | None = None,
-        q_srcaddr6: str | None = None,
-        q_dstaddr6: str | None = None,
-        q_srcport: str | None = None,
-        q_dstport: str | None = None,
-        q_srcintf: str | None = None,
-        q_srcintfrole: list[str] | None = None,
-        q_dstintf: str | None = None,
-        q_dstintfrole: list[str] | None = None,
-        q_policyid: str | None = None,
-        q_security_policyid: str | None = None,
-        q_protocol: str | None = None,
-        q_web_category: str | None = None,
-        q_web_domain: str | None = None,
-        q_application: str | None = None,
-        q_country: str | None = None,
-        q_seconds: str | None = None,
-        q_since: str | None = None,
-        q_owner: str | None = None,
-        q_username: str | None = None,
-        q_shaper: str | None = None,
-        q_srcuuid: str | None = None,
-        q_dstuuid: str | None = None,
-        q_sessionid: int | None = None,
-        q_report_by: str | None = None,
-        q_sort_by: str | None = None,
-        q_ip_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -127,7 +127,34 @@ class RealtimeStatistics(CRUDEndpoint, MetadataMixin):
         Retrieve realtime drill-down and summary data for FortiView.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            srcaddr: Source IPv4 address.
+            dstaddr: Destination IPv4 address.
+            srcaddr6: Source IPv6 address.
+            dstaddr6: Destination IPv6 address.
+            srcport: Source TCP port number.
+            dstport: Destination TCP port number.
+            srcintf: Source interface name.
+            srcintfrole: Source interface role name.
+            dstintf: Destination interface name.
+            dstintfrole: Destination interface role name.
+            policyid: Firewall policy ID.
+            security_policyid: NGFW policy ID.
+            protocol: Protocol type.
+            web_category: Web category ID.
+            web_domain: Web domain name.
+            application: Web application type. It can be ID, or protocol/port pair.
+            country: Geographic location.
+            seconds: Time in seconds, since the session is established.
+            since: Time when the session is established.
+            owner: Owner.
+            username: Session login user name.
+            shaper: Traffic shaper name.
+            srcuuid: UUID of source.
+            dstuuid: UUID of destination.
+            sessionid: FortiView request Session ID.
+            report_by: Report by field.
+            sort_by: Sort by field.
+            ip_version: IP version [*ipv4 | ipv6 | ipboth].
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -194,69 +221,65 @@ class RealtimeStatistics(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_srcaddr is not None:
-            params["srcaddr"] = q_srcaddr
-        if q_dstaddr is not None:
-            params["dstaddr"] = q_dstaddr
-        if q_srcaddr6 is not None:
-            params["srcaddr6"] = q_srcaddr6
-        if q_dstaddr6 is not None:
-            params["dstaddr6"] = q_dstaddr6
-        if q_srcport is not None:
-            params["srcport"] = q_srcport
-        if q_dstport is not None:
-            params["dstport"] = q_dstport
-        if q_srcintf is not None:
-            params["srcintf"] = q_srcintf
-        if q_srcintfrole is not None:
-            params["srcintfrole"] = q_srcintfrole
-        if q_dstintf is not None:
-            params["dstintf"] = q_dstintf
-        if q_dstintfrole is not None:
-            params["dstintfrole"] = q_dstintfrole
-        if q_policyid is not None:
-            params["policyid"] = q_policyid
-        if q_security_policyid is not None:
-            params["security-policyid"] = q_security_policyid
-        if q_protocol is not None:
-            params["protocol"] = q_protocol
-        if q_web_category is not None:
-            params["web-category"] = q_web_category
-        if q_web_domain is not None:
-            params["web-domain"] = q_web_domain
-        if q_application is not None:
-            params["application"] = q_application
-        if q_country is not None:
-            params["country"] = q_country
-        if q_seconds is not None:
-            params["seconds"] = q_seconds
-        if q_since is not None:
-            params["since"] = q_since
-        if q_owner is not None:
-            params["owner"] = q_owner
-        if q_username is not None:
-            params["username"] = q_username
-        if q_shaper is not None:
-            params["shaper"] = q_shaper
-        if q_srcuuid is not None:
-            params["srcuuid"] = q_srcuuid
-        if q_dstuuid is not None:
-            params["dstuuid"] = q_dstuuid
-        if q_sessionid is not None:
-            params["sessionid"] = q_sessionid
-        if q_report_by is not None:
-            params["report_by"] = q_report_by
-        if q_sort_by is not None:
-            params["sort_by"] = q_sort_by
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
+        if srcaddr is not None:
+            params["srcaddr"] = srcaddr
+        if dstaddr is not None:
+            params["dstaddr"] = dstaddr
+        if srcaddr6 is not None:
+            params["srcaddr6"] = srcaddr6
+        if dstaddr6 is not None:
+            params["dstaddr6"] = dstaddr6
+        if srcport is not None:
+            params["srcport"] = srcport
+        if dstport is not None:
+            params["dstport"] = dstport
+        if srcintf is not None:
+            params["srcintf"] = srcintf
+        if srcintfrole is not None:
+            params["srcintfrole"] = srcintfrole
+        if dstintf is not None:
+            params["dstintf"] = dstintf
+        if dstintfrole is not None:
+            params["dstintfrole"] = dstintfrole
+        if policyid is not None:
+            params["policyid"] = policyid
+        if security_policyid is not None:
+            params["security-policyid"] = security_policyid
+        if protocol is not None:
+            params["protocol"] = protocol
+        if web_category is not None:
+            params["web-category"] = web_category
+        if web_domain is not None:
+            params["web-domain"] = web_domain
+        if application is not None:
+            params["application"] = application
+        if country is not None:
+            params["country"] = country
+        if seconds is not None:
+            params["seconds"] = seconds
+        if since is not None:
+            params["since"] = since
+        if owner is not None:
+            params["owner"] = owner
+        if username is not None:
+            params["username"] = username
+        if shaper is not None:
+            params["shaper"] = shaper
+        if srcuuid is not None:
+            params["srcuuid"] = srcuuid
+        if dstuuid is not None:
+            params["dstuuid"] = dstuuid
+        if sessionid is not None:
+            params["sessionid"] = sessionid
+        if report_by is not None:
+            params["report_by"] = report_by
+        if sort_by is not None:
+            params["sort_by"] = sort_by
+        if ip_version is not None:
+            params["ip_version"] = ip_version
         
-        if name:
-            endpoint = f"/fortiview/realtime-statistics/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/fortiview/realtime-statistics"
-            unwrap_single = False
+        endpoint = "/fortiview/realtime-statistics"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

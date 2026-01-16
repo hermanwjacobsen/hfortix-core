@@ -2,6 +2,94 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SetPayload(TypedDict, total=False):
+    """
+    Type hints for system/time/set payload fields.
+    
+    Sets current system time stamp.
+    
+    **Usage:**
+        payload: SetPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    year: str  # year
+    month: str  # month
+    day: str  # day
+    hour: str  # hour
+    minute: str  # minute
+    second: str  # second
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class SetResponse(TypedDict):
+    """
+    Type hints for system/time/set API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    year: str
+    month: str
+    day: str
+    hour: str
+    minute: str
+    second: str
+
+
+@final
+class SetObject:
+    """Typed FortiObject for system/time/set with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # year
+    year: str
+    # month
+    month: str
+    # day
+    day: str
+    # hour
+    hour: str
+    # minute
+    minute: str
+    # second
+    second: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> SetPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Set:
     """
@@ -30,7 +118,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +135,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +151,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +171,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +188,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +204,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +220,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +237,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +253,7 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +283,32 @@ class Set:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> SetObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +316,25 @@ class Set:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +342,26 @@ class Set:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> SetObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +369,25 @@ class Set:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +399,13 @@ class Set:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SetPayload | None = ...,
+        year: str | None = ...,
+        month: str | None = ...,
+        day: str | None = ...,
+        hour: str | None = ...,
+        minute: str | None = ...,
+        second: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +437,7 @@ class Set:
 
 __all__ = [
     "Set",
+    "SetPayload",
+    "SetResponse",
+    "SetObject",
 ]

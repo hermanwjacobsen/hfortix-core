@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class InterferingAp(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        wtp: str | None = None,
+        radio: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_wtp: str | None = None,
-        q_radio: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class InterferingAp(CRUDEndpoint, MetadataMixin):
         Retrieve a list of interfering APs for one FortiAP radio.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            wtp: FortiAP ID to query.
+            radio: Radio ID.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class InterferingAp(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_wtp is not None:
-            params["wtp"] = q_wtp
-        if q_radio is not None:
-            params["radio"] = q_radio
+        if wtp is not None:
+            params["wtp"] = wtp
+        if radio is not None:
+            params["radio"] = radio
         
-        if name:
-            endpoint = f"/wifi/interfering_ap/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/interfering_ap"
-            unwrap_single = False
+        endpoint = "/wifi/interfering_ap"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

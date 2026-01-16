@@ -2,6 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class UpdatePayload(TypedDict, total=False):
+    """
+    Type hints for system/ha_peer/update payload fields.
+    
+    Update configuration of peer in HA cluster.
+    
+    **Usage:**
+        payload: UpdatePayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    serial_no: str  # serial_no
+    vcluster_id: str  # vcluster_id
+    priority: str  # priority
+    hostname: str  # hostname
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class UpdateResponse(TypedDict):
+    """
+    Type hints for system/ha_peer/update API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    serial_no: str
+    vcluster_id: str
+    priority: str
+    hostname: str
+
+
+@final
+class UpdateObject:
+    """Typed FortiObject for system/ha_peer/update with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # serial_no
+    serial_no: str
+    # vcluster_id
+    vcluster_id: str
+    # priority
+    priority: str
+    # hostname
+    hostname: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> UpdatePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Update:
     """
@@ -30,7 +110,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +127,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +143,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +163,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +180,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +196,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +212,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +229,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +245,7 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +275,28 @@ class Update:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> UpdateObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +304,21 @@ class Update:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +326,22 @@ class Update:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> UpdateObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +349,21 @@ class Update:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +375,11 @@ class Update:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: UpdatePayload | None = ...,
+        serial_no: str | None = ...,
+        vcluster_id: str | None = ...,
+        priority: str | None = ...,
+        hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +411,7 @@ class Update:
 
 __all__ = [
     "Update",
+    "UpdatePayload",
+    "UpdateResponse",
+    "UpdateObject",
 ]

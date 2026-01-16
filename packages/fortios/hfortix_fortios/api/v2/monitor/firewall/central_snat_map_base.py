@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        policyid: int | None = None,
+        ip_version: Literal["ipv4", "ipv6"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_policyid: int | None = None,
-        q_ip_version: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         List traffic statistics for firewall central SNAT policies.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            policyid: Filter: Policy ID.
+            ip_version: Filter: Traffic IP Version. [ ipv4 | ipv6 ], if left empty, will retrieve data for both IPv4 and IPv6.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_policyid is not None:
-            params["policyid"] = q_policyid
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
+        if policyid is not None:
+            params["policyid"] = policyid
+        if ip_version is not None:
+            params["ip_version"] = ip_version
         
-        if name:
-            endpoint = f"/firewall/central-snat-map/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/central-snat-map"
-            unwrap_single = False
+        endpoint = "/firewall/central-snat-map"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

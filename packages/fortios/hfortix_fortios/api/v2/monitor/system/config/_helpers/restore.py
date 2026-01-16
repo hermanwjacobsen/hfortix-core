@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "source",  # 
+    "scope",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,14 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "source": "string",  # 
+    "usb_filename": "string",  # 
+    "config_id": "int",  # 
+    "password": "string",  # 
+    "scope": "string",  # 
+    "vdom": "string",  # 
+    "confirm_password_mask": "boolean",  # 
+    "file_content": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +189,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/config/restore",
     "help": "Restore system configuration from uploaded file or from USB.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 8,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

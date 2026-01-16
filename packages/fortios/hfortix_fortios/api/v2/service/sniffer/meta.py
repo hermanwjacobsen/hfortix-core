@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -168,7 +169,7 @@ class Meta(CRUDEndpoint, MetadataMixin):
             params["start"] = start
         
         if name:
-            endpoint = f"/sniffer/meta/{name}"
+            endpoint = f"/sniffer/meta/{quote_path_param(name)}"
             unwrap_single = True
         else:
             endpoint = "/sniffer/meta"

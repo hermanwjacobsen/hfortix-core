@@ -2,6 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ClientPayload(TypedDict, total=False):
+    """
+    Type hints for wifi/client payload fields.
+    
+    Retrieve a list of connected WiFi clients.
+    
+    **Usage:**
+        payload: ClientPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    type: str  # type
+    with_triangulation: str  # with_triangulation
+    with_stats: str  # with_stats
+    mac: str  # mac
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class ClientResponse(TypedDict):
+    """
+    Type hints for wifi/client API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    type: str
+    with_triangulation: str
+    with_stats: str
+    mac: str
+
+
+@final
+class ClientObject:
+    """Typed FortiObject for wifi/client with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # type
+    type: str
+    # with_triangulation
+    with_triangulation: str
+    # with_stats
+    with_stats: str
+    # mac
+    mac: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> ClientPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Client:
     """
@@ -16,54 +96,22 @@ class Client:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        type: Literal["all", "fail-login"] | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +131,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +148,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +164,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +180,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +197,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +213,7 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +243,28 @@ class Client:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> ClientObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ClientPayload | None = ...,
+        type: str | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ClientObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ClientPayload | None = ...,
+        type: str | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +272,21 @@ class Client:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ClientPayload | None = ...,
+        type: str | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ClientPayload | None = ...,
+        type: str | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +298,11 @@ class Client:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ClientPayload | None = ...,
+        type: str | None = ...,
+        with_triangulation: str | None = ...,
+        with_stats: str | None = ...,
+        mac: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +334,7 @@ class Client:
 
 __all__ = [
     "Client",
+    "ClientPayload",
+    "ClientResponse",
+    "ClientObject",
 ]

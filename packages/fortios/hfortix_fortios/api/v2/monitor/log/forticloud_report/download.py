@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Download(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: int | None = None,
+        report_name: str | None = None,
+        inline: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: int | None = None,
-        q_report_name: str | None = None,
-        q_inline: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Download(CRUDEndpoint, MetadataMixin):
         Download PDF report from FortiCloud.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: FortiCloud Report ID.
+            report_name: Full filename of the report.
+            inline: Set to 1 to download the report inline.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Download(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_report_name is not None:
-            params["report_name"] = q_report_name
-        if q_inline is not None:
-            params["inline"] = q_inline
+        if mkey is not None:
+            params["mkey"] = mkey
+        if report_name is not None:
+            params["report_name"] = report_name
+        if inline is not None:
+            params["inline"] = inline
         
-        if name:
-            endpoint = f"/log/forticloud-report/download/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/log/forticloud-report/download"
-            unwrap_single = False
+        endpoint = "/log/forticloud-report/download"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

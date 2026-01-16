@@ -2,6 +2,82 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class DownloadEvalPayload(TypedDict, total=False):
+    """
+    Type hints for system/vmlicense/download_eval payload fields.
+    
+    Download Evaluation VM License and reboot immediately if successful.
+    
+    **Usage:**
+        payload: DownloadEvalPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    account_id: str  # account_id
+    account_password: str  # account_password
+    is_government: str  # is_government
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class DownloadEvalResponse(TypedDict):
+    """
+    Type hints for system/vmlicense/download_eval API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    account_id: str
+    account_password: str
+    is_government: str
+
+
+@final
+class DownloadEvalObject:
+    """Typed FortiObject for system/vmlicense/download_eval with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # account_id
+    account_id: str
+    # account_password
+    account_password: str
+    # is_government
+    is_government: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> DownloadEvalPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class DownloadEval:
     """
@@ -30,7 +106,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +123,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +139,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +159,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +176,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +192,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +208,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +225,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +241,7 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +271,26 @@ class DownloadEval:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> DownloadEvalObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +298,19 @@ class DownloadEval:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +318,20 @@ class DownloadEval:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> DownloadEvalObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +339,19 @@ class DownloadEval:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +363,10 @@ class DownloadEval:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: DownloadEvalPayload | None = ...,
+        account_id: str | None = ...,
+        account_password: str | None = ...,
+        is_government: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +398,7 @@ class DownloadEval:
 
 __all__ = [
     "DownloadEval",
+    "DownloadEvalPayload",
+    "DownloadEvalResponse",
+    "DownloadEvalObject",
 ]

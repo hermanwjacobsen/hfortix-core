@@ -2,6 +2,78 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class PushPayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/fsw_firmware/push payload fields.
+    
+    Push FortiSwitch firmware to the given device.
+    
+    **Usage:**
+        payload: PushPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    switch_id: str  # switch_id
+    image_id: str  # image_id
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class PushResponse(TypedDict):
+    """
+    Type hints for switch_controller/fsw_firmware/push API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    switch_id: str
+    image_id: str
+
+
+@final
+class PushObject:
+    """Typed FortiObject for switch_controller/fsw_firmware/push with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # switch_id
+    switch_id: str
+    # image_id
+    image_id: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> PushPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Push:
     """
@@ -30,7 +102,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +119,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +135,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +155,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +172,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +188,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +204,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +221,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +237,7 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +267,24 @@ class Push:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> PushObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +292,17 @@ class Push:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +310,18 @@ class Push:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PushObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +329,17 @@ class Push:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +351,9 @@ class Push:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PushPayload | None = ...,
+        switch_id: str | None = ...,
+        image_id: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +385,7 @@ class Push:
 
 __all__ = [
     "Push",
+    "PushPayload",
+    "PushResponse",
+    "PushObject",
 ]

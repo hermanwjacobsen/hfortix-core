@@ -2,6 +2,106 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ReportPayload(TypedDict, total=False):
+    """
+    Type hints for sdwan/link_monitor_metrics/report payload fields.
+    
+    Report the application-level performance metrics collected by other fabric devices.
+    
+    **Usage:**
+        payload: ReportPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    agent_ip: str  # agent_ip
+    application_name: str  # application_name
+    application_id: str  # application_id
+    latency: str  # latency
+    jitter: str  # jitter
+    packet_loss: str  # packet_loss
+    ntt: str  # ntt
+    srt: str  # srt
+    application_error: str  # application_error
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class ReportResponse(TypedDict):
+    """
+    Type hints for sdwan/link_monitor_metrics/report API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    agent_ip: str
+    application_name: str
+    application_id: str
+    latency: str
+    jitter: str
+    packet_loss: str
+    ntt: str
+    srt: str
+    application_error: str
+
+
+@final
+class ReportObject:
+    """Typed FortiObject for sdwan/link_monitor_metrics/report with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # agent_ip
+    agent_ip: str
+    # application_name
+    application_name: str
+    # application_id
+    application_id: str
+    # latency
+    latency: str
+    # jitter
+    jitter: str
+    # packet_loss
+    packet_loss: str
+    # ntt
+    ntt: str
+    # srt
+    srt: str
+    # application_error
+    application_error: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> ReportPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Report:
     """
@@ -30,7 +130,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +147,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +163,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +183,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +200,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +216,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +232,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +249,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +265,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +295,38 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> ReportObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +334,31 @@ class Report:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +366,32 @@ class Report:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +399,31 @@ class Report:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +435,16 @@ class Report:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        agent_ip: str | None = ...,
+        application_name: str | None = ...,
+        application_id: str | None = ...,
+        latency: str | None = ...,
+        jitter: str | None = ...,
+        packet_loss: str | None = ...,
+        ntt: str | None = ...,
+        srt: str | None = ...,
+        application_error: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +476,7 @@ class Report:
 
 __all__ = [
     "Report",
+    "ReportPayload",
+    "ReportResponse",
+    "ReportObject",
 ]

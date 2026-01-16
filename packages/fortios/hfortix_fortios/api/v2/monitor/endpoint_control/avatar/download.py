@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class Download(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        uid: str | None = None,
+        user: str | None = None,
+        fingerprint: str | None = None,
+        default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_uid: str | None = None,
-        q_user: str | None = None,
-        q_fingerprint: str | None = None,
-        q_default: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class Download(CRUDEndpoint, MetadataMixin):
         Download an endpoint avatar image.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            uid: Single FortiClient UID.
+            user: User name of the endpoint.
+            fingerprint: Avatar fingerprint.
+            default: Default avatar name ['authuser'|'unauthuser'|'authuser_72'|'unauthuser_72']. Default avatar when endpoint / device avatar is not available. If default is not set, Not found 404 is returned.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class Download(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_uid is not None:
-            params["uid"] = q_uid
-        if q_user is not None:
-            params["user"] = q_user
-        if q_fingerprint is not None:
-            params["fingerprint"] = q_fingerprint
-        if q_default is not None:
-            params["default"] = q_default
+        if uid is not None:
+            params["uid"] = uid
+        if user is not None:
+            params["user"] = user
+        if fingerprint is not None:
+            params["fingerprint"] = fingerprint
+        if default is not None:
+            params["default"] = default
         
-        if name:
-            endpoint = f"/endpoint-control/avatar/download/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/endpoint-control/avatar/download"
-            unwrap_single = False
+        endpoint = "/endpoint-control/avatar/download"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class Policy6(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        count_only: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_count_only: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class Policy6(CRUDEndpoint, MetadataMixin):
         Retrieve a list of active IPv6 policy routes.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            count_only: Returns the number of IPv6 policy routes only.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class Policy6(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_count_only is not None:
-            params["count_only"] = q_count_only
+        if count_only is not None:
+            params["count_only"] = count_only
         
-        if name:
-            endpoint = f"/router/policy6/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/router/policy6"
-            unwrap_single = False
+        endpoint = "/router/policy6"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

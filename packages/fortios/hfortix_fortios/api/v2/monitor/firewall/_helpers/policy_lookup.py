@@ -32,6 +32,10 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "srcintf",  # 
+    "sourceip",  # 
+    "protocol",  # 
+    "dest",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +58,21 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ipv6": "boolean",  # 
+    "srcintf": "string",  # 
+    "sourceport": "int",  # 
+    "sourceip": "string",  # 
+    "protocol": "string",  # 
+    "dest": "string",  # 
+    "destport": "int",  # 
+    "icmptype": "int",  # 
+    "icmpcode": "int",  # 
+    "policy_type": "string",  # 
+    "auth_type": "string",  # 
+    "user_group": "array",  # 
+    "server_name": "string",  # 
+    "user_db": "string",  # 
+    "group_attr_type": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +198,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "firewall/policy-lookup",
     "help": "Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 15,
+    "required_fields_count": 4,
     "fields_with_defaults_count": 0,
 }
 

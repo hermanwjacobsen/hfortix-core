@@ -32,6 +32,8 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "mkey",  # 
+    "report_name",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +56,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "mkey": "int",  # 
+    "report_name": "string",  # 
+    "inline": "int",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +184,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "log/forticloud-report/download",
     "help": "Download PDF report from FortiCloud.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 3,
+    "required_fields_count": 2,
     "fields_with_defaults_count": 0,
 }
 

@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class TierPlusCandidates(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        fortilink: str | None = None,
+        parent_peer1: str | None = None,
+        parent_peer2: str | None = None,
+        is_tier2: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_fortilink: str | None = None,
-        q_parent_peer1: str | None = None,
-        q_parent_peer2: str | None = None,
-        q_is_tier2: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class TierPlusCandidates(CRUDEndpoint, MetadataMixin):
         Find a pair of FortiSwitches that are eligible to form a tier 2/3 MC-LAG.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            fortilink: FortiLink interface name.
+            parent_peer1: FortiSwitch ID for MC-LAG parent peer 1.
+            parent_peer2: FortiSwitch ID for MC-LAG parent peer 2.
+            is_tier2: Whether candidates are for a Tier 2 MC-LAG.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class TierPlusCandidates(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_fortilink is not None:
-            params["fortilink"] = q_fortilink
-        if q_parent_peer1 is not None:
-            params["parent_peer1"] = q_parent_peer1
-        if q_parent_peer2 is not None:
-            params["parent_peer2"] = q_parent_peer2
-        if q_is_tier2 is not None:
-            params["is_tier2"] = q_is_tier2
+        if fortilink is not None:
+            params["fortilink"] = fortilink
+        if parent_peer1 is not None:
+            params["parent_peer1"] = parent_peer1
+        if parent_peer2 is not None:
+            params["parent_peer2"] = parent_peer2
+        if is_tier2 is not None:
+            params["is_tier2"] = is_tier2
         
-        if name:
-            endpoint = f"/switch-controller/mclag-icl/tier-plus-candidates/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/switch-controller/mclag-icl/tier-plus-candidates"
-            unwrap_single = False
+        endpoint = "/switch-controller/mclag-icl/tier-plus-candidates"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

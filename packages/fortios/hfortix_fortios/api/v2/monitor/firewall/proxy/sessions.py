@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,31 +85,30 @@ class Sessions(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        summary: bool | None = None,
+        srcaddr: str | None = None,
+        dstaddr: str | None = None,
+        srcaddr6: str | None = None,
+        dstaddr6: str | None = None,
+        srcport: str | None = None,
+        dstport: str | None = None,
+        srcintf: str | None = None,
+        dstintf: str | None = None,
+        policyid: str | None = None,
+        proxy_policyid: str | None = None,
+        protocol: str | None = None,
+        application: str | None = None,
+        country: str | None = None,
+        seconds: str | None = None,
+        since: str | None = None,
+        owner: str | None = None,
+        username: str | None = None,
+        src_uuid: str | None = None,
+        dst_uuid: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ip_version: str | None = None,
-        q_summary: bool | None = None,
-        q_srcaddr: str | None = None,
-        q_dstaddr: str | None = None,
-        q_srcaddr6: str | None = None,
-        q_dstaddr6: str | None = None,
-        q_srcport: str | None = None,
-        q_dstport: str | None = None,
-        q_srcintf: str | None = None,
-        q_dstintf: str | None = None,
-        q_policyid: str | None = None,
-        q_proxy_policyid: str | None = None,
-        q_protocol: str | None = None,
-        q_application: str | None = None,
-        q_country: str | None = None,
-        q_seconds: str | None = None,
-        q_since: str | None = None,
-        q_owner: str | None = None,
-        q_username: str | None = None,
-        q_src_uuid: str | None = None,
-        q_dst_uuid: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -120,7 +120,28 @@ class Sessions(CRUDEndpoint, MetadataMixin):
         List all active proxy sessions (optionally filtered).
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ip_version: IP version [*ipv4 | ipv6 | ipboth].
+            count: Maximum number of entries to return. Valid range is [20, 1000]; if a value is specified out of that range, it will be rounded up or down.
+            summary: Enable/disable inclusion of session summary (setup rate, total sessions, etc).
+            srcaddr: Source IPv4 address.
+            dstaddr: Destination IPv4 address.
+            srcaddr6: Source IPv6 address.
+            dstaddr6: Destination IPv6 address.
+            srcport: Source TCP port number.
+            dstport: Destination TCP port number.
+            srcintf: Source interface name.
+            dstintf: Destination interface name.
+            policyid: Firewall policy ID.
+            proxy_policyid: Explicit proxy policy ID.
+            protocol: Protocol type.
+            application: Web application type.
+            country: Geographic location.
+            seconds: Time in seconds, since the session is established.
+            since: Time when the session is established.
+            owner: Owner.
+            username: Session login user name.
+            src_uuid: UUID of source.
+            dst_uuid: UUID of destination.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -187,55 +208,51 @@ class Sessions(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ip_version is not None:
-            params["ip_version"] = q_ip_version
-        if q_summary is not None:
-            params["summary"] = q_summary
-        if q_srcaddr is not None:
-            params["srcaddr"] = q_srcaddr
-        if q_dstaddr is not None:
-            params["dstaddr"] = q_dstaddr
-        if q_srcaddr6 is not None:
-            params["srcaddr6"] = q_srcaddr6
-        if q_dstaddr6 is not None:
-            params["dstaddr6"] = q_dstaddr6
-        if q_srcport is not None:
-            params["srcport"] = q_srcport
-        if q_dstport is not None:
-            params["dstport"] = q_dstport
-        if q_srcintf is not None:
-            params["srcintf"] = q_srcintf
-        if q_dstintf is not None:
-            params["dstintf"] = q_dstintf
-        if q_policyid is not None:
-            params["policyid"] = q_policyid
-        if q_proxy_policyid is not None:
-            params["proxy-policyid"] = q_proxy_policyid
-        if q_protocol is not None:
-            params["protocol"] = q_protocol
-        if q_application is not None:
-            params["application"] = q_application
-        if q_country is not None:
-            params["country"] = q_country
-        if q_seconds is not None:
-            params["seconds"] = q_seconds
-        if q_since is not None:
-            params["since"] = q_since
-        if q_owner is not None:
-            params["owner"] = q_owner
-        if q_username is not None:
-            params["username"] = q_username
-        if q_src_uuid is not None:
-            params["src_uuid"] = q_src_uuid
-        if q_dst_uuid is not None:
-            params["dst_uuid"] = q_dst_uuid
+        if ip_version is not None:
+            params["ip_version"] = ip_version
+        if summary is not None:
+            params["summary"] = summary
+        if srcaddr is not None:
+            params["srcaddr"] = srcaddr
+        if dstaddr is not None:
+            params["dstaddr"] = dstaddr
+        if srcaddr6 is not None:
+            params["srcaddr6"] = srcaddr6
+        if dstaddr6 is not None:
+            params["dstaddr6"] = dstaddr6
+        if srcport is not None:
+            params["srcport"] = srcport
+        if dstport is not None:
+            params["dstport"] = dstport
+        if srcintf is not None:
+            params["srcintf"] = srcintf
+        if dstintf is not None:
+            params["dstintf"] = dstintf
+        if policyid is not None:
+            params["policyid"] = policyid
+        if proxy_policyid is not None:
+            params["proxy-policyid"] = proxy_policyid
+        if protocol is not None:
+            params["protocol"] = protocol
+        if application is not None:
+            params["application"] = application
+        if country is not None:
+            params["country"] = country
+        if seconds is not None:
+            params["seconds"] = seconds
+        if since is not None:
+            params["since"] = since
+        if owner is not None:
+            params["owner"] = owner
+        if username is not None:
+            params["username"] = username
+        if src_uuid is not None:
+            params["src_uuid"] = src_uuid
+        if dst_uuid is not None:
+            params["dst_uuid"] = dst_uuid
         
-        if name:
-            endpoint = f"/firewall/proxy/sessions/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/proxy/sessions"
-            unwrap_single = False
+        endpoint = "/firewall/proxy/sessions"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

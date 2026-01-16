@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,14 @@ class GlobalSearch(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        search: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        search_tables: Literal["firewall.address", "firewall.address6"] | None = None,
+        skip_tables: Literal["firewall.address", "firewall.address6"] | None = None,
+        exact: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_search: str | None = None,
-        q_scope: str | None = None,
-        q_search_tables: list[str] | None = None,
-        q_skip_tables: list[str] | None = None,
-        q_exact: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -104,7 +104,11 @@ class GlobalSearch(CRUDEndpoint, MetadataMixin):
         Search for CMDB table objects based on search phrase.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            search: Phrase used for searching.
+            scope: Search scope [vdom|global].
+            search_tables: Array of CMDB tables to search on. If not defined, global search function will do a search on all tables that the current user has read permission on. E.g ['firewall.address', 'firewall.address6'].
+            skip_tables: Array of CMDB tables to be skipped when doing global search. E.g. ['firewall.address', 'firewall.address6'].
+            exact: If true, only entries with exact match will be returned.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -171,23 +175,19 @@ class GlobalSearch(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_search is not None:
-            params["search"] = q_search
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_search_tables is not None:
-            params["search_tables"] = q_search_tables
-        if q_skip_tables is not None:
-            params["skip_tables"] = q_skip_tables
-        if q_exact is not None:
-            params["exact"] = q_exact
+        if search is not None:
+            params["search"] = search
+        if scope is not None:
+            params["scope"] = scope
+        if search_tables is not None:
+            params["search_tables"] = search_tables
+        if skip_tables is not None:
+            params["skip_tables"] = skip_tables
+        if exact is not None:
+            params["exact"] = exact
         
-        if name:
-            endpoint = f"/system/global-search/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/global-search"
-            unwrap_single = False
+        endpoint = "/system/global-search"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

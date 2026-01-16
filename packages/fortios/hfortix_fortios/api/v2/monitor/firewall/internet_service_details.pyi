@@ -2,6 +2,94 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class InternetServiceDetailsPayload(TypedDict, total=False):
+    """
+    Type hints for firewall/internet_service_details payload fields.
+    
+    List all details for a given Internet Service ID.
+    
+    **Usage:**
+        payload: InternetServiceDetailsPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    id: str  # id
+    country_id: str  # country_id
+    region_id: str  # region_id
+    city_id: str  # city_id
+    summary_only: str  # summary_only
+    ipv6_only: str  # ipv6_only
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class InternetServiceDetailsResponse(TypedDict):
+    """
+    Type hints for firewall/internet_service_details API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    id: str
+    country_id: str
+    region_id: str
+    city_id: str
+    summary_only: str
+    ipv6_only: str
+
+
+@final
+class InternetServiceDetailsObject:
+    """Typed FortiObject for firewall/internet_service_details with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # id
+    id: str
+    # country_id
+    country_id: str
+    # region_id
+    region_id: str
+    # city_id
+    city_id: str
+    # summary_only
+    summary_only: str
+    # ipv6_only
+    ipv6_only: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> InternetServiceDetailsPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class InternetServiceDetails:
     """
@@ -16,54 +104,24 @@ class InternetServiceDetails:
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
+    # Service/Monitor endpoint with query parameters
     @overload
     def get(
         self,
         *,
-        name: str,
+        id: str,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +141,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +158,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +174,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +190,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +207,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +223,7 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +253,32 @@ class InternetServiceDetails:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> InternetServiceDetailsObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InternetServiceDetailsPayload | None = ...,
+        id: str | None = ...,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> InternetServiceDetailsObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InternetServiceDetailsPayload | None = ...,
+        id: str | None = ...,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +286,25 @@ class InternetServiceDetails:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InternetServiceDetailsPayload | None = ...,
+        id: str | None = ...,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InternetServiceDetailsPayload | None = ...,
+        id: str | None = ...,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +316,13 @@ class InternetServiceDetails:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: InternetServiceDetailsPayload | None = ...,
+        id: str | None = ...,
+        country_id: str | None = ...,
+        region_id: str | None = ...,
+        city_id: str | None = ...,
+        summary_only: str | None = ...,
+        ipv6_only: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +354,7 @@ class InternetServiceDetails:
 
 __all__ = [
     "InternetServiceDetails",
+    "InternetServiceDetailsPayload",
+    "InternetServiceDetailsResponse",
+    "InternetServiceDetailsObject",
 ]

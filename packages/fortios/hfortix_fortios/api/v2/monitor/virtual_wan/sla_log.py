@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,19 +85,18 @@ class SlaLog(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        sla: list[str] | None = None,
+        interface: str | None = None,
+        since: int | None = None,
+        seconds: int | None = None,
+        latest: bool | None = None,
+        min_sample_interval: int | None = None,
+        sampling_interval: int | None = None,
+        skip_vpn_child: bool | None = None,
+        include_sla_targets_met: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_sla: list[str] | None = None,
-        q_interface: str | None = None,
-        q_since: int | None = None,
-        q_seconds: int | None = None,
-        q_latest: bool | None = None,
-        q_min_sample_interval: int | None = None,
-        q_sampling_interval: int | None = None,
-        q_skip_vpn_child: bool | None = None,
-        q_include_sla_targets_met: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -108,7 +108,15 @@ class SlaLog(CRUDEndpoint, MetadataMixin):
         Retrieve logs of SLA probe results for the specified SD-WAN SLA or health check name.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            sla: Filter: SLA names.
+            interface: Filter: Interface name.
+            since: Filter: Only return SLA logs generated since this Unix timestamp.
+            seconds: Filter: Only return SLA logs generated in the last N seconds.
+            latest: If set, will only return the latest log, in the meantime, since, seconds, or sampling_interval will be ignored.
+            min_sample_interval: Minimum seconds between kept log samples. Returned samples may not be evenly spaced (default: 5).
+            sampling_interval: Deprecated: Use min_sample_interval instead
+            skip_vpn_child: If set, will skip all VPN child interfaces.
+            include_sla_targets_met: If set, will return SLA targets that are met. Can only be used when "latest" is set.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -175,31 +183,27 @@ class SlaLog(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_sla is not None:
-            params["sla"] = q_sla
-        if q_interface is not None:
-            params["interface"] = q_interface
-        if q_since is not None:
-            params["since"] = q_since
-        if q_seconds is not None:
-            params["seconds"] = q_seconds
-        if q_latest is not None:
-            params["latest"] = q_latest
-        if q_min_sample_interval is not None:
-            params["min_sample_interval"] = q_min_sample_interval
-        if q_sampling_interval is not None:
-            params["sampling_interval"] = q_sampling_interval
-        if q_skip_vpn_child is not None:
-            params["skip_vpn_child"] = q_skip_vpn_child
-        if q_include_sla_targets_met is not None:
-            params["include_sla_targets_met"] = q_include_sla_targets_met
+        if sla is not None:
+            params["sla"] = sla
+        if interface is not None:
+            params["interface"] = interface
+        if since is not None:
+            params["since"] = since
+        if seconds is not None:
+            params["seconds"] = seconds
+        if latest is not None:
+            params["latest"] = latest
+        if min_sample_interval is not None:
+            params["min_sample_interval"] = min_sample_interval
+        if sampling_interval is not None:
+            params["sampling_interval"] = sampling_interval
+        if skip_vpn_child is not None:
+            params["skip_vpn_child"] = skip_vpn_child
+        if include_sla_targets_met is not None:
+            params["include_sla_targets_met"] = include_sla_targets_met
         
-        if name:
-            endpoint = f"/virtual-wan/sla-log/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/virtual-wan/sla-log"
-            unwrap_single = False
+        endpoint = "/virtual-wan/sla-log"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

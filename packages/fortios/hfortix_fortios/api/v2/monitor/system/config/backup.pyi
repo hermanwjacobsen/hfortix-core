@@ -2,6 +2,98 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class BackupPayload(TypedDict, total=False):
+    """
+    Type hints for system/config/backup payload fields.
+    
+    Backup system config
+    
+    **Usage:**
+        payload: BackupPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    destination: str  # destination
+    usb_filename: str  # usb_filename
+    password: str  # password
+    scope: str  # scope
+    vdom: str  # vdom
+    password_mask: str  # password_mask
+    file_format: str  # file_format
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class BackupResponse(TypedDict):
+    """
+    Type hints for system/config/backup API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    destination: str
+    usb_filename: str
+    password: str
+    scope: str
+    vdom: str
+    password_mask: str
+    file_format: str
+
+
+@final
+class BackupObject:
+    """Typed FortiObject for system/config/backup with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # destination
+    destination: str
+    # usb_filename
+    usb_filename: str
+    # password
+    password: str
+    # scope
+    scope: str
+    # vdom
+    vdom: str
+    # password_mask
+    password_mask: str
+    # file_format
+    file_format: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> BackupPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Backup:
     """
@@ -30,7 +122,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +139,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +155,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +175,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +192,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +208,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +224,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +241,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +257,7 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +287,32 @@ class Backup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> BackupObject | dict[str, Any]: ...
     
     # POST overloads
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +320,25 @@ class Backup:
     @overload
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -230,14 +346,26 @@ class Backup:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> BackupObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -245,13 +373,25 @@ class Backup:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -263,7 +403,13 @@ class Backup:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: BackupPayload | None = ...,
+        destination: str | None = ...,
+        usb_filename: str | None = ...,
+        password: str | None = ...,
+        scope: str | None = ...,
+        password_mask: str | None = ...,
+        file_format: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,4 +441,7 @@ class Backup:
 
 __all__ = [
     "Backup",
+    "BackupPayload",
+    "BackupResponse",
+    "BackupObject",
 ]

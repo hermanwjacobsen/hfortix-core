@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class Client(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        type: Literal["all", "fail-login"] | None = None,
+        with_triangulation: bool | None = None,
+        with_stats: bool | None = None,
+        mac: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_type: str | None = None,
-        q_with_triangulation: bool | None = None,
-        q_with_stats: bool | None = None,
-        q_mac: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class Client(CRUDEndpoint, MetadataMixin):
         Retrieve a list of connected WiFi clients.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            type: Request type [all*|fail-login].
+            with_triangulation: Enable to include regions of FortiAP detecting the client.
+            with_stats: Enable to include statistics of FortiAP client.
+            mac: WiFi client MAC address.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class Client(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_type is not None:
-            params["type"] = q_type
-        if q_with_triangulation is not None:
-            params["with_triangulation"] = q_with_triangulation
-        if q_with_stats is not None:
-            params["with_stats"] = q_with_stats
-        if q_mac is not None:
-            params["mac"] = q_mac
+        if type is not None:
+            params["type"] = type
+        if with_triangulation is not None:
+            params["with_triangulation"] = with_triangulation
+        if with_stats is not None:
+            params["with_stats"] = with_stats
+        if mac is not None:
+            params["mac"] = mac
         
-        if name:
-            endpoint = f"/wifi/client/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/wifi/client"
-            unwrap_single = False
+        endpoint = "/wifi/client"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

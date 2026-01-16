@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,14 +85,13 @@ class InternetServiceMatch(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ip: str | None = None,
+        is_ipv6: bool | None = None,
+        ipv4_mask: str | None = None,
+        ipv6_prefix: int | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ip: str | None = None,
-        q_is_ipv6: bool | None = None,
-        q_ipv4_mask: str | None = None,
-        q_ipv6_prefix: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -103,7 +103,10 @@ class InternetServiceMatch(CRUDEndpoint, MetadataMixin):
         List internet services that exist at a given IP or Subnet.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ip: IP (in dot-decimal notation).
+            is_ipv6: Whether IP is IPv6. If not provided, will determine IP version based on given IP, but setting is_ipv6 flag is recommended.
+            ipv4_mask: IPv4 address mask (in dot-decimal notation). Required if is_ipv6 is false. Example: 255.255.255.255
+            ipv6_prefix: IPv6 address prefix. Required if is_ipv6 is true. Example: 128
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -170,21 +173,17 @@ class InternetServiceMatch(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ip is not None:
-            params["ip"] = q_ip
-        if q_is_ipv6 is not None:
-            params["is_ipv6"] = q_is_ipv6
-        if q_ipv4_mask is not None:
-            params["ipv4_mask"] = q_ipv4_mask
-        if q_ipv6_prefix is not None:
-            params["ipv6_prefix"] = q_ipv6_prefix
+        if ip is not None:
+            params["ip"] = ip
+        if is_ipv6 is not None:
+            params["is_ipv6"] = is_ipv6
+        if ipv4_mask is not None:
+            params["ipv4_mask"] = ipv4_mask
+        if ipv6_prefix is not None:
+            params["ipv6_prefix"] = ipv6_prefix
         
-        if name:
-            endpoint = f"/firewall/internet-service-match/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/firewall/internet-service-match"
-            unwrap_single = False
+        endpoint = "/firewall/internet-service-match"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

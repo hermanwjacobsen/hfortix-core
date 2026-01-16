@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,11 +85,10 @@ class InterfaceConnectedAdminsInfo(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        interface: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_interface: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -100,7 +100,7 @@ class InterfaceConnectedAdminsInfo(CRUDEndpoint, MetadataMixin):
         Return admins info that are connected to current interface.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            interface: Interface that admins is connected through.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -167,15 +167,11 @@ class InterfaceConnectedAdminsInfo(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_interface is not None:
-            params["interface"] = q_interface
+        if interface is not None:
+            params["interface"] = interface
         
-        if name:
-            endpoint = f"/system/interface-connected-admins-info/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/system/interface-connected-admins-info"
-            unwrap_single = False
+        endpoint = "/system/interface-connected-admins-info"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

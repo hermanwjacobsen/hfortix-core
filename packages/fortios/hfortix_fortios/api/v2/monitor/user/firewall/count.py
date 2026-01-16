@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Count(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        ipv4: bool | None = None,
+        ipv6: bool | None = None,
+        include_fsso: bool | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_ipv4: bool | None = None,
-        q_ipv6: bool | None = None,
-        q_include_fsso: bool | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Count(CRUDEndpoint, MetadataMixin):
         Get the number of authenticated firewall users.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            ipv4: Include IPv4 users (default=true).
+            ipv6: Include IPv6 users (default=false).
+            include_fsso: Include FSSO users (default=true).
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Count(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_ipv4 is not None:
-            params["ipv4"] = q_ipv4
-        if q_ipv6 is not None:
-            params["ipv6"] = q_ipv6
-        if q_include_fsso is not None:
-            params["include_fsso"] = q_include_fsso
+        if ipv4 is not None:
+            params["ipv4"] = ipv4
+        if ipv6 is not None:
+            params["ipv6"] = ipv6
+        if include_fsso is not None:
+            params["include_fsso"] = include_fsso
         
-        if name:
-            endpoint = f"/user/firewall/count/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/firewall/count"
-            unwrap_single = False
+        endpoint = "/user/firewall/count"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

@@ -54,6 +54,9 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "ipv4": "boolean",  # 
+    "ipv6": "boolean",  # 
+    "include_fsso": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +182,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "user/firewall/count",
     "help": "Get the number of authenticated firewall users.",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

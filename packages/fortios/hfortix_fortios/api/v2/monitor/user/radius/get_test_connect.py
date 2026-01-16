@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,17 +85,16 @@ class GetTestConnect(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        ordinal: str | None = None,
+        server: str | None = None,
+        secret: str | None = None,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = None,
+        user: str | None = None,
+        password: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_ordinal: str | None = None,
-        q_server: str | None = None,
-        q_secret: str | None = None,
-        q_auth_type: str | None = None,
-        q_user: str | None = None,
-        q_password: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -106,7 +106,13 @@ class GetTestConnect(CRUDEndpoint, MetadataMixin):
         Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Name of FortiGate's RADIUS object whose settings to test.
+            ordinal: If 'mkey' is provided, the server-secret pair to use from the object: 'primary', 'secondary' or 'tertiary'. Defaults to 'primary'.
+            server: Host name or IP of a RADIUS server. If 'mkey' is provided, this overrides the 'server' value in the object.
+            secret: Secret password for the RADIUS server. If 'mkey' is provided, this overrides the 'secret' value in the object.
+            auth_type: Authentication protocol to use [auto|ms_chap_v2|ms_chap|chap|pap]. If 'mkey' is provided, this overrides the 'auth-type' value in the object.
+            user: User name whose access to check.
+            password: User's password.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -173,27 +179,23 @@ class GetTestConnect(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_ordinal is not None:
-            params["ordinal"] = q_ordinal
-        if q_server is not None:
-            params["server"] = q_server
-        if q_secret is not None:
-            params["secret"] = q_secret
-        if q_auth_type is not None:
-            params["auth_type"] = q_auth_type
-        if q_user is not None:
-            params["user"] = q_user
-        if q_password is not None:
-            params["password"] = q_password
+        if mkey is not None:
+            params["mkey"] = mkey
+        if ordinal is not None:
+            params["ordinal"] = ordinal
+        if server is not None:
+            params["server"] = server
+        if secret is not None:
+            params["secret"] = secret
+        if auth_type is not None:
+            params["auth_type"] = auth_type
+        if user is not None:
+            params["user"] = user
+        if password is not None:
+            params["password"] = password
         
-        if name:
-            endpoint = f"/user/radius/get-test-connect/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/user/radius/get-test-connect"
-            unwrap_single = False
+        endpoint = "/user/radius/get-test-connect"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

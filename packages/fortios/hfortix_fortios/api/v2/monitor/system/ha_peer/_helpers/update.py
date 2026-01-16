@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "serial_no",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,10 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "serial_no": "string",  # 
+    "vcluster_id": "int",  # 
+    "priority": "int",  # 
+    "hostname": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +184,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "system/ha-peer/update",
     "help": "Update configuration of peer in HA cluster.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 4,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

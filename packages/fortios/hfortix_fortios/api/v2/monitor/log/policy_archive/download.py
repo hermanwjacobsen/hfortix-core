@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,13 +85,12 @@ class Download(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: int | None = None,
+        srcip: str | None = None,
+        dstip: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: int | None = None,
-        q_srcip: str | None = None,
-        q_dstip: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -102,7 +102,9 @@ class Download(CRUDEndpoint, MetadataMixin):
         Download policy-based packet capture archive.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: Session ID (from traffic log).
+            srcip: Source IP.
+            dstip: Destination IP.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -169,19 +171,15 @@ class Download(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_srcip is not None:
-            params["srcip"] = q_srcip
-        if q_dstip is not None:
-            params["dstip"] = q_dstip
+        if mkey is not None:
+            params["mkey"] = mkey
+        if srcip is not None:
+            params["srcip"] = srcip
+        if dstip is not None:
+            params["dstip"] = dstip
         
-        if name:
-            endpoint = f"/log/policy-archive/download/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/log/policy-archive/download"
-            unwrap_single = False
+        endpoint = "/log/policy-archive/download"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

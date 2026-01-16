@@ -54,6 +54,15 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "sla": "array",  # 
+    "interface": "string",  # 
+    "since": "int",  # 
+    "seconds": "int",  # 
+    "latest": "boolean",  # 
+    "min_sample_interval": "int",  # 
+    "sampling_interval": "int",  # 
+    "skip_vpn_child": "boolean",  # 
+    "include_sla_targets_met": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,7 +188,7 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "virtual-wan/sla-log",
     "help": "Retrieve logs of SLA probe results for the specified SD-WAN SLA or health check name.",
-    "total_fields": 0,
+    "total_fields": 9,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

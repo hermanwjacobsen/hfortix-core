@@ -32,6 +32,10 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "email",  # 
+    "password",  # 
+    "old_email",  # 
+    "old_password",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +58,11 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "email": "string",  # 
+    "password": "string",  # 
+    "old_email": "string",  # 
+    "old_password": "string",  # 
+    "is_government": "boolean",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +188,8 @@ SCHEMA_INFO = {
     "category": "monitor",
     "api_path": "registration/forticare/transfer",
     "help": "Transfer to a new FortiCare account.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 5,
+    "required_fields_count": 4,
     "fields_with_defaults_count": 0,
 }
 

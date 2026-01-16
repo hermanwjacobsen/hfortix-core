@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,15 +85,14 @@ class Report(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        scope: Literal["global", "vdom"] | None = None,
+        standalone: str | None = None,
+        type: Literal["psirt", "insight"] | None = None,
+        checks: str | None = None,
+        show_hidden: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_scope: str | None = None,
-        q_standalone: str | None = None,
-        q_type: str | None = None,
-        q_checks: str | None = None,
-        q_show_hidden: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -104,7 +104,11 @@ class Report(CRUDEndpoint, MetadataMixin):
         Retrieve full report of all Security Rating tests.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            scope: Scope of the request [global | vdom*].
+            standalone: If enabled this will only return a report with checks for the current FortiGate.
+            type: The report sub-type to fetch ['psirt', 'insight'].
+            checks: Retrieve a report with only the given Security Rating checks.
+            show_hidden: Show hidden Security Rating controls in the report.
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -171,23 +175,19 @@ class Report(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_scope is not None:
-            params["scope"] = q_scope
-        if q_standalone is not None:
-            params["standalone"] = q_standalone
-        if q_type is not None:
-            params["type"] = q_type
-        if q_checks is not None:
-            params["checks"] = q_checks
-        if q_show_hidden is not None:
-            params["show-hidden"] = q_show_hidden
+        if scope is not None:
+            params["scope"] = scope
+        if standalone is not None:
+            params["standalone"] = standalone
+        if type is not None:
+            params["type"] = type
+        if checks is not None:
+            params["checks"] = checks
+        if show_hidden is not None:
+            params["show-hidden"] = show_hidden
         
-        if name:
-            endpoint = f"/security-rating/report/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/security-rating/report"
-            unwrap_single = False
+        endpoint = "/security-rating/report"
+        unwrap_single = False
         
         return self._client.get(
             "service", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single

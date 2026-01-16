@@ -34,7 +34,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Literal, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -46,6 +46,7 @@ from hfortix_fortios._helpers import (
     build_api_payload,
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    quote_path_param,  # URL encoding for path parameters
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -84,12 +85,11 @@ class CertNameAvailable(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        name: str | None = None,
+        mkey: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
-        q_mkey: str | None = None,
-        q_scope: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
@@ -101,7 +101,8 @@ class CertNameAvailable(CRUDEndpoint, MetadataMixin):
         Check if the local certificate name is available to use.
 
         Args:
-            name: Name identifier to retrieve specific object. If None, returns all objects.
+            mkey: The certificate name to be checked.
+            scope: Scope of certificate name [vdom*|global]. Global scope is only accessible for global administrators
             filter: List of filter expressions to limit results.
                 Each filter uses format: "field==value" or "field!=value"
                 Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
@@ -168,17 +169,13 @@ class CertNameAvailable(CRUDEndpoint, MetadataMixin):
             params["count"] = count
         if start is not None:
             params["start"] = start
-        if q_mkey is not None:
-            params["mkey"] = q_mkey
-        if q_scope is not None:
-            params["scope"] = q_scope
+        if mkey is not None:
+            params["mkey"] = mkey
+        if scope is not None:
+            params["scope"] = scope
         
-        if name:
-            endpoint = f"/vpn-certificate/cert-name-available/{name}"
-            unwrap_single = True
-        else:
-            endpoint = "/vpn-certificate/cert-name-available"
-            unwrap_single = False
+        endpoint = "/vpn-certificate/cert-name-available"
+        unwrap_single = False
         
         return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
