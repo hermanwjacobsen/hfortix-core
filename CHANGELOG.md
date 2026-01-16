@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.79] - 2026-01-16
+
+### Added - **Full Log, Monitor, and Service API Support**
+
+- ✅ **Log endpoints**: Full support for `fgt.api.log.*` endpoints (disk, memory, fortianalyzer, etc.)
+- ✅ **Monitor endpoints**: Full support for `fgt.api.monitor.*` endpoints with proper POST method generation
+- ✅ **Service endpoints**: Full support for `fgt.api.service.*` endpoints with `name` parameter
+
+### Fixed - **Code Generator Improvements**
+
+- ✅ **POST method generation**: Fixed schema parser to read `http_methods` from schema JSON instead of hardcoding GET
+- ✅ **Monitor action endpoints**: Endpoints like `monitor.firewall.policy.reset.post()` now work correctly
+- ✅ **Service POST endpoints**: Service endpoints now use intuitive `name` parameter instead of `mkey`
+- ✅ **Request fields parsing**: Schema parser now reads `request_fields` for service/monitor schemas
+- ✅ **Log generator fix**: Fixed log generator to use correct schema directory path
+
+### Changed - **Service Endpoint API**
+
+Service POST endpoints now use `name` parameter which maps to `mkey` internally:
+
+```python
+# Before (confusing)
+fgt.api.service.sniffer.start.post(payload_dict={"mkey": "sniffer1"}, vdom="test")
+
+# After (intuitive)
+fgt.api.service.sniffer.start.post(name="sniffer1", vdom="test")
+```
+
+### Examples
+
+```python
+# Log endpoints
+logs = fgt.api.log.disk.traffic.forward.get(rows=15)
+
+# Monitor endpoints (including POST actions)
+stats = fgt.api.monitor.firewall.policy.get()
+reset = fgt.api.monitor.firewall.policy.reset.post()
+
+# Service endpoints with name parameter
+fgt.api.service.sniffer.start.post(name="capture1", vdom="test")
+fgt.api.service.sniffer.stop.post(name="capture1", vdom="test")
+pcap = fgt.api.service.sniffer.download.post(name="capture1", vdom="test")
+# pcap.raw['content'] contains binary PCAP data
+```
+
+---
+
 ## [0.5.78] - 2026-01-16
 
 ### Fixed

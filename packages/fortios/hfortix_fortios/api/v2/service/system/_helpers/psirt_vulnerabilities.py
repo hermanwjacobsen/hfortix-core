@@ -32,6 +32,7 @@ from hfortix_fortios._helpers.validation import (
 
 # Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "severity",  # 
 ]
 
 # Fields with defaults (optional)
@@ -54,6 +55,8 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "severity": "string",  # 
+    "count": "string",  # 
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -179,8 +182,8 @@ SCHEMA_INFO = {
     "category": "service",
     "api_path": "system/psirt-vulnerabilities",
     "help": "Retrieve a list of N number of PSIRT advisories that the Security Fabric is vulnerable to for a given severity.",
-    "total_fields": 0,
-    "required_fields_count": 0,
+    "total_fields": 2,
+    "required_fields_count": 1,
     "fields_with_defaults_count": 0,
 }
 

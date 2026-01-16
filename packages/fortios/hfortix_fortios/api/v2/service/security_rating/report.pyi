@@ -2,6 +2,90 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ReportPayload(TypedDict, total=False):
+    """
+    Type hints for security_rating/report payload fields.
+    
+    Retrieve full report of all Security Rating tests.
+    
+    **Usage:**
+        payload: ReportPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    scope: str  # scope
+    standalone: str  # standalone
+    type: str  # type
+    checks: str  # checks
+    show_hidden: str  # show-hidden
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class ReportResponse(TypedDict):
+    """
+    Type hints for security_rating/report API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    scope: str
+    standalone: str
+    type: str
+    checks: str
+    show_hidden: str
+
+
+@final
+class ReportObject:
+    """Typed FortiObject for security_rating/report with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # scope
+    scope: str
+    # standalone
+    standalone: str
+    # type
+    type: str
+    # checks
+    checks: str
+    # show-hidden
+    show_hidden: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> dict[str, Any]:
+        """Convert to dictionary (alias for .dict)."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> ReportPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class Report:
     """
@@ -30,7 +114,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +131,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +147,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +167,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +184,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +200,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +216,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +233,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +249,7 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +279,30 @@ class Report:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> ReportObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        scope: str | None = ...,
+        standalone: str | None = ...,
+        type: str | None = ...,
+        checks: str | None = ...,
+        show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> ReportObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        scope: str | None = ...,
+        standalone: str | None = ...,
+        type: str | None = ...,
+        checks: str | None = ...,
+        show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +310,23 @@ class Report:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        scope: str | None = ...,
+        standalone: str | None = ...,
+        type: str | None = ...,
+        checks: str | None = ...,
+        show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        scope: str | None = ...,
+        standalone: str | None = ...,
+        type: str | None = ...,
+        checks: str | None = ...,
+        show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +338,12 @@ class Report:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: ReportPayload | None = ...,
+        scope: str | None = ...,
+        standalone: str | None = ...,
+        type: str | None = ...,
+        checks: str | None = ...,
+        show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +375,7 @@ class Report:
 
 __all__ = [
     "Report",
+    "ReportPayload",
+    "ReportResponse",
+    "ReportObject",
 ]

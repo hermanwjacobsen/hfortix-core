@@ -2,6 +2,78 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class PsirtVulnerabilitiesPayload(TypedDict, total=False):
+    """
+    Type hints for system/psirt_vulnerabilities payload fields.
+    
+    Retrieve a list of N number of PSIRT advisories that the Security Fabric is vulnerable to for a given severity.
+    
+    **Usage:**
+        payload: PsirtVulnerabilitiesPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    severity: str  # severity
+    count: str  # count
+
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class PsirtVulnerabilitiesResponse(TypedDict):
+    """
+    Type hints for system/psirt_vulnerabilities API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    severity: str
+    count: str
+
+
+@final
+class PsirtVulnerabilitiesObject:
+    """Typed FortiObject for system/psirt_vulnerabilities with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # severity
+    severity: str
+    # count
+    count: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> dict[str, Any]:
+        """Convert to dictionary (alias for .dict)."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> PsirtVulnerabilitiesPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
 
 class PsirtVulnerabilities:
     """
@@ -30,7 +102,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
     @overload
@@ -47,7 +119,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # Without mkey -> returns list of FortiObjects
     @overload
@@ -63,7 +135,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # ================================================================
     # (removed - all GET now returns FortiObject)
@@ -83,7 +155,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # With mkey as keyword arg -> returns single object
     @overload
@@ -100,7 +172,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # With no mkey -> returns list of objects
     @overload
@@ -116,7 +188,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -132,7 +204,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
     @overload
@@ -149,7 +221,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
     @overload
@@ -165,7 +237,7 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     # Fallback overload for all other cases
     @overload
@@ -195,20 +267,24 @@ class PsirtVulnerabilities:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject | dict[str, Any]: ...
+    ) -> PsirtVulnerabilitiesObject | dict[str, Any]: ...
     
     # PUT overloads
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PsirtVulnerabilitiesPayload | None = ...,
+        severity: str | None = ...,
+        count: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+    ) -> PsirtVulnerabilitiesObject: ...
     
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PsirtVulnerabilitiesPayload | None = ...,
+        severity: str | None = ...,
+        count: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -216,13 +292,17 @@ class PsirtVulnerabilities:
     @overload
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PsirtVulnerabilitiesPayload | None = ...,
+        severity: str | None = ...,
+        count: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PsirtVulnerabilitiesPayload | None = ...,
+        severity: str | None = ...,
+        count: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -234,7 +314,9 @@ class PsirtVulnerabilities:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PsirtVulnerabilitiesPayload | None = ...,
+        severity: str | None = ...,
+        count: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -266,4 +348,7 @@ class PsirtVulnerabilities:
 
 __all__ = [
     "PsirtVulnerabilities",
+    "PsirtVulnerabilitiesPayload",
+    "PsirtVulnerabilitiesResponse",
+    "PsirtVulnerabilitiesObject",
 ]

@@ -13,7 +13,15 @@ if TYPE_CHECKING:
 
 
 class Log:
-    """Container for LOG endpoints."""
+    """Container for LOG endpoints.
+    
+    Provides access to log query endpoints for different storage locations:
+    - disk: Logs stored on local disk
+    - memory: Logs stored in memory
+    - fortianalyzer: Logs from FortiAnalyzer
+    - forticloud: Logs from FortiCloud
+    - search: Log search operations
+    """
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize LOG category."""
